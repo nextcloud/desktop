@@ -2132,6 +2132,21 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <source>%1 is not readable.</source>
         <translation>%1 es ilegible.</translation>
     </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="200"/>
+        <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="202"/>
+        <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="204"/>
+        <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
@@ -2516,6 +2531,11 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1814"/>
+        <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>¡La ruta seleccionada no existe!</translation>
@@ -2526,9 +2546,32 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
         <translation>¡La ruta seleccionada no es una carpeta!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1822"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>¡No tiene permiso para escribir en la carpeta seleccionada!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1831"/>
+        <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
+        <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1843"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
+        <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
+        <comment>folder location</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
@@ -2541,9 +2584,20 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
         <translation>El directorio local %1 está dentro de un directorio usado en una conexión de sincronización de directorios. Por favor, elija otro.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
+        <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ya existe una tarea de sincronización entre el servidor y esta carpeta. Por favor elija otra carpeta local.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
+        <comment>folder location, server url</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
@@ -2852,6 +2906,13 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Elija esto para sincronizar la cuenta entera</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <location filename="../src/gui/folderwizard.cpp" line="510"/>
+        <location filename="../src/gui/folderwizard.cpp" line="515"/>
+        <source>Please choose a different location. %1 is already being synced to %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Esta carpeta ya se ha sincronizado.</translation>
@@ -2891,18 +2952,10 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Virtual files are not available for the selected folder</source>
         <translation>Los archivos virtuales no están disponibles para la carpeta seleccionada</translation>
     </message>
-</context>
-<context>
-    <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="65"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;  %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard.cpp" line="67"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt; </translation>
+        <location filename="../src/gui/folderwizard.cpp" line="634"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3884,6 +3937,11 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="398"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Los archivos virtuales no están disponiblespara la carpeta seleccionada</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -5963,13 +6021,28 @@ El servidor respondió con el error: %2</translation>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="79"/>
+        <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>La característica de archivos virtuales necesita un sistema de archivos NTFS, %1 está usando %2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
@@ -7287,6 +7360,19 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/BasicComboBox.qml" line="62"/>
         <source>Clear status message menu</source>
         <translation>Borrar el menú de mensajes de estado</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FormatWarningsWizardPage</name>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
+        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;  %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Advertencia:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>

@@ -2131,6 +2131,21 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
         <source>%1 is not readable.</source>
         <translation>A(z) %1 nem olvasható.</translation>
     </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="200"/>
+        <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="202"/>
+        <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="204"/>
+        <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
@@ -2514,6 +2529,11 @@ Alternatívaként az összes törölt fájlt visszaállíthatja a kiszolgálór�
         <translation>A(z) %1 mappát egy mappaszinkronizációs kapcsolat használja!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1814"/>
+        <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>A kiválasztott útvonal nem létezik!</translation>
@@ -2524,9 +2544,32 @@ Alternatívaként az összes törölt fájlt visszaállíthatja a kiszolgálór�
         <translation>A kiválasztott elérési út nem mappa!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1822"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nincs joga a kiválasztott mappa írásához!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1831"/>
+        <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
+        <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1843"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
+        <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
+        <comment>folder location</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
@@ -2539,9 +2582,20 @@ Alternatívaként az összes törölt fájlt visszaállíthatja a kiszolgálór�
         <translation>A(z) %1 helyi mappa már egy olyan mappában van, amely mappa szinkronizálási kapcsolathoz használt. Válasszon egy másikat.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
+        <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Már van egy szinkronizálási mappa a kiszolgálóról ebben a helyi mappában. Válasszon egy másik mappát.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
+        <comment>folder location, server url</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
@@ -2853,6 +2907,13 @@ Haladó felhasználók számára: Ez a probléma az egy mappában található t�
         <translation>Válassza ezt a teljes fiókja szinkronizálásához</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <location filename="../src/gui/folderwizard.cpp" line="510"/>
+        <location filename="../src/gui/folderwizard.cpp" line="515"/>
+        <source>Please choose a different location. %1 is already being synced to %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Ez a mappa már szinkronizálva van.</translation>
@@ -2892,18 +2953,10 @@ Haladó felhasználók számára: Ez a probléma az egy mappában található t�
         <source>Virtual files are not available for the selected folder</source>
         <translation>A virtuális fájlok nem érhetők el a kiválasztott mappához</translation>
     </message>
-</context>
-<context>
-    <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="65"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard.cpp" line="67"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt;</translation>
+        <location filename="../src/gui/folderwizard.cpp" line="634"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3886,6 +3939,11 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="398"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>A virtuális fájlok nem érhetők el a kiválasztott mappához</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -5965,13 +6023,28 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation>A virtuális fájlrendszer funkció nem támogatja a meghajtót szinkronizálási gyökérként</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="79"/>
+        <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>A virtuális fájlrendszer szolgáltatáshoz NTFS fájlrendszerre van szükség, a(z) %1 a következőt használja: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
@@ -7289,6 +7362,19 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <location filename="../src/gui/BasicComboBox.qml" line="62"/>
         <source>Clear status message menu</source>
         <translation>Állapotüzenet-menü ürítése</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FormatWarningsWizardPage</name>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
+        <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt; %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>

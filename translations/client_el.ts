@@ -2121,6 +2121,21 @@ This can be an issue with your OpenSSL libraries.</source>
         <source>%1 is not readable.</source>
         <translation> Το %1 δεν είναι αναγνώσιμο. </translation>
     </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="200"/>
+        <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="202"/>
+        <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="204"/>
+        <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
@@ -2497,6 +2512,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1814"/>
+        <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>Η επιλεγμένη διαδρομή δεν υπάρχει!</translation>
@@ -2507,9 +2527,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Η επιλεγμένη διαδρομή δεν είναι φάκελος!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1822"/>
+        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Δεν έχετε δικαιώματα εγγραφής στον επιλεγμένο φάκελο!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1831"/>
+        <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
+        <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1843"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
+        <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
+        <comment>folder location</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
@@ -2522,9 +2565,20 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Ο τοπικός φάκελος %1 περιέχεται ήδη σε φάκελο που χρησιμοποιείται σε μια σύνδεση συγχρονισμού. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1908"/>
+        <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Υπάρχει ήδη συγχρονισμός από το διακομιστή σε αυτόν τον τοπικό φάκελο. Επιλέξτε έναν άλλο τοπικό φάκελο!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1923"/>
+        <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
+        <comment>folder location, server url</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
@@ -2833,6 +2887,13 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Επιλέξτε να συγχρονίσετε ολόκληρο το λογαριασμό</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <location filename="../src/gui/folderwizard.cpp" line="510"/>
+        <location filename="../src/gui/folderwizard.cpp" line="515"/>
+        <source>Please choose a different location. %1 is already being synced to %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Αυτός ο φάκελος συγχρονίζεται ήδη.</translation>
@@ -2872,18 +2933,10 @@ For advanced users: this issue might be related to multiple sync database files 
         <source>Virtual files are not available for the selected folder</source>
         <translation>Τα εικονικά αρχεία δεν είναι διαθέσιμα για τον επιλεγμένο φάκελο.</translation>
     </message>
-</context>
-<context>
-    <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="65"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Προειδοποίηση:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard.cpp" line="67"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Προειδοποίηση:&lt;/b&gt;</translation>
+        <location filename="../src/gui/folderwizard.cpp" line="634"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3855,6 +3908,11 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="398"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Τα εικονικά αρχεία δεν είναι διαθέσιμα για τον επιλεγμένο φάκελο.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
+        <source>Virtual files are not supported at the selected location</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -5926,13 +5984,28 @@ Server replied with error: %2</source>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="79"/>
+        <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Η δυνατότητα εικονικού συστήματος αρχείων απαιτεί σύστημα αρχείων NTFS, το %1 χρησιμοποιεί %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
@@ -7250,6 +7323,19 @@ Server replied with error: %2</source>
         <location filename="../src/gui/BasicComboBox.qml" line="62"/>
         <source>Clear status message menu</source>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::FormatWarningsWizardPage</name>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
+        <translation>&lt;b&gt;Προειδοποίηση:&lt;/b&gt; %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Προειδοποίηση:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
