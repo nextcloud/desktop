@@ -290,7 +290,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     const auto hasLeadingOrTrailingSpaces = excluded == CSYNC_FILE_EXCLUDE_LEADING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
-    const auto leadingAndTrailingSpacesFilesAllowed = _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
+    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
     if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
         excluded = CSYNC_NOT_EXCLUDED;
     }
@@ -470,6 +470,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             }
             item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
+            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
             break;
         }
     }
