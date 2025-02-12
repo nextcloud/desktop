@@ -559,6 +559,8 @@ public:
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
+    void enableEnforceWindowsFileNameCompatibility();
+
     [[nodiscard]] OCC::AccountPtr account() const { return _account; }
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
