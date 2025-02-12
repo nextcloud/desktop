@@ -221,13 +221,20 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         stat = CredentialsWrong;
 
     } else if (reply->error() != QNetworkReply::NoError) {
-        _errors << job->errorStringParsingBody();
+        QByteArray body;
+        _errors << job->errorStringParsingBody(&body);
 
         const int httpStatus =
             reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpStatus == 503) {
             _errors.clear();
             stat = ServiceUnavailable;
+        } else if (httpStatus == 403) {
+            const auto davException = job->errorStringParsingBodyException(body);
+            if (davException == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
+                qCInfo(lcConnectionValidator) << "The terms of service need to be signed";
+                stat = NeedToSignTermsOfService;
+            }
         }
     }
 
