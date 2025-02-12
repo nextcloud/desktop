@@ -134,7 +134,6 @@ func createDmgForAppBundle(
     sparklePackageSignKey: String?
 ) throws {
     print("Creating DMG for the client…")
-    try installIfMissing("create-dmg", "brew install create-dmg")
 
     let dmgFilePath = URL(fileURLWithPath: productPath)
         .appendingPathComponent(appName)
