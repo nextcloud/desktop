@@ -234,12 +234,11 @@ Application::Application(int &argc, char **argv)
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 
     const auto shouldDisableGraphicsAcceleration = [&]() {
-        const auto systemEnvironment = QProcessEnvironment::systemEnvironment();
-        if (systemEnvironment.contains(QStringLiteral("VMWARE"))) {
+        if (qEnvironmentVariableIsSet("VMWARE")) {
             return true;
         }
 
-        if (systemEnvironment.contains("SESSIONNAME") && systemEnvironment.value("SESSIONNAME").startsWith("RDP-")) {
+        if (qEnvironmentVariableIsSet("SESSIONNAME") && qEnvironmentVariable("SESSIONNAME").startsWith("RDP-")) {
             return true;
         }
 
@@ -247,7 +246,7 @@ Application::Application(int &argc, char **argv)
     };
 
     if (shouldDisableGraphicsAcceleration()) {
-        QProcessEnvironment::systemEnvironment().insert(QStringLiteral("SVGA_ALLOW_LLVMPIPE"), 0);
+        qputenv("SVGA_ALLOW_LLVMPIPE", 0);
         qCInfo(lcApplication) << "Disabling graphics acceleration, application might be running in a virtual or in a remote desktop.";
     }
 #endif
