@@ -313,6 +313,7 @@ struct CreateDMG: ParsableCommand {
     var sparklePackageSignKey: String?
 
     mutating func run() throws {
+        try installIfMissing("create-dmg", "brew install create-dmg")
         try createDmgForAppBundle(
             appBundlePath: appBundlePath,
             productPath: productPath,
