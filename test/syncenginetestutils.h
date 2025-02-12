@@ -562,6 +562,7 @@ public:
     [[nodiscard]] OCC::AccountPtr account() const { return _account; }
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
+    [[nodiscard]] FakeQNAM* networkAccessManager() const { return _fakeQnam; }
 
     FileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
