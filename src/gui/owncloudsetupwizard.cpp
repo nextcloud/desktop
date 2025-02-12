@@ -31,6 +31,7 @@
 #include "networkjobs.h"
 #include "owncloudgui.h"
 #include "owncloudsetupwizard.h"
+#include "owncloudpropagator_p.h"
 #include "sslerrordialog.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
@@ -425,9 +426,16 @@ void OwncloudSetupWizard::slotAuthError()
 
         // Provide messages for other errors, such as invalid credentials.
     } else if (reply->error() != QNetworkReply::NoError) {
+        auto davException = OCC::getExceptionFromReply(reply);
+
         if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
+                           .arg(Utility::escape(_ocWizard->account()->url().toString()));
+        } else if (!davException.first.isEmpty() && davException.first == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
+            qCInfo(lcWizard) << "Terms of service not accepted yet!";
+            // TODO: it would be cool to display a new wizard page containing the terms of service
+            errorMsg = tr("Please accept the <a href=\"%1\">Terms of Service</a> with your browser and try again.")
                            .arg(Utility::escape(_ocWizard->account()->url().toString()));
         } else {
             errorMsg = job->errorStringParsingBody();
