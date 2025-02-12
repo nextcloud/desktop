@@ -371,7 +371,10 @@ private slots:
     void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameAndUploadFile()
     {
         FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.enableEnforceWindowsFileNameCompatibility();
+
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
         const QString fileWithSpaces1(" foo");
         const QString fileWithSpaces2(" bar ");
         const QString fileWithSpaces3("bla ");
@@ -459,6 +462,7 @@ private slots:
     void testCreateLocalPathsWithLeadingAndTrailingSpaces_syncOnSupportingOs()
     {
         FakeFolder fakeFolder{FileInfo()};
+        fakeFolder.enableEnforceWindowsFileNameCompatibility();
         fakeFolder.localModifier().mkdir("A");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -541,6 +545,7 @@ private slots:
     void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAutomaticallyAndDontUploadFile()
     {
         FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.enableEnforceWindowsFileNameCompatibility();
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces(" foo");
         const QString fileTrimmed("foo");

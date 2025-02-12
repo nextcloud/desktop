@@ -2039,6 +2039,8 @@ private slots:
     void testCreateFileWithTrailingLeadingSpaces_local_automatedRenameBeforeUpload()
     {
         FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.enableEnforceWindowsFileNameCompatibility();
+
         fakeFolder.syncEngine().setLocalDiscoveryEnforceWindowsFileNameCompatibility(true);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
