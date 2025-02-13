@@ -23,7 +23,7 @@ TextEdit {
     id: root
 
     readonly property color accentColor: palette.highlight
-    readonly property color secondaryColor: palette.dark
+    readonly property color secondaryColor: palette.placeholderText
     readonly property alias submitButton: submitButton
 
     clip: true
