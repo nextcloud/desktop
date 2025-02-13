@@ -38,7 +38,6 @@ GridLayout {
     signal toggleAllowResharing(bool enable)
     signal togglePasswordProtect(bool enable)
     signal toggleExpirationDate(bool enable)
-    signal toggleNoteToRecipient(bool enable)
     signal permissionModeChanged(int permissionMode)
 
     signal setLinkShareLabel(string label)
@@ -252,7 +251,6 @@ GridLayout {
                     onToggleHideDownload: root.toggleHideDownload(enable)
                     onTogglePasswordProtect: root.togglePasswordProtect(enable)
                     onToggleExpirationDate: root.toggleExpirationDate(enable)
-                    onToggleNoteToRecipient: root.toggleNoteToRecipient(enable)
                     onPermissionModeChanged: root.permissionModeChanged(permissionMode)
 
                     onSetLinkShareLabel: root.setLinkShareLabel(label)

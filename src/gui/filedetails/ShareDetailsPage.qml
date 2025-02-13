@@ -87,7 +87,6 @@ Page {
     readonly property bool isFolderItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeFolder
     readonly property bool isEncryptedItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFile || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFolder || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedTopLevelFolder
 
-    property bool waitingForNoteEnabledChange: false
     property bool waitingForExpireDateEnabledChange: false
     property bool waitingForPasswordProtectEnabledChange: false
     property bool waitingForExpireDateChange: false
@@ -101,7 +100,7 @@ Page {
     }
 
     function resetNoteField() {
-        noteTextEdit.text = note;
+        noteTextArea.text = note;
         waitingForNoteChange = false;
     }
 
@@ -133,7 +132,7 @@ Page {
 
     function resetNoteEnabledField() {
         noteEnabledMenuItem.checked = noteEnabled;
-        waitingForNoteEnabledChange = false;
+        waitingForNoteChange = false;
     }
 
     function resetExpireDateEnabledField() {
@@ -662,16 +661,18 @@ Page {
                 checkable: true
                 checked: root.noteEnabled
                 text: qsTr("Note to recipient")
-                enabled: !root.waitingForNoteEnabledChange
+                enabled: !root.waitingForNoteChange
 
                 onClicked: {
-                    root.toggleNoteToRecipient(checked);
-                    root.waitingForNoteEnabledChange = true;
+                    if (!checked && root.note !== "") {
+                        root.setNote("");
+                        root.waitingForNoteChange = true;
+                    }
                 }
 
                 NCBusyIndicator {
                     anchors.fill: parent
-                    visible: root.waitingForNoteEnabledChange
+                    visible: root.waitingForNoteChange && !noteEnabledMenuItem.checked
                     running: visible
                     z: 1
                 }
@@ -682,7 +683,7 @@ Page {
                 height: visible ? implicitHeight : 0
                 spacing: scrollContentsColumn.indicatorSpacing
 
-                visible: root.noteEnabled
+                visible: noteEnabledMenuItem.checked
 
                 Image {
                     Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
@@ -697,27 +698,25 @@ Page {
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
 
-                NCInputTextEdit {
-                    id: noteTextEdit
+                NCInputTextArea {
+                    id: noteTextArea
 
                     Layout.fillWidth: true
-                    height: visible ? Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight) : 0
+                    // no height here -- let the textarea figure it out how much it needs
                     submitButton.height: Math.min(Style.talkReplyTextFieldPreferredHeight, height - 2)
 
                     text: root.note
-                    enabled: root.noteEnabled &&
-                             !root.waitingForNoteChange &&
-                             !root.waitingForNoteEnabledChange
+                    placeholderText: qsTr("Enter a note for the recipient")
+                    enabled: noteEnabledMenuItem.checked && !root.waitingForNoteChange
 
-                    onEditingFinished: if(text !== root.note) {
+                    onEditingFinished: if (text !== "" && text !== root.note) {
                         root.setNote(text);
                         root.waitingForNoteChange = true;
                     }
 
                     NCBusyIndicator {
                         anchors.fill: parent
-                        visible: root.waitingForNoteChange ||
-                                 root.waitingForNoteEnabledChange
+                        visible: root.waitingForNoteChange && noteEnabledMenuItem.checked
                         running: visible
                         z: 1
                     }

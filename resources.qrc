@@ -13,7 +13,7 @@
         <file>src/gui/filedetails/FileDetailsWindow.qml</file>
         <file>src/gui/filedetails/FileTag.qml</file>
         <file>src/gui/filedetails/NCInputDateField.qml</file>
-        <file>src/gui/filedetails/NCInputTextEdit.qml</file>
+        <file>src/gui/filedetails/NCInputTextArea.qml</file>
         <file>src/gui/filedetails/NCInputTextField.qml</file>
         <file>src/gui/filedetails/NCTabButton.qml</file>
         <file>src/gui/filedetails/ShareeDelegate.qml</file>
