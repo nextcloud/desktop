@@ -277,7 +277,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
@@ -501,7 +501,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/lock-https.svg/" + palette.dark
+                    source: "image://svgimage-custom-color/lock-https.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
@@ -607,7 +607,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/calendar.svg/" + palette.dark
+                    source: "image://svgimage-custom-color/calendar.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
@@ -692,7 +692,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
