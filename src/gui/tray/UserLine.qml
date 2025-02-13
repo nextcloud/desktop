@@ -152,6 +152,9 @@ AbstractButton {
                }
 
                 MenuItem {
+                    visible: model.canLogout
+                    height: visible ? implicitHeight : 0
+                    width: parent.width
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
@@ -175,7 +178,7 @@ AbstractButton {
 
                 MenuItem {
                     id: removeAccountButton
-                    text: qsTr("Remove account")
+                    text: model.removeAccountText
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: {

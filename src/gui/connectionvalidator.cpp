@@ -271,6 +271,13 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
     checkServerTermsOfService();
+
+    if (_account->isPublicShareLink()) {
+        slotUserFetched(nullptr);
+        return;
+    }
+
+    fetchUser();
 }
 
 void ConnectionValidator::fetchUser()
