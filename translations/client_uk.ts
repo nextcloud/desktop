@@ -172,13 +172,13 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="111"/>
         <source>Resume sync for all</source>
         <translation>Відновити синхронізацію для всіх</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="111"/>
         <source>Pause sync for all</source>
         <translation>Призупинити синхронізацію для всіх</translation>
     </message>
@@ -193,32 +193,32 @@
         <translation>Додати новий обліковий запис</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
         <source>Settings</source>
         <translation>Налаштування</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="128"/>
         <source>Exit</source>
         <translation>Вийти</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="156"/>
         <source>Current account avatar</source>
         <translation>Піктограма поточного користувача</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="182"/>
         <source>Current account status is online</source>
         <translation>Статус в мережі поточного користувача</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="182"/>
         <source>Current account status is do not disturb</source>
         <translation>Поточний статус &quot;не турбувати&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="253"/>
         <source>Account switcher and settings menu</source>
         <translation>Перемикання користувачів та меню налаштувань</translation>
     </message>
@@ -307,17 +307,17 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Evict materialised files</source>
         <translation>Вилучити звантажені файли</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
         <source>Materialised items</source>
         <translation>Фізично присутні дані</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>Перезавантажити</translation>
     </message>
@@ -493,17 +493,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="242"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Діалогове вікно Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="379"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>Результати пошуку</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="443"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
         <source>New activities</source>
         <translation>Нові події</translation>
     </message>
@@ -554,14 +554,14 @@ Should an account import be attempted?</source>
 Чи спробувати імпортувати дані облікового запису?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="225"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 облікових записів знайдено із застарілого настільного клієнта.
 Чи імпортувати ці облікові записи?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="227"/>
+        <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 обліковий запис знайдено із застарілого настільного клієнта.
@@ -575,12 +575,12 @@ Should the account be imported?</source>
         <translation>Імпорт зі збереженням сумісности</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="230"/>
+        <location filename="../src/gui/accountmanager.cpp" line="235"/>
         <source>Import</source>
         <translation>Імпорт</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <location filename="../src/gui/accountmanager.cpp" line="236"/>
         <source>Skip</source>
         <translation>Пропустити</translation>
     </message>
@@ -675,12 +675,12 @@ Should the account be imported?</source>
         <translation>Шифрувати каталог</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="122"/>
         <source>End-to-end Encryption</source>
         <translation>Наскрізне шифрування</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="123"/>
+        <location filename="../src/gui/accountsettings.cpp" line="124"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
         <translation>Це призведе до шифрування вашого каталогу та всіх файлів в ньому. Ці файли більше не будуть доступні без парольної фрази-ключа.
@@ -712,17 +712,17 @@ Should the account be imported?</source>
         <translation>Увага</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="401"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Будь ласка, зачекайте завершення синхронізації каталогу перед тим, як зашифрувати його.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="403"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Виявлено незначну проблему під час синхронізації каталогу. Шифрування цієї каталоги буде виконано лише після успішного завершення синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="405"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Виявлено проблему під час синхронізації каталогу. Шифрування цієї каталоги буде виконано лише після успішного завершення синхронізації.</translation>
     </message>
@@ -978,7 +978,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Відсутнє з&apos;єднання між %2 та %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1312"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1335"/>
         <source>Unable to connect to %1.</source>
         <translation>Не вдалося з&apos;єднатися із %1.</translation>
     </message>
@@ -988,7 +988,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Помилка у налаштуванні сервера: %1, див. %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1349"/>
         <source>You need to accept the terms of service</source>
         <translation>Потрібно прийняти умови користування</translation>
     </message>
@@ -1018,7 +1018,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Окремі каталоги не було синхронізовано, оскільки їхній розмір завеликий або розміщені у зовнішніх сховищах:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1609"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1640"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Виявлено %2 каталогів, розмір яких збільшився поза встановленим обмеженням %1MB</translation>
     </message>
@@ -1220,34 +1220,39 @@ This action will abort any currently running synchronization.</source>
         <translation>Продовжити</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="398"/>
+        <source>Quit %1</source>
+        <translation>Вийти %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="514"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 облікових записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="515"/>
         <source>1 account</source>
         <translation>1 обліковий запис</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="517"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 каталогів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="518"/>
         <source>1 folder</source>
         <translation>1 каталог</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>Legacy import</source>
         <translation>Імпорт застарілих записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1263,11 +1268,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Виявлено помилку під час отримання доступу до файлу конфігурації у %1. Будь ласка, пересвідчитеся, що присутній доступ до файлу у системного облікового запису.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="398"/>
-        <source>Quit %1</source>
-        <translation>Вийти %1</translation>
     </message>
 </context>
 <context>
@@ -1733,13 +1733,13 @@ This action will abort any currently running synchronization.</source>
         <translation>Помилка серверу: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="730"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Помилка з налаштуванням шифрування метаданих!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="717"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Помилка під час налаштування зашифрованих метаданих: початкова сиґнатура, отримана від сервера, є порожньою.</translation>
     </message>
@@ -2295,29 +2295,29 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Зберегти файли</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1443"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Каталог %2 перевищив встановлене обмеження на розмір %1MB
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1438"/>
+        <location filename="../src/gui/folder.cpp" line="1454"/>
         <source>Keep syncing</source>
         <translation>Синхронізовувати</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1446"/>
+        <location filename="../src/gui/folder.cpp" line="1462"/>
         <source>Stop syncing</source>
         <translation>Зупинити синхронізацію</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1457"/>
+        <location filename="../src/gui/folder.cpp" line="1473"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Каталог %1 перевищив встановлене обмеження на розмір %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1458"/>
+        <location filename="../src/gui/folder.cpp" line="1474"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Призупинити синхронізацію цього каталогу?</translation>
     </message>
@@ -2345,12 +2345,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1580"/>
+        <location filename="../src/gui/folder.cpp" line="1596"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Помилка звантаженння віртульного файлу: код &quot;%1&quot;, статус &quot;%2&quot;, повідомлення про помилку &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1674"/>
+        <location filename="../src/gui/folder.cpp" line="1690"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2359,7 +2359,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 Альтернативно ви можете відновити усі вилучені файли шляхом завантаженя з каталогу &quot;%1&quot; на сервер хмари.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1675"/>
+        <location filename="../src/gui/folder.cpp" line="1691"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2368,22 +2368,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 Альтернативно ви можете відновити усі вилучені файли шляхом їхнього звантаженя з сервера хмари.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1676"/>
+        <location filename="../src/gui/folder.cpp" line="1692"/>
         <source>Remove all files?</source>
         <translation>Дійсно  вилучити всі файли?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1680"/>
+        <location filename="../src/gui/folder.cpp" line="1696"/>
         <source>Proceed with Deletion</source>
         <translation>Дійсно вилучити</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1681"/>
+        <location filename="../src/gui/folder.cpp" line="1697"/>
         <source>Restore Files to Server</source>
         <translation>Відновити файли на сервері</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1681"/>
+        <location filename="../src/gui/folder.cpp" line="1697"/>
         <source>Restore Files from Server</source>
         <translation>Відновити файли з сервера</translation>
     </message>
@@ -2454,32 +2454,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1747"/>
+        <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Синхронізація %1 із %2 (залишилося декілька секунд)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1762"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Синхронізація %1 із %2 (залишилося ще %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1753"/>
+        <location filename="../src/gui/folderman.cpp" line="1765"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронізація %1 із %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1759"/>
+        <location filename="../src/gui/folderman.cpp" line="1771"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Синхронізація %1 (залишилося декілька секунд)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1761"/>
+        <location filename="../src/gui/folderman.cpp" line="1773"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронізація %1 (залишилося ще %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1764"/>
+        <location filename="../src/gui/folderman.cpp" line="1776"/>
         <source>Syncing %1</source>
         <translation>Синхронізація %1</translation>
     </message>
@@ -2524,16 +2524,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Не вибрано прийнятного каталогу!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1810"/>
-        <source>The folder %1 is used in a folder sync connection!</source>
-        <translation>Каталог %1 використовується у синхронізації каталогів!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1814"/>
-        <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>Вибраний шлях не існує!</translation>
@@ -2544,15 +2534,35 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Вибраний шлях не є каталогом!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1664"/>
+        <source>You have no permission to write to the selected folder!</source>
+        <translation>У вас немає прав на запис до цього каталогу!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1716"/>
+        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation>Каталог %1 на пристрої вже містить каталог, який використовується для синхронізації каталогів. Будь ласка, виберіть інший каталог!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1724"/>
+        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation>Каталог %1 на пристрої вже присутній у каталозі, який використовується для синхронізації каталогів. Будь ласка, виберіть інший каталог!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1740"/>
+        <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
+        <translation>Синхронізацію між хмарою та каталогом на пристрої вже встановлено. Будь ласка, виберіть інший каталог!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1814"/>
+        <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1822"/>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1664"/>
-        <source>You have no permission to write to the selected folder!</source>
-        <translation>У вас немає прав на запис до цього каталогу!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1831"/>
@@ -2572,24 +2582,9 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1716"/>
-        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Каталог %1 на пристрої вже містить каталог, який використовується для синхронізації каталогів. Будь ласка, виберіть інший каталог!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1724"/>
-        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Каталог %1 на пристрої вже присутній у каталозі, який використовується для синхронізації каталогів. Будь ласка, виберіть інший каталог!</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1740"/>
-        <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Синхронізацію між хмарою та каталогом на пристрої вже встановлено. Будь ласка, виберіть інший каталог!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1923"/>
@@ -2598,7 +2593,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <location filename="../src/gui/folderman.cpp" line="2060"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -2706,12 +2701,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Узгодження змін</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1015"/>
         <source>Syncing local and remote changes</source>
         <translation>Синхронізація змін на пристрої та віддалено </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation type="unfinished"/>
@@ -2729,7 +2724,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1071"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Звантажити %1/s</translation>
@@ -2746,7 +2741,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1081"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Завантажити %1/s</translation>
@@ -2797,12 +2792,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>файл %1 з %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1137"/>
         <source>File %1 of %2</source>
         <translation>Файл %1 із %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1190"/>
         <source>About to start syncing</source>
         <translation>Початок синхронізації</translation>
     </message>
@@ -3168,7 +3163,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Сповіщення сервера, на які треба звернути увагу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="195"/>
+        <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show chat notification dialogs.</source>
         <translation>Показувати діалог сповіщень у чаті</translation>
     </message>
@@ -3209,17 +3204,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Зауважте, що таким чином ви виберете набір оновлень, які буде застосовувано, і що неможливо буде повернутися до попередніх версій. Відтак повернення з &quot;бета&quot; до &quot;стабільного&quot; каналу зазвичай неможливо буде виконати одразу, натомість ви матимете зачекати на нову стабільну версію порівняно зі встановленою бета-версією.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
+        <location filename="../src/gui/generalsettings.cpp" line="406"/>
         <source>daily</source>
         <translation>щоденно</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="409"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>enterprise</source>
         <translation>для бізнесу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="437"/>
+        <location filename="../src/gui/generalsettings.cpp" line="438"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3230,7 +3225,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Пониження версії не відбувається одразу: повернення з каналу &quot;бета&quot; до &quot;стабільного&quot; означає, що ви матимете зачекати на нову стабільну версію.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="442"/>
+        <location filename="../src/gui/generalsettings.cpp" line="443"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3239,12 +3234,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Пониження версії не відбувається одразу: повернення з каналу &quot;бета&quot; до &quot;для бізнесу&quot; означає, що ви матимете зачекати на нову версію для бізнесу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>Changing update channel?</source>
         <translation>Змінити канал оновлення?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="450"/>
+        <location filename="../src/gui/generalsettings.cpp" line="451"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4297,30 +4292,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Таке ім&apos;я файлу є зарезервованим ім&apos;ям у файловій системі.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Каталог</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Ім&apos;я %1, що містить символ &quot;%2&quot; не підтримується файловою системою.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="398"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Ім&apos;я %1 містить принаймні один недійсний символ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="400"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Ім&apos;я %1 є зарезервованою назвою у файловій системі.</translation>
     </message>
@@ -4375,22 +4370,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Таке ім&apos;я файлу внесено до чорного списку на сервері.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Причина: все ім&apos;я файлу є недозволеним.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="455"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Причина: ім&apos;я файлу містить недозволену частину в назві (початок імени файлу)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Причина: файл містить недозволене розширення (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Причина: ім&apos;я файлу містить недозволений символ (%1).</translation>
     </message>
@@ -4425,7 +4420,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Неможливо виконати синхронізацію через неправильний час модифікації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1090"/>
+        <location filename="../src/libsync/discovery.cpp" line="1101"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Не вдалося завантажити файл, оскільки його відкрито у &quot;%1&quot;.</translation>
     </message>
@@ -4508,18 +4503,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Помилка при завантаженні метаданих через неправильні зміни часу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1513"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1484"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1490"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1496"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1518"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1530"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Неможливо зробити каталог %1 тільки для читання: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1496"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1530"/>
         <source>unknown exception</source>
         <translation>невідомий виняток</translation>
     </message>
@@ -4694,17 +4689,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Файл %1 звантажено, проте це призвело до конфлікту з файлом, який вже присутній на пристрої.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>Неможливо отримати файл %1 з локальної БД</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
         <source>could not get file %1 from local DB</source>
         <translation>неможливо отримати файл %1 з локальної БД</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="464"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>Неможливо отримати файл %1 з локальної БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4807,14 +4803,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Сервер відповів неправильним HTTP кодом. Очікувався 201, але отримано &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>Неможливо отримати файл %1 з локальної БД</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
         <source>could not get file %1 from local DB</source>
         <translation>неможливо отримати файл %1 з локальної БД</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>Неможливо отримати файл %1 з локальної БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
@@ -5064,7 +5060,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="684"/>
+        <location filename="../src/gui/sharemanager.cpp" line="704"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
@@ -5072,17 +5068,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="577"/>
         <source>%1 days</source>
         <translation>%1 днів</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="579"/>
         <source>1 day</source>
         <translation>1 день</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="580"/>
         <source>Today</source>
         <translation>Сьогодні</translation>
     </message>
@@ -5112,7 +5108,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Безпечне копіювання файлів</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="966"/>
         <source>Could not find local folder for %1</source>
         <translation>Не вдалося знайти каталог на пристрої для %1</translation>
     </message>
@@ -5236,11 +5232,6 @@ Server replied with error: %2</source>
         <translation>Надання цього каталогу у спільний доступ іншим не дозволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
-        <source>Copy internal link</source>
-        <translation>Копіювати посилання</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
         <translation>Копіювати посилання для безпечного копіювання файлів</translation>
@@ -5250,6 +5241,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1191"/>
         <source>Copy public link</source>
         <translation>Копіювати публічне посилання</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
+        <source>Copy internal link</source>
+        <translation>Копіювати посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
@@ -5283,14 +5279,14 @@ Server replied with error: %2</source>
         <translation><numerusform>Спливає за %1 хвилину</numerusform><numerusform>Спливає за %1 хвилини</numerusform><numerusform>Спливає за %1 хвилин</numerusform><numerusform>Спливає за %1 хвилин</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
-        <source>Open in browser</source>
-        <translation>Відкрити у бравзері</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
         <source>Edit</source>
         <translation>Редагувати</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
+        <source>Open in browser</source>
+        <translation>Відкрити у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5824,10 +5820,10 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="113"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="128"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="135"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="145"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="166"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="198"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="257"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="148"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="169"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
         <source>Error updating metadata for a folder %1</source>
         <translation>Помилка під час оновлення метаданих для каталогу %1</translation>
     </message>
@@ -5847,7 +5843,7 @@ Server replied with error: %2</source>
         <translation>Неможливо додати або вилучити користувача %1 для доступу до каталогу %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
         <source>Failed to unlock a folder.</source>
         <translation>Не вдалося розблокувати каталог.</translation>
     </message>
@@ -5865,7 +5861,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%1 notifications</source>
         <translation>%1 сповіщень</translation>
     </message>
@@ -5881,17 +5877,17 @@ Server replied with error: %2</source>
         <translation>Розв&apos;язати конфлікт</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="879"/>
         <source>Rename file</source>
         <translation>Перейменувати файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1085"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Відкрити Асистент Nextcloud в бравзері</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1085"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Відкрити Nextcloud Talk в бравзері</translation>
     </message>
@@ -6025,8 +6021,8 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
-        <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation>Функціонал віртуальної файлової системи не підтримує синхронізацію кореневого каталогу диску.</translation>
+        <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
+        <translation>Функціонал віртуальної файлової системи вимагає наявності NTFS, %1 використовує %2</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="79"/>
@@ -6034,19 +6030,9 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="75"/>
-        <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>Функціонал віртуальної файлової системи вимагає наявності NTFS, %1 використовує %2</translation>
-    </message>
-    <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/common/vfs.cpp" line="83"/>
-        <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation>Функціонал віртуальної файлової системи не підтримується на мережевих дисках</translation>
     </message>
 </context>
 <context>
@@ -6187,12 +6173,12 @@ Server replied with error: %2</source>
         <translation>Сервер облікового запису %1 має версію %2, яка не підтримується. Використання цього клієнта з версією сервера, яка не підтримується, не протестовано та може принести шкоду. Продовжуйте на власний ризик.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Terms of service</source>
         <translation>Умови користування</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Користувач %1 має прийняти умови користування хмарою вашого серверу. Вас буде переспрямовано до %2, де ви зможете переглянути та погодитися з умовами.</translation>
     </message>
@@ -6268,23 +6254,23 @@ Server replied with error: %2</source>
         <translation>Каталог(и) для синхронізації не налаштовано</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS для %1: Відбувається синхронізація.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS для %1: Остання синхронізація була успішною.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS для %1: Помилка під час синхронізації.</translation>
     </message>
@@ -6730,7 +6716,7 @@ Server replied with error: %2</source>
         <translation>Шукати користувачів або групи...</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Sharing is not available for this folder</source>
         <translation>Для цього каталогу недоступне надання у спільний доступ</translation>
     </message>
@@ -7143,18 +7129,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
-        <source>Downloading</source>
-        <translation>Отримання</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
         <translation>завантаження</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
-        <source>Uploading</source>
-        <translation>Завантаження</translation>
+        <source>Downloading</source>
+        <translation>Отримання</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -7163,8 +7144,8 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
-        <source>Deleting</source>
-        <translation>Вилучення</translation>
+        <source>Uploading</source>
+        <translation>Завантаження</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -7172,9 +7153,9 @@ Server replied with error: %2</source>
         <translation>переміщення</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
-        <source>Moving</source>
-        <translation>Переміщення</translation>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
+        <source>Deleting</source>
+        <translation>Вилучення</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
@@ -7183,8 +7164,8 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
-        <source>Ignoring</source>
-        <translation>Ігнорування</translation>
+        <source>Moving</source>
+        <translation>Переміщення</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -7192,17 +7173,22 @@ Server replied with error: %2</source>
         <translation>помилка</translation>
     </message>
     <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <source>Ignoring</source>
+        <translation>Ігнорування</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>updating local metadata</source>
         <translation>оновлення метаданих на пристрої</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local metadata</source>
         <translation>Оновлення локальних метаданих</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="95"/>
         <source>Updating local virtual files metadata</source>
         <translation>Оновлення метаданих віртуальних файлів на пристрої</translation>
     </message>
@@ -7362,19 +7348,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OCC::FormatWarningsWizardPage</name>
-    <message>
-        <location filename="../src/gui/folderwizard.cpp" line="65"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Попередження&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard.cpp" line="67"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Попередження&lt;/b&gt;</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AbstractPropagateRemoteDeleteEncrypted</name>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
@@ -7385,6 +7358,19 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
         <translation>&quot;%1 Не вдалося розблокувати зашифрований каталог %2&quot;.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FormatWarningsWizardPage</name>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
+        <translation>&lt;b&gt;Попередження&lt;/b&gt; %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Попередження&lt;/b&gt;</translation>
     </message>
 </context>
 <context>

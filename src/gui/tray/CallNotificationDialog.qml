@@ -24,7 +24,7 @@ import Qt5Compat.GraphicalEffects
 
 ApplicationWindow {
     id: root
-    color: palette.base
+    color: "transparent"
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     readonly property int windowSpacing: 10
@@ -89,7 +89,7 @@ ApplicationWindow {
         width: parent.width
         height: contentLayout.height + (root.windowSpacing * 2)
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        color: palette.base
+        color: Style.colorWithoutTransparency(palette.base)
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
         clip: true
