@@ -32,6 +32,7 @@
 
 #include "common/utility.h"
 #include "common/filesystembase.h"
+#include "common/qtcompat.h"
 #include "../version.h"
 
 #include <QString>
@@ -461,10 +462,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
         QRegularExpressionMatch m;
         if (filetype == ItemTypeDirectory
             && _bnameTraversalRegexDir.contains(basePath)) {
-            m = _bnameTraversalRegexDir[basePath].matchView(bnameStr);
+            m = matchRegularExpression(_bnameTraversalRegexDir[basePath], bnameStr);
         } else if (filetype == ItemTypeFile
             && _bnameTraversalRegexFile.contains(basePath)) {
-            m = _bnameTraversalRegexFile[basePath].matchView(bnameStr);
+            m = matchRegularExpression(_bnameTraversalRegexFile[basePath], bnameStr);
         } else {
             continue;
         }

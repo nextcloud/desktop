@@ -14,6 +14,7 @@
 #include "configfile.h"
 #include "sslerrordialog.h"
 #include "theme.h"
+#include "common/qtcompat.h"
 
 #include <QtGui>
 #include <QtNetwork>
@@ -201,7 +202,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 
     msg += QL("<p>");
 
-    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZone::UTC)) {
+    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZoneUTC)) {
 	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
         msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     }

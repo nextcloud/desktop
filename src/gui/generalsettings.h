@@ -56,7 +56,9 @@ private slots:
     void slotToggleCallNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotIgnoreFilesEditor();
+#if defined(HAVE_KARCHIVE)
     void slotCreateDebugArchive();
+#endif
     void loadMiscSettings();
     void slotShowLegalNotice();
 #if defined(BUILD_UPDATER)

@@ -35,7 +35,7 @@ if (WIN32)
 
     target_include_directories("nextcloudsync_vfs_cfapi" BEFORE PUBLIC ${CMAKE_CURRENT_BINARY_DIR} INTERFACE ${CMAKE_BINARY_DIR})
 
-    set(vfs_installdir "${PLUGINDIR}")
+    set(vfs_installdir "${PLUGIN_INSTALL_DIR}")
 
     generate_export_header(nextcloudsync_vfs_cfapi
         BASE_NAME nextcloudsync_vfs_cfapi

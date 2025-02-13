@@ -15,6 +15,7 @@
 #include "filesystem.h"
 
 #include "common/utility.h"
+#include "common/qtcompat.h"
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "std/c_time.h"

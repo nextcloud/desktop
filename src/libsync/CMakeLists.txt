@@ -1,5 +1,5 @@
 project(libsync)
-find_package(KF6Archive REQUIRED)
+find_package(KF6Archive)
 include(DefinePlatformDefaults)
 
 set(CMAKE_AUTOMOC TRUE)
@@ -157,6 +157,8 @@ set(libsync_SRCS
     creds/keychainchunk.cpp
     caseclashconflictsolver.h
     caseclashconflictsolver.cpp
+    kfcompat.h
+    kfcompat.cpp
 )
 
 if (WIN32)
@@ -223,9 +225,14 @@ target_link_libraries(nextcloudsync
   Qt::Gui
   Qt::Svg
   Qt::Widgets
-  KF6::Archive
+
   Qt::Core5Compat
 )
+
+if (KF6Archive_FOUND)
+   target_link_libraries(nextcloudsync PUBLIC  KF6::Archive)
+   add_definitions(-DHAVE_KARCHIVE)
+endif()
 
 target_compile_features(nextcloudsync
     PRIVATE

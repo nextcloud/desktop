@@ -32,3 +32,5 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
+
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
