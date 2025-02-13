@@ -820,7 +820,7 @@ private slots:
         helper.resetTestData();
 
         // Test with an existing link share.
-        // This one has a pre-existing password
+        // This one has a pre-existing note
         helper.appendShareReplyData(_testLinkShareDefinition);
         QCOMPARE(helper.shareCount(), 1);
 
@@ -844,7 +844,7 @@ private slots:
         const auto linkSharePtr = sharePtr.dynamicCast<LinkShare>(); // Need to connect to signal
         QSignalSpy noteSet(linkSharePtr.data(), &LinkShare::noteSet);
 
-        model.toggleShareNoteToRecipient(sharePtr, false);
+        model.setShareNote(sharePtr, QStringLiteral(""));
         QVERIFY(noteSet.wait(3000));
         QCOMPARE(shareIndex.data(ShareModel::NoteEnabledRole).toBool(), false);
 
@@ -852,7 +852,7 @@ private slots:
         model.setShareNote(sharePtr, note);
         QVERIFY(noteSet.wait(3000));
         QCOMPARE(shareIndex.data(ShareModel::NoteEnabledRole).toBool(), true);
-        // The model stores the recently set password.
+        // The model stores the recently set note.
         // We want to present the user with it in the UI while the model is alive
         QCOMPARE(shareIndex.data(ShareModel::NoteRole).toString(), note);
     }

@@ -1088,26 +1088,6 @@ void ShareModel::toggleShareExpirationDateFromQml(const QVariant &share, const b
     toggleShareExpirationDate(ptr, enable);
 }
 
-void ShareModel::toggleShareNoteToRecipient(const SharePtr &share, const bool enable) const
-{
-    if (share.isNull()) {
-        return;
-    }
-
-    const QString note = enable ? tr("Enter a note for the recipient") : QString();
-    if (const auto linkShare = share.objectCast<LinkShare>()) {
-        linkShare->setNote(note);
-    } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
-        userGroupShare->setNote(note);
-    }
-}
-
-void ShareModel::toggleShareNoteToRecipientFromQml(const QVariant &share, const bool enable) const
-{
-    const auto ptr = share.value<SharePtr>();
-    toggleShareNoteToRecipient(ptr, enable);
-}
-
 void ShareModel::changePermissionModeFromQml(const QVariant &share, const OCC::ShareModel::SharePermissionsMode permissionMode)
 {
     const auto sharePtr = share.value<SharePtr>();
