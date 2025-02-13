@@ -46,6 +46,7 @@
 namespace {
 const QString TOOLBAR_CSS()
 {
+#ifdef IONOS_BUILD
     return QStringLiteral("QToolBar { background: %1; border: none; border-bottom: 1px solid %2; } "
                         "QToolBar QToolButton { background: %1; border: none; margin: 2px 0px 7px 12px; padding: 11px 4px 4px 4px; border-radius: %5; %8; } "
                         "QToolBar QToolButton:checked { background: %7; color: %4; }"
@@ -58,6 +59,12 @@ const QString TOOLBAR_CSS()
                         "QMenu::item::selected { background: %3; color: %4; }" 
                         "QMenu::item::pressed { background: %6; color: %4; }"
                         );
+#else
+    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
+        "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+        "QToolBar QToolBarExtension { padding:0; } "
+        "QToolBar QToolButton:checked { background: %3; color: %4; }");
+#endif
 }
 
 const float buttonSizeRatio = 1.618f; // golden ratio
@@ -127,6 +134,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->addAction(newAccountAction);
     _toolBar->addAction(newAccountAction);
     connect(newAccountAction, &QAction::triggered, _gui, &ownCloudGui::slotNewAccountWizard);
+    
+#ifndef IONOS_BUILD
+    // Adds space between users + activities and general + network actions
+    auto *spacer = new QWidget();
+    spacer->setMinimumWidth(10);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->addWidget(spacer);
+#endif
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/ses/ses-settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -150,12 +165,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-
     #endif
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
-    // _actionGroupWidgets.insert(networkAction, networkSettings);
     _toolBar->addSeparator();
+
     const auto accountsList = AccountManager::instance()->accounts();
     for (const auto &account : accountsList) {
         accountAdded(account.data());
@@ -297,7 +311,18 @@ void SettingsDialog::accountAdded(AccountState *s)
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-
+#ifndef IONOS_BUILD
+    auto *account = dynamic_cast<Account *>(sender());
+    if (account && _actionForAccount.contains(account)) {
+        QAction *action = _actionForAccount[account];
+        if (action) {
+            QImage pix = account->avatar();
+            if (!pix.isNull()) {
+                action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
+            }
+        }
+    }
+#endif
 }
 
 void SettingsDialog::slotAccountDisplayNameChanged()
@@ -347,6 +372,8 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
+#ifdef IONOS_BUILD
+
 void SettingsDialog::customizeStyle()
 {
     QVariantMap palette = Theme::instance()->systemPalette();
@@ -389,6 +416,24 @@ void SettingsDialog::customizeStyle()
         }
     }
 }
+#else
+void SettingsDialog::customizeStyle()
+{
+    QString highlightColor(palette().highlight().color().name());
+    QString highlightTextColor(palette().highlightedText().color().name());
+    QString dark(palette().dark().color().name());
+    QString background(palette().base().color().name());
+    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
+
+    Q_FOREACH (QAction *a, _actionGroup->actions()) {
+        QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
+        a->setIcon(icon);
+        auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
+        if (btn)
+            btn->setIcon(icon);
+    }
+}
+#endif
 
 class ToolButtonAction : public QWidgetAction
 {
