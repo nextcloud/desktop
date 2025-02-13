@@ -22,7 +22,7 @@ let package = Package(
                 .upToNextMajor(from: "2.1.2")
         ),
         .package(url: "https://github.com/nextcloud/NextcloudKit", from: "5.0.4"),
-        .package(url: "https://github.com/realm/realm-swift.git", exact: "10.49.0"),
+        .package(url: "https://github.com/realm/realm-swift.git", exact: "20.0.1"),
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0")
     ],
     targets: [
