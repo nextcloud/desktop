@@ -100,6 +100,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     }
 
     endResetModel();
+    // TODO: maybe we need to analyze the previous state of _dirty before signal emitting?
     emit dirtyChanged();
 
     // Automatically fetch the subfolders to prevent showing the expansion chevron if there are no subfolders
@@ -114,7 +115,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
 
 Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 {
-    if (!_accountState) {
+    if (!_accountState || !index.isValid()) {
         return {};
     }
 
@@ -157,10 +158,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         if (role == FolderStatusDelegate::AddButton) {
             return true;
         } else if (role == Qt::ToolTipRole) {
-            if (!_accountState->isConnected()) {
-                return tr("You need to be connected to add a folder");
+            if (_accountState) {
+                if (_accountState && !_accountState->isConnected()) {
+                    return tr("You need to be connected to add a folder");
+                }
+                return tr("Click this button to add a folder to synchronize.");
             }
-            return tr("Click this button to add a folder to synchronize.");
         }
         return {};
     }
@@ -393,7 +396,9 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 }
             }
         }
-        _dirty = true;
+        // TODO: think about that maybe better to introduce a separate setter for [_dirty] var with emitting of signal if changed
+        // TODO: maybe we need to analyze the previous state of _dirty before signal emitting?
+        _dirty = true;;
         emit dirtyChanged();
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
@@ -426,15 +431,17 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
 
 FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index) const
 {
-    if (const auto sub = static_cast<SubFolderInfo *>(index.internalPointer())) {
-        if (sub->hasLabel()) {
-            return FetchLabel;
-        } else {
-            return SubFolder;
+    if (index.isValid()) {
+        if (const auto sub = static_cast<SubFolderInfo *>(index.internalPointer())) {
+            if (sub->hasLabel()) {
+                return FetchLabel;
+            } else {
+                return SubFolder;
+            }
         }
-    }
-    if (index.row() < _folders.count()) {
-        return RootFolder;
+        if (index.row() < _folders.count()) {
+            return RootFolder;
+        }
     }
     return AddButton;
 }
