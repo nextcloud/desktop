@@ -100,7 +100,6 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     }
 
     endResetModel();
-    // TODO: maybe we need to analyze the previous state of _dirty before signal emitting?
     emit dirtyChanged();
 
     // Automatically fetch the subfolders to prevent showing the expansion chevron if there are no subfolders
@@ -396,8 +395,6 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 }
             }
         }
-        // TODO: think about that maybe better to introduce a separate setter for [_dirty] var with emitting of signal if changed
-        // TODO: maybe we need to analyze the previous state of _dirty before signal emitting?
         _dirty = true;
         emit dirtyChanged();
         emit dataChanged(index, index, QVector<int>() << role);
