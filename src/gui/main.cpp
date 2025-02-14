@@ -88,28 +88,32 @@ int main(int argc, char **argv)
 #if defined Q_OS_MAC
     qmlStyle = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
-    qmlStyle = QStringLiteral("Fusion");
+    if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
+        qmlStyle = QStringLiteral("Universal");
+        widgetsStyle = QStringLiteral("Fusion");
+    } else {
+        qmlStyle = QStringLiteral("FluentWinUI3");
+        widgetsStyle = QStringLiteral("windows11");
+    }
     QApplication::setFont(IonosTheme::settingsFontDefault());
 #endif
 
-    QApplication::setStyle(new sesStyle);
-    QQuickStyle::setStyle(qmlStyle);
-    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
-// Comment in again when Ionos Compiler Switch is available
-// #if defined Q_OS_WIN
-//     if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
-//         QApplication::setStyle(QStyleFactory::create("Fusion"));
-//     }
-// #endif
-
+#ifdef IONOS_BUILD
     OCC::Application app(argc, argv);
     app.setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
 
-    QQuickStyle::setStyle(style);
+    QQuickStyle::setStyle(qmlStyle);
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
+#elif
+    QQuickStyle::setStyle(qmlStyle);
+    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
+
+    OCC::Application app(argc, argv);
+
     if (!widgetsStyle.isEmpty()) {
         QApplication::setStyle(QStyleFactory::create(widgetsStyle));
     }
+#endif
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
