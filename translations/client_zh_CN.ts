@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>滚动至顶部</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
@@ -2130,17 +2130,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，文件夹 %1 不存在。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="202"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 不是有效的文件夹。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="204"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 不是可读文件夹。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
@@ -2552,41 +2552,41 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1814"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，所选文件夹无效。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1822"/>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 已被用作同步文件夹。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1831"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，路径 %1 不存在。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，路径 %1 不是文件夹。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1843"/>
         <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，您没有足够的权限写入 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 已包含在用作同步文件夹的文件夹中。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1923"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 已被用作 %2 的同步文件夹。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2060"/>
@@ -2902,7 +2902,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 已同步到 %2。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
@@ -2947,7 +2947,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>所选位置不支持虚拟文件</translation>
     </message>
 </context>
 <context>
@@ -3931,7 +3931,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>所选位置不支持虚拟文件</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -6007,7 +6007,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 是驱动器，它不支持虚拟文件。</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -6017,12 +6017,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="79"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 不是 NTFS 文件系统，它不支持虚拟文件。</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>请选择其他位置，%1 是网络驱动器，它不支持虚拟文件。</translation>
     </message>
 </context>
 <context>

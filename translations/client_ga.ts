@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Scrollaigh go barr</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
@@ -2134,17 +2134,17 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Níl fillteán %1 ann.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="202"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán bailí é %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="204"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán inléite é %1.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
@@ -2556,41 +2556,41 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
     <message>
         <location filename="../src/gui/folderman.cpp" line="1814"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Níl an fillteán roghnaithe bailí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1822"/>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Tá %1 á úsáid mar fhillteán sioncronaithe cheana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1831"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Níl conair %1 ann.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán é conair %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1843"/>
         <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Níl go leor ceadanna agat chun scríobh chuig %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Tá %1 i bhfillteán a úsáidtear mar fhillteán sioncronaithe cheana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1923"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Tá %1 in úsáid cheana mar fhillteán sioncronaithe le haghaidh %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2060"/>
@@ -2906,7 +2906,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Tá %1 á shioncronú go %2 cheana féin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
@@ -2951,7 +2951,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le comhaid fhíorúla ag an suíomh roghnaithe</translation>
     </message>
 </context>
 <context>
@@ -3937,7 +3937,7 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le comhaid fhíorúla ag an suíomh roghnaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -6019,7 +6019,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Is tiomántán é %1. Ní thacaíonn sé le comhaid fhíorúla.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -6029,12 +6029,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="79"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Ní córas comhaid NTFS é %1. Ní thacaíonn sé le comhaid fhíorúla.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh suíomh eile le do thoil. Is tiomántán líonra é %1. Ní thacaíonn sé le comhaid fhíorúla.</translation>
     </message>
 </context>
 <context>
