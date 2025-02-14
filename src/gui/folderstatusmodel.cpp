@@ -421,23 +421,17 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
         }
         return _folders.count() + 1; // +1 for the "add folder" button
     }
-    const auto info = infoForIndex(parent);
-    if (!info)
-        return 0;
-    if (info->hasLabel())
-        return 1;
-    return info->_subs.count();
+    if (const auto info = infoForIndex(parent)) {
+        return info->hasLabel() ? 1 : info->_subs.count();
+    }
+    return 0;
 }
 
 FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        if (const auto sub = static_cast<SubFolderInfo *>(index.internalPointer())) {
-            if (sub->hasLabel()) {
-                return FetchLabel;
-            } else {
-                return SubFolder;
-            }
+        if (const auto sub = static_cast<const SubFolderInfo *>(index.internalPointer())) {
+            return sub->hasLabel() ? FetchLabel : SubFolder;
         }
         if (index.row() < _folders.count()) {
             return RootFolder;
