@@ -30,7 +30,6 @@ using namespace OCC::Utility;
 class TestFolderStatusModel : public QObject
 {
     Q_OBJECT
-    static inline constexpr auto _modelTesterMode = QAbstractItemModelTester::FailureReportingMode::QtTest;
     std::unique_ptr<FolderMan> _folderMan;
 
 public:
@@ -196,7 +195,7 @@ private:
     {
         executeFolderManTest([functor](const AccountState *accountState, Folder*){
             FolderStatusModel test;
-            QAbstractItemModelTester tester{&test, _modelTesterMode};
+            QAbstractItemModelTester tester{&test, QAbstractItemModelTester::FailureReportingMode::QtTest};
             tester.setUseFetchMore(true);
             functor(accountState, test);
         });
