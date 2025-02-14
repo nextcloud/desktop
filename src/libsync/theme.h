@@ -645,6 +645,8 @@ private:
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
+    [[nodiscard]] QString developerStringInfo() const;
+
     void updateMultipleOverrideServers();
     void connectToPaletteSignal() const;
 #if defined(Q_OS_WIN)

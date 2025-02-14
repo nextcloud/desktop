@@ -410,6 +410,18 @@ Theme::Theme()
 #endif
 }
 
+QString Theme::developerStringInfo() const
+{
+    // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
+    const auto osStringList = Utility::platformName().split(QLatin1Char(' '));
+    const auto osName = osStringList.at(0);
+
+    const auto devString = QString(tr("<p>%1 Desktop Client Version %2 (%3). For more information please click <a href='%4'>here</a>.</p>", "%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL"))
+    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName, helpUrl());
+
+    return devString;
+}
+
 // If this option returns true, the client only supports one folder to sync.
 // The Add-Button is removed accordingly.
 bool Theme::singleSyncFolder() const
@@ -592,13 +604,8 @@ QString Theme::gitSHA1() const
 
 QString Theme::aboutInfo() const
 {
-    // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
-    QStringList osStringList = Utility::platformName().split(QLatin1Char(' '));
-    QString osName = osStringList.at(0);
-
     //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
-    auto devString = QString(tr("<p>%1 Desktop Client</p><p>Version %1. For more information please click <a href='%2'>here</a>.</p>") + QStringLiteral(" (%3)"))
-            .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)), helpUrl(), osName);
+    auto devString = developerStringInfo();
                       
 
     devString += tr("<p><small>Using virtual files plugin: %1</small></p>").arg(Vfs::modeToString(bestAvailableVfsMode()));
@@ -609,12 +616,7 @@ QString Theme::aboutInfo() const
 
 QString Theme::about() const
 {
-    // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
-    QStringList osStringList = Utility::platformName().split(QLatin1Char(' '));
-    QString osName = osStringList.at(0);
-
-    //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
-    const auto devString = tr("<p>%1 desktop client %2</p>").arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)));
+    const auto devString = developerStringInfo();
 
     return devString;
 }
@@ -622,9 +624,7 @@ QString Theme::about() const
 QString Theme::aboutDetails() const
 {
     QString devString;
-    devString = tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(MIRALL_VERSION_STRING)
-              .arg(helpUrl());
+    devString = developerStringInfo();
 
     devString += tr("<p>This release was supplied by %1.</p>")
               .arg(APPLICATION_VENDOR);
