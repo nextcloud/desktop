@@ -1,7 +1,10 @@
 {
     "cmake.generator": "Ninja",
     "cmake.configureSettings": {
-        "CMAKE_PREFIX_PATH": "C:/CraftRoot",
+        "CMAKE_PREFIX_PATH": [
+          "C:/CraftRoot",
+          "C:/CraftRoot/dev-utils/bin"
+      ],
         "BUILD_TESTING":"OFF",
       },
       "cmake.buildDirectory": "${workspaceFolder}/../build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
