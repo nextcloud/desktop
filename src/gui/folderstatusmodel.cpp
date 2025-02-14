@@ -159,7 +159,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return true;
         } else if (role == Qt::ToolTipRole) {
             if (_accountState) {
-                if (_accountState && !_accountState->isConnected()) {
+                if (!_accountState->isConnected()) {
                     return tr("You need to be connected to add a folder");
                 }
                 return tr("Click this button to add a folder to synchronize.");
@@ -398,7 +398,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
         }
         // TODO: think about that maybe better to introduce a separate setter for [_dirty] var with emitting of signal if changed
         // TODO: maybe we need to analyze the previous state of _dirty before signal emitting?
-        _dirty = true;;
+        _dirty = true;
         emit dirtyChanged();
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
