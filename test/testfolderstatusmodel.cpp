@@ -89,7 +89,7 @@ private Q_SLOTS:
     
     void testModelRowsCount()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             // folders count +1 for the "add folder" button if [singleSyncFolder] is true
             const auto expectedRowsCount = Theme::instance()->singleSyncFolder() ? 1 : 2;
