@@ -64,7 +64,7 @@ private Q_SLOTS:
     
     void testAbilityToAddRemoveAccountFolders()
     {
-        executeFolderManTest([](const AccountState *accountState, Folder* folder){
+        executeFolderManTest([](const AccountState *accountState, Folder *folder){
             QVERIFY2(folder, "folder manager was not able to add folder for a given account");
             QCOMPARE(folder->accountState(), accountState);
         });
