@@ -80,7 +80,7 @@ private Q_SLOTS:
     
     void testNewModelEmitDirtyChangedSignalAfterSetAccountState()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             const QSignalSpy dirtySignalSpy{&test, &FolderStatusModel::dirtyChanged};
             test.setAccountState(accountState);
             QCOMPARE(dirtySignalSpy.count(), 1);
