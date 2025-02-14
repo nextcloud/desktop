@@ -19,28 +19,20 @@ import QtQuick.Layouts
 import com.nextcloud.desktopclient
 import Style
 
-TextEdit {
+TextArea {
     id: root
 
     readonly property color accentColor: palette.highlight
-    readonly property color secondaryColor: palette.dark
+    readonly property color secondaryColor: palette.placeholderText
     readonly property alias submitButton: submitButton
 
-    clip: true
-    textMargin: Style.smallSpacing
-    wrapMode: TextEdit.Wrap
-    selectByMouse: true
-    height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
+    // no implicitHeight here -- let the textarea take as much as it needs
+    // otherwise it will cut off some text vertically on multi-line strings...
 
-    Rectangle {
-        id: textFieldBorder
-        anchors.fill: parent
-        radius: Style.trayWindowRadius
-        border.width: Style.normalBorderWidth
-        border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: palette.base
-        z: -1
-    }
+    selectByMouse: true
+    rightPadding: submitButton.width
+
+    wrapMode: TextEdit.Wrap
 
     Button {
         id: submitButton
@@ -61,4 +53,3 @@ TextEdit {
         onClicked: root.editingFinished()
     }
 }
-

@@ -23,7 +23,7 @@ TextField {
     id: root
 
     readonly property color accentColor: Style.ncBlue
-    readonly property color secondaryColor: palette.dark
+    readonly property color secondaryColor: palette.placeholderText
     readonly property alias submitButton: submitButton
     property bool validInput: true
 
