@@ -99,7 +99,7 @@ private Q_SLOTS:
     
     void testRowsChildrenConsistency()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             QVERIFY2(test.hasChildren({}), "empty index always has children");
             // we assume that folder may contains of some child elements until not yet fetched
