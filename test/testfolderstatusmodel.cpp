@@ -72,7 +72,7 @@ private Q_SLOTS:
     
     void testModelConsistencyWithFakeFolder()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             QVERIFY2(!test.isDirty(), "model is dirty after set account state");
         });
