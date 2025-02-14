@@ -127,7 +127,7 @@ private Q_SLOTS:
     
     void testThatAppropriateSignalsEmittedIfItemChecked()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             // set checked for our single root folder
             const QSignalSpy dataChangedSignalSpy{&test, &QAbstractItemModel::dataChanged};
