@@ -14,6 +14,7 @@
 
 #include "syncstatussummary.h"
 #include "accountfwd.h"
+#include "accountstate.h"
 #include "folderman.h"
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
@@ -124,6 +125,10 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setTotalFiles(0);
         setSyncStatusString(tr("Offline"));
         setSyncStatusDetailString("");
+        if (_accountState->state() == AccountState::NeedToSignTermsOfService)
+        {
+            setSyncStatusDetailString(tr("You need to accept the terms of service"));
+        }
         setSyncIcon(Theme::instance()->folderOffline());
         return;
     }
@@ -340,6 +345,11 @@ void SyncStatusSummary::setSyncStateToConnectedState()
     setSyncStatusDetailString("");
     if (_accountState && !_accountState->isConnected()) {
         setSyncStatusString(tr("Offline"));
+        // TODO: remove this, this is intentionally in caps to see that this is temporary
+        if (_accountState->state() == AccountState::NeedToSignTermsOfService)
+        {
+            setSyncStatusDetailString(tr("NEEDS TOS <a href=\"%1\">click here</a>").arg(_accountState->account()->url().toString()));
+        }
         setSyncIcon(Theme::instance()->folderOffline());
     } else {
         setSyncStatusString(tr("All synced!"));

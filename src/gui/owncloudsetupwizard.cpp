@@ -42,8 +42,6 @@
 
 namespace OCC {
 
-const auto termsNotSignedExceptionC = QStringLiteral("OCA\\TermsOfService\\TermsNotSignedException");
-
 OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     : QObject(parent)
     , _ocWizard(new OwncloudWizard)
@@ -431,8 +429,9 @@ void OwncloudSetupWizard::slotAuthError()
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
                            .arg(Utility::escape(_ocWizard->account()->url().toString()));
-        } else if (!davException.first.isEmpty() && davException.first == termsNotSignedExceptionC) {
+        } else if (!davException.first.isEmpty() && davException.first == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
             qCInfo(lcWizard) << "Terms of service not accepted yet!";
+            // TODO: it would be cool to display a new wizard page containing the terms of service
             errorMsg = tr("Please accept the <a href=\"%1\">Terms of Service</a> with your browser and try again.")
                            .arg(Utility::escape(_ocWizard->account()->url().toString()));
         } else {
