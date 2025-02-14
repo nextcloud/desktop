@@ -21,6 +21,7 @@ enum PackagingError: Error {
     case packageNotarisationError(String)
     case packageSparkleBuildError(String)
     case packageSparkleSignError(String)
+    case packageCreateDmgFailed(String)
 }
 
 /// NOTE: Requires Packages utility. http://s.sudre.free.fr/Software/Packages/about.html
@@ -110,6 +111,57 @@ func packageAppBundle(
     print("Creating Sparkle TBZ file…")
     let sparklePackagePath =
         try buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
+
+    if let sparklePackageSignKey {
+        print("Signing Sparkle TBZ file…")
+        try signSparklePackage(
+            sparkleTbzPath: sparklePackagePath,
+            buildPath: buildPath,
+            signKey: sparklePackageSignKey
+        )
+    }
+}
+
+func createDmgForAppBundle(
+    appBundlePath: String,
+    productPath: String,
+    buildPath: String,
+    appName: String,
+    packageSigningId: String?,
+    appleId: String?,
+    applePassword: String?,
+    appleTeamId: String?,
+    sparklePackageSignKey: String?
+) throws {
+    print("Creating DMG for the client…")
+
+    let dmgFilePath = URL(fileURLWithPath: productPath)
+        .appendingPathComponent(appName)
+        .appendingPathExtension("dmg")
+        .path
+
+    guard shell("create-dmg --volname \(appName) --filesystem APFS --app-drop-link 513 37 --window-size 787 276 \"\(dmgFilePath)\" \"\(appBundlePath)\"") == 0 else {
+        throw PackagingError.packageCreateDmgFailed("Command failed.")
+    }
+
+    if let packageSigningId {
+        print("Signing DMG with \(packageSigningId)…")
+        try codesign(identity: packageSigningId, path: dmgFilePath, options: "--force")
+
+        if let appleId, let applePassword, let appleTeamId {
+            print("Notarising DMG with Apple ID \(appleId)…")
+            try notarisePackage(
+                packagePath: dmgFilePath,
+                appleId: appleId,
+                applePassword: applePassword,
+                appleTeamId: appleTeamId
+            )
+        }
+    }
+
+    print("Creating Sparkle TBZ file…")
+    let sparklePackagePath =
+        try buildSparklePackage(packagePath: dmgFilePath, buildPath: buildPath)
 
     if let sparklePackageSignKey {
         print("Signing Sparkle TBZ file…")
