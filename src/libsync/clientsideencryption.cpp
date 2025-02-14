@@ -77,7 +77,8 @@ namespace OCC
 {
 
 Q_LOGGING_CATEGORY(lcCse, "hidrivenext.sync.clientsideencryption", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseDecryption, "hidrivenext.e2e", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseDecryption, "hidrivenext.sync.clientsideencryption.decryption", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseEncryption, "hidrivenext.sync.clientsideencryption.encryption", QtInfoMsg)
 
 QString e2eeBaseUrl(const OCC::AccountPtr &account)
 {
