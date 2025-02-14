@@ -64,7 +64,7 @@ private Q_SLOTS:
     
     void testAbilityToAddRemoveAccountFolders()
     {
-        executeFolderManTest([](const AccountState *accountState, Folder* folder){
+        executeFolderManTest([](const AccountState *accountState, Folder *folder){
             QVERIFY2(folder, "folder manager was not able to add folder for a given account");
             QCOMPARE(folder->accountState(), accountState);
         });
@@ -72,7 +72,7 @@ private Q_SLOTS:
     
     void testModelConsistencyWithFakeFolder()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             QVERIFY2(!test.isDirty(), "model is dirty after set account state");
         });
@@ -80,7 +80,7 @@ private Q_SLOTS:
     
     void testNewModelEmitDirtyChangedSignalAfterSetAccountState()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             const QSignalSpy dirtySignalSpy{&test, &FolderStatusModel::dirtyChanged};
             test.setAccountState(accountState);
             QCOMPARE(dirtySignalSpy.count(), 1);
