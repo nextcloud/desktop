@@ -148,7 +148,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || (role == Qt::EditRole)) {
+    if ((role == Qt::EditRole) || !checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::DoNotUseParent)) {
         return {};
     }
 
@@ -426,7 +426,8 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
 
 FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index) const
 {
-    if (index.isValid()) {
+    if (checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid |
+                   QAbstractItemModel::CheckIndexOption::DoNotUseParent)) {
         if (const auto sub = static_cast<const SubFolderInfo *>(index.internalPointer())) {
             return sub->hasLabel() ? FetchLabel : SubFolder;
         }
@@ -439,23 +440,18 @@ FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index
 
 FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIndex &index) const
 {
-    if (!index.isValid())
-        return nullptr;
-    if (const auto parentInfo = static_cast<SubFolderInfo *>(index.internalPointer())) {
-        if (parentInfo->hasLabel()) {
-            return nullptr;
+    if (checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid |
+                   QAbstractItemModel::CheckIndexOption::DoNotUseParent)) {
+        if (const auto parentInfo = static_cast<SubFolderInfo *>(index.internalPointer())) {
+            if (parentInfo->hasLabel() || index.row() >= parentInfo->_subs.size()) {
+                return nullptr;
+            }
+            return &parentInfo->_subs[index.row()];
+        } else if (index.row() < _folders.size()){
+            return const_cast<SubFolderInfo *>(&_folders[index.row()]);
         }
-        if (index.row() >= parentInfo->_subs.size()) {
-            return nullptr;
-        }
-        return &parentInfo->_subs[index.row()];
-    } else {
-        if (index.row() >= _folders.count()) {
-            // AddButton
-            return nullptr;
-        }
-        return const_cast<SubFolderInfo *>(&_folders[index.row()]);
     }
+    return nullptr;
 }
 
 bool FolderStatusModel::isAnyAncestorEncrypted(const QModelIndex &index) const
@@ -463,7 +459,7 @@ bool FolderStatusModel::isAnyAncestorEncrypted(const QModelIndex &index) const
     auto parentIndex = parent(index);
     while (parentIndex.isValid()) {
         const auto info = infoForIndex(parentIndex);
-        if (info->isEncrypted()) {
+        if (info && info->isEncrypted()) {
             return true;
         }
         parentIndex = parent(parentIndex);
@@ -550,7 +546,8 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
 
 QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
 {
-    if (!child.isValid()) {
+    if (!checkIndex(child, QAbstractItemModel::CheckIndexOption::IndexIsValid |
+                    QAbstractItemModel::CheckIndexOption::DoNotUseParent)) {
         return {};
     }
     switch (classify(child)) {
@@ -654,9 +651,10 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
 void FolderStatusModel::resetAndFetch(const QModelIndex &parent)
 {
-    const auto info = infoForIndex(parent);
-    info->resetSubs(this, parent);
-    fetchMore(parent);
+    if (const auto info = infoForIndex(parent)) {
+        info->resetSubs(this, parent);
+        fetchMore(parent);
+    }
 }
 
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)
