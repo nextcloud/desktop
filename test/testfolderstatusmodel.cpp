@@ -118,7 +118,7 @@ private Q_SLOTS:
     
     void testSubFoldersInfoForIndices()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             QCOMPARE(test.infoForIndex({}), nullptr);
             QVERIFY2(nullptr != test.infoForIndex(test.index(0)), "NULL info for index 0");
