@@ -109,7 +109,7 @@ private Q_SLOTS:
     
     void testThatRowClassifyWorksProperly()
     {
-        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel& test) {
+        executeConsistencyModelTest([](const AccountState *accountState, FolderStatusModel &test) {
             test.setAccountState(accountState);
             QCOMPARE(test.classify({}), FolderStatusModel::ItemType::AddButton);
             QCOMPARE(test.classify(test.index(0)), FolderStatusModel::ItemType::RootFolder);
