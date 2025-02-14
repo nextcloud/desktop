@@ -16,7 +16,7 @@
             "environment": [
                 {
                     "name": "PATH",
-                    "value": "C:/CraftRoot/bin;%PATH%"
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
                 },
                 { "name": "QML_IMPORT_TRACE", "value": "1" },
                 { "name": "QT_LOGGING_RULES", "value": "qt.qml.debug=true" }
@@ -33,7 +33,7 @@
             "environment": [
                 {
                     "name": "PATH",
-                    "value": "C:/CraftRoot/bin;%PATH%"
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
                 },
             ],
         },
@@ -48,7 +48,7 @@
             "environment": [
                 {
                     "name": "PATH",
-                    "value": "C:/CraftRoot/bin;%PATH%"
+                    "value": "C:/CraftRoot/bin;C:/Craft64/bin;%PATH%"
                 },
             ],
         },

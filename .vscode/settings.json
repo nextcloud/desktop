@@ -3,7 +3,9 @@
     "cmake.configureSettings": {
         "CMAKE_PREFIX_PATH": [
           "C:/CraftRoot",
-          "C:/CraftRoot/dev-utils/bin"
+          "C:/CraftRoot/dev-utils/bin",
+          "C:/Craft64",
+          "C:/Craft64/dev-utils/bin"
       ],
         "BUILD_TESTING":"OFF",
       },
