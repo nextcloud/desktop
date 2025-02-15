@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Перейти догори</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>Виявлення сертифікатів, збережених на вашому USB-токені</translation>
     </message>
 </context>
 <context>
@@ -252,22 +252,22 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>Вибір ключа шифрування токену</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>Доступні ключі для наскрізного шифрування:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Вибрати</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -1000,7 +1000,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1533"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Перенести сертифікат до нового сертифікату</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
@@ -1528,22 +1528,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
+        <translation>Потрібний PIN для входу до токену</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Введіть PIN токену USB для сертифікату:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Неправильний PIN. Не вдалося увійти</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося увійти до токену після надання PIN користувача. Він може бути неправильний або помилковий. Спробуйте ще раз!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
@@ -2134,17 +2134,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 відсутній.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="202"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 недійсний.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="204"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 неможливо прочитати.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
@@ -2556,41 +2556,41 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1814"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Вибраний каталог недійсний.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1822"/>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 вже використовується для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1831"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Шлях %1 відсутній.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Щлях %1 не є каталогом.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1843"/>
         <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. У вас недостатньо повноважень для запису до каталогу %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1908"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 вже міститься у каталозі, який використовується для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1923"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 вже використовується для синхронізації користувачем %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2060"/>
@@ -2906,7 +2906,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. Каталог %1 вже синхронізується із %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="507"/>
@@ -2951,7 +2951,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Віртуальні файли не підтримуються у вибраному місці розташування</translation>
     </message>
 </context>
 <context>
@@ -3935,7 +3935,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="399"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Віртуальні файли не підтримуються у вибраному місці розташування</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
@@ -4447,7 +4447,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1735"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося змінити зашифрованій об&apos;єкт, оскільки вибраний сертифікат недійсний.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
@@ -5737,6 +5737,12 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="419"/>
+        <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
@@ -5853,12 +5859,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат наскрізного шифрування потрібно перенести до нового сертифікату.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>Почати перенесення</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
@@ -6017,7 +6023,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. %1 є диском, який не підтримує віртуальні файли.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -6027,12 +6033,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="79"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. %1 не містить файлову систему NTFS та не підтримує віртуальні файли.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Виберіть інше розташування. %1 є мережевим диском, який не підтримує віртуальні файли.</translation>
     </message>
 </context>
 <context>
@@ -6620,7 +6626,7 @@ Server replied with error: %2</source>
         <translation>Сховище (тільки завантажування)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
         <translation>Дозволити передавати у спільний доступ іншим</translation>
     </message>
@@ -6630,7 +6636,7 @@ Server replied with error: %2</source>
         <translation>Приховати звантаження</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="469"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
         <source>Password protection</source>
         <translation>Захист паролем</translation>
     </message>
@@ -6648,6 +6654,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
         <source>Note to recipient</source>
         <translation>Примітка отримувачу</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
+        <source>Enter a note for the recipient</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>
@@ -7114,7 +7125,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Оновлено метадані наскрізного шифрування</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -7195,7 +7206,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Оновлення метаданих наскрізного шифрування</translation>
     </message>
 </context>
 <context>

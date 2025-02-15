@@ -5740,6 +5740,12 @@ A kiszolgáló hibával válaszolt: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="419"/>
+        <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
@@ -6623,7 +6629,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Fájlelhelyezés (csak feltöltés)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
         <translation>Újra-megosztás engedélyezése</translation>
     </message>
@@ -6633,7 +6639,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Letöltés elrejtése</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="469"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
         <source>Password protection</source>
         <translation>Jelszavas védelem</translation>
     </message>
@@ -6651,6 +6657,11 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
         <source>Note to recipient</source>
         <translation>Jegyzet a címzettnek</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
+        <source>Enter a note for the recipient</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>
