@@ -5740,7 +5740,7 @@ Server antwortete mit Fehler: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Desktop-Client Version %2 (%3). Für weitere Informationen bitte &lt;a href=&apos;%4&apos;&gt;hier&lt;/a&gt; klicken.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
@@ -6658,7 +6658,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Eine Notiz für den Empfänger eingeben</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>

@@ -5741,7 +5741,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Cliente de escritorio de %1, versión %2 (%3). Para obter máis información prema &lt;a href=&apos;%4&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
@@ -5914,7 +5914,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Remove connection</source>
-        <translation>Retirar conexión</translation>
+        <translation>Retirar a conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
@@ -6659,7 +6659,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Introduza unha nota para o destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>
