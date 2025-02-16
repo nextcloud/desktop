@@ -1163,7 +1163,7 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
             if (PKCS11_login(currentSlot, 0, newPinData.data()) != 0) {
                 QMessageBox::warning(settingsDialog,
                                      tr("Invalid PIN. Login failed"),
-                                     tr("Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !"),
+                                     tr("Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!"),
                                      QMessageBox::Ok);
                 _cachedPin.clear();
                 continue;
