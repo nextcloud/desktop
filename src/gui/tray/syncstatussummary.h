@@ -66,6 +66,11 @@ private:
     void onFolderSyncStateChanged(const Folder *folder);
     void onIsConnectedChanged();
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void onFileProviderDomainSyncStateChanged(const AccountPtr &account, const SyncResult::Status status);
+#endif
+
+    void setSyncState(const SyncResult::Status state);
     void setSyncStateForFolder(const Folder *folder);
     void markFolderAsError(const Folder *folder);
     void markFolderAsSuccess(const Folder *folder);
@@ -86,6 +91,9 @@ private:
 
     AccountStatePtr _accountState;
     std::set<QString> _foldersWithErrors;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    std::set<QString> _fileProviderDomainsWithErrors;
+#endif
 
     QUrl _syncIcon = Theme::instance()->syncStatusOk();
     double _progress = 1.0;
