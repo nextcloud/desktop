@@ -20,6 +20,11 @@
 #include "syncresult.h"
 #include "tray/usermodel.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#include "gui/macOS/fileprovidersocketserver.h"
+#endif
+
 #include <theme.h>
 
 namespace {
@@ -50,6 +55,9 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     const auto folderMan = FolderMan::instance();
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+#endif
 }
 
 bool SyncStatusSummary::reloadNeeded(AccountState *accountState) const
@@ -217,6 +225,14 @@ void SyncStatusSummary::onFolderSyncStateChanged(const Folder *folder)
     }
 
     setSyncStateForFolder(folder);
+}
+
+void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &account, SyncResult::Status state)
+{
+    if (!_accountState || !_accountState->isConnected() || account != _accountState->account()) {
+        return;
+    }
+    setSyncState(state);
 }
 
 constexpr double calculateOverallPercent(
