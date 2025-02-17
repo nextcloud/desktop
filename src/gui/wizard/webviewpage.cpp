@@ -92,7 +92,7 @@ void WebViewPage::cleanupPage()
 }
 
 int WebViewPage::nextId() const {
-    return WizardCommon::Page_AdvancedSetup;
+    return WizardCommon::Page_TermsOfService;
 }
 
 bool WebViewPage::isComplete() const {

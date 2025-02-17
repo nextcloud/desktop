@@ -27,6 +27,7 @@
 #include "wizard/welcomepage.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
+#include "wizard/termsofservicewizardpage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
@@ -239,9 +240,12 @@ void OwncloudWizard::setRemoteFolder(const QString &remoteFolder)
 
 void OwncloudWizard::successfulStep()
 {
-    const int id(currentId());
+    const WizardCommon::Pages id{static_cast<WizardCommon::Pages>(currentId())};
 
     switch (id) {
+    case WizardCommon::Page_Welcome:
+        break;
+
     case WizardCommon::Page_HttpCreds:
         _httpCredsPage->setConnected();
         break;
@@ -257,6 +261,10 @@ void OwncloudWizard::successfulStep()
         }
         break;
 #endif // WITH_WEBENGINE
+
+    case WizardCommon::Page_TermsOfService:
+        _termsOfServicePage->initializePage();
+        break;
 
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
@@ -351,7 +359,13 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 
 void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
 {
-    switch (currentId()) {
+    switch (static_cast<WizardCommon::Pages>(currentId())) {
+    case WizardCommon::Page_Welcome:
+    case WizardCommon::Page_Flow2AuthCreds:
+    case WizardCommon::Page_WebView:
+    case WizardCommon::Page_TermsOfService:
+        break;
+
     case WizardCommon::Page_ServerSetup:
         _setupPage->setErrorString(msg, retryHTTPonly);
         break;
