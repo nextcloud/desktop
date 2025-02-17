@@ -30,6 +30,7 @@
 namespace OCC {
 
 class AccountState;
+class TermsOfServiceChecker;
 
 class OwncloudWizard;
 
@@ -69,6 +70,8 @@ private slots:
     void slotAssistantFinished(int);
     void slotSkipFolderConfiguration();
 
+    void termsOfServiceChecked();
+
 private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
@@ -79,8 +82,10 @@ private:
     bool ensureStartFromScratch(const QString &localFolder);
     AccountState *applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply *reply);
+    void testTermsOfService();
 
-    OwncloudWizard *_ocWizard;
+    TermsOfServiceChecker *_termsOfServiceChecker = nullptr;
+    OwncloudWizard *_ocWizard = nullptr;
     QString _initLocalFolder;
     QString _remoteFolder;
 };
