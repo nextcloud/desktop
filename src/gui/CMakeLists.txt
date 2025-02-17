@@ -240,6 +240,8 @@ set(client_SRCS
     wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.h
     wizard/owncloudsetuppage.cpp
+    wizard/termsofservicewizardpage.h
+    wizard/termsofservicewizardpage.cpp
     wizard/owncloudwizardcommon.h
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.h
