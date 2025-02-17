@@ -34,6 +34,7 @@
 #include "sslerrordialog.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
+#include "account.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -290,7 +291,11 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
         qCInfo(lcWizard) << " was redirected to" << url.toString();
     }
 
-    slotDetermineAuthType();
+    if (_ocWizard->account()->isPublicShareLink()) {
+        _ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
+    } else {
+        slotDetermineAuthType();
+    }
 }
 
 void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
@@ -340,6 +345,19 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
     if (creds) {
         _ocWizard->account()->setCredentials(creds);
         creds->persist();
+    }
+
+    if (_ocWizard->account()->isPublicShareLink()) {
+        _ocWizard->account()->setDavUser(creds->user());
+        _ocWizard->account()->setDavDisplayName(creds->user());
+
+        _ocWizard->setField(QLatin1String("OCUrl"), url);
+        _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
+                                                .arg(Theme::instance()->appNameGUI())
+                                                .arg(url));
+
+        testOwnCloudConnect();
+        return;
     }
 
     const auto fetchUserNameJob = new JsonApiJob(_ocWizard->account()->sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
@@ -732,6 +750,11 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto manager = AccountManager::instance();
 
     auto newState = manager->addAccount(newAccount);
+
+    if (newAccount->isPublicShareLink()) {
+        qCInfo(lcWizard()) << "seeting up public share link account";
+    }
+
     manager->saveAccount(newAccount.data());
     return newState;
 }
