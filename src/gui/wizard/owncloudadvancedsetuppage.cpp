@@ -196,6 +196,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
+    connect(quotaJob, &PropfindJob::finishedWithError, this, &OwncloudAdvancedSetupPage::slotQuotaRetrievedWithError);
     quotaJob->start();
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
@@ -572,6 +573,15 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
     _rSize = result["size"].toDouble();
     _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(_rSize)));
+
+    updateStatus();
+}
+
+void OwncloudAdvancedSetupPage::slotQuotaRetrievedWithError(QNetworkReply *reply)
+{
+    Q_UNUSED(reply)
+    _rSize = -1;
+    _ui.lSyncEverythingSizeLabel->setText({});
 
     updateStatus();
 }
