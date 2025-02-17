@@ -92,7 +92,13 @@ void WebViewPage::cleanupPage()
 }
 
 int WebViewPage::nextId() const {
-    return WizardCommon::Page_TermsOfService;
+    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    Q_ASSERT(ocWizard);
+    if (ocWizard->needsToAcceptTermsOfService()) {
+        return WizardCommon::Page_TermsOfService;
+    }
+
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 bool WebViewPage::isComplete() const {

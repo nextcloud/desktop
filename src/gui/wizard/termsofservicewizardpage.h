@@ -23,6 +23,7 @@ namespace OCC {
 
 class OwncloudWizard;
 class TermsOfServiceChecker;
+class TermsOfServiceCheckWidget;
 
 class TermsOfServiceWizardPage : public QWizardPage
 {
@@ -35,18 +36,21 @@ public:
     [[nodiscard]] int nextId() const override;
     [[nodiscard]] bool isComplete() const override;
 
-Q_SIGNALS:
-    void connectToOCUrl(const QString &);
-    void pollNow();
-
-private Q_SLOTS:
+public Q_SLOTS:
     void slotPollNow();
-    void termsOfServiceChecked();
+
+Q_SIGNALS:
+    void pollNow();
+    void styleChanged();
 
 private:
     QVBoxLayout *_layout = nullptr;
     OwncloudWizard *_ocWizard = nullptr;
     TermsOfServiceChecker *_termsOfServiceChecker = nullptr;
+    TermsOfServiceCheckWidget *_termsOfServiceCheckWidget = nullptr;
+
+private Q_SLOTS:
+    void termsOfServiceChecked();
 };
 
 } // namespace OCC

@@ -45,6 +45,7 @@ public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
+
 signals:
     // overall dialog close signal.
     void ownCloudWizardDone(int);
@@ -70,8 +71,6 @@ private slots:
     void slotAssistantFinished(int);
     void slotSkipFolderConfiguration();
 
-    void termsOfServiceChecked();
-
 private:
     explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
@@ -82,9 +81,7 @@ private:
     bool ensureStartFromScratch(const QString &localFolder);
     AccountState *applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply *reply);
-    void testTermsOfService();
 
-    TermsOfServiceChecker *_termsOfServiceChecker = nullptr;
     OwncloudWizard *_ocWizard = nullptr;
     QString _initLocalFolder;
     QString _remoteFolder;

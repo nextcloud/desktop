@@ -69,6 +69,7 @@ public:
     [[nodiscard]] bool useFlow2() const;
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] bool needsToAcceptTermsOfService() const;
 
     void displayError(const QString &, bool retryHTTPonly);
     [[nodiscard]] AbstractCredentials *getCredentials() const;
@@ -139,6 +140,8 @@ private:
     bool _registration = false;
 
     bool _useFlow2 = ConfigFile().forceLoginV2();
+
+    bool _needsToAcceptTermsOfService = false;
 
     friend class OwncloudSetupWizard;
 };
