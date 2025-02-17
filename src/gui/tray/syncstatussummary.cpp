@@ -104,7 +104,7 @@ void SyncStatusSummary::markFolderAsSuccess(const Folder *folder)
 
 bool SyncStatusSummary::folderErrors() const
 {
-    return _foldersWithErrors.size() != 0;
+    return !_foldersWithErrors.empty();
 }
 
 bool SyncStatusSummary::folderError(const Folder *folder) const
