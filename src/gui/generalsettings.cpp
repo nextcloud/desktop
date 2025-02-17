@@ -326,8 +326,14 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::loadUpdateChannelsList() {
     ConfigFile cfgFile;
+    if (cfgFile.serverHasValidSubscription()) {
+        _ui->updateChannel->hide();
+        _ui->updateChannelLabel->hide();
+        return;
+    }
+
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
-    if (_currentUpdateChannelList.isEmpty() || (_currentUpdateChannelList != validUpdateChannels && !cfgFile.serverHasValidSubscription())) {
+    if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
