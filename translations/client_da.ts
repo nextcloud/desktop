@@ -174,13 +174,13 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="111"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Genoptag synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="111"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pause synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="156"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Aktuel kontoavatar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="182"/>
