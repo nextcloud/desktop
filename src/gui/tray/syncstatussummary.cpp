@@ -120,6 +120,34 @@ void SyncStatusSummary::clearFolderErrors()
 void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
 {
     if (_accountState && !_accountState->isConnected()) {
+        return;
+    }
+
+    const auto state = determineSyncStatus(folder->syncResult());
+
+    switch (state) {
+    case SyncResult::Success:
+    case SyncResult::SyncPrepare:
+        markFolderAsSuccess(folder);
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    case SyncResult::Problem:
+    case SyncResult::Undefined:
+        markFolderAsError(folder);
+    case SyncResult::SyncRunning:
+    case SyncResult::NotYetStarted:
+    case SyncResult::Paused:
+    case SyncResult::SyncAbortRequested:
+        break;
+    }
+
+    setSyncState(state);
+}
+
+void SyncStatusSummary::setSyncState(const SyncResult::Status state)
+{
+    if (_accountState && !_accountState->isConnected()) {
         setSyncing(false);
         setTotalFiles(0);
         setSyncStatusString(tr("Offline"));
@@ -127,8 +155,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setSyncIcon(Theme::instance()->folderOffline());
         return;
     }
-
-    const auto state = determineSyncStatus(folder->syncResult());
 
     switch (state) {
     case SyncResult::Success:
@@ -140,7 +166,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
             setSyncStatusString(tr("All synced!"));
             setSyncStatusDetailString("");
             setSyncIcon(Theme::instance()->syncStatusOk());
-            markFolderAsSuccess(folder);
         }
         break;
     case SyncResult::Error:
@@ -150,7 +175,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setSyncStatusString(tr("Some files couldn't be synced!"));
         setSyncStatusDetailString(tr("See below for errors"));
         setSyncIcon(Theme::instance()->syncStatusError());
-        markFolderAsError(folder);
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
@@ -178,7 +202,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setSyncStatusString(tr("Some files could not be synced!"));
         setSyncStatusDetailString(tr("See below for warnings"));
         setSyncIcon(Theme::instance()->syncStatusWarning());
-        markFolderAsError(folder);
         break;
     }
 }

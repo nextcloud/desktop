@@ -66,6 +66,7 @@ private:
     void onFolderSyncStateChanged(const Folder *folder);
     void onIsConnectedChanged();
 
+    void setSyncState(const SyncResult::Status state);
     void setSyncStateForFolder(const Folder *folder);
     void markFolderAsError(const Folder *folder);
     void markFolderAsSuccess(const Folder *folder);
