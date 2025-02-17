@@ -326,6 +326,12 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::loadUpdateChannelsList() {
     ConfigFile cfgFile;
+    if (cfgFile.serverHasValidSubscription()) {
+        _ui->updateChannel->hide();
+        _ui->updateChannelLabel->hide();
+        return;
+    }
+
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
     if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
@@ -333,7 +339,6 @@ void GeneralSettings::loadUpdateChannelsList() {
         _ui->updateChannel->addItems(_currentUpdateChannelList);
         const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
         _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1 ? currentUpdateChannelIndex : 0);
-        _ui->updateChannel->setDisabled(cfgFile.serverHasValidSubscription());
         connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
     }
 }
