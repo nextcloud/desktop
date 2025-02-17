@@ -231,6 +231,7 @@ void SyncStatusSummary::onFolderSyncStateChanged(const Folder *folder)
     setSyncStateForFolder(folder);
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
 void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &account, SyncResult::Status state)
 {
     if (!_accountState || !_accountState->isConnected() || account != _accountState->account()) {
@@ -257,6 +258,7 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
         
     setSyncState(state);
 }
+#endif
 
 constexpr double calculateOverallPercent(
     qint64 totalFileCount, qint64 completedFile, qint64 totalSize, qint64 completedSize)
