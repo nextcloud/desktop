@@ -447,7 +447,8 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
                 return nullptr;
             }
             return &parentInfo->_subs[index.row()];
-        } else if (index.row() < _folders.size()){
+        }
+        if (index.row() < _folders.size()) {
             return const_cast<SubFolderInfo *>(&_folders[index.row()]);
         }
     }
