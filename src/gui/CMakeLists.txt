@@ -43,6 +43,7 @@ set(client_UI_SRCS
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudsetupnocredspage.ui
+    wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
     wizard/welcomepage.ui
 )
@@ -240,6 +241,8 @@ set(client_SRCS
     wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.h
     wizard/owncloudsetuppage.cpp
+    wizard/termsofservicecheckwidget.h
+    wizard/termsofservicecheckwidget.cpp
     wizard/termsofservicewizardpage.h
     wizard/termsofservicewizardpage.cpp
     wizard/owncloudwizardcommon.h
