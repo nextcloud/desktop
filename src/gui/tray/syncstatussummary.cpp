@@ -432,6 +432,15 @@ void SyncStatusSummary::initSyncState()
         syncStateFallbackNeeded = false;
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto accounts = AccountManager::instance()->accounts();
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        onFileProviderDomainSyncStateChanged(account, Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account));
+        syncStateFallbackNeeded = false;
+    }
+#endif
+
     if (syncStateFallbackNeeded) {
         setSyncStateToConnectedState();
     }
