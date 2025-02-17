@@ -168,7 +168,11 @@ void SyncStatusSummary::setSyncState(const SyncResult::Status state)
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
         // Success should only be shown if all folders were fine
-        if (!folderErrors() || folderError(folder)) {
+        if (!folderErrors()
+#ifdef BUILD_FILE_PROVIDER_MODULE
+            && _fileProviderDomainsWithErrors.empty()
+#endif
+        ) {
             setSyncing(false);
             setTotalFiles(0);
             setSyncStatusString(tr("All synced!"));
@@ -232,6 +236,25 @@ void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &a
     if (!_accountState || !_accountState->isConnected() || account != _accountState->account()) {
         return;
     }
+
+    switch (state) {
+    case SyncResult::Success:
+    case SyncResult::SyncPrepare:
+        // Success should only be shown if all folders were fine
+        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    case SyncResult::Problem:
+    case SyncResult::Undefined:
+        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
+    case SyncResult::SyncRunning:
+    case SyncResult::NotYetStarted:
+    case SyncResult::Paused:
+    case SyncResult::SyncAbortRequested:
+        break;
+    }
+        
     setSyncState(state);
 }
 
