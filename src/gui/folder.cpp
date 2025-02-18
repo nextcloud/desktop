@@ -1521,8 +1521,9 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
 void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
 {
     // Never warn for items in the database
-    if (record.isValid())
+    if (record.isValid()) {
         return;
+    }
 
     // Don't warn for items that no longer exist.
     // Note: This assumes we're getting file watcher notifications
@@ -1530,15 +1531,18 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     // on content change that would create spurious warnings.
     const auto fullPath = QString{_canonicalLocalPath + path};
     QFileInfo fi(fullPath);
-    if (!FileSystem::fileExists(fullPath))
+    if (!FileSystem::fileExists(fullPath)) {
         return;
+    }
 
     bool ok = false;
     auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (!ok)
+    if (!ok) {
         return;
-    if (!blacklist.contains(path + "/"))
+    }
+    if (!blacklist.contains(path + "/")) {
         return;
+    }
 
     const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
