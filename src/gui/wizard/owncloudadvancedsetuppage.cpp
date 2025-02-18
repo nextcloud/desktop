@@ -35,7 +35,12 @@
 #include "networkjobs.h"
 #include "wizard/owncloudwizard.h"
 
-namespace OCC {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#endif
+
+namespace OCC
+{
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     : QWizardPage()
@@ -101,14 +106,22 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
         _ui.confTraillingSizeLabel->hide();
     }
 
-    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+    QString vfsExperimentalText = tr("(experimental)");
 
+    if (
 #ifdef Q_OS_WIN
-    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        bestAvailableVfsMode() == Vfs::WindowsCfApi
+#elif defined(BUILD_FILE_PROVIDER_MODULE)
+        Mac::FileProvider::fileProviderAvailable()
+#else
+        false
+#endif
+    ) {
         _ui.wSyncStrategy->addLayout(_ui.lVirtualFileSync);
         setRadioChecked(_ui.rVirtualFileSync);
+        vfsExperimentalText = "";
     }
-#endif
+    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(vfsExperimentalText));
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -142,7 +155,11 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (!Theme::instance()->showVirtualFilesOption() || bestAvailableVfsMode() == Vfs::Off) {
+    if (!Theme::instance()->showVirtualFilesOption()
+#ifndef BUILD_FILE_PROVIDER_MODULE
+        || bestAvailableVfsMode() == Vfs::Off
+#endif
+    ) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
@@ -177,7 +194,6 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
     quotaJob->start();
-
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
@@ -259,7 +275,11 @@ void OwncloudAdvancedSetupPage::refreshVirtualFilesAvailibility(const QString &p
         setRadioChecked(_ui.rSyncEverything);
         _ui.rVirtualFileSync->setEnabled(false);
     } else {
-        _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+        QString textArg;
+#ifndef BUILD_FILE_PROVIDER_MODULE
+        textArg = bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)");
+#endif
+        _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(textArg));
         _ui.rVirtualFileSync->setEnabled(true);
     }
     //
