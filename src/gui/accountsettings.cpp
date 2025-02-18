@@ -1346,7 +1346,7 @@ void AccountSettings::slotAccountStateChanged()
             Q_UNREACHABLE();
             break;
         case AccountState::NeedToSignTermsOfService:
-            showConnectionLabel(tr("You need to accept the terms of service"));
+            showConnectionLabel(tr("You need to accept the terms of service at %1.").arg(server));
             break;
         }
     } else {
