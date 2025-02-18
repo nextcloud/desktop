@@ -670,7 +670,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
             }
         }
         if (spurious) {
-            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+            qCDebug(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return; // probably a spurious notification
         }
     }
