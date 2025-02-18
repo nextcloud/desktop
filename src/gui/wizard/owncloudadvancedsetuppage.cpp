@@ -412,6 +412,7 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
+#ifndef BUILD_FILE_PROVIDER_MODULE
     if (useVirtualFileSync()) {
         const auto availability = Vfs::checkAvailability(localFolder(), bestAvailableVfsMode());
         if (!availability) {
@@ -424,6 +425,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
             return false;
         }
     }
+#endif
 
     if (!_created) {
         setErrorString(QString());
