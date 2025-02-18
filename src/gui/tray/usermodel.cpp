@@ -1130,6 +1130,11 @@ bool User::isConnected() const
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
 }
 
+bool User::needsToSignTermsOfService() const
+{
+    return _account->connectionStatus() == AccountState::ConnectionStatus::NeedToSignTermsOfService;
+}
+
 
 bool User::isDesktopNotificationsAllowed() const
 {
