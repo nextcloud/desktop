@@ -688,6 +688,10 @@ void SyncEngine::startSync()
         _shouldEnforceWindowsFileNameCompatibility = true;
         _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
     }
+#if defined Q_OS_WINDOWS
+    _shouldEnforceWindowsFileNameCompatibility = true;
+    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+#endif
 
     // Check for invalid character in old server version
     QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();

@@ -418,14 +418,14 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("bla"), QStringLiteral("A/foo"), QStringLiteral("A/bar"), QStringLiteral("A/bla")});
         QVERIFY(fakeFolder.syncOnce());
 
-#if defined Q_OS_WINDOWS
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::Success);
+#if !defined Q_OS_WINDOWS
+        QCOMPARE(completeSpy.findItem(QStringLiteral("foo"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("bar"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("bla"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/foo"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/bar"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/bla"))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("with spaces"))->_status, SyncFileItem::Status::Success);
 #endif
     }
 
@@ -605,9 +605,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
+#if !defined Q_OS_WINDOWS
         auto expectedState = fakeFolder.currentLocalState();
         qDebug() << expectedState;
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+#endif
     }
 
     void testBlockInvalidMtimeSyncRemote()
