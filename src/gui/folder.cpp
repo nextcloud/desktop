@@ -1530,7 +1530,6 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
     const auto fullPath = QString{_canonicalLocalPath + path};
-    QFileInfo fi(fullPath);
     if (!FileSystem::fileExists(fullPath)) {
         return;
     }
@@ -1544,13 +1543,15 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
         return;
     }
 
+    QFileInfo excludeItemFileInfo(fullPath);
+    const auto excludeItemFilePath = excludeItemFileInfo.filePath();
     const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
              "Data inside it will not be synchronized.")
-              .arg(fi.filePath())
+              .arg(excludeItemFilePath)
         : tr("The file %1 was created but was excluded from synchronization previously. "
              "It will not be synchronized.")
-              .arg(fi.filePath());
+              .arg(excludeItemFilePath);
 
     Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
