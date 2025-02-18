@@ -83,11 +83,14 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
-    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
+    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](const bool checked) {
         if (checked) {
             _ui.lSelectiveSyncSizeLabel->clear();
             _selectiveSyncBlacklist.clear();
         }
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        updateMacOsFileProviderRelatedViews();
+#endif
     });
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
 
@@ -327,10 +330,14 @@ void OwncloudAdvancedSetupPage::updateStatus()
         setResolutionGuiVisible(false);
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    updateMacOsFileProviderRelatedViews();
+#else
     _filePathLabel->setText(QDir::toNativeSeparators(locFolder));
 
     QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
     _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
+#endif
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
@@ -625,6 +632,28 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
+{
+    if (!Mac::FileProvider::fileProviderAvailable()) {
+        return;
+    }
+
+    const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked();
+    const auto folderSelectionButtonHidden = _ui.rVirtualFileSync->isChecked();
+    const auto filePathLabelText =
+        _ui.rVirtualFileSync->isChecked() ? tr("In Finder's \"Locations\" sidebar section") : QDir::toNativeSeparators(localFolder());
+    const auto freeSpaceString = freeSpaceHidden ? QString() : Utility::octetsToString(availableLocalSpace());
+    const auto freeSpaceText = freeSpaceHidden ? QString() : QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(freeSpaceString);
+
+    _ui.lFreeSpace->setHidden(freeSpaceHidden);
+    _ui.lFreeSpace->setText(freeSpaceText);
+    _ui.pbSelectLocalFolder->setHidden(folderSelectionButtonHidden);
+    _ui.pbSelectLocalFolder->setEnabled(!folderSelectionButtonHidden);
+    _filePathLabel->setText(filePathLabelText);
+}
+#endif
 
 void OwncloudAdvancedSetupPage::styleSyncLogo()
 {
