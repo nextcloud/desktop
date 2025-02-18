@@ -292,7 +292,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
 
     const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
+#if defined Q_OS_WINDOWS
+    if (hasLeadingOrTrailingSpaces && leadingAndTrailingSpacesFilesAllowed) {
+#else
     if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
+#endif
         excluded = CSYNC_NOT_EXCLUDED;
     }
 
@@ -2282,7 +2286,8 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
 void ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
                                                              CSYNC_EXCLUDE_TYPE excludeReason)
 {
-    if (!_discoveryData->_shouldEnforceWindowsFileNameCompatibility) {
+    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(absoluteFileName);
+    if (leadingAndTrailingSpacesFilesAllowed) {
         return;
     }
 
