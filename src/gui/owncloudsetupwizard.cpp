@@ -689,6 +689,12 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         // is changed.
         auto account = applyAccountChanges();
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        if (Mac::FileProvider::fileProviderAvailable()) {
+            Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
+        }
+#endif
+
         QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
@@ -698,9 +704,11 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+#ifndef BUILD_FILE_PROVIDER_MODULE
             if (_ocWizard->useVirtualFileSync()) {
                 folderDefinition.virtualFilesMode = bestAvailableVfsMode();
             }
+#endif
             if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
