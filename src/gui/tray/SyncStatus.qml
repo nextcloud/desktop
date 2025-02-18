@@ -119,4 +119,15 @@ RowLayout {
         enabled: visible
         onClicked: NC.Systray.createResolveConflictsDialog(activityModel.allConflicts);
     }
+
+    Button {
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Open browser")
+
+        visible: NC.UserModel.currentUser.needsToSignTermsOfService
+        enabled: visible
+
+        onClicked: NC.UserModel.openCurrentAccountServer()
+    }
 }
