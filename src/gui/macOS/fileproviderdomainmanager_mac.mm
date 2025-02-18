@@ -511,8 +511,6 @@ void FileProviderDomainManager::start()
 
     setupFileProviderDomains();
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-            this, &FileProviderDomainManager::addFileProviderDomainForAccount);
     // If an account is deleted from the client, accountSyncConnectionRemoved will be
     // emitted first. So we treat accountRemoved as only being relevant to client
     // shutdowns.
