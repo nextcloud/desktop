@@ -1535,11 +1535,11 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     }
 
     bool ok = false;
-    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    const auto selectiveSyncList = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (!ok) {
         return;
     }
-    if (!blacklist.contains(path + "/")) {
+    if (!selectiveSyncList.contains(path + "/")) {
         return;
     }
 
