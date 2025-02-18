@@ -670,7 +670,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
             }
         }
         if (spurious) {
-            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+            qCDebug(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return; // probably a spurious notification
         }
     }
@@ -1521,32 +1521,37 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
 void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
 {
     // Never warn for items in the database
-    if (record.isValid())
+    if (record.isValid()) {
         return;
+    }
 
     // Don't warn for items that no longer exist.
     // Note: This assumes we're getting file watcher notifications
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
     const auto fullPath = QString{_canonicalLocalPath + path};
-    QFileInfo fi(fullPath);
-    if (!FileSystem::fileExists(fullPath))
+    if (!FileSystem::fileExists(fullPath)) {
         return;
+    }
 
     bool ok = false;
-    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (!ok)
+    const auto selectiveSyncList = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok) {
         return;
-    if (!blacklist.contains(path + "/"))
+    }
+    if (!selectiveSyncList.contains(path + "/")) {
         return;
+    }
 
+    QFileInfo excludeItemFileInfo(fullPath);
+    const auto excludeItemFilePath = excludeItemFileInfo.filePath();
     const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
              "Data inside it will not be synchronized.")
-              .arg(fi.filePath())
+              .arg(excludeItemFilePath)
         : tr("The file %1 was created but was excluded from synchronization previously. "
              "It will not be synchronized.")
-              .arg(fi.filePath());
+              .arg(excludeItemFilePath);
 
     Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
