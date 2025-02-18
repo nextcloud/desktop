@@ -1020,14 +1020,19 @@ void Folder::slotTerminateSync()
 
 void Folder::wipeForRemoval()
 {
-    // Delete files that have been partially downloaded.
-    slotDiscardDownloadProgress();
-
     disconnectFolderWatcher();
 
     // Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
+
+    if (!QDir(path()).exists()) {
+        qCCritical(lcFolder) << "db files are not going to be deleted, sync folder could not be found at" << path();
+        return;
+    }
+
+    // Delete files that have been partially downloaded.
+    slotDiscardDownloadProgress();
 
     // Remove db and temporaries
     QString stateDbFile = _engine->journal()->databaseFilePath();
