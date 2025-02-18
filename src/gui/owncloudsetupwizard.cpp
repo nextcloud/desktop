@@ -692,6 +692,11 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 #ifdef BUILD_FILE_PROVIDER_MODULE
         if (Mac::FileProvider::fileProviderAvailable()) {
             Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
+            _ocWizard->appendToConfigurationLog(
+                tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(account->account()->userIdAtHostWithPort()));
+            _ocWizard->done(result);
+            emit ownCloudWizardDone(result);
+            return;
         }
 #endif
 
