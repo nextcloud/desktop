@@ -425,17 +425,23 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
             item->_errorString = tr("Filename contains leading spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
             item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
@@ -475,7 +481,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             }
             item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
-            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         }
     }
@@ -2283,12 +2291,14 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     }
 }
 
-void ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
                                                              CSYNC_EXCLUDE_TYPE excludeReason)
 {
+    auto result = true;
+
     const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(absoluteFileName);
     if (leadingAndTrailingSpacesFilesAllowed) {
-        return;
+        return result;
     }
 
     const auto fileInfo = QFileInfo{absoluteFileName};
@@ -2312,10 +2322,11 @@ void ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
     {
         const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.fileName().trimmed()};
-        FileSystem::rename(absoluteFileName, renameTarget);
+        result = FileSystem::rename(absoluteFileName, renameTarget);
         break;
     }
     }
+    return result;
 }
 
 }

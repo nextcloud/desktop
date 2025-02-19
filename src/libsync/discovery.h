@@ -256,7 +256,7 @@ private:
      */
     void setupDbPinStateActions(SyncJournalFileRecord &record);
 
-    void maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+    bool maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
                                             CSYNC_EXCLUDE_TYPE excludeReason);
 
     qint64 _lastSyncTimestamp = 0;
