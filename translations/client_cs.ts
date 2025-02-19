@@ -2840,7 +2840,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="588"/>
+        <location filename="../src/gui/generalsettings.cpp" line="594"/>
         <source>Create Debug Archive</source>
         <translation>Vytvořit archiv s informacemi pro ladění</translation>
     </message>
@@ -2905,27 +2905,27 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
         <translation>Automatické spouštění nemůžete vypnout, protože je celosystémově zapnuté pro všechny uživatele.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="398"/>
+        <location filename="../src/gui/generalsettings.cpp" line="404"/>
         <source>stable</source>
         <translation>stabilní</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <location filename="../src/gui/generalsettings.cpp" line="408"/>
         <source>beta</source>
         <translation>vývojové</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="406"/>
+        <location filename="../src/gui/generalsettings.cpp" line="412"/>
         <source>daily</source>
         <translation>denní</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="416"/>
         <source>enterprise</source>
         <translation>podnikové</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="444"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2937,7 +2937,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Přechod na konzervativnější verze není možný: změna z beta na stable znamená vyčkat na novou stabilní verzi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="443"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2947,12 +2947,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Přechod na konzervativnější verze není možný: změna ze stable na enterprise znamená vyčkat na novou enterprise verzi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="450"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>Changing update channel?</source>
         <translation>Změnit kanál aktualizací?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="451"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2962,27 +2962,27 @@ Přechod na konzervativnější verze není možný: změna ze stable na enterpr
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Change update channel</source>
         <translation>Změnit kanál aktualizací</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="458"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="590"/>
+        <location filename="../src/gui/generalsettings.cpp" line="596"/>
         <source>Zip Archives</source>
         <translation>Zip archivy</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="600"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Debug Archive Created</source>
         <translation>Archiv s informacemi pro ladění vytvořen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="601"/>
+        <location filename="../src/gui/generalsettings.cpp" line="607"/>
         <source>Debug archive is created at %1</source>
         <translation>Archiv s ladicími informacemi je vytvořen v %1</translation>
     </message>
@@ -5621,17 +5621,17 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="75"/>
+        <location filename="../src/common/vfs.cpp" line="76"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
         <translation>Zvolte jiné umístění. %1 je disk. Nepodporuje virtuální soubory.</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="79"/>
+        <location filename="../src/common/vfs.cpp" line="80"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
         <translation>Zvolte jiné umístění. %1 se nenachází na souborovém systému NTFS. Nepodporuje virtuální soubory.</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="83"/>
+        <location filename="../src/common/vfs.cpp" line="84"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
         <translation>Zvolte jiné umístění. %1 je síťový disk. Nepodporuje virtuální soubory.</translation>
     </message>

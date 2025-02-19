@@ -2835,7 +2835,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="588"/>
+        <location filename="../src/gui/generalsettings.cpp" line="594"/>
         <source>Create Debug Archive</source>
         <translation>Создать архив с отладочными данными</translation>
     </message>
@@ -2900,27 +2900,27 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Автоматический запуск не может быть отключен, т.к. он настроен на уровне системы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="398"/>
+        <location filename="../src/gui/generalsettings.cpp" line="404"/>
         <source>stable</source>
         <translation>стабильный</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <location filename="../src/gui/generalsettings.cpp" line="408"/>
         <source>beta</source>
         <translation>бета</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="406"/>
+        <location filename="../src/gui/generalsettings.cpp" line="412"/>
         <source>daily</source>
         <translation>Ежедневно</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="416"/>
         <source>enterprise</source>
         <translation>предприятие</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="444"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2932,7 +2932,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Понижение версии невозможно: переход с бета-версии на стабильную означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="443"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2942,12 +2942,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Понижение версии невозможно: для перехода со стабильной версии на корпоративную необходимо дождаться новой корпоративной версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="450"/>
+        <location filename="../src/gui/generalsettings.cpp" line="456"/>
         <source>Changing update channel?</source>
         <translation>Сменить канал обновлений?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="451"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2957,27 +2957,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Change update channel</source>
         <translation>Сменить канал обновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="458"/>
+        <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="590"/>
+        <location filename="../src/gui/generalsettings.cpp" line="596"/>
         <source>Zip Archives</source>
         <translation>Zip архивы</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="600"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Debug Archive Created</source>
         <translation>Создан архив с отладочными данными</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="601"/>
+        <location filename="../src/gui/generalsettings.cpp" line="607"/>
         <source>Debug archive is created at %1</source>
         <translation>Архив с отладочными данными создан: «%1»</translation>
     </message>
@@ -5615,17 +5615,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="75"/>
+        <location filename="../src/common/vfs.cpp" line="76"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="79"/>
+        <location filename="../src/common/vfs.cpp" line="80"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="83"/>
+        <location filename="../src/common/vfs.cpp" line="84"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
         <translation type="unfinished"/>
     </message>
