@@ -46,9 +46,11 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsTrashing
             ]
 
+#if os(macOS)
             if #available(macOS 11.3, *) {
                 directoryCapabilities.insert(.allowsExcludingFromSync)
             }
+#endif
 
             // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
             if #unavailable(macOS 13.0) {
