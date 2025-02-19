@@ -671,6 +671,28 @@ void SyncEngine::startSync()
         return;
     }
 
+    const auto accountCaps = _account->capabilities();
+    const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
+    const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
+    const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
+    const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
+
+    _discoveryPhase->_forbiddenFilenames = forbiddenFilenames;
+    _discoveryPhase->_forbiddenBasenames = forbiddenBasenames;
+    _discoveryPhase->_forbiddenExtensions = forbiddenExtensions;
+    _discoveryPhase->_forbiddenChars = forbiddenChars;
+    if (!forbiddenFilenames.isEmpty() &&
+        !forbiddenBasenames.isEmpty() &&
+        !forbiddenExtensions.isEmpty() &&
+        !forbiddenChars.isEmpty()) {
+        _shouldEnforceWindowsFileNameCompatibility = true;
+        _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+    }
+#if defined Q_OS_WINDOWS
+    _shouldEnforceWindowsFileNameCompatibility = true;
+    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+#endif
+
     // Check for invalid character in old server version
     QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
     if (invalidFilenamePattern.isNull()
@@ -1206,6 +1228,11 @@ void SyncEngine::slotClearTouchedFiles()
 void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
 {
     _leadingAndTrailingSpacesFilesAllowed.append(filePath);
+}
+
+void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
+{
+    _shouldEnforceWindowsFileNameCompatibility = value;
 }
 
 bool SyncEngine::wasFileTouched(const QString &fn) const

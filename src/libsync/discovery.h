@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QObject>
+#include "csync_exclude.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
 #include "common/asserts.h"
@@ -254,6 +255,9 @@ private:
      * _type field accordingly.
      */
     void setupDbPinStateActions(SyncJournalFileRecord &record);
+
+    bool maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+                                            CSYNC_EXCLUDE_TYPE excludeReason);
 
     qint64 _lastSyncTimestamp = 0;
 

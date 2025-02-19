@@ -1207,6 +1207,81 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
     vfs->start(vfsParams);
 }
 
+void FakeFolder::enableEnforceWindowsFileNameCompatibility()
+{
+    syncEngine().account()->setCapabilities(QVariantMap{
+        {
+            "files",
+            QVariantMap{
+                {
+                    "forbidden_filename_basenames",
+                    QStringList{"con",
+                        "prn",
+                        "aux",
+                        "nul",
+                        "com0",
+                        "com1",
+                        "com2",
+                        "com3",
+                        "com4",
+                        "com5",
+                        "com6",
+                        "com7",
+                        "com8",
+                        "com9",
+                        "com¹",
+                        "com²",
+                        "com³",
+                        "lpt0",
+                        "lpt1",
+                        "lpt2",
+                        "lpt3",
+                        "lpt4",
+                        "lpt5",
+                        "lpt6",
+                        "lpt7",
+                        "lpt8",
+                        "lpt9",
+                        "lpt¹",
+                        "lpt²",
+                        "lpt³"
+                    }
+                },
+                {
+                    "forbidden_filename_characters",
+                    QStringList{"\\",
+                        "/",
+                        "<",
+                        ">",
+                        ":",
+                        "\"",
+                        "|",
+                        "?",
+                        "*",
+                        "\\",
+                        "/"
+                    }
+                },
+                {
+                    "forbidden_filename_extensions",
+                    QStringList{" ",
+                        ".",
+                        ".filepart",
+                        ".part",
+                        ".part"
+                    }
+                },
+                {
+                    "forbidden_filenames",
+                    QStringList{"\\",
+                        ".htaccess"
+                    }
+                }
+            }
+        }
+    });
+}
+
 FileInfo FakeFolder::currentLocalState()
 {
     QDir rootDir { _tempDir.path() };
