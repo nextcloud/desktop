@@ -589,7 +589,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (const Activity &activity : _activityModel->errorsList()) {
             if (activity._expireAtMsecs != -1) {
                 // we process expired activities in a different slot
                 continue;
@@ -638,7 +638,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         // We keep track very well of pending conflicts.
         // Inform other components about them.
         QStringList conflicts;
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (const Activity &activity : _activityModel->errorsList()) {
             if (activity._folder == folder
                 && activity._syncFileItemStatus == SyncFileItem::Conflict) {
                 conflicts.append(activity._file);

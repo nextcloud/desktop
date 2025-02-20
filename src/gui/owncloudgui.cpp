@@ -358,7 +358,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
-        foreach (AccountStatePtr a, problemAccounts) {
+        for (const AccountStatePtr &a : qAsConst(problemAccounts)) {
             accountNames.append(a->account()->displayName());
         }
         _tray->setToolTip(tr("Disconnected from %1").arg(accountNames.join(QLatin1String(", "))));
@@ -570,7 +570,7 @@ void ownCloudGui::slotLogin()
         account->signIn();
     } else {
         auto list = AccountManager::instance()->accounts();
-        foreach (const auto &a, list) {
+        for (const auto &a : qAsConst(list)) {
             a->signIn();
         }
     }
@@ -584,7 +584,7 @@ void ownCloudGui::slotLogout()
         list.append(account);
     }
 
-    foreach (const auto &ai, list) {
+    for (const auto &ai : qAsConst(list)) {
         ai->signOutByUi();
     }
 }

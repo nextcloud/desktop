@@ -211,7 +211,7 @@ bool Capabilities::isClientStatusReportingEnabled() const
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
     QList<QByteArray> list;
-    foreach (const auto &t, _capabilities["checksums"].toMap()["supportedTypes"].toList()) {
+    for (const auto &t : qAsConst(_capabilities["checksums"].toMap()["supportedTypes"].toList())) {
         list.push_back(t.toByteArray());
     }
     return list;
@@ -373,7 +373,7 @@ bool Capabilities::privateLinkPropertyAvailable() const
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
     QList<int> list;
-    foreach (const auto &t, _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList()) {
+    for (const auto &t : qAsConst(_capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList())) {
         list.push_back(t.toInt());
     }
     return list;
@@ -445,7 +445,7 @@ void Capabilities::addDirectEditor(DirectEditor* directEditor)
 
 DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
 {
-    foreach(DirectEditor* editor, _directEditors) {
+    for (DirectEditor* editor : qAsConst(_directEditors)) {
         if(editor->hasMimetype(mimeType))
             return editor;
     }
@@ -455,7 +455,7 @@ DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType
 
 DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
 {
-    foreach(DirectEditor* editor, _directEditors) {
+    for (DirectEditor* editor : qAsConst(_directEditors)) {
         if(editor->hasOptionalMimetype(mimeType))
             return editor;
     }
