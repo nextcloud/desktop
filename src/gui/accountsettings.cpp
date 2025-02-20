@@ -120,6 +120,7 @@ void showEnableE2eeWarningDialog(std::function<void(void)> onAccept)
     const auto messageBox = new QMessageBox;
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     messageBox->setText(AccountSettings::tr("End-to-end Encryption"));
+    messageBox->setTextFormat(Qt::RichText);
     messageBox->setInformativeText(
         AccountSettings::tr("This will encrypt your folder and all files within it. "
                             "These files will no longer be accessible without your encryption mnemonic key. "
