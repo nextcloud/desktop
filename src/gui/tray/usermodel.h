@@ -61,6 +61,7 @@ class User : public QObject
     Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
+    Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
     Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
 
@@ -71,6 +72,7 @@ public:
     [[nodiscard]] AccountStatePtr accountState() const;
 
     [[nodiscard]] bool isConnected() const;
+    [[nodiscard]] bool needsToSignTermsOfService() const;
     [[nodiscard]] bool isCurrentUser() const;
     void setCurrentUser(const bool &isCurrent);
     [[nodiscard]] Folder *getFolder() const;

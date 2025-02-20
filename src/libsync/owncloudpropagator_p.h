@@ -69,8 +69,8 @@ inline QPair<QByteArray, QByteArray> getExceptionFromReply(QNetworkReply * const
         return {};
     }
     const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    // only for BadRequest and UnsupportedMediaType
-    if (httpStatusCode != 400 && httpStatusCode != 415) {
+    // only for BadRequest, Forbidden, and UnsupportedMediaType
+    if (!(httpStatusCode == 400 || httpStatusCode == 403 || httpStatusCode == 415)) {
         return {};
     }
 

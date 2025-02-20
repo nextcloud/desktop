@@ -14,6 +14,7 @@
 
 #include "syncstatussummary.h"
 #include "accountfwd.h"
+#include "accountstate.h"
 #include "folderman.h"
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
@@ -128,6 +129,14 @@ void SyncStatusSummary::clearFolderErrors()
 void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
 {
     if (_accountState && !_accountState->isConnected()) {
+        setSyncing(false);
+        setTotalFiles(0);
+        setSyncStatusString(tr("Offline"));
+        setSyncStatusDetailString("");
+        if (_accountState->state() == AccountState::NeedToSignTermsOfService) {
+            setSyncStatusDetailString(tr("You need to accept the terms of service"));
+        }
+        setSyncIcon(Theme::instance()->folderOffline());
         return;
     }
 

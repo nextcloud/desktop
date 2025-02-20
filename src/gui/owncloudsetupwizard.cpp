@@ -13,13 +13,6 @@
  * for more details.
  */
 
-#include <QAbstractButton>
-#include <QtCore>
-#include <QProcess>
-#include <QMessageBox>
-#include <QDesktopServices>
-#include <QApplication>
-
 #include "accessmanager.h"
 #include "account.h"
 #include "accountmanager.h"
@@ -31,6 +24,7 @@
 #include "networkjobs.h"
 #include "owncloudgui.h"
 #include "owncloudsetupwizard.h"
+#include "owncloudpropagator_p.h"
 #include "sslerrordialog.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudwizardcommon.h"
@@ -42,6 +36,13 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #endif
+
+#include <QAbstractButton>
+#include <QtCore>
+#include <QProcess>
+#include <QMessageBox>
+#include <QDesktopServices>
+#include <QApplication>
 
 namespace OCC {
 
@@ -362,8 +363,7 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 
         _ocWizard->setField(QLatin1String("OCUrl"), url);
         _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
-                                                .arg(Theme::instance()->appNameGUI())
-                                                .arg(url));
+                                                .arg(Theme::instance()->appNameGUI(), url));
 
         testOwnCloudConnect();
     });
@@ -381,7 +381,22 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     job->setFollowRedirects(false);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
-    connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
+    connect(job, &PropfindJob::finishedWithError, this, [this] (QNetworkReply *reply) -> void {
+        if (reply && reply->error() == QNetworkReply::ContentAccessDenied) {
+            // A 403 might indicate that the terms of service need to be signed.
+            // catch this special case here, fall back to the standard error handler if it's not TOS-related
+            auto davException = OCC::getExceptionFromReply(reply);
+            if (!davException.first.isEmpty() && davException.first == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
+                // authentication was successful, but the user hasn't signed the terms of service yet.  Prompt for that in the next step
+                qCInfo(lcWizard) << "Terms of service not accepted yet!  Will prompt the user in the next step";
+                _ocWizard->_needsToAcceptTermsOfService = true;
+                _ocWizard->successfulStep();
+                return;
+            }
+        }
+        slotAuthError();
+    });
+
     job->start();
 }
 
@@ -418,14 +433,15 @@ void OwncloudSetupWizard::slotAuthError()
                       "\"%1\". The URL is bad, the server is misconfigured.")
                        .arg(Utility::escape(redirectUrl.toString()));
 
+    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
         // A 404 is actually a success: we were authorized to know that the folder does
         // not exist. It will be created later...
-    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
         _ocWizard->successfulStep();
         return;
 
-        // Provide messages for other errors, such as invalid credentials.
     } else if (reply->error() != QNetworkReply::NoError) {
+        // Provide messages for other errors, such as invalid credentials.
+
         if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
@@ -434,8 +450,8 @@ void OwncloudSetupWizard::slotAuthError()
             errorMsg = job->errorStringParsingBody();
         }
 
-        // Something else went wrong, maybe the response was 200 but with invalid data.
     } else {
+        // Something else went wrong, maybe the response was 200 but with invalid data.
         errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
     }
 
