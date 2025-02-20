@@ -45,7 +45,7 @@ void FileProviderEditLocallyJob::start()
 
     const auto relPathSplit = _relPath.split(QLatin1Char('/'));
     if (relPathSplit.isEmpty()) {
-        showError(tr("Could not find a file for local editing."
+        showError(tr("Could not find a file for local editing. "
                      "Make sure its path is valid and it is synced locally."), _relPath);
         return;
     }
