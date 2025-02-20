@@ -51,10 +51,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..154bc35c1
+index 000000000..e91c090fa
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,231 @@
+@@ -0,0 +1,244 @@
 +
 +#pragma once
 +
@@ -109,6 +109,19 @@ index 000000000..154bc35c1
 +inline QDebug& operator<<(QDebug& d, const std::basic_string<Char, Args...>& s)
 +{
 +    return d << s.c_str();
++}
++#endif
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 6, 0)
++
++#include <chrono>
++
++template <typename Rep, typename Period>
++inline QDebug& operator<<(QDebug& d, const std::chrono::duration<Rep, Period> dur)
++{
++    return d << dur.count() << " " << Period::num << "/" << Period::den;
 +}
 +#endif
 +
@@ -312,7 +325,7 @@ index 2c23656f2..1dad0bdba 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 4bd77faba..2bf590f21 100644
+index d99986850..558d9d7c5 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -323,7 +336,7 @@ index 4bd77faba..2bf590f21 100644
  find_package(KF6GuiAddons)
  
  if (NOT TARGET Qt::GuiPrivate)
-@@ -561,9 +561,16 @@ target_link_libraries(nextcloudCore
+@@ -566,9 +566,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -341,7 +354,7 @@ index 4bd77faba..2bf590f21 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -781,3 +788,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -786,3 +793,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -353,7 +366,7 @@ index 4bd77faba..2bf590f21 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 4175ae5f0..601964330 100644
+index 6c00e6b6d..6d392029f 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -46,6 +46,7 @@
@@ -364,7 +377,7 @@ index 4175ae5f0..601964330 100644
  
  #include "config.h"
  
-@@ -979,7 +980,7 @@ QString substLang(const QString &lang)
+@@ -1004,7 +1005,7 @@ QString substLang(const QString &lang)
  void Application::setupTranslations()
  {
      const auto enforcedLocale = Theme::instance()->enforcedLocale();
@@ -373,8 +386,20 @@ index 4175ae5f0..601964330 100644
  
      auto *translator = new QTranslator(this);
      auto *qtTranslator = new QTranslator(this);
+diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
+index c9b7faaea..002801eb1 100644
+--- a/src/gui/folderman.cpp
++++ b/src/gui/folderman.cpp
+@@ -24,6 +24,7 @@
+ #include "filesystem.h"
+ #include "lockwatcher.h"
+ #include "common/asserts.h"
++#include "common/qtcompat.h"
+ #include "gui/systray.h"
+ #include <pushnotifications.h>
+ #include <syncengine.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 6a45da8a1..b96d390b3 100644
+index 3561699d6..737c3853a 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -23,6 +23,7 @@
@@ -385,7 +410,7 @@ index 6a45da8a1..b96d390b3 100644
  
  #include <QDesktopServices>
  #include <QDir>
-@@ -570,7 +571,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+@@ -575,7 +576,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
      if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
          _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
          connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
@@ -395,7 +420,7 @@ index 6a45da8a1..b96d390b3 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index 843be0dd5..dff1148d5 100644
+index d4a0aeaa4..1f3ab2cb4 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -49,6 +49,7 @@
@@ -426,7 +451,7 @@ index 843be0dd5..dff1148d5 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -581,6 +587,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -587,6 +593,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -434,7 +459,7 @@ index 843be0dd5..dff1148d5 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -602,6 +609,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -608,6 +615,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -531,7 +556,7 @@ index 72ec2eede..7f8536d79 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index c65c6639a..bee7a9cc8 100644
+index c7755fe92..067112f92 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -28,7 +28,7 @@
@@ -866,7 +891,7 @@ index 6bfad9d62..ca34f0ada 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index f25ff9b58..a3b2f66ea 100644
+index 8927f117f..9bb396348 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -18,6 +18,7 @@
