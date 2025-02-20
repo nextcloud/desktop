@@ -719,21 +719,49 @@ void FolderMan::scheduleFolder(Folder *f)
 
     qCInfo(lcFolderMan) << "Schedule folder " << alias << " to sync!";
 
+    auto syncAgainDelay = std::chrono::seconds(0);
+    if (f->consecutiveFailingSyncs() > 2 && f->consecutiveFailingSyncs() <= 4) {
+        syncAgainDelay = std::chrono::seconds(10);
+    } else if (f->consecutiveFailingSyncs() > 4 && f->consecutiveFailingSyncs() <= 6) {
+        syncAgainDelay = std::chrono::seconds(30);
+    } else if (f->consecutiveFailingSyncs() > 6) {
+        syncAgainDelay = std::chrono::seconds(60);
+    }
+
     if (!_scheduledFolders.contains(f)) {
         if (!f->canSync()) {
             qCInfo(lcFolderMan) << "Folder is not ready to sync, not scheduled!";
             _socketApi->slotUpdateFolderView(f);
             return;
         }
-        f->prepareToSync();
-        emit folderSyncStateChange(f);
-        _scheduledFolders.enqueue(f);
-        emit scheduleQueueChanged();
+
+        if (syncAgainDelay == std::chrono::seconds(0)) {
+            f->prepareToSync();
+            emit folderSyncStateChange(f);
+            _scheduledFolders.enqueue(f);
+            emit scheduleQueueChanged();
+            startScheduledSyncSoon();
+        } else {
+            qCWarning(lcFolderMan()) << "going to delay the next sync run due to too many synchronization errors" << syncAgainDelay;
+            QTimer::singleShot(syncAgainDelay, this, [this, f] () {
+                f->prepareToSync();
+                emit folderSyncStateChange(f);
+                _scheduledFolders.enqueue(f);
+                emit scheduleQueueChanged();
+                startScheduledSyncSoon();
+            });
+        }
     } else {
         qCInfo(lcFolderMan) << "Sync for folder " << alias << " already scheduled, do not enqueue!";
+        if (syncAgainDelay == std::chrono::seconds(0)) {
+            startScheduledSyncSoon();
+        } else {
+            qCWarning(lcFolderMan()) << "going to delay the next sync run due to too many synchronization errors" << syncAgainDelay;
+            QTimer::singleShot(syncAgainDelay, this, [this] () {
+                startScheduledSyncSoon();
+            });
+        }
     }
-
-    startScheduledSyncSoon();
 }
 
 void FolderMan::scheduleFolderForImmediateSync(Folder *f)
