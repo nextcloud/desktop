@@ -174,7 +174,7 @@ void User::showDesktopNotification(const Activity &activity)
 
 void User::showDesktopNotification(const ActivityList &activityList)
 {
-    const auto subject = tr("%n notification(s)", "", activityList.count());
+    const auto subject = tr("%1 notifications").arg(activityList.count());
     const auto notificationId = -static_cast<int>(qHash(subject));
 
     if (!canShowNotification(notificationId)) {
