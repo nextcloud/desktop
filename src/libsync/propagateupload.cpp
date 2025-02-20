@@ -514,18 +514,22 @@ qint64 UploadDevice::readData(char *data, qint64 maxlen)
         if (_bandwidthManager) {
             _bandwidthManager->unregisterUploadDevice(this);
         }
+        qCInfo(lcPropagateUpload) << "return" << -1;
         return -1;
     }
     maxlen = qMin(maxlen, _size - _read);
     if (maxlen <= 0) {
+        qCInfo(lcPropagateUpload) << "return" << 0;
         return 0;
     }
     if (isChoked()) {
+        qCInfo(lcPropagateUpload) << "return" << 0;
         return 0;
     }
     if (isBandwidthLimited()) {
         maxlen = qMin(maxlen, _bandwidthQuota);
         if (maxlen <= 0) { // no quota
+            qCInfo(lcPropagateUpload) << "return" << 0;
             return 0;
         }
         _bandwidthQuota -= maxlen;
@@ -534,17 +538,24 @@ qint64 UploadDevice::readData(char *data, qint64 maxlen)
     auto c = _file.read(data, maxlen);
     if (c == 0) {
         setErrorString({});
+        qCInfo(lcPropagateUpload) << "return" << c;
         return c;
     } else if (c < 0) {
         setErrorString(_file.errorString());
+        qCInfo(lcPropagateUpload) << "return" << -1;
         return -1;
     }
     _read += c;
+    qCInfo(lcPropagateUpload) << "return" << c;
     return c;
 }
 
 void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
 {
+    qCInfo(lcPropagateUpload) << "sent" << sent
+                              << "t" << t
+                              << "read with progress" << _readWithProgress;
+
     if (sent == 0 || t == 0) {
         return;
     }
