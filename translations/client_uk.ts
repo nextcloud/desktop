@@ -380,6 +380,11 @@
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <source>Evict local copies …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
         <translation>Вилучити копії на пристрої...</translation>
     </message>
@@ -2190,17 +2195,17 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Призупинити синхронізацію цього каталогу?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1544"/>
+        <location filename="../src/gui/folder.cpp" line="1549"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Каталог %1 створено, але його раніше було виключено з синхронізації. Дані всередині цього каталогу не буде синхронізовано.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1547"/>
+        <location filename="../src/gui/folder.cpp" line="1552"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Файл %1 було створено, але раніше виключено з синхронізації. Цей файл не буде синхронізовано.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1558"/>
+        <location filename="../src/gui/folder.cpp" line="1563"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2213,12 +2218,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1596"/>
+        <location filename="../src/gui/folder.cpp" line="1601"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Помилка звантаженння віртульного файлу: код &quot;%1&quot;, статус &quot;%2&quot;, повідомлення про помилку &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1690"/>
+        <location filename="../src/gui/folder.cpp" line="1695"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2227,7 +2232,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 Альтернативно ви можете відновити усі вилучені файли шляхом завантаженя з каталогу &quot;%1&quot; на сервер хмари.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1691"/>
+        <location filename="../src/gui/folder.cpp" line="1696"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2236,22 +2241,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 Альтернативно ви можете відновити усі вилучені файли шляхом їхнього звантаженя з сервера хмари.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1692"/>
+        <location filename="../src/gui/folder.cpp" line="1697"/>
         <source>Remove all files?</source>
         <translation>Дійсно  вилучити всі файли?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1696"/>
+        <location filename="../src/gui/folder.cpp" line="1701"/>
         <source>Proceed with Deletion</source>
         <translation>Дійсно вилучити</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1697"/>
+        <location filename="../src/gui/folder.cpp" line="1702"/>
         <source>Restore Files to Server</source>
         <translation>Відновити файли на сервері</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1697"/>
+        <location filename="../src/gui/folder.cpp" line="1702"/>
         <source>Restore Files from Server</source>
         <translation>Відновити файли з сервера</translation>
     </message>
@@ -3947,202 +3952,210 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Символічні посилання не підтримуються під час синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="401"/>
         <source>File is listed on the ignore list.</source>
         <translation>Файл присутній у списку ігнорування.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="405"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Імена файлів, що закінчуються на крапку, не підтримуються файловою системою.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="404"/>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Каталог</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="404"/>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Ім&apos;я %1, що містить символ &quot;%2&quot; не підтримується файловою системою.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Ім&apos;я %1 містить принаймні один недійсний символ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Ім&apos;я %1 є зарезервованою назвою у файловій системі.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="426"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Ім&apos;я файлу містить пробіли наприкінці назви.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="429"/>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="485"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains leading spaces.</source>
         <translation>Ім&apos;я файлу містить пробіли на початку назви.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Ім&apos;я файлу містить пробіли на початку та наприкінці назви.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source>Filename is too long.</source>
         <translation>Ім&apos;я файлу занадто довге</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Файл чи каталог проігноровано, оскільки він є прихований.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="435"/>
+        <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Stat failed.</source>
         <translation>Статистика не вдалася.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="438"/>
+        <location filename="../src/libsync/discovery.cpp" line="457"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфлікт: Звантажено віддалену версію, копію на пристрої перейменовано і не завантажено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Конфлікт регістрів: файл було звантажено з сервера та перейменовано для уникнення конфлікту.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Неможливо зашифрувати ім&apos;я файлу у вашій файловій системі.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="449"/>
+        <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Таке ім&apos;я файлу внесено до чорного списку на сервері.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="452"/>
+        <location filename="../src/libsync/discovery.cpp" line="471"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Причина: все ім&apos;я файлу є недозволеним.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="455"/>
+        <location filename="../src/libsync/discovery.cpp" line="474"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Причина: ім&apos;я файлу містить недозволену частину в назві (початок імени файлу)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Причина: файл містить недозволене розширення (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="480"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Причина: ім&apos;я файлу містить недозволений символ (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="599"/>
+        <location filename="../src/libsync/discovery.cpp" line="621"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Файл має розширення, зарезервоване для віртуальних файлів.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="740"/>
+        <location filename="../src/libsync/discovery.cpp" line="762"/>
         <source>size</source>
         <translation>розмір</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="742"/>
+        <location filename="../src/libsync/discovery.cpp" line="764"/>
         <source>permission</source>
         <translation>дозвіл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="746"/>
+        <location filename="../src/libsync/discovery.cpp" line="768"/>
         <source>file id</source>
         <translation>ID файлу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="750"/>
+        <location filename="../src/libsync/discovery.cpp" line="772"/>
         <source>Server reported no %1</source>
         <translation>Cервер відповів, що немає %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1113"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Неможливо виконати синхронізацію через неправильний час модифікації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1101"/>
+        <location filename="../src/libsync/discovery.cpp" line="1123"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Не вдалося завантажити файл, оскільки його відкрито у &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1144"/>
+        <location filename="../src/libsync/discovery.cpp" line="1166"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Помилка під час вилучення запису файлу %1 з бази даних</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1417"/>
-        <location filename="../src/libsync/discovery.cpp" line="1877"/>
+        <location filename="../src/libsync/discovery.cpp" line="1439"/>
+        <location filename="../src/libsync/discovery.cpp" line="1899"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Пересунено до недійсного призначення, буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1735"/>
+        <location filename="../src/libsync/discovery.cpp" line="1757"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Не вдалося змінити зашифрованій об&apos;єкт, оскільки вибраний сертифікат недійсний.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1796"/>
+        <location filename="../src/libsync/discovery.cpp" line="1818"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Проігноровано, оскільки те, що вибрано для синхронізації, міститься у чорному списку</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1830"/>
-        <location filename="../src/libsync/discovery.cpp" line="2038"/>
+        <location filename="../src/libsync/discovery.cpp" line="1852"/>
+        <location filename="../src/libsync/discovery.cpp" line="2060"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Не дозволено, оскільки ви не маєте повноважень додавати підкаталоги до цього каталогу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1841"/>
+        <location filename="../src/libsync/discovery.cpp" line="1863"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Не дозволено, оскільки ви не маєте повноважень додавати файли до цього каталогу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1855"/>
+        <location filename="../src/libsync/discovery.cpp" line="1877"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не дозволено завантажити цей файл, оскільки він має ознаку у хмарі лише для читання, файл буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1891"/>
+        <location filename="../src/libsync/discovery.cpp" line="1913"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Не дозволено вилучати, буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2085"/>
+        <location filename="../src/libsync/discovery.cpp" line="2107"/>
         <source>Error while reading the database</source>
         <translation>Помилка під час зчитування бази даних</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2170"/>
+        <location filename="../src/libsync/discovery.cpp" line="2192"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Відповідь сервера з помилкою під час зчитування каталогу &quot;%1&quot;: %2</translation>
     </message>
@@ -5200,17 +5213,17 @@ Server replied with error: %2</source>
         <translation>Неможливо прочитати з журналу синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="803"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation>Не вдається відкрити протокол синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1401"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1428"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Закінчується місце на диску. Звантаження, які можуть зменшити вільне місце до 1% буде пропущено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1408"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Недостатньо місця на сервері для окремих завантажень.</translation>
     </message>
@@ -5350,26 +5363,9 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1Настільна версія клієнта синхронізації %2 (%3). Для докладної інформації натисніть &lt;a href=&apos;%4&apos;&gt;тут&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="600"/>
-        <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;Настільний клієнт %1&lt;/p&gt;&lt;p&gt;Версія %1. Для докладної інформації, перейдіть &lt;a href=&apos;%2&apos;&gt;сюди&lt;/a&gt;.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="604"/>
+        <location filename="../src/libsync/theme.cpp" line="611"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Використання плаґіну віртуальних файлів: %1&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="617"/>
-        <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
-        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;%1 настільний клієнт %2&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="625"/>
-        <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;/p&gt;Версія %1. Докладно дивіться &lt;a href=&apos;%2&apos;&gt;тут&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="629"/>
@@ -6549,7 +6545,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="580"/>
+        <location filename="../src/libsync/theme.cpp" line="592"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Зібрано з ревізії Git %2&lt;/a&gt; на %3, %4 з використанням Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
