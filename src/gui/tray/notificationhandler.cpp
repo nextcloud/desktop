@@ -96,7 +96,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     ActivityList list;
     ActivityList callList;
 
-    foreach (auto element, notifies) {
+    for (auto element : qAsConst(notifies)) {
         auto json = element.toObject();
         auto a = Activity::fromActivityJson(json, ai->account());
 

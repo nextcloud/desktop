@@ -64,8 +64,8 @@ static QString findDefaultFileManager()
     QStringList subdirs;
     subdirs << "/applications/"
             << "/applications/kde4/";
-    foreach (QString dir, dirs) {
-        foreach (QString subdir, subdirs) {
+    for (const QString &dir : dirs) {
+        for (const QString &subdir : subdirs) {
             fi.setFile(dir + subdir + fileName);
             if (fi.exists()) {
                 return fi.absoluteFilePath();
