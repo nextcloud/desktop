@@ -237,7 +237,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
-    for (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it: syncItems) {
         if (it->_direction == SyncFileItem::Up
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -250,7 +250,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
-        for (uint transferId : qAsConst(ids)) {
+        for (uint transferId : std::as_const(ids)) {
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
