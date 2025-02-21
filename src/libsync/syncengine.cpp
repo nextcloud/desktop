@@ -215,7 +215,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
-    for (const SyncFileItemPtr &it : qAsConst(syncItems)) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_direction == SyncFileItem::Down
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -226,7 +226,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     // Delete from journal and from filesystem.
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
-    for (const SyncJournalDb::DownloadInfo &deleted_info : qAsConst(deleted_infos)) {
+    for (const SyncJournalDb::DownloadInfo &deleted_info : deleted_infos) {
         const QString tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
         qCInfo(lcEngine) << "Deleting stale temporary file: " << tmppath;
         FileSystem::remove(tmppath);
@@ -237,7 +237,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
-    for (const SyncFileItemPtr &it, qAsConst(syncItems)) {
+    for (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -263,7 +263,7 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
-    for (const SyncFileItemPtr &it : qAsConst(syncItems)) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_hasBlacklistEntry)
             blacklist_file_paths.insert(it->_file);
     }
