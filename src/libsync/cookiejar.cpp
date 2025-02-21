@@ -139,7 +139,7 @@ bool CookieJar::restore(const QString &fileName)
 QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cookies)
 {
     QList<QNetworkCookie> updatedList;
-    for (const QNetworkCookie &cookie : qAsConst(cookies)) {
+    for (const QNetworkCookie &cookie : cookies) {
         if (cookie.expirationDate() > QDateTime::currentDateTimeUtc() && !cookie.isSessionCookie()) {
             updatedList << cookie;
         }

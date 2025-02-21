@@ -369,7 +369,7 @@ void ProgressInfo::updateEstimates()
 void ProgressInfo::recomputeCompletedSize()
 {
     qint64 r = _totalSizeOfCompletedJobs;
-    for (const ProgressItem &i : qAsConst(_currentItems)) {
+    for (const ProgressItem &i : _currentItems) {
         if (isSizeDependent(i._item))
             r += i._progress._completed;
     }

@@ -141,7 +141,7 @@ bool copy_dir_recursive(QString from_dir, QString to_dir)
     from_dir += QDir::separator();
     to_dir += QDir::separator();
 
-    for (const QString &copy_file : qAsConst(dir.entryList(QDir::Files))) {
+    for (const QString &copy_file : dir.entryList(QDir::Files)) {
         QString from = from_dir + copy_file;
         QString to = to_dir + copy_file;
 
@@ -150,7 +150,7 @@ bool copy_dir_recursive(QString from_dir, QString to_dir)
         }
     }
 
-    for (const QString &copy_dir : qAsConst(dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))) {
+    for (const QString &copy_dir : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         QString from = from_dir + copy_dir;
         QString to = to_dir + copy_dir;
 

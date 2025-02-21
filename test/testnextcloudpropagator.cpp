@@ -81,7 +81,7 @@ private slots:
         tests.append(Test("\"fii\"-gzip", "fii"));
         tests.append(Test("W/\"foo\"", "foo"));
 
-        for (const auto &test : qAsConst(tests)) {
+        for (const auto &test : tests) {
             QCOMPARE(parseEtag(test.first), QByteArray(test.second));
         }
     }

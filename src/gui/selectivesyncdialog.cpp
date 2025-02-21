@@ -166,7 +166,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
             if (parent->checkState(0) == Qt::Checked
                 || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
-                for (const QString &str : qAsConst(_oldBlackList)) {
+                for (const QString &str : _oldBlackList) {
                     if (str == path || str == QLatin1String("/")) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
@@ -425,7 +425,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
     } else {
         // We did not load from the server so we reuse the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
-        for (const QString &it : qAsConst(_oldBlackList)) {
+        for (const QString &it : _oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -533,7 +533,7 @@ void SelectiveSyncDialog::accept()
         // (the ones that are no longer in the blacklist)
         auto blackListSet = QSet<QString>{blackList.begin(), blackList.end()};
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        for (const auto &it : qAsConst(changes)) {
+        for (const auto &it : changes) {
             _folder->journalDb()->schedulePathForRemoteDiscovery(it);
             _folder->schedulePathForLocalDiscovery(it);
         }

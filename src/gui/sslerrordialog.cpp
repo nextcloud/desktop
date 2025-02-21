@@ -141,7 +141,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     for (const QSslCertificate &cert : _unknownCerts) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
-        for (const auto &err : qAsConst(errors)) {
+        for (const auto &err : errors) {
             if (err.certificate() == cert) {
                 msg += QL("<p>") + err.errorString() + QL("</p>");
             }
