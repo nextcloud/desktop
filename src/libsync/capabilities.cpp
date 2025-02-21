@@ -445,7 +445,7 @@ void Capabilities::addDirectEditor(DirectEditor* directEditor)
 
 DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
 {
-    for (DirectEditor* editor : qAsConst(_directEditors)) {
+    for (DirectEditor* editor : std::as_const(_directEditors)) {
         if(editor->hasMimetype(mimeType))
             return editor;
     }
@@ -455,7 +455,7 @@ DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType
 
 DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
 {
-    for (DirectEditor* editor : qAsConst(_directEditors)) {
+    for (DirectEditor* editor : std::as_const(_directEditors)) {
         if(editor->hasOptionalMimetype(mimeType))
             return editor;
     }

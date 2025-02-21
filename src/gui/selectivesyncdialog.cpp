@@ -218,7 +218,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     // list of top-level folders as soon as possible.
     if (_oldBlackList == QStringList("/")) {
         _oldBlackList.clear();
-        for (QString path : qAsConst(list)) {
+        for (QString path : std::as_const(list)) {
             path.remove(pathToRemove);
             if (path.isEmpty()) {
                 continue;
@@ -249,7 +249,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     }
 
     Utility::sortFilenames(list);
-    for (QString path : qAsConst(list)) {
+    for (QString path : std::as_const(list)) {
         auto size = job ? job->_folderInfos[path].size : 0;
         path.remove(pathToRemove);
 

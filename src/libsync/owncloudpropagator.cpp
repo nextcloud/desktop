@@ -618,7 +618,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }
     }
 
-    for (PropagatorJob *it : qAsConst(directoriesToRemove)) {
+    for (PropagatorJob *it : std::as_const(directoriesToRemove)) {
         _rootJob->appendDirDeletionJob(it);
     }
 
@@ -1348,7 +1348,7 @@ void PropagatorCompositeJob::finalize()
 qint64 PropagatorCompositeJob::committedDiskSpace() const
 {
     qint64 needed = 0;
-    for (PropagatorJob *job : qAsConst(_runningJobs)) {
+    for (PropagatorJob *job : std::as_const(_runningJobs)) {
         needed += job->committedDiskSpace();
     }
     return needed;

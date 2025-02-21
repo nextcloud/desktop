@@ -2086,7 +2086,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     }
 
     int started = 0;
-    for (auto *rj : qAsConst(_runningJobs)) {
+    for (auto *rj : std::as_const(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
         if (started >= nbJobs)
             return started;
