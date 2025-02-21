@@ -2,6 +2,7 @@ project(gui)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF6Archive REQUIRED)
 find_package(KF6GuiAddons)
+find_package(KWayland CONFIG)
 
 if (NOT TARGET Qt::GuiPrivate)
     message(FATAL_ERROR "Could not find GuiPrivate component of Qt. It might be shipped as a separate package, please check that.")
@@ -575,6 +576,14 @@ if(KF6GuiAddons_FOUND)
     KF6::GuiAddons
   )
   add_definitions(-DHAVE_KGUIADDONS)
+endif()
+
+if(KWayland_FOUND)
+  target_link_libraries(nextcloudCore
+    PUBLIC
+    Plasma::KWaylandClient
+  )
+  add_definitions(-DHAVE_KWAYLAND)
 endif()
 
 add_subdirectory(socketapi)

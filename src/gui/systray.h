@@ -29,6 +29,11 @@ class QWindow;
 class QQuickWindow;
 class QGuiApplication;
 
+#ifdef HAVE_KWAYLAND
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
+#endif
+
 namespace OCC {
 
 class AccessManagerFactory : public QQmlNetworkAccessManagerFactory
@@ -135,9 +140,9 @@ public slots:
     void slotCurrentUserChanged();
 
     void forceWindowInit(QQuickWindow *window) const;
-    void positionWindowAtTray(QQuickWindow *window) const;
-    void positionWindowAtScreenCenter(QQuickWindow *window) const;
-    void positionNotificationWindow(QQuickWindow *window) const;
+    void positionWindowAtTray(QQuickWindow *window);
+    void positionWindowAtScreenCenter(QQuickWindow *window);
+    void positionNotificationWindow(QQuickWindow *window);
 
     // Do not use this for QQuickWindow components managed by the QML engine,
     // only for those managed by the C++ engine
@@ -195,6 +200,16 @@ private:
     QVector<QQuickWindow*> _fileDetailDialogs;
 
     QStringListModel _fakeActivityModel;
+
+#ifdef HAVE_KWAYLAND
+    std::unique_ptr<KWayland::Client::PlasmaShell> _plasmaShell;
+    std::unique_ptr<KWayland::Client::PlasmaShellSurface> _plasmaShellSurface;
+
+    QPoint _desiredPosition;
+
+    void initWayland();
+    void initWaylandSurface(QWindow *window);
+#endif
 };
 
 } // namespace OCC

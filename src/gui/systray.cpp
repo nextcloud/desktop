@@ -45,9 +45,40 @@
 #define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
 #endif
 
+#ifdef HAVE_KWAYLAND
+#include <QDBusReply>
+#include <KWayland/Client/connection_thread.h>
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/registry.h>
+#include <KWayland/Client/surface.h>
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
+
+#ifdef HAVE_KWAYLAND
+constexpr auto systemTrayGeometry = R"(
+
+  // Since QCursor::pos() doesn't return anything on Wayland, let's figure out
+  // where a system tray widget is positioned.
+  // This obviously only works on Plasma ...
+  let allPanels = panels();
+
+  allPanels.forEach(panel => {
+    panel.widgets().forEach(widget => {
+      if (widget.type !== "org.kde.plasma.systemtray") {
+        return;
+      }
+
+      // returns something like:
+      // {"x":2132,"y":7,"width":326,"height":22}
+      print(JSON.stringify(widget.geometry));
+    })
+  });
+
+)";
+#endif
 
 Systray *Systray::_instance = nullptr;
 
@@ -109,6 +140,10 @@ Systray::Systray()
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, [this]{ showWindow(WindowPosition::Center); });
 #endif
+
+#ifdef HAVE_KWAYLAND
+    initWayland();
+#endif
 }
 
 void Systray::create()
@@ -148,6 +183,10 @@ void Systray::showWindow(WindowPosition position)
     _trayWindow->show();
     _trayWindow->raise();
     _trayWindow->requestActivate();
+
+#ifdef HAVE_KWAYLAND
+    initWaylandSurface(_trayWindow.data());
+#endif
 
     setIsOpen(true);
 
@@ -614,7 +653,7 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
 
-void Systray::positionWindowAtTray(QQuickWindow *window) const
+void Systray::positionWindowAtTray(QQuickWindow *window)
 {
     if (useNormalWindow()) {
         return;
@@ -625,19 +664,33 @@ void Systray::positionWindowAtTray(QQuickWindow *window) const
     // with a different DPI setting
     const auto initialSize = window->size();
     const auto position = computeWindowPosition(initialSize.width(), initialSize.height());
+    const auto screen = currentScreen();
     window->setPosition(position);
-    window->setScreen(currentScreen());
+    window->setScreen(screen);
     window->resize(initialSize);
+
+#ifdef HAVE_KWAYLAND
+    // adjust for global positioning, see initWaylandSurface
+    _desiredPosition = screen->geometry().translated(position).topLeft();
+#endif
 }
 
-void Systray::positionWindowAtScreenCenter(QQuickWindow *window) const
+void Systray::positionWindowAtScreenCenter(QQuickWindow *window)
 {
-    if(!useNormalWindow()) {
-        window->setScreen(currentScreen());
-        const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
-        const auto position = currentScreen()->availableGeometry().center() - windowAdjustment;
-        window->setPosition(position);
+    if (useNormalWindow()) {
+        return;
     }
+
+    window->setScreen(currentScreen());
+    const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
+    const auto screen = currentScreen();
+    const auto position = screen->availableGeometry().center() - windowAdjustment;
+    window->setPosition(position);
+
+#ifdef HAVE_KWAYLAND
+    // adjust for global positioning, see initWaylandSurface
+    _desiredPosition = screen->geometry().translated(position).topLeft();
+#endif
 }
 
 void Systray::forceWindowInit(QQuickWindow *window) const
@@ -657,7 +710,7 @@ void Systray::forceWindowInit(QQuickWindow *window) const
 #endif
 }
 
-void Systray::positionNotificationWindow(QQuickWindow *window) const
+void Systray::positionNotificationWindow(QQuickWindow *window)
 {
     if (!useNormalWindow()) {
         window->setScreen(currentScreen());
@@ -671,6 +724,9 @@ void Systray::positionNotificationWindow(QQuickWindow *window) const
             // We can safely hardcode the top-right position for the notification when running GNOME
             const auto position = computeNotificationPosition(window->width(), window->height(), 0, NotificationPosition::TopRight);
             window->setPosition(position);
+#ifdef HAVE_KWAYLAND
+        // ;-) ...
+#endif
         } else {
             // For other DEs we play it safe and place the notification in the centre of the screen
             positionWindowAtScreenCenter(window);
@@ -681,9 +737,29 @@ void Systray::positionNotificationWindow(QQuickWindow *window) const
 
 QScreen *Systray::currentScreen() const
 {
+#ifdef HAVE_KWAYLAND
+    if (_plasmaShell) {
+        auto message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                      QStringLiteral("/KWin"),
+                                                      QStringLiteral("org.kde.KWin"),
+                                                      QStringLiteral("activeOutputName"));
+        QDBusReply<QString> reply = QDBusConnection::sessionBus().call(message);
+
+        if (reply.isValid()) {
+            const auto screens = QGuiApplication::screens();
+
+            for (const auto &screen : screens) {
+                if (screen->name() == reply.value()) {
+                    return screen;
+                }
+            }
+        }
+    }
+#endif
+
     const auto screen = QGuiApplication::screenAt(QCursor::pos());
 
-    if(screen) {
+    if (screen) {
         return screen;
     }
     // Didn't find anything matching the cursor position,
@@ -748,6 +824,24 @@ QRect Systray::currentScreenRect() const
 {
     const auto screen = currentScreen();
     Q_ASSERT(screen);
+
+#ifdef HAVE_KWAYLAND
+    // try to figure out the available screen space excluding panels etc.
+    if (_plasmaShell) {
+        // returns (iiii)
+        auto message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
+                                                      QStringLiteral("/StrutManager"),
+                                                      QStringLiteral("org.kde.PlasmaShell.StrutManager"),
+                                                      QStringLiteral("availableScreenRect"));
+        message.setArguments({screen->name()});
+        QDBusReply<QRect> reply = QDBusConnection::sessionBus().call(message);
+        if (reply.isValid()) {
+            qCDebug(lcSystray) << "got strut for current screen:" << reply;
+            return reply.value();
+        }
+    }
+#endif
+
     return screen->geometry();
 }
 
@@ -952,9 +1046,96 @@ QPoint Systray::calcTrayIconCenter() const
         return geo.center();
     }
 
+#ifdef HAVE_KWAYLAND
+    if (_plasmaShell) {
+        // do some dark magic to roughly determine the position of the tray icon
+        qCDebug(lcSystray) << "trying to figure out where the tray is using DBus";
+        auto message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
+                                                      QStringLiteral("/PlasmaShell"),
+                                                      QStringLiteral("org.kde.PlasmaShell"),
+                                                      QStringLiteral("evaluateScript"));
+        message.setArguments({systemTrayGeometry});
+        qCDebug(lcSystray) << "calling...";
+        QDBusReply<QString> reply = QDBusConnection::sessionBus().call(message);
+
+        qCDebug(lcSystray) << "received reply" << reply;
+        if (reply.isValid()) {
+            auto replyJson = QJsonDocument::fromJson(reply.value().toLatin1());
+            qCDebug(lcSystray) << "parsed:" << replyJson;
+            return QRect(
+                replyJson["x"].toInt(),
+                replyJson["y"].toInt(),
+                replyJson["width"].toInt(),
+                replyJson["height"].toInt()
+            ).center();
+        }
+
+        qCDebug(lcSystray) << "an attempt was made :(";
+    }
+#endif
+
     // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
     return QCursor::pos(currentScreen());
 }
+
+#ifdef HAVE_KWAYLAND
+void Systray::initWayland()
+{
+    qCDebug(lcSystray) << "initializing Wayland";
+
+    if (false) {
+        // XXX: isWayland
+        qCDebug(lcSystray) << "but... we're not on Wayland. no need to init";
+        return;
+    }
+
+    auto connection = KWayland::Client::ConnectionThread::fromApplication(this);
+    if (!connection) {
+        qCDebug(lcSystray) << "couldn't get a KWayland client connection";
+        return;
+    }
+
+    auto registry = new KWayland::Client::Registry(this);
+    registry->create(connection);
+    connect(registry, &KWayland::Client::Registry::interfacesAnnounced, this, [registry, this]() -> void {
+        const auto interface = registry->interface(KWayland::Client::Registry::Interface::PlasmaShell);
+        if (interface.name) {
+            qCDebug(lcSystray) << "we have a plasmashell interface!";
+            _plasmaShell.reset(registry->createPlasmaShell(interface.name, interface.version, this));
+        }
+    });
+
+    registry->setup();
+    connection->roundtrip();
+}
+
+void Systray::initWaylandSurface(QWindow *window)
+{
+    if (!_plasmaShell) {
+        qCDebug(lcSystray) << "not running on Plasma";
+        return;
+    }
+    if (auto surface = KWayland::Client::Surface::fromWindow(window)) {
+        qCDebug(lcSystray) << "creating a plasmashell surface";
+        // we need to keep re-creating the wl_surface, as it's always different per each window shown or hidden
+        auto plasmaShellSurface = _plasmaShell->createSurface(surface, this);
+
+        // also, it's ridiculous that `QWindow::setPosition` won't do anything
+        // apparently?
+        // trying to read `window->position()` returns a `QPoint(0, 0)`, that's
+        // why there's this workaround with the _desiredPosition property ...
+        //
+        // fun fact: the position is **global**
+        // see also: https://wayland.app/protocols/kde-plasma-shell#org_kde_plasma_surface:request:set_position
+        qCDebug(lcSystray) << "setting position of the surface to" << _desiredPosition;
+        plasmaShellSurface->setPosition(_desiredPosition);
+
+        // these windows don't need to end up there
+        plasmaShellSurface->setSkipTaskbar(true);
+        plasmaShellSurface->setSkipSwitcher(true);
+    }
+}
+#endif
 
 AccessManagerFactory::AccessManagerFactory()
     : QQmlNetworkAccessManagerFactory()
