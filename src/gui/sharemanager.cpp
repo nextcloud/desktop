@@ -559,7 +559,7 @@ const QList<SharePtr> ShareManager::parseShares(const QJsonDocument &reply) cons
 
     QList<SharePtr> shares;
 
-    for (const auto &share : qAsConst(tmpShares)) {
+    for (const auto &share : tmpShares) {
         auto data = share.toObject();
 
         auto shareType = data.value("share_type").toInt();
