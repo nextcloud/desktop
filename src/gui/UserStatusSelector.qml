@@ -341,6 +341,7 @@ ColumnLayout {
             Layout.fillHeight: true
             primary: true
             colored: true
+            focusPolicy: Qt.StrongFocus
             text: qsTr("Set status message")
             onClicked: userStatusSelectorModel.setUserStatus()
         }
