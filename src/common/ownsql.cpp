@@ -186,7 +186,7 @@ QString SqlDatabase::error() const
 void SqlDatabase::close()
 {
     if (_db) {
-        for (auto q : std::as_const(_queries)) {
+        for (const auto q : std::as_const(_queries)) {
             q->finish();
         }
         SQLITE_DO(sqlite3_close(_db));
