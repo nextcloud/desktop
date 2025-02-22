@@ -553,7 +553,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     QVector<PropagatorJob *> directoriesToRemove;
     QString removedDirectory;
     QString maybeConflictDirectory;
-    for (const SyncFileItemPtr &item : items) {
+    for (const SyncFileItemPtr &item : std::as_const(items)) {
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
             auto *delDirJob = qobject_cast<PropagateDirectory *>(directoriesToRemove.first());
@@ -616,7 +616,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }
     }
 
-    for (PropagatorJob *it : std::as_const(directoriesToRemove)) {
+    for (auto *it : std::as_const(directoriesToRemove)) {
         _rootJob->appendDirDeletionJob(it);
     }
 
@@ -1347,7 +1347,7 @@ void PropagatorCompositeJob::finalize()
 qint64 PropagatorCompositeJob::committedDiskSpace() const
 {
     qint64 needed = 0;
-    for (PropagatorJob *job : std::as_const(_runningJobs)) {
+    for (auto *job : std::as_const(_runningJobs)) {
         needed += job->committedDiskSpace();
     }
     return needed;

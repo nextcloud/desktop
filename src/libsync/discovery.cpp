@@ -405,7 +405,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                 item->_errorString = tr("File names ending with a period are not supported on this file system.");
             } else {
                 char invalid = '\0';
-                for (char x : QByteArray("\\:?*\"<>|")) {
+                constexpr QByteArrayView invalidChars("\\:?*\"<>|");
+                for (char x : invalidChars) {
                     if (item->_file.contains(x)) {
                         invalid = x;
                         break;

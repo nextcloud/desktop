@@ -34,7 +34,7 @@ namespace OCC {
  */
 static void updateFolder(const AccountPtr &account, QStringView path)
 {
-    for (Folder *f : std::as_const(FolderMan::instance()->map())) {
+    for (auto *f : std::as_const(FolderMan::instance()->map())) {
         if (f->accountState()->account() != account)
             continue;
         auto folderPath = f->remotePath();

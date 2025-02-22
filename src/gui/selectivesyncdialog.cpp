@@ -166,7 +166,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
             if (parent->checkState(0) == Qt::Checked
                 || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
-                for (const QString &str : _oldBlackList) {
+                for (const auto &str : std::as_const(_oldBlackList)) {
                     if (str == path || str == QLatin1String("/")) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
