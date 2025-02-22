@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies …</source>
-        <translation type="unfinished"/>
+        <translation>Vyzdvihnout lokální kopie…</translation>
     </message>
 </context>
 <context>
@@ -947,7 +947,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1350"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Je třeba přijmout všeobecné podmínky u %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1355"/>
@@ -1495,7 +1495,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation type="unfinished"/>
+        <translation>Přihlášení k tokenu se nezdařilo po zadání PIN kódu uživatele. Ten může být neplatný nebo chybný. Zkuste to znovu!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2223"/>
@@ -3646,7 +3646,7 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>V sekci „Umístění“ v postranním panelu nástroje Finder</translation>
     </message>
 </context>
 <context>
@@ -3875,17 +3875,17 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;/b&gt;Účet, založený na poskytovateli ze souborů%1, úspěšně založen!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>Virtuální soubory zapnuty</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace vašeho účtu nyní probíhá s podporou virtuálních souborů. To znamená, že veškeré vaše soubory jsou ve výchozím stavu k dispozici pouze při dostupném serveru a budou na vyžádání stahovány při jejich otevírání. Své soubory naleznete v sekci &lt;b&gt;Umístění&lt;/b&gt; postranní lišty nástroje Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="720"/>
@@ -4020,7 +4020,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/discovery.cpp" line="443"/>
         <location filename="../src/libsync/discovery.cpp" line="485"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Není možné přejmenovat nebo nahrát.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -5254,7 +5254,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Je třeba přijmout všeobecné podmínky</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="141"/>
@@ -5379,27 +5379,27 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="134"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>Čeká se na přijetí podmínek</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>Pravidelné dotazování se</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Odkaz zkopírován do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít prohlížeč</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat odkaz</translation>
     </message>
 </context>
 <context>
@@ -5408,7 +5408,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Klient pro počítač %2 (%3). Další informace získáte kliknutím &lt;a href=&apos;%4&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5644,12 +5644,12 @@ Server odpověděl chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minuta</numerusform><numerusform>%1 minuty</numerusform><numerusform>%1 minut</numerusform><numerusform>%1 minuty</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 hodina</numerusform><numerusform>%1 hodiny</numerusform><numerusform>%1 hodin</numerusform><numerusform>%1 hodiny</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
@@ -5659,7 +5659,7 @@ Server odpověděl chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 den</numerusform><numerusform>%1 dny</numerusform><numerusform>%1 dnů</numerusform><numerusform>%1 dny</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6201,7 +6201,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte poznámku pro příjemce</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="730"/>
@@ -6298,7 +6298,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít prohlížeč</translation>
     </message>
 </context>
 <context>
@@ -6319,17 +6319,17 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>Všeobecné podmínky</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Přejděte do vámi využívaného webového prohlížeče a přijměte  v něm zobrazené všeobecné podmínky</translation>
     </message>
 </context>
 <context>
@@ -6514,7 +6514,7 @@ Server odpověděl chybou: %2</translation>
         <translation>Vyčistit stavovou zprávu</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Nastavit stavovou zprávu</translation>
     </message>

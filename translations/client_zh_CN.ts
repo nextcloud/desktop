@@ -6505,7 +6505,7 @@ Server replied with error: %2</source>
         <translation>清除状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>设置状态消息</translation>
     </message>

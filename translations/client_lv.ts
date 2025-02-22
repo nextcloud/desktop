@@ -6484,7 +6484,7 @@ Server replied with error: %2</source>
         <translation>Notīrīt statusa ziņojumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Iestatīt stāvokļa ziņojumu</translation>
     </message>

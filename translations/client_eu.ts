@@ -6512,7 +6512,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Garbitu egoera mezua ondoren</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Ezarri egoera-mezua</translation>
     </message>

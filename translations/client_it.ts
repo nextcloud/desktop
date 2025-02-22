@@ -6511,7 +6511,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>Cancella il messaggio di stato</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Imposta il messaggio di stato</translation>
     </message>

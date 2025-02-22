@@ -6503,7 +6503,7 @@ upplýsingar skaltu &lt;a href=&apos;%4&apos;&gt;smella hér&lt;/a&gt;.&lt;/p&gt
         <translation>Hreinsa stöðuskilaboð</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Setja stöðuskilaboð</translation>
     </message>

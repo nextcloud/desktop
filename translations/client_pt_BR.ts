@@ -6510,7 +6510,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Limpar mensagem de status</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Definir mensagem de status</translation>
     </message>

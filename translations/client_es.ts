@@ -6513,7 +6513,7 @@ El servidor respondió con el error: %2</translation>
         <translation>Borrar el mensaje de estado</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Establecer un mensaje de estado</translation>
     </message>

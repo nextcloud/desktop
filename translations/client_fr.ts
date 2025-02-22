@@ -6514,7 +6514,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Effacer le message de statut</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Définir le message de statut</translation>
     </message>

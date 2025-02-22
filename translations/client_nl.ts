@@ -6500,7 +6500,7 @@ Server antwoordde met fout: %2</translation>
         <translation>Statusbericht wissen</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Statusbericht instellen</translation>
     </message>
