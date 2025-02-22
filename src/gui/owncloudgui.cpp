@@ -569,7 +569,7 @@ void ownCloudGui::slotLogin()
         account->account()->resetRejectedCertificates();
         account->signIn();
     } else {
-        auto list = AccountManager::instance()->accounts();
+        const auto list = AccountManager::instance()->accounts();
         for (const auto &a : list) {
             a->signIn();
         }
@@ -584,7 +584,7 @@ void ownCloudGui::slotLogout()
         list.append(account);
     }
 
-    for (const auto &ai : list) {
+    for (const auto &ai : std::as_const(list)) {
         ai->signOutByUi();
     }
 }
