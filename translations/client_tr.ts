@@ -6514,7 +6514,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Durum iletisini kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Durum iletisini ayarla</translation>
     </message>

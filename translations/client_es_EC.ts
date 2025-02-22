@@ -6496,7 +6496,7 @@ Server replied with error: %2</source>
         <translation>Borrar mensaje de estado</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Establecer mensaje de estado</translation>
     </message>

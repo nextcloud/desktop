@@ -6495,7 +6495,7 @@ Server replied with error: %2</source>
         <translation>إمحُ رسالة الحالة</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>عيّن رسالة الحالة</translation>
     </message>

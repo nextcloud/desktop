@@ -949,7 +949,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1350"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>您需要在 %1 接受服務條款。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1355"/>
@@ -3649,7 +3649,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>在 Finder 的「位置」側邊欄部分</translation>
     </message>
 </context>
 <context>
@@ -3878,17 +3878,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;翻譯為：基於檔案提供者的帳戶 %1 已成功創建！&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>已啟用虛擬檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>您的帳戶現在正在同步並支持虛擬檔案。這意味著所有檔案默認為在線檔案，並會在您打開它們時按需下載。您可以在 Finder 側邊欄的「位置」部分找到您的檔案。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="720"/>
@@ -5149,12 +5149,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA-256 數位指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>SHA-256 數碼指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA-512 數位指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>SHA-512 數碼指紋：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
@@ -5257,7 +5257,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>您需要接受服務條款</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="141"/>
@@ -5382,27 +5382,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="134"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>等待接受條款</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>調查</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>已複製連結至剪貼板</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>開啟瀏覽器</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>複製連結</translation>
     </message>
 </context>
 <context>
@@ -6301,7 +6301,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>開啟瀏覽器</translation>
     </message>
 </context>
 <context>
@@ -6322,17 +6322,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>服務條款</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>切換到您的瀏覽器以接受服務條款</translation>
     </message>
 </context>
 <context>
@@ -6517,7 +6517,7 @@ Server replied with error: %2</source>
         <translation>清除狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>設定狀態訊息</translation>
     </message>

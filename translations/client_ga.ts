@@ -6516,7 +6516,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Glan teachtaireacht stádais</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Socraigh teachtaireacht stádais</translation>
     </message>

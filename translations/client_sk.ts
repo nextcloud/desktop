@@ -6516,7 +6516,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Vyčistiť správu o stave</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Nastaviť správu o stave</translation>
     </message>

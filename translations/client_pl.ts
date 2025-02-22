@@ -6516,7 +6516,7 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Wyczyść komunikat statusu</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Ustaw komunikat statusu</translation>
     </message>

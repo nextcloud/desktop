@@ -6514,7 +6514,7 @@ Server replied with error: %2</source>
         <translation>Очистити статусне повідомлення</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Встановити статусне повідомлення</translation>
     </message>

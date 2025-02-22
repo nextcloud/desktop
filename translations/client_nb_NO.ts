@@ -6501,7 +6501,7 @@ Server svarte med feil: %2</translation>
         <translation>Fjern statusmelding</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="344"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
         <source>Set status message</source>
         <translation>Still inn statusmelding</translation>
     </message>
