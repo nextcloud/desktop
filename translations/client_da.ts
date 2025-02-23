@@ -1495,7 +1495,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation>Login på tokenet mislykkedes efter at have angivet bruger-PIN. Det kan være ugyldigt eller forkert. Prøv venligst igen!</translation>
+        <translation>Login på tokenet mislykkedes efter at have angivet bruger PIN. Det kan være ugyldigt eller forkert. Prøv venligst igen!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2223"/>
@@ -3866,7 +3866,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation>Din konto synkroniseres nu med understøttelse af virtuelle filer. Det betyder, at alle dine filer som standard kun er online og downloades on-demand, når du åbner dem. Du kan finde dine filer under sektionen &lt;b&gt;Placeringer&lt;/b&gt; sektionen i Finder sidebjælken.</translation>
+        <translation>Din konto synkroniseres nu med understøttelse af virtuelle filer. Det betyder, at alle dine filer som standard kun er online og downloades on-demand, når du åbner dem. Du kan finde dine filer under sektionen &lt;b&gt;Placeringer&lt;/b&gt; i Finder sidebjælken.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="720"/>
@@ -5362,12 +5362,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation>Linket er kopieret til udklipsholderen.</translation>
+        <translation>Linket kopieret til udklipsholderen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation>Åbn Browser</translation>
+        <translation>Åbn browser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
@@ -5381,7 +5381,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
-        <translation>&lt;p&gt;%1 Desktop Klient Version %2 (%3). For mere information klik venligst &lt;a href=&apos;%4&apos;&gt;her&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 Desktop klient version %2 (%3). For mere information klik venligst &lt;a href=&apos;%4&apos;&gt;her&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
