@@ -616,7 +616,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }
     }
 
-    for (auto *it : std::as_const(directoriesToRemove)) {
+    for (const auto it : std::as_const(directoriesToRemove)) {
         _rootJob->appendDirDeletionJob(it);
     }
 
@@ -641,7 +641,7 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         // checkForPermissions() has already run and used the permissions
         // of the file we're about to delete to decide whether uploading
         // to the new dir is ok...
-        for (const SyncFileItemPtr &dirItem : items) {
+        for (const auto &dirItem : items) {
             if (dirItem->destination().startsWith(item->destination() + "/")) {
                 dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
                 _anotherSyncNeeded = true;
@@ -1347,7 +1347,7 @@ void PropagatorCompositeJob::finalize()
 qint64 PropagatorCompositeJob::committedDiskSpace() const
 {
     qint64 needed = 0;
-    for (auto *job : std::as_const(_runningJobs)) {
+    for (const auto job : std::as_const(_runningJobs)) {
         needed += job->committedDiskSpace();
     }
     return needed;

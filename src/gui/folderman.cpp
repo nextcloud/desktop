@@ -660,7 +660,7 @@ Folder *FolderMan::folder(const QString &alias)
 void FolderMan::scheduleAllFolders()
 {
     const auto folderMapValues = _folderMap.values();
-    for (auto *f : folderMapValues) {
+    for (const auto f : folderMapValues) {
         if (f && f->canSync()) {
             scheduleFolder(f);
         }
@@ -808,7 +808,7 @@ void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
         Folder *folder = nullptr;
-        for (auto *f : std::as_const(_folderMap)) {
+        for (const auto f : std::as_const(_folderMap)) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a separate queue.
                 _currentEtagJob = f->etagJob();
@@ -842,7 +842,7 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
         const auto folderMapValues = _folderMap.values();
-        for (auto *f : folderMapValues) {
+        for (const auto f : folderMapValues) {
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
@@ -854,7 +854,7 @@ void FolderMan::slotAccountStateChanged()
                                                            "terminating or descheduling sync folders";
 
         const auto folderValues = _folderMap.values();
-        for (auto *f : folderValues) {
+        for (const auto f : folderValues) {
             if (f
                 && f->isSyncRunning()
                 && f->accountState() == accountState) {
@@ -1358,7 +1358,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
         serverPath.prepend('/');
 
     const auto mapValues = map().values();
-    for (auto *folder : mapValues) {
+    for (const auto folder : mapValues) {
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
@@ -1706,7 +1706,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         auto runSeen = false;
         auto various = false;
 
-        for (const auto *folder : std::as_const(folders)) {
+        for (const auto folder : std::as_const(folders)) {
             // We've already seen an error, worst case met.
             // No need to check the remaining folders.
             if (errorsSeen) {
@@ -2009,7 +2009,7 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
 {
     // Note that the setting will revert to 'true' if all folders
     // are deleted...
-    for (auto *folder : std::as_const(_folderMap)) {
+    for (const auto folder : std::as_const(_folderMap)) {
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
     }
