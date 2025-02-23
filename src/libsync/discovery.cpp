@@ -406,7 +406,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             } else {
                 char invalid = '\0';
                 constexpr QByteArrayView invalidChars("\\:?*\"<>|");
-                for (char x : invalidChars) {
+                for (const auto x : invalidChars) {
                     if (item->_file.contains(x)) {
                         invalid = x;
                         break;
@@ -2087,7 +2087,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     }
 
     int started = 0;
-    for (auto *rj : std::as_const(_runningJobs)) {
+    for (const auto rj : std::as_const(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
         if (started >= nbJobs)
             return started;
