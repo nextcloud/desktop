@@ -218,7 +218,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     // list of top-level folders as soon as possible.
     if (_oldBlackList == QStringList("/")) {
         _oldBlackList.clear();
-        for (QString path : std::as_const(list)) {
+        for (auto path : std::as_const(list)) {
             path.remove(pathToRemove);
             if (path.isEmpty()) {
                 continue;
@@ -249,7 +249,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     }
 
     Utility::sortFilenames(list);
-    for (QString path : std::as_const(list)) {
+    for (auto path : std::as_const(list)) {
         auto size = job ? job->_folderInfos[path].size : 0;
         path.remove(pathToRemove);
 
@@ -425,7 +425,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
     } else {
         // We did not load from the server so we reuse the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
-        for (const QString &it : _oldBlackList) {
+        for (const auto &it : _oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }

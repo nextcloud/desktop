@@ -937,7 +937,7 @@ void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &di
 void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 {
     auto data = json.object().value("ocs").toObject().value("data").toObject();
-    auto editors = data.value("editors").toObject();
+    const auto editors = data.value("editors").toObject();
 
     for (const auto &editorKey : editors.keys()) {
         auto editor = editors.value(editorKey).toObject();

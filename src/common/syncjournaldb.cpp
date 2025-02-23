@@ -950,7 +950,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";
-        for (const auto &it : _etagStorageFilter) {
+        for (const auto &it : std::as_const(_etagStorageFilter)) {
             if (it.startsWith(prefix)) {
                 qCInfo(lcDb) << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
                 record._etag = "_invalid_";

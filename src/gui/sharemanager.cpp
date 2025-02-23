@@ -34,7 +34,7 @@ namespace OCC {
  */
 static void updateFolder(const AccountPtr &account, QStringView path)
 {
-    for (auto *f : std::as_const(FolderMan::instance()->map())) {
+    for (auto f : std::as_const(FolderMan::instance()->map())) {
         if (f->accountState()->account() != account)
             continue;
         auto folderPath = f->remotePath();
@@ -464,7 +464,7 @@ void ShareManager::createShare(const QString &path,
         [=](const QJsonDocument &reply) {
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionAll;
-            for (const QJsonValue &element : reply.object()["ocs"].toObject()["data"].toArray()) {
+            for (const auto &element : reply.object()["ocs"].toObject()["data"].toArray()) {
                 auto map = element.toObject();
                 if (map["file_target"] == path)
                     existingPermissions = Share::Permissions(map["permissions"].toInt());
