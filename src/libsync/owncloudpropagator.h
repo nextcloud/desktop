@@ -277,7 +277,7 @@ public:
     {
         if (!_runningJobs.empty()) {
             _abortsCount = _runningJobs.size();
-            foreach (PropagatorJob *j, _runningJobs) {
+            for (const auto j : std::as_const(_runningJobs)) {
                 if (abortType == AbortType::Asynchronous) {
                     connect(j, &PropagatorJob::abortFinished,
                             this, &PropagatorCompositeJob::slotSubJobAbortFinished);

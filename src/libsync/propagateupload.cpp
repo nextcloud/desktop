@@ -865,7 +865,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     };
 
     // Abort all running jobs, except for explicitly excluded ones
-    foreach (AbstractNetworkJob *job, _jobs) {
+    for (const auto job : std::as_const(_jobs)) {
         auto reply = job->reply();
         if (!reply || !reply->isRunning())
             continue;
