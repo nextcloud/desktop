@@ -394,7 +394,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Viss ir sinhronizēts.</translation>
     </message>
 </context>
 <context>
@@ -5231,7 +5231,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="346"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="94"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Viss ir sinhronizēts.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
@@ -5995,7 +5995,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="808"/>
         <source>You deleted %1</source>
-        <translation>Jūs izdzēsāt %1</translation>
+        <translation>Tika izdzēsta %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
@@ -6005,12 +6005,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="812"/>
         <source>You changed %1</source>
-        <translation>Jūs izmainījāt %1</translation>
+        <translation>Tu mainīji %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="836"/>
         <source>Synced %1</source>
-        <translation>Sinhronizēti %1</translation>
+        <translation>Sinhronizēta %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>

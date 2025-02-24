@@ -6289,7 +6289,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="94"/>
         <source>Sync now</source>
-        <translation>直ちに同期</translation>
+        <translation>今すぐ同期</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
