@@ -3318,8 +3318,8 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Kon geen bestand vinden om lokaal te bewerken. Zorg ervoor dat het pad juist is en dat het lokaal gesynchroniseerd is.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5496,10 +5496,10 @@ Server antwoordde met fout: %2</translation>
         <source>Trigger the migration</source>
         <translation type="unfinished"/>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 meldingen</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

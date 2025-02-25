@@ -3331,8 +3331,8 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>No se ha podido encontrar un archivo para edición local. Asegúrate de que su ruta sea válida y esté sincronizado localmente.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5509,10 +5509,10 @@ El servidor respondió con el error: %2</translation>
         <source>Trigger the migration</source>
         <translation type="unfinished"/>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1notificaciones</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

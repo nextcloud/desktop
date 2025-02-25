@@ -3334,8 +3334,8 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Nepodarilo sa nájsť súbor pre lokálne úpravy. Uistite sa, že jeho cesta je platná a je synchronizovaná lokálne.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5512,10 +5512,10 @@ Server odpovedal chybou: %2</translation>
         <source>Trigger the migration</source>
         <translation>Spustiť migráciu</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 notifikácií</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

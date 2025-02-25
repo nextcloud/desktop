@@ -2766,7 +2766,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Benyt &amp;monokrome ikoner</translation>
+        <translation>Anvend &amp;monokrome ikoner</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
@@ -2953,7 +2953,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="464"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="596"/>
@@ -2976,7 +2976,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="817"/>
         <source>Password for share required</source>
-        <translation>Password til deling påkrævet</translation>
+        <translation>Adgangskode til deling påkrævet</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="818"/>
@@ -3103,7 +3103,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Tilføj nyt ignorermønster:</translation>
+        <translation>Tilføj nyt ignoreringsmønster:</translation>
     </message>
 </context>
 <context>
@@ -3126,7 +3126,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Angiv venligst et navn til filen:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
@@ -3313,7 +3313,7 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5483,10 +5483,10 @@ Server replied with error: %2</source>
         <source>Trigger the migration</source>
         <translation>Start migreringen</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
@@ -5535,7 +5535,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
 </context>
 <context>

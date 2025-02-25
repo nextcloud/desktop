@@ -3326,8 +3326,8 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Не удалось найти файл для локального редактирования. Убедитесь, что его путь верен и файл синхронизирован локально.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5504,10 +5504,10 @@ Server replied with error: %2</source>
         <source>Trigger the migration</source>
         <translation type="unfinished"/>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 уведомлений</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

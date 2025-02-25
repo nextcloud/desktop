@@ -3334,8 +3334,8 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Det gick inte att hitta en fil för lokal redigering. Se till att sökvägen är giltig och att den är synkroniserad lokalt.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5512,10 +5512,10 @@ Servern svarade med fel: %2</translation>
         <source>Trigger the migration</source>
         <translation>Initiera migreringen</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 aviseringar</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

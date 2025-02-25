@@ -3332,8 +3332,8 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Datei zur lokalen Bearbeitung konnte nicht gefunden werden. Stellen Sie sicher, dass der Pfad gültig ist und lokal synchronisiert wird.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5510,10 +5510,10 @@ Server antwortete mit Fehler: %2</translation>
         <source>Trigger the migration</source>
         <translation>Starten der Migration</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 Benachrichtigungen</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

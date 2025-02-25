@@ -3334,8 +3334,8 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Níorbh fhéidir comhad a aimsiú le haghaidh eagarthóireacht áitiúil. Cinntigh go bhfuil a chonair bailí agus go bhfuil sé sioncronaithe go háitiúil.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5512,10 +5512,10 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <source>Trigger the migration</source>
         <translation>Spreag an imirce</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>% 1 fógra</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

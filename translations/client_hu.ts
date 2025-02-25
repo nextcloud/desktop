@@ -3335,8 +3335,8 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>A helyi szerkesztéshez szükséges fájl nem található. Győződjön meg róla, hogy az elérési útja érvényes és helyileg szinkronizálva van.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5513,10 +5513,10 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <source>Trigger the migration</source>
         <translation type="unfinished"/>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 értesítés</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>

@@ -3332,8 +3332,8 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Impossible de trouver un fichier pour l&apos;édition locale. Vérifier que son chemin d&apos;accès est valide et qu&apos;il est synchronisé localement.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5510,10 +5510,10 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <source>Trigger the migration</source>
         <translation>Déclencher la migration</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 notifications</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
