@@ -11,6 +11,11 @@
 		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
 		532572082C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */; };
+		5342B3A52D6D853B00DBB57A /* ShareExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5342B3982D6D853B00DBB57A /* ShareExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5342B3AC2D6D85B500DBB57A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5342B3AB2D6D85B500DBB57A /* NextcloudKit */; };
+		5342B3C32D6DB96C00DBB57A /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5342B3BC2D6DB96C00DBB57A /* icon.icns */; };
+		5342B3C52D6DB96C00DBB57A /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5342B3C12D6DB96C00DBB57A /* ShareViewController.xib */; };
+		5342B3C62D6DB96C00DBB57A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5342B3BF2D6DB96C00DBB57A /* ShareViewController.swift */; };
 		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */; };
@@ -66,6 +71,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5342B3A32D6D853B00DBB57A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5342B3972D6D853B00DBB57A;
+			remoteInfo = ShareExt;
+		};
 		538E397427F4765000FA63D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
@@ -143,6 +155,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				5342B3A52D6D853B00DBB57A /* ShareExt.appex in Embed App Extensions */,
 				C2B573E21B1CD9CE00303B36 /* FinderSyncExt.appex in Embed App Extensions */,
 				538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */,
 			);
@@ -154,6 +167,12 @@
 /* Begin PBXFileReference section */
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
 		532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+EnumerationListener.swift"; sourceTree = "<group>"; };
+		5342B3982D6D853B00DBB57A /* ShareExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5342B3BC2D6DB96C00DBB57A /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		5342B3BD2D6DB96C00DBB57A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5342B3BE2D6DB96C00DBB57A /* ShareExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExt.entitlements; sourceTree = "<group>"; };
+		5342B3BF2D6DB96C00DBB57A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		5342B3C02D6DB96C00DBB57A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ShareViewController.xib; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
 		5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCommunicationService.swift; sourceTree = "<group>"; };
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -211,6 +230,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5342B3952D6D853B00DBB57A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5342B3AC2D6D85B500DBB57A /* NextcloudKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396427F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -260,6 +287,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5342B3C22D6DB96C00DBB57A /* ShareExt */ = {
+			isa = PBXGroup;
+			children = (
+				5342B3BC2D6DB96C00DBB57A /* icon.icns */,
+				5342B3BD2D6DB96C00DBB57A /* Info.plist */,
+				5342B3BE2D6DB96C00DBB57A /* ShareExt.entitlements */,
+				5342B3BF2D6DB96C00DBB57A /* ShareViewController.swift */,
+				5342B3C12D6DB96C00DBB57A /* ShareViewController.xib */,
+			);
+			path = ShareExt;
+			sourceTree = "<group>";
+		};
 		5350E4C72B0C368B00F276CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +412,7 @@
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
 				53B9797F2B84C81F002DA742 /* FileProviderUIExt */,
 				53903D0D2956164F00D0B308 /* NCDesktopClientSocketKit */,
+				5342B3C22D6DB96C00DBB57A /* ShareExt */,
 				538E396827F4765000FA63D5 /* Frameworks */,
 				C2B573B21B1CD91E00303B36 /* Products */,
 			);
@@ -386,6 +426,7 @@
 				538E396727F4765000FA63D5 /* FileProviderExt.appex */,
 				53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */,
 				53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */,
+				5342B3982D6D853B00DBB57A /* ShareExt.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -450,6 +491,26 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5342B3972D6D853B00DBB57A /* ShareExt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5342B3A92D6D853B00DBB57A /* Build configuration list for PBXNativeTarget "ShareExt" */;
+			buildPhases = (
+				5342B3942D6D853B00DBB57A /* Sources */,
+				5342B3952D6D853B00DBB57A /* Frameworks */,
+				5342B3962D6D853B00DBB57A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExt;
+			packageProductDependencies = (
+				5342B3AB2D6D85B500DBB57A /* NextcloudKit */,
+			);
+			productName = ShareExt;
+			productReference = 5342B3982D6D853B00DBB57A /* ShareExt.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		538E396627F4765000FA63D5 /* FileProviderExt */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */;
@@ -531,6 +592,7 @@
 				C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */,
 				538E397527F4765000FA63D5 /* PBXTargetDependency */,
 				53903D202956164F00D0B308 /* PBXTargetDependency */,
+				5342B3A42D6D853B00DBB57A /* PBXTargetDependency */,
 			);
 			name = desktopclient;
 			packageProductDependencies = (
@@ -567,9 +629,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					5342B3972D6D853B00DBB57A = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					538E396627F4765000FA63D5 = {
 						CreatedOnToolsVersion = 13.3;
 					};
@@ -621,12 +686,22 @@
 				C2B573D61B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396627F4765000FA63D5 /* FileProviderExt */,
 				53B9797D2B84C81F002DA742 /* FileProviderUIExt */,
+				5342B3972D6D853B00DBB57A /* ShareExt */,
 				53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5342B3962D6D853B00DBB57A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5342B3C32D6DB96C00DBB57A /* icon.icns in Resources */,
+				5342B3C52D6DB96C00DBB57A /* ShareViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396527F4765000FA63D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -691,6 +766,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5342B3942D6D853B00DBB57A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5342B3C62D6DB96C00DBB57A /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396327F4765000FA63D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -757,6 +840,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5342B3A42D6D853B00DBB57A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5342B3972D6D853B00DBB57A /* ShareExt */;
+			targetProxy = 5342B3A32D6D853B00DBB57A /* PBXContainerItemProxy */;
+		};
 		538E397527F4765000FA63D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 538E396627F4765000FA63D5 /* FileProviderExt */;
@@ -788,7 +876,131 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		5342B3C12D6DB96C00DBB57A /* ShareViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5342B3C02D6DB96C00DBB57A /* Base */,
+			);
+			name = ShareViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		5342B3A62D6D853B00DBB57A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExt/ShareExt.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShareExt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareExt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.desktopclient.ShareExt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5342B3A72D6D853B00DBB57A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExt/ShareExt.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShareExt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareExt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.desktopclient.ShareExt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		538E397727F4765000FA63D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1217,7 +1429,6 @@
 		C2B573CD1B1CD91E00303B36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1274,7 +1485,6 @@
 		C2B573CE1B1CD91E00303B36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1435,6 +1645,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5342B3A92D6D853B00DBB57A /* Build configuration list for PBXNativeTarget "ShareExt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5342B3A62D6D853B00DBB57A /* Debug */,
+				5342B3A72D6D853B00DBB57A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1533,6 +1752,11 @@
 			productName = NextcloudKit;
 		};
 		5307A6E72965DAD8001E0C6A /* NextcloudKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
+			productName = NextcloudKit;
+		};
+		5342B3AB2D6D85B500DBB57A /* NextcloudKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
