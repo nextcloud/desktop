@@ -21,6 +21,7 @@
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
+#include <qnamespace.h>
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -187,7 +188,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     , _ui(new Ui::GeneralSettings)
 {
     _ui->setupUi(this);
-
+    
+    _ui->labelInterval->setText("seconds (if <a href=\"https://github.com/nextcloud/notify_push\">Client Push</a> is unavailable)");
+    _ui->labelInterval->setTextFormat(Qt::RichText);
+    _ui->labelInterval->setTextInteractionFlags(Qt::TextBrowserInteraction);
     _ui->labelInterval->setOpenExternalLinks(true);
 
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
