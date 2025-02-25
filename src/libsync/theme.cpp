@@ -417,7 +417,7 @@ QString Theme::developerStringInfo() const
     const auto osName = osStringList.at(0);
 
     const auto devString = QString(tr("%1 Desktop Client Version %2 (%3)", "%1 is application name. %2 is the human version string. %3 is the operating system name."))
-    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName, helpUrl());
+    .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING), osName);
 
     return devString;
 }
