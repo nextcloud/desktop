@@ -153,6 +153,8 @@ public:
     [[nodiscard]] bool useNewBigFolderSizeLimit() const;
     [[nodiscard]] bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
+    [[nodiscard]] bool hasRemotePollInterval(const QString &connection = QString()) const;
+    void resetRemotePollInterval(const QString &connection = QString());
 
     /** If we should move the files deleted on the server in the trash  */
     [[nodiscard]] bool moveToTrash() const;

@@ -1315,4 +1315,25 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
+bool ConfigFile::hasRemotePollInterval(const QString &connection) const
+{
+    QString con(connection);
+    if (connection.isEmpty())
+        con = defaultConnection();
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(con);
+
+    return settings.contains(QLatin1String(remotePollIntervalC));
+}
+
+void ConfigFile::resetRemotePollInterval(const QString &connection) {
+    QString con(connection);
+    if (connection.isEmpty())
+        con = defaultConnection();
+
+    std::chrono::milliseconds defaultInterval(DEFAULT_REMOTE_POLL_INTERVAL);
+    setRemotePollInterval(defaultInterval, con); // Use existing method
+}
+
 }
