@@ -217,7 +217,7 @@ void SslButton::slotUpdateMenu()
         const auto systemCerts = QSslConfiguration::systemCaCertificates();
 
         QList<QSslCertificate> tmpChain;
-        foreach (QSslCertificate cert, chain) {
+        for (const auto &cert : chain) {
             tmpChain << cert;
             if (systemCerts.contains(cert))
                 break;
@@ -225,7 +225,7 @@ void SslButton::slotUpdateMenu()
         chain = tmpChain;
 
         // find trust anchor (informational only, verification is done by QSslSocket!)
-        for (const QSslCertificate &rootCA : systemCerts) {
+        for (const auto &rootCA : systemCerts) {
             if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName)
                 && rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain.append(rootCA);

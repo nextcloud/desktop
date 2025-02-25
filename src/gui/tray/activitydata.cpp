@@ -174,7 +174,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     }
 
     auto actions = json.value("actions").toArray();
-    foreach (auto action, actions) {
+    for (const auto &action : actions) {
         activity._links.append(ActivityLink::createFomJsonObject(action.toObject()));
     }
 
