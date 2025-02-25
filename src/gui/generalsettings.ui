@@ -187,6 +187,50 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
+        <item>
+         <widget class="QCheckBox" name="remotePollIntervalCheckBox">
+          <property name="text">
+           <string>Server poll interval</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="remotePollIntervalSpinBox">
+          <property name="minimum">
+            <number>30</number>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>         
+         </widget>         
+        </item>
+        <item>
+         <widget class="QLabel" name="labelInterval">
+          <property name="text">
+           <string extracomment="Trailing part of &quot;Server poll interval&quot; ">seconds (if <a href="https://github.com/nextcloud/notify_push">Client Push</a> is unavailable)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_remotePollInterval">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_trash">
         <item>
          <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
