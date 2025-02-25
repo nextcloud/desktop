@@ -57,7 +57,7 @@ Q_LOGGING_CATEGORY(lcCleanupPolls, "nextcloud.sync.propagator.cleanuppolls", QtI
 
 qint64 criticalFreeSpaceLimit()
 {
-    qint64 value = 50 * 1000 * 1000LL;
+    qint64 value = 512 * 1000 * 1000LL;
 
     static bool hasEnv = false;
     static qint64 env = qgetenv("OWNCLOUD_CRITICAL_FREE_SPACE_BYTES").toLongLong(&hasEnv);
@@ -70,7 +70,7 @@ qint64 criticalFreeSpaceLimit()
 
 qint64 freeSpaceLimit()
 {
-    qint64 value = 250 * 1000 * 1000LL;
+    qint64 value = 1000 * 1000 * 1000LL;
 
     static bool hasEnv = false;
     static qint64 env = qgetenv("OWNCLOUD_FREE_SPACE_BYTES").toLongLong(&hasEnv);
