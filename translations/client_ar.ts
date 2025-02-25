@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies …</source>
-        <translation type="unfinished"/>
+        <translation>إخلاء النُّسَخ المحلية ... </translation>
     </message>
 </context>
 <context>
@@ -944,7 +944,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1350"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>يجب عليك قبول شروط الخدمة في %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1355"/>
@@ -3318,8 +3318,8 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>تعذّر إيجاد ملف للتحرير محلِّياً. تأكد من صحة مساره و من أنه مُزامَنٌ محلِّياً.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -3632,7 +3632,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>في قسم &quot;المواقع&quot; في الشريط الجانبي للباحث</translation>
     </message>
 </context>
 <context>
@@ -3861,17 +3861,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;حساب يعتمد على مُزوِّد الملف  %1 تم إنشاؤه بنجاحٍ!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>تمكين الملفات الافتراضية</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>.تتم الآن مزامنة حسابك مع دعم الملفات الافتراضية. وهذا يعني أن جميع ملفاتك متاحة افتراضياً فقط عبر الإنترنت، وسيتم تنزيلها عند طلب فتحها. يمكنك إيجاد ملفاتك تحت قسم &lt;b&gt;مواقع&lt;/b&gt; في الشريط الجانبي للباحث.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="720"/>
@@ -4003,7 +4003,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="443"/>
         <location filename="../src/libsync/discovery.cpp" line="485"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>لايمكن تغيير تسميتها أو رفعها.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -5235,7 +5235,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>يجب عليك قبول شروط الخدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="141"/>
@@ -5360,27 +5360,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="134"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>في انتظار قبول شروط الخدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>تصويت</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>تمّ نسخ الرابط إلى الحافظة.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>إفتَح المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>إنسَخ الرابط</translation>
     </message>
 </context>
 <context>
@@ -5491,10 +5491,10 @@ Server replied with error: %2</source>
         <source>Trigger the migration</source>
         <translation>البدء في الترحيل</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 إشعارات</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
@@ -6279,7 +6279,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>إفتَح المتصفح</translation>
     </message>
 </context>
 <context>
@@ -6300,17 +6300,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>شروط الخدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>الشعار</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>بدِّل إلى مُتصفِّحِك لقبول شروط الخدمة</translation>
     </message>
 </context>
 <context>

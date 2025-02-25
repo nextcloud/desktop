@@ -3334,8 +3334,8 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation>Nie można znaleźć pliku do edycji lokalnej. Upewnij się, że ścieżka jest prawidłowa i jest synchronizowana lokalnie.</translation>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5512,10 +5512,10 @@ Serwer odpowiedział błędem: %2</translation>
         <source>Trigger the migration</source>
         <translation>Wyzwalanie migracji</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%1 notifications</source>
-        <translation>%1 powiadomień</translation>
+        <source>%n notifications</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
