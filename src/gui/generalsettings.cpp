@@ -247,8 +247,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->remotePollIntervalSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::slotRemotePollIntervalChanged);
-    connect(_ui->remotePollIntervalCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotRemotePollIntervalCheckBoxToggled);
+    connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
@@ -330,12 +329,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
-    
-    bool hasCustomInterval = cfgFile.hasRemotePollInterval();
-    _ui->remotePollIntervalCheckBox->setChecked(hasCustomInterval);
+    ;
     auto interval = cfgFile.remotePollInterval(); 
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));  
-    _ui->remotePollIntervalSpinBox->setEnabled(hasCustomInterval);
 }
 
 #if defined(BUILD_UPDATER)
@@ -654,31 +650,15 @@ void GeneralSettings::customizeStyle()
 #endif
 }
 
-void GeneralSettings::slotRemotePollIntervalCheckBoxToggled(bool checked) {
-    _ui->remotePollIntervalSpinBox->setEnabled(checked); // Enable/disable the spin box
-
-    ConfigFile cfgFile;
-
-    if (checked) {
-        slotRemotePollIntervalChanged(_ui->remotePollIntervalSpinBox->value());
-    } else {
-        // Reset to default interval when unchecked
-        cfgFile.resetRemotePollInterval();
-
-        // Update the spinbox with the default value
-        auto interval = cfgFile.remotePollInterval();
-        _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
-    }
-}
 
 void GeneralSettings::slotRemotePollIntervalChanged(int seconds) {
-    if (_currentlyLoading) return;
-
-    if (_ui->remotePollIntervalCheckBox->isChecked()) {
-        ConfigFile cfgFile;
-        std::chrono::milliseconds interval(seconds * 1000);
-        cfgFile.setRemotePollInterval(interval);
+    if (_currentlyLoading) {
+        return;
     }
+
+    ConfigFile cfgFile;
+    std::chrono::milliseconds interval(seconds * 1000);
+    cfgFile.setRemotePollInterval(interval);
 }
 
 } // namespace OCC

@@ -185,11 +185,22 @@
          </widget>
         </item>
        </layout>
+      </item>      
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_trash">
+        <item>
+         <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
+          <property name="text">
+           <string>Move removed files to trash</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
         <item>
-         <widget class="QCheckBox" name="remotePollIntervalCheckBox">
+         <widget class="QLabel" name="remotePollIntervalLabel">
           <property name="text">
            <string>Server poll interval</string>
           </property>
@@ -201,7 +212,7 @@
             <number>30</number>
           </property>
           <property name="maximum">
-           <number>3600</number>
+           <number>999999</number>
           </property>
           <property name="singleStep">
            <number>1</number>
@@ -227,17 +238,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_trash">
-        <item>
-         <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
-          <property name="text">
-           <string>Move removed files to trash</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
