@@ -601,8 +601,9 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         const auto isEncrypted = info->isEncrypted();
         const auto isParentEncrypted = _model->isAnyAncestorEncrypted(index);
         const auto isTopFolder = index.parent().isValid() && !index.parent().parent().isValid();
+        const auto isExternal = info->_isExternal;
 
-        if (!isEncrypted && !isParentEncrypted && isTopFolder) {
+        if (!isEncrypted && !isParentEncrypted && !isExternal && isTopFolder) {
             ac = menu.addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, info] { slotMarkSubfolderEncrypted(info); });
         } else {
