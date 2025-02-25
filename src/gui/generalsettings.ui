@@ -211,7 +211,7 @@
         <item>
          <widget class="QLabel" name="labelInterval">
           <property name="text">
-           <string extracomment="Trailing part of &quot;Server poll interval&quot; ">seconds (if <a href="https://github.com/nextcloud/notify_push">Client Push</a> is unavailable)</string>
+           <string extracomment="Trailing part of &quot;Server poll interval&quot; ">seconds (if Client Push is unavailable)</string>
           </property>
          </widget>
         </item>
