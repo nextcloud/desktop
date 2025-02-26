@@ -25,6 +25,7 @@ import com.nextcloud.desktopclient 1.0
 GridLayout {
     id: root
 
+    signal domainSignalRequested
     required property var syncStatus
 
     rows: syncStatus.syncing ? 2 : 1
@@ -63,5 +64,11 @@ GridLayout {
         Layout.fillWidth: true
         value: root.syncStatus.fractionCompleted
         visible: root.syncStatus.syncing
+    }
+
+    Button {
+        text: qsTr("Request sync")
+        onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
+        visible: !root.syncStatus.syncing
     }
 }
