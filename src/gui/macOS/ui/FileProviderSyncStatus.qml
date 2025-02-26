@@ -73,9 +73,8 @@ GridLayout {
         hoverEnabled: true
         onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
 
-        ToolTip {
-            visible: requestSyncButton.hovered
-            text: qsTr("Request a sync of changes for the VFS environment. macOS may ignore or delay this request.")
-        }
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Request a sync of changes for the VFS environment.\nmacOS may ignore or delay this request.")
     }
 }
