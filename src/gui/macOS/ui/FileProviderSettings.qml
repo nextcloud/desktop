@@ -79,6 +79,7 @@ Page {
 
                 FileProviderSyncStatus {
                     syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
+                    onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                 }
 
                 FileProviderFastEnumerationSettings {
