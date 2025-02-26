@@ -139,20 +139,6 @@ Page {
                         }
                     }
                 }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-                    Layout.topMargin: Style.standardSpacing
-                    text: qsTr("Advanced")
-                    font.bold: true
-                    font.pointSize: Style.subheaderFontPtSize
-                    elide: Text.ElideRight
-                }
-
-                Button {
-                    text: qsTr("Signal file provider domain")
-                    onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
-                }
             }
         }
     }
