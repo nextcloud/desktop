@@ -575,8 +575,8 @@ Debería importarse a conta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="124"/>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="892"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -720,110 +720,110 @@ Agarde a nova sincronización e logo cífreo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="588"/>
-        <location filename="../src/gui/accountsettings.cpp" line="681"/>
+        <location filename="../src/gui/accountsettings.cpp" line="682"/>
         <source>Open folder</source>
         <translation>Abrir o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Encrypt</source>
         <translation>Cifrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
-        <location filename="../src/gui/accountsettings.cpp" line="684"/>
+        <location filename="../src/gui/accountsettings.cpp" line="615"/>
+        <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>Edit Ignored Files</source>
         <translation>Editar ficheiros ignorados</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="617"/>
-        <location filename="../src/gui/accountsettings.cpp" line="687"/>
+        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="688"/>
         <source>Create new folder</source>
         <translation>Crear un cartafol novo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="623"/>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="624"/>
+        <location filename="../src/gui/accountsettings.cpp" line="714"/>
         <source>Availability</source>
         <translation>Dispoñíbilidade</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="693"/>
         <source>Choose what to sync</source>
         <translation>Escoller que sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="698"/>
+        <location filename="../src/gui/accountsettings.cpp" line="699"/>
         <source>Force sync now</source>
         <translation>Forzar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="700"/>
+        <location filename="../src/gui/accountsettings.cpp" line="701"/>
         <source>Restart sync</source>
         <translation>Reiniciar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="706"/>
+        <location filename="../src/gui/accountsettings.cpp" line="707"/>
         <source>Resume sync</source>
         <translation>Continuar coa sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="706"/>
+        <location filename="../src/gui/accountsettings.cpp" line="707"/>
         <source>Pause sync</source>
         <translation>Pausar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="709"/>
+        <location filename="../src/gui/accountsettings.cpp" line="710"/>
         <source>Remove folder sync connection</source>
         <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="722"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>Disable virtual file support …</source>
         <translation>Desactivar a compatibilidade con ficheiros virtuais…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="731"/>
+        <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Activar a compatibilidade con ficheiros virtuais %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="731"/>
+        <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="825"/>
+        <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Folder creation failed</source>
         <translation>Produciuse un fallo ao crear o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="827"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Non foi posíbel crear o cartafol local &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="883"/>
+        <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirmar a retirada da conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="884"/>
+        <location filename="../src/gui/accountsettings.cpp" line="885"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Confirma que quere deixar de sincronizar o cartafol &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Isto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="890"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>Disable virtual file support?</source>
         <translation>Quere desactivar a compatibilidade con ficheiros virtuais?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -836,162 +836,162 @@ A única vantaxe de desactivar a compatibilidade con ficheiros virtuais é que v
 Esta acción interromperá calquera sincronización que estea a executarse actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Disable support</source>
         <translation>Desactivar a compatibilidade</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1093"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1094"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Mnemónico de cifrado de extremo a extremo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1095"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1096"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Para protexer a súa identidade criptográfica, cifrámola cun mnemotécnico de 12 palabras do dicionario. Anóteas a poñas a seguro. Serán necesarias para engadir outros dispositivos á súa conta (como o seu teléfono móbil ou o computador portátil).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
         <source>Disable end-to-end encryption</source>
         <translation>Desactivar o cifrado de extremo a extremo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Disable end-to-end encryption for %1?</source>
         <translation>Desactivar o cifrado de extremo a extremo para %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
         <translation>Ao retirar o cifrado de extremo a extremo, retiraranse os ficheiros sincronizados localmente que están cifrados.&lt;br&gt;Os  ficheiros cifrados permanecerán no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1194"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1195"/>
         <source>Sync Running</source>
         <translation>Sincronización en proceso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1195"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1196"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Estase a realizar a sincronización.&lt;br/&gt;Quere interrompela e rematala?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1267"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1268"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) de %2 en uso. Algúns cartafoles, incluíndo os compartidos e os montados en rede, poderían ter diferentes límites.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1268"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1269"/>
         <source>%1 of %2 in use</source>
         <translation>%1 de %2 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1277"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actualmente non hai dispoñíbel ningunha información sobre o uso do almacenamento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1280"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1281"/>
         <source>%1 in use</source>
         <translation>%1 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
         <source>%1 as %2</source>
         <translation>%1 como %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1314"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1315"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Este servidor da versión %1 non ten asistencia técnica! Proceda baixo a súa propia responsabilidade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>Connected to %1.</source>
         <translation>Conectado a %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1320"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1321"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>O servidor %1 non está dispoñíbel temporalmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>O servidor %1 neste momento está en modo de mantemento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1327"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>O servidor % 1 está a ser redirixido ou a súa conexión está detrás dun portal cativo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1329"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1330"/>
         <source>Signed out from %1.</source>
         <translation>Desconectado de %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1332"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1333"/>
         <source>Connecting to %1 …</source>
         <translation>Conectando con %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1337"/>
         <source>Unable to connect to %1.</source>
         <translation>Non é posíbel conectar con %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1341"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1342"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Produciuse un erro de configuración do servidor: %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1351"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>É preciso que Vde. acepte as condicións de servizo en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1355"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1356"/>
         <source>No %1 connection configured.</source>
         <translation>Non se configurou a conexión %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1534"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Migrate certificate to a new one</source>
         <translation>Migrar o certificado cara a un novo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1628"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1629"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hai cartafoles que non se sincronizaron por ser demasiado grandes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1629"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1630"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hai cartafoles que non se sincronizaron porque son almacenamentos externos:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1630"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1631"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hai cartafoles que non se sincronizaron porque son demasiado grandes ou almacenamentos externos:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1641"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1642"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Hai cartafoles que creceron máis aló de %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1693"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>Activouse o cifrado de extremo a extremo nesta conta con outro dispositivo.&lt;br&gt; Pódese activar neste dispositivo introducindo o seu mnemotécnico.&lt;br&gt; Isto activará a sincronización dos cartafoles cifrados existentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1751"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1752"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Esta conta admite o cifrado de extremo a extremo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1755"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1756"/>
         <source>Set up encryption</source>
         <translation>Definir o cifrado</translation>
     </message>
@@ -2297,136 +2297,136 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Atopouse un diario de sincronización antigo «%1», mais non foi posíbel retiralo. Asegúrese de que ningunha aplicación estea a usalo actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1428"/>
+        <location filename="../src/gui/folderman.cpp" line="1429"/>
         <source> (backup)</source>
         <translation> (copia de seguranza)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1433"/>
+        <location filename="../src/gui/folderman.cpp" line="1434"/>
         <source> (backup %1)</source>
         <translation> (copia de seguranza %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1771"/>
+        <location filename="../src/gui/folderman.cpp" line="1772"/>
         <source>Undefined state.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1774"/>
+        <location filename="../src/gui/folderman.cpp" line="1775"/>
         <source>Waiting to start syncing.</source>
         <translation>Agardando para iniciar a sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1777"/>
+        <location filename="../src/gui/folderman.cpp" line="1778"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1787"/>
+        <location filename="../src/gui/folderman.cpp" line="1788"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sincronizando %1 de %2 (restan uns segundos)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1790"/>
+        <location filename="../src/gui/folderman.cpp" line="1791"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sincronizando %1 de %2  (restan %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1793"/>
+        <location filename="../src/gui/folderman.cpp" line="1794"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1799"/>
+        <location filename="../src/gui/folderman.cpp" line="1800"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sincronizando %1 (restan uns segundos)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1801"/>
+        <location filename="../src/gui/folderman.cpp" line="1802"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (restan %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1804"/>
+        <location filename="../src/gui/folderman.cpp" line="1805"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1809"/>
+        <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1814"/>
+        <location filename="../src/gui/folderman.cpp" line="1815"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>A sincronización rematou con conflitos sen resolver.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1816"/>
+        <location filename="../src/gui/folderman.cpp" line="1817"/>
         <source>Last sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1822"/>
+        <location filename="../src/gui/folderman.cpp" line="1823"/>
         <source>Setup error.</source>
         <translation>Produciuse un erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1825"/>
+        <location filename="../src/gui/folderman.cpp" line="1826"/>
         <source>Sync request was cancelled.</source>
         <translation>Cancelouse a solicitude de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1828"/>
+        <location filename="../src/gui/folderman.cpp" line="1829"/>
         <source>Sync is paused.</source>
         <translation>Sincronización en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1834"/>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1842"/>
+        <location filename="../src/gui/folderman.cpp" line="1843"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Escolla unha localización diferente. O cartafol seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1850"/>
-        <location filename="../src/gui/folderman.cpp" line="1929"/>
+        <location filename="../src/gui/folderman.cpp" line="1851"/>
+        <location filename="../src/gui/folderman.cpp" line="1930"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Escolla unha localización diferente. %1 xa está a se usar como cartafol de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1859"/>
+        <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Escolla unha localización diferente. A ruta %1 non existe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1863"/>
+        <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Escolla unha localización diferente. A ruta %1 non é un cartafol.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1871"/>
-        <location filename="../src/gui/folderman.cpp" line="1876"/>
+        <location filename="../src/gui/folderman.cpp" line="1872"/>
+        <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Escolla unha localización diferente. Non ten permisos abondo para escribir en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1936"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Escolla unha localización diferente. %1 xa está contido nun cartafol usado como cartafol de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1951"/>
+        <location filename="../src/gui/folderman.cpp" line="1952"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Escolla unha situación diferente. %1 xa se está a usar como cartafol de sincronización para %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2088"/>
+        <location filename="../src/gui/folderman.cpp" line="2089"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -2852,37 +2852,37 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <translation>Información</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="277"/>
+        <location filename="../src/gui/generalsettings.ui" line="280"/>
         <source>Desktop client x.x.x</source>
         <translation>Cliente de escritorio x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <location filename="../src/gui/generalsettings.ui" line="304"/>
         <source>Update channel</source>
         <translation>Actualizar a canle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="331"/>
+        <location filename="../src/gui/generalsettings.ui" line="340"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Reiniciar e actualizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="348"/>
+        <location filename="../src/gui/generalsettings.ui" line="357"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Comprobar &amp;automaticamente as actualizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="364"/>
+        <location filename="../src/gui/generalsettings.ui" line="373"/>
         <source>Check Now</source>
         <translation>Comproba agora</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="391"/>
+        <location filename="../src/gui/generalsettings.ui" line="400"/>
         <source>Usage Documentation</source>
         <translation>Documentación de uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="398"/>
+        <location filename="../src/gui/generalsettings.ui" line="407"/>
         <source>Legal Notice</source>
         <translation>Aviso legal</translation>
     </message>
@@ -3334,7 +3334,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel atopar un ficheiro para a edición local. Asegúrese de que a ruta sexa a correcta e de que se sincronice localmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -3983,195 +3983,195 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Os nomes de ficheiros que finalizan cun punto non están admitidos neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>O nome %1 que contén o carácter «%2» non está admitido neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>O nome %1 contén algún carácter incorrecto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>O nome %1 é un nome reservado neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="426"/>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>Filename contains trailing spaces.</source>
         <translation>O nome do ficheiro contén espazos finais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="429"/>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="485"/>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <location filename="../src/libsync/discovery.cpp" line="486"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>Non foi posíbel cambiar o nome ou enviar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="434"/>
         <source>Filename contains leading spaces.</source>
         <translation>O nome do ficheiro contén espazos ao principio.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>O nome do ficheiro contén espazos ao principio e ao final.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Filename is too long.</source>
         <translation>O nome de ficheiro é longo de máis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <location filename="../src/libsync/discovery.cpp" line="452"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>O ficheiro/cartafol ignórase por estar agochado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="455"/>
         <source>Stat failed.</source>
         <translation>Produciuse un fallo na obtención de estatísticas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="457"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflito: descargada a versión do servidor, cambiou o nome da copia local e non foi enviada.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="462"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Conflito de capitalización: Descargado e renomeado o ficheiro do servidor para evitar o conflito.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="465"/>
+        <location filename="../src/libsync/discovery.cpp" line="466"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>O nome do ficheiro non pode ser codificado no seu sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="468"/>
+        <location filename="../src/libsync/discovery.cpp" line="469"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>O nome do ficheiro está na lista de bloqueo no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="471"/>
+        <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Motivo: está prohibido todo o nome do ficheiro.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="474"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Motivo: o nome do ficheiro ten un nome base prohibido (inicio do nome de ficheiro).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="477"/>
+        <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Motivo: o ficheiro ten unha extensión prohibida (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="480"/>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Motivo: o nome do ficheiro contén un carácter prohibido (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="621"/>
+        <location filename="../src/libsync/discovery.cpp" line="622"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>O ficheiro ten a extensión reservada para ficheiros virtuais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="762"/>
+        <location filename="../src/libsync/discovery.cpp" line="763"/>
         <source>size</source>
         <translation>tamaño</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="764"/>
+        <location filename="../src/libsync/discovery.cpp" line="765"/>
         <source>permission</source>
         <translation>permiso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="768"/>
+        <location filename="../src/libsync/discovery.cpp" line="769"/>
         <source>file id</source>
         <translation>ID do ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="772"/>
+        <location filename="../src/libsync/discovery.cpp" line="773"/>
         <source>Server reported no %1</source>
         <translation>O servidor non informou de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1113"/>
+        <location filename="../src/libsync/discovery.cpp" line="1114"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1123"/>
+        <location filename="../src/libsync/discovery.cpp" line="1124"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1166"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1439"/>
-        <location filename="../src/libsync/discovery.cpp" line="1899"/>
+        <location filename="../src/libsync/discovery.cpp" line="1440"/>
+        <location filename="../src/libsync/discovery.cpp" line="1900"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1757"/>
+        <location filename="../src/libsync/discovery.cpp" line="1758"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Non é posíbel modificar o elemento cifrado porque o certificado seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1818"/>
+        <location filename="../src/libsync/discovery.cpp" line="1819"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1852"/>
-        <location filename="../src/libsync/discovery.cpp" line="2060"/>
+        <location filename="../src/libsync/discovery.cpp" line="1853"/>
+        <location filename="../src/libsync/discovery.cpp" line="2061"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1863"/>
+        <location filename="../src/libsync/discovery.cpp" line="1864"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1877"/>
+        <location filename="../src/libsync/discovery.cpp" line="1878"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1913"/>
+        <location filename="../src/libsync/discovery.cpp" line="1914"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2107"/>
+        <location filename="../src/libsync/discovery.cpp" line="2108"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2192"/>
+        <location filename="../src/libsync/discovery.cpp" line="2193"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2</translation>
     </message>
@@ -5407,9 +5407,9 @@ O servidor respondeu co erro: %2</translation>
     <name>OCC::Theme</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="419"/>
-        <source>&lt;p&gt;%1 Desktop Client Version %2 (%3). For more information please click &lt;a href=&apos;%4&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name. %4 is the help URL</comment>
-        <translation>&lt;p&gt;Cliente de escritorio de %1, versión %2 (%3). Para obter máis información prema &lt;a href=&apos;%4&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
+        <source>%1 Desktop Client Version %2 (%3)</source>
+        <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5513,7 +5513,7 @@ O servidor respondeu co erro: %2</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
-        <source>%n notifications</source>
+        <source>%n notification(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
