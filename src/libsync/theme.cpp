@@ -960,6 +960,11 @@ bool Theme::enforceVirtualFilesSyncFolder() const
     return ENFORCE_VIRTUAL_FILES_SYNC_FOLDER && vfsMode != OCC::Vfs::Off;
 }
 
+bool Theme::disableVirtualFilesSyncFolder() const
+{
+    return DISABLE_VIRTUAL_FILES_SYNC_FOLDER;
+}
+
 QColor Theme::defaultColor()
 {
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
