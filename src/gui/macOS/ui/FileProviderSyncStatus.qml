@@ -67,8 +67,15 @@ GridLayout {
     }
 
     Button {
+        id: requestSyncButton
         text: qsTr("Request sync")
-        onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
         visible: !root.syncStatus.syncing
+        hoverEnabled: true
+        onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
+
+        ToolTip {
+            visible: requestSyncButton.hovered
+            text: qsTr("Request a sync of changes for the VFS environment. macOS may ignore or delay this request.")
+        }
     }
 }
