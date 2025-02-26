@@ -50,6 +50,7 @@
 #include <QMessageBox>
 
 #include <KZip>
+#include <chrono>
 
 namespace {
 struct ZipEntry {
@@ -186,6 +187,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     , _ui(new Ui::GeneralSettings)
 {
     _ui->setupUi(this);
+    
+    _ui->labelInterval->setText("seconds (if <a href=\"https://github.com/nextcloud/notify_push\">Client Push</a> is unavailable)");
+    _ui->labelInterval->setTextFormat(Qt::RichText);
+    _ui->labelInterval->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    _ui->labelInterval->setOpenExternalLinks(true);
 
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
@@ -240,7 +246,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-
+    connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
+    
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
@@ -321,6 +328,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+    const auto interval = cfgFile.remotePollInterval(); 
+    _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));  
 }
 
 #if defined(BUILD_UPDATER)
@@ -637,6 +647,17 @@ void GeneralSettings::customizeStyle()
 #else
     _ui->updatesContainer->setVisible(false);
 #endif
+}
+
+void GeneralSettings::slotRemotePollIntervalChanged(int seconds) 
+{
+    if (_currentlyLoading) {
+        return;
+    }
+
+    ConfigFile cfgFile;
+    std::chrono::milliseconds interval(seconds * 1000);
+    cfgFile.setRemotePollInterval(interval);
 }
 
 } // namespace OCC
