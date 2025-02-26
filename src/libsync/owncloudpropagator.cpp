@@ -22,6 +22,7 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "bulkpropagatorjob.h"
+#include "bulkpropagatordownloadjob.h"
 #include "updatee2eefoldermetadatajob.h"
 #include "updatemigratede2eemetadatajob.h"
 #include "propagatorjobs.h"
@@ -693,7 +694,17 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
         }
         removedDirectory = item->_file + "/";
     } else {
-        directories.top().second->appendTask(item);
+        const auto isVfsCfApi = syncOptions()._vfs && syncOptions()._vfs->mode() == Vfs::WindowsCfApi;
+        const auto isDownload = item->_direction == SyncFileItem::Down &&
+            (item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC);
+        const auto isVirtualFile = item->_type == ItemTypeVirtualFile;
+        const auto shouldAddBulkPropagateDownloadItem = isDownload && isVirtualFile && isVfsCfApi && !directories.isEmpty();
+
+        if (shouldAddBulkPropagateDownloadItem) {
+            addBulkPropagateDownloadItem(item, directories);
+        } else {
+            directories.top().second->appendTask(item);
+        }
     }
 
     if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
@@ -701,6 +712,27 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
         // directory we want to skip processing items inside it.
         maybeConflictDirectory = item->_file + "/";
     }
+}
+
+void OwncloudPropagator::addBulkPropagateDownloadItem(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
+{
+    BulkPropagatorDownloadJob *bulkPropagatorDownloadJob = nullptr;
+    const auto foundBulkPrpagatorDownloadJobIt = std::find_if(
+        std::cbegin(directories.top().second->_subJobs._jobsToDo),
+        std::cend(directories.top().second->_subJobs._jobsToDo),
+        [](PropagatorJob *job)
+        {
+            const auto bulkDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(job);
+            return bulkDownloadJob != nullptr;
+        }
+    );
+    if (foundBulkPrpagatorDownloadJobIt == std::cend(directories.top().second->_subJobs._jobsToDo)) {
+        bulkPropagatorDownloadJob = new BulkPropagatorDownloadJob(this, directories.top().second);
+        directories.top().second->appendJob(bulkPropagatorDownloadJob);
+    } else {
+        bulkPropagatorDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(*foundBulkPrpagatorDownloadJobIt);
+    }
+    bulkPropagatorDownloadJob->addDownloadItem(item);
 }
 
 void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
