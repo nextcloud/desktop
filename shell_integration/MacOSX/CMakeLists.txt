@@ -22,6 +22,17 @@ if(APPLE)
         COMMENT building Mac Overlay icons
         VERBATIM)
 
+    add_custom_target( mac_shareplugin ALL
+        xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+        -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
+        -target ShareExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        "OC_OEM_SHARE_ICNS=${OC_OEM_SHARE_ICNS}"
+        "OC_APPLICATION_NAME=${APPLICATION_NAME}"
+        "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
+        "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
+        COMMENT building macOS Share extension
+        VERBATIM)
+
     if (BUILD_FILE_PROVIDER_MODULE)
         add_custom_target( mac_fileproviderplugin ALL
             xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
@@ -48,9 +59,9 @@ if(APPLE)
             COMMENT building macOS File Provider UI extension
             VERBATIM)
 
-        add_dependencies(mac_overlayplugin mac_fileproviderplugin mac_fileprovideruiplugin nextcloud) # for the ownCloud.icns to be generated
+        add_dependencies(mac_overlayplugin mac_shareplugin mac_fileproviderplugin mac_fileprovideruiplugin nextcloud) # for the ownCloud.icns to be generated
     else()
-        add_dependencies(mac_overlayplugin nextcloud) # for the ownCloud.icns to be generated
+        add_dependencies(mac_overlayplugin mac_shareplugin nextcloud) # for the ownCloud.icns to be generated
     endif()
 
     if (BUILD_OWNCLOUD_OSX_BUNDLE)
@@ -63,6 +74,10 @@ if(APPLE)
 
         # HACK: Launch Services expects there to be a Library folder within the FinderSyncExt.appex.
         install(DIRECTORY DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FinderSyncExt.appex/Contents/Library)
+
+        install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/ShareExt.appex
+            DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
+            USE_SOURCE_PERMISSIONS)
 
         if (BUILD_FILE_PROVIDER_MODULE)
             install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderExt.appex
