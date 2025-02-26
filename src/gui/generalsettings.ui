@@ -198,6 +198,50 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
+        <item>
+         <widget class="QLabel" name="remotePollIntervalLabel">
+          <property name="text">
+           <string>Server poll interval</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="remotePollIntervalSpinBox">
+          <property name="minimum">
+            <number>30</number>
+          </property>
+          <property name="maximum">
+           <number>999999</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>         
+         </widget>         
+        </item>
+        <item>
+         <widget class="QLabel" name="labelInterval">
+          <property name="text">
+           <string extracomment="Trailing part of &quot;Server poll interval&quot; ">seconds (if Client Push is unavailable)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_remotePollInterval">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
