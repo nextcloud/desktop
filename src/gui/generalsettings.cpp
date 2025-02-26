@@ -21,7 +21,6 @@
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
-#include <qnamespace.h>
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -248,6 +247,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
+    
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
@@ -329,8 +329,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
-    ;
-    auto interval = cfgFile.remotePollInterval(); 
+    const auto interval = cfgFile.remotePollInterval(); 
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));  
 }
 
@@ -650,8 +649,8 @@ void GeneralSettings::customizeStyle()
 #endif
 }
 
-
-void GeneralSettings::slotRemotePollIntervalChanged(int seconds) {
+void GeneralSettings::slotRemotePollIntervalChanged(int seconds) 
+{
     if (_currentlyLoading) {
         return;
     }
