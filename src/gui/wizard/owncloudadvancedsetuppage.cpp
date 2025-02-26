@@ -158,7 +158,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (!Theme::instance()->showVirtualFilesOption()
+    if (Theme::instance()->disableVirtualFilesSyncFolder() || !Theme::instance()->showVirtualFilesOption()
 #ifndef BUILD_FILE_PROVIDER_MODULE
         || bestAvailableVfsMode() == Vfs::Off
 #endif
