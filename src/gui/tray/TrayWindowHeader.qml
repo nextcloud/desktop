@@ -121,14 +121,11 @@ Rectangle {
                     model: UserAppsModel
                     delegate: MenuItem {
                         id: appEntry
-                        anchors.left: parent.left
-                        anchors.right: parent.right
                         text: model.appName
                         font.pixelSize: Style.topLinePixelSize
                         icon.source: model.appIconUrl
                         icon.color: palette.windowText
                         onTriggered: UserAppsModel.openAppUrl(appUrl)
-                        hoverEnabled: true
                         Accessible.role: Accessible.MenuItem
                         Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                         Accessible.onPressAction: appEntry.triggered()
