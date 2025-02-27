@@ -2816,107 +2816,118 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
+        <source>Server poll interval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>seconds (if Client Push is unavailable)</source>
+        <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>أظهِر مجلدات المزامنة في جزء التنقل من المُستعرِض</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <location filename="../src/gui/generalsettings.ui" line="266"/>
         <source>S&amp;how crash reporter</source>
         <translation>عرض تقرير &amp;التعرقلات</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>عين الملفات &amp;المتجاهلة</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="594"/>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.cpp" line="604"/>
         <source>Create Debug Archive</source>
         <translation>إنشيء أرشيفاً بالتنقيحات Debug Archive</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="265"/>
+        <location filename="../src/gui/generalsettings.ui" line="309"/>
         <source>Info</source>
         <translation>معلومات</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="280"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Desktop client x.x.x</source>
         <translation>عميل سطح المكتب؛ الإصدار x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="304"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Update channel</source>
         <translation>قناة التحديث</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="340"/>
+        <location filename="../src/gui/generalsettings.ui" line="384"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;أعد_التشغيل_و_حدّث</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="357"/>
+        <location filename="../src/gui/generalsettings.ui" line="401"/>
         <source>&amp;Automatically check for updates</source>
         <translation>ابحث عن التحديثات بشكل تلقائي</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="373"/>
+        <location filename="../src/gui/generalsettings.ui" line="417"/>
         <source>Check Now</source>
         <translation>إفحَصِ الآن</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="400"/>
+        <location filename="../src/gui/generalsettings.ui" line="444"/>
         <source>Usage Documentation</source>
         <translation>توثيق الاستعمالات</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="407"/>
+        <location filename="../src/gui/generalsettings.ui" line="451"/>
         <source>Legal Notice</source>
         <translation>ملاحظة قانونية</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Server notifications that require attention.</source>
         <translation>إشعارات الخادم ذات الأهمية</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="196"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Show chat notification dialogs.</source>
         <translation>عرض نافذة إشعارات الدردشة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="200"/>
+        <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Show call notification dialogs.</source>
         <translation>عرض حوارات إشعارات المكالمات.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="214"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>لا يمكنك تعطيل التشغيل التلقائي لأنه تم تمكين التشغيل التلقائي على مستوى النظام.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="404"/>
+        <location filename="../src/gui/generalsettings.cpp" line="414"/>
         <source>stable</source>
         <translation>مُستقِرٌ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="408"/>
+        <location filename="../src/gui/generalsettings.cpp" line="418"/>
         <source>beta</source>
         <translation>بيتا</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="412"/>
+        <location filename="../src/gui/generalsettings.cpp" line="422"/>
         <source>daily</source>
         <translation>يومي</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="426"/>
         <source>enterprise</source>
         <translation>مؤسَّسِي</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="444"/>
+        <location filename="../src/gui/generalsettings.cpp" line="454"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2928,7 +2939,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 لا يمكن تخفيض مستوى الإصدارات على الفور: التغيير من الإصدار التجريبي إلى الإصدار المستقر يعني انتظار الإصدار المستقر الجديد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="459"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2938,12 +2949,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 لا يمكن تخفيض الإصدارات على الفور: التغيير من الإصدار المستقر إلى الإصدار المؤسسي يعني انتظار الإصدار المؤسسي الجديد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="456"/>
+        <location filename="../src/gui/generalsettings.cpp" line="466"/>
         <source>Changing update channel?</source>
         <translation>تغيير قناة التحديث؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="467"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2953,27 +2964,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Change update channel</source>
         <translation>تغيير قناة التحديث</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="464"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="596"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Zip Archives</source>
         <translation>أراشيف مضغوطة Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="606"/>
+        <location filename="../src/gui/generalsettings.cpp" line="616"/>
         <source>Debug Archive Created</source>
         <translation>تم إنشاء أرشيف التنقيح debug archive</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="607"/>
+        <location filename="../src/gui/generalsettings.cpp" line="617"/>
         <source>Debug archive is created at %1</source>
         <translation>تمّ إنشاء أرشيف التنقيح في %1</translation>
     </message>
@@ -3319,7 +3330,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>تعذّر العثور على ملف للتحرير المحلي. تأكد من أن مساره صالح وأنه مُتزامِنٌ محليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5389,7 +5400,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 إصدار عميل سطح المكتب %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5494,7 +5505,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n إشعار(ات)</numerusform><numerusform>%n إشعار(ات)</numerusform><numerusform>%n إشعار(ات)</numerusform><numerusform>%n إشعار(ات)</numerusform><numerusform>%n إشعار(ات)</numerusform><numerusform>%n إشعار(ات)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
@@ -5989,12 +6000,12 @@ Server replied with error: %2</source>
         <translation>مجلد جديد</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="131"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Failed to create debug archive</source>
         <translation>تعذّر إنشاء أرشيف لتنقيح الأخطاء</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>تعذّر إنشاء أرشيف لتنقيح الأخطاء في الموضع المحدد!</translation>
     </message>

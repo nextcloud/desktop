@@ -2827,107 +2827,118 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
+        <source>Server poll interval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>seconds (if Client Push is unavailable)</source>
+        <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Taispeáin fillteáin shioncronaithe i bpána nascleanúna &amp;Explorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <location filename="../src/gui/generalsettings.ui" line="266"/>
         <source>S&amp;how crash reporter</source>
         <translation>S&amp;how tuairisceoir tuairteála</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Cuir &amp;Comhaid Neamhaird in Eagar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="594"/>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.cpp" line="604"/>
         <source>Create Debug Archive</source>
         <translation>Cruthaigh Cartlann Dífhabhtaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="265"/>
+        <location filename="../src/gui/generalsettings.ui" line="309"/>
         <source>Info</source>
         <translation>Eolas</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="280"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Desktop client x.x.x</source>
         <translation>Cliant deisce x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="304"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Update channel</source>
         <translation>Nuashonraigh cainéal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="340"/>
+        <location filename="../src/gui/generalsettings.ui" line="384"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Atosaigh &amp;&amp; Nuashonraigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="357"/>
+        <location filename="../src/gui/generalsettings.ui" line="401"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Seiceáil go huathoibríoch le haghaidh nuashonruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="373"/>
+        <location filename="../src/gui/generalsettings.ui" line="417"/>
         <source>Check Now</source>
         <translation>Seiceáil Anois</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="400"/>
+        <location filename="../src/gui/generalsettings.ui" line="444"/>
         <source>Usage Documentation</source>
         <translation>Doiciméadú Úsáide</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="407"/>
+        <location filename="../src/gui/generalsettings.ui" line="451"/>
         <source>Legal Notice</source>
         <translation>Fógra Dlíthiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Server notifications that require attention.</source>
         <translation>Fógraí freastalaí a dteastaíonn aird uathu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="196"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Show chat notification dialogs.</source>
         <translation>Taispeáin dialóga fógraí comhrá.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="200"/>
+        <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Show call notification dialogs.</source>
         <translation>Taispeáin dialóga fógra glaonna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="214"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Ní féidir leat uath-thús a dhíchumasú toisc go bhfuil uath-tús ar fud an chórais cumasaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="404"/>
+        <location filename="../src/gui/generalsettings.cpp" line="414"/>
         <source>stable</source>
         <translation>cobhsaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="408"/>
+        <location filename="../src/gui/generalsettings.cpp" line="418"/>
         <source>beta</source>
         <translation>béite</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="412"/>
+        <location filename="../src/gui/generalsettings.cpp" line="422"/>
         <source>daily</source>
         <translation>laethúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="426"/>
         <source>enterprise</source>
         <translation>fiontar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="444"/>
+        <location filename="../src/gui/generalsettings.cpp" line="454"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2939,7 +2950,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó beta go cobhsaí fanacht leis an leagan cobhsaí nua.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="459"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2949,12 +2960,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsaí go fiontar fanacht leis an leagan fiontair nua.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="456"/>
+        <location filename="../src/gui/generalsettings.cpp" line="466"/>
         <source>Changing update channel?</source>
         <translation>Cainéal nuashonraithe á athrú?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="467"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2964,27 +2975,27 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Change update channel</source>
         <translation>Athraigh cainéal nuashonraithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="464"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Cancel</source>
         <translation>Cealaigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="596"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Zip Archives</source>
         <translation>Cartlanna Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="606"/>
+        <location filename="../src/gui/generalsettings.cpp" line="616"/>
         <source>Debug Archive Created</source>
         <translation>Cartlann Dífhabhtaithe Cruthaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="607"/>
+        <location filename="../src/gui/generalsettings.cpp" line="617"/>
         <source>Debug archive is created at %1</source>
         <translation>Cruthaítear cartlann dífhabhtaithe ag % 1</translation>
     </message>
@@ -5410,7 +5421,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Leagan Cliant Deisce %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5515,7 +5526,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fógra(í)</numerusform><numerusform>%n fógra(í)</numerusform><numerusform>%n fógra(í)</numerusform><numerusform>%n fógra(í)</numerusform><numerusform>%n fógra(í)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
@@ -6010,12 +6021,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Fillteán nua</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="131"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Failed to create debug archive</source>
         <translation>Theip ar chruthú cartlann dífhabhtaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Níorbh fhéidir cartlann dífhabhtaithe a chruthú sa suíomh roghnaithe!</translation>
     </message>

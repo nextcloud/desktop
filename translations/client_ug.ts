@@ -2824,107 +2824,118 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
+        <source>Server poll interval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>seconds (if Client Push is unavailable)</source>
+        <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>&amp; Explorer نىڭ يولباشچى تاختىسىدا ماسقەدەم ھۆججەت قىسقۇچنى كۆرسىتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <location filename="../src/gui/generalsettings.ui" line="266"/>
         <source>S&amp;how crash reporter</source>
         <translation>S ۋە قانداق چۈشۈپ كەتكەن مۇخبىر</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>ھۆججەتلەرنى تەھرىرلەش ۋە نەزەردىن ساقىت قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="594"/>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.cpp" line="604"/>
         <source>Create Debug Archive</source>
         <translation>خاتالىق ئارخىپى قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="265"/>
+        <location filename="../src/gui/generalsettings.ui" line="309"/>
         <source>Info</source>
         <translation>ئۇچۇر</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="280"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Desktop client x.x.x</source>
         <translation>ئۈستەل يۈزى خېرىدارى x.x.x.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="304"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Update channel</source>
         <translation>قانالنى يېڭىلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="340"/>
+        <location filename="../src/gui/generalsettings.ui" line="384"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp; قايتا قوزغىتىش &amp;&amp; يېڭىلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="357"/>
+        <location filename="../src/gui/generalsettings.ui" line="401"/>
         <source>&amp;Automatically check for updates</source>
         <translation>يېڭىلانمىلارنى ئاپتوماتىك تەكشۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="373"/>
+        <location filename="../src/gui/generalsettings.ui" line="417"/>
         <source>Check Now</source>
         <translation>ھازىر تەكشۈرۈڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="400"/>
+        <location filename="../src/gui/generalsettings.ui" line="444"/>
         <source>Usage Documentation</source>
         <translation>ئىشلىتىش ھۆججىتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="407"/>
+        <location filename="../src/gui/generalsettings.ui" line="451"/>
         <source>Legal Notice</source>
         <translation>قانۇن ئۇقتۇرۇشى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Server notifications that require attention.</source>
         <translation>دىققەت قىلىشنى تەلەپ قىلىدىغان مۇلازىمېتىر ئۇقتۇرۇشى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="196"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="200"/>
+        <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Show call notification dialogs.</source>
         <translation>چاقىرىش ئۇقتۇرۇشى سۆزلىشىش.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="214"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>ئاپتوماتىك قوزغىتىشنى چەكلىيەلمەيسىز ، چۈنكى سىستېما بويىچە ئاپتوماتىك قوزغىتىش ئىقتىدارى قوزغىتىلغان.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="404"/>
+        <location filename="../src/gui/generalsettings.cpp" line="414"/>
         <source>stable</source>
         <translation>مۇقىم</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="408"/>
+        <location filename="../src/gui/generalsettings.cpp" line="418"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="412"/>
+        <location filename="../src/gui/generalsettings.cpp" line="422"/>
         <source>daily</source>
         <translation>ھەر كۈنى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="426"/>
         <source>enterprise</source>
         <translation>كارخانا</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="444"/>
+        <location filename="../src/gui/generalsettings.cpp" line="454"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2936,7 +2947,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 دەرىجىسىنى تۆۋەنلىتىش دەرھال مۇمكىن ئەمەس: سىناقتىن مۇقىم ھالەتكە ئۆزگەرتىش يېڭى مۇقىم نەشرىنى ساقلاشنى كۆرسىتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="459"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2946,12 +2957,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 دەرىجىسىنى تۆۋەنلىتىش دەرھال مۇمكىن ئەمەس: مۇقىملىقتىن كارخانىغا ئۆزگەرتىش يېڭى كارخانا نۇسخىسىنى ساقلاشنى كۆرسىتىدۇ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="456"/>
+        <location filename="../src/gui/generalsettings.cpp" line="466"/>
         <source>Changing update channel?</source>
         <translation>يېڭىلاش قانىلىنى ئۆزگەرتەمسىز؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="467"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2961,27 +2972,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Change update channel</source>
         <translation>يېڭىلاش قانىلىنى ئۆزگەرتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="464"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="596"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Zip Archives</source>
         <translation>Zip Archives</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="606"/>
+        <location filename="../src/gui/generalsettings.cpp" line="616"/>
         <source>Debug Archive Created</source>
         <translation>ئارخىپ ئارخىپى قۇرۇلدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="607"/>
+        <location filename="../src/gui/generalsettings.cpp" line="617"/>
         <source>Debug archive is created at %1</source>
         <translation>خاتالىق ئارخىپى% 1 دە قۇرۇلدى</translation>
     </message>
@@ -6007,12 +6018,12 @@ Server replied with error: %2</source>
         <translation>يېڭى ھۆججەت قىسقۇچ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="131"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Failed to create debug archive</source>
         <translation>خاتالىق ئارخىپى قۇرالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>تاللانغان جايدا خاتالىق ئارخىپى قۇرالمىدى!</translation>
     </message>

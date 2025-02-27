@@ -2829,107 +2829,118 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
+        <source>Server poll interval</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>seconds (if Client Push is unavailable)</source>
+        <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Mostra le cartelle di sincronizzazione nel pannello di navigazione di &amp;Explorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <location filename="../src/gui/generalsettings.ui" line="266"/>
         <source>S&amp;how crash reporter</source>
         <translation>Mostra il rapporto di c&amp;hiusura inattesa</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Mod&amp;ifica file ignorati</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <location filename="../src/gui/generalsettings.cpp" line="594"/>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.cpp" line="604"/>
         <source>Create Debug Archive</source>
         <translation>Crea archivio di debug</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="265"/>
+        <location filename="../src/gui/generalsettings.ui" line="309"/>
         <source>Info</source>
         <translation>Informazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="280"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Desktop client x.x.x</source>
         <translation>Client desktop x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="304"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Update channel</source>
         <translation>Canale di aggiornamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="340"/>
+        <location filename="../src/gui/generalsettings.ui" line="384"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Riavvia e aggiorna</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="357"/>
+        <location filename="../src/gui/generalsettings.ui" line="401"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Verific&amp;a automaticamente la presenza di aggiornamenti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="373"/>
+        <location filename="../src/gui/generalsettings.ui" line="417"/>
         <source>Check Now</source>
         <translation>Controlla ora</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="400"/>
+        <location filename="../src/gui/generalsettings.ui" line="444"/>
         <source>Usage Documentation</source>
         <translation>Manuale d&apos;uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="407"/>
+        <location filename="../src/gui/generalsettings.ui" line="451"/>
         <source>Legal Notice</source>
         <translation>Note legali</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Server notifications that require attention.</source>
         <translation>Notifiche del server che richiedono attenzione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="196"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Show chat notification dialogs.</source>
         <translation>Mostra la finestra di dialogo di notifica della chat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="200"/>
+        <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Show call notification dialogs.</source>
         <translation>Mostra finestre di notifica chiamata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="214"/>
+        <location filename="../src/gui/generalsettings.cpp" line="220"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Non puoi disabilitare l&apos;avvio automatico poiché è abilitato l&apos;avvio automatico a livello di sistema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="404"/>
+        <location filename="../src/gui/generalsettings.cpp" line="414"/>
         <source>stable</source>
         <translation>stabile</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="408"/>
+        <location filename="../src/gui/generalsettings.cpp" line="418"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="412"/>
+        <location filename="../src/gui/generalsettings.cpp" line="422"/>
         <source>daily</source>
         <translation>giornaliero</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="426"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="444"/>
+        <location filename="../src/gui/generalsettings.cpp" line="454"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2941,7 +2952,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Non è possibile effettuare il downgrade delle versioni immediatamente: passare da beta a stabile significa attendere la nuova versione stabile.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="449"/>
+        <location filename="../src/gui/generalsettings.cpp" line="459"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2951,12 +2962,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Il downgrade delle versioni non è possibile immediatamente: passare da stabile a enterprise significa attendere la nuova versione enterprise.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="456"/>
+        <location filename="../src/gui/generalsettings.cpp" line="466"/>
         <source>Changing update channel?</source>
         <translation>Vuoi cambiare canale di aggiornamento?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="457"/>
+        <location filename="../src/gui/generalsettings.cpp" line="467"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2966,27 +2977,27 @@ Il downgrade delle versioni non è possibile immediatamente: passare da stabile 
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Change update channel</source>
         <translation>Cambia il canale di aggiornamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="464"/>
+        <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="596"/>
+        <location filename="../src/gui/generalsettings.cpp" line="606"/>
         <source>Zip Archives</source>
         <translation>Archivi zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="606"/>
+        <location filename="../src/gui/generalsettings.cpp" line="616"/>
         <source>Debug Archive Created</source>
         <translation>Archivio di debug creato</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="607"/>
+        <location filename="../src/gui/generalsettings.cpp" line="617"/>
         <source>Debug archive is created at %1</source>
         <translation>L&apos;archivio di debug è stato creato in %1</translation>
     </message>
@@ -5404,7 +5415,7 @@ Il server ha risposto con errore: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Versione Client Desktop %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5509,7 +5520,7 @@ Il server ha risposto con errore: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notifica(e)</numerusform><numerusform>%n notificata(e)</numerusform><numerusform>%n notifica(e)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
@@ -6004,12 +6015,12 @@ Il server ha risposto con errore: %2</translation>
         <translation>Nuova cartella</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="131"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Failed to create debug archive</source>
         <translation>Impossibile creare archivio con i log per il debug</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Impossibile creare archivio con i log per il debug nel percorso selezionato!</translation>
     </message>
