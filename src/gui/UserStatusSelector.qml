@@ -145,33 +145,11 @@ ColumnLayout {
 
                 property color borderColor: showBorder ? Style.ncBlue : palette.dark
 
-                // We create the square with only the top-left and bottom-left rounded corners
-                // by overlaying different rectangles on top of each other
                 background: Rectangle {
                     radius: Style.slightlyRoundedButtonRadius
                     color: palette.button
                     border.color: fieldButton.borderColor
                     border.width: Style.normalBorderWidth
-
-                    Rectangle {
-                        anchors.fill: parent
-                        anchors.leftMargin: parent.width / 2
-                        anchors.rightMargin: -1
-                        z: 1
-                        color: palette.button
-                        border.color: fieldButton.borderColor
-                        border.width: Style.normalBorderWidth
-                    }
-
-                    Rectangle { // We need to cover the blue border of the non-radiused rectangle
-                        anchors.fill: parent
-                        anchors.leftMargin: parent.width / 4
-                        anchors.rightMargin: parent.width / 4
-                        anchors.topMargin: Style.normalBorderWidth
-                        anchors.bottomMargin: Style.normalBorderWidth
-                        z: 2
-                        color: palette.button
-                    }
                 }
 
                 contentItem: Label {
@@ -212,43 +190,11 @@ ColumnLayout {
             TextField {
                 id: userStatusMessageTextField
 
-                property color borderColor: activeFocus ? Style.ncBlue : palette.dark
-
                 Layout.fillWidth: true
-                Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
-
                 placeholderText: qsTr("What is your status?")
-                placeholderTextColor: palette.dark
                 text: userStatusSelectorModel.userStatusMessage
-                verticalAlignment: TextInput.AlignVCenter
                 selectByMouse: true
                 onEditingFinished: userStatusSelectorModel.userStatusMessage = text
-
-                background: Rectangle {
-                    radius: Style.slightlyRoundedButtonRadius
-                    color: palette.base
-                    border.color: userStatusMessageTextField.borderColor
-                    border.width: Style.normalBorderWidth
-
-                    Rectangle {
-                        anchors.fill: parent
-                        anchors.rightMargin: parent.width / 2
-                        z: 1
-                        color: palette.base
-                        border.color: userStatusMessageTextField.borderColor
-                        border.width: Style.normalBorderWidth
-                    }
-
-                    Rectangle { // We need to cover the blue border of the non-radiused rectangle
-                        anchors.fill: parent
-                        anchors.leftMargin: parent.width / 4
-                        anchors.rightMargin: parent.width / 4
-                        anchors.topMargin: Style.normalBorderWidth
-                        anchors.bottomMargin: Style.normalBorderWidth
-                        z: 2
-                        color: palette.base
-                    }
-                }
             }
         }
 
@@ -321,28 +267,20 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBottom
 
-        UserStatusSelectorButton {
-            // Prevent being squashed by the other buttons with larger text
-            Layout.minimumWidth: implicitWidth
-            Layout.fillHeight: true
-            primary: true
+        Button {
             text: qsTr("Cancel")
             onClicked: finished()
         }
-        UserStatusSelectorButton {
+        Item { // Spacing
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            primary: true
-            text: qsTr("Clear status message")
+        }
+        Button {
+            text: qsTr("Clear")
             onClicked: userStatusSelectorModel.clearUserStatus()
         }
-        UserStatusSelectorButton {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            primary: true
-            colored: true
+        Button {
             focusPolicy: Qt.StrongFocus
-            text: qsTr("Set status message")
+            text: qsTr("Apply")
             onClicked: userStatusSelectorModel.setUserStatus()
         }
     }
