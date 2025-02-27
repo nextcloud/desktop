@@ -60,6 +60,7 @@ private slots:
     void loadMiscSettings();
     void slotShowLegalNotice();
     void slotRemotePollIntervalChanged(int seconds);
+    void updatePollIntervalVisibility();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();
     void slotUpdateChannelChanged();
