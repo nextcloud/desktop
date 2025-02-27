@@ -121,7 +121,9 @@ Rectangle {
                     model: UserAppsModel
                     delegate: MenuItem {
                         id: appEntry
-                        text: model.appName
+                        // HACK: Without creating our own component (and killing native styling)
+                        // HACK: we do not have a way to adjust the text and icon spacing.
+                        text: "  " + model.appName
                         font.pixelSize: Style.topLinePixelSize
                         icon.source: model.appIconUrl
                         icon.color: palette.windowText
