@@ -659,15 +659,17 @@ void GeneralSettings::slotRemotePollIntervalChanged(int seconds)
     cfgFile.setRemotePollInterval(interval);
 }
 
-void GeneralSettings::updatePollIntervalVisibility() {
+void GeneralSettings::updatePollIntervalVisibility() 
+{
     const auto accounts = AccountManager::instance()->accounts();
-    const auto pushAvailable = std::any_of(accounts.cbegin(), accounts.cend(),
-    [](const AccountStatePtr &accountState) -> bool {
-        if (!accountState)
+    const auto pushAvailable = std::any_of(accounts.cbegin(), accounts.cend(), [](const AccountStatePtr &accountState) -> bool {
+        if (!accountState) {
             return false;
-        AccountPtr accountPtr = accountState->account();
-        if (!accountPtr)
+        }
+        const auto accountPtr = accountState->account();
+        if (!accountPtr) {
             return false;
+        }
         return accountPtr->capabilities().availablePushNotifications().testFlag(PushNotificationType::Files);
     });
 
