@@ -21,6 +21,7 @@
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
+#include "capabilities.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -187,12 +188,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     , _ui(new Ui::GeneralSettings)
 {
     _ui->setupUi(this);
-    
-    _ui->labelInterval->setText("seconds (if <a href=\"https://github.com/nextcloud/notify_push\">Client Push</a> is unavailable)");
-    _ui->labelInterval->setTextFormat(Qt::RichText);
-    _ui->labelInterval->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    _ui->labelInterval->setOpenExternalLinks(true);
 
+    updatePollIntervalVisibility();
+    
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
@@ -330,7 +328,8 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
     const auto interval = cfgFile.remotePollInterval(); 
-    _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));  
+    _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
+    updatePollIntervalVisibility(); 
 }
 
 #if defined(BUILD_UPDATER)
@@ -658,6 +657,23 @@ void GeneralSettings::slotRemotePollIntervalChanged(int seconds)
     ConfigFile cfgFile;
     std::chrono::milliseconds interval(seconds * 1000);
     cfgFile.setRemotePollInterval(interval);
+}
+
+void GeneralSettings::updatePollIntervalVisibility() 
+{
+    const auto accounts = AccountManager::instance()->accounts();
+    const auto pushAvailable = std::any_of(accounts.cbegin(), accounts.cend(), [](const AccountStatePtr &accountState) -> bool {
+        if (!accountState) {
+            return false;
+        }
+        const auto accountPtr = accountState->account();
+        if (!accountPtr) {
+            return false;
+        }
+        return accountPtr->capabilities().availablePushNotifications().testFlag(PushNotificationType::Files);
+    });
+
+    _ui->horizontalLayoutWidget_remotePollInterval->setVisible(!pushAvailable);
 }
 
 } // namespace OCC
