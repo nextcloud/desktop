@@ -2829,13 +2829,13 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>伺服器民意調查間距</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>seconds (if Client Push is unavailable)</source>
         <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>秒（如果客戶端推送不可用）</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>

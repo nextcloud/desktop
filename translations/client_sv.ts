@@ -2828,13 +2828,13 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Serverns uppdateringsintervall</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>seconds (if Client Push is unavailable)</source>
         <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>sekunder (om Client Push inte är tillgängligt)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>

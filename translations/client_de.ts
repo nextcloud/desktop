@@ -2827,13 +2827,13 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Serverabrufintervall</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>seconds (if Client Push is unavailable)</source>
         <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>Sekunden (Wenn Client-Push nicht verfügbar ist)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>

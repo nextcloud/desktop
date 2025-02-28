@@ -2828,13 +2828,13 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Інтервал надсилання запитів до сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>seconds (if Client Push is unavailable)</source>
         <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>секунд (якщо недоступні пуш-сповіщення у клієнті)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -3344,7 +3344,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо знайти файл для редагування на пристрої. Пересвідчиться, що шлях до файлу є дійсним, файл синхронізовано з пристроєм.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -5419,7 +5419,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Настільна версія клієнта %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5524,7 +5524,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n сповіщення</numerusform><numerusform>%n сповіщення</numerusform><numerusform>%n сповіщень</numerusform><numerusform>%n сповіщень</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
