@@ -148,8 +148,6 @@ set(client_SRCS
     systray.h
     systray.cpp
     EncryptionTokenSelectionWindow.qml
-    thumbnailjob.h
-    thumbnailjob.cpp
     userinfo.h
     userinfo.cpp
     vfsdownloaderrordialog.h
