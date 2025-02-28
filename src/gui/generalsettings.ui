@@ -251,7 +251,7 @@
          <item>
           <widget class="QLabel" name="labelInterval">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Client Push&lt;/span&gt;&lt;/a&gt; is unavailable)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</string>
            </property>
            <property name="textFormat">
             <enum>Qt::TextFormat::RichText</enum>
@@ -260,7 +260,7 @@
             <bool>true</bool>
            </property>
            <property name="textInteractionFlags">
-            <set>Qt::TextInteractionFlag::TextBrowserInteraction</set>
+            <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
            </property>
           </widget>
          </item>
