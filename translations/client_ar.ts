@@ -2817,13 +2817,13 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>فترة تصويت الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>seconds (if Client Push is unavailable)</source>
         <extracomment>Trailing part of &quot;Server poll interval&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>ثوانٍ (إذا كانت مُعطَيَات العميل Client Push غير متوفرة )</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
