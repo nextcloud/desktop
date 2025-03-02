@@ -2838,12 +2838,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Server poll interval</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -5420,7 +5420,7 @@ Server replied with error: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Desktop Client Version %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5525,7 +5525,7 @@ Server replied with error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification(s)</numerusform><numerusform>%n notification(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
