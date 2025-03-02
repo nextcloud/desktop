@@ -2844,7 +2844,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>秒（如果&lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;客戶端推送&lt;/a&gt;不可用）</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
