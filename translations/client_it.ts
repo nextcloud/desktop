@@ -2845,7 +2845,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>secondi (se il &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Push del Client&lt;/a&gt; non è disponibile)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>

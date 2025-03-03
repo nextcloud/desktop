@@ -2832,7 +2832,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>ثوانٍ (إذا &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;إرسال من جانب العميل &lt;/a&gt; لم يكن متوفراً)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
