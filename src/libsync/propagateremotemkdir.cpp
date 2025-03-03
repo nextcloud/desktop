@@ -59,8 +59,9 @@ void PropagateRemoteMkdir::start()
     }
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(_item->_file),
-        this);
+                         propagator()->fullRemotePath(_item->_file),
+                         {},
+                         this);
     connect(qobject_cast<DeleteJob *>(_job), &DeleteJob::finishedSignal, this, &PropagateRemoteMkdir::slotMkdir);
     _job->start();
 }

@@ -121,7 +121,7 @@ void PropagateUploadFileNG::doStartUpload()
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), {}, this))->start();
         // startNewUpload will reset the _transferId and the UploadInfo in the db.
     }
 
@@ -168,7 +168,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
 
         // Wipe the old chunking data.
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), {}, this))->start();
 
         propagator()->_activeJobList.append(this);
         startNewUpload();
@@ -186,7 +186,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (const auto &serverChunk : std::as_const(_serverChunks)) {
-            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), serverChunk.originalName), this);
+            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), serverChunk.originalName), {}, this);
             QObject::connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             _jobs.append(job);
             job->start();
