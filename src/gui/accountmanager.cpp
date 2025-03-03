@@ -42,7 +42,6 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
-constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -336,7 +335,6 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     } else {
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), account->_skipE2eeMetadataChecksumValidation);
     }
-    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(account->networkProxySetting()));
     settings.setValue(networkProxyTypeC, account->proxyType());
     settings.setValue(networkProxyHostNameC, account->proxyHostName());
     settings.setValue(networkProxyPortC, account->proxyPort());
@@ -501,7 +499,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
     acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
     acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
     acc->setProxyPort(settings.value(networkProxyPortC).toInt());
