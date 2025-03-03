@@ -297,8 +297,9 @@ void PropagateUploadFileCommon::startUploadFile() {
 
     qDebug() << "Deleting the current";
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(_fileToUpload._file),
-        this);
+                             propagator()->fullRemotePath(_fileToUpload._file),
+                             {},
+                             this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);

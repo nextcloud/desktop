@@ -254,7 +254,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
-            (new DeleteJob(account(), url, this))->start();
+            (new DeleteJob(account(), url, {}, this))->start();
         }
     }
 }
