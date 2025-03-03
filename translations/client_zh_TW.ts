@@ -2838,12 +2838,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>伺服器輪詢間隔</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>秒（若&lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;客戶端推播&lt;/a&gt;不可用）</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>

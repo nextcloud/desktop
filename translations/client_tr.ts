@@ -2037,17 +2037,17 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 klasörü bulunamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="202"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 klasörü geçersiz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="204"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 klasörü okunabilir değil.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -2387,41 +2387,41 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/folderman.cpp" line="1843"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. Seçilmiş klasör bulunamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1851"/>
         <location filename="../src/gui/folderman.cpp" line="1930"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 zaten bir eşitleme klasörü olarak kullanılıyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 yolu bulunamadı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1864"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 yolu bir klasör değil.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1872"/>
         <location filename="../src/gui/folderman.cpp" line="1877"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 klasörüne yazma izniniz yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1, zaten bir eşitleme klasörü olarak kullanılan klasörün içinde bulunuyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1952"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 zaten %2 için bir eşitleme klasörü olarak kullanılıyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2089"/>
@@ -2694,7 +2694,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 zaten %2 ile eşitleniyor.</translation>
     </message>
 </context>
 <context>
@@ -2841,7 +2841,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>saniye (&lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;İstemci itmesi&lt;/a&gt; kullanılamıyorsa)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -3885,17 +3885,17 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;%1 dosya hizmeti sağlayıcı hesabı oluşturuldu!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar kullanıma alındı</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınız artık sanal dosya desteğiyle eşitleniyor. Bu seçenek kullanıma alındığında, tüm dosyalarınız varsayılan olarak yalnızca çevrim içi kullanılır ve istek üzerine indirilir. Dosyalarınızı Finder kenar çubuğunun &lt;b&gt;Konumlar&lt;/b&gt; bölümünde bulabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="720"/>
@@ -5677,17 +5677,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 bir sürücü ve sanal dosyaları desteklemiyor.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 dosya sistemi NTFS değil ve sanal dosyaları desteklemiyor.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="84"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen farklı bir konum seçin. %1 bir ağ sürücüsü ve sanal dosyaları desteklemiyor.</translation>
     </message>
 </context>
 <context>
