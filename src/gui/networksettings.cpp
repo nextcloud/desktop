@@ -116,34 +116,28 @@ void NetworkSettings::loadProxySettings()
         return;
     }
 
-    const auto useGlobalProxy = !_account || _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy;
-    const auto cfgFile = ConfigFile();
-    const auto proxyType = useGlobalProxy ? cfgFile.proxyType() : _account->proxyType();
-    const auto proxyPort = useGlobalProxy ? cfgFile.proxyPort() : _account->proxyPort();
-    const auto proxyHostName = useGlobalProxy ? cfgFile.proxyHostName() : _account->proxyHostName();
-    const auto proxyNeedsAuth = useGlobalProxy ? cfgFile.proxyNeedsAuth() : _account->proxyNeedsAuth();
-    const auto proxyUser = useGlobalProxy ? cfgFile.proxyUser() : _account->proxyUser();
-    const auto proxyPassword = useGlobalProxy ? cfgFile.proxyPassword() : _account->proxyPassword();
+    const auto proxyType = _account->proxyType();
+    const auto proxyPort = _account->proxyPort();
+    const auto proxyHostName = _account->proxyHostName();
+    const auto proxyNeedsAuth = _account->proxyNeedsAuth();
+    const auto proxyUser = _account->proxyUser();
+    const auto proxyPassword = _account->proxyPassword();
 
     // load current proxy settings
-    if (_account && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
-        _ui->globalProxySettingsRadioButton->setChecked(true);
-    } else {
-        switch (proxyType) {
-        case QNetworkProxy::NoProxy:
-            _ui->noProxyRadioButton->setChecked(true);
-            break;
-        case QNetworkProxy::DefaultProxy:
-            _ui->systemProxyRadioButton->setChecked(true);
-            break;
-        case QNetworkProxy::Socks5Proxy:
-        case QNetworkProxy::HttpProxy:
-            _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
-            _ui->manualProxyRadioButton->setChecked(true);
-            break;
-        default:
-            break;
-        }
+    switch (proxyType) {
+    case QNetworkProxy::NoProxy:
+        _ui->noProxyRadioButton->setChecked(true);
+        break;
+    case QNetworkProxy::DefaultProxy:
+        _ui->systemProxyRadioButton->setChecked(true);
+        break;
+    case QNetworkProxy::Socks5Proxy:
+    case QNetworkProxy::HttpProxy:
+        _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
+        _ui->manualProxyRadioButton->setChecked(true);
+        break;
+    default:
+        break;
     }
 
     _ui->hostLineEdit->setText(proxyHostName);
@@ -210,8 +204,7 @@ void NetworkSettings::saveProxySettings()
     }
 
     if (_account) { // We must be setting up network proxy for a specific account
-        const auto proxySetting = useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy;
-        _account->setProxySettings(proxySetting, proxyType, host, port, needsAuth, user, password);
+        _account->setProxySettings(proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
         AccountManager::instance()->saveAccount(_account);
@@ -227,9 +220,7 @@ void NetworkSettings::saveProxySettings()
 
         const auto accounts = AccountManager::instance()->accounts();
         for (const auto &accountState : accounts) {
-            if (accountState->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
-                accountState->freshConnectionAttempt();
-            }
+            accountState->freshConnectionAttempt();
         }
     }
 }
