@@ -107,8 +107,7 @@ public:
     Q_ENUM(AccountNetworkProxySetting)
 
     enum class AccountNetworkTransferLimitSetting {
-        GlobalLimit = -2,
-        AutoLimit, // Value under 0 is interpreted as auto in general
+        AutoLimit = -1, // Value under 0 is interpreted as auto in general
         NoLimit,
         ManualLimit,
     };
@@ -565,8 +564,8 @@ private:
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
-    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
-    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
+    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
