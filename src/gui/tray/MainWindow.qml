@@ -43,7 +43,16 @@ ApplicationWindow {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
-    Component.onCompleted: Systray.forceWindowInit(trayWindow)
+    Component.onCompleted: {
+        Systray.forceWindowInit(trayWindow)
+        if (Systray.useNormalWindow) {
+            return;
+        }
+
+        // do not allow this window to be resized when it's frameless
+        this.minimumWidth = this.maximumWidth = this.width
+        this.minimumHeight = this.maximumHeight = this.height
+    }
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
