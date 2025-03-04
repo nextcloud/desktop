@@ -38,6 +38,9 @@ public slots:
     void slotStyleChanged();
 #if defined(BUILD_UPDATER)
     void loadUpdateChannelsList();
+    QString updateChannelToLocalized(const QString &channel) const;
+    void setAndCheckNewUpdateChannel(const QString &newChannel);
+    void restoreUpdateChannel();
 #endif
 
 private slots:
@@ -58,6 +61,7 @@ private slots:
     void slotUpdateChannelChanged();
     void slotUpdateCheckNow();
     void slotToggleAutoUpdateCheck();
+    void slotRestoreUpdateChannel();
 #endif
 
 private:

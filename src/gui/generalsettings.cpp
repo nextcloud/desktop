@@ -324,18 +324,25 @@ void GeneralSettings::loadUpdateChannelsList() {
     if (cfgFile.serverHasValidSubscription()) {
         _ui->updateChannel->hide();
         _ui->updateChannelLabel->hide();
+        _ui->restoreUpdateChannelButton->hide();
         return;
     }
 
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
+    const auto currentUpdateChannel = cfgFile.currentUpdateChannel();
     if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
-        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
+        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(currentUpdateChannel);
         _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1 ? currentUpdateChannelIndex : 0);
         connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
     }
+
+    const auto defaultUpdateChannel = cfgFile.defaultUpdateChannel();
+    _ui->restoreUpdateChannelButton->setText(tr("Restore to &%1").arg(defaultUpdateChannel));
+    _ui->restoreUpdateChannelButton->setEnabled(currentUpdateChannel != defaultUpdateChannel);
+    connect(_ui->restoreUpdateChannelButton, &QPushButton::clicked, this, &GeneralSettings::slotRestoreUpdateChannel);
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -392,28 +399,43 @@ void GeneralSettings::slotUpdateInfo()
 #endif
 }
 
+void GeneralSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
+    ConfigFile().setUpdateChannel(newChannel);
+    if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#endif
+}
+
+QString GeneralSettings::updateChannelToLocalized(const QString &channel) const
+{
+    if (channel == QStringLiteral("stable")) {
+        return tr("stable");
+    }
+
+    if (channel == QStringLiteral("beta")) {
+        return tr("beta");
+    }
+
+    if (channel == QStringLiteral("daily")) {
+        return tr("daily");
+    }
+
+    if (channel == QStringLiteral("enterprise")) {
+        return tr("enterprise");
+    }
+
+    return QString{};
+}
+
 void GeneralSettings::slotUpdateChannelChanged()
 {
-    const auto updateChannelToLocalized = [](const QString &channel) {
-        if (channel == QStringLiteral("stable")) {
-            return tr("stable");
-        }
-
-        if (channel == QStringLiteral("beta")) {
-            return tr("beta");
-        }
-
-        if (channel == QStringLiteral("daily")) {
-            return tr("daily");
-        }
-
-        if (channel == QStringLiteral("enterprise")) {
-            return tr("enterprise");
-        }
-
-        return QString{};
-    };
-
     const auto updateChannelFromLocalized = [](const int index) {
         switch(index) {
         case 1:
@@ -431,10 +453,18 @@ void GeneralSettings::slotUpdateChannelChanged()
     };
 
     ConfigFile configFile;
-    const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == configFile.currentUpdateChannel()) {
+    const auto newChannel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
+    const auto currentUpdateChannel = configFile.currentUpdateChannel();
+    if (newChannel == currentUpdateChannel) {
         return;
     }
+
+    if (newChannel == configFile.defaultUpdateChannel()) {
+        restoreUpdateChannel();
+        return;
+    }
+
+    _ui->restoreUpdateChannelButton->setEnabled(true);
 
     const auto nonEnterpriseOptions = tr("- beta: contains versions with new features that may not be tested thoroughly\n"
                                     "- daily: contains versions created daily only for testing and development\n"
@@ -457,22 +487,12 @@ void GeneralSettings::slotUpdateChannelChanged()
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, newChannel, currentUpdateChannel, msgBox, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
-            ConfigFile().setUpdateChannel(channel);
-            if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-            else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#endif
+            updateChannelToLocalized(newChannel);
         } else {
-            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().currentUpdateChannel()));
+            _ui->updateChannel->setCurrentText(updateChannelToLocalized(currentUpdateChannel));
         }
     });
     msgBox->open();
@@ -501,6 +521,19 @@ void GeneralSettings::slotToggleAutoUpdateCheck()
     ConfigFile cfgFile;
     bool isChecked = _ui->autoCheckForUpdatesCheckBox->isChecked();
     cfgFile.setAutoUpdateCheck(isChecked, QString());
+}
+
+void GeneralSettings::restoreUpdateChannel()
+{
+    const auto defaultUpdateChannel = ConfigFile().defaultUpdateChannel();
+    _ui->restoreUpdateChannelButton->setEnabled(false);
+    _ui->updateChannel->setCurrentText(updateChannelToLocalized(defaultUpdateChannel));
+    setAndCheckNewUpdateChannel(defaultUpdateChannel);
+}
+
+void GeneralSettings::slotRestoreUpdateChannel()
+{
+    restoreUpdateChannel();
 }
 #endif // defined(BUILD_UPDATER)
 
