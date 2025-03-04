@@ -71,7 +71,7 @@ GridLayout {
         text: qsTr("Request sync")
         visible: !root.syncStatus.syncing
         hoverEnabled: true
-        onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
+        onClicked: root.domainSignalRequested()
 
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
