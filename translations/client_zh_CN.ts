@@ -355,16 +355,6 @@
         <source>Enable virtual files</source>
         <translation>启用虚拟文件</translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
-        <source>Advanced</source>
-        <translation>高级</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
-        <source>Signal file provider domain</source>
-        <translation>信号文件提供商域名</translation>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -387,14 +377,25 @@
 <context>
     <name>FileProviderSyncStatus</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="58"/>
         <source>Syncing</source>
         <translation>正在同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="58"/>
         <source>All synced!</source>
         <translation>全部同步完成！</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
+        <source>Request sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -472,17 +473,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="254"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 桌面主对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="391"/>
         <source>Unified search results list</source>
         <translation>统一搜索结果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
         <source>New activities</source>
         <translation>新动态</translation>
     </message>
@@ -4413,12 +4414,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="119"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="123"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>服务器返回的 HTTP 状态错误，应返回 204，但返回的是“%1 %2”。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="127"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="131"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>无法从本地数据库删除文件记录 %1</translation>
     </message>
@@ -4434,22 +4435,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="135"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>服务器返回的 HTTP 状态错误，应返回 201，但返回的是“%1 %2”。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="258"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
         <translation>无法加密文件夹 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="282"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="283"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>将元数据写入数据库出错：%1 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="285"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="286"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 在使用中 </translation>
     </message>
@@ -4513,49 +4514,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="287"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="708"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="709"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>上传 %1 超过文件夹的限额</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="324"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="399"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="325"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="400"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="413"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>文件 %1 修改时间无效。不要上传到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="396"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="397"/>
         <source>File Removed (start upload) %1</source>
         <translation>文件已删除（开始上传）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="422"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="423"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>本地文件在同步时已修改，完成后会再次同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="433"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="434"/>
         <source>Local file changed during sync.</source>
         <translation>本地文件在同步时已修改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="443"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="444"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>解锁加密文件夹失败</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="714"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="715"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>无法上传包含无效字符的项目</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="816"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="817"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元数据出错：%1 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="819"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="820"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 在使用中 </translation>
     </message>
@@ -5502,43 +5503,43 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="103"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>端到端证书需要迁移到新证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="105"/>
         <source>Trigger the migration</source>
         <translation>触发迁移</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="177"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 个通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
         <source>Retry all uploads</source>
         <translation>重试所有上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="725"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="889"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
         <source>Resolve conflict</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="879"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
         <source>Rename file</source>
         <translation>重命名文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1085"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>在浏览器中打开 Nextcloud Assistant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1085"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在浏览器中打开 Nextcloud Talk</translation>
     </message>
@@ -5546,22 +5547,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>Confirm Account Removal</source>
         <translation>确认移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您确定要移除与账号&lt;i&gt;%1&lt;/i&gt;的连接吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Remove connection</source>
         <translation>移除连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -6019,27 +6020,27 @@ Server replied with error: %2</source>
         <translation>无法在所选位置创建调试存档！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="806"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="805"/>
         <source>You renamed %1</source>
         <translation>你重命名了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="808"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="807"/>
         <source>You deleted %1</source>
         <translation>你删除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="809"/>
         <source>You created %1</source>
         <translation>你创建了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="812"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
         <source>You changed %1</source>
         <translation>你修改了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="836"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
@@ -6346,7 +6347,7 @@ Server replied with error: %2</source>
         <translation>更多应用</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="132"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器打开 %1</translation>
     </message>
@@ -6495,29 +6496,29 @@ Server replied with error: %2</source>
         <translation>状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="220"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
         <translation>你什么状态？</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="292"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
         <translation>在指定时间段后清除状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="329"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
-        <source>Clear status message</source>
-        <translation>清除状态消息</translation>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
+        <source>Clear</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="345"/>
-        <source>Set status message</source>
-        <translation>设置状态消息</translation>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
