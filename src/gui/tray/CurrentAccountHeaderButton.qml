@@ -204,7 +204,7 @@ Button {
 
             EnforcedPlainTextLabel {
                 id: currentAccountServer
-                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 width: Style.currentAccountLabelWidth
                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
                 elide: Text.ElideRight
@@ -220,13 +220,15 @@ Button {
 
                 EnforcedPlainTextLabel {
                     id: emoji
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
                     width: Style.userStatusEmojiSize
                     text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
+                    topPadding: -Style.accountLabelsSpacing
                 }
                 EnforcedPlainTextLabel {
                     id: message
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     Layout.fillWidth: true
                     visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                     width: Style.currentAccountLabelWidth
@@ -235,6 +237,8 @@ Button {
                           : UserModel.currentUser ? UserModel.currentUser.server : ""
                     elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
+                    leftPadding: Style.accountLabelsSpacing
+                    topPadding: -Style.userStatusAnchorsMargin
                 }
             }
         }
