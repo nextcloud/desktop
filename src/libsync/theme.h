@@ -596,6 +596,7 @@ public:
     [[nodiscard]] bool showVirtualFilesOption() const;
 
     [[nodiscard]] bool enforceVirtualFilesSyncFolder() const;
+    [[nodiscard]] bool disableVirtualFilesSyncFolder() const;
 
     static QColor defaultColor();
 
