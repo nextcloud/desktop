@@ -21,6 +21,9 @@ set(CMAKE_XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+set(NMC_RCC_FILE "nmctheme_v1.rcc")
+configure_file(${CMAKE_SOURCE_DIR}/${NMC_RCC_FILE} "${BIN_OUTPUT_DIRECTORY}/${NMC_RCC_FILE}" COPYONLY)
+
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
 set(QT_VERSION_MAJOR "6")
@@ -352,6 +355,7 @@ configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
     configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
+    install(FILES nmctheme_v1.rcc DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
 elseif(BUILD_CLIENT)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
