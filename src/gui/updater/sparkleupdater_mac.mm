@@ -129,8 +129,7 @@ private:
 {
     Q_UNUSED(updater)
 
-    const auto errorQstring = QString::fromNSString(error.localizedDescription);
-    const auto message = QObject::tr("Aborted with error: %1", "%1 is version number").arg(errorQstring);
+    const auto message = QString::fromNSString(error.localizedDescription);
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
 }
