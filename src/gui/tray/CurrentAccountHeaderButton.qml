@@ -68,7 +68,7 @@ Button {
             id: userLineInstantiator
             model: UserModel
             delegate: MenuItem {
-                implicitHeight: instantiatedUserLine.height
+                implicitHeight: instantiatedUserLine.height + Style.standardSpacing
                 UserLine {
                     id: instantiatedUserLine
                     width: parent.width
@@ -190,7 +190,7 @@ Button {
 
         Column {
             id: accountLabels
-            spacing: 0
+            spacing: Style.extraExtraSmallSpacing
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: Style.userStatusSpacing
             Layout.fillWidth: true
@@ -210,10 +210,11 @@ Button {
 
             EnforcedPlainTextLabel {
                 id: currentAccountServer
-                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 width: Style.currentAccountLabelWidth
                 color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
+                font.pixelSize: Style.subLinePixelSize
                 elide: Text.ElideRight
                 visible: UserModel.numUsers() > 1
             }
@@ -222,28 +223,27 @@ Button {
                 id: currentUserStatus
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected &&
                          UserModel.currentUser.serverHasUserStatus
-                spacing: Style.accountLabelsSpacing
                 width: parent.width
 
                 EnforcedPlainTextLabel {
                     id: emoji
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
-                    width: Style.userStatusEmojiSize
                     color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
+                    font.pixelSize: Style.subLinePixelSize
                 }
                 EnforcedPlainTextLabel {
                     id: message
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     Layout.fillWidth: true
                     visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
-                    width: Style.currentAccountLabelWidth
                     color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                           ? UserModel.currentUser.statusMessage
                           : UserModel.currentUser ? UserModel.currentUser.server : ""
-                    elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
+                    elide: Text.ElideRight
                 }
             }
         }
