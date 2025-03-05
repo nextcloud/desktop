@@ -473,17 +473,17 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="254"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloudデスクトップのメインダイアログ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="391"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
         <translation>統合検索結果</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="455"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
     </message>
