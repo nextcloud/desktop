@@ -150,26 +150,26 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     }
 
     if (!_relativeLimitCurrentMeasuredDevice) {
-        qCDebug(lcBandwidthManager) << "No device set, just waiting 1 sec";
+        qCInfo(lcBandwidthManager) << "No device set, just waiting 1 sec";
         _relativeUploadDelayTimer.setInterval(1000);
         _relativeUploadDelayTimer.start();
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting Delay";
+    qCInfo(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting Delay";
 
     const auto currentReadWithProgress = _relativeLimitCurrentMeasuredDevice->_readWithProgress;
     const auto currentRead = _relativeLimitCurrentMeasuredDevice->_read;
     const auto relativeLimitProgressMeasured = (currentReadWithProgress + currentRead) / 2;
     const auto relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeUploadLimitProgressAtMeasuringRestart;
 
-    qCDebug(lcBandwidthManager) << _relativeUploadLimitProgressAtMeasuringRestart
+    qCInfo(lcBandwidthManager) << _relativeUploadLimitProgressAtMeasuringRestart
                                 << relativeLimitProgressMeasured
                                 << relativeLimitProgressDifference;
 
     const auto speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
 
-    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
+    qCInfo(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
                                 << currentReadWithProgress << currentRead
                                 << qAbs(currentReadWithProgress - currentRead)
                                 << ")";
@@ -179,7 +179,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     const auto waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
     const auto realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
 
-    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << uploadLimitPercent << "%";
+    qCInfo(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << uploadLimitPercent << "%";
 
     // We want to wait twice as long since we want to give all
     // devices the same quota we used now since we don't want
@@ -194,7 +194,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
         uploadDevice->setBandwidthLimited(true);
         uploadDevice->setChoked(false);
         uploadDevice->giveBandwidthQuota(quotaPerDevice);
-        qCDebug(lcBandwidthManager) << "Gave" << quotaPerDevice / 1024.0 << "kB to" << uploadDevice;
+        qCInfo(lcBandwidthManager) << "Gave" << quotaPerDevice / 1024.0 << "kB to" << uploadDevice;
     }
 
     _relativeLimitCurrentMeasuredDevice = nullptr;
@@ -213,7 +213,7 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting measuring";
+    qCInfo(lcBandwidthManager) << _relativeUploadDeviceList.size() << "Starting measuring";
 
     // Take first device and then append it again (= we round robin all devices)
     _relativeLimitCurrentMeasuredDevice = _relativeUploadDeviceList.front();
@@ -250,23 +250,23 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
         return;
     }
     if (!_relativeLimitCurrentMeasuredJob) {
-        qCDebug(lcBandwidthManager) << "No job set, just waiting 1 sec";
+        qCInfo(lcBandwidthManager) << "No job set, just waiting 1 sec";
         _relativeDownloadDelayTimer.setInterval(1000);
         _relativeDownloadDelayTimer.start();
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting Delay";
+    qCInfo(lcBandwidthManager) << _downloadJobList.size() << "Starting Delay";
 
     const auto relativeLimitProgressMeasured = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
     const auto relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
 
-    qCDebug(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart
+    qCInfo(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart
                                 << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
     const auto speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
 
-    qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
+    qCInfo(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
                                 << _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
 
     const auto downloadLimitPercent = qMax( qMin(-_currentDownloadLimit, qint64(90)), qint64(10));
@@ -274,7 +274,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     const auto waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
     const auto realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
 
-    qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << downloadLimitPercent << "%";
+    qCInfo(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << downloadLimitPercent << "%";
 
     // We want to wait twice as long since we want to give all
     // devices the same quota we used now since we don't want
@@ -286,7 +286,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     auto quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
 
     if (quota > 20 * 1024) {
-        qCDebug(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
+        qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
         quota -= 20 * 1024;
     }
 
@@ -296,7 +296,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
         getFileJob->setChoked(false);
         getFileJob->giveBandwidthQuota(quotaPerJob);
 
-        qCDebug(lcBandwidthManager) << "Gave" << quotaPerJob / 1024.0 << "kB to" << getFileJob;
+        qCInfo(lcBandwidthManager) << "Gave" << quotaPerJob / 1024.0 << "kB to" << getFileJob;
     }
     _relativeLimitCurrentMeasuredDevice = nullptr;
 }
@@ -311,11 +311,11 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
     }
 
     if (_downloadJobList.empty()) {
-        qCDebug(lcBandwidthManager) << _downloadJobList.size() << "No jobs?";
+        qCInfo(lcBandwidthManager) << _downloadJobList.size() << "No jobs?";
         return;
     }
 
-    qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting measuring";
+    qCInfo(lcBandwidthManager) << _downloadJobList.size() << "Starting measuring";
 
     // Take first device and then append it again (= we round robin all devices)
     _relativeLimitCurrentMeasuredJob = _downloadJobList.front();
@@ -391,22 +391,22 @@ void BandwidthManager::absoluteLimitTimerExpired()
     if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
         const auto quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
 
-        qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
+        qCInfo(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
 
         for (const auto device : _absoluteUploadDeviceList) {
             device->giveBandwidthQuota(quotaPerDevice);
-            qCDebug(lcBandwidthManager) << "Gave " << quotaPerDevice / 1024.0 << " kB to" << device;
+            qCInfo(lcBandwidthManager) << "Gave " << quotaPerDevice / 1024.0 << " kB to" << device;
         }
     }
 
     if (usingAbsoluteDownloadLimit() && !_downloadJobList.empty()) {
         const auto quotaPerJob = _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
 
-        qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
+        qCInfo(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
 
         for (const auto job : _downloadJobList) {
             job->giveBandwidthQuota(quotaPerJob);
-            qCDebug(lcBandwidthManager) << "Gave " << quotaPerJob / 1024.0 << " kB to" << job;
+            qCInfo(lcBandwidthManager) << "Gave " << quotaPerJob / 1024.0 << " kB to" << job;
         }
     }
 }
