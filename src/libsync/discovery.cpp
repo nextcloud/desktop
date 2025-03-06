@@ -1433,6 +1433,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
     const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
+    if (isE2eeMove) {
+        qCInfo(lcDisco) << "requesting permanent deletion for" << originalPath;
+        _discoveryData->_permanentDeletionRequests.insert(originalPath);
+    }
+
     if (isE2eeMoveOnlineOnlyItemWithCfApi) {
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_direction = SyncFileItem::Down;
@@ -1784,6 +1789,7 @@ void ProcessDirectoryJob::processFileFinalize(
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
         if (removed) {
             job->setParent(_discoveryData);
+            _discoveryData->_deletedItem[path._original] = item;
             _discoveryData->enqueueDirectoryToDelete(path._original, job);
         } else {
             connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);

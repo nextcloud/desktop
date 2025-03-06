@@ -44,6 +44,10 @@ void DeleteJob::start()
         req.setRawHeader(oneHeaderIt.key(), oneHeaderIt.value());
     }
 
+    if (_skipTrashbin) {
+        req.setRawHeader("X-NC-Skip-Trashbin", "true");
+    }
+
     if (_url.isValid()) {
         startRequest("DELETE", _url, req);
     } else {
@@ -59,6 +63,16 @@ QByteArray DeleteJob::folderToken() const
 void DeleteJob::setFolderToken(const QByteArray &folderToken)
 {
     _folderToken = folderToken;
+}
+
+bool DeleteJob::skipTrashbin() const
+{
+    return _skipTrashbin;
+}
+
+void DeleteJob::setSkipTrashbin(bool skipTrashbin)
+{
+    _skipTrashbin = skipTrashbin;
 }
 
 } // namespace OCC
