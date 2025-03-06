@@ -154,6 +154,7 @@ void BasePropagateRemoteDeleteEncrypted::deleteRemoteItem(const QString &filenam
     qCInfo(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Deleting nested encrypted item" << filename;
 
     const auto deleteJob = new DeleteJob(_propagator->account(), _propagator->fullRemotePath(filename), {}, this);
+    deleteJob->setSkipTrashbin(true);
     if (_encryptedFolderMetadataHandler && _encryptedFolderMetadataHandler->folderMetadata()
         && _encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
         deleteJob->setFolderToken(_encryptedFolderMetadataHandler->folderToken());

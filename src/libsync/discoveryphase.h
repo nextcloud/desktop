@@ -315,6 +315,11 @@ class DiscoveryPhase : public QObject
 
     void enqueueDirectoryToDelete(const QString &path, ProcessDirectoryJob* const directoryJob);
 
+    /// contains files/folder names that are requested to be deleted permanently
+    QSet<QString> _permanentDeletionRequests;
+
+    void markPermanentDeletionRequests();
+
 public:
     // input
     QString _localDir; // absolute path to the local directory. ends with '/'
