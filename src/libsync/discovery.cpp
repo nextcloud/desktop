@@ -245,12 +245,16 @@ void ProcessDirectoryJob::process()
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
         }
 
-        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup) {
-            processBlacklisted(path, e.localEntry, e.dbEntry);
+        const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
+
+        const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
+
+        if (willBeExcluded) {
             continue;
         }
 
-        if (handleExcluded(path._target, e, entries, isHidden)) {
+        if (isBlacklisted) {
+            processBlacklisted(path, e.localEntry, e.dbEntry);
             continue;
         }
 
@@ -266,7 +270,7 @@ void ProcessDirectoryJob::process()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, const bool isHidden, const bool isBlacklisted)
 {
     const auto isDirectory = entries.localEntry.isDirectory || entries.serverEntry.isDirectory;
 
@@ -497,7 +501,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     _childIgnored = true;
-    emit _discoveryData->itemDiscovered(item);
+
+    if (isBlacklisted) {
+        emit _discoveryData->silentlyExcluded(path);
+    } else {
+        emit _discoveryData->itemDiscovered(item);
+    }
+
     return true;
 }
 
