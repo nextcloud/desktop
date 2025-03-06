@@ -236,9 +236,7 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, e, entries, isHidden))
-            continue;
+        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
@@ -249,6 +247,10 @@ void ProcessDirectoryJob::process()
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
+            continue;
+        }
+
+        if (handleExcluded(path._target, e, entries, isHidden)) {
             continue;
         }
 
