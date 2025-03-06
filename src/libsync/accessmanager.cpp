@@ -36,6 +36,13 @@ AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
     setCookieJar(new CookieJar);
+    connect(this, &QNetworkAccessManager::authenticationRequired, this, [this](QNetworkReply *reply, QAuthenticator *authenticator) {
+        if (authenticator->user().isEmpty()) {
+            qCWarning(lcAccessManager) << "Server requested authentication and we didn't provide a user, aborting ...";
+            authenticator->setUser(QUuid::createUuid().toString());
+            reply->abort();
+        }
+    });
 }
 
 QByteArray AccessManager::generateRequestId()
