@@ -184,6 +184,7 @@ void PropagateRemoteDeleteEncryptedRootFolder::deleteNestedRemoteItem(const QStr
     auto deleteJob = new DeleteJob(_propagator->account(), _propagator->fullRemotePath(filename), {}, this);
     deleteJob->setFolderToken(folderToken());
     deleteJob->setProperty(encryptedFileNamePropertyKey, filename);
+    deleteJob->setSkipTrashbin(true);
 
     connect(deleteJob, &DeleteJob::finishedSignal, this, &PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinished);
 
