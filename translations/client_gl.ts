@@ -2946,7 +2946,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
         <translation>– beta: contén versións con novas funcionalidades que é posíbel que non fosen probadas
-– diario: contén versións creadas diariamente só para probas e desenvolvemento
+– diaria: contén versións creadas diariamente só para probas e desenvolvemento
 
 Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel implica agardar pola nova versión estábel.</translation>
     </message>
@@ -2958,7 +2958,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
         <translation>– empresarial: contén versións estábeis para os clientes.
 
-Non é posíbel reverter as versións inmediatamente: cambiar de estábel estable a empresarial implica agardar pola nova versión empresarial.</translation>
+Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empresarial implica agardar pola nova versión empresarial.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
