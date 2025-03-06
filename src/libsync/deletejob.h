@@ -35,9 +35,13 @@ public:
     [[nodiscard]] QByteArray folderToken() const;
     void setFolderToken(const QByteArray &folderToken);
 
+    [[nodiscard]] bool skipTrashbin() const;
+    void setSkipTrashbin(bool skipTrashbin);
+
 private:
     QMap<QByteArray, QByteArray> _headers = {};
     QUrl _url; // Only used if the constructor taking a url is taken.
     QByteArray _folderToken;
+    bool _skipTrashbin = false;
 };
 }
