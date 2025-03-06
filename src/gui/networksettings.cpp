@@ -40,12 +40,6 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
 
-    if (!account) {
-        _ui->globalProxySettingsRadioButton->setVisible(false);
-        _ui->globalDownloadSettingsRadioButton->setVisible(false);
-        _ui->globalUploadSettingsRadioButton->setVisible(false);
-    }
-
     if (!Theme::instance()->doNotUseProxy()) {
         _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
         _ui->userLineEdit->setPlaceholderText(tr("Username for proxy server"));
@@ -91,11 +85,9 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     _ui->uploadSpinBox->setVisible(_ui->uploadLimitRadioButton->isChecked());
     _ui->uploadSpinBoxLabel->setVisible(_ui->uploadLimitRadioButton->isChecked());
 
-    connect(_ui->globalUploadSettingsRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->globalDownloadSettingsRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
@@ -124,34 +116,28 @@ void NetworkSettings::loadProxySettings()
         return;
     }
 
-    const auto useGlobalProxy = !_account || _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy;
-    const auto cfgFile = ConfigFile();
-    const auto proxyType = useGlobalProxy ? cfgFile.proxyType() : _account->proxyType();
-    const auto proxyPort = useGlobalProxy ? cfgFile.proxyPort() : _account->proxyPort();
-    const auto proxyHostName = useGlobalProxy ? cfgFile.proxyHostName() : _account->proxyHostName();
-    const auto proxyNeedsAuth = useGlobalProxy ? cfgFile.proxyNeedsAuth() : _account->proxyNeedsAuth();
-    const auto proxyUser = useGlobalProxy ? cfgFile.proxyUser() : _account->proxyUser();
-    const auto proxyPassword = useGlobalProxy ? cfgFile.proxyPassword() : _account->proxyPassword();
+    const auto proxyType = _account->proxyType();
+    const auto proxyPort = _account->proxyPort();
+    const auto proxyHostName = _account->proxyHostName();
+    const auto proxyNeedsAuth = _account->proxyNeedsAuth();
+    const auto proxyUser = _account->proxyUser();
+    const auto proxyPassword = _account->proxyPassword();
 
     // load current proxy settings
-    if (_account && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
-        _ui->globalProxySettingsRadioButton->setChecked(true);
-    } else {
-        switch (proxyType) {
-        case QNetworkProxy::NoProxy:
-            _ui->noProxyRadioButton->setChecked(true);
-            break;
-        case QNetworkProxy::DefaultProxy:
-            _ui->systemProxyRadioButton->setChecked(true);
-            break;
-        case QNetworkProxy::Socks5Proxy:
-        case QNetworkProxy::HttpProxy:
-            _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
-            _ui->manualProxyRadioButton->setChecked(true);
-            break;
-        default:
-            break;
-        }
+    switch (proxyType) {
+    case QNetworkProxy::NoProxy:
+        _ui->noProxyRadioButton->setChecked(true);
+        break;
+    case QNetworkProxy::DefaultProxy:
+        _ui->systemProxyRadioButton->setChecked(true);
+        break;
+    case QNetworkProxy::Socks5Proxy:
+    case QNetworkProxy::HttpProxy:
+        _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
+        _ui->manualProxyRadioButton->setChecked(true);
+        break;
+    default:
+        break;
     }
 
     _ui->hostLineEdit->setText(proxyHostName);
@@ -163,16 +149,12 @@ void NetworkSettings::loadProxySettings()
 
 void NetworkSettings::loadBWLimitSettings()
 {
-    const auto useGlobalLimit = !_account || _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
-    const auto cfgFile = ConfigFile();
-    const auto useDownloadLimit = useGlobalLimit ? cfgFile.useDownloadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->downloadLimitSetting());
-    const auto downloadLimit = useGlobalLimit ? cfgFile.downloadLimit() : _account->downloadLimit();
-    const auto useUploadLimit = useGlobalLimit ? cfgFile.useUploadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->uploadLimitSetting());
-    const auto uploadLimit = useGlobalLimit ? cfgFile.uploadLimit() : _account->uploadLimit();
+    const auto useDownloadLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->downloadLimitSetting());
+    const auto downloadLimit = _account->downloadLimit();
+    const auto useUploadLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->uploadLimitSetting());
+    const auto uploadLimit = _account->uploadLimit();
 
-    if (_account && _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
-        _ui->globalDownloadSettingsRadioButton->setChecked(true);
-    } else if (useDownloadLimit >= 1) {
+    if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
     } else if (useDownloadLimit == 0) {
         _ui->noDownloadLimitRadioButton->setChecked(true);
@@ -181,9 +163,7 @@ void NetworkSettings::loadBWLimitSettings()
     }
     _ui->downloadSpinBox->setValue(downloadLimit);
 
-    if (_account && _account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
-        _ui->globalUploadSettingsRadioButton->setChecked(true);
-    } else if (useUploadLimit >= 1) {
+    if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
     } else if (useUploadLimit == 0) {
         _ui->noUploadLimitRadioButton->setChecked(true);
@@ -197,7 +177,6 @@ void NetworkSettings::saveProxySettings()
 {
     checkEmptyProxyHost();
 
-    const auto useGlobalProxy = _ui->globalProxySettingsRadioButton->isChecked();
     const auto user = _ui->userLineEdit->text();
     const auto password = _ui->passwordLineEdit->text();
     const auto host = _ui->hostLineEdit->text();
@@ -218,8 +197,7 @@ void NetworkSettings::saveProxySettings()
     }
 
     if (_account) { // We must be setting up network proxy for a specific account
-        const auto proxySetting = useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy;
-        _account->setProxySettings(proxySetting, proxyType, host, port, needsAuth, user, password);
+        _account->setProxySettings(proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
         AccountManager::instance()->saveAccount(_account.data());
@@ -235,9 +213,7 @@ void NetworkSettings::saveProxySettings()
 
         const auto accounts = AccountManager::instance()->accounts();
         for (const auto &accountState : accounts) {
-            if (accountState->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
-                accountState->freshConnectionAttempt();
-            }
+            accountState->freshConnectionAttempt();
         }
     }
 }
@@ -256,7 +232,7 @@ void NetworkSettings::saveBWLimitSettings()
         useDownloadLimit = 0;
     } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
         useDownloadLimit = -1;
-    } else if (_account && _ui->globalDownloadSettingsRadioButton->isChecked()) {
+    } else if (_account) {
         useDownloadLimit = -2;
     }
 
@@ -266,7 +242,7 @@ void NetworkSettings::saveBWLimitSettings()
         useUploadLimit = 0;
     } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
         useUploadLimit = -1;
-    } else if (_account && _ui->globalUploadSettingsRadioButton->isChecked()) {
+    } else if (_account) {
         useUploadLimit = -2;
     }
 

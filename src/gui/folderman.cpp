@@ -1564,11 +1564,10 @@ void FolderMan::setDirtyProxy()
         if (folder 
             && folder->accountState() 
             && folder->accountState()->account()
-            && folder->accountState()->account()->networkAccessManager()
-            && folder->accountState()->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
+            && folder->accountState()->account()->networkAccessManager()) {
             // Need to do this so we do not use the old determined system proxy
             const auto proxy = QNetworkProxy(QNetworkProxy::DefaultProxy);
-            folder->accountState()->account()->networkAccessManager()->setProxy(proxy);
+            folder->accountState()->account()->setProxyType(proxy.type());
         }
     }
 }
