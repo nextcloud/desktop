@@ -31,7 +31,7 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
       _networkManager(nullptr)
 {
     QObject::connect(AccountManager::instance(), &AccountManager::accountRemoved,
-                     this, [=](AccountState *) {
+                     this, [=, this](AccountState *) {
         _accountRemoved = true;
     });
     if (FolderMan::instance()) {

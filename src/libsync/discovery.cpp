@@ -675,7 +675,7 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
-                                                    [=](bool result) {
+                                                    [=, this](bool result) {
                                                         --_pendingAsyncJobs;
                                                         if (!result) {
                                                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
@@ -732,7 +732,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
         item->_e2eCertificateFingerprint = serverEntry.e2eCertificateFingerprint;
     }
-    item->_encryptedFileName = [=] {
+    item->_encryptedFileName = [=, this] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
         }
@@ -1023,7 +1023,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -1549,7 +1549,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
 
 
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
