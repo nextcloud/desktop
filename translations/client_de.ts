@@ -1681,19 +1681,19 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="630"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="653"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="686"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverantwort: PROPFIND-Antwort ist nicht im XML-Format!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="730"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="716"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="753"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Einrichtungsfehler für verschlüsselte Metadaten!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="717"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="740"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Fehler bei der Einrichtung der verschlüsselten Metadaten: Die ursprüngliche Signatur vom Server ist leer.</translation>
     </message>
@@ -1701,27 +1701,27 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="302"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="325"/>
         <source>Error while opening directory %1</source>
         <translation>Fehler beim Öffnen des Ordners %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Verzeichnis auf dem Client nicht zugreifbar, Berechtigung verweigert</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="308"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Directory not found: %1</source>
         <translation>Ordner nicht gefunden: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="339"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="362"/>
         <source>Filename encoding is not valid</source>
         <translation>Dateinamenkodierung ist ungültig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
         <translation>Fehler beim Lesen des Ordners %1</translation>
     </message>
@@ -4140,49 +4140,49 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Fehler beim Löschen des Dateisatzes %1 aus der Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1440"/>
-        <location filename="../src/libsync/discovery.cpp" line="1900"/>
+        <location filename="../src/libsync/discovery.cpp" line="1445"/>
+        <location filename="../src/libsync/discovery.cpp" line="1906"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Auf ungültiges Ziel verschoben, wiederherstellen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1758"/>
+        <location filename="../src/libsync/discovery.cpp" line="1763"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Das verschlüsselte Element kann nicht geändert werden, da das ausgewählte Zertifikat nicht gültig ist.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1819"/>
+        <location filename="../src/libsync/discovery.cpp" line="1825"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoriert wegen der &quot;Choose what to sync&quot;-Blacklist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1853"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1859"/>
+        <location filename="../src/libsync/discovery.cpp" line="2067"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nicht erlaubt, da Sie nicht die Berechtigung haben, Unterordner zu diesem Ordner hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1864"/>
+        <location filename="../src/libsync/discovery.cpp" line="1870"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nicht erlaubt, da Sie keine Berechtigung zum Hinzufügen von Dateien in diesen Ordner haben.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1884"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist. Wiederherstellen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1920"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Entfernen nicht erlaubt, wiederherstellen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2108"/>
+        <location filename="../src/libsync/discovery.cpp" line="2114"/>
         <source>Error while reading the database</source>
         <translation>Fehler beim Lesen der Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2193"/>
+        <location filename="../src/libsync/discovery.cpp" line="2199"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Der Server hat während des Lesens des Verzeichnisses &quot;%1&quot; mit einem Fehler geantwortet: %2</translation>
     </message>
@@ -4424,12 +4424,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="123"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Es wurde ein falscher HTTP-Status-Code vom Server gesendet. Erwartet wurde 204, aber gesendet wurde &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="131"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Der Dateidatensatz %1 konnte nicht aus der lokalen Datenbank gelöscht werden</translation>
     </message>

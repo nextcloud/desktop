@@ -1682,19 +1682,19 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="630"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="653"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="686"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="730"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="716"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="753"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="717"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="740"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Produciuse un erro de configuración dos metadatos cifrados: a sinatura inicial do servidor está baleira.</translation>
     </message>
@@ -1702,27 +1702,27 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="302"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="325"/>
         <source>Error while opening directory %1</source>
         <translation>Produciuse un erro ao abrir o directorio %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Directorio non accesíbel no cliente, permiso denegado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="308"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Directory not found: %1</source>
         <translation>Non se atopou o directorio: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="339"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="362"/>
         <source>Filename encoding is not valid</source>
         <translation>O nome de ficheiro codificado non é correcto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
         <translation>Produciuse un erro ao ler o directorio %1</translation>
     </message>
@@ -4141,49 +4141,49 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1440"/>
-        <location filename="../src/libsync/discovery.cpp" line="1900"/>
+        <location filename="../src/libsync/discovery.cpp" line="1445"/>
+        <location filename="../src/libsync/discovery.cpp" line="1906"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1758"/>
+        <location filename="../src/libsync/discovery.cpp" line="1763"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Non é posíbel modificar o elemento cifrado porque o certificado seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1819"/>
+        <location filename="../src/libsync/discovery.cpp" line="1825"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1853"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1859"/>
+        <location filename="../src/libsync/discovery.cpp" line="2067"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1864"/>
+        <location filename="../src/libsync/discovery.cpp" line="1870"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1884"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1920"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2108"/>
+        <location filename="../src/libsync/discovery.cpp" line="2114"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2193"/>
+        <location filename="../src/libsync/discovery.cpp" line="2199"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2</translation>
     </message>
@@ -4425,12 +4425,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="123"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="131"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
     </message>

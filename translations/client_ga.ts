@@ -1682,19 +1682,19 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="630"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="653"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="686"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Earráid fhreastalaí: Níl an freagra PROPFIND formáidithe XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="730"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="716"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="753"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Earráid socraithe meiteashonraí criptithe!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="717"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="740"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Earráid socraithe meiteashonraí criptithe: tá síniú tosaigh an fhreastalaí folamh.</translation>
     </message>
@@ -1702,27 +1702,27 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="302"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="325"/>
         <source>Error while opening directory %1</source>
         <translation>Earráid agus eolaire % 1 á oscailt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Níl an t-eolaire inrochtana ag an gcliant, diúltaíodh cead</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="308"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Directory not found: %1</source>
         <translation>Comhadlann gan aimsiú: % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="339"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="362"/>
         <source>Filename encoding is not valid</source>
         <translation>Níl ionchódú ainm comhaid bailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
         <translation>Earráid agus eolaire % 1 á léamh</translation>
     </message>
@@ -4142,49 +4142,49 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Earráid agus taifead comhaid % 1 á scriosadh ón mbunachar sonraí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1440"/>
-        <location filename="../src/libsync/discovery.cpp" line="1900"/>
+        <location filename="../src/libsync/discovery.cpp" line="1445"/>
+        <location filename="../src/libsync/discovery.cpp" line="1906"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Bogtha go dtí an sprioc neamhbhailí, á athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1758"/>
+        <location filename="../src/libsync/discovery.cpp" line="1763"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Ní féidir an mhír chriptithe a mhionathrú toisc nach bhfuil an teastas roghnaithe bailí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1819"/>
+        <location filename="../src/libsync/discovery.cpp" line="1825"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Rinneadh neamhaird de mar gheall ar an liosta dubh &quot;roghnaigh cad ba cheart a shioncronú&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1853"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1859"/>
+        <location filename="../src/libsync/discovery.cpp" line="2067"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ní cheadaítear toisc nach bhfuil cead agat fofhillteáin a chur leis an bhfillteán sin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1864"/>
+        <location filename="../src/libsync/discovery.cpp" line="1870"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ní cheadaítear toisc nach bhfuil cead agat comhaid a chur san fhillteán sin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1884"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ní cheadaítear an comhad seo a uaslódáil toisc go bhfuil sé inléite amháin ar an bhfreastalaí, á athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1920"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ní cheadaítear a bhaint, a athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2108"/>
+        <location filename="../src/libsync/discovery.cpp" line="2114"/>
         <source>Error while reading the database</source>
         <translation>Earráid agus an bunachar sonraí á léamh</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2193"/>
+        <location filename="../src/libsync/discovery.cpp" line="2199"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>D&apos;fhreagair an freastalaí le earráid agus eolaire &quot;% 1&quot; á léamh : % 2</translation>
     </message>
@@ -4426,12 +4426,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="123"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Cód HTTP mícheart curtha ar ais ag an bhfreastalaí. Bhíothas ag súil le 204, ach fuarthas &quot;% 1 % 2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="131"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Níorbh fhéidir taifead comhaid % 1 a scriosadh ó DB logánta</translation>
     </message>

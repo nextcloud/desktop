@@ -1681,19 +1681,19 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="630"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="653"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="686"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfeil: PROPFIND-svaret er ikke XML-formatert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="730"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="716"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="753"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Feil ved oppsett av kryptert metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="717"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="740"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -1701,27 +1701,27 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="302"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="325"/>
         <source>Error while opening directory %1</source>
         <translation>Feil under åpning av katalogen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Katalog ikke tilgjengelig på klient, tillatelse nektet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="308"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Directory not found: %1</source>
         <translation>Mappe ikke funnet: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="339"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="362"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnavn koding er ikke gyldig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
         <translation>Kunne ikke lese mappen %1</translation>
     </message>
@@ -4126,49 +4126,49 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Feil under sletting av filpost %1 fra databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1440"/>
-        <location filename="../src/libsync/discovery.cpp" line="1900"/>
+        <location filename="../src/libsync/discovery.cpp" line="1445"/>
+        <location filename="../src/libsync/discovery.cpp" line="1906"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttet til ugyldig mål, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1758"/>
+        <location filename="../src/libsync/discovery.cpp" line="1763"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1819"/>
+        <location filename="../src/libsync/discovery.cpp" line="1825"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorert på grunn av svartelisten &quot;velg hva som skal synkroniseres&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1853"/>
-        <location filename="../src/libsync/discovery.cpp" line="2061"/>
+        <location filename="../src/libsync/discovery.cpp" line="1859"/>
+        <location filename="../src/libsync/discovery.cpp" line="2067"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tillatt fordi du ikke har tillatelse til å legge til undermapper i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1864"/>
+        <location filename="../src/libsync/discovery.cpp" line="1870"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tillatt fordi du ikke har tillatelse til å legge til filer i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1884"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ikke tillatt å laste opp denne filen fordi den er skrivebeskyttet på serveren, gjenopprettes</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1920"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ikke tillatt å fjerne, gjenopprette</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2108"/>
+        <location filename="../src/libsync/discovery.cpp" line="2114"/>
         <source>Error while reading the database</source>
         <translation>Feil under lesing av databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2193"/>
+        <location filename="../src/libsync/discovery.cpp" line="2199"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Serveren svarte med en feil under lesing av katalogen &quot;%1&quot;: %2</translation>
     </message>
@@ -4410,12 +4410,12 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="123"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Feil HTTP-kode returnert fra server. Ventet 204, men mottok &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="131"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunne ikke slette filposten %1 fra lokal DB</translation>
     </message>
