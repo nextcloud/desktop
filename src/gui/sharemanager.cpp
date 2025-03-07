@@ -54,7 +54,8 @@ static void updateFolder(const AccountPtr &account, QStringView path)
 
 Share::Share(AccountPtr account,
     const QString &id,
-    const QString &uidowner,
+    const QString &uidOwner,
+    const QString &uidFileOwner,
     const QString &ownerDisplayName,
     const QString &path,
     const ShareType shareType,
@@ -63,7 +64,8 @@ Share::Share(AccountPtr account,
     const ShareePtr shareWith)
     : _account(account)
     , _id(id)
-    , _uidowner(uidowner)
+    , _uidOwner(uidOwner)
+    , _uidFileOwner(uidFileOwner)
     , _ownerDisplayName(ownerDisplayName)
     , _path(path)
     , _shareType(shareType)
@@ -90,7 +92,12 @@ QString Share::getId() const
 
 QString Share::getUidOwner() const
 {
-    return _uidowner;
+    return _uidOwner;
+}
+
+QString Share::getUidFileOwner() const
+{
+    return _uidFileOwner;
 }
 
 QString Share::getOwnerDisplayName() const
@@ -195,7 +202,8 @@ QDate LinkShare::getExpireDate() const
 
 LinkShare::LinkShare(AccountPtr account,
     const QString &id,
-    const QString &uidowner,
+    const QString &uidOwner,
+    const QString &uidFileOwner,
     const QString &ownerDisplayName,
     const QString &path,
     const QString &name,
@@ -207,7 +215,7 @@ LinkShare::LinkShare(AccountPtr account,
     const QString &note,
     const QString &label,
     const bool hideDownload)
-    : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
+    : Share(account, id, uidOwner, uidFileOwner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
     , _name(name)
     , _token(token)
     , _note(note)
@@ -334,7 +342,8 @@ void LinkShare::slotHideDownloadSet(const QJsonDocument &jsonDoc, const QVariant
 
 UserGroupShare::UserGroupShare(AccountPtr account,
     const QString &id,
-    const QString &owner,
+    const QString &uidOwner,
+    const QString &uidFileOwner,
     const QString &ownerDisplayName,
     const QString &path,
     const ShareType shareType,
@@ -343,7 +352,7 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     const ShareePtr shareWith,
     const QDate &expireDate,
     const QString &note)
-    : Share(account, id, owner, ownerDisplayName, path, shareType, isPasswordSet, permissions, shareWith)
+    : Share(account, id, uidOwner, uidFileOwner, ownerDisplayName, path, shareType, isPasswordSet, permissions, shareWith)
     , _note(note)
     , _expireDate(expireDate)
 {
@@ -612,6 +621,7 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
     return QSharedPointer<UserGroupShare>(new UserGroupShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toVariant().toString(),
+        data.value("uid_file_owner").toVariant().toString(),
         data.value("displayname_owner").toVariant().toString(),
         data.value("path").toString(),
         static_cast<Share::ShareType>(data.value("share_type").toInt()),
@@ -652,6 +662,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data) 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toString(),
+        data.value("uid_file_owner").toString(),
         data.value("displayname_owner").toString(),
         data.value("path").toString(),
         data.value("name").toString(),
@@ -674,6 +685,7 @@ SharePtr ShareManager::parseShare(const QJsonObject &data) const
     return SharePtr(new Share(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toVariant().toString(),
+        data.value("uid_file_owner").toVariant().toString(),
         data.value("displayname_owner").toVariant().toString(),
         data.value("path").toString(),
         (Share::ShareType)data.value("share_type").toInt(),
