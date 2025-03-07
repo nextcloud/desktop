@@ -470,7 +470,7 @@ void ShareManager::createShare(const QString &path,
     auto job = new OcsShareJob(_account);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
     connect(job, &OcsShareJob::shareJobFinished, this,
-        [=](const QJsonDocument &reply) {
+        [=, this](const QJsonDocument &reply) {
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionAll;
             for (const auto &element : reply.object()["ocs"].toObject()["data"].toArray()) {

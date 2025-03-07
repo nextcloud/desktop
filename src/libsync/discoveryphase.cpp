@@ -82,7 +82,7 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::functi
     connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
         return completionCallback(false);
     });
-    connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+    connect(propfindJob, &PropfindJob::result, this, [=, this](const QVariantMap &values) {
         const auto result = values.value(QLatin1String("size")).toLongLong();
         const auto limit = _syncOptions._newBigFolderSizeLimit;
         qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << result << "limit:" << limit;
@@ -773,7 +773,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
             }
         };
 
-        std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=](const RemoteInfo &info) {
+        std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=, this](const RemoteInfo &info) {
             auto result = info;
             const auto encryptedFileInfo = findEncryptedFile(result.name);
             if (encryptedFileInfo) {
