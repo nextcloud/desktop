@@ -214,6 +214,9 @@ public:
     [[nodiscard]] QString overrideLocalDir() const;
     void setOverrideLocalDir(const QString &localDir);
 
+    [[nodiscard]] QString proposeLocalDir() const;
+    void setProposeLocalDir(const QString &localDir);
+
     [[nodiscard]] bool isVfsEnabled() const;
     void setVfsEnabled(bool enabled);
 
