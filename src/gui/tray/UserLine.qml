@@ -97,6 +97,7 @@ AbstractButton {
 
                 EnforcedPlainTextLabel {
                     id: emoji
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
                     topPadding: -Style.accountLabelsSpacing
@@ -104,12 +105,14 @@ AbstractButton {
 
                 EnforcedPlainTextLabel {
                     id: message
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                     Layout.fillWidth: true
                     visible: model.statusMessage !== ""
                     text: statusMessage
                     elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
                     leftPadding: Style.accountLabelsSpacing
+                    topPadding: -Style.userStatusAnchorsMargin
                 }
             }
 
@@ -121,6 +124,7 @@ AbstractButton {
                 text: server
                 elide: Text.ElideRight
                 font.pixelSize: Style.subLinePixelSize
+                topPadding: -Style.accountLabelsAnchorsMargin
             }
         }
 
