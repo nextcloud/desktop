@@ -110,7 +110,7 @@ bool ConflictSolver::renameLocalVersion()
         return false;
     }
 
-    const auto renamePattern = [=] {
+    const auto renamePattern = [=, this] {
         auto result = QString::fromUtf8(OCC::Utility::conflictFileBaseNameFromPattern(_localVersionFilename.toUtf8()));
         const auto dotIndex = result.lastIndexOf('.');
         return QString(result.left(dotIndex) + "_%1" + result.mid(dotIndex));

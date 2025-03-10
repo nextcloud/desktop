@@ -114,7 +114,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
         if (QString::compare(account->davUser(), newUserId, Qt::CaseInsensitive) != 0) {
             // TODO: the error message should be in the UI
             qInfo() << "Authenticated with the wrong user! Please login with the account:" << account->prettyName();
-            if (const auto cred = account->credentials()) {
+            if (account->credentials()) {
                 account->credentials()->askFromUser();
             }
             return;

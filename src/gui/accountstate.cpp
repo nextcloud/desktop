@@ -78,7 +78,7 @@ AccountState::AccountState(const AccountPtr &account)
                 _termsOfServiceChecker.start();
             });
 
-    connect(this, &AccountState::isConnectedChanged, [=]{
+    connect(this, &AccountState::isConnectedChanged, [=, this]{
         // Get the Apps available on the server if we're now connected.
         if (isConnected()) {
             fetchNavigationApps();
