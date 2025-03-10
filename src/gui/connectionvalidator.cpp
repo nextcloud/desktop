@@ -60,8 +60,7 @@ void ConnectionValidator::checkServerAndAuth()
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if ((ClientProxy::isUsingSystemDefault() && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy)
-        || _account->proxyType() == QNetworkProxy::DefaultProxy) {
+    if (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
