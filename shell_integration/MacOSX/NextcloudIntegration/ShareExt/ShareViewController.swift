@@ -9,6 +9,10 @@ import Cocoa
 
 class ShareViewController: NSViewController {
 
+    @IBOutlet weak var titleField: NSTextField!
+    @IBOutlet weak var outlineView: NSOutlineView!
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
+
     override var nibName: NSNib.Name? {
         return NSNib.Name("ShareViewController")
     }
