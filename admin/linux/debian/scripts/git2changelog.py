@@ -31,7 +31,7 @@ def getCommitVersion(commit):
     try:
         for line in subprocess.check_output(["git", "show",
                                              commit + ":VERSION.cmake"]).splitlines():
-            m = re.match("set\( MIRALL_VERSION_([A-Z]+) +([0-9]+) *\)", line)
+            m = re.match("set\( *MIRALL_VERSION_([A-Z]+) +([0-9]+) *\)", line)
             if m is not None:
                 kind=m.group(1)
                 version=m.group(2)
