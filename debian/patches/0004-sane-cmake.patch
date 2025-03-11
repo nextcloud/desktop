@@ -152,7 +152,7 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 6ac13ffdc..2d2a63046 100644
+index b504186ff..0fc433593 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
 @@ -17,22 +17,40 @@ set(NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_MAJOR 28)
@@ -204,5 +204,5 @@ index 6ac13ffdc..2d2a63046 100644
 +    set ( MIRALL_VERSION_STRING "${EXTERNAL_VERSION}" )
 +endif ( NOT DEFINED EXTERNAL_VERSION )
  if(MIRALL_VERSION_PATCH VERSION_GREATER_EQUAL "50")
-     set (MIRALL_HUMAN_VERSION_STRING "3.16.0 rc2")
+     set (MIRALL_HUMAN_VERSION_STRING "3.16.0")
  else()
