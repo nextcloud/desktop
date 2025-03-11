@@ -104,8 +104,11 @@ Button {
 
         MenuItem {
             id: syncPauseButton
+            height: Systray.anySyncFolders ? implicitHeight : 0
             font.pixelSize: Style.topLinePixelSize
             hoverEnabled: true
+            enabled: Systray.anySyncFolders
+            visible: Systray.anySyncFolders
             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
             Accessible.role: Accessible.MenuItem
             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
