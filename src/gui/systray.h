@@ -69,6 +69,7 @@ class Systray : public QSystemTrayIcon
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
     Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
+    Q_PROPERTY(bool anySyncFolders READ anySyncFolders NOTIFY anySyncFoldersChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
     Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
 
@@ -92,6 +93,7 @@ public:
     Q_REQUIRED_RESULT bool useNormalWindow() const;
 
     Q_REQUIRED_RESULT bool syncIsPaused() const;
+    Q_REQUIRED_RESULT bool anySyncFolders() const;
     Q_REQUIRED_RESULT bool isOpen() const;
 
     [[nodiscard]] bool enableAddAccount() const;
@@ -113,6 +115,7 @@ signals:
     void showErrorMessageDialog(const QString &error);
 
     void syncIsPausedChanged();
+    void anySyncFoldersChanged();
     void isOpenChanged();
 
     void hideSettingsDialog();
@@ -158,6 +161,7 @@ private slots:
     void slotUpdateSyncPausedState();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
+    void slotSyncFoldersChanged(const OCC::Folder::Map &foldeMap);
 
 private:
     // Argument allows user to specify a specific dialog to be raised
@@ -183,6 +187,8 @@ private:
 
     bool _isOpen = false;
     bool _syncIsPaused = true;
+    bool _anySyncFolders = false;
+
     std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QSharedPointer<QQuickWindow> _trayWindow;
