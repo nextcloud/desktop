@@ -837,9 +837,15 @@ bool AvatarJob::finished()
     QImage avImage;
 
     if (http_result_code == 200) {
-        QByteArray pngData = reply()->readAll();
-        if (pngData.size()) {
-            if (avImage.loadFromData(pngData)) {
+        if (const auto data = reply()->readAll(); data.size()) {
+#ifdef Q_OS_MACOS
+            // NOTE: We are facing issues with JPEGs at the moment on macOS with our Qt 6.8.2-based release.
+            // Do not create previews for JPEGs to prevent crashing.
+            if (data.startsWith(QByteArrayLiteral("\xFF\xD8")) && data.endsWith(QByteArrayLiteral("\xFF\xD9"))) {
+                qCDebug(lcAvatarJob) << "Avatar pixmap is a JPEG, avoiding";
+            } else
+#endif
+            if (avImage.loadFromData(data)) {
                 qCDebug(lcAvatarJob) << "Retrieved Avatar pixmap!";
             }
         }
