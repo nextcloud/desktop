@@ -52,6 +52,7 @@ option( BUILD_UPDATER "Build updater" ON )
 option( WITH_PROVIDERS "Build with providers list" ON )
 
 option( ENFORCE_VIRTUAL_FILES_SYNC_FOLDER "Enforce use of virtual files sync folder when available" OFF )
+option( DISABLE_VIRTUAL_FILES_SYNC_FOLDER "Disable use of virtual files sync folder even when available" OFF )
 
 option(ENFORCE_SINGLE_ACCOUNT "Enforce use of a single account in desktop client" OFF)
 
