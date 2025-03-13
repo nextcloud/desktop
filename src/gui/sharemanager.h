@@ -74,7 +74,8 @@ public:
      */
     explicit Share(AccountPtr account,
                    const QString &id,
-                   const QString &owner,
+                   const QString &uidOwner,
+                   const QString &uidFileOwner,
                    const QString &ownerDisplayName,
                    const QString &path,
                    const ShareType shareType,
@@ -98,6 +99,11 @@ public:
      * Get the uid_owner
      */
     [[nodiscard]] QString getUidOwner() const;
+
+    /*
+     * Get the uid_file_owner
+     */
+    [[nodiscard]] QString getUidFileOwner() const;
 
     /*
      * Get the owner display name
@@ -165,7 +171,8 @@ public slots:
 protected:
     AccountPtr _account;
     QString _id;
-    QString _uidowner;
+    QString _uidOwner;
+    QString _uidFileOwner;
     QString _ownerDisplayName;
     QString _path;
     ShareType _shareType;
@@ -207,7 +214,8 @@ class LinkShare : public Share
 public:
     explicit LinkShare(AccountPtr account,
         const QString &id,
-        const QString &uidowner,
+        const QString &uidOwner,
+        const QString &uidFileOwner,
         const QString &ownerDisplayName,
         const QString &path,
         const QString &name,
@@ -338,7 +346,8 @@ class UserGroupShare : public Share
 public:
     UserGroupShare(AccountPtr account,
         const QString &id,
-        const QString &owner,
+        const QString &uidOwner,
+        const QString &uidFileOwner,
         const QString &ownerDisplayName,
         const QString &path,
         const ShareType shareType,
