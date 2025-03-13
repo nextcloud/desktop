@@ -113,7 +113,8 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
 void FileProviderSocketController::sendMessage(const QString &message) const
 {
     if (!_socket) {
-        qCWarning(lcFileProviderSocketController) << "Not sending message on dead file provider socket:" << message;
+        const auto toLog = message.contains("ACCOUNT_DETAILS") ? "ACCOUNT_DETAILS:****" : message;
+        qCWarning(lcFileProviderSocketController) << "Not sending message on dead file provider socket:" << toLog;
         return;
     }
 
