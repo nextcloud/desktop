@@ -1,3 +1,780 @@
+nextcloud-desktop (3.16.0) jammy; urgency=medium
+
+  [ Matthieu Gallien ]
+  * master branch will be 3.16.0 future release
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * fix spelling os UserStatus qml type when setting user status
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Make connectToPaletteSignal const
+  * Try connectToSignal on all OSes on Theme init
+  * Add connectToSignal on darkMode property fetch
+  * Use Style.darkMode instead of Theme.darkMode
+
+  [ Matthieu Gallien ]
+  * no transparent background for main ApplicationWindow
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * fix regressions in automated tests for bulk upload
+  * fix local discovery test for file names with spaces on windows
+  * fix TestSyncConflictsModel by using locale aware test data
+  * fir regression with VFS availability test on Windows
+  * when updating a virtual file after lock/unlock: avoid setting modtime
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * enable reversed locale layout in QML
+
+  [ Valdnet ]
+  * improve translations of strings with numbers inside
+
+  [ Matthieu Gallien ]
+  * convert double numbers to int because we expect them to be real ints
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Valdnet ]
+  * l10n: Change to a capital letter
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * mac-crafter: Check if path to trecursively codesign exists and throw error if it doesn't
+  * mac-crafter: Only attempt sparkle codesign if it exists in the app bundle
+
+  [ Matthieu Gallien ]
+  * when locking a file set If-Match header to ensure etag is correct
+
+  [ Claudio Cambra ]
+  * Re-add transparent tray window colour
+  * Make tray window item a rectangle with base palette colour
+  * Change window background colour to palette window color
+  * Generate icon paths for activities as just svg custom color image provider based urls with no colouring
+  * Replace dark/light icon roles with a single icon role in activity list model
+
+  [ Matthieu Gallien ]
+  * set the proper file type for directory junction entries
+
+  [ Claudio Cambra ]
+  * Set margins on account settings internal layouts as 0 to match folder tree for vfs and connection settings
+  * Disable border on file provider settings page by default
+
+  [ Camila Ayres ]
+  * Add bool theme option to display legacy import dialog.
+  * Check for the option to display legacy import dialog.
+  * Move option APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG to CMakeLists.txt.
+
+  [ rakekniven ]
+  * chore(i18n): Aligned error messages
+
+  [ Claudio Cambra ]
+  * Ensure colour of featured app icon is consistent with other header buttons
+  * Rename first header on macos vfs doc entry, fixing title in index
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Close isExecutable command outpipe file handle after use
+
+  [ Camila Ayres ]
+  * Include Nextcloud in the search for legacy config when the client is branded.
+  * Do not display any notification when import was successful, only log it.
+
+  [ Matthieu Gallien ]
+  * improve definition of MIRALL_VERSION_SUFFIX and MIRALL_VERSION_BUILD
+  * dehydrate placeholder files using CfDehydratePlaceholder
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * use modern non deprecated hash algorithm and parameters
+  * optionally install PDB files when building them
+
+  [ Camila Ayres ]
+  * Include folders when displaying the local metadata about a conflict.
+
+  [ Hannah von Reth ]
+  * Fix network drive detection
+  * Fix crash on missing sync root
+  * Warn if we encounter an unsupported configuration
+
+  [ Camila Ayres ]
+  * Update tests for folder check to match fix.
+  * Remove unused variable.
+  * Add [[nodiscard]] to functions.
+  * All conditions must be true to use virtual files in the selected location.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ rakekniven ]
+  * chore(i18n): Corrected spelling and improved grammar
+
+  [ Rello ]
+  * Update VERSION.cmake
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Rello ]
+  * improvement of error message
+  * Update src/gui/folderman.cpp
+
+  [ xjzsq ]
+  * Fix a bug preventing sync root in folder on drive roots
+
+  [ Matthieu Gallien ]
+  * allow dehydrating pinned LNK files
+  * remove deprecated API
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Andy Scherzinger ]
+  * docs: Add authors file
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ dependabot[bot] ]
+  * Bump cpp-linter/cpp-linter-action from 2.13.3 to 2.13.4
+
+  [ Claudio Cambra ]
+  * Replace all uses of qAsConst with std::as_const
+  * Ensure use of QMessageBox-using QMessageBox::critical
+  * Replace use of deprecated QLibraryInfo::location with QLibraryInfo::path
+  * Replace use of itemDelegate with itemDelegateForIndex
+  * Replace use of QCheckBox::stateChanged with QCheckBox::checkStateChanged
+  * Use QTimeZone::UTC instead of Qt::UTC
+  * Remove unneeded take from systray
+  * Do not use const char * to add data to crypto hash
+  * Replace deprecated QVariant types with QMetaType
+  * Use char16_t cast instead of ushort cast
+  * Use unique_ptr over scoped pointer
+  * Use matchView instead of match
+  * Use std::prev ove -1ing the iterator
+  * Replace QWebSocket::error with errorOccurred
+  * Use QDomDocument content method returning ParseResult
+  * Move pinned Qt and Craft cache versions to 6.8.0 and 24.12 respectively
+  * Use default downloaddir for craft
+
+  [ Matthieu Gallien ]
+  * use CI images with Qt 6.8.0
+
+  [ Claudio Cambra ]
+  * Replace aAsConst with std::as_const in tests
+  * Use non-deprecated qChecksum in qtlocalpeer of qtsingleapplication
+  * Use QTimeZone in startOfDay for QDate in tests
+  * Use std::next rather than adding to iterator in tests
+
+  [ Matthieu Gallien ]
+  * use existing craft cache version 24.10
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * prevent crash by catching more exception types from c++ std lib
+  * ensure no crash due to uncatched exception from std c++ lib
+
+  [ Camila Ayres ]
+  * Use Qt::ElideRight.
+  * Remove extra \n.
+  * Remove assert for when the timestamp is not empty.
+
+  [ sol8712 ]
+  * url update in readme
+
+  [ kleifgch ]
+  * Call setDesktopFileName without `.desktop` suffix
+
+  [ Matthieu Gallien ]
+  * add a simple github action workflow to build test the documentation
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Florian Schmaus ]
+  * Fix filename of fix-macosvfs-file-sharing.png
+
+  [ Fredrik Eriksson ]
+  * Fix .netrc parsing
+  * Fix index check
+  * Enable netrc tests
+
+  [ Matthieu Gallien ]
+  * force dehydratation of lnk files when vfs metadata are wrong
+  * fix code style
+  * prevent implicit hydration when checking PIN state
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ kaikli ]
+  * fix dev application name
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * ensure proper read write access to root folder and db files
+
+  [ Joshua Noeske ]
+  * Make extraction of ETag header independent of capitalisation.
+
+  [ Claudio Cambra ]
+  * Replace use of midlight palette colour for secondary text with mid colour
+  * Use dark palette colour for secondary text
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * remove old vim swap file
+  * fix apps menu not closing when the window is hidden, and make group folders menu work again
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * improve feedback from documentation generation workflow
+
+  [ Claudio Cambra ]
+  * Use standard ComboBox for user status selector
+  * Delete unused BasicComboBox component
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ tflidd ]
+  * Update macosvfs.rst
+
+  [ rakekniven ]
+  * chore(i18n): Improved grammar
+
+  [ Ankur Bavisa ]
+  * update runwizard introduction screen
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * mac-crafter: Update Sparkle version to 2.6.4
+  * updater: Replace SUUpdater with SPUStandardUpdaterController
+  * updater: Refactor NCSparkleUpdaterDelegate to conform to SPUUpdaterDelegate
+  * mac-crafter: Apply code-signing procedure on Sparkle as recommended by Sparkle docs
+  * updater: Provide feedURL via non-deprecated delegate method
+  * Set allPaused as false if we have available FileProvider domains with macOS VFS
+
+  [ Jyrki Gadinger ]
+  * fix window resize on DPI changes
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * github: Add "Bug" issue type to BUG_REPORT template
+  * github: Add "Enhancement" issue type to feature request template
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Carl Schwan ]
+  * Use normal MenuSeparator instead of custom code
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * update legal notice copyright years for Nextcloud
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * add some missing doc images in a valid path
+
+  [ Rello ]
+  * Update feature.md
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Carl Schwan ]
+  * Avoid converting string to color
+
+  [ Matthieu Gallien ]
+  * handle LNK virtual files only when VFS mode is not off
+  * add an assert to ensure we do not use virtual file types with no VFS
+  * update metadata when a file item has wrong type in DB
+  * fix the if check for invalid virtual LNK files
+
+  [ Rello ]
+  * Update craftmaster.ini
+  * Update VERSION.cmake
+  * Update craftmaster.ini
+
+  [ Claudio Cambra ]
+  * Add maxChunkSize getter function to get chunked upload max size from capabilities
+  * Override config chunk sizing values with max chunk size retrieved from capabilities
+  * Enforce chunk size provided by server capabilities
+  * Add config entry to override server chunk size
+  * Fix naming for overrideSercerChunkSize constexpr
+  * Remove extraneous parenthesis
+  * Fix capsMaxChunkSize comparison
+  * Do not apply max capabilities chunk size as min chunk size too
+  * Actually call overrideServerChunkSize
+  * Remove overrideServerChunkSize config entry
+  * Expose maxConcurrentChunkUploads from Capabilities
+  * Apply max concurrent chunk uploads retrieved from server capabilities
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * switch client side encryption to use sha256 hash algorithm
+
+  [ Felix ]
+  * Log path strings directly instead of accumulating
+  * Check if discovery paths are empty before logging
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * modify appimage build script to work with an EL8 base
+  * gitignore: add .cache and *.AppImage
+  * start using the EL8 image for building the appimage
+  * replace drone PR appimage setup with GitHub Actions
+
+  [ Matthieu Gallien ]
+  * update the drone signature
+
+  [ Jyrki Gadinger ]
+  * update AppImage build comment text
+
+  [ Matthieu Gallien ]
+  * use latest appimage build docker image
+
+  [ Claudio Cambra ]
+  * Do not assume root activity link is the correct "join call" link
+
+  [ Jyrki Gadinger ]
+  * fix "Resolve conflicts" dialog not showing up
+  * persist credentials retrieved through the wizard
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * use new in Qt6.8 windows fluent style
+  * require Qt 6.8.0
+  * switch drone ci to Qt 6.8.0 based images
+
+  [ Jyrki Gadinger ]
+  * Remove transparency value from system colours where needed
+
+  [ Matthieu Gallien ]
+  * switch to latest Qt 6.8.1 ci image
+  * on windows use Qt FluentWinUI3 style unless win10: Universal
+  * fix wrong if condition
+
+  [ István Váradi ]
+  * Add Ubuntu Plucky
+
+  [ Rello ]
+  * Delete .github/workflows/documentation.yml
+  * Link to new documentation
+  * Update BUG_REPORT.yml
+
+  [ Jyrki Gadinger ]
+  * fix colours in dark mode
+
+  [ Integral ]
+  * refactor: replace QString() with QStringLiteral() for better performance
+
+  [ Jyrki Gadinger ]
+  * use correct qml style on Windows
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * craft: Only set NSIS package type with windows
+  * craft: Upgrade to binary cache 25.01 and Qt version 6.8.1
+  * craft: Clean up ini file
+
+  [ Matthieu Gallien ]
+  * only use debug log level for discovery traces to decrease cost
+
+  [ Claudio Cambra ]
+  * shell_integration/macOS: Pin to NextcloudFileProviderKit stable-2.0
+  * shell_integration/macOS/FileProviderExt: Adapt to API changes in NextcloudFileProviderKit changes in 2.0
+  * shell_integration/macOS/FileProviderUIExt: Adapt FileProviderUIExt Locking to NextcloudKit 5
+  * shell_integration/macOS/FileProviderUIExt: Adapt FileProviderUIExt sharing to NextcloudKit 5
+  * shell_integration/macOS/FileProviderUIExt: Adapt MetadataProvider utility methods to NextcloudKit 5
+  * shell_integration/macOS/FileProviderExt: Do not delete an item twice in FileProviderExtension
+  * shell_integration/macOS/FileProviderUIExt: Use valid NKError description property
+
+  [ Camila Ayres ]
+  * Improve logging when error occurs while changing folder permissions.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * add support to use PKCS#11 harware token to store certifice for e2ee
+  * partial fix for broken automated tests
+  * disable some parts of the auto tests for end-to-end encryption
+  * fix setting up encryption with software based certificate storage
+  * fixes for software end-to-end encryption issues
+  * fixes wrong conversion from or to base64 encoding
+  * remove wrong conversions from or to base64
+  * remove duplicated code in ClientSideEncryption class
+  * clear useless declarations or include
+
+  [ Jyrki Gadinger ]
+  * fetch "shared with me" information separately
+
+  [ Claudio Cambra ]
+  * gui/tray: If there are successfully synced file provide raccounts do not present "problem" sync icon
+  * gui/tray: Present successful sync tray icon is we just have idle file provider accounts
+
+  [ Matthieu Gallien ]
+  * set the parent folder read/write always when downloading a new file
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * fix deletion of .lnk files on Windows with paths containing special characters
+
+  [ Claudio Cambra ]
+  * shell_integration/macOS/FileProviderUIExt: Add internal link share type to NKShare extension
+  * shell_integration/macOS/FileProviderUIExt: Do not hide copy link buttons for internal link shares
+  * shell_integration/macOS/FileProviderUIExt: Do not present share options view for uneditable and undeletable shares
+  * shell_integration/macOS/FileProviderUIExt: Add method to generate a share from an nkfile
+  * shell_integration/macOS/FileProviderUIExt: Enforce item metadata being valid when fetching shares
+  * shell_integration/macOS/FileProviderUIExt: Append internal link share to fetched shares
+  * gui/macOS: Avoid url domain extensions matching bundle type extensions breaking access to file provider domains
+  * gui/macOS: Add convenience inline methods to check if VFS domain identifier is illegal or not
+  * gui/macOS: Fix accountIdFromDomainId
+  * gui/macOS: Forcibly reconfigure file provider domains with illegal domain names
+  * gui/macOS: Mark one line helper functions with inline in domain manager implementation
+  * shell_integration/macOS: Upgrade to NextcloudCapabilitiesKit 2.2.0
+  * shell_integration/macOS/FileProviderUIExt: Check locking is available on the server before attempting
+
+  [ mammo0 ]
+  * replace ownCloud references with Nextcloud
+
+  [ Camila Ayres ]
+  * Add button to scroll to top when activity list is long.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Improve text returned when checking VFS availability.
+
+  [ Jyrki Gadinger ]
+  * skip attempt to install updates at launch when update checks are disabled
+
+  [ Claudio Cambra ]
+  * gui/tray: Prevent talk reply text field being too wide and breaking layout
+
+  [ alex-z ]
+  * Bugfix. E2EE. Always migrate from 1.2 to 2.0, even with nested folders.
+
+  [ Matthieu Gallien ]
+  * while migrating from another version, clean updater config
+
+  [ Camila Ayres ]
+  * Look for previous used application name for config folder.
+  * Update the max folder and the max account version.
+  * Check for FoldersWithPlaceholders when migrating account's folders.
+  * Remove check for overrideurl when migrating account.
+  * Overwrite the user exclude list when the client is branded.
+
+  [ Alex Knop ]
+  * dialogfix
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * add test skeleton for OCC::FolderStatusModel
+
+  [ Camila Ayres ]
+  * Detect if it is running in a Vmware or being access via RDP to disable graphic acceleration.
+
+  [ Matthieu Gallien ]
+  * use qputenv to modify the running process environment
+  * prepare for 3.16.0-rc1
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * fix rounded corners in the call notification
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * don't use palette.dark for icons in share page
+  * use TextArea instead of TextEdit for share note field
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ rakekniven ]
+  * chore(i18n): Remove blank
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * vfs: fix root folder detection regression
+  * vfs: use native separators for displayed error message
+
+  [ Camila Ayres ]
+  * Disable the option to select an update channel when server has a valid subscription.
+  * Don't display the option to change update channels when server has valid subscription.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * qCInfo => qCDebug
+  * Add {} to single line if.
+  * fi => excludeItemFileInfo.
+  * blacklist => selectiveSyncList.
+
+  [ Matthieu Gallien ]
+  * enforce trailing and leading spaces for new files
+  * automatic removing of invalid spaces in file names
+  * try to detect if naming rules are enabled on server before auto rename
+  * basically try to enforce the windows compatibility as guess from server
+  * try to enforce the windows compatibility as guessed from server
+  * ensure correct behavioron Windows for invalid file names
+  * handle errors when automated renaming for name rules is failing
+  * provide consistent version info including human readable version
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Valdnet ]
+  * l10n: Change three dots to an ellipsis
+
+  [ Camila Ayres ]
+  * Check if folder exists before deleting sync db and VFS sync root connection.
+
+  [ Matthieu Gallien ]
+  * prevent infinite sync loop: delay retry after many errors
+  * using multi-arg is better than many arg calls in QString class
+
+  [ Jyrki Gadinger ]
+  * wizard: display error message when ToS haven't been accepted yet
+
+  [ Matthieu Gallien ]
+  * detect the need to sign the terms of service during login web flow v2
+  * add a wizard page to check terms of service
+
+  [ Jyrki Gadinger ]
+  * implement terms of service check wizard page
+  * add link to server if TOS needs to be signed
+  * add a button to open the browser if TOS need to be signed
+  * check for need of signing TOS during connectivity check
+
+  [ Pablo Ariño Muñoz ]
+  * fixed html formatting on encrypted warning message
+
+  [ Matthieu Gallien ]
+  * prepare for 3.16.0 rc2
+
+  [ Jyrki Gadinger ]
+  * FolderStatusModel: only create a single QFileIconProvider object
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * UserStatusSelector: set focusPolicy on accept button
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * ensure we can delete invalid read-only items
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Pablo Ariño Muñoz ]
+  * Added plural forms handling correction to notification message
+  * Removed parenthesis and passed a nullptr for the disambiguation
+  * Added space between sentences
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Pablo Ariño Muñoz ]
+  * Replaced foreach with range loops
+  * removed redundant qAsConst
+  * Replaced qAsConst with std::as_const
+  * Added more std::as_const and replaced types for auto, as well as other suggestions
+  * Carried out further fixes, changing types to auto and adding const
+  * Added copy of container to ranged loop so as to prevent crash
+
+  [ rakekniven ]
+  * chore(i18n): Use correct plural syntax
+
+  [ Camila Ayres ]
+  * Update help url default value.
+  * Remove help url from developer string.
+  * Adjust layout margins to align text.
+  * Remove helpUlr() call from string.
+
+  [ Jyrki Gadinger ]
+  * do not display encrypt action for external folders
+
+  [ Claudio Cambra ]
+  * craft: Use Qt 6.8.2
+
+  [ Camila Ayres ]
+  * Prepare for 3.16.0-rc3.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Pablo Ariño Muñoz ]
+  * Added an option to customize the server poll interval in the Advanced Settings
+  * Fixed link by changing it from .ui to .cpp
+  * Simplified the code, removed checkbox and moved section further down
+  * fixed formatting mistakes and removed unnecessary include
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Pablo Ariño Muñoz ]
+  * Changed critical free space to 512MB and free space to 1GB in code and documentation
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Pablo Ariño Muñoz ]
+  * Changed properties to designer file and hiding interval selector when notify push is available
+  * carried out suggested improvements
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * gui/tray: Do not generate JPEG images in async image response for macOS
+  * gui/tray: Remove unused thumbnailjob class
+
+  [ Matthieu Gallien ]
+  * when deleting a remote locked file, provide needed lock headers
+
+  [ Claudio Cambra ]
+  * gui/macOS: Remove "Advanced" settings from File Provider settings
+  * gui/macOS: Reimplement sync button more subtly within the sync status component
+  * gui/macOS: Add tooltip explaining the "request sync" action in the File Provider settings
+  * gui/macOS: Use attached tooltip properties rather than creating a new tooltip in request sync button
+
+  [ Jyrki Gadinger ]
+  * update AppImage builds to Qt 6.8.2
+
+  [ Claudio Cambra ]
+  * gui/tray: Use standard native buttons for bottom buttons in user status selector page
+  * gui/tray: Let menu handle sizing of child menu items in tray window header
+  * gui/tray: Add hacky workaround to avoid icon and text for menu items in tray header being too close
+  * gui/tray: Do not add custom styling to status message text field in user status
+  * gui/tray: Make bottom buttons in user status selector smaller
+
+  [ Jyrki Gadinger ]
+  * gui: do not allow MainWindow to be resized
+
+  [ Camila Ayres ]
+  * Bump version to release 3.16.0-rc4.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * Revert "gui: do not allow MainWindow to be resized"
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Remove aditional text when error occurs.
+
+  [ Claudio Cambra ]
+  * gui/macOS: Fix emitted signal in file provider sync status GUI component
+
+  [ Jyrki Gadinger ]
+  * make use of the new `x-nc-skip-trashbin` header
+  * always set a user if we got asked for one
+
+  [ Matthieu Gallien ]
+  * prepare 3.16.0 final release
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Thu, 13 Mar 2025 19:04:31 +0000
+
 nextcloud-desktop (3.15.0) jammy; urgency=medium
 
   [ suiso67 ]
