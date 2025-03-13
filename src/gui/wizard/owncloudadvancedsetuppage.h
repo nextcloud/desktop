@@ -69,6 +69,10 @@ private slots:
 private:
     void setRadioChecked(QRadioButton *radio);
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void updateMacOsFileProviderRelatedViews();
+#endif
+
     void setupCustomization();
     void updateStatus();
     bool dataChanged();

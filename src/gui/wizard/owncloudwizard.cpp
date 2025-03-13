@@ -471,6 +471,11 @@ void OwncloudWizard::bringToTop()
 
 void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
 {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    callback(true);
+    return;
+#endif
+
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
     QPushButton *acceptButton = nullptr;
