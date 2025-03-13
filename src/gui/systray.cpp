@@ -109,6 +109,9 @@ Systray::Systray()
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, [this]{ showWindow(WindowPosition::Center); });
 #endif
+
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotSyncFoldersChanged);
+    slotSyncFoldersChanged(FolderMan::instance()->map());
 }
 
 void Systray::create()
@@ -490,6 +493,14 @@ void Systray::slotPauseAllFolders()
     setPauseOnAllFoldersHelper(true);
 }
 
+void Systray::slotSyncFoldersChanged(const OCC::Folder::Map &folderMap)
+{
+    if (const auto currentAnySyncFolders = !folderMap.isEmpty(); currentAnySyncFolders != _anySyncFolders) {
+        _anySyncFolders = currentAnySyncFolders;
+        emit anySyncFoldersChanged();
+    }
+}
+
 void Systray::setPauseOnAllFoldersHelper(bool pause)
 {
     // For some reason we get the raw pointer from Folder::accountState()
@@ -608,6 +619,11 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
         slotUnpauseAllFolders();
     }
     emit syncIsPausedChanged();
+}
+
+bool Systray::anySyncFolders() const
+{
+    return _anySyncFolders;
 }
 
 /********************************************************************************************/
