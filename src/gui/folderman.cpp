@@ -991,7 +991,8 @@ bool FolderMan::pushNotificationsFilesReady(Account *account)
 bool FolderMan::isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const
 {
     auto result = false;
-    if (ENFORCE_VIRTUAL_FILES_SYNC_FOLDER &&
+    if (!DISABLE_VIRTUAL_FILES_SYNC_FOLDER &&
+            ENFORCE_VIRTUAL_FILES_SYNC_FOLDER &&
             folderDefinition.virtualFilesMode != bestAvailableVfsMode() &&
             folderDefinition.virtualFilesMode == Vfs::Off &&
             OCC::Theme::instance()->showVirtualFilesOption()) {
