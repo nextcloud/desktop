@@ -27,6 +27,12 @@
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
 
+namespace OCC {
+
+Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileproviderdomainmanager", QtInfoMsg)
+
+}
+
 // Ensure that conversion to/from domain identifiers and display names
 // are consistent throughout these classes
 namespace {
@@ -118,7 +124,8 @@ QString accountIdFromDomainId(NSString * const domainId)
             return account->userIdAtHostWithPort();
         }
     }
-    Q_UNREACHABLE();
+    qCWarning(OCC::lcMacFileProviderDomainManager) << "Could not find account id for domain id:" << qDomainId;
+    return {};
 }
 
 API_AVAILABLE(macos(11.0))
@@ -130,8 +137,6 @@ inline QString accountIdFromDomain(NSFileProviderDomain * const domain)
 }
 
 namespace OCC {
-
-Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileproviderdomainmanager", QtInfoMsg)
 
 namespace Mac {
 
