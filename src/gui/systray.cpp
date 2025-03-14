@@ -29,6 +29,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QQuickWindow>
 #include <QVariantMap>
 #include <QScreen>
@@ -528,6 +529,13 @@ bool Systray::useNormalWindow() const
 
     ConfigFile cfg;
     return cfg.showMainDialogAsNormalWindow();
+}
+
+bool Systray::quickStyleProvidesTextFieldContextMenus() const
+{
+    static constexpr std::array styles{"org.kde.breeze", "org.kde.desktop"};
+    const auto style = QQuickStyle::name().toStdString();
+    return std::find(styles.cbegin(), styles.cend(), style);
 }
 
 bool Systray::isOpen() const
