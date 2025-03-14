@@ -535,7 +535,7 @@ bool Systray::quickStyleProvidesTextFieldContextMenus() const
 {
     static constexpr std::array styles{"org.kde.breeze", "org.kde.desktop"};
     const auto style = QQuickStyle::name().toStdString();
-    return std::find(styles.cbegin(), styles.cend(), style);
+    return std::find(styles.cbegin(), styles.cend(), style) != styles.cend();
 }
 
 bool Systray::isOpen() const
