@@ -45,7 +45,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     const auto userConfig = cfgFile.excludeFile(ConfigFile::Scope::UserScope);
     ui->ignoreTableWidget->readIgnoreFile(userConfig);
 
-    connect(this, &QDialog::accepted, [=]() {
+    connect(this, &QDialog::accepted, [=, this]() {
         ui->ignoreTableWidget->slotWriteIgnoreFile(userConfig);
         /* handle the hidden file checkbox */
 
