@@ -163,6 +163,7 @@ TextField {
 
     Menu {
         id: contextMenu
+        z: suggestionsPopup.z + 1
         MenuItem {
             text: qsTr("Cut")
             onTriggered: root.cut()
