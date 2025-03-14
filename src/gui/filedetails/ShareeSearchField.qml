@@ -87,7 +87,7 @@ TextField {
         }
     }
     onPressed: function(mouse) {
-        if (mouse.button !== Qt.RightButton) return;
+        if (Systray.quickStyleProvidesTextFieldContextMenus || mouse.button !== Qt.RightButton) return;
         contextMenu.popup(mouse.x, mouse.y);
     }
 
