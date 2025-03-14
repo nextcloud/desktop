@@ -136,12 +136,6 @@ void AsyncImageResponse::slotProcessNetworkReply()
             } else {
                 processNextImage();
             }
-#ifdef Q_OS_MACOS
-        // NOTE: We are facing issues with JPEGs at the moment on macOS with our Qt 6.8.2-based release.
-        // Do not create previews for JPEGs to prevent crashing.
-        } else if (imageData.startsWith(QByteArrayLiteral("\xFF\xD8")) && imageData.endsWith(QByteArrayLiteral("\xFF\xD9"))) {
-            processNextImage();
-#endif
         } else {
             setImageAndEmitFinished(QImage::fromData(imageData));
         }
