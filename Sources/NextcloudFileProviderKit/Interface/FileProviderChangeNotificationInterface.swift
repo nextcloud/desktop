@@ -20,15 +20,19 @@ public class FileProviderChangeNotificationInterface: ChangeNotificationInterfac
     }
 
     public func notifyChange() {
-        NSFileProviderManager(for: domain)?.signalEnumerator(for: .workingSet) { error in
-            if let error {
-                self.logger.error(
+        Task { @MainActor in
+            if let manager = NSFileProviderManager(for: domain) {
+                do {
+                    try await manager.signalEnumerator(for: .workingSet)
+                } catch let error {
+                    self.logger.error(
                     """
                     Could not signal enumerator for
-                    \(self.domain.identifier.rawValue, privacy: .public):
-                    \(error.localizedDescription, privacy: .public)
+                        \(self.domain.identifier.rawValue, privacy: .public):
+                        \(error.localizedDescription, privacy: .public)
                     """
-                )
+                    )
+                }
             }
         }
     }
