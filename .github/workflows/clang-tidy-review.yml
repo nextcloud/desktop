@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       with:
           fetch-depth: 2
     - name: Prepare compile_commands.json
