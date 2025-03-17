@@ -36,7 +36,7 @@ jobs:
           key: macos-latest-${{ env.CRAFT_TARGET }}
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: 3.12
 
