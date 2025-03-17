@@ -30,7 +30,7 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
 
       - name: Restore cache
-        uses: actions/cache@v4
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
           path: ~/cache
           key: macos-latest-${{ env.CRAFT_TARGET }}
