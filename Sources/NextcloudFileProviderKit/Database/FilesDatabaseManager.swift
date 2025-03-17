@@ -96,9 +96,7 @@ public final class FilesDatabaseManager: Sendable {
 
     func ncDatabase() -> Realm {
         let realm = try! Realm()
-        if !realm.refresh() {
-            Self.logger.error("Failed to refresh Realm!!")
-        }
+        realm.refresh()
         return realm
     }
 
