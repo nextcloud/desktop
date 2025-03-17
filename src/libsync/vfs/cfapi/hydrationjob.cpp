@@ -33,6 +33,8 @@ OCC::HydrationJob::HydrationJob(QObject *parent)
 {
 }
 
+OCC::HydrationJob::~HydrationJob() = default;
+
 OCC::AccountPtr OCC::HydrationJob::account() const
 {
     return _account;
@@ -203,7 +205,7 @@ void OCC::HydrationJob::emitFinished(Status status)
     }
 
     if (status == Success) {
-        connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=] {
+        connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=, this] {
             _transferDataSocket->close();
             emit finished(this);
         });
