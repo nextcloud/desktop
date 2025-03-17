@@ -203,7 +203,7 @@ void OCC::HydrationJob::emitFinished(Status status)
     }
 
     if (status == Success) {
-        connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=] {
+        connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=, this] {
             _transferDataSocket->close();
             emit finished(this);
         });
