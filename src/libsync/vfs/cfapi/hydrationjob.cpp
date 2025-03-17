@@ -33,6 +33,8 @@ OCC::HydrationJob::HydrationJob(QObject *parent)
 {
 }
 
+OCC::HydrationJob::~HydrationJob() = default;
+
 OCC::AccountPtr OCC::HydrationJob::account() const
 {
     return _account;
