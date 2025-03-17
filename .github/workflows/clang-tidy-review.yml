@@ -24,7 +24,7 @@ jobs:
         /usr/bin/git config --global --add safe.directory "$GITHUB_WORKSPACE"
         /usr/bin/git diff -U0 HEAD^ | clang-tidy-diff-15.py -checks='-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast' -p1 -path build -export-fixes clang-tidy-result/fixes.yml
     - name: Run clang-tidy-pr-comments action
-      uses: platisd/clang-tidy-pr-comments@v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
+      uses: platisd/clang-tidy-pr-comments@a8811fa17cd6bd02c52a3791b44f9840777e396a # v1.6.1 # >1.4.3 switches to composite method w/ a forced python version and breaks things: https://github.com/actions/setup-python/issues/871
       with:
         # The GitHub token (or a personal access token)
         github_token: ${{ secrets.GITHUB_TOKEN }}
