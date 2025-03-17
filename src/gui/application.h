@@ -113,7 +113,7 @@ private:
     void handleEditLocallyFromOptions();
 
     AccountManager::AccountsRestoreResult restoreLegacyAccount();
-    void setupConfigFile();
+    bool setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const;
     void setupAccountsAndFolders();
 
     /**
