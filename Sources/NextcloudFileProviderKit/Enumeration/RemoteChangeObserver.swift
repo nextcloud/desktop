@@ -36,7 +36,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     private(set) var webSocketPingFailCount = 0
     private(set) var webSocketAuthenticationFailCount = 0
 
-    private(set) var pollingTimer: Timer?
+    private(set) var pollingTimer: DispatchSourceTimer?
     public var pollInterval: TimeInterval = 60 {
         didSet {
             if pollingActive {
@@ -76,23 +76,23 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func startPollingTimer() {
-        Task { @MainActor in
-            pollingTimer = Timer.scheduledTimer(
-                withTimeInterval: pollInterval, repeats: true
-            ) { [weak self] _ in
-                self?.logger.info("Polling timer timeout, notifying change")
-                self?.changeNotificationInterface.notifyChange()
-            }
-            logger.info("Starting polling timer")
+        stopPollingTimer() // Ensure any existing timer is stopped first
+        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+        timer.schedule(deadline: .now(), repeating: pollInterval)
+        timer.setEventHandler { [weak self] in
+            self?.logger.info("Polling timer timeout, notifying change")
+            self?.changeNotificationInterface.notifyChange()
         }
+
+        pollingTimer = timer
+        timer.resume()
+        logger.info("Starting polling timer")
     }
 
     private func stopPollingTimer() {
-        Task { @MainActor in
-            logger.info("Stopping polling timer")
-            pollingTimer?.invalidate()
-            pollingTimer = nil
-        }
+        logger.info("Stopping polling timer")
+        pollingTimer?.cancel()
+        pollingTimer = nil
     }
 
     public func connect() {
