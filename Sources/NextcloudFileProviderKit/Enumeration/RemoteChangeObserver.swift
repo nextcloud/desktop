@@ -79,12 +79,15 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         pollingTimer = Timer.scheduledTimer(
             withTimeInterval: pollInterval, repeats: true
         ) { [weak self] _ in
+            self?.logger.info("Polling timer timeout, notifying change")
             self?.changeNotificationInterface.notifyChange()
         }
+        logger.info("Starting polling timer")
         RunLoop.current.add(pollingTimer!, forMode: .common)
     }
 
     private func stopPollingTimer() {
+        logger.info("Stopping polling timer")
         pollingTimer?.invalidate()
         pollingTimer = nil
     }
