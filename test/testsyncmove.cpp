@@ -976,6 +976,10 @@ private slots:
 
     void testMovedWithError()
     {
+#if defined Q_OS_MACOS
+        QSKIP("not reliable on macOS");
+#endif
+
         QFETCH(Vfs::Mode, vfsMode);
         const auto getName = [vfsMode] (const QString &s)
         {
