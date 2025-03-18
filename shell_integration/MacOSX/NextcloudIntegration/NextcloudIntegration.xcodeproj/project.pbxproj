@@ -10,6 +10,7 @@
 		5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E52965C6FA001E0C6A /* NextcloudKit */; };
 		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
+		531EDE572D897B4F00FD91F9 /* Eviction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531EDE562D897B4F00FD91F9 /* Eviction.swift */; };
 		532572082C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */; };
 		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
@@ -153,6 +154,7 @@
 
 /* Begin PBXFileReference section */
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
+		531EDE562D897B4F00FD91F9 /* Eviction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eviction.swift; sourceTree = "<group>"; };
 		532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+EnumerationListener.swift"; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
 		5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCommunicationService.swift; sourceTree = "<group>"; };
@@ -260,6 +262,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		531EDE542D88569400FD91F9 /* Evicting */ = {
+			isa = PBXGroup;
+			children = (
+				531EDE562D897B4F00FD91F9 /* Eviction.swift */,
+			);
+			path = Evicting;
+			sourceTree = "<group>";
+		};
 		5350E4C72B0C368B00F276CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +363,7 @@
 		53B9797F2B84C81F002DA742 /* FileProviderUIExt */ = {
 			isa = PBXGroup;
 			children = (
+				531EDE542D88569400FD91F9 /* Evicting */,
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				537BD6782C58D0FC00446ED0 /* Locking */,
 				537BD6772C58D0C400446ED0 /* Sharing */,
@@ -721,6 +732,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */,
+				531EDE572D897B4F00FD91F9 /* Eviction.swift in Sources */,
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
 				53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */,
