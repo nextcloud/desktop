@@ -1480,7 +1480,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation>PIN nécessaire pour se connecter au jeton</translation>
+        <translation>Saisie du code PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
