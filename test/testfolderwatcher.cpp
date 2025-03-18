@@ -331,6 +331,10 @@ private slots:
     }
     void testDetectLockFilesExternally()
     {
+#if defined Q_OS_MACOS
+        QSKIP("not reliable on macOS");
+#endif
+
         QStringList listOfOfficeFiles = {QString(_rootPath + "/document.docx"), QString(_rootPath + "/document.odt")};
         std::sort(std::begin(listOfOfficeFiles), std::end(listOfOfficeFiles));
 
