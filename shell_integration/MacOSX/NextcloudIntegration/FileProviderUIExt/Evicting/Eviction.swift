@@ -24,3 +24,14 @@ func evict(
     }
 }
 
+func evict(
+    itemsWithIdentifiers identifiers: [NSFileProviderItemIdentifier],
+    inDomain domain: NSFileProviderDomain
+) {
+    let semaphore = DispatchSemaphore(value: 0)
+    Task {
+        await evict(itemsWithIdentifiers: identifiers, inDomain: domain)
+        semaphore.signal()
+    }
+    semaphore.wait()
+}
