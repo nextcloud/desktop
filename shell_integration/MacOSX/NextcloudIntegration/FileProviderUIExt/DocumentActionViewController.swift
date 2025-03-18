@@ -43,6 +43,8 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
             prepare(childViewController: LockViewController(itemIdentifiers, locking: true))
         case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
             prepare(childViewController: LockViewController(itemIdentifiers, locking: false))
+        case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
+            evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
         default:
             return
         }
