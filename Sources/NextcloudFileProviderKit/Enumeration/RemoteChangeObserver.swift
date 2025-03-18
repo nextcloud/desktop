@@ -76,20 +76,23 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func startPollingTimer() {
-        pollingTimer = Timer.scheduledTimer(
-            withTimeInterval: pollInterval, repeats: true
-        ) { [weak self] _ in
-            self?.logger.info("Polling timer timeout, notifying change")
-            self?.changeNotificationInterface.notifyChange()
+        Task { @MainActor in
+            pollingTimer = Timer.scheduledTimer(
+                withTimeInterval: pollInterval, repeats: true
+            ) { [weak self] _ in
+                self?.logger.info("Polling timer timeout, notifying change")
+                self?.changeNotificationInterface.notifyChange()
+            }
+            logger.info("Starting polling timer")
         }
-        logger.info("Starting polling timer")
-        RunLoop.current.add(pollingTimer!, forMode: .common)
     }
 
     private func stopPollingTimer() {
-        logger.info("Stopping polling timer")
-        pollingTimer?.invalidate()
-        pollingTimer = nil
+        Task { @MainActor in
+            logger.info("Stopping polling timer")
+            pollingTimer?.invalidate()
+            pollingTimer = nil
+        }
     }
 
     public func connect() {
