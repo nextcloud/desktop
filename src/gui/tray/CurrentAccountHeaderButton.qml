@@ -36,6 +36,13 @@ Button {
     Accessible.name: qsTr("Current account")
     Accessible.onPressAction: root.clicked()
 
+    palette {
+        text: Style.currentUserHeaderTextColor
+        windowText: Style.currentUserHeaderTextColor
+        buttonText: Style.currentUserHeaderTextColor
+        button: Style.adjustedCurrentUserHeaderColor
+    }
+
     // We call open() instead of popup() because we want to position it
     // exactly below the dropdown button, not the mouse
     onClicked: {

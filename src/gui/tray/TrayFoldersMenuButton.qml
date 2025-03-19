@@ -53,6 +53,13 @@ HeaderButton {
     Accessible.name: tooltip.text
     Accessible.onPressAction: root.clicked()
 
+    palette {
+        text: Style.currentUserHeaderTextColor
+        windowText: Style.currentUserHeaderTextColor
+        buttonText: Style.currentUserHeaderTextColor
+        button: Style.adjustedCurrentUserHeaderColor
+    }
+
     ToolTip {
         id: tooltip
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
