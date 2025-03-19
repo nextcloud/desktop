@@ -32,8 +32,6 @@ PutMultiFileJob::PutMultiFileJob(AccountPtr account,
 
     for(const auto &singleDevice : _devices) {
         singleDevice._device->setParent(this);
-        connect(this, &PutMultiFileJob::uploadProgress,
-                singleDevice._device.get(), &UploadDevice::slotJobUploadProgress);
     }
 }
 
@@ -56,7 +54,12 @@ void PutMultiFileJob::start()
         if (oneDevice._device->size() == 0) {
             onePart.setBody({});
         } else {
-            onePart.setBodyDevice(oneDevice._device.get());
+            const auto allData = oneDevice._device->readAll();
+            onePart.setBody(allData);
+        }
+
+        if (oneDevice._device->isOpen()) {
+            oneDevice._device->close();
         }
 
         for (auto it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
@@ -76,6 +79,9 @@ void PutMultiFileJob::start()
     }
 
     connect(reply(), &QNetworkReply::uploadProgress, this, &PutMultiFileJob::uploadProgress);
+    connect(reply(), &QNetworkReply::uploadProgress, this, [] (qint64 bytesSent, qint64 bytesTotal) {
+        qCInfo(lcPutMultiFileJob()) << "upload progress" << bytesSent << bytesTotal;
+    });
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
     AbstractNetworkJob::start();
@@ -91,8 +97,10 @@ bool PutMultiFileJob::finished()
     for(const auto &oneDevice : _devices) {
         Q_ASSERT(oneDevice._device);
 
-        if (!oneDevice._device->errorString().isEmpty()) {
-            qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
+        if (oneDevice._device->isOpen()) {
+            if (!oneDevice._device->errorString().isEmpty()) {
+                qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
+            }
         }
 
         if (oneDevice._device->isOpen()) {
