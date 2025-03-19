@@ -206,7 +206,10 @@ void FileProviderSocketController::sendNotAuthenticated() const
 
 void FileProviderSocketController::sendAccountDetails() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to send account details, stopping";
+        return;
+    }
     const auto account = _accountState->account();
     Q_ASSERT(account);
 
