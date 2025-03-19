@@ -35,6 +35,7 @@ Rectangle {
         text: Style.currentUserHeaderTextColor
         windowText: Style.currentUserHeaderTextColor
         buttonText: Style.currentUserHeaderTextColor
+        button: Style.adjustedCurrentUserHeaderColor
     }
 
     RowLayout {
