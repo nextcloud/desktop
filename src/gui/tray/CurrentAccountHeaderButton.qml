@@ -162,9 +162,11 @@ Button {
                 id: currentAccountStatusIndicatorBackground
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
+                         && UserModel.currentUser.status !== UserStatus.Invisible
+                         && UserModel.currentUser.status !== UserStatus.Offline
                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: root.parentBackgroundColor
+                color: "white"
                 anchors.bottom: currentAccountAvatar.bottom
                 anchors.right: currentAccountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -174,6 +176,8 @@ Button {
                 id: currentAccountStatusIndicator
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
+                         && UserModel.currentUser.status !== UserStatus.Invisible
+                         && UserModel.currentUser.status !== UserStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                 cache: false
                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -198,6 +202,7 @@ Button {
                 id: currentAccountUser
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 width: Style.currentAccountLabelWidth
+                color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.name : ""
                 elide: Text.ElideRight
 
@@ -209,6 +214,7 @@ Button {
                 id: currentAccountServer
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 width: Style.currentAccountLabelWidth
+                color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
                 elide: Text.ElideRight
                 visible: UserModel.numUsers() > 1
@@ -225,6 +231,7 @@ Button {
                     id: emoji
                     visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
                     width: Style.userStatusEmojiSize
+                    color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
                 }
                 EnforcedPlainTextLabel {
@@ -233,6 +240,7 @@ Button {
                     Layout.fillWidth: true
                     visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                     width: Style.currentAccountLabelWidth
+                    color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                           ? UserModel.currentUser.statusMessage
                           : UserModel.currentUser ? UserModel.currentUser.server : ""
