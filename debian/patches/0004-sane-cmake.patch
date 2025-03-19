@@ -152,16 +152,17 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 7bf09aeff..57ebf2b08 100644
+index 3fe5f7797..ae4305866 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
-@@ -43,5 +43,9 @@ if( MIRALL_VERSION_BUILD )
-     set( MIRALL_VERSION_STRING "${MIRALL_VERSION_STRING} (build ${MIRALL_VERSION_BUILD})" )
- endif( MIRALL_VERSION_BUILD )
+@@ -59,6 +59,10 @@ if(MIRALL_VERSION_BUILD)
+     set(MIRALL_VERSION_STRING "${MIRALL_VERSION_STRING} (build ${MIRALL_VERSION_BUILD})")
+ endif()
  
 +if (DEFINED EXTERNAL_VERSION)
 +    set (MIRALL_VERSION_STRING "${EXTERNAL_VERSION}")
 +endif (DEFINED EXTERNAL_VERSION)
 +
- # not used anymore. For brander, please maintain craftmaster.ini
- set(QT_MAJOR_VERSION 6)
+ # ------------------------------------
+ # Misc
+ # ------------------------------------
