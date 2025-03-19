@@ -2812,7 +2812,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Perdir confirmaci´pón antes de sincronizar almacenamientos externos</translation>
+        <translation>Perdir confirmación antes de sincronizar almacenamientos externos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
