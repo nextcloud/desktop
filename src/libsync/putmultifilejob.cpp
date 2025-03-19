@@ -68,6 +68,7 @@ void PutMultiFileJob::start()
         _body.append(onePart);
     }
 
+    req.setAttribute(QNetworkRequest::DoNotBufferUploadDataAttribute, true);
     sendRequest("POST", _url, req, &_body);
 
     if (reply()->error() != QNetworkReply::NoError) {
