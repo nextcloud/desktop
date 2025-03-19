@@ -1481,6 +1481,12 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <name>OCC::ClientSideEncryption</name>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
+        <source>Input PIN code</source>
+        <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
         <translation type="unfinished"/>
     </message>
@@ -1925,7 +1931,7 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>pirms %1 minūtēm</numerusform><numerusform>pirms %1 minūtes</numerusform><numerusform>pirms %1 minūtēm</numerusform></translation>
+        <translation><numerusform>pirms %1 minūtēm</numerusform><numerusform>pirms %1 minūtes</numerusform><numerusform>pirms %1 minūtes/ēm</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
@@ -1955,7 +1961,7 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="172"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloķēja %1 - beigsies pēc %2 minūtēm</numerusform><numerusform>Bloķēja %1 - beigsies pēc %2 minūtes</numerusform><numerusform>Bloķēja %1 - beigsies pēc %2 minūtēm</numerusform></translation>
+        <translation><numerusform>Bloķēja %1 - beigsies pēc %2 minūtēm</numerusform><numerusform>Bloķēja %1 - beigsies pēc %2 minūtes</numerusform><numerusform> %1 aizslēdza - beigsies pēc %2 minūtes/ēm</numerusform></translation>
     </message>
 </context>
 <context>

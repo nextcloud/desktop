@@ -1481,6 +1481,12 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <name>OCC::ClientSideEncryption</name>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
+        <source>Input PIN code</source>
+        <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
         <translation>Do zalogowania się do tokena potrzebny jest PIN</translation>
     </message>
