@@ -147,7 +147,7 @@ static void create_dirs( const char *path )
  * whole tree.
  *
  */
-static void traverse_dir(void **state, const QString &dir, int *cnt)
+static void traverse_dir(void **state, const QString &dir, int *cnt, bool checkPermissionsValidity)
 {
     csync_vio_handle_t *dh = nullptr;
     std::unique_ptr<csync_file_stat_t> dirent;
@@ -161,7 +161,7 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
     assert_non_null(dh);
 
     OCC::Vfs *vfs = nullptr;
-    while( (dirent = csync_vio_local_readdir(dh, vfs)) ) {
+    while( (dirent = csync_vio_local_readdir(dh, vfs, checkPermissionsValidity)) ) {
         assert_non_null(dirent.get());
         if (!dirent->original_path.isEmpty()) {
             sv->ignored_dir = dirent->original_path;
@@ -190,7 +190,7 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
         }
         output(subdir_out.constData());
         if( is_dir ) {
-            traverse_dir(state, QString::fromUtf8(subdir), cnt);
+            traverse_dir(state, QString::fromUtf8(subdir), cnt, checkPermissionsValidity);
         }
     }
 
@@ -210,11 +210,12 @@ static void check_readdir_shorttree(void **state)
 {
     auto sv = (statevar*) *state;
 
+    bool checkPermissionsValidity = true;
     const char *t1 = "alibaba/und/die/vierzig/räuber/";
     create_dirs( t1 );
     int files_cnt = 0;
     
-    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt, checkPermissionsValidity);
 
     assert_string_equal(sv->result.constData(),
         QString::fromUtf8("<DIR> %1/alibaba"
@@ -233,6 +234,7 @@ static void check_readdir_with_content(void **state)
     auto sv = (statevar*) *state;
     int files_cnt = 0;
 
+    bool checkPermissionsValidity = true;
     const char *t1 = "warum/nur/40/Räuber/";
     create_dirs( t1 );
 
@@ -240,7 +242,7 @@ static void check_readdir_with_content(void **state)
     create_file( t1, "пя́тница.txt", "Am Freitag tanzt der Ürk");
 
 
-    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt, checkPermissionsValidity);
 
     assert_string_equal(sv->result.constData(),
         QString::fromUtf8("<DIR> %1/warum"
@@ -258,6 +260,8 @@ static void check_readdir_with_content(void **state)
 static void check_readdir_longtree(void **state)
 {
     auto sv = (statevar*) *state;
+
+    bool checkPermissionsValidity = true;
 
     /* Strange things here: Compilers only support strings with length of 4k max.
      * The expected result string is longer, so it needs to be split up in r1, r2 and r3
@@ -318,7 +322,7 @@ static void check_readdir_longtree(void **state)
     /* assemble the result string ... */
     const auto result = (r1 + r2 + r3).toUtf8();
     int files_cnt = 0;
-    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt, checkPermissionsValidity);
     assert_int_equal(files_cnt, 0);
     /* and compare. */
     assert_string_equal(sv->result.constData(), result.constData());
@@ -333,6 +337,7 @@ static void check_readdir_bigunicode(void **state)
 //    3: ? ASCII: 191 - BF
 //    4: ASCII: 32    - 20
 
+    bool checkPermissionsValidity = true;
     QString p = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, QStringLiteral("goodone/"));
     int rc = oc_mkdir(p);
     assert_int_equal(rc, 0);
@@ -344,7 +349,7 @@ static void check_readdir_bigunicode(void **state)
     assert_int_equal(rc, 0);
 
     int files_cnt = 0;
-    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt, checkPermissionsValidity);
     const auto expected_result = QStringLiteral("<DIR> %1/goodone"
                                                 "<DIR> %1/goodone/ugly\xEF\xBB\xBF\x32.txt")
                                      .arg(CSYNC_TEST_DIR);
