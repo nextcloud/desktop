@@ -162,7 +162,7 @@ void FileProviderSocketController::requestFileProviderDomainInfo() const
     sendMessage(requestMessage);
 }
 
-void FileProviderSocketController::slotAccountStateChanged(const AccountState::State state)
+void FileProviderSocketController::slotAccountStateChanged(const AccountState::State state) const
 {
     switch(state) {
     case AccountState::Disconnected:
@@ -241,7 +241,7 @@ void FileProviderSocketController::sendAccountDetails() const
     sendMessage(message);
 }
 
-void FileProviderSocketController::reportSyncState(const QString &receivedState)
+void FileProviderSocketController::reportSyncState(const QString &receivedState) const
 {
     if (!accountState()) {
         qCWarning(lcFileProviderSocketController) << "No account state available to report sync state";
