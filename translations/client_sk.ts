@@ -171,54 +171,54 @@
         <translation>Aktuálny účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
         <translation>Pokračovať v synchronizácii pre všetky účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
         <translation>Pozastaviť synchronizáciu pre všetky účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
         <translation>Pridať účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
         <translation>Pridať nový účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
         <translation>Nastavenia</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="131"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
         <translation>Ukončiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
         <translation>Avatar aktuálneho účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
         <translation>Stav aktuálneho účtu je pripojený</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
         <translation>Stav aktuálneho účtu je nerušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="256"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
         <translation>Prepínač účtov a menu nastavení</translation>
     </message>
@@ -389,13 +389,14 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Vyžiadať synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Požiadajte o synchronizáciu zmien pre prostredie VFS.
+macOS môže túto požiadavku ignorovať alebo oddialiť.</translation>
     </message>
 </context>
 <context>
@@ -1483,7 +1484,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Vložiť kód PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
@@ -2845,12 +2846,12 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Interval dotazovania sa na server</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekúnd (ak je &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt; Push pre Klienta &lt;/a&gt; nedostupné</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -5428,7 +5429,7 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Verzia klienta pre Desktop %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5533,7 +5534,7 @@ Server odpovedal chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n oznámenie</numerusform><numerusform>%n oznámenia</numerusform><numerusform>%n oznámení</numerusform><numerusform>%n oznámení</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5565,22 +5566,22 @@ Server odpovedal chybou: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrďte ostránenie účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Naozaj chcete odstrániť pripojenie k účtu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Týmto sa &lt;b&gt;neodstránia&lt;/b&gt; žiadne súbory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Remove connection</source>
         <translation>Vymazať prepojenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
@@ -6355,17 +6356,17 @@ Server odpovedal chybou: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="75"/>
         <source>Open local or group folders</source>
         <translation>Otvoriť miestne alebo skupinové adresáre</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
         <source>More apps</source>
         <translation>Viac aplikácií</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="132"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>Otvoriť %1 v prehliadači</translation>
     </message>
@@ -6434,39 +6435,39 @@ Server odpovedal chybou: %2</translation>
         <translation>Prepnúť na účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
         <translation>Stav aktuálneho účtu je pripojený</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
         <translation>Stav aktuálneho účtu je nerušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
         <translation>Možnosti účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Set status</source>
         <translation>Nastaviť stav</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log out</source>
         <translation>Odhlásiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log in</source>
         <translation>Prihlásiť sa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="178"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="179"/>
         <source>Remove account</source>
         <translation>Odobrať účet</translation>
     </message>
@@ -6531,12 +6532,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Použiť</translation>
     </message>
 </context>
 <context>

@@ -171,54 +171,54 @@
         <translation>Stávající účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
         <translation>Pokračovat v synchronizaci u všeho</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
         <translation>Pozastavit synchronizaci u všeho</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
         <translation>Přidat účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
         <translation>Přidat nový účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="131"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
         <translation>Stávající zástupný obrázek uživatele</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
         <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
         <translation>Stávající stav účtu je nerušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="256"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
         <translation>Přepínání účtů a nabídka nastavení</translation>
     </message>
@@ -5564,22 +5564,22 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>Confirm Account Removal</source>
         <translation>Potvrďte odebrání účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete odebrat propojení s účtem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Pozn.:&lt;/b&gt; Toto &lt;b&gt;nesmaže&lt;/b&gt; žádné soubory.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Remove connection</source>
         <translation>Odebrat spojení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
@@ -6354,17 +6354,17 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="75"/>
         <source>Open local or group folders</source>
         <translation>Otevřít místní nebo skupinové složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
         <source>More apps</source>
         <translation>Více aplikací</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="132"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>Otevřít %1 v prohlížeči</translation>
     </message>
@@ -6433,39 +6433,39 @@ Server odpověděl chybou: %2</translation>
         <translation>Přepnout na účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
         <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
         <translation>Stávající stav účtu je nerušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
         <translation>Akce účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Set status</source>
         <translation>Nastavit stav</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log out</source>
         <translation>Odhlásit se</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log in</source>
         <translation>Přihlásit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="178"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="179"/>
         <source>Remove account</source>
         <translation>Odebrat účet</translation>
     </message>

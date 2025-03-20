@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Rolar para o topo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="156"/>
@@ -171,54 +171,54 @@
         <translation>Conta atual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
         <translation>Retomar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
         <translation>Adicionar nova conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="131"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
         <translation>Avatar atual da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
         <translation>O status atual da conta é online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="256"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
@@ -257,17 +257,17 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>Chaves Disponíveis para criptografia de ponta a ponta:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Escolher</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -389,7 +389,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Solicitar sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
@@ -947,7 +947,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1351"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Você precisa aceitar os termos de serviço em %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1356"/>
@@ -957,7 +957,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Migrar o certificado para um novo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1629"/>
@@ -1480,22 +1480,22 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Inserir o código PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
+        <translation>PIN necessário para fazer login no token</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Digite o PIN do token USB do certificado:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>PIN inválido. Falha de login</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
@@ -2028,7 +2028,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -3274,7 +3274,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -4215,7 +4215,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1496"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1530"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>exceção desconhecida</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1541"/>
@@ -4344,7 +4344,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>exceção desconhecida</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
@@ -5408,7 +5408,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
@@ -5422,7 +5422,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Versão do Cliente para Desktop %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5517,7 +5517,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="103"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>O certificado de ponta a ponta precisa ser migrado para um novo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="105"/>
@@ -5527,7 +5527,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notificação</numerusform><numerusform>%n notificações</numerusform><numerusform>%n notificações</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5559,22 +5559,22 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>Confirm Account Removal</source>
         <translation>Confirme a Exclusão da Conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Quer realmente excluir a conexão para a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Obs.:&lt;/b&gt; Isso &lt;b&gt;não&lt;/b&gt; excluirá nenhum arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Remove connection</source>
         <translation>Excluir conexão</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -5658,12 +5658,12 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minuto</numerusform><numerusform>%1 minutos</numerusform><numerusform>%1 minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 hora</numerusform><numerusform>%1 horas</numerusform><numerusform>%1 horas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
@@ -5673,7 +5673,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dia</numerusform><numerusform>%1 dias</numerusform><numerusform>%1 dias</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6200,7 +6200,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Proteção com senha</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="578"/>
@@ -6312,7 +6312,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir navegador</translation>
     </message>
 </context>
 <context>
@@ -6333,33 +6333,33 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>Termos de Serviço</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Alterne para seu navegador para aceitar os termos de serviço</translation>
     </message>
 </context>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="75"/>
         <source>Open local or group folders</source>
         <translation>Abrir pastas locais ou de grupo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
         <source>More apps</source>
         <translation>Mais aplicativos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="132"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 no navegador</translation>
     </message>
@@ -6428,39 +6428,39 @@ Servidor respondeu com erro: %2</translation>
         <translation>Mudar para a conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
         <translation>O status da conta atual é online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
         <translation>Ações da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Set status</source>
         <translation>Definir status</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log out</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log in</source>
         <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="178"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="179"/>
         <source>Remove account</source>
         <translation>Remover conta</translation>
     </message>
@@ -6525,12 +6525,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Limpar</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar</translation>
     </message>
 </context>
 <context>
@@ -6706,7 +6706,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Os metadados de criptografia de ponta a ponta foram atualizados</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="65"/>
@@ -6752,7 +6752,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Os metadados de criptografia de ponta a ponta estão sendo atualizados</translation>
     </message>
 </context>
 <context>

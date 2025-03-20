@@ -171,54 +171,54 @@
         <translation>Geçerli hesap</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
         <translation>Tümünü eşitlemeyi sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="114"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
         <translation>Tümünü eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
         <translation>Yeni hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="131"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
         <translation>Çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
         <translation>Geçerli hesap görseli</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
         <translation>Hesap çevrim içi durumda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="185"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesap rahatsız etmeyin durumunda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="256"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
         <translation>Hesap değiştirici ve ayarlar menüsü</translation>
     </message>
@@ -5564,22 +5564,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>Confirm Account Removal</source>
         <translation>Hesap silmeyi onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını silmek istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Remove connection</source>
         <translation>Bağlantıyı sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -6354,17 +6354,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="75"/>
         <source>Open local or group folders</source>
         <translation>Yerel ya da grup klasörlerini aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
         <source>More apps</source>
         <translation>Diğer uygulamalar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="132"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
@@ -6433,39 +6433,39 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Şu hesaba geç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
         <translation>Hesabın geçerli durumu: Çevrim içi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="69"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
         <translation>Hesap işlemleri</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Set status</source>
         <translation>Durumu ayarla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log out</source>
         <translation>Oturumu kapat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="164"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="156"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Log in</source>
         <translation>Oturum aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="178"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="179"/>
         <source>Remove account</source>
         <translation>Hesabı sil</translation>
     </message>
