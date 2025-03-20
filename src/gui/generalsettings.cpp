@@ -580,8 +580,11 @@ void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {
     ConfigFile cfgFile;
     cfgFile.setShowInExplorerNavigationPane(checked);
+
+#ifdef Q_OS_WIN
     // Now update the registry with the change.
     FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
+#endif
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()
