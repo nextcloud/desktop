@@ -11,7 +11,6 @@
 		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
 		531EDE572D897B4F00FD91F9 /* Eviction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531EDE562D897B4F00FD91F9 /* Eviction.swift */; };
-		532572082C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */; };
 		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */; };
@@ -155,7 +154,6 @@
 /* Begin PBXFileReference section */
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
 		531EDE562D897B4F00FD91F9 /* Eviction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eviction.swift; sourceTree = "<group>"; };
-		532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+EnumerationListener.swift"; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
 		5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCommunicationService.swift; sourceTree = "<group>"; };
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -339,7 +337,6 @@
 				53D666602B70C9A70042C03D /* FileProviderConfig.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */,
-				532572072C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift */,
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
@@ -714,7 +711,6 @@
 				535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,
 				5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */,
-				532572082C4690340068DEC3 /* FileProviderExtension+EnumerationListener.swift in Sources */,
 				5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
