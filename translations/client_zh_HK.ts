@@ -1490,11 +1490,6 @@ This action will abort any currently running synchronization.</source>
         <translation>輸入 PIN 代碼</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>登錄權杖需要輸入 PIN</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>輸入證書 USB 權杖的 PIN：</translation>

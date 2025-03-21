@@ -1487,11 +1487,6 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Vložiť kód PIN</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>Pre prihlásenie tokenom je potrebný PIN</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Vložte PIN certifikátu USB tokenu:</translation>

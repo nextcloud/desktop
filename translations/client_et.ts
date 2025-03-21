@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroonimine on peatatud</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
@@ -180,7 +180,7 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroonimine kõigi jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
@@ -485,7 +485,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Uued tegevused</translation>
     </message>
 </context>
 <context>
@@ -592,12 +592,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="237"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sünkrooni kõik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="244"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Sünkrooni mitte midagi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
@@ -607,17 +607,17 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Tavaline failide sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsete failide sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Ühenduse seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -650,7 +650,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="125"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevaga krüptid selle kausta ja kõik seal sisalduvad failid. Edaspidi nad enam pole ligipääsetavad ilma mnemofraasina loodud krüptovõtmeta.
+&lt;b&gt;See tegevus on pöördumatu. Kas oled kindel, et soovid jätkata?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -680,29 +681,31 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Enne krüptimis palun oota, et kaust oleks sünkroonis.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="404"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Kaustas on üks pisike sünkroniseerimisviga. Selle kausta krüptimine on võimalik vaid siis, kui sünkroniseerimine on õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Kaustas on sünkroniseerimisviga. Selle kausta krüptimine on võimalik vaid siis, kui sünkroniseerimine on õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Läbib krüptimine on selles seadmes seadistamata. Alles seejärel saad seda kausta krüptida.
+Kas sa sooviksid läbiva krüptimise kasutusele võtta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="442"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta krüptimine koos siuga pole võimalik. Tõsta failid sealt ajutiselt välja.
+Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -712,7 +715,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Kausta krüptimine ei õnnestunud, sest teda pole enam olemas.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="588"/>
@@ -751,17 +754,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="699"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sünrooni kohe sundkorras</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="701"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Käivita sünroonimine uuesti</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="707"/>
         <source>Resume sync</source>
-        <translation>Taasta sünroonimist</translation>
+        <translation>Jätka sünroonimist</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="707"/>
@@ -771,7 +774,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="710"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kausta sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="723"/>
@@ -786,7 +789,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(katseline)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="826"/>
@@ -811,7 +814,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kausta sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
@@ -840,7 +843,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1096"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Sinu krüptograafilise identiteedi kaitsmiseks me krüptime ta 12-sõnalise mnemofraasiga. Palun märgi see üles ning hoia turvaliselt kas moodsas digitaalses salasõnalaekas või vana kooli seifis. Seda salafraasi läheb sul vaja teiste seadmete (näiteks sinu nutiseade või sülearvuti) sidumisel sinu kasutajakontoga.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1121"/>
@@ -855,7 +858,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Läbiva krüptimise kasutamise lõpetamise eemaldatakse siit seadmest krüptitud failid.&lt;br&gt;Küll aga jäävad krüptitud failid alles serverisse.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1195"/>
@@ -895,7 +898,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1315"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri versioon %1 pole toetatud! Jätkad omal vastusel.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
@@ -975,7 +978,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1693"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Läbiv krüptimine on selle kasutajakonto jaoks teises seadmes sisse lülitatud.&lt;br&gt;Sama saad teha ka selles seadmes, kui sisestad oma mnemofraasi (salafraasi).&lt;br&gt;Seejärel hakkab toimima ka olemasolevate krüptitud kaustade sünkroniseerimine.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1752"/>
@@ -1473,11 +1476,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2347,7 +2345,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1818"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Viimane sünkroniseerimine õnnestus.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1824"/>
@@ -2445,7 +2443,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="175"/>
         <source>Could not decrypt!</source>
-        <translation type="unfinished"/>
+        <translation>Dekrüptimine ei õnnestu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="177"/>
@@ -2747,7 +2745,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Näita kõnede teavitusi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -2762,12 +2760,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Näita vestluste teavitusi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Näita serveri &amp;teavitusi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
@@ -2808,7 +2806,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Näita sünkroonitavaid kaustu &amp;Exploreri failihalduri vasakus paanis</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
@@ -2884,12 +2882,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="200"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Näita vestluste teavituste vaateid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="204"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Näita kõneteavituste vaateid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
@@ -3382,12 +3380,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="45"/>
         <source>Proxy Settings</source>
-        <translation>Proksi seaded</translation>
+        <translation>Proksiserveri seaded</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="51"/>
         <source>Use system proxy</source>
-        <translation>Kasuta süsteemi proksit</translation>
+        <translation>Kasuta süsteemi proksiserveri seadistusi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="110"/>
@@ -3397,29 +3395,29 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="161"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proksi server nõuab autentimist</translation>
+        <translation>Proksiserver eeldab autentimist</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="224"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Märkus: kui kasutajakontot hallatakse samas arvutis asuvas serveris, siis proksiserveri seadistused ei ole kasutusel</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta proksiserver käsitsi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="259"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proksiserver pole vajalik</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <location filename="../src/gui/networksettings.ui" line="400"/>
         <location filename="../src/gui/networksettings.ui" line="510"/>
         <source>Use global settings</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta üldisi seadistusi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="312"/>
@@ -3474,17 +3472,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.cpp" line="52"/>
         <source>Password for proxy server</source>
-        <translation>Proksiserveri parool</translation>
+        <translation>Proksiserveri salasõna</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="54"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) proksi</translation>
+        <translation>HTTP(S) proksiserver</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="55"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 proksi</translation>
+        <translation>SOCKS5 proksiserver</translation>
     </message>
 </context>
 <context>
@@ -3648,7 +3646,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Proovi ilma krüptimata üle http-ühenduse (see pole turvaline)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -4109,7 +4107,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1775"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>Krüptitud objekti ei õnnestu muuta, sest valitud sertifikaat pole kehtiv.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1837"/>
@@ -4413,7 +4411,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ kausta krüptimine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="283"/>
@@ -4476,7 +4474,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="243"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Krüptitud faili üleslaadimine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="278"/>
@@ -4514,7 +4512,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="446"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Krüptitud kausta lukustuse eemaldamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="719"/>
@@ -4593,7 +4591,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Vajalik on proksi autentimine</translation>
+        <translation>Proksiserver eeldab autentimist</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -4608,7 +4606,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Proksi serveri jaoks on vajalik kasutajanimi ja parool.</translation>
+        <translation>Proksiserveri jaoks on vajalikud kasutajanimi ja salasõna.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -4757,23 +4755,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Otsi üldiselt</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemusi ei leidu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Üldised otsingutulemused</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4781,12 +4779,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="551"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ kausta krüptimine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="552"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ kasutajakonto jaoks pole läbivat krüptimist seadistatud. Palun tee seda konto seda konto seadistusest ja seejärel lisa kaustale krüptimine.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
@@ -4798,7 +4796,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Järgneva kausta krüptimine ei õnnestunud: „%1“.
+
+Veateade serveri päringuvastuses: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="579"/>
@@ -4808,7 +4808,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="580"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Järgneva kausta krüptimine õnnestus: „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="785"/>
@@ -4818,18 +4818,18 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1061"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Vali uus asukoht…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Ma jagasin sinuga midagi</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1147"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1184"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise valikud</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1148"/>
@@ -4840,12 +4840,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1150"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri privaatne link lõikelauale</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1151"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Saada privaatne link e-kirjaga…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
@@ -4855,49 +4855,49 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Selle faili edasijagamine pole lubatud</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Selle kausta edasijagamine pole lubatud</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1188"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri sisemine link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1226"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Krüpti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1237"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Lukusta fail</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1240"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda faili lukustus</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1255"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Lukustaja: %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1259"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Aegub %1 minuti pärast</numerusform><numerusform>Aegub %1 minuti pärast</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebilehitsejas</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1399"/>
@@ -4945,7 +4945,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation>Subjekti Alternatiivsed Nimed:</translation>
+        <translation>Subjekti alternatiivsed nimed:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
@@ -5033,13 +5033,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>See url EI OLE turvaline, kuna see pole krüpteeritud.
+        <translation>See ühendus EI OLE turvaline, kuna see pole krüpteeritud.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Serveri versioon: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -5054,7 +5054,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>See ühendus ei ole turvaline</translation>
     </message>
 </context>
 <context>
@@ -5257,7 +5257,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroonimine on peatatud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5295,7 +5295,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Laadi alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
@@ -5305,44 +5305,44 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Ava põhivaade</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="190"/>
         <location filename="../src/gui/systray.cpp" line="200"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="191"/>
         <location filename="../src/gui/systray.cpp" line="206"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Jätka sünroonimist</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192"/>
         <source>Settings</source>
-        <translation>Seaded</translation>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="193"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Abiteave</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="194"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Sulge %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="200"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroonimine kõigi jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="206"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Jätka sünkroonimist kõigi jaoks</translation>
     </message>
 </context>
 <context>
@@ -5425,7 +5425,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="155"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Krüptitud kausta lukustuse eemaldamine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
@@ -5456,7 +5456,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="97"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Krüptitud juurkausta „%1“ kausta jaoks ei õnnestunud leida</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
@@ -5832,7 +5832,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS %1 jaoks: Viimane sünkroniseerimine õnnestus.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="462"/>
@@ -6259,7 +6259,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="94"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sünkrooni kohe nüüd</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
@@ -6674,27 +6674,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Kustutamisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Teisaldamisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Eiramisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
@@ -6717,7 +6717,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroonimise olek pole teada</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>

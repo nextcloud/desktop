@@ -1487,11 +1487,6 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Cuir isteach cód PIN</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>Bhí gá le PIN chun logáil isteach ar an comhartha</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Cuir isteach PIN Deimhnithe USB Chomhartha:</translation>

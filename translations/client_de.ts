@@ -1486,11 +1486,6 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>PIN-Code eingeben</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>PIN für die Anmeldung am Token erforderlich</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>PIN des USB-Token-Zertifikats eingeben:</translation>
