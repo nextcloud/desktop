@@ -1487,11 +1487,6 @@ This action will abort any currently running synchronization.</source>
         <translation>Унесите PIN кôд</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>Потребан је PIN за пријаву на жетон</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Унесите PIN сертификата USB жетона:</translation>

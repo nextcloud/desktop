@@ -1487,11 +1487,6 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>PIN necesario para acceder ao testemuño</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Introduza o PIN do testemuó USB do certificado:</translation>

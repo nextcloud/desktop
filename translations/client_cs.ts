@@ -1486,11 +1486,6 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>Pro přihlášení se k tokenu je zapotřebí PIN</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Zadejte PIN k certifikátu na USB tokenu:</translation>

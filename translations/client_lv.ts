@@ -1486,11 +1486,6 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation type="unfinished"/>
@@ -3162,7 +3157,7 @@ Vienības, kurām ir atļauta dzēšana, tiks dzēstas, ja tās novērš mapi no
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Šīs rakstzīmes sistēmā nav atļautas: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; atstarpes sākumā/beigās</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -6598,7 +6593,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/main.cpp" line="51"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 prasa darboties sistēmas ikonjoslā. Ja izmantojat XFCE, lūdzu, ievērojiet &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;šos norādījumus&lt;/a&gt;. Pretējā gadījumā, lūdzu, instalējiet sistēmas ikonjoslas lietotni, piemēram, &quot;trayer&quot;, un mēģiniet vēlreiz.</translation>
+        <translation>%1 ir nepieciešama strādājoša sistēmas ikonjosla. Ja tiek izmantots XFCE, lūgums ievērot &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;šos norādījumus&lt;/a&gt;. Pārējos gadījumos lūgums uzstādīt sistēmas ikonjoslas lietotni, piemēram, &quot;trayer&quot;, un mēģināt vēlreiz.</translation>
     </message>
 </context>
 <context>

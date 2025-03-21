@@ -1487,11 +1487,6 @@ This action will abort any currently running synchronization.</translation>
         <translation>Input PIN code</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>PIN needed to login to token</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Enter Certificate USB Token PIN:</translation>

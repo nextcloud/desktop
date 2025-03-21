@@ -1484,11 +1484,6 @@ Vous prenez vos propres risques.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
-        <source>PIN needed to login to token</source>
-        <translation>PIN nécessaire pour se connecter au jeton</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation>Entrez le PIN du jeton USB de certificat:</translation>
