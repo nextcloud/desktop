@@ -1822,7 +1822,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1837,7 +1837,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Palun proovi uuesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
@@ -1910,13 +1910,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 sekundi eest</numerusform><numerusform>%1 sekundi eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minuti eest</numerusform><numerusform>%1 minuti eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
@@ -1996,32 +1996,32 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="161"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Ootame autentimist</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="166"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Pollime autentimist</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Alustame autentimisega</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="175"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Link on kopeeritud lõikelauale.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebilehitseja</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri link</translation>
     </message>
 </context>
 <context>
@@ -2029,22 +2029,22 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="200"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ kausta pole olemas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="202"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ pole korrektne kaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="204"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ pole loetav kaust.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="452"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muud faili on eemaldatud.</numerusform><numerusform>%1 ja %n muud faili on eemaldatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="454"/>
@@ -2139,7 +2139,8 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="1387"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Uus kaust, mis on suurem, kui %1 MB on lisatud: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1390"/>
@@ -2161,12 +2162,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1459"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Jätka sünkroonimist</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1467"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Lõpeta sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1478"/>
@@ -2229,12 +2230,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1707"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Taasta failid serverisse</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1707"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Taasta failid serverist</translation>
     </message>
 </context>
 <context>
@@ -2257,12 +2258,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta loomine ei õnnestunud. Palun kontrolli, kas sul on vajalikud kirjutusõigused.</translation>
     </message>
 </context>
 <context>
@@ -2517,23 +2518,23 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Allalaadimine %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Üleslaadimine %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1088"/>
@@ -2667,7 +2668,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="365"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Vali see sünkroniseering tervele kontole</translation>
+        <translation>Vali see sünkroniseerimine tervele kontole</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
@@ -6737,12 +6738,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation>Sünkroniseerimine õnnestus, mõnda faili eirati.</translation>
+        <translation>Sünkroniseerimine õnnestus, mõnda faili eirati</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimisel tekkis viga</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
@@ -6757,7 +6758,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine on peatamisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="129"/>
