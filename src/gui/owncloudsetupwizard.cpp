@@ -125,8 +125,20 @@ void OwncloudSetupWizard::startWizard()
     if (!QDir(localFolder).isAbsolute()) {
         localFolder = QDir::homePath() + QLatin1Char('/') + localFolder;
     }
-
+	
     _ocWizard->setProperty("localFolder", localFolder);
+	
+    {
+        ConfigFile cfg;
+        if (!cfg.proposeLocalDir().isEmpty()) {
+			qCInfo(lcWizard) << "cfg.proposeLocalDir() " << cfg.proposeLocalDir();
+			if (cfg.proposeLocalDir() == "false") {
+			    localFolder = "Please select folder";
+			}
+            _ocWizard->setProperty("localFolder", localFolder);
+        }
+    }
+		
     {
         ConfigFile cfg;
         if (!cfg.overrideLocalDir().isEmpty()) {

@@ -95,6 +95,7 @@ namespace {
         "  --background               : launch the application in the background.\n"
         "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
         "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
+		"  --proposelocaldir          : specify 'false' to enforce an active local directory decision.\n"
         "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
         "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
         "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
@@ -359,6 +360,11 @@ Application::Application(int &argc, char **argv)
 
         if (!_overrideLocalDir.isEmpty()) {
             cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (!_proposeLocalDir.isEmpty()) {
+            cfg.setProposeLocalDir(_proposeLocalDir);
             shouldExit = true;
         }
 
@@ -880,6 +886,12 @@ void Application::parseOptions(const QStringList &options)
                 _overrideLocalDir = it.next();
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
+            }
+        } else if (option == QStringLiteral("--proposelocaldir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _proposeLocalDir = it.next();
+            } else {
+                showHint("Invalid value passed to --proposelocaldir");
             }
         } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
