@@ -391,6 +391,8 @@ public final class FilesDatabaseManager: Sendable {
                         permissions: \(metadata.permissions, privacy: .public)
                         size: \(metadata.size, privacy: .public)
                         trashbinFileName: \(metadata.trashbinFileName, privacy: .public)
+                        downloaded: \(metadata.downloaded, privacy: .public)
+                        uploaded: \(metadata.uploaded, privacy: .public)
                     """
                 )
             }

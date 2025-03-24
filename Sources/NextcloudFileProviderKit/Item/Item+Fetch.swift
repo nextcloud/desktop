@@ -111,6 +111,10 @@ public extension Item {
 
                 metadata.status = Status.normal.rawValue
                 metadata.downloaded = true
+                // HACK: We were previously failing to correctly set the uploaded state to true for
+                // enumerated items. Fix it now to ensure we do not show "waiting for upload" when
+                // having downloaded incorrectly enumerated files
+                metadata.uploaded = true
                 metadata.sessionError = ""
                 dbManager.addItemMetadata(metadata)
 
@@ -240,6 +244,10 @@ public extension Item {
 
         updatedMetadata.status = Status.normal.rawValue
         updatedMetadata.downloaded = true
+        // HACK: We were previously failing to correctly set the uploaded state to true for
+        // enumerated items. Fix it now to ensure we do not show "waiting for upload" when
+        // having downloaded incorrectly enumerated files
+        updatedMetadata.uploaded = true
         updatedMetadata.sessionError = ""
 
         dbManager.addItemMetadata(updatedMetadata)
