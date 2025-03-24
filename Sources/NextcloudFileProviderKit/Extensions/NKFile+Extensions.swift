@@ -10,7 +10,7 @@ import NextcloudKit
 import RealmSwift
 
 extension NKFile {
-    func toItemMetadata() -> SendableItemMetadata {
+    func toItemMetadata(uploaded: Bool = true) -> SendableItemMetadata {
         let creationDate = creationDate ?? date
         let uploadDate = uploadDate ?? date
         let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown")
@@ -65,6 +65,7 @@ extension NKFile {
             shareType: shareType,
             size: size,
             tags: tags,
+            uploaded: uploaded,
             trashbinFileName: trashbinFileName,
             trashbinOriginalLocation: trashbinOriginalLocation,
             trashbinDeletionTime: trashbinDeletionTime,
