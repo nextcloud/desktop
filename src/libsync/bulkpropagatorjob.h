@@ -73,11 +73,17 @@ private slots:
     void slotComputeTransmissionChecksum(OCC::SyncFileItemPtr item,
                                          OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
+    void slotComputeMd5Checksum(SyncFileItemPtr item,
+                                UploadFileInfo fileToUpload,
+                                const QByteArray &transmissionChecksumType,
+                                const QByteArray &transmissionChecksum);
+
     // transmission checksum computed, prepare the upload
     void slotStartUpload(OCC::SyncFileItemPtr item,
                          OCC::BulkPropagatorJob::UploadFileInfo fileToUpload,
                          const QByteArray &transmissionChecksumType,
-                         const QByteArray &transmissionChecksum);
+                         const QByteArray &transmissionChecksum,
+                         const QByteArray &md5Checksum);
 
     // invoked on internal error to unlock a folder and failed
     void slotOnErrorStartFolderUnlock(OCC::SyncFileItemPtr item,
@@ -94,7 +100,8 @@ private slots:
 private:
     void doStartUpload(SyncFileItemPtr item,
                        UploadFileInfo fileToUpload,
-                       QByteArray transmissionChecksumHeader);
+                       QByteArray transmissionChecksumHeader,
+                       QByteArray md5ChecksumHeader);
 
     void adjustLastJobTimeout(AbstractNetworkJob *job,
                               qint64 fileSize) const;
