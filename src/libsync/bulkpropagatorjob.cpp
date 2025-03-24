@@ -295,7 +295,7 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
 {
     // Compute the transmission checksum.
     const auto computeChecksum = new ComputeChecksum(this);
-    const auto checksumType = uploadChecksumEnabled() ? propagator()->account()->capabilities().preferredUploadChecksumType() : "";
+    const auto checksumType = uploadChecksumEnabled() ? propagator()->account()->capabilities().preferredUploadChecksumType() : QByteArray{""};
     computeChecksum->setChecksumType(checksumType);
 
     connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
