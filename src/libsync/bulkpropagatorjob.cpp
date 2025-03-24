@@ -221,7 +221,6 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
                 remotePath, fileToUpload._path,
                 fileToUpload._size, currentHeaders};
 
-    qCInfo(lcBulkPropagatorJob) << remotePath << "transmission checksum" << transmissionChecksumHeader << fileToUpload._path;
     _filesToUpload.push_back(std::move(newUploadFile));
     _pendingChecksumFiles.remove(item->_file);
 
