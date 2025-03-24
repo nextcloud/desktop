@@ -2782,7 +2782,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation>Mostrar Notificações de Chamada</translation>
+        <translation>Mostrar Notificações de Bate-Papo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -2904,7 +2904,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="200"/>
         <source>Show chat notification dialogs.</source>
-        <translation>Mostrar diálogos de notificação de chamada.</translation>
+        <translation>Mostrar diálogos de notificação de bate-papo.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="204"/>
@@ -5397,7 +5397,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>Consultando</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
