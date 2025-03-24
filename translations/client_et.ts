@@ -174,7 +174,7 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Jätka sünkroonimist kõigi jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
@@ -195,12 +195,12 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Sulge</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
@@ -210,17 +210,17 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakonto on hetkel võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakonto olek on hetkel „Ära sega“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakontode vahetaja ja seadistuste menüü</translation>
     </message>
 </context>
 <context>
@@ -343,12 +343,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsete failide seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Üldised seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
@@ -480,7 +480,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud otsingutulemuste loend</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
@@ -2083,7 +2083,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 on ümber nimetatud %2.</translation>
+        <translation>%1 uus nimi on %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="480"/>
@@ -2151,7 +2151,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1391"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Valimaks, kas sa soovid ta alla laadida, ava palun seadistused.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1448"/>
@@ -4670,13 +4670,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Seaded</translation>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="104"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1i seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="122"/>
@@ -5233,7 +5233,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="346"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="94"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Kõik on sünkroonis!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
@@ -5542,96 +5542,96 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Olekute valmisvalikute laadimine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Olekute laadimine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Olekute funktsionaalsus pole toetatud ja olekuid seega määrata ei saa.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emojid pole toetatud. Mõned võrgusolekute funktsionaalsused ei pruugi toimida.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Olekute määramine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Olekusõnumi eemaldamine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ära eemalda</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minuti pärast</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 tunni pärast</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 tunni pärast</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Täna</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Sel nädalal</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Vähem kui minuti pärast</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minuti pärast</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minuti pärast</numerusform><numerusform>%1 minuti pärast</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tunni pärast</numerusform><numerusform>%1 tunni pärast</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 päeva pärast</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 päeva pärast</numerusform><numerusform>%1 päeva pärast</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6239,7 +6239,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Otsi kasutajaid või gruppe…</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
@@ -6327,7 +6327,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="40"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Otsi faile, sõnumeid või sündmusi…</translation>
     </message>
 </context>
 <context>
@@ -6335,7 +6335,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Otsimiseks alusta kirjutamist</translation>
     </message>
 </context>
 <context>
@@ -6351,7 +6351,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="29"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemuste kest</translation>
     </message>
 </context>
 <context>
@@ -6375,7 +6375,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="33"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemuste lõik %1</translation>
     </message>
 </context>
 <context>
@@ -6388,12 +6388,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakonto on hetkel võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakonto olek on hetkel „Ära sega“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -6403,7 +6403,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Määra oma olek võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="156"/>
@@ -6428,67 +6428,67 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Sinu olek võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Eemal</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ära sega</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sellega summutad teavitused</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Nähtamatu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Sellega paistad olema võrgust väljas</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Olekusõnum</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Mis on sinu olek võrgus?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda olek</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Tühjenda</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda</translation>
     </message>
 </context>
 <context>

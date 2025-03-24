@@ -1484,7 +1484,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Inserisci il codice PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
