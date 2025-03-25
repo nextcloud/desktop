@@ -1,4 +1,5 @@
 usr/bin/nextcloud
+usr/lib/systemd/user/com.nextcloud.desktopclient.nextcloud.service
 usr/share/applications/com.nextcloud.desktopclient.nextcloud.desktop
 usr/share/dbus-1/services/com.nextcloudgmbh.Nextcloud.service
 usr/share/mime/packages/nextcloud.xml
