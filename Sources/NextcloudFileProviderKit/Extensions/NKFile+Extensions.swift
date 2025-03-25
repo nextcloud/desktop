@@ -114,7 +114,7 @@ extension Array<NKFile> {
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         await concurrentChunkedForEach { file in
             guard file.ocId != targetDirectoryMetadata.ocId else { return }
-            await conversionActor.add( metadata: file.toItemMetadata())
+            await conversionActor.add(metadata: file.toItemMetadata())
         }
         return await conversionActor.convertedMetadatas()
     }
