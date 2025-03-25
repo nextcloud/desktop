@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>See kasutajakonto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Selle kasutajakonto tunnuspilt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
@@ -421,12 +421,12 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>Sinu kasutajakonto ühendamiseks ava nüüd oma veebibrauser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
@@ -475,7 +475,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloudi töölauarakenduse põhivaade</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -779,12 +779,12 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Lülita virtuaalsete failide tugi välja…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Lülita virtuaalsete failide tugi sisse: %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
@@ -799,7 +799,7 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="827"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kohaliku kausta loomine ei õnnestunud &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
@@ -809,7 +809,7 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="885"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kas sa kindlasti soovid lõpetada &lt;i&gt;%1&lt;/i&gt; kausta sünkroniseerimise?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See toiming &lt;b&gt;ei&lt;/b&gt; kustuta ühtegi faili.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
@@ -858,7 +858,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Läbiva krüptimise kasutamise lõpetamise eemaldatakse siit seadmest krüptitud failid.&lt;br&gt;Küll aga jäävad krüptitud failid alles serverisse.</translation>
+        <translation>Läbiva krüptimise kasutamise lõpetamisel eemaldatakse siit seadmest krüptitud failid.&lt;br&gt;Küll aga jäävad krüptitud failid alles serverisse.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1195"/>
@@ -878,7 +878,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1269"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Kasutusel on %1 lubatud mahust %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1278"/>
@@ -893,7 +893,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1308"/>
         <source>%1 as %2</source>
-        <translation>%1 kasutajana %2</translation>
+        <translation>serveriga %1 kasutajana %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1315"/>
@@ -913,37 +913,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>%1 server on hetkel hooldusrežiimis.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1327"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>%1 serveri päringud on hetkel ümbersuunatud või sinu internetiühendus asub  pääsulehe taga.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1330"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Välja logitud serverist %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1333"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Loon ühendust serveriga %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1337"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestu luua ühendust serveriga %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1342"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri seadistusviga: %1 asukohas %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1351"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sa pead nõustuma kasutustingimustega: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1356"/>
@@ -958,22 +958,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1629"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>On kaustu, mis on jäänud sünkroniseerimata, kuna nad on liiga suured:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1630"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>On kaustu, mis on jäänud sünkroniseerimata, kuna nad asuvad välises andmeruumis:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1631"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>On kaustu, mis on jäänud sünkroniseerimata, kuna nad on liiga suured või asuvad välises andmeruumis:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1642"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>On kaustu, mille maht on kasvanud üle %1 MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1693"/>
@@ -1459,7 +1459,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="284"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Failinimes leidub keelatud tähemärke: %1</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1629,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="54"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Ühtegi Nextcloudi kontot pole seadistatud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="171"/>
@@ -1991,7 +1991,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="98"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Veebibrauseri avamine ei õnnestu, palun kopeeri link veebibrauseri jaoks ja ava ta ise.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="161"/>
@@ -2066,7 +2066,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="466"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>„%1“ ja %n muud fail on uuendatud.</numerusform><numerusform>„%1“ ja %n muud faili on uuendatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="468"/>
@@ -2157,7 +2157,8 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="1448"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Üks kaust on ületanud kaustadele lubatud mahu ülempiiri %1 MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1459"/>
@@ -2172,7 +2173,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1478"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kaust on ületanud kaustadele lubatud mahu ülempiiri %2 MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1479"/>
@@ -2220,12 +2221,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1702"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Kas eemaldame kõik failid?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1706"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Jätka kustutamisega</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1707"/>
@@ -2291,7 +2292,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1773"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Määratlemata olek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1776"/>
@@ -2351,7 +2352,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1824"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Seadistamise viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1827"/>
@@ -2480,7 +2481,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerime virtuaalseid faile kohalikus kaustas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="330"/>
@@ -2736,7 +2737,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>Üldised seaded</translation>
+        <translation>Üldised seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -2771,12 +2772,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>Advanced</source>
-        <translation>Täpsem</translation>
+        <translation>Täiendavad seadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis on suuremad, kui</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -2787,22 +2788,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Anna teada, kui kaustade maht kasvab üle lubatud piiri</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Lülita sünkroniseerimine automaatselt välja, kui kausta maht ületab lubatud piiri</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis asuvad välises andmeruumis</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Viska eemaldatavad failid prügikasti</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
@@ -2817,12 +2818,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Serverist andmete uuendamise välp</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekundit (kui &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Tõuketeenuste moodul ehk Client Push&lt;/a&gt; pole saadaval)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -2833,22 +2834,22 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.ui" line="295"/>
         <location filename="../src/gui/generalsettings.cpp" line="603"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Loo arhiivifail veaotsingu jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="320"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Rakenduse teave</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="335"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Töölaua klient x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="359"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Uuenduste kanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -2858,27 +2859,27 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolli uuendusi &amp;automaatselt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="428"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolli kohe</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Kasutusjuhendid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Juriidiline teave</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Serveriteavitused, mis vajavad sinu tähelepanu.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="200"/>
@@ -2893,7 +2894,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna kasutusel on süsteemiülene automaatne käivitud, siis rakenduse automaatset käivitamist sisselogimisel ei saa välja lülitada.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -2908,12 +2909,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="421"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>igaöine</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="425"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>suurfirmade</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="453"/>
@@ -2948,7 +2949,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="472"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Muuda uuenduste kanalit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
@@ -2958,17 +2959,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="605"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip-failid</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="615"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Arhiivifail veaotsingu jaoks on loodud</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="616"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Arhiivifail veaotsingu jaoks on loodud asukohta %1</translation>
     </message>
 </context>
 <context>
@@ -3057,7 +3058,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Luba kustutamine</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -3072,29 +3073,31 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kõik</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Mustrile vastavad failid ja kaustad jäävad sünkroniseerimata.
+
+Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus nad takistavad kausta kustutamist. Seda saab näiteks kasutada metainfo kustutamisel.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Faili avamine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ei saa salvestada muudatusi siia: „%1“.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Eiramise mustri lisamine</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
@@ -3207,7 +3210,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="256"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Failinimes leidub keelatud tähemärke: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="269"/>
@@ -3231,7 +3234,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Juriidiline teave</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
@@ -3241,12 +3244,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Autoriõigused 2017-2025 Nextcloud GmbH&lt;br /&gt;Autoriõigused 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Litsentseeritud GNU Üldise Avaliku Litsentsi (GPL) versioon 2.0 või iga hilisema versiooni alusel.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3791,7 +3794,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="591"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>loon kausta Nextcloudi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="596"/>
@@ -4134,7 +4137,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1932"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Eemaldamine pole lubatud, taastan</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2126"/>
@@ -5351,7 +5354,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="134"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>Ootan, et nõustud kasutustingimustega</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
@@ -5361,17 +5364,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Link on kopeeritud lõikelauale.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebilehitseja</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri link</translation>
     </message>
 </context>
 <context>
@@ -5380,17 +5383,17 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Töölauaklient, versioon %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Kasutusel on virtuaalsete failide lisamoodul: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="629"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Selle versiooni levitaja: %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5485,7 +5488,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n teavitus</numerusform><numerusform>%n teavitust</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5501,17 +5504,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Muuda failinime</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava Nextcloud Assistant veebibrauseris</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava Nextcloud Talk veebibrauseris</translation>
     </message>
 </context>
 <context>
@@ -5519,17 +5522,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Kinnita kasutajakonto eemaldamine</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kas sa kindlasti soovid eemaldada &lt;i&gt;%1&lt;/i&gt; kasutajakonto ühenduse?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See toiming &lt;b&gt;ei&lt;/b&gt; kustuta ühtegi faili.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda ühendus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
@@ -5982,12 +5985,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Veaotsingu jaoks mõeldud arhiivifaili loomine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="134"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Veaotsingu jaoks mõeldud arhiivifaili loomine valitud asukohta ei õnnestunud!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="805"/>
@@ -6590,7 +6593,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="592"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Kompileeritud Giti sissekande &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; alusel %3, %4 kasutades teeke: Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6723,7 +6726,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Ootan sünkroniseerimise alustamist</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
@@ -6733,7 +6736,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine õnnestus</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
@@ -6748,7 +6751,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Seadistamisel tekkis viga</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="123"/>

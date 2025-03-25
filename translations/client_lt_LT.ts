@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Slinkti į viršų</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="156"/>
@@ -3095,7 +3095,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyksta rašyti pakeitimus į „%1“.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -3143,7 +3143,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sinchronizuoti failo „%1“, nes jo pavadinime yra simbolių, kurie šioje sistemoje yra neleidžiami.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
@@ -3247,7 +3247,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Autorių teisės 2017–2025 Nextcloud GmbH&lt;br /&gt;Autorių teisės 2012–2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -3592,7 +3592,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="322"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti aplanką „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
@@ -4179,7 +4179,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1496"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1530"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>nežinoma išimtis</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1541"/>
@@ -4308,7 +4308,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>nežinoma išimtis</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
@@ -4418,12 +4418,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko šifruoti aplanko %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="283"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida rašant metaduomenis į duomenų bazę: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="286"/>
@@ -4796,7 +4796,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko šifruoti aplanko</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="572"/>
@@ -4840,7 +4840,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1148"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1364"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Veikla</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1150"/>
@@ -5365,17 +5365,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Nuoroda nukopijuota į iškarpinę.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklę</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą</translation>
     </message>
 </context>
 <context>
@@ -5489,7 +5489,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n pranešimas</numerusform><numerusform>%n pranešimai</numerusform><numerusform>%n pranešimų</numerusform><numerusform>%n pranešimas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5671,7 +5671,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>nepavyko atsisiųsti</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>

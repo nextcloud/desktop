@@ -2838,12 +2838,12 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Intervalo de pesquisa do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>segundos (se o &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; não estiver disponível)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -3658,7 +3658,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>Na seção da barra lateral &quot;Locais&quot; do Finder</translation>
     </message>
 </context>
 <context>
@@ -3887,7 +3887,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Conta %1 baseada em File Provider criada com sucesso!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
@@ -3897,7 +3897,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>Sua conta agora está sendo sincronizada com suporte a arquivos virtuais. Isso significa que todos os seus arquivos são somente on-line por padrão e serão baixados sob demanda quando você os abrir. Você pode encontrar seus arquivos na seção &lt;b&gt;Locais&lt;/b&gt; da barra lateral do Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="741"/>
