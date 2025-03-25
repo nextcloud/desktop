@@ -33,6 +33,7 @@ extension NKTrash {
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
             size: size,
+            uploaded: true,
             trashbinFileName: trashbinFileName,
             trashbinOriginalLocation: trashbinOriginalLocation,
             trashbinDeletionTime: trashbinDeletionTime,
