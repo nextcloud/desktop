@@ -399,7 +399,7 @@ final class EnumeratorTests: XCTestCase {
         var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
         itemAMetadata.etag = oldItemAEtag
 
-        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
+        let itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -512,7 +512,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.fileNameView = oldName
         itemAMetadata.serverUrl = oldServerUrl
 
-        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
+        let itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
