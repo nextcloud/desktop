@@ -183,4 +183,46 @@ final class ItemPropertyTests: XCTestCase {
         )
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
+
+    func testItemUserInfoDownloadedState() {
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.downloaded = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
+        )
+
+        XCTAssertNotNil(item.userInfo?["downloaded"])
+
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let downloadedPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count > 0"
+        )
+        XCTAssertTrue(downloadedPredicate.evaluate(with: fileproviderItems))
+    }
+
+    func testItemUserInfoUndownloadedState() {
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.downloaded = false
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
+        )
+
+        XCTAssertNotNil(item.userInfo?["downloaded"])
+
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let undownloadedPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == false ).@count > 0"
+        )
+        XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
+    }
 }
