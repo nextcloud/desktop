@@ -38,7 +38,7 @@
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
-				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.downloaded ).@count &gt; 0</string>
+				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
