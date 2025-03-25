@@ -207,6 +207,7 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
+        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
 
         // Ensure the newly discovered folder has no etag
         let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
@@ -237,6 +238,7 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
+        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
 
         // Ensure the newly discovered folder has no etag
         var dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
@@ -282,6 +284,7 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
+        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
 
         // Ensure the newly discovered folder has an etag
         let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
@@ -326,6 +329,7 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertNotEqual(dbFolderMetadata.etag, oldEtag)
         XCTAssertEqual(storedFolderItem.childItemCount?.intValue, remoteFolder.children.count)
+        XCTAssertEqual(storedFolderItem.isUploaded, true)
 
         let retrievedItemA = try XCTUnwrap(
             observer.items.first(where: { $0.itemIdentifier.rawValue == remoteItemA.identifier })
@@ -338,6 +342,8 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
+        XCTAssertEqual(retrievedItemA.isDownloaded, false)
+        XCTAssertEqual(retrievedItemA.isUploaded, true)
     }
 
     func testEnumerateFile() async throws {
@@ -372,6 +378,8 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedItemAItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
+        XCTAssertEqual(retrievedItemAItem.isDownloaded, false)
+        XCTAssertEqual(retrievedItemAItem.isUploaded, true)
     }
 
     func testFolderAndContentsChangeEnumeration() async throws {
@@ -391,7 +399,7 @@ final class EnumeratorTests: XCTestCase {
         var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
         itemAMetadata.etag = oldItemAEtag
 
-        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
+        let itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -504,7 +512,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.fileNameView = oldName
         itemAMetadata.serverUrl = oldServerUrl
 
-        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
+        let itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -757,6 +765,8 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteTrashItemA.identifier)
         XCTAssertEqual(storedItemA.filename, remoteTrashItemA.name)
         XCTAssertEqual(storedItemA.documentSize?.int64Value, remoteTrashItemA.size)
+        XCTAssertEqual(storedItemA.isDownloaded, false)
+        XCTAssertEqual(storedItemA.isUploaded, true)
 
         let storedItemB = try XCTUnwrap(
             Item.storedItem(
@@ -769,6 +779,8 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(storedItemB.itemIdentifier.rawValue, remoteTrashItemB.identifier)
         XCTAssertEqual(storedItemB.filename, remoteTrashItemB.name)
         XCTAssertEqual(storedItemB.documentSize?.int64Value, remoteTrashItemB.size)
+        XCTAssertEqual(storedItemB.isDownloaded, false)
+        XCTAssertEqual(storedItemB.isUploaded, true)
 
         let storedItemC = try XCTUnwrap(
             Item.storedItem(
@@ -781,6 +793,8 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(storedItemC.itemIdentifier.rawValue, remoteTrashItemC.identifier)
         XCTAssertEqual(storedItemC.filename, remoteTrashItemC.name)
         XCTAssertEqual(storedItemC.documentSize?.int64Value, remoteTrashItemC.size)
+        XCTAssertEqual(storedItemC.isDownloaded, false)
+        XCTAssertEqual(storedItemC.isUploaded, true)
     }
 
     func testTrashChangeEnumeration() async throws {

@@ -209,9 +209,11 @@ public class Item: NSObject, NSFileProviderItem {
             path: "", // Placeholder as not set in original code
             serverUrl: account.davFilesUrl,
             size: 0, // Default as not set in original code
+            uploaded: true,
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code
+
         )
         return Item(
             metadata: metadata,
@@ -242,6 +244,7 @@ public class Item: NSObject, NSFileProviderItem {
             path: "", // Placeholder as not set in original code
             serverUrl: account.trashUrl,
             size: 0, // Default as not set in original code
+            uploaded: true,
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code

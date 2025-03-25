@@ -70,6 +70,7 @@ final class ItemFetchTests: XCTestCase {
 
         XCTAssertEqual(contents, remoteItem.data)
         XCTAssertTrue(fetchedItem.isDownloaded)
+        XCTAssertTrue(fetchedItem.isUploaded)
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)
         XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
@@ -183,6 +184,8 @@ final class ItemFetchTests: XCTestCase {
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)
         XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
+        XCTAssertTrue(fetchedItem.isUploaded)
+        XCTAssertTrue(fetchedItem.isDownloaded)
 
         let fm = FileManager.default
         var itemIsDir = ObjCBool(false)

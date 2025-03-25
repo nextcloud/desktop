@@ -195,6 +195,7 @@ public class MockRemoteItem: Equatable {
             path: "", // Placeholder as not set in original code
             serverUrl: trimmedServerUrl,
             size: size,
+            uploaded: true,
             trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
             trashbinOriginalLocation: trashbinOriginalLocation ?? "",
             urlBase: account.serverUrl,
