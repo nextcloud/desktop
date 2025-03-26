@@ -58,7 +58,6 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
     return reply.value(headerName).toString().toLatin1();
 }
 
-constexpr auto batchSize = 100;
 constexpr auto parallelJobsMaximumCount = 1;
 
 }
@@ -70,10 +69,10 @@ Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", 
 BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob(propagator)
     , _items(items)
-    , _currentBatchSize(batchSize)
+    , _currentBatchSize(_items.size())
 {
-    _filesToUpload.reserve(batchSize);
-    _pendingChecksumFiles.reserve(batchSize);
+    _filesToUpload.reserve(_items.size());
+    _pendingChecksumFiles.reserve(_items.size());
 }
 
 bool BulkPropagatorJob::scheduleSelfOrChild()
@@ -84,10 +83,14 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    for(auto i = 0; i < _currentBatchSize && !_items.empty(); ++i) {
+    qCDebug(lcBulkPropagatorJob()) << "max chunk size" << PropagatorJob::propagator()->syncOptions().maxChunkSize();
+
+    for(auto batchDataSize = 0; batchDataSize <= PropagatorJob::propagator()->syncOptions().maxChunkSize() && !_items.empty(); ) {
         const auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
+
+        batchDataSize += currentItem->_size;
 
         QMetaObject::invokeMethod(this, [this, currentItem] {
             UploadFileInfo fileToUpload;
@@ -117,7 +120,7 @@ bool BulkPropagatorJob::handleBatchSize()
     }
 
     // change batch size before trying it again
-    const auto halfBatchSize = batchSize / 2;
+    const auto halfBatchSize = static_cast<int>(_items.size() / 2);
 
     // we already tried to upload with half of the batch size
     if(_currentBatchSize == halfBatchSize) {
