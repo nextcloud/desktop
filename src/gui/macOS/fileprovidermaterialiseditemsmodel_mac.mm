@@ -42,7 +42,8 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
         return;
     }
 
-    __block BOOL successfullyDeleted = YES;
+    __block BOOL successfullyDeleted = NO;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 
     [manager evictItemWithIdentifier:identifier.toNSString() completionHandler:^(NSError *error) {
         if (error != nil) {
@@ -51,10 +52,13 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
             Systray::instance()->showMessage(tr("Error"),
                                              tr("An error occurred while trying to delete the local copy of this item: %1").arg(errorDesc),
                                              QSystemTrayIcon::Warning);
-            successfullyDeleted = NO;
+        } else {
+            successfullyDeleted = YES;
         }
+        dispatch_semaphore_signal(semaphore);
     }];
 
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC));
     if (successfullyDeleted == NO) {
         return;
     }
