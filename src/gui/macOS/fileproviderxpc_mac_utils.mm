@@ -244,8 +244,7 @@ NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *const cli
             dispatch_group_leave(group);
             return;
         }
-        extensionNcAccount = [NSString stringWithString:extensionAccountId];
-        [extensionNcAccount retain];
+        extensionNcAccount = [[NSString alloc] initWithString:extensionAccountId];
         dispatch_group_leave(group);
     }];
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
