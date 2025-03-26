@@ -57,7 +57,11 @@ public:
         }
     }
 
-    ~MacImplementation() = default;
+    ~MacImplementation()
+    {
+        [_downloadProgressObserver release];
+        [_uploadProgressObserver release];
+    }
 
     void updateDownload(NSProgress *const progress) const
     {
