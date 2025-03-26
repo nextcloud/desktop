@@ -87,6 +87,9 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
                                                    << ocId;
         emit notAvailable();
     }
+
+    [itemLocalUrl release];
+    [receivedError release];
 }
 
 } // namespace OCC::Mac
