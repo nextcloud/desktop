@@ -1,6 +1,6 @@
 ## Contributing by reporting issues
 * **Always report bugs via Github**: that is the most reliable way to contacts us since we do not follow any process to check the forum and social media. 
-* **For questions about the Nextcloud Desktop Client, use the [📋 Forum](https://help.nextcloud.com)**.
+* **For questions about the Nextcloud Desktop Client**, use the [📋 Forum](https://help.nextcloud.com) and the [:speech_balloon: Desktop public Talk chat room](https://cloud.nextcloud.com/call/d8k2r6p6).
 * Alternativately, we also have [🐣 Twitter](https://twitter.com/Nextclouders) and [🐘 Mastodon](https://mastodon.xyz/@nextcloud) accounts. 
 
 ### Bug Reporting Guidelines
@@ -39,7 +39,6 @@ If you can certify it, then just add a line to every git commit message:
 Signed-off-by: Random J Developer <random@developer.example.org>
 ```
 
-Use your real name (sorry, no pseudonyms or anonymous contributions).
 If you set your `user.name` and `user.email` git configs, you can sign your
 commit automatically with `git commit -s`. You can also use git [aliases](https://git-scm.com/book/tr/v2/Git-Basics-Git-Aliases)
 like `git config --global alias.ci 'commit -s'`. Now you can commit with
