@@ -3,13 +3,15 @@
 <plist version="1.0">
 <dict>
         <key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-	<key>LSMinimumSystemVersion</key>
+        <string>NSApplication</string>
+        <key>LSMinimumSystemVersion</key>
         <string>11.0</string>
-	<key>LSUIElement</key>
-	<true/>
-	<key>CFBundleDevelopmentRegion</key>
-        <string>English</string>
+        <key>LSUIElement</key>
+        <true/>
+        <key>CFBundleDevelopmentRegion</key>
+        <string>en</string>
+        <key>CFBundleAllowMixedLocalizations</key>
+        <true/>
         <key>CFBundleExecutable</key>
         <string>@APPLICATION_NAME@</string>
         <key>CFBundleIconFile</key>
@@ -29,7 +31,7 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2024 @APPLICATION_VENDOR_XML_ESCAPED@</string>
+        <string>(C) 2014-2025 @APPLICATION_VENDOR_XML_ESCAPED@</string>
         <key>NSSupportsAutomaticGraphicsSwitching</key>
         <true/>
         <key>NSRequiresAquaSystemAppearance</key>
