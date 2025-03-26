@@ -78,7 +78,6 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
                 } else if (service == nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Service is nil";
                 } else {
-                    [service retain];
                     [fpServices addObject:@{service.name: service}];
                 }
                 dispatch_group_leave(group);
@@ -191,7 +190,6 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
                     return;
                 }
 
-                [connection retain];
                 [connections addObject:connection];
                 dispatch_group_leave(group);
             }];
