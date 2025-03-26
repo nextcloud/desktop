@@ -59,6 +59,8 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
     }];
 
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC));
+    [manager release];
+
     if (successfullyDeleted == NO) {
         return;
     }
