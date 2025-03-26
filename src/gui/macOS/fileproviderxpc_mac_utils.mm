@@ -30,7 +30,7 @@ Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc
 NSArray<NSFileProviderManager *> *getDomainManagers()
 {
     dispatch_group_t group = dispatch_group_create();
-    __block NSMutableArray<NSFileProviderManager *> *managers = NSMutableArray.array;
+    __block NSMutableArray<NSFileProviderManager *> *const managers = NSMutableArray.array;
 
     dispatch_group_enter(group);
 
@@ -45,8 +45,11 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
         for (NSFileProviderDomain *const domain in domains) {
             qCInfo(lcFileProviderXPCUtils) << "Got domain" << domain.identifier;
             NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
-            [manager retain];
-            [managers addObject:manager];
+            if (manager) {
+                [managers addObject:manager];
+            } else {
+                qCWarning(lcFileProviderXPCUtils) << "Could not get manager for domain" << domain.identifier;
+            }
         }
 
         dispatch_group_leave(group);
