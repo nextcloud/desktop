@@ -194,7 +194,6 @@ public slots:
         [enumerator retain];
 
         FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
-        [storageUseObserver retain];
         storageUseObserver.enumerationFinishedHandler = ^(NSError *const error) {
             qCInfo(lcFileProviderSettingsController) << "Enumeration finished for" << domain.identifier;
             if (error != nil) {

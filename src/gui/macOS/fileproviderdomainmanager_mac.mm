@@ -275,7 +275,6 @@ public:
 
             NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
                                                                                                    displayName:domainDisplayName.toNSString()];
-            [fileProviderDomain retain];
 
             [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
                 if(error) {
