@@ -1003,8 +1003,10 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
+    qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
     const auto enforcedLocale = Theme::instance()->enforcedLocale();
     const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
+    qCInfo(lcApplication) << "selected application language:" << lang;
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
