@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="24"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Ava %1 kohalikust andmeruumist</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="172"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Ava faili üksikasjad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
@@ -30,17 +30,17 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="43"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Tegevuste loend</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Keri algusesse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="156"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Tegevusi veel pole</translation>
     </message>
 </context>
 <context>
@@ -112,17 +112,17 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Andmed on sünkroniseerimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="219"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebisait</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Hiljuti muudetud</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
@@ -142,12 +142,12 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Välju sünkroniseerimiskliendist</translation>
     </message>
 </context>
 <context>
@@ -262,12 +262,12 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Vali</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="63"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="226"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Tegevus</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="235"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine</translation>
     </message>
 </context>
 <context>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
-        <translation type="unfinished"/>
+        <translation>Laadi uuesti</translation>
     </message>
 </context>
 <context>
@@ -1434,27 +1434,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="104"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ei toeta sama nimega faile, mis erinevad vaid suur- ja väiketähtede võrra.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses ja lõpus on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="252"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="254"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime lõpus on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="259"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta vigast failinime</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="284"/>
@@ -1467,7 +1467,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1731"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Viga metainfo salvestamisel andmebaasi</translation>
     </message>
 </context>
 <context>
@@ -1476,7 +1476,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Sisesta PIN-kood</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
@@ -1486,7 +1486,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>Vigane PIN-kood. Sisselogimine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
@@ -1525,13 +1525,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Faili avamiseks klõpsi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1543,53 +1543,53 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 baiti</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Ava kohalik versioon&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>Server version</translation>
+        <translation>Serveri versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Ava serveri versioon&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="179"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Säilita valitud versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalik versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Ava serveri versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Säilita mõlemad versioonid</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Säilita kohalik versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Säilita serveri versioon</translation>
     </message>
 </context>
 <context>
@@ -1607,7 +1607,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="91"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Kinnita kustutamine</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
@@ -1621,7 +1621,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Faili teisaldamine ei õnnestunud:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -2977,17 +2979,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="817"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine eeldab salasõna kasutamist</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="818"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Palun sisesta lingi jagamisel kasutatav salasõna:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="844"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Viga jagamisel</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="845"/>
@@ -3110,102 +3112,102 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Vigane failinimi</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Faili sünkroniseerimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmed pole lubatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Palun sisesta sellele failile uus nimi:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Uus failinimi</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Muuda failinime</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili sünkroniseerimine polnud võimalik, sest failinimes leidub tähemärke, mis siin arvutis/seadmes pole lubatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad tähemärgid pole siin arvutis/seadmes failide nimedes lubatud: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; tühikud alguses ja lõpus</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili sünkroniseerimine polnud võimalik, sest failinimes leidub tähemärke, mis siin serveris pole lubatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
         <source>The following characters are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad tähemärgid pole lubatud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad nimede põhiosad pole lubatud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad failinimed pole lubatud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad faililaiendid pole lubatud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin nime muutmiseks vajalikke õigusi…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Sul puuduvad õigused selle failinime muutmiseks. Palun autorit, et ta teeks seda.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="174"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Failiõiguste laadimisel tekkis viga %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="191"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses ja lõpus on tühikuid</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="194"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses on tühikuid</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="196"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime lõpus on tühikuid</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="201"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta vigast failinime</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="256"/>
@@ -3215,17 +3217,17 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="269"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime muutmine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="280"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna sama nimega fail on serveris juba olemas, siis failinime muutmine pole võimalik. Palun vali mõnu muu nimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="316"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Kohaliku faili nime muutmine ei õnnestunud. %1</translation>
     </message>
 </context>
 <context>
@@ -3351,17 +3353,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Get update</source>
-        <translation>Hangi uuendus</translation>
+        <translation>Võta uuendamine ette</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Uuendamine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 kliendi uus versioon on saadaval, aga uuendamine ei õnnestunud.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; on allalaaditud. Paigaldatud versioon on %3. Kui kinnitad, et arvuti taaskäivitamine ja järgnev uuendamine on hetkel sobilikud, siis see võib järgnevaga ka juhtuda.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
@@ -3371,12 +3373,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita ja uuenda</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Uuenda käsitsi</translation>
     </message>
 </context>
 <context>
@@ -3450,7 +3452,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="390"/>
         <location filename="../src/gui/networksettings.ui" line="437"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Piira 3/4 hinnangulise ribalaiusega</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="393"/>
@@ -3494,32 +3496,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Uuendus on saadaval: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevaga on %1 uuendus paigaldamise. Paigaldusrakendus võib sult töö käigus küsida täiendavaid õigusi. Paigaldamise lõpetamiseks võib arvuti taaskäivitamine olla vajalik.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Laadin alla: %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 on saadaval. Uuendamisega alustamiseks käivita rakendus uuesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Uuenduse allalaadimine ei õnnestunud. Palun ava &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; ja laadi uuendus käsitsi alla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Uuenduse allalaadimine ei õnnestunud. Palun ava %1 ja laadi uuendus käsitsi alla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
@@ -3529,22 +3531,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uus %1 on saadaval. Palun ava &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; ja laadi uuendis alla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uus %1 on saadaval. Palun ava %2 ja laadi uuendus alla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin uuendusserverit...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Uuenduse staatus on teadmata: Uuendusi ei kontrollitud.</translation>
+        <translation>Uuenduse olek on teadmata: Uuendusi ei kontrollitud.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
@@ -3879,7 +3881,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Lisa %1 kasutajakonto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
@@ -3889,7 +3891,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="109"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="491"/>
@@ -3966,7 +3968,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Fail</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4142,7 +4144,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2126"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Viga andmebaasist lugemisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2211"/>
@@ -4657,7 +4659,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="310"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Alamkaustade loendi laadimisel tekkis viga.</translation>
     </message>
 </context>
 <context>
@@ -4702,7 +4704,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="716"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Viga</translation>
     </message>
 </context>
 <context>
@@ -4710,42 +4712,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="580"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 päeva</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="582"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 päev</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="583"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Täna</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Turvalise failiedastuse link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Jagamislink</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="765"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Lingi jagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="767"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Sisene link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="769"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Turvaline failiedastus</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="969"/>
@@ -5716,12 +5718,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="234"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Tuvastasin vigase sertifikaadi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="235"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Server nimega „%1“ esitas vigase sertifikaadi. Kas jätkame?</translation>
     </message>
 </context>
 <context>
@@ -5737,42 +5739,42 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Sisselogimisvaade</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logi sisse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Või liitu teenusepakkujaga</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Hoia oma andmeid turvaliselt ja enda kontrolli all</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Turvaline ühistöö ja failivahetus</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Lihtsaltkasutatav veebimeil, kalender ja kontaktihaldus</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Ekraanijagamine, veebipõhised kohtumised ja konverentsid</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Võid ka kasutada oma serverit</translation>
     </message>
 </context>
 <context>
@@ -6112,7 +6114,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="191"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeritud!</translation>
     </message>
 </context>
 <context>
@@ -6120,7 +6122,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="99"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Jagamiseks mõeldud salasõna lisamisel tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="217"/>
@@ -6136,27 +6138,27 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="323"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="369"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Luba üleslaadimine ja muutmine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="356"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Ainult vaatamine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="382"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Failiedastus (ainult üleslaadimine)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Luba edasijagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="441"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Peida allalaadimine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
@@ -6166,37 +6168,37 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="578"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Määra aegumise kuupäev</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="663"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Märge saajale</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="709"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta märkus saajale</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="730"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Lõpeta jagamine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Lisa veel üks link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Jagamislink on kopeeritud!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri jagamislink</translation>
     </message>
 </context>
 <context>
