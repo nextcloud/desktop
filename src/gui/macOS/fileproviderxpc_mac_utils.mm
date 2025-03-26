@@ -249,7 +249,7 @@ NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *const cli
     return extensionNcAccount;
 }
 
-QHash<QString, void*> processClientCommunicationConnections(NSArray *const connections)
+QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections)
 {
     QHash<QString, void*> clientCommServices;
 
