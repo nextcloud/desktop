@@ -1208,7 +1208,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nPUT, 0);
-        QCOMPARE(nPOST, 2);
+        QCOMPARE(nPOST, 1);
         nPUT = 0;
         nPOST = 0;
 
@@ -1219,7 +1219,7 @@ private slots:
 
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nPUT, 120);
-        QCOMPARE(nPOST, 2);
+        QCOMPARE(nPOST, 1);
         nPUT = 0;
         nPOST = 0;
 

@@ -270,13 +270,13 @@ qint64 ConfigFile::chunkSize() const
 qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxChunkSizeC), 5LL * 1000LL * 1000LL * 1000LL).toLongLong(); // default to 5000 MB
+    return settings.value(QLatin1String(maxChunkSizeC), 100LL * 1024LL * 1024LL).toLongLong(); // default to 100 MiB
 }
 
 qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1000LL * 1000LL).toLongLong(); // default to 5 MB
+    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1024LL * 1024LL).toLongLong(); // default to 5 MiB
 }
 
 chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
