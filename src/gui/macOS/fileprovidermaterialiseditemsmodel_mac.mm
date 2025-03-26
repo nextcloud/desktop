@@ -30,7 +30,7 @@ Q_LOGGING_CATEGORY(lcMacImplFileProviderMaterialisedItemsModelMac, "nextcloud.gu
 
 void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, const QString &domainIdentifier)
 {
-    NSFileProviderManager * const manager = FileProviderUtils::managerForDomainIdentifier(domainIdentifier);
+    NSFileProviderManager *const manager = FileProviderUtils::managerForDomainIdentifier(domainIdentifier);
     if (manager == nil) {
         qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Received null manager for domain"
                                                                   << domainIdentifier

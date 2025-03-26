@@ -120,7 +120,7 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
     }
 
     __block QString returnPath = QObject::tr("Unknown");
-    NSFileProviderManager *manager = FileProviderUtils::managerForDomainIdentifier(domainId);
+    NSFileProviderManager *const manager = FileProviderUtils::managerForDomainIdentifier(domainId);
 
      if (manager == nil) {
         qCWarning(lcMacImplFileProviderItemMetadata) << "Null manager, cannot get item path";

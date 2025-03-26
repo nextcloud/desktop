@@ -94,7 +94,7 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
 NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *managers)
 {
     dispatch_group_t group = dispatch_group_create();
-    __block NSMutableArray<NSURL *> *urls = NSMutableArray.array;
+    __block NSMutableArray<NSURL *> *const urls = NSMutableArray.array;
 
     for (NSFileProviderManager *const manager in managers) {
 
