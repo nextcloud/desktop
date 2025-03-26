@@ -173,7 +173,7 @@ Button {
                          && UserModel.currentUser.status !== UserStatus.Offline
                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: "white"
+                color: root.parentBackgroundColor
                 anchors.bottom: currentAccountAvatar.bottom
                 anchors.right: currentAccountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
