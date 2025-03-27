@@ -1711,13 +1711,11 @@ static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo *res)
     res->_valid = ok;
 }
 
-static bool deleteBatch(SqlQuery &query, const QStringList &entries, const QString &name)
+static bool deleteBatch(SqlQuery &query, const QStringList &entries)
 {
     if (entries.isEmpty())
         return true;
 
-    qCDebug(lcDb) << "Removing stale" << name << "entries:" << entries.join(QStringLiteral(", "));
-    // FIXME: Was ported from execBatch, check if correct!
     for (const auto &entry : entries) {
         query.reset_and_clear_bindings();
         query.bindValue(1, entry);
@@ -1831,7 +1829,7 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
             qCDebug(lcDb) << "database error:" << query->error();
             return empty_result;
         }
-        if (!deleteBatch(*query, superfluousPaths, QStringLiteral("downloadinfo"))) {
+        if (!deleteBatch(*query, superfluousPaths)) {
             return empty_result;
         }
     }
@@ -1965,7 +1963,7 @@ QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
     }
 
     const auto deleteUploadInfoQuery = _queryManager.get(PreparedSqlQueryManager::DeleteUploadInfoQuery);
-    deleteBatch(*deleteUploadInfoQuery, superfluousPaths, QStringLiteral("uploadinfo"));
+    deleteBatch(*deleteUploadInfoQuery, superfluousPaths);
     return ids;
 }
 
@@ -2033,7 +2031,7 @@ bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
 
     SqlQuery delQuery(_db);
     delQuery.prepare("DELETE FROM blacklist WHERE path = ?");
-    return deleteBatch(delQuery, superfluousPaths, QStringLiteral("blacklist"));
+    return deleteBatch(delQuery, superfluousPaths);
 }
 
 void SyncJournalDb::deleteStaleFlagsEntries()
