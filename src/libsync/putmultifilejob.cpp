@@ -41,8 +41,6 @@ void PutMultiFileJob::start()
 {
     QNetworkRequest req;
 
-    auto fullSize = 0;
-
     for(const auto &oneDevice : _devices) {
         // Our rate limits in UploadDevice::readData will cause an application freeze if used here.
         // QHttpMultiPart's internal QHttpMultiPartIODevice::readData will loop over and over trying
@@ -53,7 +51,6 @@ void PutMultiFileJob::start()
 
         auto onePart = QHttpPart{};
 
-        fullSize += oneDevice._device->size();
         if (oneDevice._device->size() == 0) {
             onePart.setBody({});
         } else {
@@ -73,9 +70,6 @@ void PutMultiFileJob::start()
 
         _body.append(onePart);
     }
-
-    req.setAttribute(QNetworkRequest::DoNotBufferUploadDataAttribute, true);
-    req.setHeader(QNetworkRequest::ContentLengthHeader, fullSize);
 
     sendRequest("POST", _url, req, &_body);
 
