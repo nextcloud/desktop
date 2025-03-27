@@ -29,6 +29,10 @@ class QString;
  *
  * You should threfore try to avoid using this in C++ code wherever possible
  * and only use this in *_mac.mm implementation files.
+ *
+ * IMPORTANT: All Objective-C objects returned here need to be released!
+ * They have been internally retained due to the async nature of the
+ * FileProvider API.
  */
 
 namespace OCC {
