@@ -33,7 +33,7 @@ ApplicationWindow {
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    title: qsTr("Evict materialised files")
+    title: qsTr("Remove local copies")
     color: palette.base
     flags: Qt.Dialog | Qt.WindowStaysOnTopHint
     width: 640
@@ -49,7 +49,7 @@ ApplicationWindow {
             Layout.margins: Style.standardSpacing
 
             EnforcedPlainTextLabel {
-                text: qsTr("Materialised items")
+                text: qsTr("Local copies")
                 font.bold: true
                 font.pointSize: Style.headerFontPtSize
                 Layout.fillWidth: true
