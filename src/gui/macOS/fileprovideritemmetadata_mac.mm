@@ -132,6 +132,7 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
 
     // getUserVisibleUrl is async, so wait here
 
+    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsItemIdentifier
                               completionHandler:^(NSURL *const userVisibleFile, NSError *const error) {
 
@@ -141,6 +142,7 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
             returnPath = QString::fromNSString(userVisibleFile.path);
         }
 
+        [manager release];
         dispatch_semaphore_signal(semaphore);
     }];
 
