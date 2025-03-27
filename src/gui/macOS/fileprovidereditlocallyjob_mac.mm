@@ -44,8 +44,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
     
     NSFileProviderDomain *const domain = (NSFileProviderDomain *)voidDomain;
     if (domain == nil) {
-        qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get domain for account:"
-                                                   << userId;
+        qCWarning(lcFileProviderEditLocallyMacJob) << "Could not get domain for account:" << userId;
         emit notAvailable();
     }
 
@@ -56,37 +55,35 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
         emit notAvailable();
     }
 
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    __block NSError *receivedError;
-    __block NSURL *itemLocalUrl;
+    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsOcId
                               completionHandler:^(NSURL *const url, NSError *const error) {
-        [url retain];
-        [error retain];
-        itemLocalUrl = url;
-        receivedError = error;
-        dispatch_semaphore_signal(semaphore);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            Systray::instance()->destroyEditFileLocallyLoadingDialog();
+        });
+
+        if (error != nil) {
+            const auto errorMessage = QString::fromNSString(error.localizedDescription);
+            qCWarning(lcFileProviderEditLocallyMacJob) << "Error getting user visible URL for item:" << errorMessage;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                emit notAvailable();
+            });
+        } else if (url != nil) {
+            const auto itemLocalPath = QString::fromNSString(url.path);
+            qCDebug(lcFileProviderEditLocallyMacJob) << "Got user visible URL for item:" << itemLocalPath;
+            [NSWorkspace.sharedWorkspace openURL:url];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                emit finished();
+            });
+        } else {
+            qCWarning(lcFileProviderEditLocallyMacJob) << "Got nil user visible URL for item" << ocId;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                emit notAvailable();
+            });
+        }
+        [manager release];
     }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-
-    Systray::instance()->destroyEditFileLocallyLoadingDialog();
-
-    if (receivedError != nil) {
-        const auto errorMessage = QString::fromNSString(receivedError.localizedDescription);
-        qCWarning(lcFileProviderEditLocallyMacJob) << "Error getting user visible URL for item"
-                                                   << ocId << ":" << errorMessage;
-        emit notAvailable();
-    } else if (itemLocalUrl != nil) {
-        const auto itemLocalPath = QString::fromNSString(itemLocalUrl.path);
-        qCDebug(lcFileProviderEditLocallyMacJob) << "Got user visible URL for item" 
-                                                 << ocId << ":" << itemLocalPath;
-        [NSWorkspace.sharedWorkspace openURL:itemLocalUrl];
-        emit finished();
-    } else {
-        qCWarning(lcFileProviderEditLocallyMacJob) << "Got nil user visible URL for item"
-                                                   << ocId;
-        emit notAvailable();
-    }
 }
 
 } // namespace OCC::Mac

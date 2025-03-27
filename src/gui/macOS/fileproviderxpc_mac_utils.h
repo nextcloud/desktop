@@ -29,6 +29,6 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
 void configureFileProviderConnection(NSXPCConnection *connection);
 NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol);
 NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *clientCommService);
-QHash<QString, void*> processClientCommunicationConnections(NSArray *connections);
+QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections);
 
 }

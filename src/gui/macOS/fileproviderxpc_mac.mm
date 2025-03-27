@@ -148,6 +148,8 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     } else {
         qCWarning(lcFileProviderXPC) << "Could not open debug log file" << filename;
     }
+
+    [rcvdDebugLogString release];
 }
 
 bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId, const bool retry, const bool reconfigureOnFail)
