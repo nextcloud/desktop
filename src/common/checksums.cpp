@@ -201,7 +201,7 @@ QByteArray ComputeChecksum::checksumType() const
 
 void ComputeChecksum::start(const QString &filePath)
 {
-    qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
+    qCDebug(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
     startImpl(filePath);
 }
 
