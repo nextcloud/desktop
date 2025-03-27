@@ -90,7 +90,8 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const auto jsonDocument = QJsonDocument::fromJson(jsonData, &jsonParseError);
+        const auto json = jsonDocument.object();
         QString pollToken, pollEndpoint, loginUrl;
 
         if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
@@ -116,6 +117,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
                 errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
                                   .arg(reply->errorString().toHtmlEscaped());
             } else if (jsonParseError.error != QJsonParseError::NoError) {
+                qCWarning(lcFlow2auth()) << "error when parsing JSON" << jsonParseError.errorString() << jsonData;
                 errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
                                   .arg(jsonParseError.errorString());
             } else {
@@ -207,7 +209,8 @@ void Flow2Auth::slotPollTimerTimeout()
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const auto jsonDocument = QJsonDocument::fromJson(jsonData, &jsonParseError);
+        const auto json = jsonDocument.object();
         QUrl serverUrl;
         QString loginName, appPassword;
 
@@ -234,6 +237,7 @@ void Flow2Auth::slotPollTimerTimeout()
                 errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
                                   .arg(reply->errorString().toHtmlEscaped());
             } else if (jsonParseError.error != QJsonParseError::NoError) {
+                qCWarning(lcFlow2auth()) << "error when parsing JSON" << jsonParseError.errorString() << jsonData;
                 errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
                                   .arg(jsonParseError.errorString());
             } else {
