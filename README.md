@@ -60,7 +60,7 @@ mkdir <build directory>
 3. Compile:
 ```
 cd <build directory>
-cmake -S <cloned desktop repo> -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=. -DNEXTCLOUD_DEV=ON
+cmake -S <cloned desktop repo> -B build -DCMAKE_PREFIX_PATH=<dependencies> -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=. -DNEXTCLOUD_DEV=ON
 ```
 
 > [!TIP]
