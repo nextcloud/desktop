@@ -564,7 +564,7 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 
 void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 {
-    qCDebug(lcBulkPropagatorJob) << "Received a full reply" << fullReply;
+    qCDebug(lcBulkPropagatorJob) << "Received a full reply" << QJsonDocument::fromVariant(fullReply).toJson();
 
     for(auto singleFileIt = std::begin(_filesToUpload); singleFileIt != std::end(_filesToUpload); ) {
         const auto &singleFile = *singleFileIt;
