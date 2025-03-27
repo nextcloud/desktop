@@ -100,13 +100,8 @@ bool PutMultiFileJob::finished()
             if (!oneDevice._device->errorString().isEmpty()) {
                 qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
             }
-        }
 
-        if (oneDevice._device->isOpen()) {
             oneDevice._device->close();
-        } else {
-            qCWarning(lcPutMultiFileJob) << "Did not close device" << oneDevice._device.get()
-                                         << "as it was not open";
         }
     }
 
