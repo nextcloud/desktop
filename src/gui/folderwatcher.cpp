@@ -223,8 +223,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             _lockedFiles.insert(checkResult.path);
         }
 
-        qCDebug(lcFolderWatcher) << "Locked files:" << _lockedFiles.values();
-
         // ------- handle ignores:
         if (pathIsIgnored(path)) {
             continue;
@@ -232,9 +230,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
         changedPaths.insert(path);
     }
-
-    qCDebug(lcFolderWatcher) << "Unlocked files:" << _unlockedFiles.values();
-    qCDebug(lcFolderWatcher) << "Locked files:" << _lockedFiles;
 
     if (!_lockedFiles.isEmpty() || !_unlockedFiles.isEmpty()) {
         if (_lockChangeDebouncingTimer.isActive()) {
