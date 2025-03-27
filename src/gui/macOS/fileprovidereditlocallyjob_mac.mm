@@ -55,6 +55,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
         emit notAvailable();
     }
 
+    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsOcId
                               completionHandler:^(NSURL *const url, NSError *const error) {
 
@@ -81,6 +82,7 @@ void FileProviderEditLocallyJob::openFileProviderFile(const QString &ocId)
                 emit notAvailable();
             });
         }
+        [manager release];
     }];
 }
 
