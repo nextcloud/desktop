@@ -160,7 +160,11 @@ void FileProviderMaterialisedItemsModel::setItems(const QVector<FileProviderItem
     }
 
     beginResetModel();
+    // We are using this in the "Free up space" dialog so, sort by size.
     _items = items;
+    std::ranges::sort(_items, [](const auto &a, const auto &b) {
+        return a.documentSize() > b.documentSize();
+    });
     endResetModel();
 
     Q_EMIT itemsChanged();
