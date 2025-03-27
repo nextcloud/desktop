@@ -79,7 +79,13 @@ void PutMultiFileJob::start()
 
     connect(reply(), &QNetworkReply::uploadProgress, this, &PutMultiFileJob::uploadProgress);
     connect(reply(), &QNetworkReply::uploadProgress, this, [] (qint64 bytesSent, qint64 bytesTotal) {
-        qCInfo(lcPutMultiFileJob()) << "upload progress" << bytesSent << bytesTotal;
+        qCDebug(lcPutMultiFileJob()) << "upload progress" << bytesSent << bytesTotal;
+    });
+    connect(reply(), &QNetworkReply::bytesWritten, this, [] (qint64 bytesSent) {
+        qCDebug(lcPutMultiFileJob()) << "upload progress" << bytesSent;
+    });
+    connect(reply(), &QNetworkReply::requestSent, this, [] () {
+        qCDebug(lcPutMultiFileJob()) << "request sent";
     });
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
