@@ -303,8 +303,18 @@
     <name>FileProviderEvictionDialog</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <source>Remove local copies</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Evict materialised files</source>
         <translation>Despejar arquivos materializados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Local copies</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
@@ -367,6 +377,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation>%1 GB de %2 GB de arquivos remotos sincronizados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <source>Free up space …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
