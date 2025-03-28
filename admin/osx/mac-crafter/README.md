@@ -1,3 +1,6 @@
+<!-- SPDX-FileCopyrightText: 2024 Camila Ayres <hello@camilasan.com>
+<!-- SPDX-License-Identifier: GPL-2.0-or-later -->
+
 # mac-crafter
 
 A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.
