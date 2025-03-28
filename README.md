@@ -60,11 +60,11 @@ mkdir <build directory>
 3. Compile:
 ```
 cd <build directory>
-cmake -S <cloned desktop repo> -B build -DCMAKE_INSTALL_PREFIX=<dependencies> -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=. -DNEXTCLOUD_DEV=ON
+cmake -S <cloned desktop repo> -B build -DCMAKE_PREFIX_PATH=<dependencies> -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=. -DNEXTCLOUD_DEV=ON
 ```
 
 > [!TIP]
-> The cmake variabel NEXTCLOUD_DEV allows you to run your own build of the client while developing in parallel with an installed version of the client.
+> The cmake variable NEXTCLOUD_DEV allows you to run your own build of the client while developing in parallel with an installed version of the client.
 
 4. Build it:
 - Windows:
