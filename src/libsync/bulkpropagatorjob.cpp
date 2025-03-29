@@ -58,7 +58,6 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
     return reply.value(headerName).toString().toLatin1();
 }
 
-constexpr auto batchSize = 100;
 constexpr auto parallelJobsMaximumCount = 1;
 
 }
@@ -70,10 +69,10 @@ Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", 
 BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob(propagator)
     , _items(items)
-    , _currentBatchSize(batchSize)
+    , _currentBatchSize(_items.size())
 {
-    _filesToUpload.reserve(batchSize);
-    _pendingChecksumFiles.reserve(batchSize);
+    _filesToUpload.reserve(_items.size());
+    _pendingChecksumFiles.reserve(_items.size());
 }
 
 bool BulkPropagatorJob::scheduleSelfOrChild()
@@ -84,10 +83,14 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    for(auto i = 0; i < _currentBatchSize && !_items.empty(); ++i) {
+    qCDebug(lcBulkPropagatorJob()) << "max chunk size" << PropagatorJob::propagator()->syncOptions().maxChunkSize();
+
+    for(auto batchDataSize = 0; batchDataSize <= PropagatorJob::propagator()->syncOptions().maxChunkSize() && !_items.empty(); ) {
         const auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
+
+        batchDataSize += currentItem->_size;
 
         QMetaObject::invokeMethod(this, [this, currentItem] {
             UploadFileInfo fileToUpload;
@@ -117,7 +120,7 @@ bool BulkPropagatorJob::handleBatchSize()
     }
 
     // change batch size before trying it again
-    const auto halfBatchSize = batchSize / 2;
+    const auto halfBatchSize = static_cast<int>(_items.size() / 2);
 
     // we already tried to upload with half of the batch size
     if(_currentBatchSize == halfBatchSize) {
@@ -153,7 +156,8 @@ void BulkPropagatorJob::startUploadFile(SyncFileItemPtr item, UploadFileInfo fil
 
 void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
                                       UploadFileInfo fileToUpload,
-                                      QByteArray transmissionChecksumHeader)
+                                      QByteArray transmissionChecksumHeader,
+                                      QByteArray md5ChecksumHeader)
 {
     if (propagator()->_abortRequested) {
         return;
@@ -204,13 +208,13 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
 
     const auto remotePath = propagator()->fullRemotePath(fileToUpload._file);
 
+    currentHeaders["X-File-MD5"] = md5ChecksumHeader;
     currentHeaders[checkSumHeaderC] = transmissionChecksumHeader;
 
     BulkUploadItem newUploadFile{propagator()->account(), item, fileToUpload,
                 remotePath, fileToUpload._path,
                 fileToUpload._size, currentHeaders};
 
-    qCInfo(lcBulkPropagatorJob) << remotePath << "transmission checksum" << transmissionChecksumHeader << fileToUpload._path;
     _filesToUpload.push_back(std::move(newUploadFile));
     _pendingChecksumFiles.remove(item->_file);
 
@@ -299,7 +303,27 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
     computeChecksum->setChecksumType(checksumType);
 
     connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
-        slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
+        slotComputeMd5Checksum(item, fileToUpload, contentChecksumType, contentChecksum);
+    });
+    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
+
+    computeChecksum->start(fileToUpload._path);
+}
+
+void BulkPropagatorJob::slotComputeMd5Checksum(SyncFileItemPtr item,
+                                               UploadFileInfo fileToUpload,
+                                               const QByteArray &transmissionChecksumType,
+                                               const QByteArray &transmissionChecksum)
+{
+    // Compute the transmission checksum.
+    const auto computeChecksum = new ComputeChecksum(this);
+    const auto checksumType = QByteArray{"MD5"};
+    computeChecksum->setChecksumType(checksumType);
+
+    connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload, transmissionChecksumType, transmissionChecksum] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
+        Q_UNUSED(contentChecksumType)
+
+        slotStartUpload(item, fileToUpload, transmissionChecksumType, transmissionChecksum, contentChecksum);
     });
     connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
 
@@ -309,7 +333,8 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
 void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
                                         UploadFileInfo fileToUpload,
                                         const QByteArray &transmissionChecksumType,
-                                        const QByteArray &transmissionChecksum)
+                                        const QByteArray &transmissionChecksum,
+                                        const QByteArray &md5Checksum)
 {
     const auto transmissionChecksumHeader = makeChecksumHeader(transmissionChecksumType, transmissionChecksum);
 
@@ -363,7 +388,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
         return;
     }
 
-    doStartUpload(item, fileToUpload, transmissionChecksum);
+    doStartUpload(item, fileToUpload, transmissionChecksum, md5Checksum);
 }
 
 void BulkPropagatorJob::slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
@@ -539,7 +564,7 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 
 void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 {
-    qCDebug(lcBulkPropagatorJob) << "Received a full reply" << fullReply;
+    qCDebug(lcBulkPropagatorJob) << "Received a full reply" << QJsonDocument::fromVariant(fullReply).toJson();
 
     for(auto singleFileIt = std::begin(_filesToUpload); singleFileIt != std::end(_filesToUpload); ) {
         const auto &singleFile = *singleFileIt;
