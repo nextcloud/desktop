@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kohalikud koopiad</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Kohalikud koopiad</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
@@ -381,12 +381,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Vabasta andmeruumi…</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies …</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kohalikud koopiad…</translation>
     </message>
 </context>
 <context>
@@ -404,13 +404,14 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Käivita sünkroniseerimine nüüd</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Alusta virtuaalse failisüsteemi süsnkroniseerimist kohe.
+macOS võib seda eirata või alustamisega viivitada.</translation>
     </message>
 </context>
 <context>
@@ -2389,41 +2390,41 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1844"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. Valitud kaust pole korrektne kaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1852"/>
         <location filename="../src/gui/folderman.cpp" line="1931"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ on juba kasutusel sünkroniseeritava kaustana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1861"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ asukohta pole olemas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1865"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ pole kaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1873"/>
         <location filename="../src/gui/folderman.cpp" line="1878"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. Sul pole piisavalt õigusi kirjutamaks „%1“ kausta.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1938"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ on juba sisaldub sünkroniseeritavas kaustas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1953"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ on juba kasutusel sünkroniseeritava kaustana %2 jaoks.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2090"/>
@@ -2693,7 +2694,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ jaoks juba on %2 sünkroniseerimine kasutusel.</translation>
     </message>
 </context>
 <context>
@@ -2718,7 +2719,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed faili pole valitud asukohas toetatud</translation>
     </message>
 </context>
 <context>
@@ -3330,7 +3331,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Ei leidnud faili, mida kohalkus seadmes muuta. Palun kontrolli, et asukoht on korrektne ja ta on sünkroniseeritud.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -3623,7 +3624,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="428"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed faili pole valitud asukohas toetatud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="491"/>
@@ -4012,7 +4013,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <location filename="../src/libsync/discovery.cpp" line="492"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Nime muutmine või üleslaadimine ei õnnestu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -6290,7 +6291,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebilehitseja</translation>
     </message>
 </context>
 <context>
@@ -6311,17 +6312,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>Kasutustingimused</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Kasutustingimustega nõustumiseks ava oma veebibrauser</translation>
     </message>
 </context>
 <context>
