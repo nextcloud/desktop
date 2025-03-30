@@ -18,6 +18,17 @@
 #include <QLoggingCategory>
 #include <QUrl>
 #include <QThreadPool>
+#include <QSettings>
+
+namespace {
+    constexpr auto proxyC = "Proxy";
+    constexpr auto proxyTypeC = "Proxy/type";
+    constexpr auto proxyHostC = "Proxy/host";
+    constexpr auto proxyPortC = "Proxy/port";
+    constexpr auto proxyUserC = "Proxy/user";
+    constexpr auto proxyPassC = "Proxy/pass";
+    constexpr auto proxyNeedsAuthC = "Proxy/needsAuth";
+}
 
 namespace OCC {
 
@@ -126,6 +137,23 @@ void ClientProxy::setupQtProxyFromConfig()
         default:
             break;
     }
+}
+
+void ClientProxy::setupQtProxyFromSettings(const QSettings &settings)
+{
+    if (settings.value(QLatin1String(proxyTypeC)).isNull()) {
+        qCInfo(lcClientProxy) << "No Proxy settings found.";
+        return;
+    }
+
+    OCC::ConfigFile configFile;
+    const auto proxyType = settings.value(QLatin1String(proxyTypeC)).toInt();
+    configFile.setProxyType(proxyType,
+                            settings.value(QLatin1String(proxyHostC)).toString(),
+                            settings.value(QLatin1String(proxyPortC)).toInt(),
+                            settings.value(QLatin1String(proxyNeedsAuthC)).toBool(),
+                            settings.value(QLatin1String(proxyUserC)).toString(),
+                            settings.value(QLatin1String(proxyPassC)).toString());
 }
 
 void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)
