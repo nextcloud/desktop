@@ -187,8 +187,7 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
     account->networkAccessManager()->clearAccessCache();
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if ((ClientProxy::isUsingSystemDefault() && account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy)
-        || account->proxyType() == QNetworkProxy::DefaultProxy) {
+    if (ClientProxy::isUsingSystemDefault() || account->proxyType() == QNetworkProxy::DefaultProxy) {
         qCDebug(lcWizard) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(account->url(), this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
     } else {
