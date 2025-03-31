@@ -796,6 +796,11 @@ int Account::checksumRecalculateServerVersionMinSupportedMajor() const
     return checksumRecalculateRequestServerVersionMinSupportedMajor;
 }
 
+bool Account::bulkUploadNeedsLegacyChecksumHeader() const
+{
+    return serverVersionInt() < makeServerVersion(32, 0, 0);
+}
+
 void Account::setServerVersion(const QString &version)
 {
     if (version == _serverVersion) {
