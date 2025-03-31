@@ -279,8 +279,9 @@ void Flow2Auth::slotPollTimerTimeout()
 void Flow2Auth::slotPollNow()
 {
     // poll now if we're not already doing so
-    if(_isBusy || !_hasToken)
+    if(_isBusy || !_hasToken) {
         return;
+    }
 
     _secondsLeft = 1;
     slotPollTimerTimeout();
