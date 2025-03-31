@@ -991,12 +991,12 @@ QString substLang(const QString &lang)
     // transifex translation conventions.
 
     // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans")) {
+    if (lang.startsWith(QLatin1String("zh_Hans"))) {
         return QLatin1String("zh_CN");
     }
     // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant")) {
-        return QLatin1String("zh_TW");
+    if (lang.contains(QLatin1String("_Hant_"))) {
+        return QString(lang).replace(QLatin1String("_Hant_"), "_");
     }
     return lang;
 }
