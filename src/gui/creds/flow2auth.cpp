@@ -177,8 +177,9 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-    if(_isBusy || !_hasToken)
+    if(_isBusy || !_hasToken) {
         return;
+    }
 
     _isBusy = true;
 
@@ -191,20 +192,20 @@ void Flow2Auth::slotPollTimerTimeout()
     emit statusChanged(PollStatus::statusPollNow, 0);
 
     // Step 2: Poll
-    QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QNetworkRequest request;
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QStringLiteral("token=%1").arg(_pollToken));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
 
-    auto job = _account->sendRequest("POST", _pollEndpoint, req, requestBody);
+    auto job = _account->sendRequest("POST", _pollEndpoint, request, requestBody);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
+        const auto jsonData = reply->readAll();
         QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QUrl serverUrl;
         QString loginName, appPassword;
 
@@ -223,8 +224,8 @@ void Flow2Auth::slotPollTimerTimeout()
         if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
             || json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
             QString errorReason;
-            QString errorFromJson = json["error"].toString();
-            if (!errorFromJson.isEmpty()) {
+            if (const QString errorFromJson = json["error"].toString();
+                !errorFromJson.isEmpty()) {
                 errorReason = tr("Error returned from the server: <em>%1</em>")
                                   .arg(errorFromJson.toHtmlEscaped());
             } else if (reply->error() != QNetworkReply::NoError) {
@@ -239,8 +240,9 @@ void Flow2Auth::slotPollTimerTimeout()
             qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
 
             // We get a 404 until authentication is done, so don't show this error in the GUI.
-            if(reply->error() != QNetworkReply::ContentNotFoundError)
+            if (reply->error() != QNetworkReply::ContentNotFoundError) {
                 emit result(Error, errorReason);
+            }
 
             // Forget sensitive data
             appPassword.clear();
