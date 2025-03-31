@@ -527,18 +527,19 @@ void FakePutReply::abort()
     emit finished();
 }
 
-FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, QObject *parent)
+FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, const QString &serverVersion, QObject *parent)
     : FakeReply { parent }
+    , _serverVersion(serverVersion)
 {
     setRequest(request);
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
-    _allFileInfo = performMultiPart(remoteRootFileInfo, request, putPayload, contentType);
+    _allFileInfo = performMultiPart(remoteRootFileInfo, request, putPayload, contentType, _serverVersion);
     QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 }
 
-QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType)
+QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType, const QString &serverVersion)
 {
     QVector<FileInfo *> result;
 
@@ -563,7 +564,19 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
         const auto standardChecksum = allHeaders[QStringLiteral("oc-checksum")];
         Q_ASSERT(!fileName.isEmpty());
         Q_ASSERT(modtime > 0);
-        Q_ASSERT(!expectedMd5Checksum.isEmpty());
+
+        auto components = serverVersion.split('.');
+        const auto serverIntVersion = OCC::Account::makeServerVersion(components.value(0).toInt(),
+                                                                      components.value(1).toInt(),
+                                                                      components.value(2).toInt());
+
+        const auto md5ChecksumMandatory = serverIntVersion < OCC::Account::makeServerVersion(32, 0, 0);
+
+        if (md5ChecksumMandatory) {
+            Q_ASSERT(!expectedMd5Checksum.isEmpty());
+        } else {
+            Q_ASSERT(expectedMd5Checksum.isEmpty());
+        }
         Q_ASSERT(!standardChecksum.isEmpty());
 
         const auto standardChecksumComponents = standardChecksum.split(':');
@@ -582,12 +595,15 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
             Q_ASSERT(false);
         }
 
-        QCryptographicHash md5SumAlgorithm{QCryptographicHash::Algorithm::Md5};
-        QCryptographicHash standardSumAlgorithm{standardHashAlgorithm};
+        if (md5ChecksumMandatory) {
+            QCryptographicHash md5SumAlgorithm{QCryptographicHash::Algorithm::Md5};
 
-        md5SumAlgorithm.addData(onePartBody.toLatin1());
-        const auto computedMd5Checksum = md5SumAlgorithm.result().toHex();
-        Q_ASSERT(expectedMd5Checksum == computedMd5Checksum);
+            md5SumAlgorithm.addData(onePartBody.toLatin1());
+            const auto computedMd5Checksum = md5SumAlgorithm.result().toHex();
+            Q_ASSERT(expectedMd5Checksum == computedMd5Checksum);
+        }
+
+        QCryptographicHash standardSumAlgorithm{standardHashAlgorithm};
 
         standardSumAlgorithm.addData(onePartBody.toLatin1());
         const auto computedStandardChecksum = standardSumAlgorithm.result().toHex();
@@ -1146,7 +1162,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
             reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
         } else if (verb == QLatin1String("POST") || op == QNetworkAccessManager::PostOperation) {
             if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
-                reply = new FakePutMultiFileReply { info, op, newRequest, contentType, outgoingData->readAll(), this };
+                reply = new FakePutMultiFileReply { info, op, newRequest, contentType, outgoingData->readAll(), _serverVersion, this };
             }
         } else if (verb == QLatin1String("LOCK") || verb == QLatin1String("UNLOCK")) {
             reply = new FakeFileLockReply{info, op, newRequest, this};
@@ -1171,6 +1187,11 @@ QNetworkReply * FakeQNAM::overrideReplyWithError(QString fileName, QNetworkAcces
     return reply;
 }
 
+void FakeQNAM::setServerVersion(const QString &version)
+{
+    _serverVersion = version;
+}
+
 FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
     : _localModifier(_tempDir.path())
 {
@@ -1192,7 +1213,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
     _account->setCredentials(new FakeCredentials { _fakeQnam });
     _account->setDavDisplayName(QStringLiteral("fakename"));
-    _account->setServerVersion(QStringLiteral("10.0.0"));
+    _account->setServerVersion(_serverVersion);
+    _fakeQnam->setServerVersion(_serverVersion);
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
     _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
@@ -1313,6 +1335,17 @@ void FakeFolder::enableEnforceWindowsFileNameCompatibility()
             }
         }
     });
+}
+
+void FakeFolder::setServerVersion(const QString &version)
+{
+    if (_serverVersion == version) {
+        return;
+    }
+
+    _serverVersion = version;
+    _account->setServerVersion(_serverVersion);
+    _fakeQnam->setServerVersion(_serverVersion);
 }
 
 FileInfo FakeFolder::currentLocalState()
