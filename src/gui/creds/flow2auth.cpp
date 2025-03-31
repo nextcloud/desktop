@@ -67,8 +67,9 @@ void Flow2Auth::copyLinkToClipboard()
 
 void Flow2Auth::fetchNewToken(const TokenAction action)
 {
-    if(_isBusy)
+    if(_isBusy) {
         return;
+    }
 
     _isBusy = true;
     _hasToken = false;
@@ -76,21 +77,21 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     emit statusChanged(PollStatus::statusFetchToken, 0);
 
     // Step 1: Initiate a login, do an anonymous POST request
-    QUrl url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
-    _enforceHttps = url.scheme() == QStringLiteral("https");
+    const auto loginV2url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
+    _enforceHttps = loginV2url.scheme() == QStringLiteral("https");
 
     // add 'Content-Length: 0' header (see https://github.com/nextcloud/desktop/issues/1473)
-    QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentLengthHeader, "0");
-    req.setHeader(QNetworkRequest::UserAgentHeader, Utility::friendlyUserAgentString());
+    QNetworkRequest request;
+    request.setHeader(QNetworkRequest::ContentLengthHeader, "0");
+    request.setHeader(QNetworkRequest::UserAgentHeader, Utility::friendlyUserAgentString());
 
-    auto job = _account->sendRequest("POST", url, req);
+    auto job = _account->sendRequest("POST", loginV2url, request);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
+        const auto jsonData = reply->readAll();
         QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const auto json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString pollToken, pollEndpoint, loginUrl;
 
         if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
@@ -108,8 +109,8 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
             || json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
             QString errorReason;
-            QString errorFromJson = json["error"].toString();
-            if (!errorFromJson.isEmpty()) {
+            if (const auto errorFromJson = json["error"].toString();
+                !errorFromJson.isEmpty()) {
                 errorReason = tr("Error returned from the server: <em>%1</em>")
                                   .arg(errorFromJson.toHtmlEscaped());
             } else if (reply->error() != QNetworkReply::NoError) {
@@ -128,12 +129,11 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             return;
         }
 
-
         _loginUrl = loginUrl;
 
         if (_account->isUsernamePrefillSupported()) {
-            const auto userName = Utility::getCurrentUserName();
-            if (!userName.isEmpty()) {
+            if (const auto userName = Utility::getCurrentUserName();
+                !userName.isEmpty()) {
                 auto query = QUrlQuery(_loginUrl);
                 query.addQueryItem(QStringLiteral("user"), userName);
                 _loginUrl.setQuery(query);
@@ -143,22 +143,19 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         _pollToken = pollToken;
         _pollEndpoint = pollEndpoint;
 
-
         // Start polling
-        ConfigFile cfg;
-        std::chrono::milliseconds polltime = cfg.remotePollInterval();
+        std::chrono::milliseconds polltime = ConfigFile().remotePollInterval();
         qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
         _secondsInterval = (polltime.count() / 1000);
         _secondsLeft = _secondsInterval;
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
-        if(!_pollTimer.isActive()) {
+        if (!_pollTimer.isActive()) {
             _pollTimer.start();
         }
 
 
-        switch(action)
-        {
+        switch(action) {
         case actionOpenBrowser:
             // Try to open Browser
             if (!Utility::openBrowser(authorisationLink())) {
