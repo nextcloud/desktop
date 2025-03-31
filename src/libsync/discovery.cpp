@@ -1121,6 +1121,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
 
         if ((item->_direction == SyncFileItem::Down || item->_instruction == CSYNC_INSTRUCTION_CONFLICT || item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC) &&
+                item->_direction != SyncFileItem::Up &&
                 (item->_modtime <= 0 || item->_modtime >= 0xFFFFFFFF)) {
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Cannot sync due to invalid modification time");

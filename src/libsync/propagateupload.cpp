@@ -324,8 +324,15 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
     if (_item->_modtime <= 0) {
-        slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
-        return;
+        const auto now = QDateTime::currentSecsSinceEpoch();
+        qCInfo(lcPropagateUpload) << "File" << _item->_file << "has invalid modification time of" << _item->_modtime << "-- trying to update it to" << now;
+        if (FileSystem::setModTime(filePath, now)) {
+            _item->_modtime = now;
+        } else {
+            qCWarning(lcPropagateUpload) << "Could not update modification time for" << _item->_file;
+            slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
+            return;
+        }
     }
 
     const QByteArray checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();

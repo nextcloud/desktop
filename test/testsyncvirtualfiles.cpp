@@ -1751,6 +1751,10 @@ private slots:
             return {};
         };
 
+        const auto lastModified = [&](const QString &path) -> qint64 {
+            return fakeFolder.currentLocalState().find(path)->lastModified.toSecsSinceEpoch();
+        };
+
         fakeFolder.localModifier().insert(fooFileRootFolder);
         fakeFolder.localModifier().insert(barFileRootFolder);
         fakeFolder.localModifier().mkdir(QStringLiteral("subfolder"));
@@ -1765,13 +1769,19 @@ private slots:
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
 
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
 
         fakeFolder.execUntilFinished();
+
+        // ensure mtime has changed after the sync
+        QCOMPARE_GT(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
 
         fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
 
         QVERIFY(fakeFolder.syncOnce());
+
+        // ensure mtime is now CURRENT_MTIME
+        QCOMPARE(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
 
         fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
         fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
@@ -1779,9 +1789,12 @@ private slots:
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
 
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
 
         fakeFolder.execUntilFinished();
+
+        // ensure mtime has changed after the sync
+        QCOMPARE_GT(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
 
         fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
 
@@ -1793,7 +1806,11 @@ private slots:
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
 
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
+
+        // the server only considers an mtime of 0-86400 (1d) as invalid, so this is fine
+        // see also: apps/dav/lib/Connector/Sabre/MtimeSanitizer.php
+        QCOMPARE(lastModified(barFileAaaSubFolder), INVALID_MTIME2);
 
         fakeFolder.execUntilFinished();
     }
