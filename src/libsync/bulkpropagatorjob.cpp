@@ -401,7 +401,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
         return;
     }
 
-    doStartUpload(item, fileToUpload, transmissionChecksum, md5Checksum);
+    doStartUpload(item, fileToUpload, transmissionChecksumHeader, md5Checksum);
 }
 
 void BulkPropagatorJob::slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
