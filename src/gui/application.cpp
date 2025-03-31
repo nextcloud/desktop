@@ -97,6 +97,7 @@ namespace {
         "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
         "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
         "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
+        "  --set-language <lang>      : specify a language to use for the client, regardless of the OS language.\n"
         "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
         "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
         "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
@@ -359,6 +360,12 @@ Application::Application(int &argc, char **argv)
 
         if (!_overrideLocalDir.isEmpty()) {
             cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (!_setLanguage.isNull()) {
+            // checking for .isNull here as setting the value to an empty string will use the OS language again
+            cfg.setLanguage(_setLanguage);
             shouldExit = true;
         }
 
@@ -881,6 +888,10 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
+        } else if (option == QStringLiteral("--set-language")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _setLanguage = it.next();
+            }
         } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
         } else {
@@ -1001,10 +1012,22 @@ QString substLang(const QString &lang)
     return lang;
 }
 
+QString enforcedLanguage()
+{
+    const ConfigFile cfg;
+    const auto configLanguage = cfg.language();
+    if (!configLanguage.isEmpty()) {
+        // always prefer value from configuration
+        return configLanguage;
+    }
+
+    return Theme::instance()->enforcedLocale();
+}
+
 void Application::setupTranslations()
 {
     qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
-    const auto enforcedLocale = Theme::instance()->enforcedLocale();
+    const auto enforcedLocale = enforcedLanguage();
     const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
     qCInfo(lcApplication) << "selected application language:" << lang;
 

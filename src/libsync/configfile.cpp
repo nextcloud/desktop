@@ -115,6 +115,8 @@ static const QString defaultUpdateChannelName = "stable";
 static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("enterprise") };
 static const QString defaultEnterpriseChannel = "enterprise";
 
+static constexpr char languageC[] = "language";
+
 static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
 
@@ -1252,6 +1254,17 @@ void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
     settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
 }
 
+QString ConfigFile::language() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(languageC), QLatin1String("")).toString();
+}
+
+void ConfigFile::setLanguage(const QString& language)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(languageC), language);
+}
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
 
