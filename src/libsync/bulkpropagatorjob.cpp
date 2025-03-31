@@ -188,7 +188,9 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
 
     const auto remotePath = propagator()->fullRemotePath(fileToUpload._file);
 
-    currentHeaders["X-File-MD5"] = md5ChecksumHeader;
+    if (!md5ChecksumHeader.isEmpty()) {
+        currentHeaders["X-File-MD5"] = md5ChecksumHeader;
+    }
     currentHeaders[checkSumHeaderC] = transmissionChecksumHeader;
 
     BulkUploadItem newUploadFile{propagator()->account(), item, fileToUpload,
@@ -281,7 +283,11 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
     computeChecksum->setChecksumType(checksumType);
 
     connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
-        slotComputeMd5Checksum(item, fileToUpload, contentChecksumType, contentChecksum);
+        if (propagator()->account()->bulkUploadNeedsLegacyChecksumHeader()) {
+            slotComputeMd5Checksum(item, fileToUpload, contentChecksumType, contentChecksum);
+        } else {
+            slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum, {});
+        }
     });
     connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
 
