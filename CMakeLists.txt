@@ -74,7 +74,20 @@ if (NOT DEFINED PACKAGE)
     set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
 endif()
 
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+set(APPLE_SUPPRESS_X11_WARNING ON)
+
+find_package(ECM 6.0.0 REQUIRED NO_MODULE)
+set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://invent.kde.org/frameworks/extra-cmake-modules")
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH})
+
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(ECMMarkNonGuiExecutable)
+include(ECMSetupVersion)
+
+#include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMEnableSanitizers)
 
 include(ECMCoverageOption)
 
