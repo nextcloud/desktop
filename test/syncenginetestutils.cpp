@@ -535,6 +535,7 @@ FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetw
 
 QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType)
 {
+    Q_UNUSED(request)
     QVector<FileInfo *> result;
 
     auto stringPutPayload = QString::fromUtf8(putPayload);
@@ -564,7 +565,7 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
             // Assume that the file is filled with the same character
             fileInfo = remoteRootFileInfo.create(fileName, onePartBody.size(), onePartBody.at(0).toLatin1());
         }
-        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("x-oc-mtime").toLongLong());
+        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(modtime);
         remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
         result.push_back(fileInfo);
     }
