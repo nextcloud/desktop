@@ -15,6 +15,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QCryptographicHash>
 
 #include <memory>
 #include <filesystem>
@@ -555,8 +556,40 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
         }
         const auto fileName = allHeaders[QStringLiteral("x-file-path")];
         const auto modtime = allHeaders[QByteArrayLiteral("x-file-mtime")].toLongLong();
+        const auto expectedMd5Checksum = allHeaders[QStringLiteral("x-file-md5")];
+        const auto standardChecksum = allHeaders[QStringLiteral("oc-checksum")];
         Q_ASSERT(!fileName.isEmpty());
         Q_ASSERT(modtime > 0);
+        Q_ASSERT(!expectedMd5Checksum.isEmpty());
+        Q_ASSERT(!standardChecksum.isEmpty());
+
+        const auto standardChecksumComponents = standardChecksum.split(':');
+        Q_ASSERT(standardChecksumComponents.size() == 2);
+        auto standardHashAlgorithm = QCryptographicHash::Algorithm::Sha1;
+        const auto standardHashAlgorithmString = standardChecksumComponents.at(0);
+        if (standardHashAlgorithmString == QStringLiteral("MD5")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Md5;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA1")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha1;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA256")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha256;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA3_256")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha3_256;
+        } else if (standardHashAlgorithmString == QStringLiteral("Adler32")) {
+            Q_ASSERT(false);
+        }
+
+        QCryptographicHash md5SumAlgorithm{QCryptographicHash::Algorithm::Md5};
+        QCryptographicHash standardSumAlgorithm{standardHashAlgorithm};
+
+        md5SumAlgorithm.addData(onePartBody.toLatin1());
+        const auto computedMd5Checksum = md5SumAlgorithm.result().toHex();
+        Q_ASSERT(expectedMd5Checksum == computedMd5Checksum);
+
+        standardSumAlgorithm.addData(onePartBody.toLatin1());
+        const auto computedStandardChecksum = standardSumAlgorithm.result().toHex();
+        Q_ASSERT(standardChecksumComponents.at(1) == computedStandardChecksum);
+
         FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
         if (fileInfo) {
             fileInfo->size = onePartBody.size();
