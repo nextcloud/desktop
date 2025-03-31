@@ -1333,6 +1333,71 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 
+    void testLocalInvalidMtimeCorrection()
+    {
+        const auto INVALID_MTIME = QDateTime::fromSecsSinceEpoch(0);
+        const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().insert(QStringLiteral("invalid"));
+        fakeFolder.localModifier().setModTime("invalid", INVALID_MTIME);
+        fakeFolder.localModifier().insert(QStringLiteral("recent"));
+        fakeFolder.localModifier().setModTime("recent", RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // "invalid" file had a mtime of 0, so it's been updated to the current time during testing
+        const auto currentMtime = fakeFolder.currentLocalState().find("invalid")->lastModified;
+        QCOMPARE_GT(currentMtime, RECENT_MTIME);
+        QCOMPARE_GT(fakeFolder.currentRemoteState().find("invalid")->lastModified, RECENT_MTIME);
+
+        // "recent" file had a mtime of RECENT_MTIME, so it shouldn't have been changed
+        QCOMPARE(fakeFolder.currentLocalState().find("recent")->lastModified, RECENT_MTIME);
+        QCOMPARE(fakeFolder.currentRemoteState().find("recent")->lastModified, RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
+        QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testLocalInvalidMtimeCorrectionBulkUpload()
+    {
+        const auto INVALID_MTIME = QDateTime::fromSecsSinceEpoch(0);
+        const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        fakeFolder.localModifier().insert(QStringLiteral("invalid"));
+        fakeFolder.localModifier().setModTime("invalid", INVALID_MTIME);
+        fakeFolder.localModifier().insert(QStringLiteral("recent"));
+        fakeFolder.localModifier().setModTime("recent", RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce()); // this will use the BulkPropagatorJob
+
+        // "invalid" file had a mtime of 0, so it's been updated to the current time during testing
+        const auto currentMtime = fakeFolder.currentLocalState().find("invalid")->lastModified;
+        QCOMPARE_GT(currentMtime, RECENT_MTIME);
+        QCOMPARE_GT(fakeFolder.currentRemoteState().find("invalid")->lastModified, RECENT_MTIME);
+
+        // "recent" file had a mtime of RECENT_MTIME, so it shouldn't have been changed
+        QCOMPARE(fakeFolder.currentLocalState().find("recent")->lastModified, RECENT_MTIME);
+        QCOMPARE(fakeFolder.currentRemoteState().find("recent")->lastModified, RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce()); // this will not propagate anything
+
+        // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
+        QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     void testServerUpdatingMTimeShouldNotCreateConflicts()
     {
         constexpr auto testFile = "test.txt";

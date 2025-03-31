@@ -171,10 +171,17 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
 
         item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
         if (item->_modtime <= 0) {
-            _pendingChecksumFiles.remove(item->_file);
-            slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
-            checkPropagationIsDone();
-            return;
+            const auto now = QDateTime::currentSecsSinceEpoch();
+            qCInfo(lcPropagateUpload) << "File" << item->_file << "has invalid modification time of" << item->_modtime << "-- trying to update it to" << now;
+            if (FileSystem::setModTime(newFilePathAbsolute, now)) {
+                item->_modtime = now;
+            } else {
+                qCWarning(lcPropagateUpload) << "Could not update modification time for" << item->_file;
+                _pendingChecksumFiles.remove(item->_file);
+                slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
+                checkPropagationIsDone();
+                return;
+            }
         }
     }
 
@@ -298,18 +305,26 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
         return;
     }
 
-    const auto prevModtime = item->_modtime; // the _item value was set in PropagateUploadFile::start()
+    const auto prevModtime = item->_modtime; // the item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
     item->_modtime = FileSystem::getModTime(originalFilePath);
+    qCDebug(lcPropagateUpload) << "fullFilePath" << fullFilePath << "originalFilePath" << originalFilePath << "prevModtime" << prevModtime << "item->_modtime" << item->_modtime;
     if (item->_modtime <= 0) {
-        _pendingChecksumFiles.remove(item->_file);
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
-        checkPropagationIsDone();
-        return;
+        const auto now = QDateTime::currentSecsSinceEpoch();
+        qCInfo(lcPropagateUpload) << "File" << item->_file << "has invalid modification time of" << item->_modtime << "-- trying to update it to" << now;
+        if (FileSystem::setModTime(originalFilePath, now)) {
+            item->_modtime = now;
+        } else {
+            qCWarning(lcPropagateUpload) << "Could not update modification time for" << item->_file;
+            _pendingChecksumFiles.remove(item->_file);
+            slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
+            checkPropagationIsDone();
+            return;
+        }
     }
-    if (prevModtime != item->_modtime) {
+    if (prevModtime > 0 && prevModtime != item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         _pendingChecksumFiles.remove(item->_file);
 
