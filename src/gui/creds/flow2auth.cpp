@@ -89,41 +89,16 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
-        const auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError{};
-        const auto json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const auto json = handleRequest(reply);
         QString pollToken, pollEndpoint, loginUrl;
 
-        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
-            && !json.isEmpty()) {
+        if (!json.isEmpty()) {
             pollToken = json.value("poll").toObject().value("token").toString();
             pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
-            if (_enforceHttps && QUrl(pollEndpoint).scheme() != QStringLiteral("https")) {
-                qCWarning(lcFlow2auth) << "Can not poll endpoint because the returned url" << pollEndpoint << "does not start with https";
-                emit result(Error, tr("The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
-                return;
-            }
             loginUrl = json["login"].toString();
         }
 
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-            || json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
-            QString errorReason;
-            if (const auto errorFromJson = json["error"].toString();
-                !errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
-            } else if (reply->error() != QNetworkReply::NoError) {
-                errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
-                                  .arg(reply->errorString().toHtmlEscaped());
-            } else if (jsonParseError.error != QJsonParseError::NoError) {
-                errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                                  .arg(jsonParseError.errorString());
-            } else {
-                errorReason = tr("The reply from the server did not contain all expected fields");
-            }
-            qCWarning(lcFlow2auth) << "Error when getting the loginUrl" << json << errorReason;
-            emit result(Error, errorReason);
+        if (json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
             _pollTimer.stop();
             _isBusy = false;
             return;
@@ -154,8 +129,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
             _pollTimer.start();
         }
 
-
-        switch(action) {
+        switch (action) {
         case actionOpenBrowser:
             // Try to open Browser
             if (!Utility::openBrowser(authorisationLink())) {
