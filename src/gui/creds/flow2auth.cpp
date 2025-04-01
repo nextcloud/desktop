@@ -67,7 +67,7 @@ void Flow2Auth::copyLinkToClipboard()
 
 void Flow2Auth::fetchNewToken(const TokenAction action)
 {
-    if(_isBusy) {
+    if (_isBusy) {
         return;
     }
 
@@ -177,7 +177,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-    if(_isBusy || !_hasToken) {
+    if (_isBusy || !_hasToken) {
         return;
     }
 
@@ -203,47 +203,17 @@ void Flow2Auth::slotPollTimerTimeout()
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        const auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError{};
-        const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const QJsonObject json = handleRequest(reply);
         QUrl serverUrl;
         QString loginName, appPassword;
 
-        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
-            && !json.isEmpty()) {
+        if (!json.isEmpty()) {
             serverUrl = json["server"].toString();
-            if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
-                qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
-                emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
-                return;
-            }
             loginName = json["loginName"].toString();
             appPassword = json["appPassword"].toString();
         }
 
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-            || json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
-            QString errorReason;
-            if (const QString errorFromJson = json["error"].toString();
-                !errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
-            } else if (reply->error() != QNetworkReply::NoError) {
-                errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
-                                  .arg(reply->errorString().toHtmlEscaped());
-            } else if (jsonParseError.error != QJsonParseError::NoError) {
-                errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                                  .arg(jsonParseError.errorString());
-            } else {
-                errorReason = tr("The reply from the server did not contain all expected fields");
-            }
-            qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
-
-            // We get a 404 until authentication is done, so don't show this error in the GUI.
-            if (reply->error() != QNetworkReply::ContentNotFoundError) {
-                emit result(Error, errorReason);
-            }
-
+        if (json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
             // Forget sensitive data
             appPassword.clear();
             loginName.clear();
@@ -276,10 +246,56 @@ void Flow2Auth::slotPollTimerTimeout()
     });
 }
 
+QJsonObject Flow2Auth::handleRequest(QNetworkReply *reply)
+{
+    const auto jsonData = reply->readAll();
+    QJsonParseError jsonParseError{};
+    const auto json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+
+    if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
+        && !json.isEmpty()) {
+        const QUrl serverUrl = json["server"].toString();
+        if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
+            qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
+            emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
+            return {};
+        }
+    }
+
+    if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
+        QString errorReason;
+        if (const QString errorFromJson = json["error"].toString();
+            !errorFromJson.isEmpty()) {
+            errorReason = tr("Error returned from the server: <em>%1</em>")
+            .arg(errorFromJson.toHtmlEscaped());
+        } else if (reply->error() != QNetworkReply::NoError) {
+            errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
+            .arg(reply->errorString().toHtmlEscaped());
+        } else if (jsonParseError.error != QJsonParseError::NoError) {
+            errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
+            .arg(jsonParseError.errorString());
+        } else if (json.isEmpty()) {
+            errorReason = tr("The reply from the server did not contain all expected fields")
+            .arg(jsonParseError.errorString());
+        }
+
+        qCDebug(lcFlow2auth) << "Error when requesting:" << reply->url() << "- json returned:" << json << "- error:" << errorReason;
+
+        // We get a 404 until authentication is done, so don't show this error in the GUI.
+        if (reply->error() != QNetworkReply::ContentNotFoundError) {
+            emit result(Error, errorReason);
+        }
+
+        return {};
+    }
+
+    return json;
+}
+
 void Flow2Auth::slotPollNow()
 {
     // poll now if we're not already doing so
-    if(_isBusy || !_hasToken) {
+    if (_isBusy || !_hasToken) {
         return;
     }
 
