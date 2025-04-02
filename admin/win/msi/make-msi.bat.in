@@ -4,21 +4,25 @@ set BuildArch=@MSI_BUILD_ARCH@
 
 setlocal EnableDelayedExpansion
 
-REM list of additional supported languages in the installer
+REM list of additional supported languages in the installer, grouped by codepage
 REM since candle needs to be run for each codepage we can reuse its output for the other languages
+REM
+REM each additional language will add about ~1min of build time!
+REM in order to be able to create transforms of the installer we must have an already-translated MSI ready, so for each language a separate temporary MSI will be built
+REM
 REM IMPORTANT: end each line but the last with ;^
 REM
 REM see also: https://learn.microsoft.com/en-gb/windows/win32/msi/localizing-the-error-and-actiontext-tables
 REM the codepage is the value of the "ASCII code page" in the table
 set languages=^
-1252:en-us de-de fr-fr;^
-1250:cs-cz
+1252:en-us de-de fr-fr it-it es-es
 
 set languages_to_id=^
 en-us:1033;^
 de-de:1031;^
 fr-fr:1036;^
-cs-cz:1029
+it-it:1040;^
+es-es:3082
 
 set LF=^
 
@@ -55,7 +59,7 @@ if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
 call :build_each_language
 
-call :create_language_transforms
+call :embed_language_transforms
 
 if NOT "%WILANGID%" == "" (
   set supported_language_ids=
@@ -111,23 +115,6 @@ exit 0
     echo :: Linking MSI project for !culture!
     "%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:!culture!;en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj RegistryCleanupCustomAction.wixobj -out "!culture!_@MSI_INSTALLER_FILENAME@"
     if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
-  )
-  exit /b
-
-
-:create_language_transforms
-  REM same loop as in :build_each_language, but we don't care about the codepage
-  for /f "tokens=1,* eol=; delims=:" %%l in ("%languages:;=!LF!%") do (
-    call :create_language_transform %%m
-  )
-  exit /b
-
-
-:create_language_transform culture1 culture2 ...
-  set cultures=%*
-
-  for %%c in (%cultures: =!LF!%) do (
-    set culture=%%c
 
     if NOT "!culture!" == "en-us" (
       REM en-us is the base language for our installer, no need to create transforms for that
@@ -136,12 +123,34 @@ exit 0
       "%WIX%\bin\torch.exe" -p -t language "en-us_@MSI_INSTALLER_FILENAME@" "!culture!_@MSI_INSTALLER_FILENAME@" -out "!culture!.mst"
       if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
+      REM at this point we do not need the translated installer anymore
+      del "!culture!_@MSI_INSTALLER_FILENAME@"
+    )
+
+  )
+  exit /b
+
+
+:embed_language_transforms
+  REM same loop as in :build_each_language, but we don't care about the codepage
+  for /f "tokens=1,* eol=; delims=:" %%l in ("%languages:;=!LF!%") do (
+    call :embed_language_transform %%m
+  )
+  exit /b
+
+
+:embed_language_transform culture1 culture2 ...
+  set cultures=%*
+
+  for %%c in (%cultures: =!LF!%) do (
+    set culture=%%c
+
+    if NOT "!culture!" == "en-us" (
+      REM en-us is the base language for our installer, there is no transform for that
+
       call :set_language_id_for_culture
       echo :: Embedding language !culture! with id !language_id! into MSI
       cscript "%WISUBSTG%" "en-us_@MSI_INSTALLER_FILENAME@" "!culture!.mst" !language_id!
-
-      REM at this point we do not need the translated installer anymore
-      del "!culture!_@MSI_INSTALLER_FILENAME@"
     )
   )
   exit /b
