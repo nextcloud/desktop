@@ -5242,12 +5242,12 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="126"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="343"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Pole võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Sa pead nõustuma kasutustingimustega</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="141"/>
@@ -5259,12 +5259,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Mõnede failide sünkroniseerimine ei õnnestunud!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="152"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Vaata alljärgnevaid vigu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
@@ -5274,7 +5274,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin muudatusi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
@@ -5284,32 +5284,32 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Mõnede failide sünkroniseerimine ei õnnestunud!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="180"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Palun loe hoiatusi alljärgnevas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="221"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2 · Jäänud veel %3</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="243"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin faile: %1 / %2</translation>
     </message>
 </context>
 <context>
@@ -5419,22 +5419,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Otsinguteenuse pakkujate laadimine ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ jaoks otsinguteenuse pakkujate laadimine ei õnnestunud. Viga: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>„%2“ otsing ei õnnestunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ otsing ei õnnestunud. Viga: %2</translation>
     </message>
 </context>
 <context>
@@ -5442,7 +5442,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="132"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud uuendada kausta metainfot.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="155"/>
@@ -5452,7 +5452,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud lõpetada objektiga tehtavat toimingut.</translation>
     </message>
 </context>
 <context>
@@ -5468,12 +5468,12 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 kausta metainfo uuendamisel tekkis viga</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja %1 avaliku võtme laadimine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="97"/>
@@ -5483,12 +5483,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 kasutaja lisamine või eemaldamine ligipääsuks kaustale %2 ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta lukustust ei õnnestunud eemaldada.</translation>
     </message>
 </context>
 <context>
@@ -5496,12 +5496,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="103"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Läbival krüptimisel kasutatav sertifikaat vajab uuendamist</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="105"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>Käivita kolimine</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
@@ -5511,13 +5511,13 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Proovi uuesti kõiki üles laadida</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda failikonflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
@@ -5678,37 +5678,37 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimise viga</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation type="unfinished"/>
+        <translation>Viga allalaadimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>- allalaadimine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation type="unfinished"/>
+        <translation>&gt; Lisateave</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Lisateave</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga %1 allaladimisel</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation type="unfinished"/>
+        <translation>%1 - allalaadimine ei õnnestunud</translation>
     </message>
 </context>
 <context>
@@ -5717,7 +5717,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="91"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Vigase muutmisaja tõttu ei õnnestunud metainfot muuta</translation>
     </message>
 </context>
 <context>
@@ -5726,7 +5726,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Vigase muutmisaja tõttu ei õnnestunud metainfot muuta</translation>
     </message>
 </context>
 <context>
@@ -5747,7 +5747,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Sa oled logitud välja %2 serveri %1 kasutajakontost. Palun logi uuesti sisse.</translation>
     </message>
 </context>
 <context>
@@ -5798,7 +5798,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="271"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Mittetoetatud serveri versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
@@ -5808,7 +5808,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Kasutustingimused</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="285"/>
@@ -5818,7 +5818,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Lahtiühendatud %1 kasutajakontost</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
@@ -5849,7 +5849,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS %1 jaoks: Sünkroniseerimine on töös.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="459"/>
@@ -5859,7 +5859,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS %1 jaoks: Tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="469"/>
@@ -5892,7 +5892,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajanimi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
@@ -5966,7 +5966,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>&amp;Parool</translation>
+        <translation>&amp;Salasõna</translation>
     </message>
 </context>
 <context>
@@ -5980,7 +5980,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
@@ -6013,33 +6013,33 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="805"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Sa muutsid nime: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="807"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Sa kustutasid: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="809"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Sa lõid: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Sa muutsid: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseeritud: %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n p</numerusform><numerusform>%n p</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
@@ -6050,7 +6050,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/common/utility.cpp" line="449"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n t</numerusform><numerusform>%n t</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="455"/>
@@ -6061,13 +6061,13 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1 min</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="460"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n min</numerusform><numerusform>%n min</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="464"/>
@@ -6143,12 +6143,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="217"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Muuda jaosmeediat</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Jagamise silt</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="323"/>
@@ -6179,7 +6179,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Kaitstud salasõnaga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="578"/>
@@ -6222,37 +6222,37 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="93"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Uus jaosmeedia eeldab salasõna lisamist</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="121"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Jaosmeedia salasõna</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Seda jagas sinuga %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Aegub %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="313"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine pole kasutusel</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="320"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Seda objekti ei saa jagada</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="328"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine pole kasutusel.</translation>
     </message>
 </context>
 <context>
@@ -6265,7 +6265,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Selle kausta jagamine pole võimalik</translation>
     </message>
 </context>
 <context>
@@ -6273,7 +6273,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="981"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud luua ühendust andmebaasiga</translation>
     </message>
 </context>
 <context>
@@ -6299,12 +6299,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Vasta kasutajale…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="51"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Vasta vestluse sõnumile</translation>
     </message>
 </context>
 <context>
@@ -6335,12 +6335,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Veel rakendusi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava %1 veebilehitsejas</translation>
     </message>
 </context>
 <context>
@@ -6364,7 +6364,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="45"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Laadi veel tulemusi</translation>
     </message>
 </context>
 <context>
@@ -6380,7 +6380,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="43"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Laadi veel tulemusi</translation>
     </message>
 </context>
 <context>
@@ -6388,7 +6388,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="40"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Otsingutulemusi ei leidu:</translation>
     </message>
 </context>
 <context>
@@ -6404,7 +6404,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="31"/>
         <source>Switch to account</source>
-        <translation type="unfinished"/>
+        <translation>Vaheta kasutajakontot</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
@@ -6414,12 +6414,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
-        <translation>Kasutajakonto olek on hetkel „Ära sega“</translation>
+        <translation>Kasutajakonto olek on hetkel olekus „Ära sega“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakonto tegevused</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
@@ -6522,7 +6522,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="120"/>
@@ -6542,32 +6542,32 @@ Veateade serveri päringuvastuses: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="299"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n aasta</numerusform><numerusform>%n aastat</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="300"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n kuu</numerusform><numerusform>%n kuud</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="301"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n päev</numerusform><numerusform>%n päeva</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="302"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tund</numerusform><numerusform>%n tundi</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="303"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut</numerusform><numerusform>%n minutit</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="304"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekund</numerusform><numerusform>%n sekundit</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="328"/>
@@ -6580,17 +6580,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="262"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollsumma päis on vigane</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="296"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollsumma päises oli tundmatu kontrollsumma tüüp „%1“</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="301"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Allalaaditud fail ei vasta kontrollsummale. Allalaadimine jätkub. „%1“ != „%2“</translation>
     </message>
 </context>
 <context>
@@ -6619,22 +6619,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalne fail on loodud</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Asendatud virtuaalse faili poolt</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>Allalaetud</translation>
+        <translation>Allalaaditud</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Uploaded</source>
-        <translation>Üles laetud</translation>
+        <translation>Üles laaditud</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
