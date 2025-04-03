@@ -29,7 +29,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.text)
     }
@@ -45,7 +46,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.pdf)
     }
@@ -61,7 +63,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.folder)
     }
@@ -78,7 +81,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.package)
     }
@@ -95,7 +99,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.bundle)
     }
@@ -112,7 +117,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.folder)
     }
@@ -129,7 +135,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         XCTAssertTrue(item.contentType.conforms(to: .bundle))
     }
@@ -149,7 +156,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
 
         XCTAssertNotNil(item.userInfo?["locked"])
@@ -172,7 +180,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
 
         XCTAssertNil(item.userInfo?["locked"])
@@ -193,7 +202,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
 
         XCTAssertNotNil(item.userInfo?["downloaded"])
@@ -214,7 +224,8 @@ final class ItemPropertyTests: XCTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface()
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
 
         XCTAssertNotNil(item.userInfo?["downloaded"])

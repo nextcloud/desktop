@@ -30,7 +30,9 @@ extension Enumerator {
         error: NKError?
     ) {
         let results = await self.scanRecursively(
-            Item.rootContainer(account: account, remoteInterface: remoteInterface).metadata,
+            Item.rootContainer(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
+            ).metadata,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,

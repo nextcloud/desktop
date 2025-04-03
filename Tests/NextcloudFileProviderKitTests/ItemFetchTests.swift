@@ -53,7 +53,8 @@ final class ItemFetchTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (localPathMaybe, fetchedItemMaybe, error) = await item.fetchContents(
@@ -65,8 +66,6 @@ final class ItemFetchTests: XCTestCase {
         let contents = try Data(contentsOf: localPath)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-
-        fetchedItem.dbManager = Self.dbManager
 
         XCTAssertEqual(contents, remoteItem.data)
         XCTAssertTrue(fetchedItem.isDownloaded)
@@ -167,9 +166,9 @@ final class ItemFetchTests: XCTestCase {
             metadata: directoryMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        item.dbManager = Self.dbManager
 
         let (localPathMaybe, fetchedItemMaybe, error) =
             await item.fetchContents(dbManager: Self.dbManager)
@@ -179,7 +178,6 @@ final class ItemFetchTests: XCTestCase {
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: directoryMetadata.ocId))
 
-        fetchedItem.dbManager = Self.dbManager
 
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)

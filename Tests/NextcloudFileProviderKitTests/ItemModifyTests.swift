@@ -124,16 +124,17 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let targetItem = Item(
             metadata: targetItemMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        targetItem.dbManager = Self.dbManager
 
         let (modifiedItemMaybe, error) = await item.modify(
             itemTarget: targetItem,
@@ -205,17 +206,17 @@ final class ItemModifyTests: XCTestCase {
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        folderItem.dbManager = Self.dbManager
 
         let targetFolderItem = Item(
             metadata: modifiedFolderMetadata,
             parentItemIdentifier: .init(remoteFolderB.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        targetFolderItem.dbManager = Self.dbManager
 
         let (modifiedFolderMaybe, error) = await folderItem.modify(
             itemTarget: targetFolderItem,
@@ -475,9 +476,9 @@ final class ItemModifyTests: XCTestCase {
             metadata: bundleItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        bundleItem.dbManager = Self.dbManager
 
         let fm = FileManager.default
         let tempUrl = fm.temporaryDirectory.appendingPathComponent(keynoteBundleFilename)
@@ -549,9 +550,9 @@ final class ItemModifyTests: XCTestCase {
             metadata: targetBundleMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        targetItem.dbManager = Self.dbManager
 
         let (modifiedItemMaybe, error) = await bundleItem.modify(
             itemTarget: targetItem,
@@ -620,16 +621,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let trashItem = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-
-        item.dbManager = Self.dbManager
 
         let (trashedItemMaybe, error) = await item.modify(
             itemTarget: trashItem,
@@ -683,16 +684,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let trashItem = Item(
             metadata: renamedItemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-
-        item.dbManager = Self.dbManager
 
         let (trashedItemMaybe, error) = await item.modify(
             itemTarget: trashItem,
@@ -762,16 +763,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let trashFolderItem = Item(
             metadata: folderMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-
-        folderItem.dbManager = Self.dbManager
 
         let (trashedFolderItemMaybe, error) = await folderItem.modify(
             itemTarget: trashFolderItem,
@@ -858,16 +859,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let trashFolderItem = Item(
             metadata: renamedFolderMetadata, // Test rename first and then trash
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-
-        folderItem.dbManager = Self.dbManager
 
         let (trashedFolderItemMaybe, error) = await folderItem.modify(
             itemTarget: trashFolderItem,
@@ -922,16 +923,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let trashItem = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-
-        item.dbManager = Self.dbManager
 
         let (trashedItemMaybe, trashError) = await item.modify(
             itemTarget: trashItem,
@@ -941,7 +942,6 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(trashError)
         let trashedItem = try XCTUnwrap(trashedItemMaybe)
-        trashedItem.dbManager = Self.dbManager
         XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
 
         let (untrashedItemMaybe, untrashError) = await trashedItem.modify(
@@ -968,15 +968,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: trashItemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        trashItem.dbManager = Self.dbManager
 
         let untrashedTargetItem = Item(
             metadata: trashItemMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (untrashedItemMaybe, untrashError) = await trashItem.modify(
@@ -987,7 +988,6 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(untrashError)
         let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
-        untrashedItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(remoteFolder.identifier))
     }
 
@@ -1018,15 +1018,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: trashItemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        trashItem.dbManager = Self.dbManager
 
         let targetItem = Item(
             metadata: targetItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (modifiedUntrashedItemMaybe, error) = await trashItem.modify(
@@ -1038,7 +1039,6 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNil(error)
         
         let modifiedUntrashedItem = try XCTUnwrap(modifiedUntrashedItemMaybe)
-        modifiedUntrashedItem.dbManager = Self.dbManager
 
         XCTAssertEqual(modifiedUntrashedItem.parentItemIdentifier, .rootContainer)
         XCTAssertEqual(modifiedUntrashedItem.itemIdentifier, targetItem.itemIdentifier)
@@ -1067,15 +1067,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: trashItemMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        trashItem.dbManager = Self.dbManager
 
         let untrashedTargetItem = Item(
             metadata: trashItemMetadata,
             parentItemIdentifier: .init(rootItem.identifier),
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (untrashedItemMaybe, untrashError) = await trashItem.modify(
@@ -1086,7 +1087,6 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(untrashError)
         let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
-        untrashedItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedItem.itemIdentifier, trashItem.itemIdentifier)
         XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(rootItem.identifier))
     }
@@ -1104,15 +1104,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: trashFolderMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        trashedFolderItem.dbManager = Self.dbManager
 
         let untrashedTargetItem = Item(
             metadata: trashFolderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (untrashedFolderItemMaybe, untrashError) = await trashedFolderItem.modify(
@@ -1123,7 +1124,6 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(untrashError)
         let untrashedItem = try XCTUnwrap(untrashedFolderItemMaybe)
-        untrashedItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedItem.parentItemIdentifier, .rootContainer)
         XCTAssertEqual(remoteTrashFolder.children.count, 1)
         XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
@@ -1160,15 +1160,16 @@ final class ItemModifyTests: XCTestCase {
             metadata: trashFolderMetadata,
             parentItemIdentifier: .trashContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        trashedFolderItem.dbManager = Self.dbManager
 
         let untrashedTargetItem = Item(
             metadata: renamedTrashFolderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (untrashedFolderItemMaybe, untrashError) = await trashedFolderItem.modify(
@@ -1179,7 +1180,6 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(untrashError)
         let untrashedFolderItem = try XCTUnwrap(untrashedFolderItemMaybe)
-        untrashedFolderItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedFolderItem.parentItemIdentifier, .rootContainer)
         XCTAssertEqual(untrashedFolderItem.filename, renamedTrashFolderMetadata.fileName)
         XCTAssertEqual(remoteTrashFolder.children.count, 1)
@@ -1216,16 +1216,17 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let targetItem = Item(
             metadata: targetItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        targetItem.dbManager = Self.dbManager
 
         let (modifiedItemMaybe, error) = await item.modify(
             itemTarget: targetItem,
@@ -1289,16 +1290,17 @@ final class ItemModifyTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let targetItem = Item(
             metadata: targetItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        targetItem.dbManager = Self.dbManager
 
         let (modifiedItemMaybe, error) = await item.modify(
             itemTarget: targetItem,

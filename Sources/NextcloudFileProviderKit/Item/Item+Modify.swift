@@ -84,7 +84,8 @@ public extension Item {
             metadata: newMetadata,
             parentItemIdentifier: newParentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
         return (modifiedItem, nil)
     }
@@ -204,7 +205,8 @@ public extension Item {
             metadata: newMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
         return (modifiedItem, nil)
     }
@@ -501,7 +503,8 @@ public extension Item {
             metadata: bundleRootMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
     }
 
@@ -539,7 +542,8 @@ public extension Item {
             metadata: dirtyMetadata,
             parentItemIdentifier: .trashContainer,
             account: account,
-            remoteInterface: modifiedItem.remoteInterface
+            remoteInterface: modifiedItem.remoteInterface,
+            dbManager: dbManager
         )
 
         // The server may have renamed the trashed file so we need to scan the entire trash
@@ -599,7 +603,8 @@ public extension Item {
             metadata: postDeleteMetadata,
             parentItemIdentifier: .trashContainer,
             account: account,
-            remoteInterface: modifiedItem.remoteInterface
+            remoteInterface: modifiedItem.remoteInterface,
+            dbManager: dbManager
         )
 
         // Now we can directly update info on the child items
@@ -685,7 +690,8 @@ public extension Item {
                 metadata: restoredItemMetadata,
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
-                remoteInterface: modifiedItem.remoteInterface
+                remoteInterface: modifiedItem.remoteInterface,
+                dbManager: dbManager
             ), nil)
         }
 

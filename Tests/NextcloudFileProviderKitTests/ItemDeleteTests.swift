@@ -55,7 +55,8 @@ final class ItemDeleteTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (error) = await item.delete(dbManager: Self.dbManager)
@@ -105,7 +106,8 @@ final class ItemDeleteTests: XCTestCase {
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (error) = await folder.delete(dbManager: Self.dbManager)
@@ -143,7 +145,8 @@ final class ItemDeleteTests: XCTestCase {
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (error) = await item.delete(trashing: true, dbManager: Self.dbManager)

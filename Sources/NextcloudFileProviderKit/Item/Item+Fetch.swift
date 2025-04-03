@@ -267,7 +267,8 @@ public extension Item {
             metadata: updatedMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
 
         return (localPath, fpItem, nil)

@@ -36,7 +36,8 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
                 metadata: item,
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
-                remoteInterface: remoteInterface
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
             items.append(item)
         }

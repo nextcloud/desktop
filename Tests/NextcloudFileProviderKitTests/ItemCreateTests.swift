@@ -44,7 +44,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: folderItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: folderItemTemplate,
@@ -92,7 +93,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: fileItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: fileItemTemplate,
@@ -139,7 +141,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: folderItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let (createdFolderItemMaybe, folderError) = await Item.create(
@@ -165,7 +168,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: fileItemMetadata,
             parentItemIdentifier: createdFolderItem.itemIdentifier,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
@@ -283,7 +287,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: bundleItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
 
         // TODO: Add fail test with no contents
@@ -358,7 +363,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: fileItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: fileItemTemplate,
@@ -446,7 +452,8 @@ final class ItemCreateTests: XCTestCase {
             metadata: fileItemMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: fileItemTemplate,

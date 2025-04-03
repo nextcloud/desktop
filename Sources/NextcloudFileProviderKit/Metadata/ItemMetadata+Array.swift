@@ -35,7 +35,8 @@ extension Array<SendableItemMetadata> {
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
-                    remoteInterface: remoteInterface
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
                 )
                 logger.debug(
                     """
