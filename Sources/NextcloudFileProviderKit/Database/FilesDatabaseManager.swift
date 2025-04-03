@@ -51,7 +51,10 @@ public final class FilesDatabaseManager: Sendable {
         let oldDatabasePath = fileProviderDataDirUrl.appendingPathComponent(
             oldRelativeDatabaseFilePath
         )
-        guard FileManager.default.fileExists(atPath: oldDatabasePath.path) == true else { return }
+        guard FileManager.default.fileExists(atPath: oldDatabasePath.path) == true else {
+            Self.logger.debug("No old database found at \(oldDatabasePath.path) skipping migration")
+            return
+        }
         Self.logger.info("Migrating old database to database for \(account, privacy: .public)")
         let oldConfig = Realm.Configuration(
             fileURL: oldDatabasePath,
@@ -62,14 +65,18 @@ public final class FilesDatabaseManager: Sendable {
             let oldRealm = try Realm(configuration: oldConfig)
             let itemMetadatas = oldRealm.objects(RealmItemMetadata.self).filter { $0.account == account }
             let remoteFileChunks = oldRealm.objects(RemoteFileChunk.self)
+            Self.logger.info(
+                "Migrating \(itemMetadatas.count) metadatas and \(remoteFileChunks.count) chunks"
+            )
+
+            let currentRealm = try Realm()
+            try currentRealm.write {
+                itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
+                remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
+            }
             try oldRealm.write {
                 oldRealm.delete(itemMetadatas)
                 oldRealm.delete(remoteFileChunks)
-            }
-            let currentRealm = try Realm()
-            try currentRealm.write {
-                currentRealm.add(itemMetadatas)
-                currentRealm.add(remoteFileChunks)
             }
         } catch let error {
             Self.logger.error(
