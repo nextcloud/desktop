@@ -208,21 +208,33 @@ struct Build: ParsableCommand {
             )
         }
 
-        print("Crafting \(appName) Desktop Client...")
-
-        let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
-
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
+        print("Crafting \(appName) Desktop Client...")
         if fullRebuild {
             do {
                 try fm.removeItem(atPath: clientBuildDir)
             } catch let error {
                 print("WARNING! Error removing build directory: \(error)")
             }
+        } else {
+            // HACK: When building the client we often run into issues with the shell integration
+            // component -- particularly the FileProviderExt part. So we wipe out the build
+            // artifacts so this part gets build first. Let's first check if we have an existing
+            // build in the folder we expect
+            let shellIntegrationDir = "\(clientBuildDir)/work/build/shell_integration/MacOSX"
+            if fm.fileExists(atPath: shellIntegrationDir) {
+                print("Removing existing shell integration build artifacts...")
+                do {
+                    try fm.removeItem(atPath: shellIntegrationDir)
+                } catch let error {
+                    print("WARNING! Error removing shell integration build directory: \(error)")
+                }
+            }
         }
 
         let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
+        let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
         guard shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
