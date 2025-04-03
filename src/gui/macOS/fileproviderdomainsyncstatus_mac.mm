@@ -41,6 +41,7 @@ public:
             qCWarning(lcMacFileProviderDomainSyncStatus) << "Could not get manager for domain" << domainIdentifier;
             return;
         }
+        [_manager retain];
 
         if (@available(macOS 11.3, *)) {
             NSProgress *const downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
@@ -57,7 +58,13 @@ public:
         }
     }
 
-    ~MacImplementation() = default;
+    ~MacImplementation()
+    {
+        [_downloadProgressObserver release];
+        [_uploadProgressObserver release];
+        [_domain release];
+        [_manager release];
+    }
 
     void updateDownload(NSProgress *const progress) const
     {

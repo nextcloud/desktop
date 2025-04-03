@@ -950,7 +950,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";
-        foreach (const QByteArray &it, _etagStorageFilter) {
+        for (const auto &it : std::as_const(_etagStorageFilter)) {
             if (it.startsWith(prefix)) {
                 qCInfo(lcDb) << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
                 record._etag = "_invalid_";
@@ -1718,7 +1718,7 @@ static bool deleteBatch(SqlQuery &query, const QStringList &entries, const QStri
 
     qCDebug(lcDb) << "Removing stale" << name << "entries:" << entries.join(QStringLiteral(", "));
     // FIXME: Was ported from execBatch, check if correct!
-    foreach (const QString &entry, entries) {
+    for (const auto &entry : entries) {
         query.reset_and_clear_bindings();
         query.bindValue(1, entry);
         if (!query.exec()) {

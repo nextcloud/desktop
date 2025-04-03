@@ -89,14 +89,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
     _preFetchEtagHeader = postFetchEtagHeader;
 
-    auto notifies = json.object().value("ocs").toObject().value("data").toArray();
+    const auto notifies = json.object().value("ocs").toObject().value("data").toArray();
 
     auto *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
 
     ActivityList list;
     ActivityList callList;
 
-    foreach (auto element, notifies) {
+    for (const auto element : notifies) {
         auto json = element.toObject();
         auto a = Activity::fromActivityJson(json, ai->account());
 

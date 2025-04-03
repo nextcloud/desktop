@@ -578,7 +578,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
     NetworkJobTimeoutPauser pauser(reply);
     QString out;
     QDebug(&out) << "SSL-Errors happened for url " << reply->url().toString();
-    foreach (const QSslError &error, errors) {
+    for (const auto &error : errors) {
         QDebug(&out) << "\tError in " << error.certificate() << ":"
                      << error.errorString() << "(" << error.error() << ")"
                      << "\n";
@@ -588,7 +588,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
     qCInfo(lcAccount()) << reply->sslConfiguration().peerCertificateChain();
 
     bool allPreviouslyRejected = true;
-    foreach (const QSslError &error, errors) {
+    for (const auto &error : errors) {
         if (!_rejectedCertificates.contains(error.certificate())) {
             allPreviouslyRejected = false;
         }
@@ -635,7 +635,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             return;
 
         // Mark all involved certificates as rejected, so we don't ask the user again.
-        foreach (const QSslError &error, errors) {
+        for (const auto &error : errors) {
             if (!_rejectedCertificates.contains(error.certificate())) {
                 _rejectedCertificates.append(error.certificate());
             }
@@ -948,9 +948,9 @@ void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &di
 void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 {
     auto data = json.object().value("ocs").toObject().value("data").toObject();
-    auto editors = data.value("editors").toObject();
+    const auto editors = data.value("editors").toObject();
 
-    foreach (auto editorKey, editors.keys()) {
+    for (const auto &editorKey : editors.keys()) {
         auto editor = editors.value(editorKey).toObject();
 
         const QString id = editor.value("id").toString();
@@ -962,11 +962,11 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 
             auto *directEditor = new DirectEditor(id, name);
 
-            foreach(auto mimeType, mimeTypes) {
+            for (const auto &mimeType : mimeTypes) {
                 directEditor->addMimetype(mimeType.toString().toLatin1());
             }
 
-            foreach(auto optionalMimeType, optionalMimeTypes) {
+            for (const auto &optionalMimeType : optionalMimeTypes) {
                 directEditor->addOptionalMimetype(optionalMimeType.toString().toLatin1());
             }
 

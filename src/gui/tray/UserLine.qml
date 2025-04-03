@@ -50,9 +50,10 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 width: accountStatusIndicator.sourceSize.width + 2
                 height: width
+                color: "white"
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                radius:  width * Style.trayFolderStatusIndicatorRadiusFactor
+                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
             }
 
             Image {

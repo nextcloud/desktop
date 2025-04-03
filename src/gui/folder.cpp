@@ -670,7 +670,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
             }
         }
         if (spurious) {
-            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+            qCDebug(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return; // probably a spurious notification
         }
     }
@@ -1020,14 +1020,19 @@ void Folder::slotTerminateSync()
 
 void Folder::wipeForRemoval()
 {
-    // Delete files that have been partially downloaded.
-    slotDiscardDownloadProgress();
-
     disconnectFolderWatcher();
 
     // Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
+
+    if (!QDir(path()).exists()) {
+        qCCritical(lcFolder) << "db files are not going to be deleted, sync folder could not be found at" << path();
+        return;
+    }
+
+    // Delete files that have been partially downloaded.
+    slotDiscardDownloadProgress();
 
     // Remove db and temporaries
     QString stateDbFile = _engine->journal()->databaseFilePath();
@@ -1521,32 +1526,37 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
 void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
 {
     // Never warn for items in the database
-    if (record.isValid())
+    if (record.isValid()) {
         return;
+    }
 
     // Don't warn for items that no longer exist.
     // Note: This assumes we're getting file watcher notifications
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
     const auto fullPath = QString{_canonicalLocalPath + path};
-    QFileInfo fi(fullPath);
-    if (!FileSystem::fileExists(fullPath))
+    if (!FileSystem::fileExists(fullPath)) {
         return;
+    }
 
     bool ok = false;
-    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (!ok)
+    const auto selectiveSyncList = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok) {
         return;
-    if (!blacklist.contains(path + "/"))
+    }
+    if (!selectiveSyncList.contains(path + "/")) {
         return;
+    }
 
+    QFileInfo excludeItemFileInfo(fullPath);
+    const auto excludeItemFilePath = excludeItemFileInfo.filePath();
     const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
              "Data inside it will not be synchronized.")
-              .arg(fi.filePath())
+              .arg(excludeItemFilePath)
         : tr("The file %1 was created but was excluded from synchronization previously. "
              "It will not be synchronized.")
-              .arg(fi.filePath());
+              .arg(excludeItemFilePath);
 
     Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
@@ -1726,7 +1736,16 @@ void Folder::slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr
 
     setSyncPaused(true);
     for(const auto &oneFolder : folders) {
-        FileSystem::removeRecursively(localPath + oneFolder->_file);
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+        const auto fileInfo = QFileInfo{localPath + oneFolder->_file};
+        const auto parentFolderPath = fileInfo.dir().absolutePath();
+        const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+#endif
+        if (oneFolder->_type == ItemType::ItemTypeDirectory) {
+            FileSystem::removeRecursively(localPath + oneFolder->_file);
+        } else {
+            FileSystem::remove(localPath + oneFolder->_file);
+        }
     }
     callback(true);
     setSyncPaused(false);

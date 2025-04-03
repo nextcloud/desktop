@@ -278,7 +278,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return displayLocation();
     case ActionsLinksRole: {
         QList<QVariant> customList;
-        foreach (ActivityLink activityLink, a._links) {
+        for (const auto &activityLink : std::as_const(a._links)) {
             customList << QVariant::fromValue(activityLink);
         }
         return customList;
@@ -610,7 +610,7 @@ void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
         return;
     }
 
-    foreach (Activity activity, _listOfIgnoredFiles) {
+    for (const auto &activity : _listOfIgnoredFiles) {
         if (activity._file == newActivity._file) {
             duplicate = true;
             break;

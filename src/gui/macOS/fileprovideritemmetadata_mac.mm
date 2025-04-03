@@ -120,9 +120,9 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
     }
 
     __block QString returnPath = QObject::tr("Unknown");
-    NSFileProviderManager *manager = FileProviderUtils::managerForDomainIdentifier(domainId);
+    NSFileProviderManager *const manager = FileProviderUtils::managerForDomainIdentifier(domainId);
 
-     if (manager == nil) {
+    if (manager == nil) {
         qCWarning(lcMacImplFileProviderItemMetadata) << "Null manager, cannot get item path";
         return returnPath;
     }
@@ -132,6 +132,7 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
 
     // getUserVisibleUrl is async, so wait here
 
+    [manager retain];
     [manager getUserVisibleURLForItemIdentifier:nsItemIdentifier
                               completionHandler:^(NSURL *const userVisibleFile, NSError *const error) {
 
@@ -141,6 +142,7 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
             returnPath = QString::fromNSString(userVisibleFile.path);
         }
 
+        [manager release];
         dispatch_semaphore_signal(semaphore);
     }];
 

@@ -12,12 +12,13 @@
  * for more details.
  */
 
+#include "asyncimageresponse.h"
+
 #include <QIcon>
 #include <QPainter>
 #include <QSvgRenderer>
 
-#include "asyncimageresponse.h"
-#include "usermodel.h"
+#include "accountmanager.h"
 
 AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requestedSize)
 {

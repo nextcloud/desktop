@@ -156,7 +156,7 @@ bool VfsXAttr::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     Q_ASSERT(!stat->path.startsWith('/'));
 
     const auto path = QByteArray(*parentPath + '/' + stat->path);
-    const auto pin = [=] {
+    const auto pin = [=, this] {
         const auto absolutePath = QString::fromUtf8(path);
         Q_ASSERT(absolutePath.startsWith(params().filesystemPath.toUtf8()));
         const auto folderPath = absolutePath.mid(params().filesystemPath.length());

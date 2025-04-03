@@ -27,6 +27,7 @@
 #include "wizard/welcomepage.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
+#include "wizard/termsofservicewizardpage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
@@ -53,6 +54,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _flow2CredsPage(new Flow2AuthCredsPage)
+    , _termsOfServicePage(new TermsOfServiceWizardPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
 #ifdef WITH_WEBENGINE
     , _webViewPage(new WebViewPage(this))
@@ -71,6 +73,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
+    setPage(WizardCommon::Page_TermsOfService, _termsOfServicePage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
     if (!useFlow2()) {
@@ -116,6 +119,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(this, &OwncloudWizard::styleChanged, _setupPage, &OwncloudSetupPage::slotStyleChanged);
     connect(this, &OwncloudWizard::styleChanged, _advancedSetupPage, &OwncloudAdvancedSetupPage::slotStyleChanged);
     connect(this, &OwncloudWizard::styleChanged, _flow2CredsPage, &Flow2AuthCredsPage::slotStyleChanged);
+    connect(this, &OwncloudWizard::styleChanged, _termsOfServicePage, &TermsOfServiceWizardPage::styleChanged);
 
     customizeStyle();
 
@@ -216,6 +220,11 @@ bool OwncloudWizard::isConfirmBigFolderChecked() const
     return _advancedSetupPage->isConfirmBigFolderChecked();
 }
 
+bool OwncloudWizard::needsToAcceptTermsOfService() const
+{
+    return _needsToAcceptTermsOfService;
+}
+
 QString OwncloudWizard::ocUrl() const
 {
     QString url = field("OCUrl").toString().simplified();
@@ -239,9 +248,12 @@ void OwncloudWizard::setRemoteFolder(const QString &remoteFolder)
 
 void OwncloudWizard::successfulStep()
 {
-    const int id(currentId());
+    const WizardCommon::Pages id{static_cast<WizardCommon::Pages>(currentId())};
 
     switch (id) {
+    case WizardCommon::Page_Welcome:
+        break;
+
     case WizardCommon::Page_HttpCreds:
         _httpCredsPage->setConnected();
         break;
@@ -257,6 +269,10 @@ void OwncloudWizard::successfulStep()
         }
         break;
 #endif // WITH_WEBENGINE
+
+    case WizardCommon::Page_TermsOfService:
+        // nothing to do here
+        break;
 
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
@@ -284,6 +300,9 @@ void OwncloudWizard::slotCustomButtonClicked(const int which)
     } else if (which == WizardButton::CustomButton2) {
         // Because QWizard doesn't have a way of directly going to a specific page (!!!)
         restart();
+
+        // in case the wizard had been cancelled at a page where the need for signing the TOS got checked:
+        _needsToAcceptTermsOfService = false;
     }
 }
 
@@ -328,7 +347,8 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 #ifdef WITH_WEBENGINE
         id == WizardCommon::Page_WebView ||
 #endif // WITH_WEBENGINE
-        id == WizardCommon::Page_Flow2AuthCreds) {
+        id == WizardCommon::Page_Flow2AuthCreds ||
+        id == WizardCommon::Page_TermsOfService) {
         setButtonLayout({ QWizard::BackButton, QWizard::Stretch });
     } else if (id == WizardCommon::Page_AdvancedSetup) {
         setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton });
@@ -351,7 +371,15 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 
 void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
 {
-    switch (currentId()) {
+    switch (static_cast<WizardCommon::Pages>(currentId())) {
+    case WizardCommon::Page_Welcome:
+    case WizardCommon::Page_Flow2AuthCreds:
+#ifdef WITH_WEBENGINE
+    case WizardCommon::Page_WebView:
+#endif // WITH_WEBENGINE
+    case WizardCommon::Page_TermsOfService:
+        break;
+
     case WizardCommon::Page_ServerSetup:
         _setupPage->setErrorString(msg, retryHTTPonly);
         break;
@@ -445,6 +473,11 @@ void OwncloudWizard::bringToTop()
 
 void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
 {
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    callback(true);
+    return;
+#endif
+
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
     QPushButton *acceptButton = nullptr;

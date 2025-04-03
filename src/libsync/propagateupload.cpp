@@ -249,6 +249,8 @@ void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QS
 {
     qCDebug(lcPropagateUpload) << "Starting to upload encrypted file" << path << filename << size;
     _uploadingEncrypted = true;
+    _item->_e2eEncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus::EncryptedMigratedV2_0;
+    Q_ASSERT(_item->isEncrypted());
     _fileToUpload._path = path;
     _fileToUpload._file = filename;
     _fileToUpload._size = size;
@@ -297,8 +299,9 @@ void PropagateUploadFileCommon::startUploadFile() {
 
     qDebug() << "Deleting the current";
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(_fileToUpload._file),
-        this);
+                             propagator()->fullRemotePath(_fileToUpload._file),
+                             {},
+                             this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
@@ -449,6 +452,8 @@ void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, i
 void PropagateUploadFileCommon::slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString)
 {
     if (_uploadingEncrypted) {
+        Q_ASSERT(_item->isEncrypted());
+
         _uploadStatus = { status, errorString };
         connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
@@ -838,6 +843,8 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->commit("upload file start");
 
     if (_uploadingEncrypted) {
+        Q_ASSERT(_item->isEncrypted());
+
         _uploadStatus = { SyncFileItem::Success, QString() };
         connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadFileCommon::slotFolderUnlocked);
         _uploadEncryptedHelper->unlockFolder();
@@ -865,7 +872,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     };
 
     // Abort all running jobs, except for explicitly excluded ones
-    foreach (AbstractNetworkJob *job, _jobs) {
+    for (const auto job : std::as_const(_jobs)) {
         auto reply = job->reply();
         if (!reply || !reply->isRunning())
             continue;

@@ -171,6 +171,8 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             qCWarning(lcKeychainChunk) << "Error while writing" << writeJob->key() << "chunk" << writeJob->errorString();
             _chunkBuffer.clear();
         }
+
+        writeJob->deleteLater();
     }
 
     // write a chunk if there is any in the buffer
@@ -191,9 +193,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
         // keep the limit
         if (_chunkCount > KeychainChunk::MaxChunks) {
-            qCWarning(lcKeychainChunk) << "Maximum chunk count exceeded while writing" << writeJob->key() << "chunk" << QString::number(index) << "cutting off after" << QString::number(KeychainChunk::MaxChunks) << "chunks";
-
-            writeJob->deleteLater();
+            qCWarning(lcKeychainChunk) << "Maximum chunk count exceeded while writing chunk" << QString::number(index) << "cutting off after" << QString::number(KeychainChunk::MaxChunks) << "chunks";
 
             _chunkBuffer.clear();
 
@@ -231,8 +231,6 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             deleteLater();
         }
     }
-
-    writeJob->deleteLater();
 }
 
 /*

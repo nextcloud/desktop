@@ -215,7 +215,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_direction == SyncFileItem::Down
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -226,7 +226,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     // Delete from journal and from filesystem.
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
-    foreach (const SyncJournalDb::DownloadInfo &deleted_info, deleted_infos) {
+    for (const SyncJournalDb::DownloadInfo &deleted_info : deleted_infos) {
         const QString tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
         qCInfo(lcEngine) << "Deleting stale temporary file: " << tmppath;
         FileSystem::remove(tmppath);
@@ -237,7 +237,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it: syncItems) {
         if (it->_direction == SyncFileItem::Up
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -250,11 +250,11 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
-        foreach (uint transferId, ids) {
+        for (uint transferId : std::as_const(ids)) {
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
-            (new DeleteJob(account(), url, this))->start();
+            (new DeleteJob(account(), url, {}, this))->start();
         }
     }
 }
@@ -263,7 +263,7 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_hasBlacklistEntry)
             blacklist_file_paths.insert(it->_file);
     }
@@ -670,6 +670,28 @@ void SyncEngine::startSync()
         finalize(false);
         return;
     }
+
+    const auto accountCaps = _account->capabilities();
+    const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
+    const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
+    const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
+    const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
+
+    _discoveryPhase->_forbiddenFilenames = forbiddenFilenames;
+    _discoveryPhase->_forbiddenBasenames = forbiddenBasenames;
+    _discoveryPhase->_forbiddenExtensions = forbiddenExtensions;
+    _discoveryPhase->_forbiddenChars = forbiddenChars;
+    if (!forbiddenFilenames.isEmpty() &&
+        !forbiddenBasenames.isEmpty() &&
+        !forbiddenExtensions.isEmpty() &&
+        !forbiddenChars.isEmpty()) {
+        _shouldEnforceWindowsFileNameCompatibility = true;
+        _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+    }
+#if defined Q_OS_WINDOWS
+    _shouldEnforceWindowsFileNameCompatibility = true;
+    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
+#endif
 
     // Check for invalid character in old server version
     QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
@@ -1206,6 +1228,11 @@ void SyncEngine::slotClearTouchedFiles()
 void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
 {
     _leadingAndTrailingSpacesFilesAllowed.append(filePath);
+}
+
+void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
+{
+    _shouldEnforceWindowsFileNameCompatibility = value;
 }
 
 bool SyncEngine::wasFileTouched(const QString &fn) const

@@ -23,7 +23,7 @@ public:
 
 public slots:
     void slotRemoveAllItems();
-    void slotWriteIgnoreFile(const QString & file);
+    void slotWriteIgnoreFile(const QString &file);
 
 private slots:
     void slotItemSelectionChanged();

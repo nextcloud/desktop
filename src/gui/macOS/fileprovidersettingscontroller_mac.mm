@@ -167,6 +167,7 @@ public:
         qCInfo(lcFileProviderSettingsController) << "Signalling file provider domain" << userIdAtHost;
         NSFileProviderDomain * const domain = FileProviderUtils::domainForIdentifier(userIdAtHost);
         NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
+        [domain release];
         [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier
                                           completionHandler:^(NSError *const error) {
             if (error != nil) {
@@ -186,6 +187,7 @@ public:
     }
 
 public slots:
+    // NOTE: This method will release the provided args so make sure to retain them beforehand
     void enumerateMaterialisedFilesForDomainManager(NSFileProviderManager * const managerForDomain,
                                                     NSFileProviderDomain * const domain)
     {
@@ -194,7 +196,6 @@ public slots:
         [enumerator retain];
 
         FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
-        [storageUseObserver retain];
         storageUseObserver.enumerationFinishedHandler = ^(NSError *const error) {
             qCInfo(lcFileProviderSettingsController) << "Enumeration finished for" << domain.identifier;
             if (error != nil) {
@@ -229,6 +230,9 @@ public slots:
 
             [storageUseObserver release];
             [enumerator release];
+
+            [managerForDomain release];
+            [domain release];
         };
         [enumerator enumerateItemsForObserver:storageUseObserver startingAtPage:NSFileProviderInitialPageSortedByName];
     }
@@ -284,7 +288,8 @@ private:
                                                                 << ", returning early.";
                     return;
                 }
-
+                [managerForDomain retain];
+                [domain retain];
                 enumerateMaterialisedFilesForDomainManager(managerForDomain, domain);
             }
         }];

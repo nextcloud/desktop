@@ -87,6 +87,10 @@ int main(int argc, char **argv)
     if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
         qmlStyle = QStringLiteral("Universal");
         widgetsStyle = QStringLiteral("Fusion");
+        if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_UNIVERSAL_THEME")) {
+            // initialise theme with the light/dark mode setting from the OS
+            qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "System");
+        }
     } else {
         qmlStyle = QStringLiteral("FluentWinUI3");
         widgetsStyle = QStringLiteral("windows11");

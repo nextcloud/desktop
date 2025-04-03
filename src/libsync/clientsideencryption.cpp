@@ -1144,7 +1144,7 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                 /* perform pkcs #11 login */
                 bool ok;
                 newPin = QInputDialog::getText(settingsDialog,
-                                               tr("PIN needed to login to token"),
+                                               tr("Input PIN code", "Please keep it short and shorter than \"Enter Certificate USB Token PIN:\""),
                                                tr("Enter Certificate USB Token PIN:"),
                                                QLineEdit::Password,
                                                {},

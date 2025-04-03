@@ -113,7 +113,8 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
 void FileProviderSocketController::sendMessage(const QString &message) const
 {
     if (!_socket) {
-        qCWarning(lcFileProviderSocketController) << "Not sending message on dead file provider socket:" << message;
+        const auto toLog = message.contains("ACCOUNT_DETAILS") ? "ACCOUNT_DETAILS:****" : message;
+        qCWarning(lcFileProviderSocketController) << "Not sending message on dead file provider socket:" << toLog;
         return;
     }
 
@@ -161,7 +162,7 @@ void FileProviderSocketController::requestFileProviderDomainInfo() const
     sendMessage(requestMessage);
 }
 
-void FileProviderSocketController::slotAccountStateChanged(const AccountState::State state)
+void FileProviderSocketController::slotAccountStateChanged(const AccountState::State state) const
 {
     switch(state) {
     case AccountState::Disconnected:
@@ -205,7 +206,10 @@ void FileProviderSocketController::sendNotAuthenticated() const
 
 void FileProviderSocketController::sendAccountDetails() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to send account details, stopping";
+        return;
+    }
     const auto account = _accountState->account();
     Q_ASSERT(account);
 
@@ -240,7 +244,7 @@ void FileProviderSocketController::sendAccountDetails() const
     sendMessage(message);
 }
 
-void FileProviderSocketController::reportSyncState(const QString &receivedState)
+void FileProviderSocketController::reportSyncState(const QString &receivedState) const
 {
     if (!accountState()) {
         qCWarning(lcFileProviderSocketController) << "No account state available to report sync state";

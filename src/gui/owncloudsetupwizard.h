@@ -30,6 +30,7 @@
 namespace OCC {
 
 class AccountState;
+class TermsOfServiceChecker;
 
 class OwncloudWizard;
 
@@ -44,6 +45,7 @@ public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
+
 signals:
     // overall dialog close signal.
     void ownCloudWizardDone(int);
@@ -80,7 +82,7 @@ private:
     AccountState *applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply *reply);
 
-    OwncloudWizard *_ocWizard;
+    OwncloudWizard *_ocWizard = nullptr;
     QString _initLocalFolder;
     QString _remoteFolder;
 };

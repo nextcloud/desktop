@@ -20,13 +20,15 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDeleteJob, "nextcloud.sync.networkjob.delete", QtInfoMsg)
 
-DeleteJob::DeleteJob(AccountPtr account, const QString &path, QObject *parent)
+DeleteJob::DeleteJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &headers, QObject *parent)
     : SimpleFileJob(account, path, parent)
+    , _headers(headers)
 {
 }
 
-DeleteJob::DeleteJob(AccountPtr account, const QUrl &url, QObject *parent)
+DeleteJob::DeleteJob(AccountPtr account, const QUrl &url, const QMap<QByteArray, QByteArray> &headers, QObject *parent)
     : SimpleFileJob(account, QString(), parent)
+    , _headers(headers)
     , _url(url)
 {
 }
@@ -36,6 +38,14 @@ void DeleteJob::start()
     QNetworkRequest req;
     if (!_folderToken.isEmpty()) {
         req.setRawHeader("e2e-token", _folderToken);
+    }
+
+    for (auto oneHeaderIt = _headers.begin(); oneHeaderIt != _headers.end(); ++oneHeaderIt) {
+        req.setRawHeader(oneHeaderIt.key(), oneHeaderIt.value());
+    }
+
+    if (_skipTrashbin) {
+        req.setRawHeader("X-NC-Skip-Trashbin", "true");
     }
 
     if (_url.isValid()) {
@@ -53,6 +63,16 @@ QByteArray DeleteJob::folderToken() const
 void DeleteJob::setFolderToken(const QByteArray &folderToken)
 {
     _folderToken = folderToken;
+}
+
+bool DeleteJob::skipTrashbin() const
+{
+    return _skipTrashbin;
+}
+
+void DeleteJob::setSkipTrashbin(bool skipTrashbin)
+{
+    _skipTrashbin = skipTrashbin;
 }
 
 } // namespace OCC

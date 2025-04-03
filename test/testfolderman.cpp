@@ -37,7 +37,7 @@ class TestFolderMan: public QObject
 {
     Q_OBJECT
 
-    FolderMan _fm;
+    std::unique_ptr<FolderMan> _fm;
 
 signals:
     void incomingShareDeleted();
@@ -53,6 +53,9 @@ private slots:
 
     void testDeleteEncryptedFiles()
     {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 4);
 
@@ -154,6 +157,9 @@ private slots:
 
     void testLeaveShare()
     {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 
@@ -182,7 +188,7 @@ private slots:
         secondShare->permissions.setPermission(OCC::RemotePermissions::IsShared);
 
         FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
+        QCOMPARE(folderman, _fm.get());
         OCC::AccountState *accountState = OCC::AccountManager::instance()->accounts().first().data();
         const auto folder = folderman->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
         QVERIFY(folder);
@@ -252,6 +258,9 @@ private slots:
 
     void testCheckPathValidityForNewFolder()
     {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
 #ifdef Q_OS_WIN
         Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
@@ -278,7 +287,7 @@ private slots:
 
         AccountStatePtr newAccountState(new AccountState(account));
         FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
+        QCOMPARE(folderman, _fm.get());
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud1")));
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2")));
 
@@ -382,6 +391,9 @@ private slots:
 
     void testFindGoodPathForNewSyncFolder()
     {
+        _fm.reset({});
+        _fm.reset(new FolderMan{});
+
         // SETUP
 
         QTemporaryDir dir;
@@ -405,7 +417,7 @@ private slots:
 
         AccountStatePtr newAccountState(new AccountState(account));
         FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
+        QCOMPARE(folderman, _fm.get());
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud/")));
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2/")));
 

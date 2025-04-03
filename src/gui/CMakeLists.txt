@@ -43,6 +43,7 @@ set(client_UI_SRCS
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudsetupnocredspage.ui
+    wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
     wizard/welcomepage.ui
 )
@@ -147,8 +148,6 @@ set(client_SRCS
     systray.h
     systray.cpp
     EncryptionTokenSelectionWindow.qml
-    thumbnailjob.h
-    thumbnailjob.cpp
     userinfo.h
     userinfo.cpp
     vfsdownloaderrordialog.h
@@ -240,6 +239,10 @@ set(client_SRCS
     wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.h
     wizard/owncloudsetuppage.cpp
+    wizard/termsofservicecheckwidget.h
+    wizard/termsofservicecheckwidget.cpp
+    wizard/termsofservicewizardpage.h
+    wizard/termsofservicewizardpage.cpp
     wizard/owncloudwizardcommon.h
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.h

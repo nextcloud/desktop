@@ -14,11 +14,17 @@
 
 #include "syncstatussummary.h"
 #include "accountfwd.h"
+#include "accountstate.h"
 #include "folderman.h"
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
 #include "syncresult.h"
 #include "tray/usermodel.h"
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#include "gui/macOS/fileprovidersocketserver.h"
+#endif
 
 #include <theme.h>
 
@@ -50,6 +56,9 @@ SyncStatusSummary::SyncStatusSummary(QObject *parent)
     const auto folderMan = FolderMan::instance();
     connect(folderMan, &FolderMan::folderListChanged, this, &SyncStatusSummary::onFolderListChanged);
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &SyncStatusSummary::onFolderSyncStateChanged);
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &SyncStatusSummary::onFileProviderDomainSyncStateChanged);
+#endif
 }
 
 bool SyncStatusSummary::reloadNeeded(AccountState *accountState) const
@@ -104,7 +113,7 @@ void SyncStatusSummary::markFolderAsSuccess(const Folder *folder)
 
 bool SyncStatusSummary::folderErrors() const
 {
-    return _foldersWithErrors.size() != 0;
+    return !_foldersWithErrors.empty();
 }
 
 bool SyncStatusSummary::folderError(const Folder *folder) const
@@ -124,6 +133,9 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setTotalFiles(0);
         setSyncStatusString(tr("Offline"));
         setSyncStatusDetailString("");
+        if (_accountState->state() == AccountState::NeedToSignTermsOfService) {
+            setSyncStatusDetailString(tr("You need to accept the terms of service"));
+        }
         setSyncIcon(Theme::instance()->folderOffline());
         return;
     }
@@ -133,14 +145,48 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     switch (state) {
     case SyncResult::Success:
     case SyncResult::SyncPrepare:
+        markFolderAsSuccess(folder);
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    case SyncResult::Problem:
+    case SyncResult::Undefined:
+        markFolderAsError(folder);
+    case SyncResult::SyncRunning:
+    case SyncResult::NotYetStarted:
+    case SyncResult::Paused:
+    case SyncResult::SyncAbortRequested:
+        break;
+    }
+
+    setSyncState(state);
+}
+
+void SyncStatusSummary::setSyncState(const SyncResult::Status state)
+{
+    if (_accountState && !_accountState->isConnected()) {
+        setSyncing(false);
+        setTotalFiles(0);
+        setSyncStatusString(tr("Offline"));
+        setSyncStatusDetailString("");
+        setSyncIcon(Theme::instance()->folderOffline());
+        return;
+    }
+
+    switch (state) {
+    case SyncResult::Success:
+    case SyncResult::SyncPrepare:
         // Success should only be shown if all folders were fine
-        if (!folderErrors() || folderError(folder)) {
+        if (!folderErrors()
+#ifdef BUILD_FILE_PROVIDER_MODULE
+            && _fileProviderDomainsWithErrors.empty()
+#endif
+        ) {
             setSyncing(false);
             setTotalFiles(0);
             setSyncStatusString(tr("All synced!"));
             setSyncStatusDetailString("");
             setSyncIcon(Theme::instance()->syncStatusOk());
-            markFolderAsSuccess(folder);
         }
         break;
     case SyncResult::Error:
@@ -150,7 +196,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setSyncStatusString(tr("Some files couldn't be synced!"));
         setSyncStatusDetailString(tr("See below for errors"));
         setSyncIcon(Theme::instance()->syncStatusError());
-        markFolderAsError(folder);
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
@@ -178,7 +223,6 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         setSyncStatusString(tr("Some files could not be synced!"));
         setSyncStatusDetailString(tr("See below for warnings"));
         setSyncIcon(Theme::instance()->syncStatusWarning());
-        markFolderAsError(folder);
         break;
     }
 }
@@ -195,6 +239,35 @@ void SyncStatusSummary::onFolderSyncStateChanged(const Folder *folder)
 
     setSyncStateForFolder(folder);
 }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void SyncStatusSummary::onFileProviderDomainSyncStateChanged(const AccountPtr &account, SyncResult::Status state)
+{
+    if (!_accountState || !_accountState->isConnected() || account != _accountState->account()) {
+        return;
+    }
+
+    switch (state) {
+    case SyncResult::Success:
+    case SyncResult::SyncPrepare:
+        // Success should only be shown if all folders were fine
+        _fileProviderDomainsWithErrors.erase(account->userIdAtHostWithPort());
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    case SyncResult::Problem:
+    case SyncResult::Undefined:
+        _fileProviderDomainsWithErrors.insert(account->userIdAtHostWithPort());
+    case SyncResult::SyncRunning:
+    case SyncResult::NotYetStarted:
+    case SyncResult::Paused:
+    case SyncResult::SyncAbortRequested:
+        break;
+    }
+        
+    setSyncState(state);
+}
+#endif
 
 constexpr double calculateOverallPercent(
     qint64 totalFileCount, qint64 completedFile, qint64 totalSize, qint64 completedSize)
@@ -367,6 +440,15 @@ void SyncStatusSummary::initSyncState()
         onFolderSyncStateChanged(folder);
         syncStateFallbackNeeded = false;
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto accounts = AccountManager::instance()->accounts();
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        onFileProviderDomainSyncStateChanged(account, Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account));
+        syncStateFallbackNeeded = false;
+    }
+#endif
 
     if (syncStateFallbackNeeded) {
         setSyncStateToConnectedState();

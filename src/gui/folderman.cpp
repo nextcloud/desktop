@@ -660,7 +660,7 @@ Folder *FolderMan::folder(const QString &alias)
 void FolderMan::scheduleAllFolders()
 {
     const auto folderMapValues = _folderMap.values();
-    for (Folder *f : folderMapValues) {
+    for (const auto f : folderMapValues) {
         if (f && f->canSync()) {
             scheduleFolder(f);
         }
@@ -719,21 +719,49 @@ void FolderMan::scheduleFolder(Folder *f)
 
     qCInfo(lcFolderMan) << "Schedule folder " << alias << " to sync!";
 
+    auto syncAgainDelay = std::chrono::seconds(0);
+    if (f->consecutiveFailingSyncs() > 2 && f->consecutiveFailingSyncs() <= 4) {
+        syncAgainDelay = std::chrono::seconds(10);
+    } else if (f->consecutiveFailingSyncs() > 4 && f->consecutiveFailingSyncs() <= 6) {
+        syncAgainDelay = std::chrono::seconds(30);
+    } else if (f->consecutiveFailingSyncs() > 6) {
+        syncAgainDelay = std::chrono::seconds(60);
+    }
+
     if (!_scheduledFolders.contains(f)) {
         if (!f->canSync()) {
             qCInfo(lcFolderMan) << "Folder is not ready to sync, not scheduled!";
             _socketApi->slotUpdateFolderView(f);
             return;
         }
-        f->prepareToSync();
-        emit folderSyncStateChange(f);
-        _scheduledFolders.enqueue(f);
-        emit scheduleQueueChanged();
+
+        if (syncAgainDelay == std::chrono::seconds(0)) {
+            f->prepareToSync();
+            emit folderSyncStateChange(f);
+            _scheduledFolders.enqueue(f);
+            emit scheduleQueueChanged();
+            startScheduledSyncSoon();
+        } else {
+            qCWarning(lcFolderMan()) << "going to delay the next sync run due to too many synchronization errors" << syncAgainDelay;
+            QTimer::singleShot(syncAgainDelay, this, [this, f] () {
+                f->prepareToSync();
+                emit folderSyncStateChange(f);
+                _scheduledFolders.enqueue(f);
+                emit scheduleQueueChanged();
+                startScheduledSyncSoon();
+            });
+        }
     } else {
         qCInfo(lcFolderMan) << "Sync for folder " << alias << " already scheduled, do not enqueue!";
+        if (syncAgainDelay == std::chrono::seconds(0)) {
+            startScheduledSyncSoon();
+        } else {
+            qCWarning(lcFolderMan()) << "going to delay the next sync run due to too many synchronization errors" << syncAgainDelay;
+            QTimer::singleShot(syncAgainDelay, this, [this] () {
+                startScheduledSyncSoon();
+            });
+        }
     }
-
-    startScheduledSyncSoon();
 }
 
 void FolderMan::scheduleFolderForImmediateSync(Folder *f)
@@ -780,7 +808,7 @@ void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
         Folder *folder = nullptr;
-        for (Folder *f : std::as_const(_folderMap)) {
+        for (const auto f : std::as_const(_folderMap)) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a separate queue.
                 _currentEtagJob = f->etagJob();
@@ -814,7 +842,7 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
         const auto folderMapValues = _folderMap.values();
-        for (Folder *f : folderMapValues) {
+        for (const auto f : folderMapValues) {
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
@@ -825,7 +853,8 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
                                                            "terminating or descheduling sync folders";
 
-        foreach (Folder *f, _folderMap.values()) {
+        const auto folderValues = _folderMap.values();
+        for (const auto f : folderValues) {
             if (f
                 && f->isSyncRunning()
                 && f->accountState() == accountState) {
@@ -962,7 +991,8 @@ bool FolderMan::pushNotificationsFilesReady(Account *account)
 bool FolderMan::isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const
 {
     auto result = false;
-    if (ENFORCE_VIRTUAL_FILES_SYNC_FOLDER &&
+    if (!DISABLE_VIRTUAL_FILES_SYNC_FOLDER &&
+            ENFORCE_VIRTUAL_FILES_SYNC_FOLDER &&
             folderDefinition.virtualFilesMode != bestAvailableVfsMode() &&
             folderDefinition.virtualFilesMode == Vfs::Off &&
             OCC::Theme::instance()->showVirtualFilesOption()) {
@@ -1329,7 +1359,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
         serverPath.prepend('/');
 
     const auto mapValues = map().values();
-    for (Folder *folder : mapValues) {
+    for (const auto folder : mapValues) {
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
@@ -1677,7 +1707,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         auto runSeen = false;
         auto various = false;
 
-        for (const Folder *folder : std::as_const(folders)) {
+        for (const auto folder : std::as_const(folders)) {
             // We've already seen an error, worst case met.
             // No need to check the remaining folders.
             if (errorsSeen) {
@@ -1980,7 +2010,7 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
 {
     // Note that the setting will revert to 'true' if all folders
     // are deleted...
-    for (Folder *folder : std::as_const(_folderMap)) {
+    for (const auto folder : std::as_const(_folderMap)) {
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
     }

@@ -21,6 +21,7 @@
 #include <QVector>
 #include <QElapsedTimer>
 #include <QPointer>
+#include <QFileIconProvider>
 
 class QNetworkReply;
 namespace OCC {
@@ -160,6 +161,8 @@ private:
      * See slotShowPendingFetchProgress()
      */
     QMap<QPersistentModelIndex, QElapsedTimer> _fetchingItems;
+
+    QFileIconProvider _fileIconProvider;
 
 signals:
     void dirtyChanged();

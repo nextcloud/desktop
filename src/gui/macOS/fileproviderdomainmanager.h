@@ -41,11 +41,13 @@ public:
 signals:
     void domainSetupComplete();
 
+public slots:
+    void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+
 private slots:
     void setupFileProviderDomains();
     void updateFileProviderDomains();
 
-    void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);

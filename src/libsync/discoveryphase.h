@@ -315,6 +315,11 @@ class DiscoveryPhase : public QObject
 
     void enqueueDirectoryToDelete(const QString &path, ProcessDirectoryJob* const directoryJob);
 
+    /// contains files/folder names that are requested to be deleted permanently
+    QSet<QString> _permanentDeletionRequests;
+
+    void markPermanentDeletionRequests();
+
 public:
     // input
     QString _localDir; // absolute path to the local directory. ends with '/'
@@ -326,6 +331,7 @@ public:
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     QStringList _leadingAndTrailingSpacesFilesAllowed;
+    bool _shouldEnforceWindowsFileNameCompatibility = false;
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
@@ -341,6 +347,11 @@ public:
     QVector<QString> _filesUnscheduleSync;
 
     QStringList _listExclusiveFiles;
+
+    QStringList _forbiddenFilenames;
+    QStringList _forbiddenBasenames;
+    QStringList _forbiddenExtensions;
+    QStringList _forbiddenChars;
 
     bool _hasUploadErrorItems = false;
     bool _hasDownloadRemovedItems = false;

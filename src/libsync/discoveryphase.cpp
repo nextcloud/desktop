@@ -82,7 +82,7 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::functi
     connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
         return completionCallback(false);
     });
-    connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+    connect(propfindJob, &PropfindJob::result, this, [=, this](const QVariantMap &values) {
         const auto result = values.value(QLatin1String("size")).toLongLong();
         const auto limit = _syncOptions._newBigFolderSizeLimit;
         qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << result << "limit:" << limit;
@@ -225,6 +225,28 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
     }
 }
 
+void DiscoveryPhase::markPermanentDeletionRequests()
+{
+    // since we don't know in advance which files/directories need to be permanently deleted,
+    // we have to look through all of them at the end of the run
+    for (const auto &originalPath : _permanentDeletionRequests) {
+        const auto it = _deletedItem.find(originalPath);
+        if (it == _deletedItem.end()) {
+            qCWarning(lcDiscovery) << "didn't find an item for" << originalPath << "(yet)";
+            continue;
+        }
+
+        auto item = *it;
+        if (!(item->_instruction == CSYNC_INSTRUCTION_REMOVE || item->_direction == SyncFileItem::Up)) {
+            qCWarning(lcDiscovery) << "will not request permanent deletion for" << originalPath << "as the instruction is not CSYNC_INSTRUCTION_REMOVE, or the direction is not Up";
+            continue;
+        }
+
+        qCInfo(lcDiscovery) << "requested permanent server-side deletion for" << originalPath;
+        item->_wantsPermanentDeletion = true;
+    }
+}
+
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);
@@ -242,6 +264,7 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
             auto nextJob = _queuedDeletedDirectories.take(_queuedDeletedDirectories.firstKey());
             startJob(nextJob);
         } else {
+            markPermanentDeletionRequests();
             emit finished();
         }
     });
@@ -750,7 +773,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
             }
         };
 
-        std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=](const RemoteInfo &info) {
+        std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=, this](const RemoteInfo &info) {
             auto result = info;
             const auto encryptedFileInfo = findEncryptedFile(result.name);
             if (encryptedFileInfo) {

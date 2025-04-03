@@ -308,6 +308,7 @@ void ShareModel::updateData()
     _placeholderLinkShare.reset(new Share(_accountState->account(),
                                           placeholderLinkShareId,
                                           _accountState->account()->id(),
+                                          _accountState->account()->id(),
                                           _accountState->account()->davDisplayName(),
                                           _sharePath,
                                           Share::TypePlaceholderLink));
@@ -315,12 +316,14 @@ void ShareModel::updateData()
     _internalLinkShare.reset(new Share(_accountState->account(),
                                        internalLinkShareId,
                                        _accountState->account()->id(),
+                                       _accountState->account()->id(),
                                        _accountState->account()->davDisplayName(),
                                        _sharePath,
                                        Share::TypeInternalLink));
 
     _secureFileDropPlaceholderLinkShare.reset(new Share(_accountState->account(),
                                                         secureFileDropPlaceholderLinkShareId,
+                                                        _accountState->account()->id(),
                                                         _accountState->account()->id(),
                                                         _accountState->account()->davDisplayName(),
                                                         _sharePath,
@@ -497,7 +500,7 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     for (const auto &share : shares) {
         if (share.isNull() ||
             share->account().isNull() ||
-            share->getUidOwner() != share->account()->davUser()) {
+            share->getUidFileOwner() != share->account()->davUser()) {
             continue;
         }
 

@@ -21,7 +21,6 @@
 #include <account.h>
 #include <theme.h>
 
-#include <QFileIconProvider>
 #include <QVarLengthArray>
 #include <set>
 
@@ -194,7 +193,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             } else if (subfolderInfo._size > 0 && isAnyAncestorEncrypted(index)) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
-            return QFileIconProvider().icon(subfolderInfo._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
+            return _fileIconProvider.icon(subfolderInfo._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         }
         case Qt::ForegroundRole:
             if (subfolderInfo._isUndecided || (subfolderInfo._isNonDecryptable && subfolderInfo._checked)) {

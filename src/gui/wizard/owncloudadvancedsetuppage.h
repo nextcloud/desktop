@@ -23,6 +23,7 @@
 #include "elidedlabel.h"
 
 class QProgressIndicator;
+class QNetworkReply;
 
 namespace OCC {
 
@@ -63,9 +64,14 @@ private slots:
     void slotSelectiveSyncClicked();
     void slotVirtualFileSyncClicked();
     void slotQuotaRetrieved(const QVariantMap &result);
+    void slotQuotaRetrievedWithError(QNetworkReply *reply);
 
 private:
     void setRadioChecked(QRadioButton *radio);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void updateMacOsFileProviderRelatedViews();
+#endif
 
     void setupCustomization();
     void updateStatus();

@@ -56,12 +56,12 @@ ConflictDialog::ConflictDialog(QWidget *parent)
     _ui->conflictMessage->setTextFormat(Qt::PlainText);
 
     connect(_ui->localVersionRadio, &QCheckBox::toggled, this, &ConflictDialog::updateButtonStates);
-    connect(_ui->localVersionButton, &QToolButton::clicked, this, [=] {
+    connect(_ui->localVersionButton, &QToolButton::clicked, this, [=, this] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->localVersionFilename()));
     });
 
     connect(_ui->remoteVersionRadio, &QCheckBox::toggled, this, &ConflictDialog::updateButtonStates);
-    connect(_ui->remoteVersionButton, &QToolButton::clicked, this, [=] {
+    connect(_ui->remoteVersionButton, &QToolButton::clicked, this, [=, this] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->remoteVersionFilename()));
     });
 

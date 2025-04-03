@@ -181,9 +181,10 @@ void PropagateRemoteDeleteEncryptedRootFolder::deleteNestedRemoteItem(const QStr
 {
     qCInfo(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Deleting nested encrypted remote item" << filename;
 
-    auto deleteJob = new DeleteJob(_propagator->account(), _propagator->fullRemotePath(filename), this);
+    auto deleteJob = new DeleteJob(_propagator->account(), _propagator->fullRemotePath(filename), {}, this);
     deleteJob->setFolderToken(folderToken());
     deleteJob->setProperty(encryptedFileNamePropertyKey, filename);
+    deleteJob->setSkipTrashbin(true);
 
     connect(deleteJob, &DeleteJob::finishedSignal, this, &PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinished);
 

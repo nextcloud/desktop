@@ -346,7 +346,7 @@ void LsColJob::start()
         qCWarning(lcLsColJob) << "Propfind with no properties!";
     }
     QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
+    for (const auto &prop : properties) {
         if (prop.contains(':')) {
             int colIdx = prop.lastIndexOf(":");
             auto ns = prop.left(colIdx);

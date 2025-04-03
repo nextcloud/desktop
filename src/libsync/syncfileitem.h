@@ -347,6 +347,10 @@ public:
     bool isPermissionsInvalid = false;
 
     QString _discoveryResult;
+
+    /// if true, requests the file to be permanently deleted instead of moved to the trashbin
+    /// only relevant for when `_instruction` is set to `CSYNC_INSTRUCTION_REMOVE`
+    bool _wantsPermanentDeletion = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

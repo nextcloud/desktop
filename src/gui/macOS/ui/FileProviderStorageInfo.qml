@@ -56,7 +56,7 @@ GridLayout {
         Layout.row: 0
         Layout.column: 2
         Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
-        text: qsTr("Evict local copies...")
+        text: qsTr("Free up space …")
         onPressed: root.evictDialogRequested()
     }
 

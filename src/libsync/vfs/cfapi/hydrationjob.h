@@ -43,6 +43,8 @@ public:
 
     explicit HydrationJob(QObject *parent = nullptr);
 
+    ~HydrationJob() override;
+
     AccountPtr account() const;
     void setAccount(const AccountPtr &account);
 

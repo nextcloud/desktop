@@ -236,9 +236,7 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, e, entries, isHidden))
-            continue;
+        const auto isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->isInitialized();
@@ -247,7 +245,15 @@ void ProcessDirectoryJob::process()
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
         }
 
-        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup) {
+        const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
+
+        const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
+
+        if (willBeExcluded) {
+            continue;
+        }
+
+        if (isBlacklisted) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
             continue;
         }
@@ -264,7 +270,7 @@ void ProcessDirectoryJob::process()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, const bool isHidden, const bool isBlacklisted)
 {
     const auto isDirectory = entries.localEntry.isDirectory || entries.serverEntry.isDirectory;
 
@@ -272,8 +278,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
-    const auto osDoesNotSupportsSpaces = Utility::isWindows();
-    if (excluded == CSYNC_NOT_EXCLUDED && osDoesNotSupportsSpaces) {
+    if (excluded == CSYNC_NOT_EXCLUDED) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
         const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
         if (startsWithSpace && endsWithSpace) {
@@ -291,20 +296,30 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     const auto hasLeadingOrTrailingSpaces = excluded == CSYNC_FILE_EXCLUDE_LEADING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
-    const auto leadingAndTrailingSpacesFilesAllowed = _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
-    if (hasLeadingOrTrailingSpaces && ((!osDoesNotSupportsSpaces && wasSyncedAlready) || leadingAndTrailingSpacesFilesAllowed)) {
+
+    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
+#if defined Q_OS_WINDOWS
+    if (hasLeadingOrTrailingSpaces && leadingAndTrailingSpacesFilesAllowed) {
+#else
+    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
+#endif
         excluded = CSYNC_NOT_EXCLUDED;
     }
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
-    if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenameRx.pattern().isEmpty()) {
-        if (path.contains(_discoveryData->_invalidFilenameRx)) {
-            excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-            isInvalidPattern = true;
-        }
+    if (excluded == CSYNC_NOT_EXCLUDED
+        && !wasSyncedAlready
+        && !_discoveryData->_invalidFilenameRx.pattern().isEmpty()
+        && path.contains(_discoveryData->_invalidFilenameRx)) {
+
+        excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        isInvalidPattern = true;
     }
-    if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
+    if (excluded == CSYNC_NOT_EXCLUDED
+        && !entries.dbEntry.isValid()
+        && _discoveryData->_ignoreHiddenFiles && isHidden) {
+
         excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
     }
 
@@ -335,7 +350,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                     });
 
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
-        && (_discoveryData->_serverBlacklistedFiles.contains(localName)
+        && !wasSyncedAlready
+        &&(_discoveryData->_serverBlacklistedFiles.contains(localName)
             || hasForbiddenFilename
             || hasForbiddenBasename
             || hasForbiddenExtension
@@ -395,7 +411,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                 item->_errorString = tr("File names ending with a period are not supported on this file system.");
             } else {
                 char invalid = '\0';
-                foreach (char x, QByteArray("\\:?*\"<>|")) {
+                constexpr QByteArrayView invalidChars("\\:?*\"<>|");
+                for (const auto x : invalidChars) {
                     if (item->_file.contains(x)) {
                         invalid = x;
                         break;
@@ -415,14 +432,23 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
             item->_errorString = tr("Filename contains leading spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
             item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
@@ -462,6 +488,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             }
             item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
+            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+                item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
+            }
             break;
         }
     }
@@ -472,7 +501,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     _childIgnored = true;
-    emit _discoveryData->itemDiscovered(item);
+
+    if (isBlacklisted) {
+        emit _discoveryData->silentlyExcluded(path);
+    } else {
+        emit _discoveryData->itemDiscovered(item);
+    }
+
     return true;
 }
 
@@ -652,7 +687,7 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
-                                                    [=](bool result) {
+                                                    [=, this](bool result) {
                                                         --_pendingAsyncJobs;
                                                         if (!result) {
                                                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
@@ -709,7 +744,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
         item->_e2eCertificateFingerprint = serverEntry.e2eCertificateFingerprint;
     }
-    item->_encryptedFileName = [=] {
+    item->_encryptedFileName = [=, this] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
         }
@@ -1000,7 +1035,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
@@ -1410,6 +1445,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
     const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
+    if (isE2eeMove) {
+        qCInfo(lcDisco) << "requesting permanent deletion for" << originalPath;
+        _discoveryData->_permanentDeletionRequests.insert(originalPath);
+    }
+
     if (isE2eeMoveOnlineOnlyItemWithCfApi) {
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_direction = SyncFileItem::Down;
@@ -1521,7 +1561,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isVirtualFile() && isVfsWithSuffix())
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=, this](const HttpResult<QByteArray> &etag) mutable {
 
 
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
@@ -1761,6 +1801,7 @@ void ProcessDirectoryJob::processFileFinalize(
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
         if (removed) {
             job->setParent(_discoveryData);
+            _discoveryData->_deletedItem[path._original] = item;
             _discoveryData->enqueueDirectoryToDelete(path._original, job);
         } else {
             connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
@@ -2064,7 +2105,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     }
 
     int started = 0;
-    foreach (auto *rj, _runningJobs) {
+    for (const auto rj : std::as_const(_runningJobs)) {
         started += rj->processSubJobs(nbJobs - started);
         if (started >= nbJobs)
             return started;
@@ -2267,6 +2308,44 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     if (record._type == ItemTypeVirtualFile && *pin == PinState::AlwaysLocal) {
         record._type = ItemTypeVirtualFileDownload;
     }
+}
+
+bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+                                                             CSYNC_EXCLUDE_TYPE excludeReason)
+{
+    auto result = true;
+
+    const auto leadingAndTrailingSpacesFilesAllowed = !_discoveryData->_shouldEnforceWindowsFileNameCompatibility || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(absoluteFileName);
+    if (leadingAndTrailingSpacesFilesAllowed) {
+        return result;
+    }
+
+    const auto fileInfo = QFileInfo{absoluteFileName};
+    switch (excludeReason)
+    {
+    case CSYNC_NOT_EXCLUDED:
+    case CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT:
+    case CSYNC_FILE_EXCLUDE_AND_REMOVE:
+    case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
+    case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
+    case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
+    case CSYNC_FILE_EXCLUDE_HIDDEN:
+    case CSYNC_FILE_SILENTLY_EXCLUDED:
+    case CSYNC_FILE_EXCLUDE_STAT_FAILED:
+    case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
+    case CSYNC_FILE_EXCLUDE_LIST:
+    case CSYNC_FILE_EXCLUDE_CONFLICT:
+        break;
+    case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
+    case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
+    case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
+    {
+        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.fileName().trimmed()};
+        result = FileSystem::rename(absoluteFileName, renameTarget);
+        break;
+    }
+    }
+    return result;
 }
 
 }

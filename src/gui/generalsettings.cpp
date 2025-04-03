@@ -21,6 +21,7 @@
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
+#include "capabilities.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -50,6 +51,7 @@
 #include <QMessageBox>
 
 #include <KZip>
+#include <chrono>
 
 namespace {
 struct ZipEntry {
@@ -187,6 +189,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    updatePollIntervalVisibility();
+    
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
@@ -240,7 +244,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-
+    connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
+    
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
@@ -321,13 +326,23 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+    const auto interval = cfgFile.remotePollInterval(); 
+    _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
+    updatePollIntervalVisibility(); 
 }
 
 #if defined(BUILD_UPDATER)
 void GeneralSettings::loadUpdateChannelsList() {
     ConfigFile cfgFile;
+    if (cfgFile.serverHasValidSubscription()) {
+        _ui->updateChannel->hide();
+        _ui->updateChannelLabel->hide();
+        return;
+    }
+
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
-    if (_currentUpdateChannelList.isEmpty() || (_currentUpdateChannelList != validUpdateChannels && !cfgFile.serverHasValidSubscription())) {
+    if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
@@ -631,6 +646,34 @@ void GeneralSettings::customizeStyle()
 #else
     _ui->updatesContainer->setVisible(false);
 #endif
+}
+
+void GeneralSettings::slotRemotePollIntervalChanged(int seconds) 
+{
+    if (_currentlyLoading) {
+        return;
+    }
+
+    ConfigFile cfgFile;
+    std::chrono::milliseconds interval(seconds * 1000);
+    cfgFile.setRemotePollInterval(interval);
+}
+
+void GeneralSettings::updatePollIntervalVisibility() 
+{
+    const auto accounts = AccountManager::instance()->accounts();
+    const auto pushAvailable = std::any_of(accounts.cbegin(), accounts.cend(), [](const AccountStatePtr &accountState) -> bool {
+        if (!accountState) {
+            return false;
+        }
+        const auto accountPtr = accountState->account();
+        if (!accountPtr) {
+            return false;
+        }
+        return accountPtr->capabilities().availablePushNotifications().testFlag(PushNotificationType::Files);
+    });
+
+    _ui->horizontalLayoutWidget_remotePollInterval->setVisible(!pushAvailable);
 }
 
 } // namespace OCC

@@ -69,9 +69,14 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
         }
     }
 
-    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << remoteFilename;
+    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << remoteFilename << "wantsPermanentDeletion" << _item->_wantsPermanentDeletion;
 
-    _job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(remoteFilename), this);
+    auto headers = QMap<QByteArray, QByteArray>{};
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _item->_file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
+    }
+    _job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(remoteFilename), headers, this);
+    _job->setSkipTrashbin(_item->_wantsPermanentDeletion);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();

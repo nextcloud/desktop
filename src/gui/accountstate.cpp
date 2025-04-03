@@ -78,7 +78,7 @@ AccountState::AccountState(const AccountPtr &account)
                 _termsOfServiceChecker.start();
             });
 
-    connect(this, &AccountState::isConnectedChanged, [=]{
+    connect(this, &AccountState::isConnectedChanged, [=, this]{
         // Get the Apps available on the server if we're now connected.
         if (isConnected()) {
             fetchNavigationApps();
@@ -222,6 +222,11 @@ bool AccountState::isConnected() const
     return _state == Connected;
 }
 
+bool AccountState::needsToSignTermsOfService() const
+{
+    return _state == NeedToSignTermsOfService;
+}
+
 void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
 {
     _timeOfLastETagCheck = tp;
@@ -316,7 +321,7 @@ void AccountState::checkConnectivity()
     _connectionErrors.clear();
     connect(conValidator, &ConnectionValidator::connectionResult,
         this, &AccountState::slotConnectionValidatorResult);
-    if (isConnected()) {
+    if (isConnected() || needsToSignTermsOfService()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         conValidator->checkAuthentication();

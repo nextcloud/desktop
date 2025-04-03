@@ -18,7 +18,6 @@
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
-#include "thumbnailjob.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -74,7 +73,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         this, &User::slotCheckExpiredActivities);
 
     connect(_account.data(), &AccountState::stateChanged,
-            [=]() { if (isConnected()) {slotRefreshImmediately();} });
+            [=, this]() { if (isConnected()) {slotRefreshImmediately();} });
     connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
@@ -174,7 +173,7 @@ void User::showDesktopNotification(const Activity &activity)
 
 void User::showDesktopNotification(const ActivityList &activityList)
 {
-    const auto subject = tr("%1 notifications").arg(activityList.count());
+    const auto subject = tr("%n notification(s)", nullptr, activityList.count());
     const auto notificationId = -static_cast<int>(qHash(subject));
 
     if (!canShowNotification(notificationId)) {
@@ -342,7 +341,7 @@ void User::slotReceivedPushActivity(Account *account)
 void User::slotCheckExpiredActivities()
 {
     const auto errorsList = _activityModel->errorsList();
-    for (const Activity &activity : errorsList) {
+    for (const auto &activity : errorsList) {
         if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
@@ -589,7 +588,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (const auto &activity : _activityModel->errorsList()) {
             if (activity._expireAtMsecs != -1) {
                 // we process expired activities in a different slot
                 continue;
@@ -638,7 +637,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         // We keep track very well of pending conflicts.
         // Inform other components about them.
         QStringList conflicts;
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (const auto &activity : _activityModel->errorsList()) {
             if (activity._folder == folder
                 && activity._syncFileItemStatus == SyncFileItem::Conflict) {
                 conflicts.append(activity._file);
@@ -1130,6 +1129,11 @@ bool User::isConnected() const
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
 }
 
+bool User::needsToSignTermsOfService() const
+{
+    return _account->connectionStatus() == AccountState::ConnectionStatus::NeedToSignTermsOfService;
+}
+
 
 bool User::isDesktopNotificationsAllowed() const
 {
@@ -1345,8 +1349,9 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
 
         connect(u, &User::statusChanged, this, [this, row] {
-            emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusIconRole, 
-			    				    UserModel::StatusEmojiRole,     
+            emit dataChanged(index(row, 0), index(row, 0), {UserModel::StatusRole,
+                                                            UserModel::StatusIconRole,
+                                                            UserModel::StatusEmojiRole,
                                                             UserModel::StatusMessageRole});
         });
         
@@ -1538,6 +1543,8 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return _users[index.row()]->server();
     } else if (role == ServerHasUserStatusRole) {
         return _users[index.row()]->serverHasUserStatus();
+    } else if (role == StatusRole) {
+        return QVariant::fromValue(_users[index.row()]->status());
     } else if (role == StatusIconRole) {
         return _users[index.row()]->statusIcon();
     } else if (role == StatusEmojiRole) {
@@ -1564,6 +1571,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
     roles[ServerHasUserStatusRole] = "serverHasUserStatus";
+    roles[StatusRole] = "status";
     roles[StatusIconRole] = "statusIcon";
     roles[StatusEmojiRole] = "statusEmoji";
     roles[StatusMessageRole] = "statusMessage";

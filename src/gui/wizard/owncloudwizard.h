@@ -33,6 +33,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 class WelcomePage;
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
+class TermsOfServiceWizardPage;
 class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
@@ -68,6 +69,7 @@ public:
     [[nodiscard]] bool useFlow2() const;
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] bool needsToAcceptTermsOfService() const;
 
     void displayError(const QString &, bool retryHTTPonly);
     [[nodiscard]] AbstractCredentials *getCredentials() const;
@@ -123,20 +125,23 @@ private:
     [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
 
     AccountPtr _account;
-    WelcomePage *_welcomePage;
-    OwncloudSetupPage *_setupPage;
-    OwncloudHttpCredsPage *_httpCredsPage;
-    Flow2AuthCredsPage *_flow2CredsPage;
-    OwncloudAdvancedSetupPage *_advancedSetupPage;
+    WelcomePage *_welcomePage = nullptr;
+    OwncloudSetupPage *_setupPage = nullptr;
+    OwncloudHttpCredsPage *_httpCredsPage = nullptr;
+    Flow2AuthCredsPage *_flow2CredsPage = nullptr;
+    TermsOfServiceWizardPage *_termsOfServicePage = nullptr;
+    OwncloudAdvancedSetupPage *_advancedSetupPage = nullptr;
     OwncloudWizardResultPage *_resultPage = nullptr;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
-    WebViewPage *_webViewPage = nullptr;
+    WebViewPage*_webViewPage = nullptr;
 
     QStringList _setupLog;
 
     bool _registration = false;
 
     bool _useFlow2 = ConfigFile().forceLoginV2();
+
+    bool _needsToAcceptTermsOfService = false;
 
     friend class OwncloudSetupWizard;
 };

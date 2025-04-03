@@ -282,6 +282,52 @@ struct Codesign: ParsableCommand {
     }
 }
 
+struct CreateDMG: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Creae a DMG for the client.")
+
+    @Argument(help: "Path to the desktop client app bundle.")
+    var appBundlePath: String
+
+    @Option(name: [.short, .long], help: "Path for the final product to be put.")
+    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
+
+    @Option(name: [.short, .long], help: "Path for build files to be written.")
+    var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
+
+    @Option(name: [.long], help: "The application's branded name.")
+    var appName = "Nextcloud"
+
+    @Option(name: [.long], help: "Apple ID, used for notarisation.")
+    var appleId: String?
+
+    @Option(name: [.long], help: "Apple ID password, used for notarisation.")
+    var applePassword: String?
+
+    @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
+    var appleTeamId: String?
+
+    @Option(name: [.long], help: "Apple package signing ID.")
+    var packageSigningId: String?
+
+    @Option(name: [.long], help: "Sparkle package signing key.")
+    var sparklePackageSignKey: String?
+
+    mutating func run() throws {
+        try installIfMissing("create-dmg", "brew install create-dmg")
+        try createDmgForAppBundle(
+            appBundlePath: appBundlePath,
+            productPath: productPath,
+            buildPath: buildPath,
+            appName: appName,
+            packageSigningId: packageSigningId,
+            appleId: appleId,
+            applePassword: applePassword,
+            appleTeamId: appleTeamId,
+            sparklePackageSignKey: sparklePackageSignKey
+        )
+    }
+}
+
 struct Package: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Packaging script for the client.")
 
@@ -334,7 +380,7 @@ struct Package: ParsableCommand {
 struct MacCrafter: ParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.",
-        subcommands: [Build.self, Codesign.self, Package.self],
+        subcommands: [Build.self, Codesign.self, Package.self, CreateDMG.self],
         defaultSubcommand: Build.self
     )
 }

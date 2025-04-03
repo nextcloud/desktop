@@ -25,6 +25,7 @@ import com.nextcloud.desktopclient 1.0
 GridLayout {
     id: root
 
+    signal domainSignalRequested
     required property var syncStatus
 
     rows: syncStatus.syncing ? 2 : 1
@@ -63,5 +64,17 @@ GridLayout {
         Layout.fillWidth: true
         value: root.syncStatus.fractionCompleted
         visible: root.syncStatus.syncing
+    }
+
+    Button {
+        id: requestSyncButton
+        text: qsTr("Request sync")
+        visible: !root.syncStatus.syncing
+        hoverEnabled: true
+        onClicked: root.domainSignalRequested()
+
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Request a sync of changes for the VFS environment.\nmacOS may ignore or delay this request.")
     }
 }

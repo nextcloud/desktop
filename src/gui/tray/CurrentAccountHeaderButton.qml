@@ -36,6 +36,13 @@ Button {
     Accessible.name: qsTr("Current account")
     Accessible.onPressAction: root.clicked()
 
+    palette {
+        text: Style.currentUserHeaderTextColor
+        windowText: Style.currentUserHeaderTextColor
+        buttonText: Style.currentUserHeaderTextColor
+        button: Style.adjustedCurrentUserHeaderColor
+    }
+
     // We call open() instead of popup() because we want to position it
     // exactly below the dropdown button, not the mouse
     onClicked: {
@@ -104,8 +111,11 @@ Button {
 
         MenuItem {
             id: syncPauseButton
+            height: Systray.anySyncFolders ? implicitHeight : 0
             font.pixelSize: Style.topLinePixelSize
             hoverEnabled: true
+            enabled: Systray.anySyncFolders
+            visible: Systray.anySyncFolders
             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
             Accessible.role: Accessible.MenuItem
             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
@@ -159,6 +169,8 @@ Button {
                 id: currentAccountStatusIndicatorBackground
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
+                         && UserModel.currentUser.status !== UserStatus.Invisible
+                         && UserModel.currentUser.status !== UserStatus.Offline
                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 color: root.parentBackgroundColor
@@ -171,6 +183,8 @@ Button {
                 id: currentAccountStatusIndicator
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
                          && UserModel.currentUser.serverHasUserStatus
+                         && UserModel.currentUser.status !== UserStatus.Invisible
+                         && UserModel.currentUser.status !== UserStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                 cache: false
                 x: currentAccountStatusIndicatorBackground.x + 1
@@ -195,6 +209,7 @@ Button {
                 id: currentAccountUser
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 width: Style.currentAccountLabelWidth
+                color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.name : ""
                 elide: Text.ElideRight
 
@@ -206,6 +221,7 @@ Button {
                 id: currentAccountServer
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 width: Style.currentAccountLabelWidth
+                color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
                 elide: Text.ElideRight
                 visible: UserModel.numUsers() > 1
@@ -222,6 +238,7 @@ Button {
                     id: emoji
                     visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
                     width: Style.userStatusEmojiSize
+                    color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
                 }
                 EnforcedPlainTextLabel {
@@ -230,6 +247,7 @@ Button {
                     Layout.fillWidth: true
                     visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                     width: Style.currentAccountLabelWidth
+                    color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                           ? UserModel.currentUser.statusMessage
                           : UserModel.currentUser ? UserModel.currentUser.server : ""
