@@ -24,7 +24,9 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
     }
 
     func testMaterialisedObserver() async {
-        let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+        let dbManager = FilesDatabaseManager(
+            realmConfig: .defaultConfiguration, account: Self.account.ncKitAccount
+        )
         let remoteInterface = MockRemoteInterface()
         let expect = XCTestExpectation(description: "Enumerator")
         let observer = MaterialisedEnumerationObserver(
@@ -50,7 +52,9 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
         var itemC = SendableItemMetadata(ocId: "itemC", fileName: "itemC", account: Self.account)
         itemC.downloaded = true
 
-        let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+        let dbManager = FilesDatabaseManager(
+            realmConfig: .defaultConfiguration, account: Self.account.ncKitAccount
+        )
         dbManager.addItemMetadata(itemA)
         dbManager.addItemMetadata(itemB)
         dbManager.addItemMetadata(itemC)

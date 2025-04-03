@@ -18,7 +18,9 @@ final class ItemFetchTests: XCTestCase {
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+    static let dbManager = FilesDatabaseManager(
+        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+    )
 
     override func setUp() {
         super.setUp()
@@ -177,7 +179,6 @@ final class ItemFetchTests: XCTestCase {
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
 
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: directoryMetadata.ocId))
-
 
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)

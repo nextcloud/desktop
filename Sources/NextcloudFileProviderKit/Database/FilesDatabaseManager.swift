@@ -30,7 +30,9 @@ public final class FilesDatabaseManager: Sendable {
 
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
-    public init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
+    public init(
+        realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration, account: String
+    ) {
         Realm.Configuration.defaultConfiguration = realmConfig
 
         do {
@@ -41,7 +43,7 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    public convenience init?() {
+    public convenience init?(account: String) {
         let relativeDatabaseFilePath = Self.relativeDatabaseFolderPath + Self.databaseFilename
         guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
         let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
@@ -90,7 +92,7 @@ public final class FilesDatabaseManager: Sendable {
             },
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
-        self.init(realmConfig: config)
+        self.init(realmConfig: config, account: account)
     }
 
     func ncDatabase() -> Realm {

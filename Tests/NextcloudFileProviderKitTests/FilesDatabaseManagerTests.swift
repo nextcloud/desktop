@@ -16,7 +16,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+    static let dbManager = FilesDatabaseManager(
+        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+    )
 
     override func setUp() {
         super.setUp()

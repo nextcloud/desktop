@@ -11,8 +11,10 @@ import XCTest
 @testable import NextcloudFileProviderKit
 
 final class UploadTests: XCTestCase {
-    let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
-    let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+    static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
+    static let dbManager = FilesDatabaseManager(
+        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+    )
 
     override func setUp() {
         super.setUp()
@@ -26,14 +28,14 @@ final class UploadTests: XCTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
-        let remotePath = account.davFilesUrl + "/file.txt"
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account,
-            dbManager: dbManager
+            withAccount: Self.account,
+            dbManager: Self.dbManager
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -50,17 +52,17 @@ final class UploadTests: XCTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
-        let remotePath = account.davFilesUrl + "/file.txt"
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
         let chunkSize = 3
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account,
+            withAccount: Self.account,
             inChunksSized: chunkSize,
-            dbManager: dbManager,
+            dbManager: Self.dbManager,
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -93,7 +95,7 @@ final class UploadTests: XCTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         let chunkSize = 3
         let uploadUuid = UUID().uuidString
         let previousUploadedChunkNum = 1
@@ -105,7 +107,7 @@ final class UploadTests: XCTestCase {
         let previousUploadedChunks = [previousUploadedChunk]
         remoteInterface.currentChunks = [uploadUuid: previousUploadedChunks]
 
-        let db = dbManager.ncDatabase()
+        let db = Self.dbManager.ncDatabase()
         try db.write {
             db.add([
                 RemoteFileChunk(
@@ -121,16 +123,16 @@ final class UploadTests: XCTestCase {
             ])
         }
 
-        let remotePath = account.davFilesUrl + "/file.txt"
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account,
+            withAccount: Self.account,
             inChunksSized: chunkSize,
             usingChunkUploadId: uploadUuid,
-            dbManager: dbManager,
+            dbManager: Self.dbManager,
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -219,17 +221,17 @@ final class UploadTests: XCTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = capabilities
 
-        let remotePath = account.davFilesUrl + "/file.txt"
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account,
-            dbManager: dbManager,
+            withAccount: Self.account,
+            dbManager: Self.dbManager,
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -298,17 +300,17 @@ final class UploadTests: XCTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = capabilities
 
-        let remotePath = account.davFilesUrl + "/file.txt"
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account,
-            dbManager: dbManager,
+            withAccount: Self.account,
+            dbManager: Self.dbManager,
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
