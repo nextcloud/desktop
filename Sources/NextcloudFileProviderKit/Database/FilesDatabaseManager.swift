@@ -41,10 +41,45 @@ public final class FilesDatabaseManager: Sendable {
         } catch let error {
             Self.logger.error("Error opening Realm db: \(error, privacy: .public)")
         }
+
+        // Migrate from old unified database to new per-account DB
+        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return }
+        let oldRelativeDatabaseFilePath = Self.relativeDatabaseFolderPath + Self.databaseFilename
+        let oldDatabasePath = fileProviderDataDirUrl.appendingPathComponent(
+            oldRelativeDatabaseFilePath
+        )
+        guard FileManager.default.fileExists(atPath: oldDatabasePath.path) == true else { return }
+        Self.logger.info("Migrating old database to database for \(account, privacy: .public)")
+        let oldConfig = Realm.Configuration(
+            fileURL: oldDatabasePath,
+            schemaVersion: stable2_0SchemaVersion,
+            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+        )
+        do {
+            let oldRealm = try Realm(configuration: oldConfig)
+            let itemMetadatas = oldRealm.objects(RealmItemMetadata.self).filter { $0.account == account }
+            let remoteFileChunks = oldRealm.objects(RemoteFileChunk.self)
+            try oldRealm.write {
+                oldRealm.delete(itemMetadatas)
+                oldRealm.delete(remoteFileChunks)
+            }
+            let currentRealm = try Realm()
+            try currentRealm.write {
+                currentRealm.add(itemMetadatas)
+                currentRealm.add(remoteFileChunks)
+            }
+        } catch let error {
+            Self.logger.error(
+                """
+                Error migrating old database to database for \(account, privacy: .public)
+                    Received error: \(error, privacy: .public)
+                """
+            )
+        }
     }
 
     public convenience init?(account: String) {
-        let relativeDatabaseFilePath = Self.relativeDatabaseFolderPath + Self.databaseFilename
+        let relativeDatabaseFilePath = Self.relativeDatabaseFolderPath + account + "-" + Self.databaseFilename
         guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
         let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
 
