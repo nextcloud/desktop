@@ -393,6 +393,11 @@ void Account::tryMigrateCookieJar()
     QString oldCookieJarPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
     if (QFile::exists(oldCookieJarPath))
     {
+        if (QFile::exists(cookieJarPath()))
+        {
+            qWarning() << "Both old cookie jar and new cookie jar exists. Abort migration";
+            return;
+        }
         qDebug() << "Migrating cookie jar from "<< oldCookieJarPath << "to " << cookieJarPath();
         if (!QFile::rename(oldCookieJarPath, cookieJarPath()))
             qWarning() << "Failed to migrate cookie jar";
