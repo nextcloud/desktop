@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+version = 1
+SPDX-PackageName = "desktop"
+SPDX-PackageSupplier = "Nextcloud <info@nextcloud.com>"
+SPDX-PackageDownloadLocation = "https://github.com/nextcloud/desktop"
+
+[[annotations]]
+path = ["translations/*"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2012 ownCloud Inc. and ownCloud translators, 2018 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = [".tx/nextcloud.client-desktop/*_translation"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
