@@ -723,8 +723,8 @@ Would you like to set up end-to-end encryption?</source>
         <location filename="../src/gui/accountsettings.cpp" line="442"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>您无法使用内容加密文件夹，请删除文件。
-等待新的同步，然后对其进行加密。</translation>
+        <translation>您无法加密包含内容的文件夹，请先移除文件。
+然后等待新的同步，对其进行加密。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -823,7 +823,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>确定移除文件夹同步连接</translation>
+        <translation>确认移除文件夹同步连接</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="885"/>
@@ -887,7 +887,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1196"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>同步操作正在进行。&lt;br/&gt;您确定要停止吗？</translation>
+        <translation>正在同步中，&lt;br/&gt;你确定要中断它吗？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1268"/>
@@ -902,7 +902,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1278"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>目前没有储存使用量信息可用。</translation>
+        <translation>当前存储没有使用量信息可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1281"/>
@@ -932,7 +932,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>服务器 %1 目前正在维护。</translation>
+        <translation>服务器 %1目前处于维护模式。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1327"/>
