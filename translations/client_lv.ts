@@ -2491,7 +2491,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="250"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ir neatrisinātas nesaderības. Klikšķināt, lai uzzinātu vairāk.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
@@ -2914,7 +2914,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="204"/>
         <source>Show call notification dialogs.</source>
-        <translation>Rādīt zvanu paziņojumu dialogus.</translation>
+        <translation>Rādīt zvanu paziņojumu lodziņus.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
@@ -4931,7 +4931,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1399"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Atrisināt nesaderību…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1403"/>
@@ -5197,7 +5197,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="466"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Neatrisināta nesaderība.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="568"/>
@@ -5522,7 +5522,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Atrisināt nesaderību</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
@@ -6122,7 +6122,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Resolve conflicts</source>
-        <translation>Risināt konfliktus</translation>
+        <translation>Atrisināt nesaderības</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="157"/>
@@ -6291,7 +6291,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Resolve conflicts</source>
-        <translation>Risināt konfliktus</translation>
+        <translation>Atrisināt nesaderības</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>

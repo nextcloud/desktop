@@ -5562,7 +5562,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation>Abra o Nextcloud Assistant no navegador</translation>
+        <translation>Abra o Assistente Nextcloud no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
