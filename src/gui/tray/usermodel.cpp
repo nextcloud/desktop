@@ -869,9 +869,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         activity._subject = item->_errorString;
         activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
 
-        if (item->_status == SyncFileItem::Status::FileIgnored) {
-            _activityModel->addIgnoredFileToList(activity);
-        } else {
+        if (item->_status != SyncFileItem::Status::FileIgnored) {
             // add 'protocol error' to activity list
             if (item->_status == SyncFileItem::Status::FileNameInvalid || item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
                 ActivityLink buttonActivityLink;

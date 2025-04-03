@@ -597,31 +597,6 @@ void ActivityListModel::addErrorToActivityList(const Activity &activity, const E
     }
 }
 
-void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
-{
-    qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: " << newActivity._file;
-
-    bool duplicate = false;
-    if (_listOfIgnoredFiles.size() == 0) {
-        _notificationIgnoredFiles = newActivity;
-        _notificationIgnoredFiles._subject = tr("Files from the ignore list as well as symbolic links are not synced.");
-        addEntriesToActivityList({_notificationIgnoredFiles});
-        _listOfIgnoredFiles.append(newActivity);
-        return;
-    }
-
-    for (const auto &activity : _listOfIgnoredFiles) {
-        if (activity._file == newActivity._file) {
-            duplicate = true;
-            break;
-        }
-    }
-
-    if (!duplicate) {
-        _notificationIgnoredFiles._message.append(", " + newActivity._file);
-    }
-}
-
 void ActivityListModel::addNotificationToActivityList(const Activity &activity)
 {
     qCDebug(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
