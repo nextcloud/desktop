@@ -17,13 +17,13 @@ import Foundation
 import OSLog
 import RealmSwift
 
-fileprivate let stable1_0SchemaVersion: UInt64 = 100
-fileprivate let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
+internal let stable1_0SchemaVersion: UInt64 = 100
+internal let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
+
+public let relativeDatabaseFolderPath = "Database/"
+public let databaseFilename = "fileproviderextdatabase.realm"
 
 public final class FilesDatabaseManager: Sendable {
-
-    private static let relativeDatabaseFolderPath = "Database/"
-    private static let databaseFilename = "fileproviderextdatabase.realm"
     private static let schemaVersion = stable2_0SchemaVersion
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
@@ -31,7 +31,10 @@ public final class FilesDatabaseManager: Sendable {
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
     public init(
-        realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration, account: String
+        realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration,
+        account: String,
+        fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
+        relativeDatabaseFolderPath: String = relativeDatabaseFolderPath,
     ) {
         Realm.Configuration.defaultConfiguration = realmConfig
 
@@ -43,8 +46,8 @@ public final class FilesDatabaseManager: Sendable {
         }
 
         // Migrate from old unified database to new per-account DB
-        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return }
-        let oldRelativeDatabaseFilePath = Self.relativeDatabaseFolderPath + Self.databaseFilename
+        guard let fileProviderDataDirUrl else { return }
+        let oldRelativeDatabaseFilePath = relativeDatabaseFolderPath + databaseFilename
         let oldDatabasePath = fileProviderDataDirUrl.appendingPathComponent(
             oldRelativeDatabaseFilePath
         )
@@ -79,15 +82,13 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     public convenience init?(account: String) {
-        let relativeDatabaseFilePath = Self.relativeDatabaseFolderPath + account + "-" + Self.databaseFilename
+        let relativeDatabaseFilePath = relativeDatabaseFolderPath + account + "-" + databaseFilename
         guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
         let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
 
         // Disable file protection for directory DB
         // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/
-        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(
-            Self.relativeDatabaseFolderPath
-        )
+        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFolderPath)
         let dbFolderPath = dbFolder.path
         do {
             try FileManager.default.createDirectory(at: dbFolder, withIntermediateDirectories: true)
