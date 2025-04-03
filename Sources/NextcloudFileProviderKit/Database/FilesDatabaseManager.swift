@@ -21,7 +21,6 @@ fileprivate let stable1_0SchemaVersion: UInt64 = 100
 fileprivate let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
 
 public final class FilesDatabaseManager: Sendable {
-    public static let shared = FilesDatabaseManager()!
 
     private static let relativeDatabaseFolderPath = "Database/"
     private static let databaseFilename = "fileproviderextdatabase.realm"

@@ -128,7 +128,7 @@ public extension Item {
     func fetchContents(
         domain: NSFileProviderDomain? = nil,
         progress: Progress = .init(),
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName

@@ -421,7 +421,7 @@ extension Item {
         remoteInterface: RemoteInterface,
         forcedChunkSize: Int? = nil,
         progress: Progress,
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
         

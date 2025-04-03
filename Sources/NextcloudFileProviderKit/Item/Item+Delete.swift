@@ -19,7 +19,7 @@ public extension Item {
     func delete(
         trashing: Bool = false,
         domain: NSFileProviderDomain? = nil,
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> Error? {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {

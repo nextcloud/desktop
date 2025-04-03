@@ -18,7 +18,7 @@ public extension Item {
         newParentItemIdentifier: NSFileProviderItemIdentifier,
         newParentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType.conforms(to: .directory)
@@ -820,7 +820,7 @@ public extension Item {
         domain: NSFileProviderDomain? = nil,
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         var modifiedItem = self
 

@@ -44,7 +44,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager = .shared,
+        dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         fastEnumeration: Bool = true,
         listener: EnumerationListener? = nil
