@@ -654,8 +654,63 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
         if (record.isValid()
             && !FileSystem::fileChanged(path.toString(), record._fileSize, record._modtime) && _vfs) {
             spurious = true;
+   // Inherited = 0,
 
+    /** The file shall be available and up to date locally.
+     *
+     * Also known as "pinned". Pinned dehydrated files shall be hydrated
+     * as soon as possible.
+     */
+    //AlwaysLocal = 1,
+
+    /** File shall be a dehydrated placeholder, filled on demand.
+     *
+     * Also known as "unpinned". Unpinned hydrated files shall be dehydrated
+     * as soon as possible.
+     *
+     * If a unpinned file becomes hydrated (such as due to an implicit hydration
+     * where the user requested access to the file's data) its pin state changes
+     * to Unspecified.
+     */
+    //OnlineOnly = 2,
+
+    /** The user hasn't made a decision. The client or platform may hydrate or
+     * dehydrate as they see fit.
+     *
+     * New remote files in unspecified directories start unspecified, and
+     * dehydrated (which is an arbitrary decision).
+     */
+    //Unspecified = 3,
+
+    /** The file will never be synced to the cloud.
+     * 
+     * Useful for ignored files to indicate to the OS the file will never be
+     * synced
+     */
+    //Excluded = 4,
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
+                if (*pinState == PinState::Unspecified) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "Unspecified!" << path;
+                }
+                if (*pinState == PinState::Inherited) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "Inherited!" << path;
+                }
+                if (*pinState == PinState::Excluded) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "Excluded!" << path;
+                }
+                if (*pinState == PinState::AlwaysLocal) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "AlwaysLocal!" << path;
+                }
+                if (*pinState == PinState::OnlineOnly) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "OnlineOnly!" << path;
+                }
+                if (pinState.isValid()) {
+                    qCWarning(lcFolder) << "PINSTATE:" << "is invalid!" << path;
+                }
+                qCDebug(lcFolder) << "record is dir?" << record.isDirectory();
+                if (*pinState == PinState::Unspecified) {
+                    spurious = false;
+                }
                 if (*pinState == PinState::AlwaysLocal && record.isVirtualFile()) {
                     spurious = false;
                 }
