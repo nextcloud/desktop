@@ -42,7 +42,6 @@ public:
     OCC::Activity testNotificationActivity;
     OCC::Activity testSyncResultErrorActivity;
     OCC::Activity testSyncFileItemActivity;
-    OCC::Activity testFileIgnoredActivity;
 
     QSharedPointer<OCC::SortedActivityListModel> testingSortedALM()
     {
@@ -114,7 +113,6 @@ private slots:
         testNotificationActivity = exampleNotificationActivity(accName);
         testSyncResultErrorActivity = exampleSyncResultErrorActivity(accName);
         testSyncFileItemActivity = exampleSyncFileItemActivity(accName, accUrl);
-        testFileIgnoredActivity = exampleFileIgnoredActivity(accName, accUrl);
     };
 
     void testMatchingRowCounts()
@@ -146,7 +144,6 @@ private slots:
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
         addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
         addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
-        addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     }
 
     void testSort()
@@ -168,7 +165,6 @@ private slots:
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
         addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
         addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
-        addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
 
         // first let's go through priority activities (interactive ones and those with _fileAction == "security"
         auto i = 0;
@@ -204,15 +200,6 @@ private slots:
 
             QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
             QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FatalError);
-        }
-        lasIndex = i;
-
-        // now, let's check if activity is an ignored file
-        for (; i < lasIndex + 1 && i < model->rowCount(); ++i) {
-            const auto index = model->index(i, 0);
-            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
-            QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
-            QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FileIgnored);
         }
         lasIndex = i;
 
