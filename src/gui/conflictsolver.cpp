@@ -95,7 +95,7 @@ bool ConflictSolver::deleteLocalVersion()
     if (FileSystem::isDir(_localVersionFilename)) {
         return FileSystem::removeRecursively(_localVersionFilename);
     } else {
-        return QFile(_localVersionFilename).remove();
+        return FileSystem::remove(_localVersionFilename);
     }
 }
 
