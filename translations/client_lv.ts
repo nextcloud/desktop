@@ -919,7 +919,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1315"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Servera versija %1 nav atbalstīta! Turpiniet uz savu risku.</translation>
+        <translation>Servera versija %1 nav atbalstīta. Turpināt uz savu atbildību.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1317"/>
@@ -1575,7 +1575,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>Server version</translation>
+        <translation>Servera versija</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
@@ -1611,7 +1611,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation>Saglabāt servera versiju</translation>
+        <translation>Paturēt servera versiju</translation>
     </message>
 </context>
 <context>
@@ -4052,12 +4052,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Nesaderība: lejupielādēta versija no servera, vietējā kopija pārdēvēta un nav augšupielādēta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Reģistrjutīga nesaderība: servera datne lejupielādēta un pārdēvēta, lai izvairītos no sakritības.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="472"/>
@@ -5066,7 +5066,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Servera versija: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -5269,7 +5269,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="152"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Kļūdas skatīt zemāk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
@@ -5289,12 +5289,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Dažas datnes nevarēja sinhronizēt.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="180"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Brīdinājumus skatīt zemāk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="221"/>
@@ -5808,7 +5808,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Konta %1 serveris darbojas ar neatbalstītu versiju %2. Šī klienta izmantošana ar neatbalstītām servera versijām nav pārbaudīta un ir iespējami bīstama. Turpināt uz savu atbildību.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
@@ -6107,7 +6107,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="64"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Izvēlieties, vai vēlaties saglabāt lokālo versiju, servera versiju vai abas. Ja izvēlaties abas, lokālām datnēm tiks pievienots numurs tā nosaukumā.</translation>
+        <translation>Jāizvēlas, vai paturēt vietējo vai servera versiju vai abas. Ja izvēlas abas, vietējās datnes nosaukumam tiks pievienots skaitlis.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="80"/>
@@ -6644,12 +6644,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Servera versija lejupielādēta, kopēta izmainīta lokālā datne uz konfliktēto datni</translation>
+        <translation>Lejupielādēta servera versija, izmainītā vietējā datne iekopēta nesaderību datnē</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Lejupielādēta servera versija, nokopēta mainītā lokālā datne gadījuma konflikta konflikta datnē</translation>
+        <translation>Lejupielādēta servera versija, vietējā izmainītā datne iekopēta reģistrjutības nesaderības datnē</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
