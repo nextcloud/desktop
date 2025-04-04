@@ -58,18 +58,15 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
 bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
-    QStringList errors;
     QList<QPair<QString, bool>> deleted;
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-    bool success = FileSystem::removeRecursively(
-        absolute,
-        [&deleted](const QString &path, bool isDir) {
-            // by prepending, a folder deletion may be followed by content deletions
-            deleted.prepend(qMakePair(path, isDir));
-        },
-        &errors);
+    const auto success = FileSystem::removeRecursively(absolute,
+                                                       [&deleted](const QString &path, bool isDir) {
+                                                           // by prepending, a folder deletion may be followed by content deletions
+                                                           deleted.prepend(qMakePair(path, isDir));
+                                                       });
 
     if (!success) {
         // We need to delete the entries from the database now from the deleted vector.
@@ -87,8 +84,6 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
                 qCWarning(lcPropagateLocalRemove) << "Failed to delete file record from local DB" << it.first.mid(propagator()->localPath().size());
             }
         }
-
-        _error = errors.join(", ");
     }
     return success;
 }
@@ -116,13 +111,13 @@ void PropagateLocalRemove::start()
     if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
-            done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
+            done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
             return;
         }
     } else {
         if (_item->isDirectory()) {
             if (QDir(filename).exists() && !removeRecursively(QString())) {
-                done(SyncFileItem::NormalError, _error, ErrorCategory::GenericError);
+                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
@@ -133,7 +128,7 @@ void PropagateLocalRemove::start()
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
                 if (!FileSystem::remove(filename, &removeError)) {
-                    done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
+                    done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                     return;
                 }
             }
