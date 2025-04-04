@@ -150,6 +150,7 @@ private:
 
     QString _overrideServerUrl;
     QString _overrideLocalDir;
+    QString _setLanguage;
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
