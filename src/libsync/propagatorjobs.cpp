@@ -63,7 +63,6 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-    FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
     bool success = FileSystem::removeRecursively(
         absolute,
         [&deleted](const QString &path, bool isDir) {

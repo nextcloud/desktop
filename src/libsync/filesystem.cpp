@@ -259,6 +259,8 @@ qint64 FileSystem::getSize(const QString &filename)
 // Code inspired from Qt5's QDir::removeRecursively
 bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
 {
+    FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
+
     bool allRemoved = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
 
