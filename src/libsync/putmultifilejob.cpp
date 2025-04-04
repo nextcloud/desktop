@@ -71,21 +71,16 @@ void PutMultiFileJob::start()
         _body.append(onePart);
     }
 
-    sendRequest("POST", _url, req, &_body);
+    const auto newReply = sendRequest("POST", _url, req, &_body);
+    const auto &requestID = newReply->request().rawHeader("X-Request-ID");
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcPutMultiFileJob) << " Network error: " << reply()->errorString();
     }
 
     connect(reply(), &QNetworkReply::uploadProgress, this, &PutMultiFileJob::uploadProgress);
-    connect(reply(), &QNetworkReply::uploadProgress, this, [] (qint64 bytesSent, qint64 bytesTotal) {
-        qCDebug(lcPutMultiFileJob()) << "upload progress" << bytesSent << bytesTotal;
-    });
-    connect(reply(), &QNetworkReply::bytesWritten, this, [] (qint64 bytesSent) {
-        qCDebug(lcPutMultiFileJob()) << "upload progress" << bytesSent;
-    });
-    connect(reply(), &QNetworkReply::requestSent, this, [] () {
-        qCDebug(lcPutMultiFileJob()) << "request sent";
+    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (qint64 bytesSent, qint64 bytesTotal) {
+        qCDebug(lcPutMultiFileJob()) << requestID << "upload progress" << bytesSent << bytesTotal;
     });
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
