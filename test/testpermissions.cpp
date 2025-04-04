@@ -11,9 +11,7 @@
 
 #include <QtTest>
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
-#endif
 #include <iostream>
 
 using namespace OCC;
@@ -91,7 +89,6 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     void t7pl()
     {
         FakeFolder fakeFolder{ FileInfo() };
@@ -428,7 +425,6 @@ private slots:
         QCOMPARE(count, 2);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
-#endif
 
     static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
     {
@@ -604,7 +600,6 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     static void demo_perms(std::filesystem::perms p)
     {
         using std::filesystem::perms;
@@ -952,7 +947,6 @@ private slots:
         QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test/newFile.txt"));
         QVERIFY(ensureReadOnlyItem("/readOnlyFolder/newFolder"));
     }
-#endif
 };
 
 QTEST_GUILESS_MAIN(TestPermissions)

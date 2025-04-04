@@ -274,11 +274,9 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         } else {
             QString removeError;
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             const auto fileInfo = QFileInfo{di.filePath()};
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-#endif
             removeOk = FileSystem::remove(di.filePath(), &removeError);
             if (removeOk) {
                 if (onDeleted)
@@ -295,12 +293,10 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
             allRemoved = false;
     }
     if (allRemoved) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         const auto fileInfo = QFileInfo{path};
         const auto parentFolderPath = fileInfo.dir().absolutePath();
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
         FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
-#endif
         allRemoved = QDir().rmdir(path);
         if (allRemoved) {
             if (onDeleted)
@@ -326,7 +322,6 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
     return false;
 }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 bool FileSystem::setFolderPermissions(const QString &path,
                                       FileSystem::FolderPermissions permissions) noexcept
 {
@@ -563,7 +558,5 @@ FileSystem::FilePermissionsRestore::~FilePermissionsRestore()
         FileSystem::setFolderPermissions(_path, _initialPermissions);
     }
 }
-
-#endif
 
 } // namespace OCC

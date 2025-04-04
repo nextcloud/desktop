@@ -32,9 +32,7 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
-#endif
 #include <ctime>
 
 
@@ -62,12 +60,10 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
     FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
-#endif
     bool success = FileSystem::removeRecursively(
         absolute,
         [&deleted](const QString &path, bool isDir) {
@@ -132,12 +128,10 @@ void PropagateLocalRemove::start()
             }
         } else {
             if (FileSystem::fileExists(filename)) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
                 const auto fileInfo = QFileInfo{filename};
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
 
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-#endif
 
                 if (!FileSystem::remove(filename, &removeError)) {
                     done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
@@ -200,7 +194,6 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     auto parentFolderPath = std::filesystem::path{};
     auto parentNeedRollbackPermissions = false;
     try {
@@ -225,7 +218,6 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
-#endif
 
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
@@ -234,7 +226,6 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (!_item->_remotePerm.isNull() &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
@@ -279,7 +270,6 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
-#endif
 
     // Insert the directory into the database. The correct etag will be set later,
     // once all contents have been propagated, because should_update_metadata is true.
@@ -360,7 +350,6 @@ void PropagateLocalRename::start()
             return;
         }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         auto targetParentFolderPath = std::filesystem::path{};
         auto targetParentFolderWasReadOnly = false;
         try {
@@ -431,31 +420,26 @@ void PropagateLocalRename::start()
         };
 
         const auto folderPermissionsHandler = FileSystem::FilePermissionsRestore{existingFile, FileSystem::FolderPermissions::ReadWrite};
-#endif
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (targetParentFolderWasReadOnly) {
                 restoreTargetPermissions(targetParentFolderPath);
             }
             if (originParentFolderWasReadOnly) {
                 restoreTargetPermissions(originParentFolderPath);
             }
-#endif
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         if (targetParentFolderWasReadOnly) {
             restoreTargetPermissions(targetParentFolderPath);
         }
         if (originParentFolderWasReadOnly) {
             restoreTargetPermissions(originParentFolderPath);
         }
-#endif
     }
 
     SyncJournalFileRecord oldRecord;
