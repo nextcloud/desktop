@@ -74,8 +74,16 @@ void PUTFileJob::start()
         qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
+    connect(reply(), &QNetworkReply::uploadProgress, this, [] (qint64 bytesSent, qint64 bytesTotal) {
+        qCInfo(lcPutJob()) << "upload progress" << bytesSent << bytesTotal;
+    });
+    connect(reply(), &QNetworkReply::bytesWritten, this, [] (qint64 bytesSent) {
+        qCInfo(lcPutJob()) << "upload progress" << bytesSent;
+    });
+
     connect(reply(), &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
+
     _requestTimer.start();
     AbstractNetworkJob::start();
 }
