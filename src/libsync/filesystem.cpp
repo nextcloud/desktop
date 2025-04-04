@@ -535,8 +535,8 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, 
         _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
         if (_initialPermissions != temporaryPermissions) {
             _rollbackNeeded = true;
-            FileSystem::setFolderPermissions(_path, temporaryPermissions);
         }
+        FileSystem::setFolderPermissions(_path, temporaryPermissions);
     }
     catch (const std::filesystem::filesystem_error &e)
     {
