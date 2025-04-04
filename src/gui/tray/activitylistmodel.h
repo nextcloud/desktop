@@ -131,7 +131,6 @@ public slots:
 
     void addNotificationToActivityList(const OCC::Activity &activity);
     void addErrorToActivityList(const OCC::Activity &activity, const OCC::ActivityListModel::ErrorType type);
-    void addIgnoredFileToList(const OCC::Activity &newActivity);
     void addSyncFileItemToActivityList(const OCC::Activity &activity);
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(const OCC::Activity &activity);
