@@ -769,19 +769,16 @@ void PropagateDownloadFile::setDeleteExistingFolder(bool enabled)
 
 void PropagateDownloadFile::done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category)
 {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
-#endif
     PropagateItemJob::done(status, errorString, category);
 }
 
 void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         const auto newDirPath = std::filesystem::path{fileName.toStdWString()};
         Q_ASSERT(newDirPath.has_parent_path());
@@ -805,7 +802,6 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = true;
     }
-#endif
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
@@ -1349,13 +1345,11 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
-#endif
 
     FileSystem::setFileHidden(filename, false);
 

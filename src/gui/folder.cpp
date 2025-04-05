@@ -1736,11 +1736,9 @@ void Folder::slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr
 
     setSyncPaused(true);
     for(const auto &oneFolder : folders) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         const auto fileInfo = QFileInfo{localPath + oneFolder->_file};
         const auto parentFolderPath = fileInfo.dir().absolutePath();
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-#endif
         if (oneFolder->_type == ItemType::ItemTypeDirectory) {
             FileSystem::removeRecursively(localPath + oneFolder->_file);
         } else {

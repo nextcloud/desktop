@@ -44,7 +44,7 @@ public:
 
 private:
     bool removeRecursively(const QString &path);
-    QString _error;
+
     bool _moveToTrash = false;
 };
 
