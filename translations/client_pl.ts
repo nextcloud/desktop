@@ -1105,11 +1105,6 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Wystąpił błąd sieci: klient ponowi próbę synchronizacji.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="607"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::AddCertificateDialog</name>
@@ -5552,22 +5547,22 @@ Serwer odpowiedział błędem: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
         <translation>Rozwiąż konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
         <translation>Zmień nazwę pliku</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Otwórz Nextcloud Assistant w przeglądarce</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Otwórz Nextcloud Talk w przeglądarce</translation>
     </message>
@@ -5575,22 +5570,22 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1487"/>
         <source>Confirm Account Removal</source>
         <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Czy na pewno chcesz usunąć połączenie z kontem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ta operacja &lt;b&gt;nie&lt;/b&gt; usunie plików klienta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Remove connection</source>
         <translation>Usuń połączenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>

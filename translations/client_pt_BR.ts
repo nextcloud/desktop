@@ -1104,11 +1104,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Ocorreu um erro de rede: o cliente tentará sincronizar novamente.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="607"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Arquivos da lista de ignorados e links simbólicos não são sincronizados.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::AddCertificateDialog</name>
@@ -3742,7 +3737,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="102"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>O link para sua interface web %1 quando você abri-lo no navegador.</translation>
+        <translation>O link da interface da web do seu %1 quando você o abre no navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="217"/>
@@ -4063,7 +4058,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Filename is too long.</source>
-        <translation>O arquivo é muito grande.</translation>
+        <translation>O nome do arquivo é muito longo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="458"/>
@@ -5550,22 +5545,22 @@ Servidor respondeu com erro: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
         <translation>Resolver conflito</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
         <translation>Renomear arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Abra o Assistente Nextcloud no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abra o Nextcloud Talk no navegador</translation>
     </message>
@@ -5573,22 +5568,22 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1487"/>
         <source>Confirm Account Removal</source>
         <translation>Confirme a Exclusão da Conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Quer realmente excluir a conexão para a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Obs.:&lt;/b&gt; Isso &lt;b&gt;não&lt;/b&gt; excluirá nenhum arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Remove connection</source>
         <translation>Excluir conexão</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -5815,12 +5810,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>E-mail web fácil de usar, calendário &amp; contatos</translation>
+        <translation>Webmail, calendário &amp; contatos fáceis de usar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Compartilhamento de tela, reuniões online &amp; conferências web</translation>
+        <translation>Compartilhamento de tela, reuniões on-line &amp; webconferências</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
@@ -6025,7 +6020,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="262"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>Este é o link para a sua interface web %1 quando você abri-lo no navegador.</translation>
+        <translation>Este é o link da interface da web do seu %1 quando você o abre no navegador.</translation>
     </message>
 </context>
 <context>

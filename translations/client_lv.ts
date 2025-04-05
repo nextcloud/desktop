@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="24"/>
         <source>Open %1 locally</source>
-        <translation>Atvērt %1 lokāli</translation>
+        <translation>Atvērt %1 vietēji</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation>Lokālā versija</translation>
+        <translation>Vietējā versija</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
@@ -639,12 +639,12 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>End-to-end šifrēšana ar virtuālām datnēm</translation>
+        <translation>Pilnīga šifrēšana ar virtuālām datnēm</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Šķiet, ka šai mapei ir iespējota virtuālo datņu funkcija. Šobrīd nav iespējams lejupielādēt virtuālās datnes, kas ir end-to-end šifrētas. Lai iegūtu labāko pieredzi ar virtuālām datnēm un end-to-end šifrēšanu, pārliecinieties, ka šifrētā mape ir atzīmēta ar &quot;Vienmēr pieejams lokāli&quot;.</translation>
+        <translation>Šķiet, ka šai mapei ir iespējota virtuālo datņu iespēja. Šobrīd nav iespējams lejupielādēt virtuālās datnes, kas ir pilnībā šifrētas. Lai iegūtu labāko pieredzi ar virtuālām datnēm un pilnīgu šifrēšanu, jāpārliecinās, ka šifrētā mape ir atzīmēta ar &quot;Vienmēr pieejama vietēji&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="109"/>
@@ -661,7 +661,7 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="122"/>
         <source>End-to-end Encryption</source>
-        <translation>End-to-end šifrēšana</translation>
+        <translation>Pilnīga šifrēšana</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="125"/>
@@ -688,7 +688,7 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>End-to-end šifrēšana ir iespējota šim kontam</translation>
+        <translation>Pilnīga šifrēšana tika iespējota šim kontam</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
@@ -714,8 +714,8 @@ Vai konts jāimportē?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>End-to-end šifrēšana nav konfigurēta uz šīs ierīces. Kad tā būs konfigurēta, jūs varēsiet šifrēt šo mapi.
-Vai vēlaties iestatīt end-to-end šifrēšanu?</translation>
+        <translation>Šajā ierīcē nav konfigurēta pilnīga šifrēšana. Tiklīdz tā būs konfigurēta, būs iespējams šifrēt šo mapi.
+Vai iestatīt pilnīgu šifrēšanu?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="442"/>
@@ -816,7 +816,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="827"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Nevarēja izveidot lokālo mapi &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Nevarēja izveidot vietējo mapi &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
@@ -859,7 +859,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1094"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>End-to-end šifrēšanas mnemonika</translation>
+        <translation>Pilnīgas šifrēšanas mnemonika</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1096"/>
@@ -869,17 +869,17 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1121"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Atspējot no end-to-end šifrēšanu</translation>
+        <translation>Atspējot pilnīgu šifrēšanu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Atspējot end-to-end šifrēšanu %1?</translation>
+        <translation>Atspējot pilnīgu šifrēšanu %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Noņemot end-to-end šifrēšanu, tiks noņemti lokālās sinhronizētās datnes, kas ir šifrētas.&lt;br&gt;Šifrētās datnes paliks serverī.</translation>
+        <translation>Pēc pilnīgās šifrēšanas noņemšanas tiks noņemtas vietēji sinhronizētās šifrētās datnes.&lt;br&gt;Šifrētās datnes paliks serverī.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1195"/>
@@ -999,12 +999,12 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1693"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>End-to-end šifrēšana ir iespējota šajā kontā ar citu ierīci.&lt;br&gt;To var iespējot šajā ierīcē, ievadot savu mnemoniku.&lt;br&gt;Tas ļaus sinhronizēt esošās šifrētās mapes.</translation>
+        <translation>Pilnīga šifrēšana šajā kontā tika iespējota ar citu ierīci.&lt;br&gt;To var iespējot šajā ierīcē ar savas mnemonikas ievadīšanu.&lt;br&gt;Tas ļaus sinhronizēt esošās šifrētās mapes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1752"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>Šis konts atbalsta end-to-end šifrēšanu.</translation>
+        <translation>Šis konts atbalsta pilnīgu šifrēšanu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1756"/>
@@ -1104,11 +1104,6 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Atgadījās tīkla kļūda: klients mēģinās atkārtot sinhronizēšanu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="607"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Datnes no izņēmumu saraksta, kā arī simboliskās saites netiek sinhronizētas.</translation>
     </message>
 </context>
 <context>
@@ -1300,13 +1295,13 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Lokālā datne mainīta sinhronizēšanas laikā. Tas tiks turpināts.</translation>
+        <translation>Vietējā datne sinhronizēšanas laikā tika izmainīta. Tā tiks atsākta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="334"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="678"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokālā datne mainīta sinhronizēšanas laikā.</translation>
+        <translation>Vietējā datne sinhronizēšanas laikā tika izmainīta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="441"/>
@@ -1542,12 +1537,12 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation>Kuru datnes versiju vēlaties saglabāt?&lt;br/&gt;Ja izvēlaties abas versijas, lokālai datnei tiks pievienots numurs tās nosaukumā.</translation>
+        <translation>Kuru datnes versiju paturēt?&lt;br/&gt;Ja atlasa abas versijas, vietējās datnes nosaukumam tiks pievienots skaitlis.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation>Lokālā versija</translation>
+        <translation>Vietējā versija</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
@@ -1570,7 +1565,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Atvērt lokālo versiju&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Atvērt vietējo versiju&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -1591,7 +1586,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
-        <translation>Atvērt lokālo versiju</translation>
+        <translation>Atvērt vietējo versiju</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
@@ -1606,7 +1601,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
-        <translation>Saglabāt lokālo versiju</translation>
+        <translation>Saglabāt vietējo versiju</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
@@ -1802,7 +1797,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="435"/>
         <source>Invalid local file path.</source>
-        <translation>Nederīgs lokālās datnes ceļš.</translation>
+        <translation>Nederīgs vietējās datnes ceļš.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="445"/>
@@ -5520,22 +5515,22 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
         <translation>Atrisināt nesaderību</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation type="unfinished"/>
     </message>
@@ -5543,22 +5538,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1487"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Remove connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Cancel</source>
         <translation>Atcelt</translation>
     </message>
@@ -5892,7 +5887,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
         <source>&amp;Local Folder</source>
-        <translation>Lokālā mape</translation>
+        <translation>&amp;Vietēja mape</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
@@ -6112,7 +6107,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="80"/>
         <source>All local versions</source>
-        <translation>Visas lokālās versijas</translation>
+        <translation>Visas vietējās versijas</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="98"/>
@@ -6680,7 +6675,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="58"/>
         <source>Updated local metadata</source>
-        <translation>Atjaunoti lokālie metadati</translation>
+        <translation>Atjaunināti vietējie metadati</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
@@ -6817,12 +6812,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
         <source>Always available locally</source>
-        <translation>Vienmēr pieejams lokāli</translation>
+        <translation>Vienmēr pieejama vietēji</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Currently available locally</source>
-        <translation>Pašlaik pieejams lokāli</translation>
+        <translation>Pašlaik pieejama vietēji</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
@@ -6837,12 +6832,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="99"/>
         <source>Make always available locally</source>
-        <translation>Nodrošināt vienmēr pieejamu lokāli</translation>
+        <translation>Padarīt vienmēr pieejamu vietēji</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="104"/>
         <source>Free up local space</source>
-        <translation>Atbrīvojiet lokālo vietu</translation>
+        <translation>Atbrīvot vietējo vietu</translation>
     </message>
 </context>
 </TS>

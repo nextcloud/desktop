@@ -1106,11 +1106,6 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Ağ sorunu çıktı: İstemci yeniden eşitlemeyi deneyecek.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="607"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::AddCertificateDialog</name>
@@ -5551,22 +5546,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
         <translation>Çakışmayı çöz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
         <translation>Dosyayı yeniden adlandır</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Tarayıcıda Nextcloud Assistant uygulamasını aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Tarayıcıda Nextcloud Konuş uygulamasını aç</translation>
     </message>
@@ -5574,22 +5569,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1487"/>
         <source>Confirm Account Removal</source>
         <translation>Hesap silmeyi onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını silmek istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Remove connection</source>
         <translation>Bağlantıyı sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>

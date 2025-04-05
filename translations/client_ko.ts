@@ -1104,11 +1104,6 @@ This action will abort any currently running synchronization.</source>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>네트워크 오류 발생: 클라이언트가 동기화를 다시 시도할 것입니다.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="607"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>무시 목록의 파일과 심볼릭 링크는 동기화되지 않습니다.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::AddCertificateDialog</name>
@@ -5550,22 +5545,22 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="888"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="886"/>
         <source>Resolve conflict</source>
         <translation>충돌 해결</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="878"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
         <translation>파일 이름 바꾸기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>브라우저에서 Nextcloud 어시스턴트 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>브라우저에서 Nextcloud 토크 열기</translation>
     </message>
@@ -5573,22 +5568,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1489"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1487"/>
         <source>Confirm Account Removal</source>
         <translation>계정 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1490"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1488"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;계정 &lt;i&gt;%1&lt;/i&gt;와(과) 연결을 삭제합니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;참고:&lt;/b&gt;이는 어떠한 파일도 삭제하지 &lt;b&gt;않을&lt;/b&gt; 것입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Remove connection</source>
         <translation>연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
