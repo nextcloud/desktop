@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 53abf9d0e..c3fc0ecf0 100644
+index 5a1714f9c..aeba19ea2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -366,7 +366,7 @@ index 2bfa004dd..63ebf3070 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 6c00e6b6d..6d392029f 100644
+index 53c85e4b2..4a6702f48 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -46,6 +46,7 @@
@@ -377,15 +377,15 @@ index 6c00e6b6d..6d392029f 100644
  
  #include "config.h"
  
-@@ -1004,7 +1005,7 @@ QString substLang(const QString &lang)
- void Application::setupTranslations()
+@@ -1005,7 +1006,7 @@ void Application::setupTranslations()
  {
+     qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = Theme::instance()->enforcedLocale();
 -    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
 +    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : systemLocaleName());
+     qCInfo(lcApplication) << "selected application language:" << lang;
  
      auto *translator = new QTranslator(this);
-     auto *qtTranslator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
 index 6be6516e4..c6746ad4b 100644
 --- a/src/gui/folderman.cpp
@@ -506,7 +506,7 @@ diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMe
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
 rename to src/gui/tray/TrayFoldersMenuButton.qml.in
-index f98cad514..8925c87c7 100644
+index 060a167bd..cedf683d6 100644
 --- a/src/gui/tray/TrayFoldersMenuButton.qml
 +++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
 @@ -11,7 +11,7 @@
@@ -556,7 +556,7 @@ index 72ec2eede..7f8536d79 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index c7755fe92..067112f92 100644
+index 06432ee29..a96689434 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -28,7 +28,7 @@
