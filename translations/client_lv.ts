@@ -2097,13 +2097,13 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 tika pārsaukta uz %2 un %n citas datne(s) tika pārsauktas.</numerusform><numerusform>%1 tika pārsaukta uz %2 un %n citas datne(s) tika pārsauktas.</numerusform><numerusform>%1 tika pārsaukta uz %2 un %n citas datne(s) tika pārsauktas.</numerusform></translation>
+        <translation><numerusform>%1 tika pārdēvēta par %2 un %n citu datņu tika pārdēvētas.</numerusform><numerusform>%1 tika pārdēvēta par %2 un %n cita datne tika pārdēvēta.</numerusform><numerusform>%1 tika pārdēvēta par %2 un %n citas datnes tika pārdēvētas.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 ir pārsaukts par %2.</translation>
+        <translation>%1 tika pārdēvēta par %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="480"/>
@@ -6148,7 +6148,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation>koplietošanas etiķete</translation>
+        <translation>Koplietojuma iezīme</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="323"/>

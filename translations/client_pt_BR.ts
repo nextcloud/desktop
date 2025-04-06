@@ -1283,7 +1283,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Arquivo removido (iniciar envio) %1</translation>
+        <translation>Arquivo Removido (iniciar upload) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
@@ -4537,7 +4537,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagateupload.cpp" line="289"/>
         <location filename="../src/libsync/propagateupload.cpp" line="713"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>O envio de %1 excede a cota para a pasta</translation>
+        <translation>O upload de %1 excede a cota para a pasta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="327"/>
@@ -4549,7 +4549,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="399"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Arquivo Removido (iniciar envio) %1</translation>
+        <translation>Arquivo Removido (iniciar upload) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="425"/>
@@ -4773,7 +4773,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
         <source>Secure file drop link</source>
-        <translation>Link para soltar arquivo seguro</translation>
+        <translation>Link do depósito de arquivos seguro</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
@@ -4793,7 +4793,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="769"/>
         <source>Secure file drop</source>
-        <translation>Secure file drop</translation>
+        <translation>Depósito de arquivos seguro</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="969"/>
@@ -5263,7 +5263,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Não há espaço disponível no servidor para alguns envios.</translation>
+        <translation>Não há espaço disponível no servidor para alguns uploads.</translation>
     </message>
 </context>
 <context>
@@ -5541,7 +5541,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
         <source>Retry all uploads</source>
-        <translation>Retentar todos os envios</translation>
+        <translation>Retentar todos os uploads</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
@@ -6184,7 +6184,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="323"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="369"/>
         <source>Allow upload and editing</source>
-        <translation>Permitir envio e edição</translation>
+        <translation>Permitir uploads e edição</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="356"/>
