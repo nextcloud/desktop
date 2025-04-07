@@ -586,9 +586,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #ifdef Q_OS_WIN
     // You cannot delete a read-only file on windows, but we want to
     // allow that.
-    if (!isWritable(fileName)) {
-        setFileReadOnly(fileName, false);
-    }
+    setFileReadOnly(fileName, false);
 #endif
     QFile f(fileName);
     if (!f.remove()) {
