@@ -682,11 +682,6 @@
 		<key>PROJECT_REQUIREMENTS</key>
 		<dict>
 			<key>LIST</key>
-			<array/>
-			<key>POSTINSTALL_PATH</key>
-			<dict/>
-			<key>PREINSTALL_PATH</key>
-			<dict/>
 			<array>
 				<dict>
 					<key>BEHAVIOR</key>
@@ -712,6 +707,10 @@
 					<true/>
 				</dict>
 			</array>
+			<key>POSTINSTALL_PATH</key>
+			<dict/>
+			<key>PREINSTALL_PATH</key>
+			<dict/>
 			<key>RESOURCES</key>
 			<array/>
 			<key>ROOT_VOLUME_ONLY</key>
