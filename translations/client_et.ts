@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>Objektis %1</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Jäta vahele</translation>
     </message>
 </context>
 <context>
@@ -71,38 +71,38 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="106"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="123"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin „%1“ muudatusi</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 / %2 (jäänud %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 (jäänud %2 )</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="143"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Hiljuti muudetud faile pole.</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="78"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Ava fail kohalikuks muutmiseks</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Hiljutisi emojisid pole</translation>
     </message>
 </context>
 <context>
@@ -296,7 +296,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="37"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation> %1 faili üksikasjad· %2</translation>
     </message>
 </context>
 <context>
@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta kiirsünkroniseerimist</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
@@ -363,7 +363,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta virtuaalsete failide tuge</translation>
     </message>
 </context>
 <context>
@@ -376,7 +376,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>Kaugfailidest on sünkroniseeritud: %1 GB / %2 GB</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
@@ -527,17 +527,17 @@ macOS võib seda eirata või alustamisega viivitada.</translation>
     <message>
         <location filename="../src/libsync/account.cpp" line="1013"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2 on juba lukustanud „%1“ faili.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1015"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ lukustamisel tekkis viga: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1017"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ lukustuse eemaldamisel tekkis viga: %2</translation>
     </message>
 </context>
 <context>
@@ -563,12 +563,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="235"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Impordi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Jäta vahele</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="271"/>
@@ -581,7 +581,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Andmeruum:…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
@@ -697,7 +697,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation>Enne krüptimis palun oota, et kaust oleks sünkroonis.</translation>
+        <translation>Enne krüptimist palun oota, et kaust oleks sünkroonis.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="404"/>
@@ -835,7 +835,7 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Kas lülitame virtuaalsete failide toe välja?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1002"/>
@@ -849,7 +849,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Lülita tugi välja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1094"/>
@@ -1055,7 +1055,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>Tuvastasin ümbersuunamise</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="170"/>
@@ -1075,7 +1075,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Sa pead nõustuma kasutustingimustega</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="178"/>
@@ -1088,17 +1088,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="483"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Täiendavat teavet tegevuste kohta leiad tegevuste serverirakendusest.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="503"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Laadin tegevuste andmeid…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Tekkis võrguühenduse viga: klient proovin sünkroniseerimist uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1116,17 +1116,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaat ja võti (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Sirvi…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaadi salasõna:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
@@ -1155,23 +1155,23 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>uuem</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>vanem</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>eiran</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>kustutan</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
@@ -1187,12 +1187,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="514"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 kasutajakontot</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="515"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 kasutajakonto</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="517"/>
@@ -1238,12 +1238,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta „%1“ jaoks kasutajanimi ja salasõna serveris %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>Kas&amp;utajanimi:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1269,58 +1269,58 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="123"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili ei saa üles laadida, sest juba on olemas sama olemusliku nimega fail, kus erinevus on vaid suur- ja väiketähtedes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili muutmisaeg on vigane. Ära laadi seda serverisse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fail on eemaldatud (üleslaadimise alustamisel): %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili muutmisaeg on vigane. Ära laadi  seda serverisse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail muutus sünkroniseerimise käigus. Tegevus jätkub.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="334"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="678"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail muutus sünkroniseerimise käigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="441"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Võrguühenduse viga: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="487"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="490"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="660"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail on eemaldatud sünkroniseerimise käigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="708"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Taastamine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -1328,37 +1328,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna sama nimega fail on serveris juba olemas, siis failinime muutmine pole võimalik. Palun vali mõni muu nimi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime muutmine ei õnnestunud. Palun kontrolli, et ühendus serveriga toimib.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Sul puuduvad õigused selle failinime muutmiseks. Palun autorit, et ta teeks seda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Failiõiguste laadimisel tekkis viga %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses ja lõpus on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime lõpus on tühikuid.</translation>
     </message>
 </context>
 <context>
@@ -1386,7 +1386,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>fail A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
@@ -1414,7 +1414,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>fail B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
@@ -1520,18 +1520,18 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimiskonflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ konfliktsed versioonid.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Millist faili versiooni sa soovid säilitada?&lt;br/&gt;Kui valid mõlemad versioonid, siis lisatakse kohaliku faili nimele number.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -1608,12 +1608,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Kas sa soovid &lt;i&gt;„%1“&lt;/i&gt; kausta koos kogu oma sisuga jäädavalt kustutada?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Kas sa soovid &lt;i&gt;„%1“&lt;/i&gt; jäädavalt kustutada?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="91"/>
@@ -1652,7 +1652,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="183"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Aegumine</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="220"/>
@@ -1675,12 +1675,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="198"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Viga faili kustutamise katkestamisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="199"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga „%1“ kustutamise katkestamisel</translation>
     </message>
 </context>
 <context>
@@ -1708,17 +1708,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="325"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga „%1“ kausta avamisel</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Kaust pole kliendi poolel kättesaadav õiguste puudumise tõttu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kausta ei leidu: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="362"/>
@@ -1728,7 +1728,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga „%1“ kausta lugemisel</translation>
     </message>
 </context>
 <context>
@@ -1743,13 +1743,13 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="414"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="434"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud alustada muutmist kohalikus seadmes.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="47"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="323"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Seadistamisel tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
@@ -1770,13 +1770,13 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="379"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="388"/>
         <source>An error occurred during data retrieval.</source>
-        <translation type="unfinished"/>
+        <translation>Andmete laadimisel tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="183"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="415"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Enne faili muutmist kohalikus seadmes vajalikul sünkroniseerimisel tekkis viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="367"/>
@@ -1791,12 +1791,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="435"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Vigane kohalik asukoht.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="445"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 avamine ei õnnestu</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="445"/>
@@ -1806,7 +1806,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="530"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 fail on juba lukustatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="531"/>
@@ -1904,7 +1904,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="165"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>Viga krüptitud kausta tunnuse laadimisel.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
@@ -1935,31 +1935,31 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tunni eest</numerusform><numerusform>%1 tunni eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="134"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 päeva eest</numerusform><numerusform>%1 päeva eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="137"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 kuu eest</numerusform><numerusform>%1 kuu eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="140"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 aasta eest</numerusform><numerusform>%1 aasta eest</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="172"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Selle lukustas %1 - aegub %2 minuti pärast</numerusform><numerusform>Selle lukustas %1 - aegub %2 minuti pärast</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1973,7 +1973,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="231"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Viga serveripäringu vastuseks: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
@@ -2131,12 +2131,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="501"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>„%1“ ja %n muu fail on parasjagu lukustatud.</numerusform><numerusform>„%1“ ja %n muud faili on parasjagu lukustatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ on parasjagu lukustatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="511"/>
@@ -2201,7 +2201,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on loodud, aga ta oli viimati sünkroniseerimisest välistatud ja seega hetkel sünkroniseerimisele ei kuulu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1568"/>
@@ -2290,7 +2290,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="426"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Tuvastasin vana sünkroniseerimislogi „%1“, kuid selle eemaldamine ei õnnestunud. Palun veendu, et seda ei kasutaks ükski rakendus.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1430"/>
@@ -2320,32 +2320,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1789"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 / %2 (mõni sekund jäänud)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1792"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 / %2 (jäänud %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1795"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 (mõni sekund jäänud)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1 (jäänud %2 )</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1806"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1811"/>
@@ -2474,7 +2474,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="224"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Laadin kaustaloendit serverist…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="250"/>
@@ -2484,7 +2484,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsete failide tugi on kasutusel</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="284"/>
@@ -2494,33 +2494,33 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation>Sünkroniseerime virtuaalseid faile kohalikus kaustas</translation>
+        <translation>Sünkroniseerin virtuaalseid faile kohalikus kaustas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="330"/>
         <source>Synchronizing files in local folder</source>
-        <translation>Sünkroniseerime faile kohalikus kaustas</translation>
+        <translation>Sünkroniseerin faile kohalikus kaustas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin „%1“ muudatusi kaugseadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin „%1“ muudatusi kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerin kohalikke ja kaugkaustu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2582,22 +2582,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Fail %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Alustamas sünkroniseerimist</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ootan %n muu kausta järgi…</numerusform><numerusform>Ootan %n muu kausta järgi…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1194"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Valmistun sünkroniseerima…</translation>
     </message>
 </context>
 <context>
@@ -2657,7 +2657,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Sisesta uue kausta nimi, mis on loomisel „%1“ alla:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="254"/>
@@ -2704,7 +2704,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <location filename="../src/gui/folderwizard.cpp" line="613"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(katseline)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
@@ -2949,7 +2949,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Kas muudad uuenduskalanli?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="466"/>
@@ -3015,12 +3015,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="62"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Palun sisesta %1 salasõna:&lt;br&gt;&lt;br&gt;Kasutajanimi: %2&lt;br&gt;Kasutajakonto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="76"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Võtmehoidlast lugemine ei õnnestunud vea tõttu: „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="83"/>
@@ -3233,7 +3233,7 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="280"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Kuna sama nimega fail on serveris juba olemas, siis failinime muutmine pole võimalik. Palun vali mõnu muu nimi.</translation>
+        <translation>Kuna sama nimega fail on serveris juba olemas, siis failinime muutmine pole võimalik. Palun vali mõni muu nimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="316"/>
@@ -3282,7 +3282,7 @@ If enabled, logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Lülita sisse logimine ajutisse kausta</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -3331,7 +3331,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Faili tunnust ei õnnestu tuvastada.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
@@ -3575,13 +3575,13 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="75"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Ühenda</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="112"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(katseline)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="127"/>
@@ -3607,14 +3607,14 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Hoiatus: kohalik kaust pole tühi, palun vali lahendus!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="658"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>Vaba ruumi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="428"/>
@@ -3635,7 +3635,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="601"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Kohalikus kaustas pole piisavalt vaba ruumi!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
@@ -3700,7 +3700,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="939"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1016"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Konfliktse faili muutmisaega ei õnnestu tuvastada: %1</translation>
     </message>
 </context>
 <context>
@@ -3709,7 +3709,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="102"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>See on sinu %1i kasutajaliidese veebiaadress, kui sa avad ta veebibrauseris.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="217"/>
@@ -3724,7 +3724,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="372"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestu laadida sertifikaati. Kas salasõna oli vale?</translation>
     </message>
 </context>
 <context>
@@ -3752,7 +3752,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="365"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Proovin luua ühendust: %1 / %2…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
@@ -3777,12 +3777,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Loon kohalikku „%1“ kausta sünkroniseerimise jaoks…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Sobib</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="510"/>
@@ -3874,7 +3874,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed faiid on kasutusel</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
@@ -3923,12 +3923,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="506"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Lülita sisse katseline kohatäitjarežiim</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="507"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Püsi turvalisena</translation>
     </message>
 </context>
 <context>
@@ -3936,12 +3936,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Jagamine eeldab salasõna kasutamist</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Palun sisesta jaosmeedia puhul kasutatav salasõna:</translation>
     </message>
 </context>
 <context>
@@ -3957,7 +3957,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Sümbollingid ei ole sünkroniseerimisel toetatud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
@@ -3967,7 +3967,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Failinimed, mis lõppevad punktiga pole selles failisüsteemis toetatud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4013,17 +4013,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime alguses ja lõpus on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Failinimi on liiga pikk.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="458"/>
@@ -4053,52 +4053,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>See failinimi on serveris keelatud</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Põhjus: selline failinimi on keelatud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Põhjus: selline failinime põhiosa (nime algus) on keelatud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="484"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Põhjus: selline faililaiend on keelatud (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="487"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Põhjus: failinimi sisaldab keelatud kirjamärki (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="634"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Failil on laiend, mis on kasutusel vaid virtuaalsete failide puhul.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="775"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>suurus</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="777"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>õigused</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="781"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>faili tunnus</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Server teatas, et „%1“ puudub</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1126"/>
@@ -4108,7 +4108,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1136"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna fail on avatud rakenduses „%1“, siis tema üleslaadimine pole võimalik.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1179"/>
@@ -4168,12 +4168,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1439"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1453"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Vigase muutmisaja tõttu ei õnnestunud metainfot muuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1484"/>
@@ -4189,17 +4189,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1496"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1530"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>tundmatu viga või erind</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1541"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1545"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -4207,7 +4207,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud laadida „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
@@ -4224,7 +4224,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1382"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="543"/>
@@ -4254,13 +4254,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="951"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Allalaaditud fail on tühi, aga server ütles, et oleks pidanud olema: %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1214"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1228"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Server tuvastas, et „%1“ faili muutmisaeg on vigane. Ära salvesta seda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1301"/>
@@ -4270,12 +4270,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1414"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1417"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -4306,7 +4306,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="233"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ kausta loomine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="247"/>
@@ -4318,17 +4318,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>tundmatu viga või erind</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="296"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -4341,7 +4341,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
 </context>
 <context>
@@ -4361,7 +4361,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud laadida „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="477"/>
@@ -4373,18 +4373,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="490"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="523"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="493"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="528"/>
@@ -4394,7 +4394,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud muuta faili nime</translation>
     </message>
 </context>
 <context>
@@ -4407,7 +4407,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
 </context>
 <context>
@@ -4433,12 +4433,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="283"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metainfo salvestamisel andmebaasi: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="286"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -4446,19 +4446,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Ei saa muuta nime: „%1“ → „%2“, tekkis viga „%3“</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="225"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="295"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="242"/>
@@ -4468,12 +4468,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud laadida „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="273"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
@@ -4509,12 +4509,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili muutmisaeg on vigane. Ära laadi  seda serverisse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="399"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fail on eemaldatud (üleslaadimise alustamisel): %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="425"/>
@@ -4534,17 +4534,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Kui failis või kaustas on keelatud tähemärke, siis seda ei saa üles laadida</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="821"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="824"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -4644,7 +4644,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Laadin…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
@@ -4852,7 +4852,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1148"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1364"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Tegevus</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1150"/>
@@ -4867,7 +4867,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Lahku jaoskaustast</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
@@ -4919,27 +4919,27 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1399"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda failikonflikt…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1403"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Teisalda ja muuda nime…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1406"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Teisalda, muuda nime ja laadi üles…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta kohalikud muudatused</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1414"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Teisalda ja laadi üles…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1415"/>
@@ -5134,12 +5134,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sõrmejälg (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sõrmejälg (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
@@ -5167,22 +5167,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="384"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Faili uuendamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="413"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestu uuendada virtuaalse faili metaandmeid: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="420"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestu uuendada metaandmeid: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="434"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud seadistada faili kirjet kohalikus andmebaasis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="466"/>
@@ -5213,12 +5213,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="669"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnesta lugeda sünkroniseerimislogist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
-        <translation>Ei suuda avada sünkroniseeringu zurnaali</translation>
+        <translation>Ei suuda avada sünkroniseerimislogi</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1428"/>
@@ -5372,7 +5372,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>Pollin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
@@ -5655,17 +5655,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ on ketas, mis ei toeta virtuaalseid faile.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ pole NTFS-i põhine failisüsteem ja seega ei toeta virtuaalseid faile.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="84"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Palun vali muu asukoht. „%1“ on võrguketas, mis ei toeta virtuaalseid faile.</translation>
     </message>
 </context>
 <context>
@@ -5839,7 +5839,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="456"/>
@@ -5869,7 +5869,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="531"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollin „%1“ muudatusi kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="548"/>
@@ -5912,12 +5912,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseeri kõik serverist</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Küsi enne luba, kui plaanid sünkroniseerida kaustu, mis on suuremad kui</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -5928,7 +5928,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis asuvad välises andmeruumis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
@@ -5938,7 +5938,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Säilita kohalikud andmed</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
@@ -5948,7 +5948,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Kustuta kohaliku kausta sisu ja alusta sünkroniseerimist tühja kaustaga</translation>
     </message>
 </context>
 <context>
@@ -5985,7 +5985,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="262"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>See on sinu %1i kasutajaliidese veebiaadress, kui sa avad ta veebibrauseris.</translation>
     </message>
 </context>
 <context>
@@ -6325,7 +6325,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="75"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalikud või grupikaustad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="110"/>
@@ -6598,7 +6598,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="51"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 vajab tööks süsteemisalve. Kui Sa kasutad XFCE-d, palun järgi &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;neid juhiseid&lt;/a&gt;. Muudel juhtudel palun paigalda süsteemisalve rakendus nagu näiteks „trayer“ ning proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -6716,12 +6716,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Uuendan kohalikke metaandmeid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="95"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Uuendan kohalike virtuaalsete failide metaandmeid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
@@ -6807,7 +6807,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Alati saadaval kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="87"/>
@@ -6817,7 +6817,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Mõned on saadaval vaid võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>
@@ -6827,12 +6827,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="99"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Muuda alati saadavaks kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="104"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Vabasta andmeruumi</translation>
     </message>
 </context>
 </TS>
