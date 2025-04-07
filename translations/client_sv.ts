@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort lokala kopior</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Lokala kopior</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Frigör utrymme …</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>

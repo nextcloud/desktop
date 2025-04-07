@@ -800,7 +800,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>Habilitar suporte de arquivo virtual %1 … </translation>
+        <translation>Ativar suporte de arquivos virtuais %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
@@ -1732,7 +1732,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="383"/>
         <source>Error while reading directory %1</source>
-        <translation>Erro enquanto lia o diretório  %1</translation>
+        <translation>Erro ao ler o diretório %1</translation>
     </message>
 </context>
 <context>
@@ -4597,7 +4597,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="515"/>
         <source>Poll URL missing</source>
-        <translation>URL de enquete ausente </translation>
+        <translation>Falta o URL da enquete</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
@@ -6857,7 +6857,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Available online only</source>
-        <translation>Disponível apenas online </translation>
+        <translation>Disponível apenas on-line </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="99"/>
