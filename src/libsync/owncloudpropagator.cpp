@@ -1465,7 +1465,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
@@ -1530,7 +1529,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg("", tr("unknown exception"));
                 }
             }
-#endif
             if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
                 if (_item->isEncrypted()) {
                     _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
