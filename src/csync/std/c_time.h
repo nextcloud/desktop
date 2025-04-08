@@ -31,7 +31,7 @@
 #include <sys/time.h>
 #endif
 
-OCSYNC_EXPORT int c_utimes(const QString &uri, const struct timeval *times);
+OCSYNC_EXPORT int c_utimes(const QString &uri, time_t time);
 
 
 #endif /* _C_TIME_H */
