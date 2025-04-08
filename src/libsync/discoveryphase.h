@@ -180,7 +180,7 @@ signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
-    void setfolderQuota(FolderQuota folderQuota);
+    void setfolderQuota(const FolderQuota &folderQuota);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);

@@ -580,6 +580,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | (db/local/remote)"
                            << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                            << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
+                           << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
                            << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
                            << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                            << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
@@ -591,10 +592,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
                            << " | file lock type: " << localFileLockType << "//" << serverFileLockType
                            << " | live photo: " << dbEntry._isLivePhoto << "//" << serverEntry.isLivePhoto
-                           << " | metadata missing: /" << localEntry.isMetadataMissing << '/'
-                           << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
-                           << " | quota used: //" << serverEntry.folderQuota.bytesUsed
-                           << " | quota available: //" << serverEntry.folderQuota.bytesAvailable;
+                           << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
 
     qCInfo(lcDisco).nospace() << processingLog;
 
@@ -1080,6 +1078,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
 int64_t ProcessDirectoryJob::folderQuotaAvailable(const SyncFileItemPtr &item)
 {
+    const auto unlimitedFreeSpace = -3;
     if (const auto isNewItem = item->_instruction == CSYNC_INSTRUCTION_NEW;
         _queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
         && !item->isDirectory()
@@ -1087,26 +1086,28 @@ int64_t ProcessDirectoryJob::folderQuotaAvailable(const SyncFileItemPtr &item)
         && item->_size > 0
         && (item->_instruction == CSYNC_INSTRUCTION_SYNC || isNewItem)) {
 
+        const auto unknownFreeSpace = -2;
+        const auto bytesAvailable = _folderQuota.bytesAvailable;
+
         if (!_dirItem) {
-            return _folderQuota.bytesAvailable;
+            return bytesAvailable;
         }
 
         const auto isDirItemRenamed = _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME;
 
-        // quota is unknown at this point - follow server values: -2: Unknown free space
+        // quota is unknown at this point
         if (isDirItemRenamed && isNewItem) {
-            return -2;
+            return unknownFreeSpace;
         }
 
         if (isDirItemRenamed) {
-            return _folderQuota.bytesAvailable;
+            return bytesAvailable;
         }
 
         return _dirItem->_folderQuota.bytesAvailable;
     }
 
-    // -3: Unlimited free space
-    return -3;
+    return unlimitedFreeSpace;
 }
 
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
@@ -1164,6 +1165,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
 
         if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
+            qCDebug(lcDisco) << "Folder" << item->_file
+                             << "- quota used: " << serverEntry.folderQuota.bytesUsed
+                             << "- quota available: " << serverEntry.folderQuota.bytesAvailable;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             if (_currentFolder._server.isEmpty()) {
                 item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
@@ -2264,7 +2268,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     return serverJob;
 }
 
-void ProcessDirectoryJob::setFolderQuota(FolderQuota folderQuota)
+void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
 {
     _folderQuota.bytesUsed = folderQuota.bytesUsed;
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;

@@ -1442,8 +1442,9 @@ void SyncEngine::slotInsufficientLocalStorage()
 void SyncEngine::slotInsufficientRemoteStorage()
 {
     auto msg = tr("There is insufficient space available on the server for some uploads.");
-    if (_uniqueErrors.contains(msg))
+    if (_uniqueErrors.contains(msg)) {
         return;
+    }
 
     _uniqueErrors.insert(msg);
     emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);

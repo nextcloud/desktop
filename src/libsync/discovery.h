@@ -306,6 +306,6 @@ signals:
     void etag(const QByteArray &, const QDateTime &time);
 
 private slots:
-    void setFolderQuota(FolderQuota folderQuota);
+    void setFolderQuota(const FolderQuota &folderQuota);
 };
 }
