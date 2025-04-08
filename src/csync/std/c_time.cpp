@@ -25,43 +25,45 @@
 #include <QFile>
 
 #ifdef HAVE_UTIMES
-int c_utimes(const QString &uri, const struct timeval *times) {
-    int ret = utimes(QFile::encodeName(uri).constData(), times);
-    return ret;
+int c_utimes(const QString &uri, const time_t time)
+{
+    struct timeval times[2];
+    times[0].tv_sec = times[1].tv_sec = time;
+    times[0].tv_usec = times[1].tv_usec = 0;
+    return utimes(QFile::encodeName(uri).constData(), times);
 }
+
 #else // HAVE_UTIMES
 
 #ifdef _WIN32
-// implementation for utimes taken from KDE mingw headers
+// based on the implementation for utimes from KDE mingw headers
 
 #include <errno.h>
 #include <wtypes.h>
-#define CSYNC_SECONDS_SINCE_1601 11644473600LL
-#define CSYNC_USEC_IN_SEC            1000000LL
-//after Microsoft KB167296
-static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
+
+constexpr long long CSYNC_SECONDS_SINCE_1601 = 11644473600LL;
+constexpr long long CSYNC_USEC_IN_SEC = 1000000LL;
+
+// after Microsoft KB167296, except it uses a `time_t` instead of a `struct timeval`.
+//
+// `struct timeval` is defined in the winsock.h header of all places, and its fields are two `long`s,
+// which even on x64 Windows is 4 bytes wide (i.e. int32).  `time_t` on the other hand is 8 bytes
+// wide (int64) on x64 Windows as well.
+static void UnixTimeToFiletime(const time_t time, LPFILETIME pft)
 {
-    LONGLONG ll = 0;
-    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_usec*10 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
+    LONGLONG ll = time * CSYNC_USEC_IN_SEC * 10 + CSYNC_SECONDS_SINCE_1601 * CSYNC_USEC_IN_SEC * 10;
     pft->dwLowDateTime = (DWORD)ll;
     pft->dwHighDateTime = ll >> 32;
 }
 
-int c_utimes(const QString &uri, const struct timeval *times) {
-    FILETIME LastAccessTime;
-    FILETIME LastModificationTime;
+int c_utimes(const QString &uri, const time_t time)
+{
+    FILETIME filetime;
     HANDLE hFile = nullptr;
 
     auto wuri = uri.toStdWString();
 
-    if(times) {
-        UnixTimevalToFileTime(times[0], &LastAccessTime);
-        UnixTimevalToFileTime(times[1], &LastModificationTime);
-    }
-    else {
-        GetSystemTimeAsFileTime(&LastAccessTime);
-        GetSystemTimeAsFileTime(&LastModificationTime);
-    }
+    UnixTimeToFiletime(time, &filetime);
 
     hFile=CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
                       nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, nullptr);
@@ -87,7 +89,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
         return -1;
     }
 
-    if(!SetFileTime(hFile, nullptr, &LastAccessTime, &LastModificationTime)) {
+    if (!SetFileTime(hFile, nullptr, &filetime, &filetime)) {
         //can this happen?
         errno=ENOENT;
         CloseHandle(hFile);
