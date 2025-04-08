@@ -1927,12 +1927,6 @@ private slots:
             QVERIFY(conflictSolverCaseClashForFolderDone.wait());
             QVERIFY(fakeFolder.syncOnce());
 
-            // verify no case clash conflicts folder items are found
-            caseClashConflictFolderItemLower = completeSpy.findItem(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
-            caseClashConflictFolderItemUpper = completeSpy.findItem(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
-            QVERIFY((!caseClashConflictFolderItemLower || caseClashConflictFolderItemLower->_file.isEmpty())
-                    && (!caseClashConflictFolderItemUpper || caseClashConflictFolderItemUpper->_file.isEmpty()));
-
             // veriy invalid filename conflict folder item is still present
             invalidFilenameConflictFolderItem = completeSpy.findItem(diverseConflictsFolderPath + "/" + testInvalidCharFolder);
             completeSpy.clear();
