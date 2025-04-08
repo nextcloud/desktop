@@ -1449,6 +1449,43 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testDetectSpuriousNotification() {
+#if !defined Q_OS_WIN
+        QSKIP("not applicable");
+#endif
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const QString odpFile("odp/presentation.odp");
+        const QString odtFile("odt/document.odt");
+        fakeFolder.localModifier().mkdir("odp");
+        fakeFolder.localModifier().insert(odpFile);
+        fakeFolder.localModifier().mkdir("odt");
+        fakeFolder.localModifier().insert(odtFile);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        QFile odp(fakeFolder.localPath() + odpFile);
+        QVERIFY(odp.open(QIODevice::ReadWrite));
+        odp.write(odpFile.toLatin1(), qstrlen(odpFile.toLatin1()));
+        odp.close();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, odpFile, CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(*vfs->pinState(odpFile), PinState::Unspecified);
+
+        QFile odt(fakeFolder.localPath() + odtFile);
+        QVERIFY(odt.open(QIODevice::ReadWrite));
+        odt.close();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, odtFile, CSYNC_INSTRUCTION_UPDATE_METADATA));
+        QCOMPARE(*vfs->pinState(odtFile), PinState::Unspecified);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
