@@ -11,6 +11,11 @@
 #include "common/utility.h"
 #include "logger.h"
 
+#include "common/vfs.h"
+#include "syncengine.h"
+#include "syncenginetestutils.h"
+#include "vfs/cfapi/cfapiwrapper.h"
+
 void touch(const QString &file)
 {
 #ifdef Q_OS_WIN
@@ -389,6 +394,38 @@ private slots:
         for (const auto &officeLockFile : listOfOfficeLockFiles) {
             rm(officeLockFile);
         }
+    }
+
+    void testDetectSupuriousNotification() {
+#if !defined Q_OS_WIN
+        QSKIP("not applicable");
+#endif
+        FakeFolder fakeFolder{ FileInfo() };
+        auto cfapiVfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WindowsCfApi).release());
+        fakeFolder.switchToVfs(cfapiVfs);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const QString odpFolder("odp");
+        const QString odpFile("odp/presentation.odp");
+        const QString odtFolder("odt");
+        const QString odtFile("odt/document.odt");
+        
+        fakeFolder.localModifier().mkdir(odpFolder);
+        fakeFolder.localModifier().insert(odpFile);
+        fakeFolder.localModifier().mkdir(odtFolder);
+        fakeFolder.localModifier().insert(odtFile);
+        cfapiVfs->setPinState(fakeFolder.localPath() + odpFile, PinState::OnlineOnly);
+        cfapiVfs->setPinState(fakeFolder.localPath() + odtFile, PinState::OnlineOnly);
+        fakeFolder.syncOnce();
+        qDebug() << "ffakeFolder.localPath() + odpFile -" << fakeFolder.localPath() + odpFile;
+        qDebug() << "ffakeFolder.localPath() + odtFile -" << fakeFolder.localPath() + odtFile;
+        QScopedPointer<QSignalSpy> pathChangedSpy(new QSignalSpy(_watcher.data(), &FolderWatcher::pathChanged));
+        touch(fakeFolder.localPath() + odpFile);
+        touch(fakeFolder.localPath() + odtFile);
+        QVERIFY(waitForPathChanged(fakeFolder.localPath() + odpFile));
+        QVERIFY(waitForPathChanged(fakeFolder.localPath() + odtFile));
+        QVERIFY(!cfapiVfs->isPlaceHolderInSync(fakeFolder.localPath() + odpFile));
+        QVERIFY(!cfapiVfs->isPlaceHolderInSync(fakeFolder.localPath() + odtFile));
     }
 };
 
