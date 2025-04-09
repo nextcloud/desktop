@@ -48,12 +48,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="176"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Helistaja tunnuspilt kõnerakenduses</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="235"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Vasta kõnerakenduse kõnede teavitusele</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="252"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Keeldu kõnerakenduse kõnede teavitusest</translation>
     </message>
 </context>
 <context>
@@ -822,7 +822,7 @@ Oota kuni sünkroniseerimine lõppeb ja seejärel krüpti.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Kinnita sünkroniseerimitava kausta eemaldamine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="885"/>
@@ -1072,7 +1072,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="174"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Küsin autentimiseks vajalikke andmeid</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
@@ -2114,17 +2114,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>„%1“ failil ja veel %n-l muul failil on sünkroniseerimiskonflikte.</numerusform><numerusform>„%1“ failil ja veel %n-l muul failil on sünkroniseerimiskonflikte.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ failil on sünkroniseerimiskonflikt. Palun kontrolli konfliktset faili!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>„%1“ ja %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform><numerusform>„%1“ ja  %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="496"/>
@@ -2575,7 +2575,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation type="unfinished"/>
+        <translation>Jäänud %5, %1 / %2, fail %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
@@ -2630,7 +2630,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="695"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Lisa sünkroniseerimine</translation>
     </message>
 </context>
 <context>
@@ -2671,7 +2671,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="264"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud autentida ligipääsul asukohta „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="266"/>
@@ -2681,7 +2681,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="284"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud luua kausta sisu loendit. Viga: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="365"/>
@@ -2726,12 +2726,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ühtegi E-Silti ei saabunud serverist, kontrolli puhverserverit/lüüsi.</translation>
+        <translation>Ühtegi ETag-i ei saabunud serverist, kontrolli puhverserverit/lüüsi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="199"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Saime jätkamiseks erineva E-Sildi. Proovin järgmine kord uuesti.</translation>
+        <translation>Sain jätkamiseks erineva ETag-i. Proovin järgmine kord uuesti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="210"/>
@@ -3011,7 +3011,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Avaliku jagatava lingi loomine või laadimine ei õnnestunud. Viga:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -3034,7 +3036,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Palun klõpsi siin&lt;/a&gt; ja loo veebiliideses rakenduse salasõna.</translation>
     </message>
 </context>
 <context>
@@ -3657,7 +3659,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ei õnnestunud luua ühendust määratud turvalise aadressiga. Kuidas sa tahad jätkata?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -3677,7 +3679,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ei õnnestunud luua ühendust määratud turvalise aadressiga &lt;em&gt;%1&lt;/em&gt;. Kuidas sa tahad jätkata?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3741,7 +3743,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Vigane võrguaadress</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
@@ -3766,7 +3768,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Server keelab ligipääsu. Kontrollimaks omi õigusi &lt;a href=&quot;%1&quot;&gt;palun klõpsi siin&lt;/a&gt; ja logi teenusesse veebibrauseri vahendusel.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
@@ -3911,7 +3913,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="491"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Kas lülitame katselise funktsionaalsuse sisse?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="492"/>
@@ -3953,7 +3955,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Pollitavalt võrguaadressilt tulid vastusena andmed vigases json-vormingus</translation>
     </message>
 </context>
 <context>
@@ -3966,7 +3968,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Fail leidub eiratavate failide loendis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
@@ -4004,7 +4006,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Failinime lõpus on tühikuid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="436"/>
@@ -4042,7 +4044,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Failikonflikt: serveris asuv versioon on alla laaditud, kohaliku koopia nimi on muudetud ja ta on üles laadimata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="468"/>
@@ -4149,7 +4151,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1893"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Pole lubatud üles laadida, kuna tegemist on serveri poolel ainult-loetava failiga, taastan oleku</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1929"/>
@@ -4238,12 +4240,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="706"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Allalaadimine vähendaks kohalikku vaba andmeruumi allapoole lubatud piiri</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Andmekandjal on vähem ruumi, kui %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="868"/>
@@ -4292,7 +4294,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="312"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fail või kaust on ainult lugemisõigustega jaosmeediast eemaldatud, aga taastamine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -4347,7 +4349,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Ajutine viga kohaliku objekti kustutamisel, mis oli kustutatud ka serverist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -4378,7 +4380,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="454"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud määrata PIN-koodi olekut</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="467"/>
@@ -4426,7 +4428,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="158"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri vastuses oli vale HTTP kood. Ootuspärane kood oli 204, aga vastuses oli „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -4489,12 +4491,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud määrata PIN-koodi olekut</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Viga metainfo salvestamisel andmebaasi</translation>
     </message>
 </context>
 <context>
@@ -4507,13 +4509,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="278"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili ei saa üles laadida, sest juba on olemas sama olemusliku nimega fail, kus erinevus on vaid suur- ja väiketähtedes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="289"/>
         <location filename="../src/libsync/propagateupload.cpp" line="713"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ üleslaadimine ületab selle kausta kvoodi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="327"/>
@@ -4573,22 +4575,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="515"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Pollimise võrguaadress on puudu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Ootamatu olekukood serveri vastusel (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Faili tunnus serveris on puudu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="551"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>Serveri vastusest on ETag puudu</translation>
     </message>
 </context>
 <context>
@@ -4611,7 +4613,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="289"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Server ei tunnistanud viimast andmeblokki. (HTTP-päringus oli ETag puudu)</translation>
     </message>
 </context>
 <context>
@@ -4660,7 +4662,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda kaugkaustad, mida sa ei soovi sünkroniseerida.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
@@ -5072,7 +5074,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>SSL-i sessioonitunnuste ja -lubade tugi puudub</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -5100,7 +5102,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="138"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestu luua turvalist ühendust teenusega &lt;i&gt;„%1“&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
@@ -5173,7 +5175,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="197"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (jäänud vahele varasema vea tõttu, järgmise katse aeg on %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="384"/>
@@ -5198,28 +5200,28 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="466"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Lahendamata failikonflikt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="568"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Vaid „%1“ on saadaval, aga alustamisel on vajalik „%2“</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="601"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kohaliku sünkroniseerimise andmekogu avamine või loomine ei õnnestu. Palun kontrolli, et sinul on sünkroniseeritavas kaustas kirjutusõigus olemas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="617"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Kasutan järelliitega virtuaalseid faile, aga järelliide on määramata</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="629"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud lugeda keeluloendit kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="669"/>
@@ -5234,12 +5236,12 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1428"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Andmekandjal napib ruumi. Allalaadimised, mis oleks andmeruumi vähendanud alla %1, jäid vahele.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Mõnede üleslaadimiste jaoks pole serveris piisavalt vaba andmeruumi.</translation>
     </message>
 </context>
 <context>
@@ -5844,7 +5846,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="387"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajakontol on sünkroniseerimine välja lülitatud</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
@@ -5954,7 +5956,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selle märkeruudu valimisel olemasoleva kohaliku kausta sisu kustutatakse ja algab puhtalt lehelt sünkroniseerimine serverist.&lt;/p&gt;&lt;p&gt;Kui sa soovid, et selle kohaliku kausta sisu peaks üleslaaditama serverisse, siis palun jäta märkeruut valimata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
@@ -6040,6 +6042,16 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
         <translation>Sünkroniseeritud: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="596"/>
+        <source>File is already deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="611"/>
+        <source>Error deleting the file</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
@@ -6645,7 +6657,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Laadisin alla serveris oleva versiooni, kohaliku muudetud  faili teave on kirjas failikonfliktide logis</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
@@ -6681,7 +6693,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="58"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Uuendasin kohalikke metaandmeid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
@@ -6798,22 +6810,22 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="45"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Brauseri avamine ei õnnestunud</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="46"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>%1 võrguaadressi avamiseks ei õnnestunud veebibrauserit käivitada. Võib-olla on vaikimisi veebibrauser seadistamata?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="69"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud käivitada e-posti klienti</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Uue sõnumi koostamiseks ei õnnestunud e-posti klienti käivitada. Võib-olla on vaikimisi e-posti klient seadistamata?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
@@ -6823,7 +6835,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Hetkel saadaval kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
@@ -6833,7 +6845,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Saadaval vaid võrgus</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="99"/>

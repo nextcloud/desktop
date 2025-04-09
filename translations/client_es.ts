@@ -1250,7 +1250,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation>&amp;Username:</translation>
+        <translation>&amp;Usuario:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1931,43 +1931,43 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 segundo(s)</numerusform><numerusform>Hace %1 segundo(s)</numerusform><numerusform>Hace %1 segundo(s)</numerusform></translation>
+        <translation><numerusform>Hace %1 segundo</numerusform><numerusform>Hace %1 segundo(s)</numerusform><numerusform>Hace %1 segundo(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 minuto(s)</numerusform><numerusform>Hace %1 minuto(s)</numerusform><numerusform>Hace %1 minuto(s)</numerusform></translation>
+        <translation><numerusform>Hace %1 minuto</numerusform><numerusform>Hace %1 minuto(s)</numerusform><numerusform>Hace %1 minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 hora(s)</numerusform><numerusform>Hace %1 hora(s)</numerusform><numerusform>Hace %1 hora(s)</numerusform></translation>
+        <translation><numerusform>Hace %1 hora</numerusform><numerusform>Hace %1 hora(s)</numerusform><numerusform>Hace %1 hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="134"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 día(s)</numerusform><numerusform>Hace %1 día(s)</numerusform><numerusform>Hace %1 día(s)</numerusform></translation>
+        <translation><numerusform>Hace %1 día</numerusform><numerusform>Hace %1 día(s)</numerusform><numerusform>Hace %1 día(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="137"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 mes(es)</numerusform><numerusform>Hace %1 mes(es)</numerusform><numerusform>Hace %1 mes(es)</numerusform></translation>
+        <translation><numerusform>Hace %1 mes</numerusform><numerusform>Hace %1 mes(es)</numerusform><numerusform>Hace %1 mes(es)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="140"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>Hace %1 año(s)</numerusform><numerusform>Hace %1 año(s)</numerusform><numerusform>Hace %1 año(s)</numerusform></translation>
+        <translation><numerusform>Hace %1 año</numerusform><numerusform>Hace %1 año(s)</numerusform><numerusform>Hace %1 año(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="172"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Expira en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Expira en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Expira en %2 minuto(s)</numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 - Caduca en %2 minuto</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2228,7 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
     <message>
         <location filename="../src/gui/folder.cpp" line="1606"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation>La descarga de archivo virtual ha fallado con código &quot;%1&quot; , estado &quot;%2&quot; y mensaje de error &quot;%3&quot;</translation>
+        <translation>La descarga del archivo virtual ha fallado con código &quot;%1&quot; , estado &quot;%2&quot; y mensaje de error &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1700"/>
@@ -2236,17 +2236,17 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation>Han sido eliminados un gran número de archivos en el servidor.
-Por favor, confirma si quieres proceder con estos borrados.
-Alternativamente, puedes restaurar todos los archivos borrados subiéndoles desde la carpeta &apos;%1&apos; al servidor.</translation>
+Por favor, confirme si quiere proceder con estas eliminaciones.
+Alternativamente, puede restaurar todos los archivos borrados subiéndolos desde la carpeta &apos;%1&apos; al servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1701"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation>Han sido eliminados un gran número de archivos en tu carpeta local &apos;%1&apos;.
-Por favor, confirma si quieres continuar con estos borrados.
-Alternativamente, puedes restaurar todos los archivos borrados descargándolos del servidor.</translation>
+        <translation>Han sido eliminados un gran número de archivos en su carpeta local &apos;%1&apos;.
+Por favor, confirma si quiere continuar con estas eliminaciones.
+Alternativamente, puede restaurar todos los archivos borrados descargándolos del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1702"/>
@@ -2256,7 +2256,7 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
     <message>
         <location filename="../src/gui/folder.cpp" line="1706"/>
         <source>Proceed with Deletion</source>
-        <translation>Continuar con el borrado</translation>
+        <translation>Continuar con la eliminación</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1707"/>
@@ -2352,7 +2352,7 @@ Alternativamente, puedes restaurar todos los archivos borrados descargándolos d
     <message>
         <location filename="../src/gui/folderman.cpp" line="1801"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation>Sincronizando %1 (Quedan unos segundos)</translation>
+        <translation>Sincronizando %1 (Quedan pocos segundos)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1803"/>
@@ -2478,7 +2478,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="175"/>
         <source>Could not decrypt!</source>
-        <translation>¡No fue posible desencriptar!</translation>
+        <translation>¡No fue posible descifrar!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="177"/>
@@ -2563,7 +2563,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Subiendo %1 /s</translation>
+        <translation>Subiendo %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
@@ -2607,7 +2607,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>About to start syncing</source>
-        <translation>A punto de empezar a sincronizar</translation>
+        <translation>A punto de comenzar a sincronizar</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
@@ -2800,7 +2800,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Mostrar servidor y notificaciones</translation>
+        <translation>Mostrar &amp;Notificaciones del Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
@@ -2959,7 +2959,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <translation>- beta: contiene versiones con nuevas características que pueden no haberse probado exhaustivamente.
 - diaria: contiene versiones creadas diariamente solo para pruebas y desarrollo.
 
-Bajar de versión no es inmediatamente posible: cambiar de beta a estable significa esperar a la siguiente ersión estable.</translation>
+Cambiar a una versión anterior no es inmediatamente posible: cambiar de beta a estable significa esperar a la siguiente version estable.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="458"/>
@@ -2967,9 +2967,9 @@ Bajar de versión no es inmediatamente posible: cambiar de beta a estable signif
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation>-empresarial: contiene versiones estables para clientes.
+        <translation>- empresarial: contiene versiones estables para clientes.
 
-Bajar de versión no es inmediatamente posible: cambiar de estable a empresarial significa esperar a la nueva versión empresarial.</translation>
+Cambiar a una versión anterior no es inmediatamente posible: cambiar de estable a empresarial significa esperar a la nueva versión empresarial.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
@@ -3187,12 +3187,12 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation>Los siguientes caracteres no se permiten en el sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espacios de entrada/salida</translation>
+        <translation>Los siguientes caracteres no se permiten en el sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espacios al inicio/final</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation>No se ha podido sincronizar el archivo «%1» porque su nombre contiene caracteres no permitidos en e lservidor.</translation>
+        <translation>No se ha podido sincronizar el archivo &quot;%1&quot; porque su nombre contiene caracteres que no están permitidos en el servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
@@ -3202,7 +3202,7 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation>Los siguientes basenames no están permitidos: %1</translation>
+        <translation>Los siguientes nombres base no están permitidos: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
@@ -3217,7 +3217,7 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Checking rename permissions …</source>
-        <translation>Comprobando los permisos de renombramiento ...</translation>
+        <translation>Comprobando los permisos de para renombrado …</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
@@ -3247,7 +3247,7 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="201"/>
         <source>Use invalid name</source>
-        <translation>Nombre no válido</translation>
+        <translation>Utilizar nombre inválido</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="256"/>
@@ -3454,7 +3454,7 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
     <message>
         <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
-        <translation>Proxy especificado manualmente</translation>
+        <translation>Especificar proxy manualmente</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="259"/>
@@ -3549,7 +3549,7 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation>Descarganod %1…</translation>
+        <translation>Descargando %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -4096,22 +4096,22 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation>Motivo: el nombre de archivo completo está prohibido.</translation>
+        <translation>Motivo: el nombre de archivo completo no está permitido.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motivo: el nombre de archivo tiene un basename (inicio del nombre del archivo) prohibido.</translation>
+        <translation>Motivo: el nombre de archivo tiene un nombre base (inicio del nombre del archivo) no permitido.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="484"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Motivo: el archivo tiene una extensión prohibida (%1).</translation>
+        <translation>Motivo: el archivo tiene una extensión no permitida (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="487"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Motivo: el nombre del archivo contiene un carácter prohibido (%1).</translation>
+        <translation>Motivo: el nombre del archivo contiene un carácter no permitido (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="634"/>
@@ -4381,7 +4381,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Error temporal al quitar ítem local que fue eliminado del servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -4912,7 +4912,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1176"/>
         <source>Leave this share</source>
-        <translation>Salir de este compartido</translation>
+        <translation>Abandonar este recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
@@ -4953,7 +4953,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1259"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Expira en %1 minuto</numerusform><numerusform>Expira en %1 minutos</numerusform><numerusform>Expira en %1 minutos</numerusform></translation>
+        <translation><numerusform>Caduca en %1 minuto</numerusform><numerusform>Caduca en %1 minutos</numerusform><numerusform>Caduca en %1 minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
@@ -5546,7 +5546,7 @@ El servidor respondió con el error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation><numerusform>%n notificación(es)</numerusform><numerusform>%n notificación(es)</numerusform><numerusform>%n notificación(es)</numerusform></translation>
+        <translation><numerusform>%n notificación</numerusform><numerusform>%n notificación(es)</numerusform><numerusform>%n notificación(es)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5613,17 +5613,17 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>La función de estado no es compatible. No podrás establecer tu estado.</translation>
+        <translation>La característica de estado no está soportada. No podrá establecer su estado.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>La función de emojis no es compatible. Es posible que algunas funciones de estado del usuario no funcionen.</translation>
+        <translation>La característica de emojis no está soportada. Es posible que algunas características de estado del usuario no funcionen.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>No se ha podido obtener el estado. Asegúrese de que está conectado al servidor.</translation>
+        <translation>No se ha podido establecer el estado. Asegúrese de que está conectado al servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
@@ -5692,7 +5692,7 @@ El servidor respondió con el error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation><numerusform>%1 día </numerusform><numerusform>%1 días </numerusform><numerusform>%1 días </numerusform></translation>
+        <translation><numerusform>%1 día</numerusform><numerusform>%1 días</numerusform><numerusform>%1 días</numerusform></translation>
     </message>
 </context>
 <context>
@@ -5787,7 +5787,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Ha sido cerrada la sesión de %1 como usuario %2. Por favor, inicie sesión de nuevo.</translation>
+        <translation>Ha cerrado la sesión de su cuenta %1 en %2. Por favor, inicie sesión de nuevo.</translation>
     </message>
 </context>
 <context>
@@ -5800,12 +5800,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation>Entrar</translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation>Registrarse con un proveedor</translation>
+        <translation>Iniciar sesión a través de un proveedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -5848,12 +5848,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Terms of service</source>
-        <translation>Términos del servicio</translation>
+        <translation>Términos de servicio</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Tu cuenta %1 requiere que aceptes los términos del servicio del servidor. Vas a ser redirigido a %2 para señalar que los has leído y estás de acuerdo.</translation>
+        <translation>Su cuenta %1 requiere que acepte los términos de servicio de su servidor. Será redirigido a %2 para indicar que los ha leído y está de acuerdo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
@@ -5894,12 +5894,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation>macOS VFS para %1: la última sincronización fue correcta.</translation>
+        <translation>macOS VFS para %1: la última sincronización fue exitosa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation>macOS VFS para %1: Se ha encontrado un error.</translation>
+        <translation>macOS VFS para %1: Se ha encontrado un problema.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="469"/>
@@ -5932,7 +5932,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation>Usuario</translation>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
@@ -5942,7 +5942,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation>Elegir una carpeta distinta</translation>
+        <translation>Elegir una carpeta diferente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
@@ -6053,27 +6053,37 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="805"/>
         <source>You renamed %1</source>
-        <translation>Has renombrado %1</translation>
+        <translation>Ha renombrado %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="807"/>
         <source>You deleted %1</source>
-        <translation>Has borrado %1</translation>
+        <translation>Ha eliminado %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="809"/>
         <source>You created %1</source>
-        <translation>Has creado %1</translation>
+        <translation>Ha creado %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
         <source>You changed %1</source>
-        <translation>Has cambiado %1</translation>
+        <translation>Ha cambiado %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
         <translation>Sincronizado %1</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="596"/>
+        <source>File is already deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="611"/>
+        <source>Error deleting the file</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
@@ -6123,7 +6133,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="63"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation>Las rutas que empiecen con el carácter &apos;#&apos; no son compatibles con el modo VFS.</translation>
+        <translation>Las rutas que comienzan con el carácter &apos;#&apos; no están soportadas en el modo VFS.</translation>
     </message>
 </context>
 <context>
@@ -6142,7 +6152,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="64"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Escoja si quiere mantener la versión local, la versión del servidor, o ambas. Si escoge ambas, se le añadirá un número al nombre del archivo local.</translation>
+        <translation>Decida si quiere mantener la versión local, la versión del servidor, o ambas. Si escoge ambas, se le añadirá un número al nombre del archivo local.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="80"/>
@@ -6204,12 +6214,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="382"/>
         <source>File drop (upload only)</source>
-        <translation>Soltar archivo (solo carga)</translation>
+        <translation>Entrega de archivos (solo carga)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
-        <translation>Permitir que los otros compartan</translation>
+        <translation>Permitir que otros compartan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="441"/>
@@ -6249,7 +6259,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
         <source>Share link copied!</source>
-        <translation>¡Enlace compartido copiado!</translation>
+        <translation>¡Enlace al recurso compartido copiado!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
@@ -6262,12 +6272,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="93"/>
         <source>Password required for new share</source>
-        <translation>Se requiere una contraseña para la nueva compartición</translation>
+        <translation>Se requiere una contraseña para el nuevo recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="121"/>
         <source>Share password</source>
-        <translation>Contraseña de la compartición</translation>
+        <translation>Contraseña del recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
@@ -6300,7 +6310,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Buscar usuarios o grupos...</translation>
+        <translation>Buscar usuarios o grupos…</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
@@ -6339,7 +6349,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation>Responder a ...</translation>
+        <translation>Responder a …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="51"/>
@@ -6436,7 +6446,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="33"/>
         <source>Search results section %1</source>
-        <translation>Sección %1 de resultados de búsqueda</translation>
+        <translation>Sección de resultados de búsqueda %1</translation>
     </message>
 </context>
 <context>
@@ -6449,12 +6459,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
-        <translation>El estado actual del usuario es en línea</translation>
+        <translation>El estado actual de la cuenta es en línea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is do not disturb</source>
-        <translation>El estado actual del usuario es no molestar</translation>
+        <translation>El estado actual de la cuenta es no molestar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -6651,7 +6661,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="592"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Creado desde la revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 con Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Creado desde la revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 utilizando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6766,7 +6776,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="95"/>
         <source>Updating local virtual files metadata</source>
-        <translation>Actualizando los metadatos locales de los archivos virtuales</translation>
+        <translation>Actualizando los metadatos de los archivos virtuales locales</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
@@ -6794,12 +6804,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync was successful</source>
-        <translation>La sincronización ha tenido éxito</translation>
+        <translation>La sincronización fue exitosa</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation>La sincronización ha tenido éxito pero se han ignorado algunos archivos</translation>
+        <translation>La sincronización fue exitosa, pero se han ignorado algunos archivos</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>

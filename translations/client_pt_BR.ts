@@ -358,7 +358,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
-        <translation>Configurações Gerais</translation>
+        <translation>Configurações gerais</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
@@ -1928,43 +1928,43 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>%1 segundo(s) atrás</numerusform><numerusform>%1 segundo(s) atrás</numerusform><numerusform>%1 segundo(s) atrás</numerusform></translation>
+        <translation><numerusform>há %1 segundo</numerusform><numerusform>há %1 segundos</numerusform><numerusform>há %1 segundos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>%1 minuto(s) atrás</numerusform><numerusform>%1 minuto(s) atrás</numerusform><numerusform>%1 minuto(s) atrás</numerusform></translation>
+        <translation><numerusform>há %1 minuto</numerusform><numerusform>há %1 minutos</numerusform><numerusform>há %1 minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>%1 hora(s) atrás</numerusform><numerusform>%1 hora(s) atrás</numerusform><numerusform>%1 hora(s) atrás</numerusform></translation>
+        <translation><numerusform>há %1 hora</numerusform><numerusform>há %1 horas</numerusform><numerusform>há %1 horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="134"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>%1 dia(s) atrás</numerusform><numerusform>%1 dia(s) atrás</numerusform><numerusform>%1 dia(s) atrás</numerusform></translation>
+        <translation><numerusform>há %1 dia</numerusform><numerusform>há %1 dias</numerusform><numerusform>há %1 dias</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="137"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>%1 mês(es) atrás</numerusform><numerusform>%1 mês(es) atrás</numerusform><numerusform>%1 mês(es) atrás</numerusform></translation>
+        <translation><numerusform>há %1 mês</numerusform><numerusform>há %1 mes</numerusform><numerusform>há %1 meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="140"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>%1 ano(s) atrás</numerusform><numerusform>%1 ano(s) atrás</numerusform><numerusform>%1 ano(s) atrás</numerusform></translation>
+        <translation><numerusform>há %1 ano</numerusform><numerusform>há %1 anos</numerusform><numerusform>há %1 anos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="172"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Expira em %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minuto(s)</numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 - Expira em %2 minuto</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -4185,7 +4185,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1929"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Não tem permissão para remover, restaurar </translation>
+        <translation>Não tem permissão para remover, restaurando</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2120"/>
@@ -4234,7 +4234,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1543"/>
         <source>File is currently in use</source>
-        <translation>O arquivo está atualmente em uso </translation>
+        <translation>O arquivo está em uso no momento</translation>
     </message>
 </context>
 <context>
@@ -4310,7 +4310,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1411"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está correntemente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
 </context>
 <context>
@@ -4363,7 +4363,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está correntemente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
 </context>
 <context>
@@ -4378,7 +4378,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Erro temporário ao remover item local removido do servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -6071,6 +6071,16 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
         <translation>%1 sincronizado</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="596"/>
+        <source>File is already deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="611"/>
+        <source>Error deleting the file</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
