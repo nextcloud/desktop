@@ -466,6 +466,17 @@ import OSLog
             return
         }
 
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not purging stale local file metadatas.
+                    db manager unabilable for domain: \(self.domain.displayName, privacy: .public)
+                """
+            )
+            completionHandler()
+            return
+        }
+
         guard let fpManager = NSFileProviderManager(for: domain) else {
             Logger.fileProviderExtension.error(
                 "Could not get file provider manager for domain: \(self.domain.displayName, privacy: .public)"
@@ -476,7 +487,7 @@ import OSLog
 
         let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
         let materialisedObserver = MaterialisedEnumerationObserver(
-            ncKitAccount: ncAccount.ncKitAccount
+            ncKitAccount: ncAccount.ncKitAccount, dbManager: dbManager
         ) { _ in
             completionHandler()
         }
