@@ -4375,7 +4375,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Errore temporaneo durante la rimozione dell&apos;elemento locale rimosso dal server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -6068,6 +6068,16 @@ Il server ha risposto con errore: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
         <source>Synced %1</source>
         <translation>%1 sincronizzato</translation>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="596"/>
+        <source>File is already deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/filesystembase.cpp" line="611"/>
+        <source>Error deleting the file</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
