@@ -1528,7 +1528,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/NextcloudFileProviderKit.git";
 			requirement = {
-				branch = "stable-2.0";
+				branch = "bugfix/separate-db";
 				kind = branch;
 			};
 		};
