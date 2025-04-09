@@ -34,7 +34,7 @@ public final class FilesDatabaseManager: Sendable {
         realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration,
         account: String,
         fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
-        relativeDatabaseFolderPath: String = relativeDatabaseFolderPath,
+        relativeDatabaseFolderPath: String = relativeDatabaseFolderPath
     ) {
         Realm.Configuration.defaultConfiguration = realmConfig
 
