@@ -66,7 +66,8 @@ extension Enumerator {
                 metadata: metadata,
                 parentItemIdentifier: .trashContainer,
                 account: account,
-                remoteInterface: remoteInterface
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
             newTrashedItems.append(item)
 

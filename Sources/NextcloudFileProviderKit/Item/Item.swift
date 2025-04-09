@@ -23,8 +23,7 @@ public class Item: NSObject, NSFileProviderItem {
         case uploadError
     }
 
-    lazy var dbManager: FilesDatabaseManager = .shared
-
+    public let dbManager: FilesDatabaseManager
     public let metadata: SendableItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
     public let account: Account
@@ -188,7 +187,11 @@ public class Item: NSObject, NSFileProviderItem {
         #endif
     }
 
-    public static func rootContainer(account: Account, remoteInterface: RemoteInterface) -> Item {
+    public static func rootContainer(
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager
+    ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             account: account.ncKitAccount,
@@ -219,11 +222,16 @@ public class Item: NSObject, NSFileProviderItem {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
     }
 
-    public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
+    public static func trashContainer(
+        remoteInterface: RemoteInterface,
+        account: Account,
+        dbManager: FilesDatabaseManager
+    ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
             account: account.ncKitAccount,
@@ -253,7 +261,8 @@ public class Item: NSObject, NSFileProviderItem {
             metadata: metadata,
             parentItemIdentifier: .trashContainer,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
     }
 
@@ -263,12 +272,14 @@ public class Item: NSObject, NSFileProviderItem {
         metadata: SendableItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
-        remoteInterface: RemoteInterface
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager
     ) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
         self.remoteInterface = remoteInterface
+        self.dbManager = dbManager
         super.init()
     }
 
@@ -276,14 +287,18 @@ public class Item: NSObject, NSFileProviderItem {
         identifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) -> Item? {
         // resolve the given identifier to a record in the model
         guard identifier != .rootContainer else {
-            return Item.rootContainer(account: account, remoteInterface: remoteInterface)
+            return Item.rootContainer(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
+            )
         }
         guard identifier != .trashContainer else {
-            return Item.trashContainer(remoteInterface: remoteInterface, account: account)
+            return Item.trashContainer(
+                remoteInterface: remoteInterface, account: account, dbManager: dbManager
+            )
         }
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
@@ -302,7 +317,8 @@ public class Item: NSObject, NSFileProviderItem {
             metadata: metadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
     }
 }

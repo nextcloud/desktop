@@ -26,7 +26,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
     public required init(
         ncKitAccount: String,
-        dbManager: FilesDatabaseManager = FilesDatabaseManager.shared,
+        dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
         self.ncKitAccount = ncKitAccount

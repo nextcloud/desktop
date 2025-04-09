@@ -92,7 +92,8 @@ extension Item {
             metadata: directoryMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
         
         return (fpItem, nil)
@@ -208,7 +209,8 @@ extension Item {
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
         
         return (fpItem, nil)
@@ -403,7 +405,8 @@ extension Item {
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         )
     }
 
@@ -418,7 +421,7 @@ extension Item {
         remoteInterface: RemoteInterface,
         forcedChunkSize: Int? = nil,
         progress: Progress,
-        dbManager: FilesDatabaseManager = .shared
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
         
@@ -555,7 +558,8 @@ extension Item {
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
-                    remoteInterface: remoteInterface
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
                 )
             }
 

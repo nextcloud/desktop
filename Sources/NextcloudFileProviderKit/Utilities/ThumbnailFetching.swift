@@ -17,6 +17,7 @@ public func fetchThumbnails(
     requestedSize size: CGSize,
     account: Account,
     usingRemoteInterface remoteInterface: RemoteInterface,
+    andDatabase dbManager: FilesDatabaseManager,
     perThumbnailCompletionHandler: @escaping (
         NSFileProviderItemIdentifier,
         Data?,
@@ -38,7 +39,8 @@ public func fetchThumbnails(
         guard let item = Item.storedItem(
             identifier: itemIdentifier,
             account: account,
-            remoteInterface: remoteInterface
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         ) else {
             logger.error(
                 """

@@ -22,7 +22,7 @@ func upload(
     withAccount account: Account,
     inChunksSized chunkSize: Int? = nil,
     usingChunkUploadId chunkUploadId: String? = UUID().uuidString,
-    dbManager: FilesDatabaseManager = .shared,
+    dbManager: FilesDatabaseManager,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
     options: NKRequestOptions = .init(queue: .global(qos: .utility)),

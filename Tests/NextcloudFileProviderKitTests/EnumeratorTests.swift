@@ -28,7 +28,9 @@ final class EnumeratorTests: XCTestCase {
     var remoteTrashItemB: MockRemoteItem!
     var remoteTrashItemC: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+    static let dbManager = FilesDatabaseManager(
+        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+    )
 
     override func setUp() {
         super.setUp()
@@ -171,7 +173,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedFolderItem.dbManager = Self.dbManager
         XCTAssertEqual(storedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(storedFolderItem.filename, remoteFolder.name)
         XCTAssertEqual(storedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
@@ -325,7 +326,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedFolderItem.dbManager = Self.dbManager
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertNotEqual(dbFolderMetadata.etag, oldEtag)
         XCTAssertEqual(storedFolderItem.childItemCount?.intValue, remoteFolder.children.count)
@@ -462,7 +462,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedFolderItem.dbManager = Self.dbManager
 
         let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
             where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
@@ -553,7 +552,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedItemA.dbManager = Self.dbManager
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
         XCTAssertEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
@@ -564,10 +562,9 @@ final class EnumeratorTests: XCTestCase {
         )
 
         let storedRootItem = Item.rootContainer(
-            account: Self.account, remoteInterface: remoteInterface
+            account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager
         )
         print(storedRootItem.metadata.serverUrl)
-        storedRootItem.dbManager = Self.dbManager
         XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
 
         let storedFolder = try XCTUnwrap(
@@ -578,7 +575,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedFolder.dbManager = Self.dbManager
         XCTAssertEqual(storedFolder.childItemCount?.intValue, remoteFolder.children.count)
     }
 
@@ -710,7 +706,6 @@ final class EnumeratorTests: XCTestCase {
                 dbManager: Self.dbManager
             )
         )
-        storedItemA.dbManager = Self.dbManager
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
         XCTAssertNotEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertFalse(storedItemA.filename.isEmpty)
