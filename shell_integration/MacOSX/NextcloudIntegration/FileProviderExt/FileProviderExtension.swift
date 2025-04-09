@@ -106,9 +106,19 @@ import OSLog
             completionHandler(nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not fetching item for identifier: \(identifier.rawValue, privacy: .public)
+                    as database is unreachable
+                """
+            )
+            completionHandler(nil, NSFileProviderError(.cannotSynchronize))
+            return Progress()
+        }
 
         if let item = Item.storedItem(
-            identifier: identifier, account: ncAccount, remoteInterface: ncKit
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
         ) {
             completionHandler(item, nil)
         } else {
@@ -155,9 +165,22 @@ import OSLog
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
+                    as database is unreachable
+                """
+            )
+            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+            return Progress()
+        }
 
         guard let item = Item.storedItem(
-            identifier: itemIdentifier, account: ncAccount, remoteInterface: ncKit
+            identifier: itemIdentifier,
+            account: ncAccount,
+            remoteInterface: ncKit,
+            dbManager: dbManager
         ) else {
             Logger.fileProviderExtension.error(
                 """
@@ -173,7 +196,7 @@ import OSLog
         let progress = Progress()
         Task {
             let (localUrl, updatedItem, error) = await item.fetchContents(
-                domain: self.domain, progress: progress
+                domain: self.domain, progress: progress, dbManager: dbManager
             )
             removeSyncAction(actionId)
             completionHandler(localUrl, updatedItem, error)
@@ -210,12 +233,19 @@ import OSLog
                 """
             )
             insertErrorAction(actionId)
-            completionHandler(
-                itemTemplate, 
-                NSFileProviderItemFields(),
-                false,
-                NSFileProviderError(.notAuthenticated)
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public)
+                    as database is unreachable
+                """
             )
+            insertErrorAction(actionId)
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
 
@@ -229,7 +259,8 @@ import OSLog
                 domain: self.domain,
                 account: ncAccount,
                 remoteInterface: ncKit,
-                progress: progress
+                progress: progress,
+                dbManager: dbManager
             )
 
             if error != nil {
@@ -283,8 +314,22 @@ import OSLog
             return Progress()
         }
 
+
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not modifying item: \(ocId, privacy: .public)
+                    with filename: \(item.filename, privacy: .public)
+                    as database is unreachable
+                """
+            )
+            insertErrorAction(actionId)
+            completionHandler(item, [], false, NSFileProviderError(.cannotSynchronize))
+            return Progress()
+        }
+
         guard let existingItem = Item.storedItem(
-            identifier: identifier, account: ncAccount, remoteInterface: ncKit
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
         ) else {
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as item not found."
@@ -304,7 +349,8 @@ import OSLog
                 options: options,
                 request: request,
                 domain: domain,
-                progress: progress
+                progress: progress,
+                dbManager: dbManager
             )
 
             if error != nil {
@@ -342,8 +388,17 @@ import OSLog
             return Progress()
         }
 
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                "Not deleting item \(identifier.rawValue, privacy: .public), db manager unavailable"
+            )
+            insertErrorAction(actionId)
+            completionHandler(NSFileProviderError(.cannotSynchronize))
+            return Progress()
+        }
+
         guard let item = Item.storedItem(
-            identifier: identifier, account: ncAccount, remoteInterface: ncKit
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
         ) else {
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
@@ -355,7 +410,7 @@ import OSLog
 
         let progress = Progress(totalUnitCount: 1)
         Task {
-            let error = await item.delete()
+            let error = await item.delete(dbManager: dbManager)
             if error != nil {
                 insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
@@ -373,15 +428,31 @@ import OSLog
     ) throws -> NSFileProviderEnumerator {
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
-                "Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue, privacy: .public) yet as account not set up"
+                """
+                Not providing enumerator for container
+                    with identifier \(containerItemIdentifier.rawValue, privacy: .public) yet
+                    as account not set up
+                """
             )
             throw NSFileProviderError(.notAuthenticated)
+        }
+
+        guard let dbManager else {
+            Logger.fileProviderExtension.error(
+                """
+                Not providing enumerator for container
+                    with identifier \(containerItemIdentifier.rawValue, privacy: .public) yet
+                    as db manager is unavailable
+                """
+            )
+            throw NSFileProviderError(.cannotSynchronize)
         }
 
         return Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
             account: ncAccount,
             remoteInterface: ncKit,
+            dbManager: dbManager,
             domain: domain,
             fastEnumeration: config.fastEnumerationEnabled
         )
