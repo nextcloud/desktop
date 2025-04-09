@@ -14,6 +14,7 @@ import OSLog
     let ncKit = NextcloudKit.shared
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: Account?
+    var dbManager: FilesDatabaseManager?
     var changeObserver: RemoteChangeObserver?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
