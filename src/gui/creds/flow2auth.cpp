@@ -89,7 +89,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
-        const auto json = handleRequest(reply);
+        const auto json = handleResponse(reply);
         QString pollToken, pollEndpoint, loginUrl;
 
         if (!json.isEmpty()) {
@@ -177,7 +177,7 @@ void Flow2Auth::slotPollTimerTimeout()
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        const QJsonObject json = handleRequest(reply);
+        const QJsonObject json = handleResponse(reply);
         QUrl serverUrl;
         QString loginName, appPassword;
 
@@ -220,7 +220,7 @@ void Flow2Auth::slotPollTimerTimeout()
     });
 }
 
-QJsonObject Flow2Auth::handleRequest(QNetworkReply *reply)
+QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
 {
     const auto jsonData = reply->readAll();
     QJsonParseError jsonParseError{};
