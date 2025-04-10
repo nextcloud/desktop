@@ -225,13 +225,29 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
     const auto jsonData = reply->readAll();
     QJsonParseError jsonParseError{};
     const auto json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-
     if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
         && !json.isEmpty()) {
-        const QUrl serverUrl = json["server"].toString();
-        if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
-            qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
-            emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
+        const auto isHttps = [&]() {
+            const auto endpoint = json["server"].toString().isEmpty()
+                ? json.value("poll").toObject().value("endpoint").toString() //from login/v2 endpoint
+                : json["server"].toString(); //from login/v2/poll endpoint
+
+            if (endpoint.isEmpty()) {
+                return false;
+            }
+
+            qCDebug(lcFlow2auth) << "Server url returned is" << endpoint;
+            if (QUrl(endpoint).scheme() != QStringLiteral("https")) {
+                return false;
+            }
+
+            return true;
+        };
+
+        if (_enforceHttps && !isHttps()) {
+            qCWarning(lcFlow2auth) << "Returned server url | poll endpoint does not start with https";
+            emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. "
+                                  "Login will not be possible because this might be a security issue. Please contact your administrator."));
             return {};
         }
     }
