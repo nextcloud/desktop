@@ -249,7 +249,7 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
             errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
             .arg(jsonParseError.errorString());
         } else if (json.isEmpty()) {
-            errorReason = tr("The reply from the server did not contain all expected fields")
+            errorReason = tr("The reply from the server did not contain all expected fields: <br><em>%1</em>")
             .arg(jsonParseError.errorString());
         }
 
