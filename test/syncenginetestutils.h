@@ -275,9 +275,9 @@ class FakePutMultiFileReply : public FakeReply
 {
     Q_OBJECT
 public:
-    FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, QObject *parent);
+    FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, const QString &serverVersion, QObject *parent);
 
-    static QVector<FileInfo *> performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType);
+    static QVector<FileInfo *> performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType, const QString &serverVersion);
 
     Q_INVOKABLE virtual void respond();
 
@@ -290,6 +290,8 @@ private:
     QVector<FileInfo *> _allFileInfo;
 
     QByteArray _payload;
+
+    QString _serverVersion;
 };
 
 class FakeMkcolReply : public FakeReply
@@ -501,6 +503,8 @@ private:
     // monitor requests and optionally provide custom replies
     Override _override;
 
+    QString _serverVersion = QStringLiteral("10.0.0");
+
 public:
     FakeQNAM(FileInfo initialRoot);
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
@@ -515,6 +519,8 @@ public:
                                  std::function<QJsonObject(const QMap<QString, QByteArray> &)> replyFunction);
 
     QNetworkReply *overrideReplyWithError(QString fileName, Operation op, QNetworkRequest newRequest);
+
+    void setServerVersion(const QString &version);
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
@@ -553,6 +559,7 @@ class FakeFolder
     OCC::AccountPtr _account;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
+    QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
     FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
@@ -560,6 +567,8 @@ public:
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
     void enableEnforceWindowsFileNameCompatibility();
+
+    void setServerVersion(const QString &version);
 
     [[nodiscard]] OCC::AccountPtr account() const { return _account; }
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
