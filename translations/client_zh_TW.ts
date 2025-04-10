@@ -417,12 +417,12 @@ macOS 可能會忽略或延遲此請求。</translation>
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="288"/>
+        <location filename="../src/libsync/filesystem.cpp" line="285"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>移除「%1」時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="308"/>
+        <location filename="../src/libsync/filesystem.cpp" line="305"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>無法移除資料夾「%1」</translation>
     </message>
@@ -1279,53 +1279,53 @@ This action will abort any currently running synchronization.</source>
         <translation>無法上傳檔案 %1，因為另一個僅有大小寫不同的相同名稱檔案已經存在</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="181"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>檔案 %1 的修改時間無效。不要上傳到伺服器。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="303"/>
         <source>File Removed (start upload) %1</source>
         <translation>已移除檔案（開始上傳）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="322"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>檔案 %1 的修改時間無效。不要上傳到伺服器。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="335"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>本機檔案在同步的過程中被修改。檔案將會復原。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="334"/>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="678"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="349"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="693"/>
         <source>Local file changed during sync.</source>
         <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="441"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="456"/>
         <source>Network error: %1</source>
         <translation>網路錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="487"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="502"/>
         <source>Error updating metadata: %1</source>
         <translation>更新中介資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="490"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="505"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 目前使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="660"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="675"/>
         <source>The local file was removed during sync.</source>
         <translation>本機檔案在同步的過程中被移除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="708"/>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="723"/>
         <source>Restoration failed: %1</source>
         <translation>還原失敗：%1</translation>
     </message>
@@ -4139,64 +4139,64 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器回報沒有 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1126"/>
+        <location filename="../src/libsync/discovery.cpp" line="1127"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>由於修改時間無效，無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1136"/>
+        <location filename="../src/libsync/discovery.cpp" line="1137"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1179"/>
+        <location filename="../src/libsync/discovery.cpp" line="1180"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>從資料庫刪除檔案紀錄 %1 時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1457"/>
-        <location filename="../src/libsync/discovery.cpp" line="1915"/>
+        <location filename="../src/libsync/discovery.cpp" line="1458"/>
+        <location filename="../src/libsync/discovery.cpp" line="1916"/>
         <source>Moved to invalid target, restoring</source>
         <translation>移動至無效目標，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1775"/>
+        <location filename="../src/libsync/discovery.cpp" line="1776"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>無法修改已加密的項目，因為選定的憑證無效。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1837"/>
+        <location filename="../src/libsync/discovery.cpp" line="1838"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>由於是「選擇要同步的項目」黑名單，故忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1871"/>
-        <location filename="../src/libsync/discovery.cpp" line="2076"/>
+        <location filename="../src/libsync/discovery.cpp" line="1872"/>
+        <location filename="../src/libsync/discovery.cpp" line="2077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>不允許，您無權新增子資料夾到該資料夾</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1879"/>
+        <location filename="../src/libsync/discovery.cpp" line="1880"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>不允許，您無權新增檔案到該資料夾</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1893"/>
+        <location filename="../src/libsync/discovery.cpp" line="1894"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允許上傳此檔案，這在伺服器上是唯讀，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1929"/>
+        <location filename="../src/libsync/discovery.cpp" line="1930"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許移除，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2120"/>
+        <location filename="../src/libsync/discovery.cpp" line="2121"/>
         <source>Error while reading the database</source>
         <translation>讀取資料庫時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2205"/>
+        <location filename="../src/libsync/discovery.cpp" line="2206"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>
@@ -4545,49 +4545,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="289"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="713"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="720"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>上傳 %1 將會超過資料夾的大小限制</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="327"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="402"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="415"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="333"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="422"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>檔案 %1 的修改時間無效。不要上傳到伺服器。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="399"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="406"/>
         <source>File Removed (start upload) %1</source>
         <translation>檔案已移除（開始上傳）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="432"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>本機檔案在同步的過程中被修改。檔案將會復原。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="436"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="443"/>
         <source>Local file changed during sync.</source>
         <translation>本機檔案在同步的過程中被修改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="446"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="453"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>無法解鎖已加密的資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="726"/>
         <source>Unable to upload an item with invalid characters</source>
         <translation>無法上傳包含無效字元的項目</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="821"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="828"/>
         <source>Error updating metadata: %1</source>
         <translation>更新中介資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="824"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="831"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 目前正在使用中</translation>
     </message>
@@ -6078,12 +6078,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="596"/>
         <source>File is already deleted</source>
-        <translation type="unfinished"/>
+        <translation>檔案已刪除</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="611"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>刪除檔案時發生錯誤</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
