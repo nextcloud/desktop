@@ -64,18 +64,27 @@ void PUTFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
+    auto requestID = QByteArray{};
+
     if (_url.isValid()) {
-        sendRequest("PUT", _url, req, _device);
+        const auto reply = sendRequest("PUT", _url, req, _device);
+        requestID = reply->request().rawHeader("X-Request-ID");
     } else {
-        sendRequest("PUT", makeDavUrl(path()), req, _device);
+        const auto reply = sendRequest("PUT", makeDavUrl(path()), req, _device);
+        requestID = reply->request().rawHeader("X-Request-ID");
     }
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
+    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (qint64 bytesSent, qint64 bytesTotal) {
+        qCDebug(lcPutJob()) << requestID << "upload progress" << bytesSent << bytesTotal;
+    });
+
     connect(reply(), &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
+
     _requestTimer.start();
     AbstractNetworkJob::start();
 }
