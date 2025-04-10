@@ -162,6 +162,8 @@ private:
 
     void checkPropagationIsDone();
 
+    bool handleBatchSize();
+
     std::deque<SyncFileItemPtr> _items;
 
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
@@ -173,6 +175,7 @@ private:
     qint64 _sentTotal = 0;
 
     SyncFileItem::Status _finalStatus = SyncFileItem::Status::NoStatus;
+    int _currentBatchSize = 0;
 };
 
 }
