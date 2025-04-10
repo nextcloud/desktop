@@ -73,7 +73,7 @@ private slots:
 
 private:
     void fetchNewToken(const TokenAction action);
-    [[nodiscard]] QJsonObject handleRequest(QNetworkReply *reply);
+    [[nodiscard]] QJsonObject handleResponse(QNetworkReply *reply);
 
     Account *_account;
     QUrl _loginUrl;
