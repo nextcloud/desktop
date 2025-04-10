@@ -74,10 +74,6 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
                 remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
             }
-            try oldRealm.write {
-                oldRealm.delete(itemMetadatas)
-                oldRealm.delete(remoteFileChunks)
-            }
         } catch let error {
             Self.logger.error(
                 """
