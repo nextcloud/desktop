@@ -181,12 +181,15 @@ QString Account::displayName() const
 
 QString Account::shortcutName() const
 {
-    auto shortcutName = QStringLiteral("%1 - %2").arg(_url.host(), prettyName());
+    auto url = _url.host();
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
-        shortcutName.append(QLatin1Char(':'));
-        shortcutName.append(QString::number(port));
+        url.append(QLatin1Char(':'));
+        url.append(QString::number(port));
     }
+
+    auto shortcutName = QStringLiteral("%1 - %2").arg(_url.host(), prettyName());
+
 
     return shortcutName;
 }
