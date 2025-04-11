@@ -646,10 +646,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
         let oldRealm = try Realm(configuration: oldConfig)
 
-        // Create test objects:
-        // - One metadata object for "account1" that should be migrated.
-        // - One metadata object for "account2" that should remain in the old DB.
-        // - One remote file chunk (migrated completely).
+        // Create test objects
         let migratingItem = RealmItemMetadata()
         migratingItem.ocId = "id1"
         migratingItem.account = account1
@@ -667,7 +664,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             oldRealm.add(remoteChunk)
         }
 
-        // Pre-assertion: the old Realm should contain both metadata objects and one remote file chunk.
         XCTAssertEqual(oldRealm.objects(RealmItemMetadata.self).count, 2)
         XCTAssertEqual(oldRealm.objects(RemoteFileChunk.self).count, 1)
 
@@ -681,7 +677,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         // 6. Call the initializer that performs the migration.
         // It will search for the old database at:
-        //   fileProviderDataDirUrl/appendingPathComponent(customRelativeDatabaseFolderPath + databaseFilename)
+        // fileProviderDataDirUrl/appendingPathComponent(customRelativeDbFolderPath + dbFilename)
         // and migrate only metadata objects with account == "account1" plus remote file chunks.
         let dbManager = FilesDatabaseManager(
             realmConfig: newConfig,
@@ -694,18 +690,31 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let newRealm = dbManager.ncDatabase()
         let newMigratedItems = newRealm.objects(RealmItemMetadata.self)
         let newRemoteChunks = newRealm.objects(RemoteFileChunk.self)
-        XCTAssertEqual(newMigratedItems.count, 1, "Only one metadata item for account1 should be migrated")
+        XCTAssertEqual(
+            newMigratedItems.count, 1, "Only one metadata item for account1 should be migrated"
+        )
         XCTAssertEqual(newMigratedItems.first?.account, account1)
         XCTAssertEqual(newRemoteChunks.count, 1, "Remote file chunks should be migrated")
 
-        // 8. Verify that the old Realm has removed the migrated objects.
-        // It should still have the metadata for "account2", and no remote file chunks.
+        // 8. Verify that the old Realm has retained the migrated objects.
         let oldRealmAfter = try Realm(configuration: oldConfig)
-        let remainingItems = oldRealmAfter.objects(RealmItemMetadata.self)
-        let remainingChunks = oldRealmAfter.objects(RemoteFileChunk.self)
-        XCTAssertEqual(remainingItems.count, 1, "Only non-migrated metadata should remain in the old Realm")
-        XCTAssertEqual(remainingItems.first?.account, account2)
-        XCTAssertEqual(remainingChunks.count, 0, "Remote file chunks should have been removed from the old Realm")
+        let allItems = oldRealmAfter.objects(RealmItemMetadata.self)
+        let allChunks = oldRealmAfter.objects(RemoteFileChunk.self)
+
+        // Expect both metadata objects still to be present.
+        XCTAssertEqual(
+            allItems.count,
+            2,
+            "The old realm should have retained both migrated and non-migrated metadata items"
+        )
+        XCTAssertTrue(
+            allItems.contains(where: { $0.account == account1 }),
+            "Migrated metadata should be retained in the old realm"
+        )
+        XCTAssertEqual(
+            allChunks.count, 1, "The remote file chunks should be retained in the old realm"
+        )
+
 
         // 9. Clean up by removing the temporary directory.
         try FileManager.default.removeItem(at: tempDir)
