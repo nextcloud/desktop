@@ -284,6 +284,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     loadUpdateChannelsList();
 #endif
 
+    if (ConfigFile().currentUpdateChannel() != ConfigFile().defaultUpdateChannel()) {
+        _ui->restoreButton->setEnabled(true);
+        connect(_ui->restoreButton, &QPushButton::clicked, this, &GeneralSettings::slotRestoreSettings);
+    }
+
     customizeStyle();
 }
 
@@ -342,11 +347,12 @@ void GeneralSettings::loadUpdateChannelsList() {
     }
 
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
+    const auto currentUpdateChannel = cfgFile.currentUpdateChannel();
     if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
-        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
+        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(currentUpdateChannel);
         _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1 ? currentUpdateChannelIndex : 0);
         connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
     }
@@ -674,6 +680,16 @@ void GeneralSettings::updatePollIntervalVisibility()
     });
 
     _ui->horizontalLayoutWidget_remotePollInterval->setVisible(!pushAvailable);
+}
+
+void GeneralSettings::slotSettingsChanged()
+{
+    _ui->restoreButton->setEnabled(true);
+}
+
+void GeneralSettings::slotRestoreSettings()
+{
+    _ui->restoreButton->setEnabled(false);
 }
 
 } // namespace OCC
