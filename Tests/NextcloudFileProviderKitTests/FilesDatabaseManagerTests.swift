@@ -719,4 +719,97 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // 9. Clean up by removing the temporary directory.
         try FileManager.default.removeItem(at: tempDir)
     }
+
+    func testMigrationIsNotPerformedTwice() throws {
+        let fm = FileManager.default
+        let tempDir = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try fm.createDirectory(at: tempDir, withIntermediateDirectories: true)
+
+        let customRelativePath = "Test/Realm/"
+        let oldRealmURL = tempDir.appendingPathComponent(
+            customRelativePath + NextcloudFileProviderKit.databaseFilename
+        )
+        try fm.createDirectory(
+            at: oldRealmURL.deletingLastPathComponent(), withIntermediateDirectories: true
+        )
+
+        let accounts = (migrated: "account1", nonMigrated: "account2")
+
+        // Insert initial objects into the old realm
+        let oldConfig = Realm.Configuration(
+            fileURL: oldRealmURL,
+            schemaVersion: stable2_0SchemaVersion,
+            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+        )
+        let oldRealm = try Realm(configuration: oldConfig)
+
+        let migratedItem = RealmItemMetadata()
+        migratedItem.ocId = "id1"
+        migratedItem.account = accounts.migrated
+
+        let nonMigratedItem = RealmItemMetadata()
+        nonMigratedItem.ocId = "id2"
+        nonMigratedItem.account = accounts.nonMigrated
+
+        let remoteChunk = RemoteFileChunk()
+        remoteChunk.fileName = "chunk1"
+
+        try oldRealm.write {
+            oldRealm.add(migratedItem)
+            oldRealm.add(nonMigratedItem)
+            oldRealm.add(remoteChunk)
+        }
+
+        // New realm config (target)
+        let newRealmURL = tempDir.appendingPathComponent("new.realm")
+        let newConfig = Realm.Configuration(
+            fileURL: newRealmURL,
+            schemaVersion: stable2_0SchemaVersion,
+            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
+        )
+
+        // First migration
+        let newDbManager = FilesDatabaseManager(
+            realmConfig: newConfig,
+            account: accounts.migrated,
+            fileProviderDataDirUrl: tempDir,
+            relativeDatabaseFolderPath: customRelativePath
+        )
+
+        let newRealm = newDbManager.ncDatabase()
+        let initialMigrated = newRealm.objects(RealmItemMetadata.self)
+        let initialChunks = newRealm.objects(RemoteFileChunk.self)
+        XCTAssertEqual(initialMigrated.count, 1)
+        XCTAssertEqual(initialMigrated.first?.account, accounts.migrated)
+        XCTAssertEqual(initialChunks.count, 1)
+
+        // Add additional migrated objects to the old realm after the first migration
+        let newMigratedItem = RealmItemMetadata()
+        newMigratedItem.ocId = "id3"
+        newMigratedItem.account = accounts.migrated
+
+        let newRemoteChunk = RemoteFileChunk()
+        newRemoteChunk.fileName = "chunk2"
+
+        try oldRealm.write {
+            oldRealm.add(newMigratedItem)
+            oldRealm.add(newRemoteChunk)
+        }
+
+        // Second migration call; new objects added after the first migration must not be added
+        let secondNewDbManager = FilesDatabaseManager(
+            realmConfig: newConfig,
+            account: accounts.migrated,
+            fileProviderDataDirUrl: tempDir,
+            relativeDatabaseFolderPath: customRelativePath
+        )
+
+        let secondNewRealm = secondNewDbManager.ncDatabase()
+        let finalMigrated = secondNewRealm.objects(RealmItemMetadata.self)
+        let finalChunks = secondNewRealm.objects(RemoteFileChunk.self)
+        XCTAssertEqual(finalMigrated.count, 1, "Migration should occur only once")
+        XCTAssertEqual(finalChunks.count, 1, "Migration should occur only once")
+
+        try FileManager.default.removeItem(at: tempDir)
+    }
 }
