@@ -179,6 +179,18 @@ QString Account::displayName() const
     return displayName;
 }
 
+QString Account::shortcutName() const
+{
+    auto shortcutName = QStringLiteral("%1 - %2").arg(_url.host(), prettyName());
+    const auto port = url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        shortcutName.append(QLatin1Char(':'));
+        shortcutName.append(QString::number(port));
+    }
+
+    return shortcutName;
+}
+
 QString Account::userIdAtHostWithPort() const
 {
     QString dn = QStringLiteral("%1@%2").arg(_davUser, _url.host());
