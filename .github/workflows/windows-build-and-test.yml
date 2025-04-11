@@ -2,29 +2,12 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 name: Windows Build and Test
 on:
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
-      tags:
-        description: 'Test scenario tags'
-        required: false
-        type: boolean
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Windows Build and Test
-    runs-on: self-hosted
+    runs-on: windows-2022
     env:
       CRAFT_TARGET: windows-msvc2022_64-cl
       COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
@@ -34,7 +17,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-          clean: false
 
       - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
         with:
@@ -65,6 +47,7 @@ jobs:
         shell: pwsh
         run: |
           choco install opencppcoverage
+
       - name: Cache Install inkscape
         id: cache-install-inkscape
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
@@ -77,6 +60,7 @@ jobs:
         shell: pwsh
         run: |
           choco install inkscape
+
       - name: Setup PATH
         shell: pwsh
         run: |
@@ -98,8 +82,11 @@ jobs:
         run: |
           function runTests() {
               $buildFolder = "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\build\nextcloud-client\work\build"
+
               cd $buildFolder
+
               $binFolder = "$buildFolder\bin"
+
               & ctest --output-on-failure --timeout 300
           }
           
