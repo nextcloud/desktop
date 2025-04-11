@@ -109,8 +109,6 @@ set(client_SRCS
     lockwatcher.cpp
     logbrowser.h
     logbrowser.cpp
-    navigationpanehelper.h
-    navigationpanehelper.cpp
     networksettings.h
     networksettings.cpp
     ocsnavigationappsjob.h
@@ -339,13 +337,19 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
+    set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
 ENDIF()
 IF( WIN32 )
-set(client_SRCS ${client_SRCS} folderwatcher_win.cpp shellextensionsserver.cpp ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp)
+    set(client_SRCS
+        ${client_SRCS}
+        folderwatcher_win.cpp
+        navigationpanehelper.h
+        navigationpanehelper.cpp
+        shellextensionsserver.cpp
+        ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp)
 ENDIF()
 IF( APPLE )
-list(APPEND client_SRCS folderwatcher_mac.cpp)
+    list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC
