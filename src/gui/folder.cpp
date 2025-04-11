@@ -107,8 +107,6 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
         this, &Folder::slotAboutToRemoveAllFiles);
-    connect(_engine.data(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-            this, &Folder::slotNeedToRemoveRemnantsReadOnlyFolders);
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
@@ -1721,34 +1719,6 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
     msgBox->open();
-}
-
-void Folder::slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
-                                                     const QString &localPath,
-                                                     std::function<void (bool)> callback)
-{
-    auto listOfFolders = QStringList{};
-    for (const auto &oneFolder : folders) {
-        listOfFolders.push_back(oneFolder->_file);
-    }
-
-    qCInfo(lcFolder()) << "will delete invalid read-only folders:" << listOfFolders.join(", ");
-
-    setSyncPaused(true);
-    for(const auto &oneFolder : folders) {
-        const auto fileInfo = QFileInfo{localPath + oneFolder->_file};
-        const auto parentFolderPath = fileInfo.dir().absolutePath();
-        const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-        if (oneFolder->_type == ItemType::ItemTypeDirectory) {
-            FileSystem::removeRecursively(localPath + oneFolder->_file);
-        } else {
-            FileSystem::remove(localPath + oneFolder->_file);
-        }
-    }
-    callback(true);
-    setSyncPaused(false);
-    _lastEtag.clear();
-    slotScheduleThisFolder();
 }
 
 void Folder::removeLocalE2eFiles()
