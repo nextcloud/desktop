@@ -840,7 +840,6 @@ void SyncEngine::slotDiscoveryFinished()
 
     if (!_remnantReadOnlyFolders.isEmpty()) {
         handleRemnantReadOnlyFolders();
-        return;
     }
 
     finishSync();
@@ -1169,9 +1168,29 @@ bool SyncEngine::handleMassDeletion()
 
 void SyncEngine::handleRemnantReadOnlyFolders()
 {
-    promptUserBeforePropagation([this](auto &&callback) {
-                                    emit aboutToRemoveRemnantsReadOnlyFolders(_remnantReadOnlyFolders, _localPath, callback);
-                                });
+    auto listOfFolders = QStringList{};
+    for (const auto &oneFolder : std::as_const(_remnantReadOnlyFolders)) {
+        listOfFolders.push_back(oneFolder->_file);
+    }
+
+    qCInfo(lcEngine()) << "will delete invalid read-only folders:" << listOfFolders.join(", ");
+
+    for(const auto &oneFolder : std::as_const(_remnantReadOnlyFolders)) {
+        const auto fileInfo = QFileInfo{_localPath + oneFolder->_file};
+        const auto parentFolderPath = fileInfo.dir().absolutePath();
+        slotAddTouchedFile(parentFolderPath);
+        const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+        slotAddTouchedFile(_localPath + oneFolder->_file);
+
+        if (oneFolder->_type == ItemType::ItemTypeDirectory) {
+            const auto deletionCallback = [this] (const QString &deleteItem, bool) {
+                slotAddTouchedFile(deleteItem);
+            };
+            FileSystem::removeRecursively(_localPath + oneFolder->_file, deletionCallback, nullptr, deletionCallback);
+        } else {
+            FileSystem::remove(_localPath + oneFolder->_file);
+        }
+    }
 }
 
 template <typename T>

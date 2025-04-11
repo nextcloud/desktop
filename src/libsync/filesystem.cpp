@@ -254,9 +254,13 @@ qint64 FileSystem::getSize(const QString &filename)
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
-bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
+bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors, const std::function<void(const QString &path, bool isDir)> &onError)
 {
-    FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
+    if (!FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite)) {
+        if (onError) {
+            onError(path, true);
+        }
+    }
 
     bool allRemoved = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
@@ -269,7 +273,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         // we never want to go into this branch for .lnk files
         bool isDir = FileSystem::isDir(fi.absoluteFilePath()) && !FileSystem::isSymLink(fi.absoluteFilePath()) && !FileSystem::isJunction(fi.absoluteFilePath());
         if (isDir) {
-            removeOk = removeRecursively(path + QLatin1Char('/') + di.fileName(), onDeleted, errors); // recursive
+            removeOk = removeRecursively(path + QLatin1Char('/') + di.fileName(), onDeleted, errors, onError); // recursive
         } else {
             QString removeError;
 
@@ -284,6 +288,9 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
                 if (errors) {
                     errors->append(QCoreApplication::translate("FileSystem", "Error removing \"%1\": %2")
                                        .arg(QDir::toNativeSeparators(di.filePath()), removeError));
+                }
+                if (onError) {
+                    onError(di.filePath(), false);
                 }
                 qCWarning(lcFileSystem) << "Error removing " << di.filePath() << ':' << removeError;
             }
@@ -304,6 +311,9 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
             if (errors) {
                 errors->append(QCoreApplication::translate("FileSystem", "Could not remove folder \"%1\"")
                                    .arg(QDir::toNativeSeparators(path)));
+            }
+            if (onError) {
+                onError(di.filePath(), false);
             }
             qCWarning(lcFileSystem) << "Error removing folder" << path;
         }
