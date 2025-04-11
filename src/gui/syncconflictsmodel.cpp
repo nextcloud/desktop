@@ -224,13 +224,19 @@ void SyncConflictsModel::selectAllConflicting(bool selected)
 
 void SyncConflictsModel::applySolution()
 {
-    for(const auto &syncConflict : std::as_const(_conflictData)) {
+    bool yesToAllRequested = false;
+    bool isBulkSolution = _conflictData.size() > 1; // no need to display the "Yes for all" button if only one file is affected
+
+    for (const auto &syncConflict : std::as_const(_conflictData)) {
         if (syncConflict.isValid()) {
             qCInfo(lcSyncConflictsModel) << syncConflict.mExistingFilePath << syncConflict.mConflictingFilePath << syncConflict.solution();
             ConflictSolver solver;
+            solver.setIsBulkSolution(isBulkSolution);
+            solver.setYesToAllRequested(yesToAllRequested);
             solver.setLocalVersionFilename(syncConflict.mConflictingFilePath);
             solver.setRemoteVersionFilename(syncConflict.mExistingFilePath);
             solver.exec(syncConflict.solution());
+            yesToAllRequested = solver.yesToAllRequested();
         }
     }
 }
