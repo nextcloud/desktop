@@ -36,6 +36,10 @@ public final class FilesDatabaseManager: Sendable {
         fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
         relativeDatabaseFolderPath: String = relativeDatabaseFolderPath
     ) {
+        let fm = FileManager.default
+        let dbPath = realmConfig.fileURL?.path
+        let migrate = dbPath != nil && !fm.fileExists(atPath: dbPath!)
+
         Realm.Configuration.defaultConfiguration = realmConfig
 
         do {
@@ -46,7 +50,7 @@ public final class FilesDatabaseManager: Sendable {
         }
 
         // Migrate from old unified database to new per-account DB
-        guard let fileProviderDataDirUrl else { return }
+        guard let fileProviderDataDirUrl, migrate else { return }
         let oldRelativeDatabaseFilePath = relativeDatabaseFolderPath + databaseFilename
         let oldDatabasePath = fileProviderDataDirUrl.appendingPathComponent(
             oldRelativeDatabaseFilePath
@@ -73,10 +77,6 @@ public final class FilesDatabaseManager: Sendable {
             try currentRealm.write {
                 itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
                 remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
-            }
-            try oldRealm.write {
-                oldRealm.delete(itemMetadatas)
-                oldRealm.delete(remoteFileChunks)
             }
         } catch let error {
             Self.logger.error(
