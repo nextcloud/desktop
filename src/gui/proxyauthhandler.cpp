@@ -70,8 +70,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
 
         // If the user explicitly configured the proxy in the
         // network settings, don't ask about it.
-        if ((account && (account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy
-                         || account->proxyType() == QNetworkProxy::HttpProxy
+        if ((account && (account->proxyType() == QNetworkProxy::HttpProxy
                          || account->proxyType() == QNetworkProxy::Socks5Proxy))
             || _configFile->proxyType() == QNetworkProxy::HttpProxy
             || _configFile->proxyType() == QNetworkProxy::Socks5Proxy) {

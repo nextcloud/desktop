@@ -1188,27 +1188,21 @@ SyncOptions Folder::initializeSyncOptions() const
 void Folder::setDirtyNetworkLimits()
 {
     const auto account = _accountState->account();
-    const auto useGlobalDown = account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
-    const auto useGlobalUp = account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
 
     ConfigFile cfg;
 
     int downloadLimit = -75; // 75%
-    const auto useDownLimit = useGlobalDown 
-        ? cfg.useDownloadLimit() 
-        : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
+    const auto useDownLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
     if (useDownLimit >= 1) {
-        downloadLimit = useGlobalDown ? cfg.downloadLimit() * 1000 : account->downloadLimit() * 1000;
+        downloadLimit = account->downloadLimit() * 1000;
     } else if (useDownLimit == 0) {
         downloadLimit = 0;
     }
 
     int uploadLimit = -75; // 75%
-    const auto useUpLimit = useGlobalUp 
-        ? cfg.useUploadLimit() 
-        : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
+    const auto useUpLimit = static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
     if (useUpLimit >= 1) {
-        uploadLimit = useGlobalUp ? cfg.uploadLimit() * 1000 : account->uploadLimit() * 1000;
+        uploadLimit = account->uploadLimit() * 1000;
     } else if (useUpLimit == 0) {
         uploadLimit = 0;
     }
