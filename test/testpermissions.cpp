@@ -94,14 +94,6 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             qDebug() << "aboutToRemoveRemnantsReadOnlyFolders called";
-                             Q_UNUSED(folders);
-                             Q_UNUSED(localPath);
-                             callback(false);
-                         });
-
         // Some of this test depends on the order of discovery. With threading
         // that order becomes effectively random, but we want to make sure to test
         // all cases and thus disable threading.
@@ -438,13 +430,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             Q_UNUSED(folders)
-                             Q_UNUSED(localPath)
-                             callback(false);
-                         });
-
         // Some of this test depends on the order of discovery. With threading
         // that order becomes effectively random, but we want to make sure to test
         // all cases and thus disable threading.
@@ -564,14 +549,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
         auto &lm = fakeFolder.localModifier();
         auto &rm = fakeFolder.remoteModifier();
         rm.mkdir("forbidden-move");
@@ -623,14 +600,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
         auto &remote = fakeFolder.remoteModifier();
 
         remote.mkdir("readOnlyFolder");
@@ -647,14 +616,6 @@ private slots:
     void testReadWriteFolderIsReallyReadWrite()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -673,14 +634,6 @@ private slots:
     void testChangePermissionsFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -717,14 +670,6 @@ private slots:
     void testChangePermissionsForFolderHierarchy()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -786,14 +731,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
         auto &remote = fakeFolder.remoteModifier();
 
         remote.mkdir("readOnlyFolder");
@@ -823,14 +760,6 @@ private slots:
     void testRenameChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -863,14 +792,6 @@ private slots:
     void testMoveChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -906,14 +827,6 @@ private slots:
     void testModifyChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
