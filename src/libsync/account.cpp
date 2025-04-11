@@ -181,7 +181,7 @@ QString Account::displayName() const
 
 QString Account::shortcutName() const
 {
-    const auto url_part = _url.host();
+    const auto url_part = QString(_url.host());
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         url_part.append(QLatin1Char(':'));
