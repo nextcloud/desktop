@@ -3302,7 +3302,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt mapi</translation>
     </message>
 </context>
 <context>
@@ -4928,7 +4928,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūkā</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1399"/>

@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Usuń kopie lokalne</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Lokalne kopie</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Zwolnij miejsce…</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
@@ -404,13 +404,14 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Prośba o synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Poproś o synchronizację zmian dla środowiska VFS.
+macOS może zignorować lub opóźnić tą prośbę.</translation>
     </message>
 </context>
 <context>
@@ -1493,7 +1494,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Wprowadź kod PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
@@ -2855,7 +2856,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekund (jeśli &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; jest niedostępny)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -4380,7 +4381,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Tymczasowy błąd podczas usuwania lokalnego elementu usuniętego z serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -6077,12 +6078,12 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="596"/>
         <source>File is already deleted</source>
-        <translation type="unfinished"/>
+        <translation>Plik jest już usunięty</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="611"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas usuwania pliku</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
@@ -6553,12 +6554,12 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Wyczyść</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Zastosuj</translation>
     </message>
 </context>
 <context>
