@@ -4381,7 +4381,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Tillfälligt fel vid borttagning av lokalt objekt som tagits bort från servern.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -6078,12 +6078,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="596"/>
         <source>File is already deleted</source>
-        <translation type="unfinished"/>
+        <translation>Filen är redan borttagen</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="611"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ta bort filen</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
