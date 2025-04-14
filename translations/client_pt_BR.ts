@@ -2944,7 +2944,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="425"/>
         <source>enterprise</source>
-        <translation>empresa</translation>
+        <translation>empresarial</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="453"/>
@@ -2964,7 +2964,7 @@ As versões de downgrade não são possíveis imediatamente: mudar de beta para 
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation>- Enterprise: contém versões estáveis ​​para clientes.
+        <translation>- Empresarial: contém versões estáveis ​​para clientes.
 
 As versões de downgrade não são possíveis imediatamente: mudar de estável para empresa significa aguardar a nova versão corporativa.</translation>
     </message>
