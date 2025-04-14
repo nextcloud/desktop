@@ -410,25 +410,13 @@ QString UserStatusSelectorModel::timeDifferenceToString(int differenceSecs) cons
         return tr("Less than a minute");
     } else if (differenceSecs < 60 * 60) {
         const auto minutesLeft = static_cast<int>(std::ceil(differenceSecs / 60.0));
-        if (minutesLeft == 1) {
-            return tr("1 minute");
-        } else {
-            return tr("%1 minutes", "", minutesLeft).arg(minutesLeft);
-        }
+        return tr("%n minute(s)", "", minutesLeft);
     } else if (differenceSecs < 60 * 60 * 24) {
         const auto hoursLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0));
-        if (hoursLeft == 1) {
-            return tr("1 hour");
-        } else {
-            return tr("%1 hours", "", hoursLeft).arg(hoursLeft);
-        }
+        return tr("%n hour(s)", "", hoursLeft);
     } else {
         const auto daysLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0 / 24.0));
-        if (daysLeft == 1) {
-            return tr("1 day");
-        } else {
-            return tr("%1 days", "", daysLeft).arg(daysLeft);
-        }
+        return tr("%n day(s)", "", daysLeft);
     }
 }
 
