@@ -115,6 +115,13 @@ private:
     AccountManager::AccountsRestoreResult restoreLegacyAccount();
     bool setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const;
     void setupAccountsAndFolders();
+    /**
+     * Looks for config files with different names from older client versions
+     * in different locations
+     *
+     * Returns the found config file path found.
+     */
+    [[nodiscard]] QString findLegacyConfigFile() const;
 
     /**
      * Maybe a newer version of the client was used with this config file:
