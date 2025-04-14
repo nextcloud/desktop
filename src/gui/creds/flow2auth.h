@@ -19,6 +19,8 @@
 #include <QTimer>
 #include "accountfwd.h"
 
+class QNetworkReply;
+
 namespace OCC {
 
 /**
@@ -71,6 +73,7 @@ private slots:
 
 private:
     void fetchNewToken(const TokenAction action);
+    [[nodiscard]] QJsonObject handleResponse(QNetworkReply *reply);
 
     Account *_account;
     QUrl _loginUrl;
