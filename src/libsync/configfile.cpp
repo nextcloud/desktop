@@ -97,6 +97,12 @@ static const QString defaultEnterpriseChannel = "enterprise";
 static constexpr char languageC[] = "language";
 
 static constexpr int deleteFilesThresholdDefaultValue = 100;
+
+constexpr auto accountsC = "Accounts";
+constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
+constexpr auto legacyCfgFileNameC = "owncloud.cfg";
+constexpr auto unbrandedRelativeConfigLocationC = "/copyNextcloud/copyNextcloud.cfg";
+constexpr auto unbrandedCfgFileNameC = "copyNextcloud.cfg";
 }
 
 namespace OCC {
@@ -1294,4 +1300,118 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
+bool ConfigFile::setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const
+{
+    // Migrate from version <= 2.4
+    qApp->setApplicationName(Theme::instance()->appNameGUI());
+#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
+    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+#endif
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
+QT_WARNING_POP
+    qApp->setApplicationName(Theme::instance()->appName());
+
+    auto legacyDir = legacyLocation;
+    if (legacyDir.endsWith('/')) {
+        legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+    }
+
+    if (!QFileInfo(legacyDir).isDir()) {
+        return false;
+    }
+
+    auto confDir = ConfigFile().configPath();
+    if (confDir.endsWith('/')) {
+        confDir.chop(1);
+    }
+
+    qCInfo(lcConfigFile) << "Migrating old config from" << legacyDir << "to" << confDir;
+    if (!QFile::rename(legacyDir, confDir)) {
+        qCWarning(lcConfigFile) << "Failed to move the old config directory" << legacyDir << "to new location" << confDir;
+        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+            const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
+            qCInfo(lcConfigFile) << "Will move the individual files:" << filesList;
+            auto setupCompleted = false;
+            for (const auto &name : filesList) {
+                if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
+                    qCDebug(lcConfigFile) << "Fallback move of " << name << "also failed";
+                    continue;
+                }
+                setupCompleted = true;
+                qCInfo(lcConfigFile)  << "Move of " << name << "succeeded.";
+            }
+            return setupCompleted;
+        }
+    } else {
+#ifndef Q_OS_WIN
+        // Create a symbolic link so a downgrade of the client would still find the config.
+        return QFile::link(confDir, legacyDir);
+#endif
+    }
+
+    return false;
+}
+
+QString ConfigFile::findLegacyConfigFile() const
+{
+    qCInfo(lcConfigFile) << "Migrate: restoreFromLegacySettings, checking settings group"
+                          << Theme::instance()->appName();
+
+           // try to open the correctly themed settings
+    auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
+
+
+    QString validLegacyConfigFile;
+    // if the settings file could not be opened, the childKeys list is empty
+    // then try to load settings from a very old place
+    if (settings->childKeys().isEmpty()) {
+        // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
+        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
+        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
+
+               // 2.5+ (rest of 2.x series)
+        const auto legacy2_5CfgSettingsLocation = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
+
+               // Now try the locations we use today
+        const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
+        const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
+        const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
+
+        const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
+        const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
+
+        auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacyCfgFileParentFolder + legacyCfgFileNamePath,
+                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+
+        if (Theme::instance()->isBranded()) {
+            const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
+            const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
+            legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
+        }
+
+        for (const auto &configFile : legacyLocations) {
+            auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+            if (oCSettings->status() != QSettings::Status::NoError) {
+                qCInfo(lcConfigFile) << "Error reading legacy configuration file" << oCSettings->status();
+                break;
+            }
+
+            if (const QFileInfo configFileInfo(configFile);
+                configFileInfo.exists() && configFileInfo.isReadable()) {
+                qCInfo(lcConfigFile) << "Migrate: checking old config " << configFile;
+                validLegacyConfigFile = configFile;
+                ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+                break;
+            } else {
+                qCInfo(lcConfigFile()) << "Migrate: could not read old config " << configFile;
+            }
+        }
+    }
+
+    return validLegacyConfigFile;
+}
 }
