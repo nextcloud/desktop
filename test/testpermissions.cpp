@@ -94,14 +94,6 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             qDebug() << "aboutToRemoveRemnantsReadOnlyFolders called";
-                             Q_UNUSED(folders);
-                             Q_UNUSED(localPath);
-                             callback(false);
-                         });
-
         // Some of this test depends on the order of discovery. With threading
         // that order becomes effectively random, but we want to make sure to test
         // all cases and thus disable threading.
@@ -281,14 +273,14 @@ private slots:
 
         applyPermissionsFromName(fakeFolder.remoteModifier());
         // error: can't upload to readonly
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
 
         assertCsyncJournalOk(fakeFolder.syncJournal());
         currentLocalState = fakeFolder.currentLocalState();
 
         //6.
-        // The file should not exist on the remote, but still be there
-        QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
+        // The file should not exist on the remote, and not be there
+        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         QVERIFY(!fakeFolder.currentRemoteState().find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         // remove it so next test succeed.
         removeReadOnly("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data");
@@ -362,8 +354,8 @@ private slots:
         //2. move a directory from read to read only  (move the directory from previous step)
         renameReadOnly("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_", "readonlyDirectory_PERM_M_/moved_PERM_CK_" );
 
-        // error: can't upload to readonly!
-        QVERIFY(!fakeFolder.syncOnce());
+        // can't upload to readonly but not an error
+        QVERIFY(fakeFolder.syncOnce());
         currentLocalState = fakeFolder.currentLocalState();
 
         //1.
@@ -371,8 +363,8 @@ private slots:
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_" ));
         // including contents
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
-        // new still exist
-        QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
+        // new no longer exists
+        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         // but is not on server: so remove it locally for the future comparison
         removeReadOnly("readonlyDirectory_PERM_M_/newname_PERM_CK_");
 
@@ -381,8 +373,8 @@ private slots:
         QVERIFY(!currentLocalState.find("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
         // but still on the server: the rename causing an error meant the deletes didn't execute
         QVERIFY(fakeFolder.currentRemoteState().find("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
-        // new still there
-        QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
+        // new no longer exists
+        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         //but not on server
         removeReadOnly("readonlyDirectory_PERM_M_/moved_PERM_CK_");
         fakeFolder.remoteModifier().remove("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
@@ -437,13 +429,6 @@ private slots:
     void testForbiddenMoves()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             Q_UNUSED(folders)
-                             Q_UNUSED(localPath)
-                             callback(false);
-                         });
 
         // Some of this test depends on the order of discovery. With threading
         // that order becomes effectively random, but we want to make sure to test
@@ -503,11 +488,11 @@ private slots:
         SyncFileItemVector discovery;
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&discovery](auto v) { discovery = v; });
         ItemCompletedSpy completeSpy(fakeFolder);
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
 
         // if renaming doesn't work, just delete+create
         QVERIFY(itemInstruction(completeSpy, "norename/file", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(itemInstruction(completeSpy, "norename/sub", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "norename/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "norename/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "norename/file_renamed", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "norename/sub_renamed", CSYNC_INSTRUCTION_NEW));
@@ -516,19 +501,19 @@ private slots:
 
         // simiilarly forbidding moves becomes delete+create
         QVERIFY(itemInstruction(completeSpy, "nomove/file", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(itemInstruction(completeSpy, "nomove/sub", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "nomove/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "nomove/sub", CSYNC_INSTRUCTION_REMOVE));
         // nomove/sub/file is removed as part of the dir
         QVERIFY(itemInstruction(completeSpy, "allowed/file_moved", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "allowed/sub_moved", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "allowed/sub_moved/file", CSYNC_INSTRUCTION_NEW));
 
-        // when moving to an invalid target, the targets should be an error
-        QVERIFY(itemInstruction(completeSpy, "nocreatefile/file", CSYNC_INSTRUCTION_ERROR));
-        QVERIFY(itemInstruction(completeSpy, "nocreatefile/zfile", CSYNC_INSTRUCTION_ERROR));
+        // when moving to an invalid target, the targets should be ignored
+        QVERIFY(itemInstruction(completeSpy, "nocreatefile/file", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "nocreatefile/zfile", CSYNC_INSTRUCTION_IGNORE));
         QVERIFY(itemInstruction(completeSpy, "nocreatefile/sub", CSYNC_INSTRUCTION_RENAME)); // TODO: What does a real server say?
-        QVERIFY(itemInstruction(completeSpy, "nocreatedir/sub2", CSYNC_INSTRUCTION_ERROR));
-        QVERIFY(itemInstruction(completeSpy, "nocreatedir/zsub2", CSYNC_INSTRUCTION_ERROR));
+        QVERIFY(itemInstruction(completeSpy, "nocreatedir/sub2", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "nocreatedir/zsub2", CSYNC_INSTRUCTION_IGNORE));
 
         // and the sources of the invalid moves should be restored, not deleted
         // (depending on the order of discovery a follow-up sync is needed)
@@ -541,12 +526,12 @@ private slots:
 
         // A follow-up sync will restore allowed/file and allowed/sub2 and maintain the nocreatedir/file errors
         completeSpy.clear();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(itemInstruction(completeSpy, "nocreatefile/file", CSYNC_INSTRUCTION_ERROR));
-        QVERIFY(itemInstruction(completeSpy, "nocreatefile/zfile", CSYNC_INSTRUCTION_ERROR));
-        QVERIFY(itemInstruction(completeSpy, "nocreatedir/sub2", CSYNC_INSTRUCTION_ERROR));
-        QVERIFY(itemInstruction(completeSpy, "nocreatedir/zsub2", CSYNC_INSTRUCTION_ERROR));
+        QVERIFY(itemInstruction(completeSpy, "nocreatefile/file", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "nocreatefile/zfile", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "nocreatedir/sub2", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "nocreatedir/zsub2", CSYNC_INSTRUCTION_NONE));
 
         QVERIFY(itemInstruction(completeSpy, "allowed/file", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "allowed/sub2", CSYNC_INSTRUCTION_NEW));
@@ -563,14 +548,6 @@ private slots:
     void testParentMoveNotAllowedChildrenRestored()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &lm = fakeFolder.localModifier();
         auto &rm = fakeFolder.remoteModifier();
@@ -623,14 +600,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
         auto &remote = fakeFolder.remoteModifier();
 
         remote.mkdir("readOnlyFolder");
@@ -647,14 +616,6 @@ private slots:
     void testReadWriteFolderIsReallyReadWrite()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -673,14 +634,6 @@ private slots:
     void testChangePermissionsFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -717,14 +670,6 @@ private slots:
     void testChangePermissionsForFolderHierarchy()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -786,14 +731,6 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
         auto &remote = fakeFolder.remoteModifier();
 
         remote.mkdir("readOnlyFolder");
@@ -823,14 +760,6 @@ private slots:
     void testRenameChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -863,14 +792,6 @@ private slots:
     void testMoveChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
@@ -906,14 +827,6 @@ private slots:
     void testModifyChildItemsInReadOnlyFolder()
     {
         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
 
         auto &remote = fakeFolder.remoteModifier();
 
