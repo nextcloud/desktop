@@ -478,7 +478,11 @@ extension Item {
         guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
             // Lock but don't upload, do not error
             Self.logger.info(
-                "Item to create is a lock file. Will handle by remotely locking the target file."
+                """
+                Item to create:
+                    \(itemTemplate.filename)
+                    is a lock file. Will handle by remotely locking the target file.
+                """
             )
             guard let targetFileName = originalFileName(
                 fromLockFileName: itemTemplate.filename
@@ -516,7 +520,47 @@ extension Item {
                     """
                 )
             }
-            return (nil, error.fileProviderError)
+
+            let metadata = SendableItemMetadata(
+                ocId: itemTemplate.itemIdentifier.rawValue,
+                account: account.ncKitAccount,
+                classFile: "lock", // Indicates this metadata is for a locked file
+                contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+                creationDate: itemTemplate.creationDate as? Date ?? Date(),
+                date: Date(),
+                directory: false,
+                e2eEncrypted: false,
+                etag: "",
+                fileId: itemTemplate.itemIdentifier.rawValue,
+                fileName: itemTemplate.filename,
+                fileNameView: itemTemplate.filename,
+                hasPreview: false,
+                iconName: "lockIcon", // Custom icon for locked items
+                mountType: "",
+                ownerId: "",
+                ownerDisplayName: "",
+                path: parentItemRemotePath + "/" + targetFileName,
+                serverUrl: parentItemRemotePath,
+                size: 0,
+                status: Status.normal.rawValue,
+                downloaded: true,
+                uploaded: false,
+                urlBase: "",
+                user: "",
+                userId: ""
+            )
+            dbManager.addItemMetadata(metadata)
+
+            return (
+                Item(
+                    metadata: metadata,
+                    parentItemIdentifier: parentItemIdentifier,
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
+                ),
+                error.fileProviderError
+            )
         }
 
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
