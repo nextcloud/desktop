@@ -43,6 +43,55 @@ public extension Item {
             return NSFileProviderError(.noSuchItem)
         }
 
+        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            guard let originalFileName = originalFileName(
+                fromLockFileName: metadata.fileName
+            ) else {
+                Self.logger.error(
+                    """
+                    Could not get original filename from lock file filename
+                        \(self.metadata.fileName, privacy: .public)
+                        so will not unlock target file.
+                    """
+                )
+                return nil
+            }
+            let originalFileServerFileNameUrl = metadata.serverUrl + "/" + originalFileName
+            let (_, _, error) = await remoteInterface.setLockStateForFile(
+                remotePath: originalFileServerFileNameUrl,
+                lock: false,
+                account: account,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+            guard error == .success else {
+                Self.logger.error(
+                    """
+                    Could not unlock item for \(self.filename, privacy: .public)...
+                        at \(originalFileServerFileNameUrl, privacy: .public)...
+                        received error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                    """
+                )
+                return error.fileProviderError
+            }
+            Self.logger.info(
+                """
+                Successfully unlocked item for: \(self.filename, privacy: .public)...
+                    at: \(originalFileServerFileNameUrl, privacy: .public)
+                """
+            )
+            return nil
+        }
+
         let (_, _, error) = await remoteInterface.delete(
             remotePath: serverFileNameUrl,
             account: account,
