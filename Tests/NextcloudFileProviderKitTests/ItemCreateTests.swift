@@ -552,4 +552,81 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertTrue(rootItem.children.isEmpty)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
+
+    func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Setup remote folder and file
+        let folderRemote = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.odt"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: false,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        // Insert folder and target file into DB
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // Construct the lock file metadata
+        let lockFileName = ".~lock.\(targetFileName)#"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+
+        let lockItemTemplate = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (createdItem, error) = await Item.create(
+            basedOn: lockItemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNotNil(createdItem)
+        XCTAssertNil(error)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: "lock-id"))
+        XCTAssertTrue(targetRemote.locked)
+    }
 }
