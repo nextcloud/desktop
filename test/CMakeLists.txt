@@ -47,9 +47,9 @@ nextcloud_add_test(Utility)
 
 if (NOT APPLE)
     nextcloud_add_test(SyncEngine)
+    nextcloud_add_test(SyncVirtualFiles)
 endif()
 
-nextcloud_add_test(SyncVirtualFiles)
 nextcloud_add_test(SyncMove)
 nextcloud_add_test(SyncDelete)
 nextcloud_add_test(SyncConflict)
