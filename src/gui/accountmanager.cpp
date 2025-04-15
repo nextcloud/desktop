@@ -23,6 +23,7 @@
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
+#include "libsync/clientproxy.h"
 
 #include <QSettings>
 #include <QDir>
@@ -60,7 +61,6 @@ constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
 constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
-constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
 constexpr auto httpAuthTypeC = "http";
@@ -82,6 +82,8 @@ constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
+
+constexpr auto generalC = "General";
 }
 
 
@@ -250,6 +252,16 @@ bool AccountManager::restoreFromLegacySettings()
             }
         }
     }
+
+    ConfigFile configFile;
+    configFile.setVfsEnabled(settings->value(configFile.isVfsEnabledC).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(configFile.launchOnSystemStartupC).toBool());
+    configFile.setOptionalServerNotifications(settings->value(configFile.optionalServerNotificationsC).toBool());
+    configFile.setPromptDeleteFiles(settings->value(configFile.promptDeleteC).toBool());
+    configFile.setShowCallNotifications(settings->value(configFile.showCallNotificationsC).toBool());
+    configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC).toBool());
+    ClientProxy().saveProxyConfigurationFromSettings(*settings);
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
