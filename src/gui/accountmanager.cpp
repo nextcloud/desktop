@@ -268,7 +268,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setShowCallNotifications(settings->value(QLatin1String(showCallNotificationsC)).toBool());
     configFile.setShowChatNotifications(settings->value(QLatin1String(showChatNotificationsC)).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(QLatin1String(showInExplorerNavigationPaneC)).toBool());
-    ClientProxy().setupQtProxyFromSettings(*settings);
+    ClientProxy().saveProxyConfigurationFromSettings(*settings);
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
