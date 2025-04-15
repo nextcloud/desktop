@@ -60,15 +60,19 @@ public class Item: NSObject, NSFileProviderItem {
         guard !metadata.lock else {
             return [.allowsReading]
         }
-        return [
+
+        var itemCapabilities: NSFileProviderItemCapabilities = [
             .allowsWriting,
             .allowsReading,
             .allowsDeleting,
             .allowsRenaming,
             .allowsReparenting,
             .allowsEvicting,
-            .allowsTrashing
         ]
+        if !isLockFileName(filename) {
+            itemCapabilities.insert(.allowsTrashing)
+        }
+        return itemCapabilities
     }
 
     public var itemVersion: NSFileProviderItemVersion {
