@@ -56,3 +56,22 @@ public func isLockFileName(_ filename: String) -> Bool {
         (filename.hasPrefix(".~lock.") && filename.hasSuffix("#"))
 }
 
+public func originalFilename(fromLockFilename lockFilename: String) -> String? {
+    // Microsoft Office: "~$MyDoc.docx" -> "MyDoc.docx"
+    if lockFilename.hasPrefix("~$") {
+        // Remove the "~$" prefix
+        let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
+        return String(lockFilename[index...])
+    }
+
+    // LibreOffice: ".~lock.MyDoc.odt#" -> "MyDoc.odt"
+    if lockFilename.hasPrefix(".~lock.") && lockFilename.hasSuffix("#") {
+        // Strip the prefix and suffix
+        let start = lockFilename.index(lockFilename.startIndex, offsetBy: 7)
+        let end = lockFilename.index(before: lockFilename.endIndex)
+        return String(lockFilename[start..<end])
+    }
+
+    // Not a recognized lock file
+    return nil
+}
