@@ -1,5 +1,5 @@
 //
-//  ItemMetadata+Array.swift
+//  SendableItemMetadata+Array.swift
 //  NextcloudFileProviderKit
 //
 //  Created by Claudio Cambra on 2024-12-23.
