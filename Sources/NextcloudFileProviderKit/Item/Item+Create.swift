@@ -7,6 +7,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
@@ -477,6 +478,34 @@ extension Item {
 
         guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
             // Lock but don't upload, do not error
+            let (_, capabilitiesData, capabilitiesError) = await remoteInterface.fetchCapabilities(
+                account: account,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: itemTemplate.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+            guard capabilitiesError == .success,
+                  let capabilitiesData,
+                  let capabilities = Capabilities(data: capabilitiesData),
+                  capabilities.files?.locking != nil
+            else {
+                uploadLogger.info(
+                    """
+                    Received nil capabilities data.
+                        Received error: \(capabilitiesError.errorDescription, privacy: .public)
+                        Will not proceed with locking for \(itemTemplate.filename, privacy: .public)
+                    """
+                )
+                return (nil, nil)
+            }
+
             Self.logger.info(
                 """
                 Item to create:
