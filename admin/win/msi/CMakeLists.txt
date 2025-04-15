@@ -25,6 +25,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/OEM.wxi
         ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
+        EnsureACL.js
         Platform.wxi
         Nextcloud.wxs
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
