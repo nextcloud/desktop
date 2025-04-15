@@ -625,6 +625,8 @@ final class ItemCreateTests: XCTestCase {
         )
 
         XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertEqual(createdItem?.isDownloaded, true)
         XCTAssertNil(error)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertTrue(targetRemote.locked)
