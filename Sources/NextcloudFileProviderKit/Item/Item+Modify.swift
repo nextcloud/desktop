@@ -871,6 +871,16 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
+        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            Self.logger.info(
+                """
+                System requested modification of lock file \(self.filename, privacy: .public)
+                    Marking as complete without syncing to server.
+                """
+            )
+            return (self, nil)
+        }
+
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
         let bundleOrPackage =
