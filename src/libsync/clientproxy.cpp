@@ -139,10 +139,10 @@ void ClientProxy::setupQtProxyFromConfig()
     }
 }
 
-void ClientProxy::setupQtProxyFromSettings(const QSettings &settings)
+void ClientProxy::saveProxyConfigurationFromSettings(const QSettings &settings)
 {
     if (settings.value(QLatin1String(proxyTypeC)).isNull()) {
-        qCInfo(lcClientProxy) << "No Proxy settings found.";
+        qCDebug(lcClientProxy) << "No Proxy settings found.";
         return;
     }
 
