@@ -48,3 +48,11 @@ public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain
     let fileProviderDataUrl = try fpManager.temporaryDirectoryURL()
     return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
 }
+
+public func isLockFileName(_ filename: String) -> Bool {
+    // Microsoft Office lock files
+    return filename.hasPrefix("~$") ||
+        // LibreOffice lock files
+        (filename.hasPrefix(".~lock.") && filename.hasSuffix("#"))
+}
+
