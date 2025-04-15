@@ -11,7 +11,7 @@ import NextcloudKit
 import OSLog
 
 extension Item {
-    
+
     private static func createNewFolder(
         itemTemplate: NSFileProviderItem?,
         remotePath: String,
@@ -433,7 +433,7 @@ extension Item {
             )
             return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
         }
-        
+
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
             Self.logger.info(
@@ -444,7 +444,7 @@ extension Item {
             )
             return (nil, NSFileProviderError(.noSuchItem))
         }
-        
+
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
         var parentItemRelativePath: String
@@ -473,6 +473,50 @@ extension Item {
             assert(parentItemRelativePath.starts(with: "/"))
         }
 
+        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
+
+        guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
+            // Lock but don't upload, do not error
+            Self.logger.info(
+                "Item to create is a lock file. Will handle by remotely locking the target file."
+            )
+            guard let targetFileName = originalFilename(fromLockFilename: itemTemplate.filename) else {
+                Self.logger.error(
+                    """
+                    Could not get original filename from lock file filename
+                        \(itemTemplate.filename, privacy: .public)
+                        so will not lock target file.
+                    """
+                )
+                return (nil, nil)
+            }
+            let (_, _, error) = await remoteInterface.setLockStateForFile(
+                remotePath: parentItemRemotePath + "/" + targetFileName,
+                lock: true,
+                account: account,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: itemTemplate.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+            if error != .success {
+                Self.logger.error(
+                    """
+                    Failed to lock target file \(targetFileName, privacy: .public)
+                        for lock file: \(itemTemplate.filename, privacy: .public)
+                        received error: \(error.errorDescription)
+                    """
+                )
+            }
+            return (nil, error.fileProviderError)
+        }
+
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             return Item.createIgnored(
@@ -488,7 +532,6 @@ extension Item {
 
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
-        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
 
         Self.logger.debug(
             """
