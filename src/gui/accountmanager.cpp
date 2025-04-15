@@ -84,13 +84,6 @@ constexpr auto maxAccountVersion = 13;
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 
 constexpr auto generalC = "General";
-constexpr auto isVfsEnabledC = "isVfsEnabled";
-constexpr auto launchOnSystemStartupC = "launchOnSystemStartup";
-constexpr auto optionalServerNotificationsC = "optionalServerNotifications";
-constexpr auto promptDeleteC = "promptDeleteAllFiles";
-constexpr auto showCallNotificationsC = "showCallNotifications";
-constexpr auto showChatNotificationsC = "showChatNotifications";
-constexpr auto showInExplorerNavigationPaneC = "showInExplorerNavigationPane";
 }
 
 
@@ -261,13 +254,13 @@ bool AccountManager::restoreFromLegacySettings()
     }
 
     ConfigFile configFile;
-    configFile.setVfsEnabled(settings->value(QLatin1String(isVfsEnabledC)).toBool());
-    configFile.setLaunchOnSystemStartup(settings->value(QLatin1String(launchOnSystemStartupC)).toBool());
-    configFile.setOptionalServerNotifications(settings->value(QLatin1String(optionalServerNotificationsC)).toBool());
-    configFile.setPromptDeleteFiles(settings->value(QLatin1String(promptDeleteC)).toBool());
-    configFile.setShowCallNotifications(settings->value(QLatin1String(showCallNotificationsC)).toBool());
-    configFile.setShowChatNotifications(settings->value(QLatin1String(showChatNotificationsC)).toBool());
-    configFile.setShowInExplorerNavigationPane(settings->value(QLatin1String(showInExplorerNavigationPaneC)).toBool());
+    configFile.setVfsEnabled(settings->value(configFile.isVfsEnabledC).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(configFile.launchOnSystemStartupC).toBool());
+    configFile.setOptionalServerNotifications(settings->value(configFile.optionalServerNotificationsC).toBool());
+    configFile.setPromptDeleteFiles(settings->value(configFile.promptDeleteC).toBool());
+    configFile.setShowCallNotifications(settings->value(configFile.showCallNotificationsC).toBool());
+    configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC).toBool());
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
 
     // Try to load the single account.

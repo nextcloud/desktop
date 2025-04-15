@@ -53,13 +53,8 @@ static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
 static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static constexpr char monoIconsC[] = "monoIcons";
-static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
 static constexpr char crashReporterC[] = "crashReporter";
-static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
-static constexpr char showCallNotificationsC[] = "showCallNotifications";
-static constexpr char showChatNotificationsC[] = "showChatNotifications";
-static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
@@ -67,7 +62,6 @@ static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
-static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -81,7 +75,6 @@ static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientVersionC[] = "clientVersion";
-static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -206,32 +199,32 @@ bool ConfigFile::setConfDir(const QString &value)
 bool ConfigFile::optionalServerNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalServerNotificationsC), true).toBool();
+    return settings.value(optionalServerNotificationsC, true).toBool();
 }
 
 bool ConfigFile::showChatNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showChatNotificationsC), true).toBool() && optionalServerNotifications();
+    return settings.value(showChatNotificationsC, true).toBool() && optionalServerNotifications();
 }
 
 void ConfigFile::setShowChatNotifications(const bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showChatNotificationsC), show);
+    settings.setValue(showChatNotificationsC, show);
     settings.sync();
 }
 
 bool ConfigFile::showCallNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showCallNotificationsC), true).toBool() && optionalServerNotifications();
+    return settings.value(showCallNotificationsC, true).toBool() && optionalServerNotifications();
 }
 
 void ConfigFile::setShowCallNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showCallNotificationsC), show);
+    settings.setValue(showCallNotificationsC, show);
     settings.sync();
 }
 
@@ -245,13 +238,13 @@ bool ConfigFile::showInExplorerNavigationPane() const
 #endif
         ;
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
+    return settings.value(showInExplorerNavigationPaneC, defaultValue).toBool();
 }
 
 void ConfigFile::setShowInExplorerNavigationPane(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showInExplorerNavigationPaneC), show);
+    settings.setValue(showInExplorerNavigationPaneC, show);
     settings.sync();
 }
 
@@ -288,7 +281,7 @@ chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
 void ConfigFile::setOptionalServerNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalServerNotificationsC), show);
+    settings.setValue(optionalServerNotificationsC, show);
     settings.sync();
 }
 
@@ -1062,13 +1055,13 @@ bool ConfigFile::showMainDialogAsNormalWindow() const {
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(promptDeleteC), false).toBool();
+    return settings.value(promptDeleteC, false).toBool();
 }
 
 void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
+    settings.setValue(promptDeleteC, promptDeleteFiles);
 }
 
 int ConfigFile::deleteFilesThreshold() const
@@ -1219,13 +1212,13 @@ void ConfigFile::setClientVersionString(const QString &version)
 bool ConfigFile::launchOnSystemStartup() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(launchOnSystemStartupC), true).toBool();
+    return settings.value(launchOnSystemStartupC, true).toBool();
 }
 
 void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
+    settings.setValue(launchOnSystemStartupC, autostart);
 }
 
 bool ConfigFile::serverHasValidSubscription() const
