@@ -1032,10 +1032,11 @@ bool Theme::darkMode() const
 
 #ifdef Q_OS_WIN
     static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-    if (!isWindows11OrGreater() &&
-        Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
-        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
-        return true;
+    if (!isWindows11OrGreater() && Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey)) {
+        if (const auto keyVariant = Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme"));
+            keyVariant.isValid() && !keyVariant.toBool()) {
+            return true;
+        }
     }
 #endif
     return isDarkFromStyle();
