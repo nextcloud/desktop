@@ -21,7 +21,6 @@
 #include <QSettings>
 
 namespace {
-    constexpr auto proxyC = "Proxy";
     constexpr auto proxyTypeC = "Proxy/type";
     constexpr auto proxyHostC = "Proxy/host";
     constexpr auto proxyPortC = "Proxy/port";
