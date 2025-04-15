@@ -56,7 +56,7 @@ public func isLockFileName(_ filename: String) -> Bool {
         (filename.hasPrefix(".~lock.") && filename.hasSuffix("#"))
 }
 
-public func originalFilename(fromLockFilename lockFilename: String) -> String? {
+public func originalFileName(fromLockFileName lockFilename: String) -> String? {
     // Microsoft Office: "~$MyDoc.docx" -> "MyDoc.docx"
     if lockFilename.hasPrefix("~$") {
         // Remove the "~$" prefix

@@ -480,7 +480,9 @@ extension Item {
             Self.logger.info(
                 "Item to create is a lock file. Will handle by remotely locking the target file."
             )
-            guard let targetFileName = originalFilename(fromLockFilename: itemTemplate.filename) else {
+            guard let targetFileName = originalFileName(
+                fromLockFileName: itemTemplate.filename
+            ) else {
                 Self.logger.error(
                     """
                     Could not get original filename from lock file filename
