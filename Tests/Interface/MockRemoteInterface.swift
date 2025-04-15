@@ -534,6 +534,20 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, nil, .success)
     }
 
+    public func setLockStateForFile(
+        remotePath: String,
+        lock: Bool,
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
+        guard let item = item(remotePath: remotePath, account: account) else {
+            return (account.ncKitAccount, nil, .urlError)
+        }
+        item.locked = lock
+        return (account.ncKitAccount, nil, .success)
+    }
+
     public func trashedItems(
         account: Account,
         options: NKRequestOptions = .init(),
