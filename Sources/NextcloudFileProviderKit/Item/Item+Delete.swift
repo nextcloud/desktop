@@ -44,6 +44,7 @@ public extension Item {
         }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            dbManager.deleteItemMetadata(ocId: metadata.ocId)
             guard let originalFileName = originalFileName(
                 fromLockFileName: metadata.fileName
             ) else {

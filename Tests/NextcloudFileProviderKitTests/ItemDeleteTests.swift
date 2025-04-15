@@ -245,6 +245,7 @@ final class ItemDeleteTests: XCTestCase {
             ocId: "lock-id", fileName: lockFileName, account: Self.account
         )
         lockFileMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(lockFileMetadata)
 
         let lockItem = Item(
             metadata: lockFileMetadata,
@@ -256,6 +257,7 @@ final class ItemDeleteTests: XCTestCase {
 
         // Delete the lock file
         let error = await lockItem.delete(dbManager: Self.dbManager)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
 
         // Assert: no error returned
         XCTAssertNil(error)
