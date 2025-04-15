@@ -239,4 +239,18 @@ final class ItemPropertyTests: XCTestCase {
         )
         XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
     }
+
+    func testItemLockFileUntrashable() {
+        let metadata = SendableItemMetadata(
+            ocId: "test-id", fileName: ".~lock.test.doc#", account: Self.account
+        )
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertFalse(item.capabilities.contains(.allowsTrashing))
+    }
 }
