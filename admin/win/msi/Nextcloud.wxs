@@ -57,8 +57,8 @@
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
         <RegistrySearch Id="RegistryLegacyUninstallString" Type="file" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppName)" Name="UninstallString" Win64="no">
-		    <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
-	    </RegistrySearch>
+            <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
+        </RegistrySearch>
     </Property>
 
     <!-- Property to disable update checks -->
@@ -71,22 +71,30 @@
     <SetProperty Id="ExecNsisUninstaller" Value="&quot;$(var.AppShortName)&quot; &quot;[NSIS_UNINSTALLEXE]&quot;" Before="ExecNsisUninstaller" Sequence="execute" />
     <SetProperty Id="RemoveNavigationPaneEntries" Value="&quot;$(var.AppName)&quot;" Before="RemoveNavigationPaneEntries" Sequence="execute" />
 
+    <!-- Ensure ACLs -->
+    <Binary Id="EnsureACL" SourceFile="EnsureACL.js" />
+    <SetProperty Id="EnsureACL" Before="EnsureACL" Value="[INSTALLDIR]" Sequence="execute" />
+    <CustomAction Id="EnsureACL" BinaryKey="EnsureACL" JScriptCall="EnsureACL" Return="check" Execute="deferred" Impersonate="no" />
+
     <InstallExecuteSequence>
         <!-- Install: Remove previous NSIS installation, if detected -->
         <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
 
+        <!-- Install: Ensure ACLs are set -->
+        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed</Custom>
+
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
         <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
-		
-		<!-- Uninstall: Cleanup the Registry -->
-		<Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+
+        <!-- Uninstall: Cleanup the Registry -->
+        <Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
 
         <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
         <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
-	<Property Id="APPNAME">$(var.AppName)</Property>
+    <Property Id="APPNAME">$(var.AppName)</Property>
     <Property Id="ARPPRODUCTICON">$(var.AppIcon)</Property>
     <Property Id="ARPHELPLINK">$(var.AppHelpLink)</Property>
     <Property Id="ARPURLINFOABOUT">$(var.AppInfoLink)</Property>
@@ -192,11 +200,11 @@
                 <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
             </RegistryKey>
         </Component>
-		<!-- Register URI handler -->
+        <!-- Register URI handler -->
         <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
-				<RegistryValue Type="string" Name="URL Protocol" Value="" />
+                <RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
@@ -214,7 +222,7 @@
 
         <ComponentRef Id="RegistryVersionInfo" />
         <ComponentRef Id="RegistryDefaultSettings" />
-		<ComponentRef Id="RegistryUriHandler" />
+        <ComponentRef Id="RegistryUriHandler" />
 
         <Feature Id="ShellExtensions" Title="Integration for Windows Explorer"
             Description="This feature requires a reboot." >
