@@ -46,6 +46,7 @@ public:
 
 public slots:
     void setupQtProxyFromConfig();
+    void saveProxyConfigurationFromSettings(const QSettings &settings);
 };
 
 class OWNCLOUDSYNC_EXPORT SystemProxyRunnable : public QObject, public QRunnable

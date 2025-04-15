@@ -252,6 +252,14 @@ public:
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
 
+    static constexpr char isVfsEnabledC[] = "isVfsEnabled";
+    static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
+    static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
+    static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
+    static constexpr char showCallNotificationsC[] = "showCallNotifications";
+    static constexpr char showChatNotificationsC[] = "showChatNotifications";
+    static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
+
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
