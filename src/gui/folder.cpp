@@ -652,8 +652,11 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
         if (record.isValid()
             && !FileSystem::fileChanged(path.toString(), record._fileSize, record._modtime) && _vfs) {
             spurious = true;
-
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
+                qCDebug(lcFolder) << "PinState for" << relativePath << "is" << *pinState;
+                if (*pinState == PinState::Unspecified) {
+                    spurious = false;
+                }
                 if (*pinState == PinState::AlwaysLocal && record.isVirtualFile()) {
                     spurious = false;
                 }
