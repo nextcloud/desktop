@@ -176,9 +176,11 @@ void AccountSetupFromCommandLineJob::setupLocalSyncFolder(AccountState *accountS
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
     definition.alias = folderMan->map().size() > 0 ? QString::number(folderMan->map().size()) : QString::number(0);
 
+#ifdef Q_OS_WIN
     if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
         definition.navigationPaneClsid = QUuid::createUuid();
     }
+#endif
 
     folderMan->setSyncEnabled(false);
 
