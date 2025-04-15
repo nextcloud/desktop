@@ -1403,4 +1403,40 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(remoteItem.name, metadata.fileName)
         XCTAssertEqual(remoteItem.data, modifiedData)
     }
+
+    func testModifyLockFileCompletesWithoutSyncing() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Construct lock file metadata
+        let lockFileName = ".~lock.test.doc#"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.classFile = "lock"
+
+        let lockItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // Simulate new contents, even though this shouldn't matter
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(lockFileName)
+        try Data("updated lock file".utf8).write(to: tempUrl)
+
+        // Call modify
+        let (modifiedItem, error) = await lockItem.modify(
+            itemTarget: lockItem,
+            changedFields: [.contents],
+            contents: tempUrl,
+            dbManager: Self.dbManager
+        )
+
+        // Assert: no error, item returned should be same as original
+        XCTAssertNil(error)
+        XCTAssertEqual(modifiedItem?.itemIdentifier, lockItem.itemIdentifier)
+        XCTAssertEqual(modifiedItem?.filename, lockFileName)
+    }
 }
