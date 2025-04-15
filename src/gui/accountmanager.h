@@ -17,6 +17,8 @@
 #include "account.h"
 #include "accountstate.h"
 
+class QSettings;
+
 namespace OCC {
 
 /**
@@ -47,7 +49,7 @@ public:
      * Returns false if there was an error reading the settings,
      * but note that settings not existing is not an error.
      */
-    AccountsRestoreResult restore(const bool alsoRestoreLegacySettings = true);
+    AccountsRestoreResult restore(const QString &legacyConfigFile, const bool alsoRestoreLegacySettings = true);
 
     /**
      * Add this account in the list of saved accounts.
@@ -120,8 +122,6 @@ private:
     // saving and loading Account to settings
     void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
-
-    bool restoreFromLegacySettings();
 
     [[nodiscard]] bool isAccountIdAvailable(const QString &id) const;
     [[nodiscard]] QString generateFreeAccountId() const;
