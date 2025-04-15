@@ -92,7 +92,7 @@ public:
 
 public slots:
     /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
-    void saveAccount(OCC::Account *newAccountData);
+    void saveAccount(const OCC::AccountPtr &newAccountData);
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);
@@ -118,7 +118,7 @@ signals:
 
 private:
     // saving and loading Account to settings
-    void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
+    void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
 
     bool restoreFromLegacySettings();

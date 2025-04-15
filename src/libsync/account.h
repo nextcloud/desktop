@@ -444,11 +444,11 @@ signals:
     void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(OCC::Account *acc);
+    void wantsAccountSaved(const OCC::AccountPtr &acc);
 
     void wantsFoldersSynced();
 
-    void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(const AccountPtr &account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
@@ -460,8 +460,8 @@ signals:
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
 
-    void pushNotificationsReady(OCC::Account *account);
-    void pushNotificationsDisabled(OCC::Account *account);
+    void pushNotificationsReady(const OCC::AccountPtr &account);
+    void pushNotificationsDisabled(const OCC::AccountPtr &account);
 
     void userStatusChanged();
 

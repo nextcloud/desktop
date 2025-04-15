@@ -777,7 +777,7 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto manager = AccountManager::instance();
 
     auto newState = manager->addAccount(newAccount);
-    manager->saveAccount(newAccount.data());
+    manager->saveAccount(newAccount);
     return newState;
 }
 
