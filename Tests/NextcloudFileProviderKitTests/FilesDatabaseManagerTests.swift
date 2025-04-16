@@ -194,6 +194,28 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(inDb.etag, transit.etag)
     }
 
+    func testTransitItemIsDeleted() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Simulate existing item in transit
+        var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.status = Status.downloading.rawValue
+        Self.dbManager.addItemMetadata(transit)
+
+        let result = Self.dbManager.updateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.deletedMetadatas?.isEmpty, false)
+        XCTAssertEqual(result.deletedMetadatas?.first?.ocId, transit.ocId)
+    }
+
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
         let metadata = RealmItemMetadata()
