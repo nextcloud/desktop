@@ -524,6 +524,7 @@ final class ItemCreateTests: XCTestCase {
         // Assert
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.isUploaded, false)
         XCTAssertTrue(rootItem.children.isEmpty)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
