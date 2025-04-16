@@ -151,7 +151,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         try fileData.write(to: fileUrl)
 
         let result = await remoteInterface.upload(
-            remotePath: Self.account.davFilesUrl, localPath: fileUrl.path, account: Self.account
+            remotePath: Self.account.davFilesUrl + "/file.txt", localPath: fileUrl.path, account: Self.account
         )
         XCTAssertEqual(result.remoteError, .success)
 
@@ -359,7 +359,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         }
         let fileData = Data("Hello, World!".utf8)
         let _ = await remoteInterface.upload(
-            remotePath: Self.account.davFilesUrl, localPath: fileUrl.path, account: Self.account
+            remotePath: Self.account.davFilesUrl + "/file.txt", localPath: fileUrl.path, account: Self.account
         )
 
         let result = await remoteInterface.download(
