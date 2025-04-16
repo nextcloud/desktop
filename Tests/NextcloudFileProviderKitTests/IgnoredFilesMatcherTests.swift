@@ -21,6 +21,8 @@ struct IgnoredFilesMatcherTests {
         let matcher = IgnoredFilesMatcher(ignoreList: patterns)
 
         #expect(matcher.isExcluded("foo.tmp"))
+        #expect(matcher.isExcluded("a/b/c/hello.tmp"))
+        #expect(matcher.isExcluded("/a/b/c/hello.tmp"))
         #expect(matcher.isExcluded("build/"))
         #expect(!matcher.isExcluded("build")) // We should not match files, just children of build
         #expect(matcher.isExcluded("folder/file.txt"))

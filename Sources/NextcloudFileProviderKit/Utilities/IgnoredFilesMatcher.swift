@@ -7,17 +7,18 @@
 
 import Foundation
 
-class IgnoredFilesMatcher {
+public class IgnoredFilesMatcher {
     private let regexes: [NSRegularExpression]
 
     private static func patternToRegex(_ pattern: String, wildcardsMatchSlash: Bool) -> String {
-        // Trim, ignore comments and empty lines
         let trimmed = pattern.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty, !trimmed.hasPrefix("#") else { return "a^" }
 
         var regex = ""
-
         var i = trimmed.startIndex
+
+        let hasSlash = trimmed.contains("/")
+
         while i < trimmed.endIndex {
             let c = trimmed[i]
             switch c {
@@ -33,10 +34,7 @@ class IgnoredFilesMatcher {
             case "?":
                 regex.append(wildcardsMatchSlash ? "." : "[^/]")
                 i = trimmed.index(after: i)
-            case ".":
-                regex.append("\\.")
-                i = trimmed.index(after: i)
-            case "[", "]", "(", ")", "{", "}", "+", "^", "$", "|", "\\":
+            case ".", "[", "]", "(", ")", "{", "}", "+", "^", "$", "|", "\\":
                 regex.append("\\\(c)")
                 i = trimmed.index(after: i)
             default:
@@ -45,10 +43,10 @@ class IgnoredFilesMatcher {
             }
         }
 
-        return "^\(regex)$"
+        return hasSlash ? "^\(regex)$" : "(^|/)"+regex+"$"
     }
 
-    init(ignoreList: [String], wildcardsMatchSlash: Bool = false) {
+    public init(ignoreList: [String], wildcardsMatchSlash: Bool = false) {
         regexes = ignoreList
             .map { Self.patternToRegex($0, wildcardsMatchSlash: wildcardsMatchSlash) }
             .compactMap { try? NSRegularExpression(pattern: $0, options: [.caseInsensitive]) }
