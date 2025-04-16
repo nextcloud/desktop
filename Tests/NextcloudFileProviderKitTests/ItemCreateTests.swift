@@ -79,6 +79,10 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, folderItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, folderItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
+        XCTAssertTrue(createdItem.isDownloaded)
+        XCTAssertTrue(createdItem.isUploaded)
     }
 
     func testCreateFile() async throws {
@@ -127,6 +131,10 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
+        XCTAssertTrue(createdItem.isDownloaded)
+        XCTAssertTrue(createdItem.isUploaded)
     }
 
     func testCreateFileIntoFolder() async throws {
@@ -202,6 +210,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdFileItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
 
         let parentDbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdFolderItem.itemIdentifier.rawValue)
@@ -210,6 +220,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(parentDbItem.fileNameView, folderItemMetadata.fileNameView)
         XCTAssertEqual(parentDbItem.directory, folderItemMetadata.directory)
         XCTAssertEqual(parentDbItem.serverUrl, folderItemMetadata.serverUrl)
+        XCTAssertTrue(parentDbItem.downloaded)
+        XCTAssertTrue(parentDbItem.uploaded)
     }
 
     func testCreateBundle() async throws {
@@ -399,6 +411,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
     }
 
     func testCreateFileChunkedResumed() async throws {
@@ -493,6 +507,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
         XCTAssertNil(dbItem.chunkUploadId)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
     }
 
     func testCreateDoesNotPropagateIgnoredFile() async throws {
@@ -525,6 +541,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertNotNil(createdItem)
         XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertEqual(createdItem?.isDownloaded, true)
         XCTAssertTrue(rootItem.children.isEmpty)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
