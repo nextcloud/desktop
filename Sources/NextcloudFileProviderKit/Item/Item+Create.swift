@@ -198,9 +198,9 @@ extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
-            urlBase: "", // Placeholder as not set in original code
-            user: "", // Placeholder as not set in original code
-            userId: "" // Placeholder as not set in original code
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
         )
 
         dbManager.addItemMetadata(newMetadata)
