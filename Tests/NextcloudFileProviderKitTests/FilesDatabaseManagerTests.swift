@@ -68,11 +68,10 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testUpdateItemMetadatas() {
-        // Setting up test data
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
-        let metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
+        var metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
+        metadata.downloaded = true
 
-        // Call updateItemMetadatas
         let result = Self.dbManager.updateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
@@ -81,10 +80,40 @@ final class FilesDatabaseManagerTests: XCTestCase {
             keepExistingDownloadState: true
         )
 
-        XCTAssertNotNil(result.newMetadatas, "Should create new metadatas")
-        XCTAssertTrue(
-            result.updatedMetadatas?.isEmpty ?? false, "No existing metadata should be updated"
+        XCTAssertEqual(result.newMetadatas?.isEmpty, false, "Should create new metadatas")
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "No metadata should be updated")
+
+        // Now test we are receiving the updated basic metadatas correctly.
+        metadata.etag = "new and shiny"
+
+        let result2 = Self.dbManager.updateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [metadata],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
+
+        XCTAssertEqual(result2.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result2.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
+
+        // Also check the download state is correctly kept the same.
+        // We set it to false here to replicate the lack of a download state when converting from
+        // the NKFiles received during remote enumeration
+        metadata.downloaded = false
+        metadata.etag = "new and shiny, but keeping original download state"
+
+        let result3 = Self.dbManager.updateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [metadata],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result3.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result3.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
+        XCTAssertEqual(result3.updatedMetadatas?.first?.downloaded, true)
     }
 
     func testSetStatusForItemMetadata() throws {
