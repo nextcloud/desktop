@@ -494,4 +494,37 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
         XCTAssertNil(dbItem.chunkUploadId)
     }
+
+    func testCreateDoesNotPropagateIgnoredFile() async throws {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"])
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // We'll create a file that matches the ignored pattern
+        let parentIdentifier = NSFileProviderItemIdentifier.rootContainer
+        let metadata = SendableItemMetadata(
+            ocId: "ignored-file-id", fileName: "foo.tmp", account: Self.account
+        )
+        let itemTemplate = Item(
+            metadata: metadata,
+            parentItemIdentifier: parentIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: itemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: ignoredMatcher,
+            progress: .init(),
+            dbManager: Self.dbManager
+        )
+
+        // Assert
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertNotNil(createdItem)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
 }
