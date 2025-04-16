@@ -19,13 +19,29 @@ public extension Item {
     func delete(
         trashing: Bool = false,
         domain: NSFileProviderDomain? = nil,
+        ignoredFiles: IgnoredFilesMatcher? = nil,
         dbManager: FilesDatabaseManager
     ) async -> Error? {
+        let ocId = itemIdentifier.rawValue
+        let relativePath = (
+            metadata.serverUrl + "/" + metadata.fileName
+        ).replacingOccurrences(of: metadata.urlBase, with: "")
+
+        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+            Self.logger.info(
+                """
+                File \(self.filename, privacy: .public) is in the ignore list.
+                    Will delete locally with no remote effect.
+                """
+            )
+            dbManager.deleteItemMetadata(ocId: ocId)
+            return nil
+        }
+
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
             return NSFileProviderError(.noSuchItem)
         }
-        let ocId = itemIdentifier.rawValue
 
         let (_, _, error) = await remoteInterface.delete(
             remotePath: serverFileNameUrl,
