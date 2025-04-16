@@ -77,7 +77,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
         XCTAssertNotNil(result.newMetadatas, "Should create new metadatas")
@@ -195,7 +196,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
@@ -237,7 +239,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: [updatedMetadata, newMetadata],
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
         XCTAssertEqual(results.newMetadatas?.count, 1, "Should create one new metadata")

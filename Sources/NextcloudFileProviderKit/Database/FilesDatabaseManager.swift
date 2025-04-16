@@ -224,7 +224,8 @@ public final class FilesDatabaseManager: Sendable {
     private func processItemMetadatasToUpdate(
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool
+        updateDirectoryEtags: Bool,
+        keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata],
         updatedMetadatas: [SendableItemMetadata],
@@ -251,6 +252,10 @@ public final class FilesDatabaseManager: Sendable {
                         } else if !updateDirectoryEtags {
                             updatedMetadata.etag = existingMetadata.etag
                         }
+                    }
+
+                    if keepExistingDownloadState {
+                        updatedMetadata.downloaded = existingMetadata.downloaded
                     }
 
                     returningUpdatedMetadatas.append(updatedMetadata)
@@ -299,7 +304,8 @@ public final class FilesDatabaseManager: Sendable {
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool
+        updateDirectoryEtags: Bool,
+        keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
@@ -325,7 +331,9 @@ public final class FilesDatabaseManager: Sendable {
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas,
-                updateDirectoryEtags: updateDirectoryEtags)
+                updateDirectoryEtags: updateDirectoryEtags,
+                keepExistingDownloadState: keepExistingDownloadState
+            )
 
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             let metadatasToCreate = metadatasToChange.newMetadatas

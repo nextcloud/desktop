@@ -306,7 +306,8 @@ extension Enumerator {
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
-            updateDirectoryEtags: false
+            updateDirectoryEtags: false,
+            keepExistingDownloadState: true
         )
 
         return (
