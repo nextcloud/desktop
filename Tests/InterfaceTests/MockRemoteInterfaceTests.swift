@@ -168,6 +168,28 @@ final class MockRemoteInterfaceTests: XCTestCase {
         // TODO: Add test for overwriting existing file
     }
 
+    func testUploadTargetName() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let fileName = UUID().uuidString
+        let fileUrl = URL.temporaryDirectory.appendingPathComponent(fileName)
+        let fileData = Data("Hello, World!".utf8)
+        try fileData.write(to: fileUrl)
+
+        let result = await remoteInterface.upload(
+            remotePath: Self.account.davFilesUrl + "/file.txt", localPath: fileUrl.path, account: Self.account
+        )
+        XCTAssertEqual(result.remoteError, .success)
+
+        let remoteItem = remoteInterface.item(
+            remotePath: Self.account.davFilesUrl + "/file.txt", account: Self.account
+        )
+        XCTAssertNotNil(remoteItem)
+        let remoteItemIncorrectFileName = remoteInterface.item(
+            remotePath: Self.account.davFilesUrl + "/" + fileName, account: Self.account
+        )
+        XCTAssertNil(remoteItemIncorrectFileName)
+    }
+
     func testChunkedUpload() async throws {
         let fileUrl =
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
