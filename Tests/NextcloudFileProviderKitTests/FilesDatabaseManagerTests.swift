@@ -72,7 +72,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         var metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
         metadata.downloaded = true
 
-        let result = Self.dbManager.updateItemMetadatas(
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
@@ -86,7 +86,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Now test we are receiving the updated basic metadatas correctly.
         metadata.etag = "new and shiny"
 
-        let result2 = Self.dbManager.updateItemMetadatas(
+        let result2 = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
@@ -103,7 +103,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         metadata.downloaded = false
         metadata.etag = "new and shiny, but keeping original download state"
 
-        let result3 = Self.dbManager.updateItemMetadatas(
+        let result3 = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
@@ -145,7 +145,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         renamedParent.serverUrl = account.davFilesUrl + "/" + newContainerFolder.fileName
         renamedParent.etag = "etag-changed"
 
-        let result = Self.dbManager.updateItemMetadatas(
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [renamedParent],
@@ -178,7 +178,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         incoming.status = Status.normal.rawValue
         incoming.etag = "new-etag"
 
-        let result = Self.dbManager.updateItemMetadatas(
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [incoming],
@@ -202,7 +202,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         transit.status = Status.downloading.rawValue
         Self.dbManager.addItemMetadata(transit)
 
-        let result = Self.dbManager.updateItemMetadatas(
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [],
@@ -321,7 +321,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Simulate updated metadata that leads to a deletion
         let updatedMetadatas = [existingMetadata1, existingMetadata3]  // Only include 2 of the 3
 
-        let _ = Self.dbManager.updateItemMetadatas(
+        let _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
@@ -364,7 +364,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(existingMetadata)
         }
 
-        let results = Self.dbManager.updateItemMetadatas(
+        let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: [updatedMetadata, newMetadata],

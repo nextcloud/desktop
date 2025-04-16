@@ -300,7 +300,9 @@ public final class FilesDatabaseManager: Sendable {
         return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
     }
 
-    public func updateItemMetadatas(
+    // ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
+    // (in case of directory renames/moves, the changes are recursed down)
+    public func depth1ReadUpdateItemMetadatas(
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
@@ -316,7 +318,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where { $0.account == account }
+                .where { $0.account == account && $0.serverUrl == serverUrl }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(

@@ -305,7 +305,7 @@ extension Enumerator {
         // that our local copies are up to date -- instead, leave them as the old.
         // They will get updated when they are the subject of a readServerUrl call.
         // (See above)
-        let changedMetadatas = dbManager.updateItemMetadatas(
+        let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
