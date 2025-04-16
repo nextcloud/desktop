@@ -1327,4 +1327,30 @@ final class ItemModifyTests: XCTestCase {
         let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
         XCTAssertNil(dbItem.chunkUploadId)
     }
+
+    func testModifyDoesNotPropagateIgnoredFile() async throws {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.bak", "/logs/"])
+        let metadata = SendableItemMetadata(
+            ocId: "ignored-modify-id",
+            fileName: "error.bak",
+            account: Self.account
+        )
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(rootItem: rootItem),
+            dbManager: Self.dbManager
+        )
+        let (resultItem, error) = await item.modify(
+            itemTarget: item,
+            changedFields: [.contents],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        XCTAssertNotNil(resultItem)
+        XCTAssertEqual(resultItem?.metadata.fileName, "error.bak")
+    }
 }
