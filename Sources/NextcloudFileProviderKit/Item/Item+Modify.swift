@@ -841,8 +841,9 @@ public extension Item {
             return (modifiedItem, nil)
         }
 
-        // Previously ignored file is no longer ignored
-        if !modifiedItem.isUploaded && modifiedItem.metadata.etag == "" {
+        // We are handling an item that is available locally but not on the server -- so create it
+        // This can happen when a previously ignored file is no longer ignored
+        if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
             guard newContents != nil || domain != nil else {
                 Self.logger.error(
                     """

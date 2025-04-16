@@ -1363,11 +1363,14 @@ final class ItemModifyTests: XCTestCase {
         let modifiedData = try XCTUnwrap("Hello world".data(using: .utf8))
         try modifiedData.write(to: tempUrl)
 
-        let metadata = SendableItemMetadata(
+        var metadata = SendableItemMetadata(
             ocId: UUID().uuidString, // We will still be holding the ID given by fileproviderd
             fileName: "error.bak",
             account: Self.account
         )
+        // Imitate expected uploaded/downloaded state
+        metadata.uploaded = false
+        metadata.downloaded = true
         Self.dbManager.addItemMetadata(metadata)
 
         var modifiedMetadata = metadata
