@@ -419,12 +419,13 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
+        ignoredFiles: IgnoredFilesMatcher? = nil,
         forcedChunkSize: Int? = nil,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
-        
+
         guard itemTemplate.contentType != .symbolicLink else {
             Self.logger.error(
                 "Cannot create item \(tempId, privacy: .public), symbolic links not supported."
@@ -445,10 +446,12 @@ extension Item {
         
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
-        
+        var parentItemRelativePath: String
+
         // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
             parentItemRemotePath = account.davFilesUrl
+            parentItemRelativePath = "/"
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
@@ -463,8 +466,65 @@ extension Item {
                 return (nil, NSFileProviderError(.noSuchItem))
             }
             parentItemRemotePath = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
+            parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
+                of: account.davFilesUrl, with: ""
+            )
+            assert(parentItemRelativePath.starts(with: "/"))
         }
-        
+
+        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
+        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+            Self.logger.info(
+                """
+                File \(itemTemplate.filename, privacy: .public) is in the ignore list.
+                    (Relative path: \(relativePath, privacy: .public))
+                    Will not propagate creation to server.
+                """
+            )
+            let metadata = SendableItemMetadata(
+                ocId: itemTemplate.itemIdentifier.rawValue,
+                account: account.ncKitAccount,
+                classFile: NKCommon.TypeClassFile.unknow.rawValue,
+                contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+                creationDate: itemTemplate.creationDate as? Date ?? Date(),
+                date: Date(),
+                directory: false,
+                e2eEncrypted: false,
+                etag: "",
+                fileId: itemTemplate.itemIdentifier.rawValue,
+                fileName: itemTemplate.filename,
+                fileNameView: itemTemplate.filename,
+                hasPreview: false,
+                iconName: "",
+                mountType: "",
+                ownerId: account.id,
+                ownerDisplayName: "",
+                path: relativePath,
+                serverUrl: parentItemRemotePath,
+                size: itemTemplate.documentSize??.int64Value ?? 0,
+                status: Status.normal.rawValue,
+                downloaded: true,
+                uploaded: false,
+                urlBase: account.serverUrl,
+                user: account.username,
+                userId: account.id
+            )
+            dbManager.addItemMetadata(metadata)
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: parentItemIdentifier,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+
+            if #available(macOS 13.0, *) {
+                return (item, NSFileProviderError(.excludedFromSync))
+            } else {
+                return (item, nil)
+            }
+        }
+
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
