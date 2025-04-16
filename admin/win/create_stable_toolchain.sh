@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2016 ownCloud, Inc.
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 #
 # This script creates a new windows toolchain repository in OBS.
 # It only works for versions that do not yet exist.

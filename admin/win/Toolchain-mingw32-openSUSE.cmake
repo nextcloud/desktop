@@ -1,5 +1,8 @@
 SET(MINGW_PREFIX  "i686-w64-mingw32")
 
+# SPDX-FileCopyrightText: 2012 ownCloud, Inc.
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # this one is important
 SET(CMAKE_SYSTEM_NAME Windows)
 

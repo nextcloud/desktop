@@ -1,5 +1,8 @@
 #!/bin/sh -x
 
+# SPDX-FileCopyrightText: 2014 ownCloud, Inc.
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 #VS2013
 base_url=http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3
 tmp_path=${1:-/tmp/.vcredist}
