@@ -116,6 +116,54 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(result3.updatedMetadatas?.first?.downloaded, true)
     }
 
+    func testUpdateRenamesDirectoryAndPropagatesToChildren() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Insert original parent directory
+        var parent = SendableItemMetadata(ocId: "dir1", fileName: "oldDir", account: account)
+        parent.directory = true
+        parent.serverUrl = account.davFilesUrl
+        parent.downloaded = true
+        Self.dbManager.addItemMetadata(parent)
+
+        // Insert a child item inside that directory
+        var child = SendableItemMetadata(ocId: "child1", fileName: "file.txt", account: account)
+        child.serverUrl = account.davFilesUrl + "/oldDir"
+        child.downloaded = true
+        Self.dbManager.addItemMetadata(child)
+
+        var newContainerFolder = SendableItemMetadata(
+            ocId: "ncf", fileName: "newContainerFolder", account: account
+        )
+        newContainerFolder.serverUrl = account.davFilesUrl
+        newContainerFolder.downloaded = true
+        Self.dbManager.addItemMetadata(newContainerFolder)
+
+        // Rename the directory
+        var renamedParent = parent
+        renamedParent.fileName = "newDir"
+        renamedParent.serverUrl = account.davFilesUrl + "/" + newContainerFolder.fileName
+        renamedParent.etag = "etag-changed"
+
+        let result = Self.dbManager.updateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [renamedParent],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        // Ensure rename took place
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false)
+        XCTAssertNotNil(result.updatedMetadatas?.first(where: { $0.fileName == "newDir" }))
+
+        // Ensure the child's serverUrl was updated accordingly
+        let updatedChild = Self.dbManager.itemMetadata(ocId: "child1")
+        XCTAssertNotNil(updatedChild)
+        XCTAssertEqual(updatedChild?.serverUrl, account.davFilesUrl + "/newContainerFolder/newDir")
+    }
+
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
         let metadata = RealmItemMetadata()
