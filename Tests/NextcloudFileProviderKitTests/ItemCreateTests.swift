@@ -321,6 +321,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertNotNil(createdBundleItem)
         XCTAssertEqual(createdBundleItem.metadata.fileName, bundleItemMetadata.fileName)
         XCTAssertEqual(createdBundleItem.metadata.directory, true)
+        XCTAssertTrue(createdBundleItem.isDownloaded)
+        XCTAssertTrue(createdBundleItem.isUploaded)
 
         // Below: this is an upstream issue (which we should fix)
         // XCTAssertTrue(createdBundleItem.contentType.conforms(to: .bundle))
@@ -340,6 +342,11 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, bundleItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, bundleItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdBundleItem.itemIdentifier.rawValue)
+        XCTAssertEqual(
+            dbItem.etag, String(data: createdBundleItem.itemVersion.contentVersion, encoding: .utf8)
+        )
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
 
         let remoteBundleItem = rootItem.children.first { $0.name == keynoteBundleFilename }
         XCTAssertNotNil(remoteBundleItem)

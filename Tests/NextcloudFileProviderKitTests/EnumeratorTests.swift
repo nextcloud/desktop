@@ -352,7 +352,8 @@ final class EnumeratorTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
-        let itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        itemAMetadata.downloaded = true
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -378,8 +379,35 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedItemAItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
-        XCTAssertEqual(retrievedItemAItem.isDownloaded, false)
+        XCTAssertEqual(retrievedItemAItem.isDownloaded, true)
         XCTAssertEqual(retrievedItemAItem.isUploaded, true)
+
+        let dbItemAMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
+        )
+        XCTAssertEqual(dbItemAMetadata.ocId, remoteItemA.identifier)
+        XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
+        XCTAssertTrue(dbItemAMetadata.downloaded)
+
+        // Check download state is not just always true
+        Self.dbManager.addItemMetadata(remoteItemB.toItemMetadata(account: Self.account))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
+        let enumerator2 = Enumerator(
+            enumeratedItemIdentifier: .init(remoteItemB.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer2 = MockEnumerationObserver(enumerator: enumerator2)
+        try await observer2.enumerateItems()
+        XCTAssertEqual(observer2.items.count, 1)
+
+        let dbItemBMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)
+        )
+        XCTAssertEqual(dbItemBMetadata.ocId, remoteItemB.identifier)
+        XCTAssertEqual(dbItemBMetadata.etag, remoteItemB.versionIdentifier)
+        XCTAssertFalse(dbItemBMetadata.downloaded)
     }
 
     func testFolderAndContentsChangeEnumeration() async throws {
@@ -394,10 +422,12 @@ final class EnumeratorTests: XCTestCase {
         let oldFolderEtag = "OLD"
         var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         folderMetadata.etag = oldFolderEtag
+        folderMetadata.downloaded = true // Test downloaded state is properly retained
 
         let oldItemAEtag = "OLD"
         var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
         itemAMetadata.etag = oldItemAEtag
+        itemAMetadata.downloaded = true // Test downloaded state is properly retained
 
         let itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
@@ -442,8 +472,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertNotEqual(dbFolderMetadata.etag, oldFolderEtag)
+        XCTAssertTrue(dbFolderMetadata.downloaded)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
         XCTAssertNotEqual(dbItemAMetadata.etag, oldItemAEtag)
+        XCTAssertTrue(dbItemAMetadata.downloaded)
         XCTAssertEqual(dbItemCMetadata.ocId, remoteItemC.identifier)
         XCTAssertEqual(dbItemCMetadata.etag, remoteItemC.versionIdentifier)
         XCTAssertEqual(dbItemCMetadata.fileName, remoteItemC.name)
@@ -453,8 +485,9 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbItemCMetadata.user, Self.account.username)
         XCTAssertEqual(dbItemCMetadata.userId, Self.account.id)
         XCTAssertEqual(dbItemCMetadata.urlBase, Self.account.serverUrl)
+        XCTAssertFalse(dbItemCMetadata.downloaded)
 
-        let storedFolderItem = try XCTUnwrap(
+        XCTAssertNotNil(
             Item.storedItem(
                 identifier: .init(remoteFolder.identifier),
                 account: Self.account,
