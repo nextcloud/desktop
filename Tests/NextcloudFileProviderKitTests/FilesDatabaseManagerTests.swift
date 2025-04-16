@@ -164,6 +164,36 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(updatedChild?.serverUrl, account.davFilesUrl + "/newContainerFolder/newDir")
     }
 
+    func testTransitItemIsNotUpdated() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Simulate existing item in transit
+        var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.status = Status.downloading.rawValue
+        transit.etag = "old-etag"
+        Self.dbManager.addItemMetadata(transit)
+
+        // Send an updated version of the same item
+        var incoming = transit
+        incoming.status = Status.normal.rawValue
+        incoming.etag = "new-etag"
+
+        let result = Self.dbManager.updateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [incoming],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Transit items should not be updated")
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.deletedMetadatas?.isEmpty, true)
+
+        let inDb = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: transit.ocId))
+        XCTAssertEqual(inDb.etag, transit.etag)
+    }
+
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
         let metadata = RealmItemMetadata()
