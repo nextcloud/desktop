@@ -316,11 +316,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where {
-                    $0.account == account &&
-                    $0.serverUrl == serverUrl &&
-                    $0.status == Status.normal.rawValue
-                }
+                .where { $0.account == account }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
