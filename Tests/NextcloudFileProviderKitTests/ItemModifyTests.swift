@@ -1353,4 +1353,51 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNotNil(resultItem)
         XCTAssertEqual(resultItem?.metadata.fileName, "error.bak")
     }
+
+    func testModifyCreatesFileThatWasPreviouslyIgnoredWithContentsUrlProvided() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["/logs/"])
+
+        let tempFileName = UUID().uuidString
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(tempFileName)
+        let modifiedData = try XCTUnwrap("Hello world".data(using: .utf8))
+        try modifiedData.write(to: tempUrl)
+
+        let metadata = SendableItemMetadata(
+            ocId: UUID().uuidString, // We will still be holding the ID given by fileproviderd
+            fileName: "error.bak",
+            account: Self.account
+        )
+        Self.dbManager.addItemMetadata(metadata)
+
+        var modifiedMetadata = metadata
+        modifiedMetadata.size = Int64(modifiedData.count)
+
+        let item = Item(
+            metadata: modifiedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (resultItem, error) = await item.modify(
+            itemTarget: item,
+            changedFields: [.contents],
+            contents: tempUrl,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        // Then it should not error and should not propagate changes
+        XCTAssertNil(error)
+        XCTAssertNotNil(resultItem)
+
+        XCTAssertFalse(rootItem.children.isEmpty)
+        let remoteItem = try XCTUnwrap(
+            rootItem.children.first { $0.identifier == resultItem?.itemIdentifier.rawValue }
+        )
+        XCTAssertEqual(remoteItem.name, metadata.fileName)
+        XCTAssertEqual(remoteItem.data, modifiedData)
+    }
 }
