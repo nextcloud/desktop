@@ -844,69 +844,16 @@ public extension Item {
         // We are handling an item that is available locally but not on the server -- so create it
         // This can happen when a previously ignored file is no longer ignored
         if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
-            guard newContents != nil || domain != nil else {
-                Self.logger.error(
-                    """
-                    Unable to upload modified item that was previously ignored.
-                        filename: \(modifiedItem.filename, privacy: .public)
-                        either the domain is nil, the provided contents are nil, or both.
-                    """
-                )
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
-            var contentsLocation = newContents
-            if contentsLocation == nil {
-                assert(domain != nil, "The domain should not be nil!")
-                guard let manager = NSFileProviderManager(for: domain!),
-                      let fileUrl = try? await manager.getUserVisibleURL(
-                        for: modifiedItem.itemIdentifier
-                      )
-                else {
-                    Self.logger.error(
-                        """
-                        Unable to upload modified item that was previously ignored.
-                            filename: \(modifiedItem.filename, privacy: .public)
-                            Unable to get a file provider manager for the given domain, or item URL
-                        """
-                    )
-                    return (nil, NSFileProviderError(.cannotSynchronize))
-                }
-                let fm = FileManager.default
-                let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-                let coordinator = NSFileCoordinator()
-                var readData: Data?
-                coordinator.coordinate(readingItemAt: fileUrl, options: [], error: nil) { readURL in
-                    readData = try? Data(contentsOf: readURL)
-                }
-                guard let readData else {
-                    Self.logger.error(
-                        """
-                        Unable to upload modified item that was previously ignored.
-                            filename: \(modifiedItem.filename, privacy: .public)
-                            Unable to get ignored file item data from URL
-                        """
-                    )
-                    return (nil, NSFileProviderError(.cannotSynchronize))
-                }
-                do {
-                    try readData.write(to: tempLocation)
-                } catch let error {
-                    Self.logger.error(
-                        """
-                        Unable to upload modified item that was previously ignored.
-                            filename: \(modifiedItem.filename, privacy: .public)
-                            Unable to write ignored file item contents to temp location.
-                            error: \(error.localizedDescription, privacy: .public)
-                        """
-                    )
-                }
-                contentsLocation = tempLocation
-            }
-            return await Self.create(
-                basedOn: itemTarget,
-                contents: contentsLocation,
-                account: account,
-                remoteInterface: remoteInterface,
+            return await modifiedItem.modifyUnuploaded(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
                 progress: progress,
                 dbManager: dbManager
             )
