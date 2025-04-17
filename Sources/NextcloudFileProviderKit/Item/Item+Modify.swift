@@ -872,13 +872,17 @@ public extension Item {
         }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
-            Self.logger.info(
-                """
-                System requested modification of lock file \(self.filename, privacy: .public)
-                    Marking as complete without syncing to server.
-                """
+            return modifiedItem.modifyLockFile(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                domain: domain,
+                progress: progress,
+                dbManager: dbManager
             )
-            return (self, nil)
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
