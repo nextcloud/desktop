@@ -1462,4 +1462,74 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(modifiedItem?.contentModificationDate, modifiedMetadata.date)
         XCTAssertEqual(modifiedItem?.creationDate, modifiedMetadata.creationDate)
     }
+
+    func testModifyLockFileToNonLockFileCompletesWithSync() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Construct lock file metadata
+        let lockFileName = ".~lock.test.doc#"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.classFile = "lock"
+
+        let lockItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // Simulate new contents, even though this shouldn't matter
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(lockFileName)
+        let tempData = try XCTUnwrap(Data("updated, no longer a lock file".utf8))
+        try tempData.write(to: tempUrl)
+
+        let newParent = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(newParent)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: newParent.ocId))
+
+        var modifiedMetadata = lockFileMetadata
+        modifiedMetadata.fileName = "nolongerlock.txt"
+        modifiedMetadata.size = Int64(tempData.count)
+        modifiedMetadata.date = Date()
+        modifiedMetadata.creationDate = Date(timeIntervalSinceNow: -100)
+        let modifyTemplateItem = Item(
+            metadata: modifiedMetadata,
+            parentItemIdentifier: .init(newParent.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await lockItem.modify(
+            itemTarget: modifyTemplateItem,
+            changedFields: [
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
+            ],
+            contents: tempUrl,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+
+        let remoteItem = try XCTUnwrap(
+            remoteFolder.children.first(where: { $0.name == modifiedMetadata.fileName })
+        )
+
+        // remote will always give new ocId on create
+        XCTAssertNotEqual(modifiedItem?.itemIdentifier, lockItem.itemIdentifier)
+        XCTAssertNotEqual(modifiedItem?.itemVersion.contentVersion, lockItem.itemVersion.contentVersion)
+
+        XCTAssertEqual(modifiedItem?.itemIdentifier.rawValue, remoteItem.identifier)
+        XCTAssertEqual(modifiedItem?.metadata.etag, remoteItem.versionIdentifier)
+
+        XCTAssertEqual(modifiedItem?.filename, modifiedMetadata.fileName)
+        XCTAssertEqual(modifiedItem?.documentSize?.intValue, tempData.count)
+        XCTAssertEqual(modifiedItem?.parentItemIdentifier.rawValue, newParent.ocId)
+        XCTAssertEqual(modifiedItem?.contentModificationDate, modifiedMetadata.date)
+
+        XCTAssertNotEqual(modifiedItem?.metadata.classFile, "lock")
+    }
 }
