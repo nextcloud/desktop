@@ -9,7 +9,7 @@ import FileProvider
 import NextcloudCapabilitiesKit
 
 extension Item {
-    public static func createLockFile(
+    static func createLockFile(
         basedOn itemTemplate: NSFileProviderItem,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         parentItemRemotePath: String,

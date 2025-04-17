@@ -11,7 +11,7 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
-extension Item {
+public extension Item {
 
     private static func createNewFolder(
         itemTemplate: NSFileProviderItem?,
@@ -412,7 +412,7 @@ extension Item {
         )
     }
 
-    public static func create(
+    static func create(
         basedOn itemTemplate: NSFileProviderItem,
         fields: NSFileProviderItemFields = NSFileProviderItemFields(),
         contents url: URL?,
