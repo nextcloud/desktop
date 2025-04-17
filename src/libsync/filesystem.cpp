@@ -334,34 +334,6 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
 bool FileSystem::setFolderPermissions(const QString &path,
                                       FileSystem::FolderPermissions permissions) noexcept
 {
-    static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
-    const auto stdStrPath = path.toStdWString();
-    try
-    {
-        switch (permissions) {
-        case OCC::FileSystem::FolderPermissions::ReadOnly:
-            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
-            break;
-        case OCC::FileSystem::FolderPermissions::ReadWrite:
-            break;
-        }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
-        return false;
-    }
-    catch (const std::system_error &e)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
-        return false;
-    }
-    catch (...)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
-        return false;
-    }
-
 #ifdef Q_OS_WIN
     SECURITY_INFORMATION info = DACL_SECURITY_INFORMATION;
     std::unique_ptr<char[]> securityDescriptor;
@@ -429,6 +401,10 @@ bool FileSystem::setFolderPermissions(const QString &path,
         }
     }
 
+    if (permissions == FileSystem::FolderPermissions::ReadWrite) {
+        qCInfo(lcFileSystem) << path << "will be read write";
+    }
+
     for (int i = 0; i < aclSize.AceCount; ++i) {
         void *currentAce = nullptr;
         if (!GetAce(resultDacl, i, &currentAce)) {
@@ -438,9 +414,6 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
         const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
 
-        if (permissions == FileSystem::FolderPermissions::ReadWrite) {
-            qCInfo(lcFileSystem) << path << "will be read write";
-        }
         if (permissions == FileSystem::FolderPermissions::ReadWrite && (ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
             qCWarning(lcFileSystem) << "AceHeader" << path << currentAceHeader->AceFlags << currentAceHeader->AceSize << currentAceHeader->AceType;
             continue;
@@ -478,7 +451,34 @@ bool FileSystem::setFolderPermissions(const QString &path,
         qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << path << GetLastError();
         return false;
     }
-#endif
+#else
+    static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+    const auto stdStrPath = path.toStdWString();
+    try
+    {
+        switch (permissions) {
+        case OCC::FileSystem::FolderPermissions::ReadOnly:
+            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
+            break;
+        case OCC::FileSystem::FolderPermissions::ReadWrite:
+            break;
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+        return false;
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
+        return false;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
+        return false;
+    }
 
     try
     {
@@ -506,12 +506,76 @@ bool FileSystem::setFolderPermissions(const QString &path,
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
         return false;
     }
+#endif
 
     return true;
 }
 
 bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
 {
+#ifdef Q_OS_WIN
+    qCInfo(lcFileSystem()) << "is it read-only folder:" << path.wstring().c_str();
+
+    SECURITY_INFORMATION info = DACL_SECURITY_INFORMATION;
+    std::unique_ptr<char[]> securityDescriptor;
+    auto neededLength = 0ul;
+
+    if (!GetFileSecurityW(path.wstring().c_str(), info, nullptr, 0, &neededLength)) {
+        const auto lastError = GetLastError();
+        if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << lastError;
+            return false;
+        }
+
+        securityDescriptor.reset(new char[neededLength]);
+
+        if (!GetFileSecurityW(path.wstring().c_str(), info, securityDescriptor.get(), neededLength, &neededLength)) {
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << GetLastError();
+            return false;
+        }
+    }
+
+    int daclPresent = false, daclDefault = false;
+    PACL resultDacl = nullptr;
+    if (!GetSecurityDescriptorDacl(securityDescriptor.get(), &daclPresent, &resultDacl, &daclDefault)) {
+        qCWarning(lcFileSystem) << "error when calling GetSecurityDescriptorDacl" << path << GetLastError();
+        return false;
+    }
+    if (!daclPresent || !resultDacl) {
+        qCWarning(lcFileSystem) << "error when calling DACL needed to set a folder read-only or read-write is missing" << path;
+        return false;
+    }
+
+    PSID sid = nullptr;
+    if (!ConvertStringSidToSidW(L"S-1-5-32-545", &sid))
+    {
+        qCWarning(lcFileSystem) << "error when calling ConvertStringSidToSidA" << path << GetLastError();
+        return false;
+    }
+
+    ACL_SIZE_INFORMATION aclSize;
+    if (!GetAclInformation(resultDacl, &aclSize, sizeof(aclSize), AclSizeInformation)) {
+        qCWarning(lcFileSystem) << "error when calling GetAclInformation" << path << GetLastError();
+        return false;
+    }
+
+    for (int i = 0; i < aclSize.AceCount; ++i) {
+        void *currentAce = nullptr;
+        if (!GetAce(resultDacl, i, &currentAce)) {
+            qCWarning(lcFileSystem) << "error when calling GetAce" << path << GetLastError();
+            return false;
+        }
+
+        const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
+
+        if ((ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
+            qCInfo(lcFileSystem()) << "detected access denied ACL: assuming read-only folder:" << path.wstring().c_str();
+            return true;
+        }
+    }
+
+    return false;
+#else
     try
     {
         const auto folderStatus = std::filesystem::status(path);
@@ -533,6 +597,7 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path;
         return false;
     }
+#endif
 }
 
 FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, FolderPermissions temporaryPermissions)
