@@ -633,4 +633,52 @@ FileSystem::FilePermissionsRestore::~FilePermissionsRestore()
     }
 }
 
+bool FileSystem::uncheckedRenameReplace(const QString &originFileName, const QString &destinationFileName, QString *errorString)
+{
+#ifndef Q_OS_WIN
+    bool success = false;
+    QFile orig(originFileName);
+    // We want a rename that also overwrites.  QFile::rename does not overwrite.
+    // Qt 5.1 has QSaveFile::renameOverwrite we could use.
+    // ### FIXME
+    success = true;
+    bool destExists = fileExists(destinationFileName);
+    if (destExists && !QFile::remove(destinationFileName)) {
+        *errorString = orig.errorString();
+        qCWarning(lcFileSystem) << "Target file could not be removed.";
+        success = false;
+    }
+    if (success) {
+        success = orig.rename(destinationFileName);
+    }
+    if (!success) {
+        *errorString = orig.errorString();
+        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
+        return false;
+    }
+#else //Q_OS_WIN
+    const auto originFileInfo = QFileInfo{originFileName};
+    const auto originParentFolderPath = originFileInfo.dir().absolutePath();
+    FilePermissionsRestore renameEnabler{originParentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+    // You can not overwrite a read-only file on windows.
+    if (!isWritable(destinationFileName)) {
+        setFileReadOnly(destinationFileName, false);
+    }
+
+    BOOL ok = 0;
+    QString orig = longWinPath(originFileName);
+    QString dest = longWinPath(destinationFileName);
+
+    ok = MoveFileEx((wchar_t *)orig.utf16(),
+                    (wchar_t *)dest.utf16(),
+                    MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
+    if (!ok) {
+        *errorString = Utility::formatWinError(GetLastError());
+        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
+        return false;
+    }
+#endif
+    return true;
+}
+
 } // namespace OCC
