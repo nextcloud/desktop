@@ -97,7 +97,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
     switch (invalidMode) {
     case InvalidMode::SystemInvalid:
         _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because the name contains characters which are not allowed on this system.").arg(_originalFileName));
-        _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: * \" | & ? , ; : \\ / ~ < > leading/trailing spaces"));
+        _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: \\ / : ? * \"  < > | leading/trailing spaces"));
         break;
     case InvalidMode::ServerInvalid:
         _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because the name contains characters which are not allowed on the server.").arg(_originalFileName));
