@@ -83,6 +83,9 @@ struct RemoteInfo
 
     bool isLivePhoto = false;
     QString livePhotoFile;
+
+    int64_t quotaUsed = 0;
+    int64_t quotaAvailable = 0;
 };
 
 struct LocalInfo
@@ -101,6 +104,8 @@ struct LocalInfo
     bool isMetadataMissing = false;
     bool isPermissionsInvalid = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
+    int64_t quotaUsed = 0;
+    int64_t quotaAailable = 0;
 };
 
 /**
@@ -205,6 +210,9 @@ private:
 
     // store top level E2EE folder paths as they are used later when discovering nested folders
     QSet<QString> _topLevelE2eeFolderPaths;
+
+    int64_t _quotaUsed = 0;
+    int64_t _quotaAvailable = 0;
 
 public:
     QByteArray _dataFingerprint;

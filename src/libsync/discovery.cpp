@@ -1280,6 +1280,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_quotaUsed = localEntry.isDirectory ? localEntry.quotaUsed : 0;
+            item->_quotaAvailable = localEntry.isDirectory ? localEntry.quotaAailable : 0;
             _childModified = true;
         } else if (dbEntry._modtime > 0 && (localEntry.modtime <= 0 || localEntry.modtime >= 0xFFFFFFFF) && dbEntry._fileSize == localEntry.size) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1288,6 +1290,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_modtime = dbEntry._modtime;
             item->_previousModtime = dbEntry._modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_quotaUsed = localEntry.isDirectory ? localEntry.quotaUsed : 0;
+            item->_quotaAvailable = localEntry.isDirectory ? localEntry.quotaAailable : 0;
             qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (dbEntry._modtime > 0 && localEntry.modtime <= 0)"
                              << "dbEntry._modtime:" << dbEntry._modtime
                              << "localEntry.modtime:" << localEntry.modtime;
