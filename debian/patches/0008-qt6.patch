@@ -325,7 +325,7 @@ index 2c23656f2..1dad0bdba 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 2bfa004dd..63ebf3070 100644
+index a58117fcf..b7c85a443 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -336,7 +336,7 @@ index 2bfa004dd..63ebf3070 100644
  find_package(KF6GuiAddons)
  
  if (NOT TARGET Qt::GuiPrivate)
-@@ -564,9 +564,16 @@ target_link_libraries(nextcloudCore
+@@ -568,9 +568,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -354,7 +354,7 @@ index 2bfa004dd..63ebf3070 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -784,3 +791,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -788,3 +795,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -366,7 +366,7 @@ index 2bfa004dd..63ebf3070 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 53c85e4b2..4a6702f48 100644
+index f214322bc..565a61d99 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -46,6 +46,7 @@
@@ -377,17 +377,17 @@ index 53c85e4b2..4a6702f48 100644
  
  #include "config.h"
  
-@@ -1005,7 +1006,7 @@ void Application::setupTranslations()
+@@ -998,7 +999,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
-     const auto enforcedLocale = Theme::instance()->enforcedLocale();
+     const auto enforcedLocale = enforcedLanguage();
 -    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
 +    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : systemLocaleName());
      qCInfo(lcApplication) << "selected application language:" << lang;
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 6be6516e4..c6746ad4b 100644
+index 4abfe8458..a5108b730 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -24,6 +24,7 @@
@@ -420,7 +420,7 @@ index 9f31cf4b7..638cb2540 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index bc5c5fbda..77b540833 100644
+index d9d0b5d2c..df1b2e088 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -50,6 +50,7 @@
@@ -451,7 +451,7 @@ index bc5c5fbda..77b540833 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -596,6 +602,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -599,6 +605,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -459,7 +459,7 @@ index bc5c5fbda..77b540833 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -617,6 +624,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -620,6 +627,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -506,12 +506,12 @@ diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMe
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
 rename to src/gui/tray/TrayFoldersMenuButton.qml.in
-index 060a167bd..cedf683d6 100644
+index be44601c7..e446ddae8 100644
 --- a/src/gui/tray/TrayFoldersMenuButton.qml
 +++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
-@@ -11,7 +11,7 @@
-  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-  * for more details.
+@@ -2,7 +2,7 @@
+  * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+  * SPDX-License-Identifier: GPL-2.0-or-later
   */
 -pragma NativeMethodBehavior: AcceptThisObject
 +@QML_ACCEPTTHISOBJECT_PRAGMA@
@@ -624,7 +624,7 @@ index 06432ee29..a96689434 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 8361d8af5..6394fef7f 100644
+index 5371ae35a..fe157d89d 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -15,6 +15,7 @@
@@ -891,7 +891,7 @@ index 6bfad9d62..ca34f0ada 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 9e90a0002..e29620cd4 100644
+index f1a7108bd..4fd5d74bc 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -18,6 +18,7 @@
@@ -948,8 +948,8 @@ index 9e90a0002..e29620cd4 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1038,7 +1024,8 @@ bool Theme::darkMode() const
-         return true;
+@@ -1039,7 +1025,8 @@ bool Theme::darkMode() const
+         }
      }
  #endif
 -    return isDarkFromStyle();
