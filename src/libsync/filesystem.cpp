@@ -281,6 +281,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
             removeOk = FileSystem::remove(di.filePath(), &removeError);
+            qCInfo(lcFileSystem()) << "delete" << di.filePath();
             if (removeOk) {
                 if (onDeleted)
                     onDeleted(di.filePath(), false);
@@ -304,6 +305,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
         FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
         allRemoved = QDir().rmdir(path);
+        qCInfo(lcFileSystem()) << "delete" << path;
         if (allRemoved) {
             if (onDeleted)
                 onDeleted(path, true);
@@ -514,7 +516,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
 bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
 {
 #ifdef Q_OS_WIN
-    qCInfo(lcFileSystem()) << "is it read-only folder:" << path.wstring().c_str();
+    qCInfo(lcFileSystem()) << "is it read-only folder:" << QString::fromStdWString(path.wstring());
 
     SECURITY_INFORMATION info = DACL_SECURITY_INFORMATION;
     std::unique_ptr<char[]> securityDescriptor;
@@ -569,7 +571,7 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
 
         if ((ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
-            qCInfo(lcFileSystem()) << "detected access denied ACL: assuming read-only folder:" << path.wstring().c_str();
+            qCInfo(lcFileSystem()) << "detected access denied ACL: assuming read-only folder:" << QString::fromStdWString(path.wstring());
             return true;
         }
     }
