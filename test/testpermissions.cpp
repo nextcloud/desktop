@@ -144,7 +144,7 @@ private slots:
                 const auto result = FileSystem::remove(fileInfoToDelete.absoluteFilePath(), &errorString);
                 if (!result) {
                     qDebug() << "fail to delete:" << fileInfoToDelete.absoluteFilePath() << errorString;
-                    //QVERIFY(result);
+                    QVERIFY(result);
                 }
             } else {
                 const auto result = FileSystem::removeRecursively(fileInfoToDelete.absoluteFilePath());
@@ -285,8 +285,6 @@ private slots:
         // The file should not exist on the remote, and not be there
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         QVERIFY(!fakeFolder.currentRemoteState().find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
-        // remove it so next test succeed.
-        removeReadOnly("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data");
         // Both side should still be the same
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -368,8 +366,8 @@ private slots:
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         // new no longer exists
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
-        // but is not on server: so remove it locally for the future comparison
-        removeReadOnly("readonlyDirectory_PERM_M_/newname_PERM_CK_");
+        // but is not on server: should have been locally removed
+        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_"));
 
         //2.
         // old removed
@@ -378,8 +376,8 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
         // new no longer exists
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
-        //but not on server
-        removeReadOnly("readonlyDirectory_PERM_M_/moved_PERM_CK_");
+        // should have been cleaned up as invalid item inside read-only folder
+        QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_"));
         fakeFolder.remoteModifier().remove("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
