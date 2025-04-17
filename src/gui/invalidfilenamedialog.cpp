@@ -140,7 +140,6 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
 
     if (_fileLocation == FileLocation::NewLocalFile) {
         allowRenaming();
-        _ui->errorLabel->setText({});
     } else {
         checkIfAllowedToRename();
     }
@@ -223,6 +222,7 @@ void InvalidFilenameDialog::allowRenaming()
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     _ui->filenameLineEdit->setEnabled(true);
     _ui->filenameLineEdit->selectAll();
+    _ui->errorLabel->setText({});
 
     const auto filePathFileInfo = QFileInfo(_filePath);
     const auto fileName = filePathFileInfo.fileName();
