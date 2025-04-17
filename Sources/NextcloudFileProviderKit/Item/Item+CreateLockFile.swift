@@ -110,7 +110,7 @@ extension Item {
             hasPreview: false,
             iconName: "lockIcon", // Custom icon for locked items
             mountType: "",
-            ownerId: "",
+            ownerId: account.id,
             ownerDisplayName: "",
             path: parentItemRemotePath + "/" + targetFileName,
             serverUrl: parentItemRemotePath,
@@ -118,9 +118,9 @@ extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: false,
-            urlBase: "",
-            user: "",
-            userId: ""
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
         )
         dbManager.addItemMetadata(metadata)
 
