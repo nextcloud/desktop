@@ -1433,7 +1433,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: newParent.ocId))
 
         var modifiedMetadata = lockFileMetadata
-        modifiedMetadata.fileName = ".~newlock.test.doc#"
+        modifiedMetadata.fileName = ".~lock.newtest.doc#"
         modifiedMetadata.size = Int64(tempData.count)
         modifiedMetadata.date = Date()
         modifiedMetadata.creationDate = Date(timeIntervalSinceNow: -100)

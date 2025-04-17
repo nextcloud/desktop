@@ -872,14 +872,16 @@ public extension Item {
         }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
-            return modifiedItem.modifyLockFile(
+            return await modifiedItem.modifyLockFile(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
                 changedFields: changedFields,
                 contents: newContents,
                 options: options,
                 request: request,
+                ignoredFiles: ignoredFiles,
                 domain: domain,
+                forcedChunkSize: forcedChunkSize,
                 progress: progress,
                 dbManager: dbManager
             )
