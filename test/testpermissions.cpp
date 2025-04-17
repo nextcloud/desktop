@@ -134,28 +134,32 @@ private slots:
         qInfo("Do some changes and see how they propagate");
 
         const auto removeReadOnly = [&] (const QString &file)  {
-            try {
-                const auto fileInfoToDelete = QFileInfo(fakeFolder.localPath() + file);
-                QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-                const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfoToDelete.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-                if (isReadOnly) {
-                    std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            const auto fileInfoToDelete = QFileInfo(fakeFolder.localPath() + file);
+            FileSystem::FilePermissionsRestore enabler{fileInfoToDelete.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
+            if (!fileInfoToDelete.isDir()) {
+                QString errorString;
+                const auto result = FileSystem::remove(fileInfoToDelete.absoluteFilePath(), &errorString);
+                if (!result) {
+                    qDebug() << "fail to delete:" << fileInfoToDelete.absoluteFilePath() << errorString;
+                    //QVERIFY(result);
                 }
-                fakeFolder.localModifier().remove(file);
-                if (isReadOnly) {
-                    std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+            } else {
+                const auto result = FileSystem::removeRecursively(fileInfoToDelete.absoluteFilePath());
+                if (!result) {
+                    qDebug() << "fail to delete:" << fileInfoToDelete.absoluteFilePath();
+                    QVERIFY(result);
                 }
-            }
-            catch (const std::exception& e)
-            {
-                qWarning() << e.what();
             }
         };
 
         const auto renameReadOnly = [&] (const QString &relativePath, const QString &relativeDestinationDirectory)  {
             try {
                 const auto sourceFileInfo = QFileInfo(fakeFolder.localPath() + relativePath);
+                FileSystem::FilePermissionsRestore sourceEnabler{sourceFileInfo.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
+
                 const auto destinationFileInfo = QFileInfo(fakeFolder.localPath() + relativeDestinationDirectory);
+                FileSystem::FilePermissionsRestore destinationEnabler{destinationFileInfo.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
+
                 const auto isSourceReadOnly = !static_cast<bool>(std::filesystem::status(sourceFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
                 const auto isDestinationReadOnly = !static_cast<bool>(std::filesystem::status(destinationFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
                 if (isSourceReadOnly) {
@@ -181,14 +185,8 @@ private slots:
         const auto insertReadOnly = [&] (const QString &file, const int fileSize) {
             try {
                 const auto fileInfo = QFileInfo(fakeFolder.localPath() + file);
-                const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-                if (isReadOnly) {
-                    std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
-                }
+                FileSystem::FilePermissionsRestore enabler{fileInfo.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
                 fakeFolder.localModifier().insert(file, fileSize);
-                if (isReadOnly) {
-                    std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
-                }
             }
             catch (const std::exception& e)
             {
@@ -239,9 +237,6 @@ private slots:
         //2.
         // File should be deleted
         QVERIFY(!currentLocalState.find("normalDirectory_PERM_CKDNV_/canBeRemoved_PERM_D_.data"));
-#ifdef Q_OS_WINDOWS
-        QEXPECT_FAIL("", "", Abort);
-#endif
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/canBeRemoved_PERM_D_.data"));
 
         //3.
