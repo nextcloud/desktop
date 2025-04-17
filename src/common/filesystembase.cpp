@@ -550,6 +550,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
             qCWarning(lcFileSystem()) << "File is already deleted" << fileName;
             return false;
         }
+        qCInfo(lcFileSystem()) << "delete" << fileName;
     }
     catch (const std::filesystem::filesystem_error &e)
     {
