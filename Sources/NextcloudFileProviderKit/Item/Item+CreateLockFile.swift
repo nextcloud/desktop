@@ -19,6 +19,8 @@ extension Item {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
+        progress.totalUnitCount = 1
+
         // Lock but don't upload, do not error
         let (_, capabilitiesData, capabilitiesError) = await remoteInterface.fetchCapabilities(
             account: account,
@@ -121,6 +123,8 @@ extension Item {
             userId: ""
         )
         dbManager.addItemMetadata(metadata)
+
+        progress.completedUnitCount = 1
 
         return (
             Item(
