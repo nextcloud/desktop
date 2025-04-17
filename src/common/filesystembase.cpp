@@ -549,6 +549,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
             }
             return false;
         }
+        qCInfo(lcFileSystem()) << "delete" << fileName;
     }
     catch (const std::filesystem::filesystem_error &e)
     {
