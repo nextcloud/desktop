@@ -1424,19 +1424,42 @@ final class ItemModifyTests: XCTestCase {
 
         // Simulate new contents, even though this shouldn't matter
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(lockFileName)
-        try Data("updated lock file".utf8).write(to: tempUrl)
+        let tempData = try XCTUnwrap(Data("updated lock file".utf8))
+        try tempData.write(to: tempUrl)
 
-        // Call modify
+        var newParent = SendableItemMetadata(ocId: "np", fileName: "np", account: Self.account)
+        newParent.serverUrl = Self.account.davFilesUrl
+        Self.dbManager.addItemMetadata(newParent)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: newParent.ocId))
+
+        var modifiedMetadata = lockFileMetadata
+        modifiedMetadata.fileName = ".~newlock.test.doc#"
+        modifiedMetadata.size = Int64(tempData.count)
+        modifiedMetadata.date = Date()
+        modifiedMetadata.creationDate = Date(timeIntervalSinceNow: -100)
+        let modifyTemplateItem = Item(
+            metadata: modifiedMetadata,
+            parentItemIdentifier: .init(newParent.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
         let (modifiedItem, error) = await lockItem.modify(
-            itemTarget: lockItem,
-            changedFields: [.contents],
+            itemTarget: modifyTemplateItem,
+            changedFields: [
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
+            ],
             contents: tempUrl,
             dbManager: Self.dbManager
         )
 
-        // Assert: no error, item returned should be same as original
         XCTAssertNil(error)
         XCTAssertEqual(modifiedItem?.itemIdentifier, lockItem.itemIdentifier)
-        XCTAssertEqual(modifiedItem?.filename, lockFileName)
+        XCTAssertEqual(modifiedItem?.filename, modifiedMetadata.fileName)
+        XCTAssertEqual(modifiedItem?.documentSize?.intValue, tempData.count)
+        XCTAssertEqual(modifiedItem?.parentItemIdentifier.rawValue, newParent.ocId)
+        XCTAssertEqual(modifiedItem?.contentModificationDate, modifiedMetadata.date)
+        XCTAssertEqual(modifiedItem?.creationDate, modifiedMetadata.creationDate)
     }
 }
