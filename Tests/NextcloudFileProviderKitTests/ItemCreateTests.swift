@@ -79,6 +79,10 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, folderItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, folderItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
+        XCTAssertTrue(createdItem.isDownloaded)
+        XCTAssertTrue(createdItem.isUploaded)
     }
 
     func testCreateFile() async throws {
@@ -127,6 +131,10 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
+        XCTAssertTrue(createdItem.isDownloaded)
+        XCTAssertTrue(createdItem.isUploaded)
     }
 
     func testCreateFileIntoFolder() async throws {
@@ -202,6 +210,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdFileItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
 
         let parentDbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdFolderItem.itemIdentifier.rawValue)
@@ -210,6 +220,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(parentDbItem.fileNameView, folderItemMetadata.fileNameView)
         XCTAssertEqual(parentDbItem.directory, folderItemMetadata.directory)
         XCTAssertEqual(parentDbItem.serverUrl, folderItemMetadata.serverUrl)
+        XCTAssertTrue(parentDbItem.downloaded)
+        XCTAssertTrue(parentDbItem.uploaded)
     }
 
     func testCreateBundle() async throws {
@@ -309,6 +321,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertNotNil(createdBundleItem)
         XCTAssertEqual(createdBundleItem.metadata.fileName, bundleItemMetadata.fileName)
         XCTAssertEqual(createdBundleItem.metadata.directory, true)
+        XCTAssertTrue(createdBundleItem.isDownloaded)
+        XCTAssertTrue(createdBundleItem.isUploaded)
 
         // Below: this is an upstream issue (which we should fix)
         // XCTAssertTrue(createdBundleItem.contentType.conforms(to: .bundle))
@@ -328,6 +342,11 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, bundleItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, bundleItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdBundleItem.itemIdentifier.rawValue)
+        XCTAssertEqual(
+            dbItem.etag, String(data: createdBundleItem.itemVersion.contentVersion, encoding: .utf8)
+        )
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
 
         let remoteBundleItem = rootItem.children.first { $0.name == keynoteBundleFilename }
         XCTAssertNotNil(remoteBundleItem)
@@ -399,6 +418,8 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
     }
 
     func testCreateFileChunkedResumed() async throws {
@@ -493,5 +514,42 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
         XCTAssertNil(dbItem.chunkUploadId)
+        XCTAssertTrue(dbItem.downloaded)
+        XCTAssertTrue(dbItem.uploaded)
+    }
+
+    func testCreateDoesNotPropagateIgnoredFile() async throws {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"])
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // We'll create a file that matches the ignored pattern
+        let parentIdentifier = NSFileProviderItemIdentifier.rootContainer
+        let metadata = SendableItemMetadata(
+            ocId: "ignored-file-id", fileName: "foo.tmp", account: Self.account
+        )
+        let itemTemplate = Item(
+            metadata: metadata,
+            parentItemIdentifier: parentIdentifier,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: itemTemplate,
+            contents: nil,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: ignoredMatcher,
+            progress: .init(),
+            dbManager: Self.dbManager
+        )
+
+        // Assert
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.isUploaded, false)
+        XCTAssertEqual(createdItem?.isDownloaded, true)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
 }

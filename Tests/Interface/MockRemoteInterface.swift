@@ -170,7 +170,7 @@ public class MockRemoteInterface: RemoteInterface {
     ) {
         var itemName: String
         do {
-            itemName = try name(from: localPath)
+            itemName = try name(from: remotePath)
             debugPrint("Handling item upload:", itemName)
         } catch {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, nil, .urlError)

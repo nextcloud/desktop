@@ -81,11 +81,12 @@ extension Item {
             return (nil, readError.fileProviderError)
         }
         
-        guard let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
+        guard var (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
         else {
             Self.logger.error("Received nil directory read metadatas during conversion")
             return (nil, NSFileProviderError(.noSuchItem))
         }
+        directoryMetadata.downloaded = true
         dbManager.addItemMetadata(directoryMetadata)
 
         let fpItem = Item(
@@ -198,9 +199,9 @@ extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
-            urlBase: "", // Placeholder as not set in original code
-            user: "", // Placeholder as not set in original code
-            userId: "" // Placeholder as not set in original code
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
         )
 
         dbManager.addItemMetadata(newMetadata)
@@ -419,12 +420,13 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
+        ignoredFiles: IgnoredFilesMatcher? = nil,
         forcedChunkSize: Int? = nil,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
-        
+
         guard itemTemplate.contentType != .symbolicLink else {
             Self.logger.error(
                 "Cannot create item \(tempId, privacy: .public), symbolic links not supported."
@@ -445,10 +447,12 @@ extension Item {
         
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
-        
+        var parentItemRelativePath: String
+
         // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
             parentItemRemotePath = account.davFilesUrl
+            parentItemRelativePath = "/"
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
@@ -463,8 +467,25 @@ extension Item {
                 return (nil, NSFileProviderError(.noSuchItem))
             }
             parentItemRemotePath = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
+            parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
+                of: account.davFilesUrl, with: ""
+            )
+            assert(parentItemRelativePath.starts(with: "/"))
         }
-        
+
+        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
+        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+            return Item.createIgnored(
+                basedOn: itemTemplate,
+                parentItemRemotePath: parentItemRemotePath,
+                contents: url,
+                account: account,
+                remoteInterface: remoteInterface,
+                progress: progress,
+                dbManager: dbManager
+            )
+        }
+
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false

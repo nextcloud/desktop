@@ -283,7 +283,7 @@ extension Enumerator {
         )
 
 
-        guard let (directoryMetadata, _, metadatas) =
+        guard var (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
         else {
             Self.logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
@@ -294,6 +294,9 @@ extension Enumerator {
         // We have now scanned this directory's contents, so update with etag in order to not check 
         // again if not needed unless it's the root container
         if serverUrl != account.davFilesUrl {
+            if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
+                directoryMetadata.downloaded = existingMetadata.downloaded
+            }
             dbManager.addItemMetadata(directoryMetadata)
         }
 
@@ -302,11 +305,12 @@ extension Enumerator {
         // that our local copies are up to date -- instead, leave them as the old.
         // They will get updated when they are the subject of a readServerUrl call.
         // (See above)
-        let changedMetadatas = dbManager.updateItemMetadatas(
+        let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
-            updateDirectoryEtags: false
+            updateDirectoryEtags: false,
+            keepExistingDownloadState: true
         )
 
         return (
@@ -393,10 +397,12 @@ extension Enumerator {
                 for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
-            let metadata = receivedFile.toItemMetadata()
-            let isNew = dbManager.itemMetadata(ocId: metadata.ocId) == nil
+            var metadata = receivedFile.toItemMetadata()
+            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+            let isNew = existing == nil
             let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
             let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+            metadata.downloaded = existing?.downloaded == true
             dbManager.addItemMetadata(metadata)
             return ([metadata], newItems, updatedItems, nil, nil)
         }
@@ -427,11 +433,13 @@ extension Enumerator {
             if serverUrl == account.davFilesUrl {
                 return (nil, nil, nil, nil, nil)
             } else {
-                let metadata = receivedFile.toItemMetadata()
-                let isNew = dbManager.itemMetadata(ocId: metadata.ocId) == nil
+                var metadata = receivedFile.toItemMetadata()
+                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                let isNew = existing == nil
                 let updatedMetadatas = isNew ? [] : [metadata]
                 let newMetadatas = isNew ? [metadata] : []
 
+                metadata.downloaded = existing?.downloaded == true
                 dbManager.addItemMetadata(metadata)
 
                 return ([metadata], newMetadatas, updatedMetadatas, nil, nil)

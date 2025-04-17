@@ -224,7 +224,8 @@ public final class FilesDatabaseManager: Sendable {
     private func processItemMetadatasToUpdate(
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool
+        updateDirectoryEtags: Bool,
+        keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata],
         updatedMetadatas: [SendableItemMetadata],
@@ -251,6 +252,10 @@ public final class FilesDatabaseManager: Sendable {
                         } else if !updateDirectoryEtags {
                             updatedMetadata.etag = existingMetadata.etag
                         }
+                    }
+
+                    if keepExistingDownloadState {
+                        updatedMetadata.downloaded = existingMetadata.downloaded
                     }
 
                     returningUpdatedMetadatas.append(updatedMetadata)
@@ -295,11 +300,14 @@ public final class FilesDatabaseManager: Sendable {
         return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
     }
 
-    public func updateItemMetadatas(
+    // ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
+    // (in case of directory renames/moves, the changes are recursed down)
+    public func depth1ReadUpdateItemMetadatas(
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool
+        updateDirectoryEtags: Bool,
+        keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
@@ -310,11 +318,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where {
-                    $0.account == account &&
-                    $0.serverUrl == serverUrl &&
-                    $0.status == Status.normal.rawValue
-                }
+                .where { $0.account == account && $0.serverUrl == serverUrl }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
@@ -325,7 +329,9 @@ public final class FilesDatabaseManager: Sendable {
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas,
-                updateDirectoryEtags: updateDirectoryEtags)
+                updateDirectoryEtags: updateDirectoryEtags,
+                keepExistingDownloadState: keepExistingDownloadState
+            )
 
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             let metadatasToCreate = metadatasToChange.newMetadatas

@@ -165,4 +165,30 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertEqual(postTrashingMetadata?.trashbinFileName, "file") // Remember we need to sync
         XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, "file")
     }
+
+    func testDeleteDoesNotPropagateIgnoredFile() async throws {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.log", "/tmp/"])
+        let metadata = SendableItemMetadata(
+            ocId: "ignored-file-id",
+            fileName: "debug.log",
+            account: Self.account
+        )
+        Self.dbManager.addItemMetadata(metadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(rootItem: rootItem),
+            dbManager: Self.dbManager
+        )
+        let error = await item.delete(
+            trashing: false,
+            domain: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
 }

@@ -817,12 +817,47 @@ public extension Item {
         contents newContents: URL?,
         options: NSFileProviderModifyItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
+        ignoredFiles: IgnoredFilesMatcher? = nil,
         domain: NSFileProviderDomain? = nil,
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
+        // For your own good: don't use "self" below here, it'll save you pain debugging when you do
+        // refactors later on. Just use modifiedItem
         var modifiedItem = self
+
+        let relativePath = (
+            metadata.serverUrl + "/" + metadata.fileName
+        ).replacingOccurrences(of: account.davFilesUrl, with: "")
+
+        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+            Self.logger.info(
+                """
+                File \(modifiedItem.filename, privacy: .public) is in the ignore list.
+                    Will delete locally with no remote effect.
+                """
+            )
+            return (modifiedItem, nil)
+        }
+
+        // We are handling an item that is available locally but not on the server -- so create it
+        // This can happen when a previously ignored file is no longer ignored
+        if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
+            return await modifiedItem.modifyUnuploaded(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            )
+        }
 
         let ocId = modifiedItem.itemIdentifier.rawValue
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {

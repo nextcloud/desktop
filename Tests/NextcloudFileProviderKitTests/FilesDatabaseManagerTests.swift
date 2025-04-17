@@ -68,22 +68,152 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testUpdateItemMetadatas() {
-        // Setting up test data
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
-        let metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
+        var metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
+        metadata.downloaded = true
 
-        // Call updateItemMetadatas
-        let result = Self.dbManager.updateItemMetadatas(
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
-        XCTAssertNotNil(result.newMetadatas, "Should create new metadatas")
-        XCTAssertTrue(
-            result.updatedMetadatas?.isEmpty ?? false, "No existing metadata should be updated"
+        XCTAssertEqual(result.newMetadatas?.isEmpty, false, "Should create new metadatas")
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "No metadata should be updated")
+
+        // Now test we are receiving the updated basic metadatas correctly.
+        metadata.etag = "new and shiny"
+
+        let result2 = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [metadata],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
+
+        XCTAssertEqual(result2.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result2.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
+
+        // Also check the download state is correctly kept the same.
+        // We set it to false here to replicate the lack of a download state when converting from
+        // the NKFiles received during remote enumeration
+        metadata.downloaded = false
+        metadata.etag = "new and shiny, but keeping original download state"
+
+        let result3 = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [metadata],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result3.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result3.updatedMetadatas?.isEmpty, false, "Metadata should be updated")
+        XCTAssertEqual(result3.updatedMetadatas?.first?.downloaded, true)
+    }
+
+    func testUpdateRenamesDirectoryAndPropagatesToChildren() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Insert original parent directory
+        var parent = SendableItemMetadata(ocId: "dir1", fileName: "oldDir", account: account)
+        parent.directory = true
+        parent.serverUrl = account.davFilesUrl
+        parent.downloaded = true
+        Self.dbManager.addItemMetadata(parent)
+
+        // Insert a child item inside that directory
+        var child = SendableItemMetadata(ocId: "child1", fileName: "file.txt", account: account)
+        child.serverUrl = account.davFilesUrl + "/oldDir"
+        child.downloaded = true
+        Self.dbManager.addItemMetadata(child)
+
+        var newContainerFolder = SendableItemMetadata(
+            ocId: "ncf", fileName: "newContainerFolder", account: account
+        )
+        newContainerFolder.serverUrl = account.davFilesUrl
+        newContainerFolder.downloaded = true
+        Self.dbManager.addItemMetadata(newContainerFolder)
+
+        // Rename the directory
+        var renamedParent = parent
+        renamedParent.fileName = "newDir"
+        renamedParent.serverUrl = account.davFilesUrl + "/" + newContainerFolder.fileName
+        renamedParent.etag = "etag-changed"
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [renamedParent],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        // Ensure rename took place
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false)
+        XCTAssertNotNil(result.updatedMetadatas?.first(where: { $0.fileName == "newDir" }))
+
+        // Ensure the child's serverUrl was updated accordingly
+        let updatedChild = Self.dbManager.itemMetadata(ocId: "child1")
+        XCTAssertNotNil(updatedChild)
+        XCTAssertEqual(updatedChild?.serverUrl, account.davFilesUrl + "/newContainerFolder/newDir")
+    }
+
+    func testTransitItemIsNotUpdated() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Simulate existing item in transit
+        var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.status = Status.downloading.rawValue
+        transit.etag = "old-etag"
+        Self.dbManager.addItemMetadata(transit)
+
+        // Send an updated version of the same item
+        var incoming = transit
+        incoming.status = Status.normal.rawValue
+        incoming.etag = "new-etag"
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [incoming],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Transit items should not be updated")
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.deletedMetadatas?.isEmpty, true)
+
+        let inDb = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: transit.ocId))
+        XCTAssertEqual(inDb.etag, transit.etag)
+    }
+
+    func testTransitItemIsDeleted() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        // Simulate existing item in transit
+        var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.status = Status.downloading.rawValue
+        Self.dbManager.addItemMetadata(transit)
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [],
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true)
+        XCTAssertEqual(result.deletedMetadatas?.isEmpty, false)
+        XCTAssertEqual(result.deletedMetadatas?.first?.ocId, transit.ocId)
     }
 
     func testSetStatusForItemMetadata() throws {
@@ -191,11 +321,12 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Simulate updated metadata that leads to a deletion
         let updatedMetadatas = [existingMetadata1, existingMetadata3]  // Only include 2 of the 3
 
-        let _ = Self.dbManager.updateItemMetadatas(
+        let _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
@@ -233,11 +364,12 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(existingMetadata)
         }
 
-        let results = Self.dbManager.updateItemMetadatas(
+        let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: [updatedMetadata, newMetadata],
-            updateDirectoryEtags: true
+            updateDirectoryEtags: true,
+            keepExistingDownloadState: true
         )
 
         XCTAssertEqual(results.newMetadatas?.count, 1, "Should create one new metadata")
