@@ -304,7 +304,8 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         const auto parentFolderPath = fileInfo.dir().absolutePath();
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
         FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
-        allRemoved = QDir().rmdir(path);
+        auto folderDeleteError = QString{};
+        allRemoved = FileSystem::remove(path, &folderDeleteError);
         qCInfo(lcFileSystem()) << "delete" << path;
         if (allRemoved) {
             if (onDeleted)
@@ -317,7 +318,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
             if (onError) {
                 onError(di.filePath(), false);
             }
-            qCWarning(lcFileSystem) << "Error removing folder" << path;
+            qCWarning(lcFileSystem) << "Error removing folder" << path << folderDeleteError;
         }
     }
     return allRemoved;
