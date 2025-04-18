@@ -302,7 +302,7 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
         <translation>Fjern lokale kopier</translation>
     </message>
@@ -312,19 +312,19 @@
         <translation>Smid materialiserede filer ud</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
         <translation>Lokale kopier</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
-        <source>Materialised items</source>
-        <translation>Materialiserede elementer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>Genindlæs</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Materialised items</source>
+        <translation>Materialiserede elementer</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <translation>%1 GB af %2 GB fjernfiler synkroniseret</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
         <translation>Frigør plads ...</translation>
     </message>
@@ -2242,7 +2242,7 @@ Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation>Et stort antal af filer på denne server er blevet slettet.
 Bekræft venligst at du ønsker at fortsætte med disse filsletninger.
-Alternativt kan du genskabe alle slettede filer ved at uploade fra&apos;%1&apos; mappe til serveren.</translation>
+Alternativt kan du genskabe alle slettede filer ved at uploade fra &apos;%1&apos; mappe til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1702"/>
@@ -2529,23 +2529,23 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrol af ændringer i ekstern &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrol af ændringer i lokal &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering af lokale og eksterne ændringer</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2557,7 +2557,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Download %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2568,7 +2568,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Upload %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
@@ -2591,7 +2591,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Et par sekunder tilbage, %1 af %2, filen %3 af %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
@@ -2607,12 +2607,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 af %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Om at starte synkronisering</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
@@ -2630,7 +2630,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="132"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Watcher ikke modtaget en test anmeldelse.</translation>
     </message>
 </context>
 <context>
@@ -2682,7 +2682,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Indtast navnet på den nye mappe der skal oprettes under &quot;%1&quot;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="254"/>
@@ -2714,7 +2714,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation type="unfinished"/>
+        <translation>Vælg et andet sted. %1 bliver allerede synkroniseret til %2.</translation>
     </message>
 </context>
 <context>
@@ -2723,18 +2723,18 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <location filename="../src/gui/folderwizard.cpp" line="613"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Brug virtuelle filer i stedet for at downloade indhold med det samme %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <location filename="../src/gui/folderwizard.cpp" line="613"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentel)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle filer er ikke understøttet til Windows partition rødder som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
@@ -2757,7 +2757,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="210"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Vi modtog en uventet download Content- Længde.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="238"/>
@@ -2856,12 +2856,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation type="unfinished"/>
+        <translation>Servervalginterval</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation type="unfinished"/>
+        <translation>sekunder (hvis &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; ikke er tilgængelig)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
@@ -2877,12 +2877,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="320"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="335"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Desktopklient x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="359"/>
@@ -2907,12 +2907,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Brugsdokumentation</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Juridisk Notits</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
@@ -2922,37 +2922,37 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="200"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Vis chat notifikationsdialoger.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="204"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Vis opkaldsanmeldelsesdialoger.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan ikke deaktivere autostart, fordi system- wide autostart er aktiveret.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="421"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>dagligt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="425"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>virksomhed</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="453"/>
@@ -2961,7 +2961,10 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: indeholder versioner med nye funktioner, der ikke kan testes grundigt
+- dagligt: indeholder versioner, der er skabt dagligt kun til afprøvning og udvikling
+
+Nedgradering versioner er ikke muligt med det samme: skifte fra beta til stabile midler venter på den nye stabile version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="458"/>
@@ -2969,12 +2972,14 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: indeholder stabile versioner til kunder.
+
+Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virksomhed betyder venter på den nye virksomhed version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Ændre opdateringskanal?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="466"/>
@@ -2982,12 +2987,14 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Kanalen bestemmer hvilke opgraderinger der vil blive tilbudt at installere:
+- Stabile: indeholder testede versioner anses for pålidelige
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="472"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Ændr opdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
@@ -2997,7 +3004,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="608"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip Archives</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="618"/>
@@ -3007,7 +3014,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="619"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Fejlarkivet oprettedes den %1</translation>
     </message>
 </context>
 <context>
@@ -3042,12 +3049,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="62"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Indtast venligst %1 adgangskode:&lt;br&gt;&lt;br&gt;Brugernavn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="76"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Læsning fra nøglering mislykkedes med fejl: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="83"/>
@@ -3085,7 +3092,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Denne indgang leveres af systemet ved &quot;%1&quot; og kan ikke ændres i dette synspunkt.</translation>
     </message>
 </context>
 <context>
@@ -3132,7 +3139,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke skrive ændringer til &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -3155,7 +3162,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Filen kunne ikke synkroniseres fordi den indeholder tegn som ikke er tilladt på dette system.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -3180,67 +3187,67 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn som ikke er tilladt på dette system.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Følgende tegn er ikke tilladt på systemet: * &quot;Note 124; &amp;?,;:\ / ~ &lt; &gt; indledende / afsluttende mellemrum</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn som ikke er tilladt på serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
         <source>The following characters are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Følgende tegn er ikke tilladt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Følgende basenavne er ikke tilladt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Følgende filnavne er ikke tilladt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Følgende filudvidelser er ikke tilladt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Kontrol af omdøbte tilladelser..</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Du har ikke tilladelse til at omdøbe denne fil. Bed venligst filens forfatter omdøbe den.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="174"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke hente tilladelser med fejl %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="191"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder indledende og afsluttende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="194"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder førende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="196"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="201"/>
@@ -3250,17 +3257,17 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="256"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder ulovlige tegn: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="269"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke omdøbe filen. Sørg for at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="280"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke omdøbe fil fordi en fil med samme navn allerede findes på serveren. Vælg et andet navn.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="316"/>
@@ -3284,7 +3291,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -3304,23 +3311,26 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Klienten kan skrive debug logs til en midlertidig mappe. Disse logfiler er meget nyttige til diagnosticering af problemer.
+Da logfiler kan blive store, vil klienten starte en ny for hver sync køre og komprimere ældre dem. Det vil også slette logfiler efter et par timer for at undgå at forbruge for meget diskplads.
+Hvis aktiveret, vil logfiler blive skrevet til %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver logning til midlertidig mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Denne indstilling fortsætter på tværs klient genstarter.
+Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne indstilling.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Åbn mappe</translation>
     </message>
 </context>
 <context>
@@ -3335,7 +3345,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/logger.cpp" line="371"/>
         <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan ikke åbnes til skrivning.&lt;br/&gt;&lt;br/&gt;Log output &lt;b&gt;kan ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3343,32 +3353,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke begynde at redigere lokalt.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>En fejl opstod under opsætningen.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke finde en fil til lokal redigering. Sørg for at dens sti er gyldig, og den er synkroniseret lokalt.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke få fil- id.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
         <source>Could not get file identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Could not get file identifier.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
         <source>The file identifier is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Filidentifikatoren er tom.</translation>
     </message>
 </context>
 <context>
@@ -3396,27 +3406,27 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Opdatering mislykkedes</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;En ny version af %1 Klienten er tilgængelig, men opdateringsprocessen mislykkedes.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er downloaded. Den installerede version er %3. Hvis du bekræfter genstart og opdatering, genstarter din computer muligvis for at fuldføre installationen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Spørg igen senere</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Genstart og opdatering</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Opdatering manuelt</translation>
     </message>
 </context>
 <context>
@@ -3534,32 +3544,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Ny opdatering af %1 klar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>En ny opdatering for %1 er ved at blive installeret. Opdater kan bede om yderligere privilegier under processen. Din computer kan genstarte for at fuldføre installationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Downloader %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 tilgængelig. Genstart programet til at starte opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke downloade opdatering. Åbn venligst &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; for at downloade opdateringen manuelt.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke downloade opdatering. Åbn venligst %1 for at downloade opdateringen manuelt.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
@@ -3569,12 +3579,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Ny %1 er tilgængelig. Åbn venligst &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; for at downloade opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Ny %1 er tilgængelig. Åbn venligst %2 for at downloade opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
@@ -3602,46 +3612,46 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="75"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Forbind</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="112"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(eksperimentel)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="127"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Brug &amp; virtuelle filer i stedet for at downloade indhold med det samme %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle filer er ikke understøttet til Windows partition som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="319"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>%1 mappe &quot;%2&quot; er synkroniseret til lokal mappe &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="322"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniser mappen &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Advarsel: Den lokale mappe er ikke tom. Vælg en løsning!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="658"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ledig plads</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="428"/>
@@ -3667,7 +3677,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>I afsnittet &quot;Placeringer&quot; i Finder</translation>
     </message>
 </context>
 <context>
@@ -3727,7 +3737,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="937"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Umuligt at få ændringstid for filen i konflikt %1</translation>
     </message>
 </context>
 <context>
@@ -3736,7 +3746,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="102"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Linket til din netgrænseflade %1 når du åbner den i browseren.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="217"/>
@@ -3746,7 +3756,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Serveradressen synes ikke at være gyldig</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="372"/>
@@ -3784,7 +3794,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Den bekræftede anmodning til serveren blev omdirigeret til &quot;%1&quot;. URL&apos;en er dårlig, serveren er forkert konfigureret.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
@@ -3891,7 +3901,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="667"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke fjerne og sikkerhedskopiere mappen, fordi mappen eller en fil i den er åben i et andet program. Luk mappen eller filen og tryk igen eller aflys opsætningen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
@@ -3919,7 +3929,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj %1 konto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
@@ -3929,12 +3939,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="109"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="491"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver eksperimentel funktion?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="492"/>
@@ -3945,17 +3955,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Når &quot;virtuelle filer&quot; tilstand er aktiveret ingen filer vil blive downloadet i første omgang. I stedet oprettes en lille &quot;%1&quot; fil for hver fil der findes på serveren. Indholdet kan downloades ved at køre disse filer eller ved hjælp af deres sammenhængsmenu.
+
+Den virtuelle filer tilstand er gensidigt eksklusivt med selektiv synkronisering. I øjeblikket vil umarkerede mapper blive oversat til online- only mapper og dine selektive synkroniseringsindstillinger vil blive nulstillet.
+
+Skift til denne tilstand vil afbryde enhver igangværende synkronisering.
+
+Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du rapportere eventuelle spørgsmål, der kommer op.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="506"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver eksperimentel pladsholdertilstand</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="507"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Pas på dig selv</translation>
     </message>
 </context>
 <context>
@@ -3963,12 +3979,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Adgangskode for deling kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Indtast en adgangskode for din deling:</translation>
     </message>
 </context>
 <context>
@@ -3984,50 +4000,50 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="399"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Symbolske links understøttes ikke i synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Filen er opført på ignoreringslisten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavne der slutter med en periode er ikke understøttet på dette filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Fil</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>%1 navn som indeholder tegnet &quot;%2&quot; er ikke understøttet på dette filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>%1 navn indeholder mindst et ugyldigt tegn</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>%1 navn er et reserveret navn på dette filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="436"/>
@@ -4040,113 +4056,113 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder førende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn indeholder indledende og afsluttende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn er for længe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Fil / mappe ignoreres, fordi den er skjult.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Stat mislykkedes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt: Serverversion downloadet, lokal kopi omdøbt og ikke uploadet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Case Clash Conflict: Server fil downloadet og omdøbt for at undgå sammenstød.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavnet kan ikke kodes på dit filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavnet er sortlistet på serveren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="478"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Årsag: hele filnavnet er forbudt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Årsag: Filnavnet har et forbudt basisnavn (filnavn starter).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="484"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Årsag: Filen har en forbudt udvidelse (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="487"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Årsag: Filnavnet indeholder en forbudt karakter (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="634"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Filen har udvidelse forbeholdt virtuelle filer.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="775"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>størrelse</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="777"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>tilladelse</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="781"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>fil- id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Server rapporterede ingen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1127"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke synkronisere på grund af ugyldig ændringstid</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1137"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke uploade filen, fordi den er åben i &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1180"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>Fejl under sletning af filregistrering %1 fra databasen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1458"/>
         <location filename="../src/libsync/discovery.cpp" line="1914"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Flyttet til ugyldig mål, genoprette</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1776"/>
@@ -4156,38 +4172,38 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1838"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ignoreret på grund af &quot;vælg hvad du skal synkronisere&quot; sortliste</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1872"/>
         <location filename="../src/libsync/discovery.cpp" line="2075"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt, fordi du ikke har tilladelse til at tilføje undermapper til denne mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1878"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt, fordi du ikke har tilladelse til at tilføje filer i denne mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1892"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt at uploade denne fil, fordi det er read- kun på serveren, genoprette</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1928"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt at fjerne, genoprette</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2118"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Fejl under læsning af databasen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2203"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Serveren svarede med en fejl under læsning af mappen &quot;%1&quot;:%2</translation>
     </message>
 </context>
 <context>
@@ -4195,12 +4211,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1420"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke slette filen %1 fra lokalt DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1434"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstid</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1464"/>
@@ -4210,23 +4226,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1504"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>Mappen %1 kan ikke læses - kun: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1476"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>ukendt undtagelse</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1520"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved opdatering af metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Filen er i brug</translation>
     </message>
 </context>
 <context>
@@ -4234,12 +4250,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke få filen %1 fra lokalt DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 kan ikke downloades fordi krypteringsinformation mangler.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
@@ -6801,12 +6817,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Fejl opstod under synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Fejl opstod under opsætning</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="123"/>
@@ -6816,7 +6832,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Standsning af synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="129"/>
