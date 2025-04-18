@@ -302,7 +302,7 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
         <translation>إزالة النسخ المحلية</translation>
     </message>
@@ -312,19 +312,19 @@
         <translation>إخلاء الملفات المنجزة</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
         <translation>نسخ محلية</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
-        <source>Materialised items</source>
-        <translation>عناصر منجزة materialized</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>إعادة تحميل</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Materialised items</source>
+        <translation>عناصر منجزة materialized</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <translation>%1 غيغا بايت من أصل %2 غيغا بايت ملفات بعيدة تمّت مزامنتها</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
         <translation>تفريغ مساحة ...</translation>
     </message>

@@ -302,7 +302,7 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
         <translation>Odebrat lokální kopie</translation>
     </message>
@@ -312,19 +312,19 @@
         <translation>Vyzdvihnout materializované soubory</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
         <translation>Lokální kopie</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
-        <source>Materialised items</source>
-        <translation>Materializované položky</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>Načíst znovu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Materialised items</source>
+        <translation>Materializované položky</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <translation>%1 GB z %2 GB souborů na protějšku synchronizováno</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
         <translation>Uvolnit prostor…</translation>
     </message>

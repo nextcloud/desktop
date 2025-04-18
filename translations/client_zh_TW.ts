@@ -302,7 +302,7 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
         <translation>移除本機副本</translation>
     </message>
@@ -312,19 +312,19 @@
         <translation>驅逐已實體化的檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
         <translation>本機副本</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
-        <source>Materialised items</source>
-        <translation>物化項目</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>重新載入</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Materialised items</source>
+        <translation>物化項目</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <translation>已同步遠端檔案 %2 GB 中的 %1 GB</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
         <translation>釋放空間……</translation>
     </message>

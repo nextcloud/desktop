@@ -302,7 +302,7 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
         <translation>Eemalda kohalikud koopiad</translation>
     </message>
@@ -312,19 +312,19 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
         <translation>Kohalikud koopiad</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
-        <source>Materialised items</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
         <source>Reload</source>
         <translation>Laadi uuesti</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
+        <source>Materialised items</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <translation>Kaugfailidest on sünkroniseeritud: %1 GB / %2 GB</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
         <translation>Vabasta andmeruumi…</translation>
     </message>
@@ -895,7 +895,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1274"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Kasutusel on %1 (%3%) / %2. Mõnedel kaustadel, sealhulgas võrgust haagitud andmekogud ja jagatud kaustad, võivad olla muud piirangud.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -975,7 +975,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Asenda sertifikaat uuega</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1635"/>
@@ -1975,12 +1975,12 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Pollimise võrguaadressi alguses puudub https-protokoll, aga sisselogimisaadressi puhul oli ta olemas. Kuna tegemist võib olla turvaprobleemiga, siis sisselogimine pole võimalik. Palun võta ühendust oma peakasutajaga.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serveri vastuses leiuduva võrguaadressi alguses puudub https-protokoll, aga sisselogimisaadressi puhul oli ta olemas. Kuna tegemist võib olla turvaprobleemiga, siis sisselogimine pole võimalik. Palun võta ühendust oma peakasutajaga.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -2750,7 +2750,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="210"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Päringu vastuses oli allalaadimise jaoks ootamatu „Content-Length“ päisekirje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="238"/>
@@ -3078,7 +3078,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Tegemist on süsteemse objektiga „%1“ kontekstis ja seda ei saa siit vaatest muuta.</translation>
     </message>
 </context>
 <context>
@@ -3613,7 +3613,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Virtuaalsed faili pole toetatud Windowsi partitsiooni juurkaustas kohaliku kausta rollis. Palun vali sellelt kettalt mõni alamkaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="319"/>
@@ -5935,7 +5935,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimislogo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
