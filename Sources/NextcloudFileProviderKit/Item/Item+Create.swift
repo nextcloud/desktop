@@ -7,11 +7,12 @@
 
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
-extension Item {
-    
+public extension Item {
+
     private static func createNewFolder(
         itemTemplate: NSFileProviderItem?,
         remotePath: String,
@@ -411,7 +412,7 @@ extension Item {
         )
     }
 
-    public static func create(
+    static func create(
         basedOn itemTemplate: NSFileProviderItem,
         fields: NSFileProviderItemFields = NSFileProviderItemFields(),
         contents url: URL?,
@@ -433,7 +434,7 @@ extension Item {
             )
             return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
         }
-        
+
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
             Self.logger.info(
@@ -444,7 +445,7 @@ extension Item {
             )
             return (nil, NSFileProviderError(.noSuchItem))
         }
-        
+
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         var parentItemRemotePath: String
         var parentItemRelativePath: String
@@ -473,6 +474,21 @@ extension Item {
             assert(parentItemRelativePath.starts(with: "/"))
         }
 
+        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
+
+        guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
+            return await Item.createLockFile(
+                basedOn: itemTemplate,
+                parentItemIdentifier: parentItemIdentifier,
+                parentItemRemotePath: parentItemRemotePath,
+                progress: progress,
+                domain: domain,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+        }
+
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             return Item.createIgnored(
@@ -488,7 +504,6 @@ extension Item {
 
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
-        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
 
         Self.logger.debug(
             """

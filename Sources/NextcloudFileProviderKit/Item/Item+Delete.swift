@@ -7,6 +7,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
@@ -41,6 +42,10 @@ public extension Item {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
             return NSFileProviderError(.noSuchItem)
+        }
+
+        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
         let (_, _, error) = await remoteInterface.delete(

@@ -191,4 +191,154 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
     }
+
+    func testDeleteLockFileUnlocksTargetFile() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Setup remote folder and file
+        let folderRemote = MockRemoteItem(
+            identifier: "folder-id",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.odt"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        // Insert folder and target file into DB
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // Construct the lock file metadata (used in deletion)
+        let lockFileName = ".~lock.\(targetFileName)#"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(lockFileMetadata)
+
+        let lockItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // Delete the lock file
+        let error = await lockItem.delete(dbManager: Self.dbManager)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
+
+        // Assert: no error returned
+        XCTAssertNil(error)
+
+        // Assert: remote file is now unlocked
+        XCTAssertFalse(
+            targetRemote.locked, "Expected the target file to be unlocked after lock file deletion"
+        )
+    }
+
+    func testDeleteLockFileWithoutCapabilitiesDoesNothing() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
+        remoteInterface.capabilities =
+            remoteInterface.capabilities.replacingOccurrences(of: ##""locking": "1.0","##, with: "")
+
+        // Setup remote folder and file
+        let folderRemote = MockRemoteItem(
+            identifier: "folder-id",
+            versionIdentifier: "1",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        let targetFileName = "MyDoc.odt"
+        let targetRemote = MockRemoteItem(
+            identifier: "folder/\(targetFileName)",
+            versionIdentifier: "1",
+            name: targetFileName,
+            remotePath: folderRemote.remotePath + "/" + targetFileName,
+            data: Data("test data".utf8),
+            locked: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        folderRemote.children = [targetRemote]
+        folderRemote.parent = rootItem
+        rootItem.children = [folderRemote]
+
+        // Insert folder and target file into DB
+        var folderMetadata = SendableItemMetadata(
+            ocId: folderRemote.identifier, fileName: "folder", account: Self.account
+        )
+        folderMetadata.directory = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        var targetMetadata = SendableItemMetadata(
+            ocId: targetRemote.identifier, fileName: targetFileName, account: Self.account
+        )
+        targetMetadata.serverUrl += "/folder"
+        Self.dbManager.addItemMetadata(targetMetadata)
+
+        // Construct the lock file metadata (used in deletion)
+        let lockFileName = ".~lock.\(targetFileName)#"
+        var lockFileMetadata = SendableItemMetadata(
+            ocId: "lock-id", fileName: lockFileName, account: Self.account
+        )
+        lockFileMetadata.serverUrl += "/folder"
+
+        let lockItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .init(folderMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // Delete the lock file
+        let error = await lockItem.delete(dbManager: Self.dbManager)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
+        XCTAssertNil(error)
+        XCTAssertTrue(
+            targetRemote.locked, "Expected the target file to still be locked"
+        )
+    }
 }

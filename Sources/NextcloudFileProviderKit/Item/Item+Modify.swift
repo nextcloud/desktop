@@ -871,6 +871,22 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
+        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            return await modifiedItem.modifyLockFile(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            )
+        }
+
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
         let bundleOrPackage =
