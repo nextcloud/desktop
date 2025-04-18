@@ -51,10 +51,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..e91c090fa
+index 000000000..2303ce952
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,244 @@
+@@ -0,0 +1,250 @@
 +
 +#pragma once
 +
@@ -131,6 +131,12 @@ index 000000000..e91c090fa
 +const auto QTimeZoneUTC = QTimeZone::UTC;
 +#else
 +const auto QTimeZoneUTC = Qt::UTC;
++#endif
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 4, 0)
++#define QCOMPARE_GT(computed, baseline) QCOMPARE(computed>baseline, true)
 +#endif
 +
 +//-----------------------------------------------------------------------------
@@ -969,4 +975,28 @@ index 96f2ba1da..aab73a0d9 100644
 +#include <QTimeZone>
  
  using namespace OCC;
+ 
+diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
+index 3d7124421..c03d8b23e 100644
+--- a/test/testsyncengine.cpp
++++ b/test/testsyncengine.cpp
+@@ -14,6 +14,7 @@
+ #include "configfile.h"
+ #include "propagatorjobs.h"
+ #include "syncengine.h"
++#include "common/qtcompat.h"
+ 
+ #include <QFile>
+ #include <QtTest>
+diff --git a/test/testsyncvirtualfiles.cpp b/test/testsyncvirtualfiles.cpp
+index 03e743ec3..d0a9f6d54 100644
+--- a/test/testsyncvirtualfiles.cpp
++++ b/test/testsyncvirtualfiles.cpp
+@@ -8,6 +8,7 @@
+ #include <QtTest>
+ #include "syncenginetestutils.h"
+ #include "common/vfs.h"
++#include "common/qtcompat.h"
+ #include "config.h"
+ #include <syncengine.h>
  
