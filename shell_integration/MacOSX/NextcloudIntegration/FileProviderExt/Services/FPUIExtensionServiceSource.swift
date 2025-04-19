@@ -53,7 +53,14 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return nil
         }
 
-        let dbManager = FilesDatabaseManager.shared
+        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+            Logger.shares.error("Could not fetch ncKitAccount on parent extension")
+            return nil
+        }
+        guard let dbManager = fpExtension.dbManager else {
+            Logger.shares.error("Could not get db manager for \(account, privacy: .public)")
+            return nil
+        }
         guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
             Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
             return nil
