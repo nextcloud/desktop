@@ -72,6 +72,7 @@ class Systray : public QSystemTrayIcon
     Q_PROPERTY(bool anySyncFolders READ anySyncFolders NOTIFY anySyncFoldersChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
     Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
+    Q_PROPERTY(bool quickStyleProvidesTextFieldContextMenus READ quickStyleProvidesTextFieldContextMenus CONSTANT)
 
 public:
     static Systray *instance();
@@ -91,6 +92,7 @@ public:
 
     Q_REQUIRED_RESULT QString windowTitle() const;
     Q_REQUIRED_RESULT bool useNormalWindow() const;
+    Q_REQUIRED_RESULT bool quickStyleProvidesTextFieldContextMenus() const;
 
     Q_REQUIRED_RESULT bool syncIsPaused() const;
     Q_REQUIRED_RESULT bool anySyncFolders() const;

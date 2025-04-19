@@ -32,7 +32,7 @@ TextField {
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
-        shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
+        !contextMenu.opened && shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
     }
 
     placeholderText: enabled ? qsTr("Search for users or groups…") : qsTr("Sharing is not available for this folder")
@@ -76,6 +76,10 @@ TextField {
                 break;
             }
         }
+    }
+    onPressed: function(mouse) {
+        if (Systray.quickStyleProvidesTextFieldContextMenus || mouse.button !== Qt.RightButton) return;
+        contextMenu.popup(mouse.x, mouse.y);
     }
 
     leftPadding: searchIcon.width + searchIcon.anchors.leftMargin + horizontalPaddingOffset
@@ -147,6 +151,26 @@ TextField {
             onClicked: root.clear()
         }
     }
+
+    Menu {
+        id: contextMenu
+        z: suggestionsPopup.z + 1
+        onAboutToShow: suggestionsPopup.close()
+
+        MenuItem {
+            text: qsTr("Cut")
+            onTriggered: root.cut()
+        }
+        MenuItem {
+            text: qsTr("Copy")
+            onTriggered: root.copy()
+        }
+        MenuItem {
+            text: qsTr("Paste")
+            onTriggered: root.paste()
+        }
+    }
+
 
     Popup {
         id: suggestionsPopup
