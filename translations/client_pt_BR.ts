@@ -48,7 +48,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="176"/>
         <source>Talk notification caller avatar</source>
-        <translation>Avatar do chamador de notificação de conversa</translation>
+        <translation>Avatar do chamador de notificação do Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="235"/>
@@ -76,7 +76,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="123"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation>Verificando as mudanças em &quot;%1&quot; </translation>
+        <translation>Verificando alterações em &quot;%1&quot; </translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
@@ -210,12 +210,12 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
-        <translation>O status atual da conta é online</translation>
+        <translation>O status atual da conta está on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
-        <translation>O status da conta atual é não perturbe</translation>
+        <translation>O status da conta atual está não perturbe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="78"/>
         <source>Opening file for local editing</source>
-        <translation>Abrir arquivo para editar localmente</translation>
+        <translation>Abrir arquivo para edição local</translation>
     </message>
 </context>
 <context>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation>Chaves Disponíveis para criptografia de ponta a ponta:</translation>
+        <translation>Chaves Disponíveis para Criptografia de ponta-a-ponta:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation>Ative a sincronização rápida</translation>
+        <translation>Ativar sincronização rápida</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
@@ -363,7 +363,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
-        <translation>Habilitar arquivos virtuais</translation>
+        <translation>Ativar arquivos virtuais</translation>
     </message>
 </context>
 <context>
@@ -491,12 +491,12 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation>Caixa de diálogo principal do desktop Nextcloud</translation>
+        <translation>Caixa de diálogo principal do Nextcloud desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
         <source>Unified search results list</source>
-        <translation>Lista unificada de resultados de pesquisa</translation>
+        <translation>Lista de resultados de pesquisa unificada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="446"/>
@@ -527,17 +527,17 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
     <message>
         <location filename="../src/libsync/account.cpp" line="1018"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>Arquivo %1 está bloqueado por %2.</translation>
+        <translation>Arquivo %1 já está bloqueado por %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1020"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>Bloquear operações em %1 falhou com o erro %2</translation>
+        <translation>A operação de bloqueio em %1 falhou com o erro %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1022"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>Desbloquear operações em %1 falhou com o erro %2</translation>
+        <translation>A operação de desbloqueio em %1 falhou com o erro %2</translation>
     </message>
 </context>
 <context>
@@ -638,7 +638,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Criptografia Ponta a Ponta com Arquivos Virtuais </translation>
+        <translation>Criptografia de Ponta-a-ponta com Arquivos Virtuais </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
