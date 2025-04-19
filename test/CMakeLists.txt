@@ -94,6 +94,7 @@ nextcloud_add_test(FileTagModel)
 nextcloud_add_test(SyncConflictsModel)
 nextcloud_add_test(DateFieldBackend)
 nextcloud_add_test(ClientStatusReporting)
+nextcloud_add_test(CookieJarMigration)
 
 nextcloud_add_test(FolderStatusModel)
 
