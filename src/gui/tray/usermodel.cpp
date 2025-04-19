@@ -61,6 +61,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
+    , _userInfo(account.data(), false, true)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -118,6 +119,9 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
+
+    _userInfo.setActive(true);
+    connect(&_userInfo, &UserInfo::quotaUpdated, this, &User::slotUpdateQuota);
 }
 
 void User::checkNotifiedNotifications()
@@ -1188,6 +1192,34 @@ void User::slotFetchGroupFolders()
 
     const auto groupFolderListJob = _account->account()->sendRequest(QByteArrayLiteral("GET"), groupFolderListUrl, req);
     connect(groupFolderListJob, &SimpleNetworkJob::finishedSignal, this, &User::slotGroupFoldersFetched);
+}
+
+void User::slotUpdateQuota(qint64 total, qint64 used)
+{
+    if (total <= 0) {
+        return;
+    }
+
+    _notifiedNotifications.clear();
+    const auto percent = used / (double)total * 100;
+    const auto percentInt = qMin(qRound(percent), 100);
+    qCDebug(lcActivity) << tr("Quota is updated; %1\% of the total space is used.").arg(QString::number(percentInt));
+    if (percentInt >= 80) {
+        const auto localFolderName = getFolder();
+
+        Activity activity;
+        activity._type = Activity::NotificationType;
+        activity._syncResultStatus = SyncResult::Success;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._subject = "Quota Warning";
+        activity._message = tr("More than %1\% of storage in use").arg(QString::number(80));
+        activity._link = localFolderName->shortGuiLocalPath();
+        activity._accName = localFolderName->accountState()->account()->displayName();
+        activity._folder = localFolderName->alias();
+        activity._id = qHash(tr("%1-quota-threshold-reached").arg(80));
+        _activityModel->addNotificationToActivityList(activity);
+        showDesktopNotification(activity);
+    }
 }
 
 void User::slotGroupFoldersFetched(QNetworkReply *reply)
