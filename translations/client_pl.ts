@@ -2009,7 +2009,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Odpowiedź serwera nie zawierała wszystkich oczekiwanych pól: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
 </context>
 <context>

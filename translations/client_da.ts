@@ -2612,7 +2612,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>About to start syncing</source>
-        <translation>Om at starte synkronisering</translation>
+        <translation>På vej til at starte synkronisering</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
@@ -6832,7 +6832,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
-        <translation>Standsning af synkronisering</translation>
+        <translation>Standser synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="129"/>
