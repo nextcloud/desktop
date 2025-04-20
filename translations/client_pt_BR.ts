@@ -660,7 +660,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="122"/>
         <source>End-to-end Encryption</source>
-        <translation>Criptografia ponta a ponta</translation>
+        <translation>Criptografia de Ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="125"/>
@@ -687,7 +687,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Criptografia Ponta a Ponta foi habilitado para essa conta</translation>
+        <translation>Criptografia de Ponta-a-ponta foi ativado para essa conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
@@ -697,24 +697,24 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation>Aguarde a sincronização da pasta antes de tentar criptografá-la.</translation>
+        <translation>Por favor, aguarde a sincronização da pasta antes de tentar criptografá-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="404"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>A pasta tem um pequeno problema de sincronização. A criptografia desta pasta será possível assim que ela for sincronizada com sucesso</translation>
+        <translation>A pasta tem um probleminha de sincronização. A criptografia desta pasta será possível depois que ela for sincronizada com sucesso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>A pasta apresenta um erro de sincronização. A criptografia desta pasta será possível assim que ela for sincronizada com sucesso</translation>
+        <translation>A pasta tem um erro de sincronização. A criptografia desta pasta será possível depois que ela for sincronizada com sucesso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>Criptografia Ponta a Ponta não está configurada para este dispositivo. Quando estiver, você poderá criptografar esta pasta.
-Você gostaria de configurar a criptografia ponta a ponta?</translation>
+        <translation>Criptografia de ponta-a-ponta não está configurada para este dispositivo. Quando ela estiver configurada, você poderá criptografar esta pasta.
+Você gostaria de configurar a criptografia de ponta-a-ponta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="442"/>
@@ -858,27 +858,27 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1100"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemônico da criptografia ponta a ponta</translation>
+        <translation>Mnemônico da criptografia de ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Para proteger sua identidade criptográfica, nós a criptografamos com um mnemônico de 12 palavras do dicionário. Por favor, anote-os e mantenha-os seguros. Eles serão necessários para adicionar outros dispositivos à sua conta (como seu celular ou computador)</translation>
+        <translation>Para proteger sua Identidade Criptográfica, nós a criptografamos com um mnemônico de 12 palavras do dicionário. Por favor, anote-os e mantenha-os seguros. Eles serão necessários para adicionar outros dispositivos à sua conta (como seu celular ou computador).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Desative a criptografia de ponta a ponta</translation>
+        <translation>Desativar a criptografia de ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1128"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Desative a criptografia de ponta a ponta para %1?</translation>
+        <translation>Desativar a criptografia de ponta-a-ponta para %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1129"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>A remoção da criptografia de ponta a ponta removerá os arquivos criptografados localmente sincronizados.&lt;br&gt;Os arquivos criptografados permanecerão no servidor.</translation>
+        <translation>A remoção da criptografia de ponta-a-ponta removerá os arquivos sincronizados localmente que estão criptografados.&lt;br&gt;Os arquivos criptografados permanecerão no servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1201"/>
@@ -998,7 +998,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>A criptografia de ponta a ponta foi habilitada nesta conta com outro dispositivo.&lt;br&gt;Ele pode ser ativado neste dispositivo inserindo seu mnemônico.&lt;br&gt;Isso permitirá a sincronização de pastas criptografadas existentes.</translation>
+        <translation>A criptografia de ponta-a-ponta foi habilitada nesta conta com outro dispositivo.&lt;br&gt;Ela pode ser ativada neste dispositivo inserindo seu mnemônico.&lt;br&gt;Isso permitirá a sincronização de pastas criptografadas existentes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1758"/>
@@ -1097,7 +1097,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="503"/>
         <source>Fetching activities …</source>
-        <translation>Buscando atividades…</translation>
+        <translation>Buscando atividades …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
@@ -1153,29 +1153,29 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/application.cpp" line="185"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Algumas configurações foram definidas em %1 versões deste cliente e usam recursos que não estão disponíveis nesta versão.&lt;br&gt;&lt;br&gt;Continuar significará &lt;b&gt;%2 essas configurações&lt;/b&gt;.&lt;br&gt;&lt;br&gt;O arquivo de configuração atual já foi copiado para &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>Algumas configurações foram definidas em versões %1 deste cliente e usam recursos que não estão disponíveis nesta versão.&lt;br&gt;&lt;br&gt;Continuar significará &lt;b&gt;%2 essas configurações&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Um backup do arquivo de configuração atual já foi feito em &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation>mais novo</translation>
+        <translation>mais recentes</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation>mais velho</translation>
+        <translation>mais velhas</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>ignoring</source>
-        <translation>ignorando</translation>
+        <translation>ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>deleting</source>
-        <translation>excluindo</translation>
+        <translation>excluir</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
@@ -1265,7 +1265,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Código HTTP incorreto retornado pelo servidor. Esperado 204, mas recebeu &quot;%1 %2&quot;.</translation>
+        <translation>Código HTTP incorreto retornado pelo servidor. Esperava 204, mas recebi &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1273,7 +1273,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>O arquivo %1 não pode ser carregado porque existe outro arquivo com o mesmo nome, diferindo apenas no caso</translation>
+        <translation>O arquivo %1 não pode ser carregado porque existe outro arquivo com o mesmo nome, diferindo apenas no uso de maiúsculas e minúsculas</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -1288,12 +1288,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="380"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>O arquivo %1 tem hora de modificação inválida. Não envie para o servidor.</translation>
+        <translation>O arquivo %1 tem tempo de modificação inválido. Não faça upload para o servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="393"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Arquivo local alterado durante a sincronização. Será retomado.</translation>
+        <translation>Arquivo local alterado durante a sincronização. Será retomada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="407"/>
