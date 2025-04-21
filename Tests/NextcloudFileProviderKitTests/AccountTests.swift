@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 @testable import NextcloudFileProviderKit
 
-final class AccountTests: XCTest {
+final class AccountTests: XCTestCase {
     func testInitializationDirect() {
         let user = "user"
         let userId = "userId"
