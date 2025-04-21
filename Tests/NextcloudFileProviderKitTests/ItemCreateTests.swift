@@ -20,7 +20,7 @@ final class ItemCreateTests: XCTestCase {
 
     var rootItem: MockRemoteItem!
     static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+        realmConfig: .defaultConfiguration, account: account
     )
 
     override func setUp() {

@@ -19,7 +19,7 @@ final class ItemDeleteTests: XCTestCase {
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
     lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
     static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+        realmConfig: .defaultConfiguration, account: account
     )
 
     override func setUp() {

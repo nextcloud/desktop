@@ -13,7 +13,7 @@ import XCTest
 final class UploadTests: XCTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
     static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+        realmConfig: .defaultConfiguration, account: account
     )
 
     override func setUp() {
