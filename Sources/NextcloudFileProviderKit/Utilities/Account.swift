@@ -50,7 +50,9 @@ public struct Account: Equatable, Sendable {
         davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + id
         trashUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/trash"
         trashRestoreUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/restore"
-        fileName = id + "_" + (URL(string: serverUrl)?.safeFilenameFromURLString() ?? "unknown")
+
+        let sanitisedUrl = (URL(string: serverUrl)?.safeFilenameFromURLString() ?? "unknown")
+        fileName = sanitise(string: id) + "_" + sanitisedUrl
     }
 
     public init?(dictionary: Dictionary<String, String>) {

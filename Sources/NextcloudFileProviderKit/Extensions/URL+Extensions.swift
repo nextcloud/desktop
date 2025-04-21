@@ -21,7 +21,7 @@ fileprivate let invalidCharacterReplacementSet =
 /// - Parameter string: The string to sanitise.
 /// - Returns: The sanitised string.
 ///
-fileprivate func sanitise(string: String) -> String {
+func sanitise(string: String) -> String {
     string
         .components(separatedBy: invalidCharacters)
         .joined(separator: invalidCharacterReplacement)
