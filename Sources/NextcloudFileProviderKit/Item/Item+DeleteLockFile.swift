@@ -34,6 +34,8 @@ extension Item {
                 """
                 Received nil capabilities data.
                     Received error: \(capabilitiesError.errorDescription, privacy: .public)
+                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    (if capabilities are not nil the server may just not have files_lock enabled).
                     Will not proceed with unlocking for \(self.filename, privacy: .public)
                 """
             )

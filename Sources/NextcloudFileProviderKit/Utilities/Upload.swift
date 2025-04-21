@@ -59,6 +59,8 @@ func upload(
                 """
                 Received nil capabilities data.
                     Received error: \(error.errorDescription, privacy: .public)
+                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    (if capabilities are not nil the server may just not provide chunk size data).
                     Using default file chunk size: \(defaultFileChunkSize, privacy: .public)
                 """
             )
