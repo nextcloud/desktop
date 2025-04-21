@@ -27,6 +27,7 @@ final class AccountTests: XCTestCase {
         XCTAssertEqual(
             account.trashRestoreUrl, serverUrl + Account.webDavTrashUrlSuffix + "\(userId)/restore"
         )
+        XCTAssertEqual(account.fileName, "\(userId)_example_com")
     }
 
     func testInitializationFromDictionary() {
@@ -38,7 +39,8 @@ final class AccountTests: XCTestCase {
             AccountDictServerUrlKey: "https://example.com",
             AccountDictDavFilesUrlKey: "https://example.com/remote.php/dav/files/user",
             AccountDictTrashUrlKey: "https://example.com/remote.php/dav/trashbin/user/trash",
-            AccountDictTrashRestoreUrlKey: "https://example.com/remote.php/dav/trashbin/user/restore"
+            AccountDictTrashRestoreUrlKey: "https://example.com/remote.php/dav/trashbin/user/restore",
+            AccountDictFileNameKey: "userId_example_com"
         ]
 
         let account = Account(dictionary: dictionary)
@@ -54,6 +56,7 @@ final class AccountTests: XCTestCase {
         XCTAssertEqual(
             account?.trashRestoreUrl, "https://example.com/remote.php/dav/trashbin/user/restore"
         )
+        XCTAssertEqual(account?.fileName, "userId_example_com")
     }
 
     func testInitializationFromIncompleteDictionary() {
@@ -80,6 +83,7 @@ final class AccountTests: XCTestCase {
         XCTAssertEqual(dictionary[AccountDictDavFilesUrlKey], "https://example.com/remote.php/dav/files/userId")
         XCTAssertEqual(dictionary[AccountDictTrashUrlKey], "https://example.com/remote.php/dav/trashbin/userId/trash")
         XCTAssertEqual(dictionary[AccountDictTrashRestoreUrlKey], "https://example.com/remote.php/dav/trashbin/userId/restore")
+        XCTAssertEqual(dictionary[AccountDictFileNameKey], "userId_example_com")
     }
 
     func testEquatability() {
@@ -96,5 +100,12 @@ final class AccountTests: XCTestCase {
             user: "user", id: "userId", serverUrl: "https://example.net", password: "password"
         )
         XCTAssertNotEqual(account1, account3)
+    }
+
+    func testFilenameValid() {
+        let account = Account(
+            user: "user", id: "/u/s/e.r/", serverUrl: "https://example.com", password: "password"
+        )
+        XCTAssertEqual(account.fileName, "u_s_e_r_example_com")
     }
 }

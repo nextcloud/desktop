@@ -18,7 +18,7 @@ final class ItemPropertyTests: XCTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
     static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+        realmConfig: .defaultConfiguration, account: account
     )
 
     func testMetadataContentType() {

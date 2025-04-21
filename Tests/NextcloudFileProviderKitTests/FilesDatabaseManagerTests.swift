@@ -17,7 +17,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     )
 
     static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account.ncKitAccount
+        realmConfig: .defaultConfiguration, account: account
     )
 
     override func setUp() {
@@ -749,8 +749,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testInitializerMigration() throws {
-        let account1 = "account1"
-        let account2 = "account2"
+        let account1 = Account(user: "account1", id: "account1", serverUrl: "c.nc.c", password: "a")
+        let account2 = Account(user: "account2", id: "account2", serverUrl: "c.nc.c", password: "b")
 
         // 1. Create a unique temporary directory for the file provider data directory.
         let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -781,11 +781,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Create test objects
         let migratingItem = RealmItemMetadata()
         migratingItem.ocId = "id1"
-        migratingItem.account = account1
+        migratingItem.account = account1.ncKitAccount
 
         let nonMigratingItem = RealmItemMetadata()
         nonMigratingItem.ocId = "id2"
-        nonMigratingItem.account = account2
+        nonMigratingItem.account = account2.ncKitAccount
 
         let remoteChunk = RemoteFileChunk()
         remoteChunk.fileName = "chunk1"
@@ -825,7 +825,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(
             newMigratedItems.count, 1, "Only one metadata item for account1 should be migrated"
         )
-        XCTAssertEqual(newMigratedItems.first?.account, account1)
+        XCTAssertEqual(newMigratedItems.first?.account, account1.ncKitAccount)
         XCTAssertEqual(newRemoteChunks.count, 1, "Remote file chunks should be migrated")
 
         // 8. Verify that the old Realm has retained the migrated objects.
@@ -840,7 +840,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             "The old realm should have retained both migrated and non-migrated metadata items"
         )
         XCTAssertTrue(
-            allItems.contains(where: { $0.account == account1 }),
+            allItems.contains(where: { $0.account == account1.ncKitAccount }),
             "Migrated metadata should be retained in the old realm"
         )
         XCTAssertEqual(
@@ -865,7 +865,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
             at: oldRealmURL.deletingLastPathComponent(), withIntermediateDirectories: true
         )
 
-        let accounts = (migrated: "account1", nonMigrated: "account2")
+        let account1 = Account(user: "account1", id: "account1", serverUrl: "c.nc.c", password: "a")
+        let account2 = Account(user: "account2", id: "account2", serverUrl: "c.nc.c", password: "b")
+        let accounts = (migrated: account1, nonMigrated: account2)
 
         // Insert initial objects into the old realm
         let oldConfig = Realm.Configuration(
@@ -877,11 +879,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         let migratedItem = RealmItemMetadata()
         migratedItem.ocId = "id1"
-        migratedItem.account = accounts.migrated
+        migratedItem.account = accounts.migrated.ncKitAccount
 
         let nonMigratedItem = RealmItemMetadata()
         nonMigratedItem.ocId = "id2"
-        nonMigratedItem.account = accounts.nonMigrated
+        nonMigratedItem.account = accounts.nonMigrated.ncKitAccount
 
         let remoteChunk = RemoteFileChunk()
         remoteChunk.fileName = "chunk1"
@@ -912,13 +914,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let initialMigrated = newRealm.objects(RealmItemMetadata.self)
         let initialChunks = newRealm.objects(RemoteFileChunk.self)
         XCTAssertEqual(initialMigrated.count, 1)
-        XCTAssertEqual(initialMigrated.first?.account, accounts.migrated)
+        XCTAssertEqual(initialMigrated.first?.account, accounts.migrated.ncKitAccount)
         XCTAssertEqual(initialChunks.count, 1)
 
         // Add additional migrated objects to the old realm after the first migration
         let newMigratedItem = RealmItemMetadata()
         newMigratedItem.ocId = "id3"
-        newMigratedItem.account = accounts.migrated
+        newMigratedItem.account = accounts.migrated.ncKitAccount
 
         let newRemoteChunk = RemoteFileChunk()
         newRemoteChunk.fileName = "chunk2"

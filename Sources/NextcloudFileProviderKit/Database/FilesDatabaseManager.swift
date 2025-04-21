@@ -32,7 +32,7 @@ public final class FilesDatabaseManager: Sendable {
 
     public init(
         realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration,
-        account: String,
+        account: Account,
         fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
         relativeDatabaseFolderPath: String = relativeDatabaseFolderPath
     ) {
@@ -59,7 +59,9 @@ public final class FilesDatabaseManager: Sendable {
             Self.logger.debug("No old database found at \(oldDatabasePath.path) skipping migration")
             return
         }
-        Self.logger.info("Migrating old database to database for \(account, privacy: .public)")
+        Self.logger.info(
+            "Migrating old database to database for \(account.ncKitAccount, privacy: .public)"
+        )
         let oldConfig = Realm.Configuration(
             fileURL: oldDatabasePath,
             schemaVersion: stable2_0SchemaVersion,
@@ -67,7 +69,9 @@ public final class FilesDatabaseManager: Sendable {
         )
         do {
             let oldRealm = try Realm(configuration: oldConfig)
-            let itemMetadatas = oldRealm.objects(RealmItemMetadata.self).filter { $0.account == account }
+            let itemMetadatas = oldRealm
+                .objects(RealmItemMetadata.self)
+                .filter { $0.account == account.ncKitAccount }
             let remoteFileChunks = oldRealm.objects(RemoteFileChunk.self)
             Self.logger.info(
                 "Migrating \(itemMetadatas.count) metadatas and \(remoteFileChunks.count) chunks"
@@ -81,15 +85,17 @@ public final class FilesDatabaseManager: Sendable {
         } catch let error {
             Self.logger.error(
                 """
-                Error migrating old database to database for \(account, privacy: .public)
+                Error migrating old database to account-specific database
+                    for: \(account.ncKitAccount, privacy: .public)
                     Received error: \(error, privacy: .public)
                 """
             )
         }
     }
 
-    public convenience init?(account: String) {
-        let relativeDatabaseFilePath = relativeDatabaseFolderPath + account + "-" + databaseFilename
+    public convenience init?(account: Account) {
+        let relativeDatabaseFilePath =
+            relativeDatabaseFolderPath + account.fileName + "-" + databaseFilename
         guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
         let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
 
