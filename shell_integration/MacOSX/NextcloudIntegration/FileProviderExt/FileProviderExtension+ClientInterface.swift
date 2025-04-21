@@ -149,7 +149,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
 
             Task { @MainActor in
                 ncAccount = account
-                dbManager = FilesDatabaseManager(account: account.ncKitAccount)
+                dbManager = FilesDatabaseManager(account: account)
                 changeObserver = RemoteChangeObserver(
                     account: account,
                     remoteInterface: ncKit,
