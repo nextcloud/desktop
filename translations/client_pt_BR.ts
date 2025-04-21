@@ -1370,12 +1370,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Conflito de Clash Case</translation>
+        <translation>Conflito de Letras Maiúsculas e Minúsculas</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>O arquivo não pôde ser sincronizado porque gera um conflito de caso com um arquivo existente neste sistema.</translation>
+        <translation>O arquivo não pôde ser sincronizado porque gera um conflito de letras maiúsculas e minúsculas com um arquivo existente neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1402,7 +1402,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation>0 byte</translation>
+        <translation>0 bytes</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
@@ -1413,7 +1413,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Arquivo de conflito de caso</translation>
+        <translation>Arquivo causando conflito de letras maiúsculas e minúsculas</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1429,22 +1429,22 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation>Insira um novo nome para o arquivo conflitante:</translation>
+        <translation>Por favor, insira um novo nome para o arquivo conflitante:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation>Novo nome de arquivo</translation>
+        <translation>Novo nome do arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="101"/>
         <source>Rename file</source>
-        <translation>Novo nome de arquivo</translation>
+        <translation>Renomear arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>O arquivo &quot;%1&quot; não pôde ser sincronizado devido a um conflito de conflito de caso com um arquivo existente neste sistema.</translation>
+        <translation>O arquivo &quot;%1&quot; não pôde ser sincronizado devido a um conflito de letras maiúsculas e minúsculas com um arquivo existente neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="104"/>
@@ -1459,12 +1459,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="252"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do arquivo contém espaços à esquerda.</translation>
+        <translation>O nome do arquivo contém espaços iniciais.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="254"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do arquivo contém espaços à direita.</translation>
+        <translation>O nome do arquivo contém espaços finais.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="259"/>
@@ -1501,7 +1501,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation>PIN inválido. Falha de login</translation>
+        <translation>PIN inválido. Falha no login</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
@@ -1511,7 +1511,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2223"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Digite sua senha de criptografia ponta a ponta:&lt;br&gt;&lt;br&gt;Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>Por favor, digite sua senha de criptografia de ponta-a-ponta:&lt;br&gt;&lt;br&gt;Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2231"/>
@@ -1656,7 +1656,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="183"/>
         <source>Timeout</source>
-        <translation>Venceu o tempo</translation>
+        <translation>Tempo limite</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="220"/>
@@ -1785,7 +1785,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="367"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Erro no servidor: resposta PROPFIND não está formatado em XML!</translation>
+        <translation>Erro de servidor: resposta PROPFIND não está formatado em XML!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="369"/>
@@ -1816,17 +1816,17 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/gui/editlocallyjob.cpp" line="531"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="542"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>Bloqueio vai durar por %1 minutos. Você também pode desbloquear este arquivo manualmente quando terminar de editar.</translation>
+        <translation>O bloqueio terá duração de %1 minutos. Você também pode desbloquear esse arquivo manualmente quando terminar de editá-lo.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 now locked.</source>
-        <translation>Arquivo %1 bloqueado.</translation>
+        <translation>Arquivo %1 agora está bloqueado.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
         <source>File %1 could not be locked.</source>
-        <translation>Arquivo %1 não pode ser bloqueado.</translation>
+        <translation>Não foi possível bloquear o arquivo %1</translation>
     </message>
 </context>
 <context>
@@ -1859,7 +1859,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <source>Invalid file path was provided.</source>
-        <translation>arquivoinválidoFoi fornecido um caminho de arquivo inválido.</translation>
+        <translation>Foi fornecido um caminho de arquivo inválido.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
@@ -1869,7 +1869,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
         <source>Could not start editing locally.</source>
-        <translation>Não foi possível iniciar a edição localmente.</translation>
+        <translation>Não foi possível iniciar a edição local.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
@@ -1904,7 +1904,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="138"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="231"/>
         <source>Error locking folder.</source>
-        <translation>Erro ao bloquear a pasta.</translation>
+        <translation>Erro ao bloquear pasta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="165"/>
@@ -2078,7 +2078,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 e %n outro(s) arquivo(s) foram adicionados. </numerusform><numerusform>%1 e %n outro arquivo foi adicionado. </numerusform><numerusform>%1 e %n outro arquivo foi adicionado. </numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foram adicionados.</numerusform><numerusform>%1 e %n outros arquivos foram adicionados.</numerusform><numerusform>%1 e %n outros arquivos foram adicionados. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="459"/>
@@ -2187,7 +2187,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1460"/>
         <source>Keep syncing</source>
-        <translation>Continue sincronizando</translation>
+        <translation>Continuar sincronizando</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1468"/>
@@ -2339,12 +2339,12 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1799"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation>Sincronizando %1 de %2 (faltam alguns segundos)</translation>
+        <translation>Sincronizando %1 de %2 (Faltam alguns segundos)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1802"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Sincronizando %1 de %2 (faltam %3)</translation>
+        <translation>Sincronizando %1 de %2 (Faltam %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1805"/>
@@ -2354,12 +2354,12 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1811"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation>Sincronizando %1 (faltam alguns segundos)</translation>
+        <translation>Sincronizando %1 (Faltam alguns segundos)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sincronizando %1 (faltam %2)</translation>
+        <translation>Sincronizando %1 (Faltam %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1816"/>
@@ -2379,7 +2379,7 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1828"/>
         <source>Last sync was successful.</source>
-        <translation>Última sincronização foi bem sucedida.</translation>
+        <translation>Última sincronização foi bem-sucedida.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1834"/>
@@ -2389,7 +2389,7 @@ Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1837"/>
         <source>Sync request was cancelled.</source>
-        <translation>Pedido de sincronismo foi cancelado.</translation>
+        <translation>A solicitação de sincronização foi cancelada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1840"/>
@@ -2526,7 +2526,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Verificando mudanças no controle remoto &quot;%1&quot; </translation>
+        <translation>Verificando mudanças no remoto &quot;%1&quot; </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
@@ -2554,7 +2554,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Baixar %1/s</translation>
+        <translation>Baixando %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2565,7 +2565,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
         <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Enviar %1/s</translation>
+        <translation>Enviando %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
@@ -2777,12 +2777,12 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Executar ao iniciar o sistema</translation>
+        <translation>&amp;Iniciar na Inicialização do Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation>Mostrar Notificações de Chamada</translation>
+        <translation>Exibir Notificações de Chamada</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -2792,17 +2792,17 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Usar ícones &amp;monocromáticos</translation>
+        <translation>Usar Ícones &amp;Monocromáticos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation>Mostrar Notificações de Bate-Papo</translation>
+        <translation>Exibir Notificações de Bate-Papo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Exibir &amp;notificações do servidor</translation>
+        <translation>Exibir &amp;Notificações do Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
@@ -2828,7 +2828,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Desative automaticamente a sincronização de pastas que superam o limite</translation>
+        <translation>Desativar automaticamente a sincronização de pastas que ultrapassam o limite</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -2879,12 +2879,12 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="335"/>
         <source>Desktop client x.x.x</source>
-        <translation>Cliente de desktop xxx</translation>
+        <translation>Cliente de desktop x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="359"/>
         <source>Update channel</source>
-        <translation>Atualizar canal</translation>
+        <translation>Canal de atualização</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -2894,7 +2894,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>&amp;Automatically check for updates</source>
-        <translation>Verificar $Automaticamente atualizações</translation>
+        <translation>Verificação &amp;automática de atualizações</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="428"/>
@@ -2904,7 +2904,7 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Usage Documentation</source>
-        <translation>Documentação de uso</translation>
+        <translation>Documentação de Uso</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
@@ -2924,12 +2924,12 @@ Para usuários avançados: esse problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="204"/>
         <source>Show call notification dialogs.</source>
-        <translation>Mostrar diálogos de notificação de chamada.</translation>
+        <translation>Mostrar diálogos de notificação de chamadas.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Você não pode desativar a inicialização automática porque a inicialização automática em todo o sistema está ativada. </translation>
+        <translation>Você não pode desativar a inicialização automática porque a inicialização automática em todo o sistema está ativada.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3189,7 +3189,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation>Os seguintes caracteres não são permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espaços à esquerda/à direita</translation>
+        <translation>Os seguintes caracteres não são permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espaços iniciais/finais</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -3219,7 +3219,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Checking rename permissions …</source>
-        <translation>Verificando renomeação de permissões…</translation>
+        <translation>Verificando permissões de renomeação …</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="169"/>
@@ -3234,17 +3234,17 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="191"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>O nome do arquivo contém espaços à esquerda e à direita.</translation>
+        <translation>O nome do arquivo contém espaços iniciais e finais.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="194"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do arquivo contém espaços à esquerda.</translation>
+        <translation>O nome do arquivo contém espaços iniciais.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="196"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do arquivo contém espaços à direita.</translation>
+        <translation>O nome do arquivo contém espaços finais.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="201"/>
@@ -3264,7 +3264,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="280"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Não é possível renomear o arquivo porque já existe um arquivo com o mesmo nome no servidor. Escolha outro nome. </translation>
+        <translation>Não é possível renomear o arquivo porque já existe um arquivo com o mesmo nome no servidor. Por favor, escolha outro nome. </translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="316"/>

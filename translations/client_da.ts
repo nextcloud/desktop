@@ -3639,7 +3639,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="322"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation>Synkroniser mappen &quot;%1&quot;</translation>
+        <translation>Synkronisér mappen &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
@@ -3939,7 +3939,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="109"/>
         <source>Cancel</source>
-        <translation>Annuller</translation>
+        <translation>Annullér</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="491"/>
@@ -4211,7 +4211,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1420"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation>Kunne ikke slette filen %1 fra lokalt DB</translation>
+        <translation>Kunne ikke slette filen %1 fra lokal DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1434"/>
@@ -4226,7 +4226,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1504"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation>Mappen %1 kan ikke læses - kun: %2</translation>
+        <translation>Mappen %1 kan ikke sættes som skrivebeskyttet: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1476"/>
@@ -4250,7 +4250,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation>Kunne ikke få filen %1 fra lokalt DB</translation>
+        <translation>Kunne ikke få filen %1 fra lokal DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
