@@ -22,6 +22,7 @@ let AccountDictServerUrlKey = "serverUrlKey"
 let AccountDictDavFilesUrlKey = "davFilesUrlKey"
 let AccountDictTrashUrlKey = "trashUrlKey"
 let AccountDictTrashRestoreUrlKey = "trashRestoreUrlKey"
+let AccountDictFileNameKey = "fileNameKey"
 
 public struct Account: Equatable, Sendable {
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
@@ -33,7 +34,8 @@ public struct Account: Equatable, Sendable {
                serverUrl,
                davFilesUrl,
                trashUrl,
-               trashRestoreUrl: String
+               trashRestoreUrl,
+               fileName: String
 
     public static func ncKitAccountString(from username: String, serverUrl: String) -> String {
         username + " " + serverUrl
@@ -48,6 +50,7 @@ public struct Account: Equatable, Sendable {
         davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + id
         trashUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/trash"
         trashRestoreUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/restore"
+        fileName = id + "_" + (URL(string: serverUrl)?.safeFilenameFromURLString() ?? "unknown")
     }
 
     public init?(dictionary: Dictionary<String, String>) {
@@ -58,7 +61,8 @@ public struct Account: Equatable, Sendable {
               let serverUrl = dictionary[AccountDictServerUrlKey],
               let davFilesUrl = dictionary[AccountDictDavFilesUrlKey],
               let trashUrl = dictionary[AccountDictTrashUrlKey],
-              let trashRestoreUrl = dictionary[AccountDictTrashRestoreUrlKey]
+              let trashRestoreUrl = dictionary[AccountDictTrashRestoreUrlKey],
+              let fileName = dictionary[AccountDictFileNameKey]
         else {
             return nil
         }
@@ -71,6 +75,7 @@ public struct Account: Equatable, Sendable {
         self.davFilesUrl = davFilesUrl
         self.trashUrl = trashUrl
         self.trashRestoreUrl = trashRestoreUrl
+        self.fileName = fileName
     }
 
     public func dictionary() -> Dictionary<String, String> {
@@ -82,7 +87,8 @@ public struct Account: Equatable, Sendable {
             AccountDictServerUrlKey: serverUrl,
             AccountDictDavFilesUrlKey: davFilesUrl,
             AccountDictTrashUrlKey: trashUrl,
-            AccountDictTrashRestoreUrlKey: trashRestoreUrl
+            AccountDictTrashRestoreUrlKey: trashRestoreUrl,
+            AccountDictFileNameKey: fileName
         ]
     }
 }
