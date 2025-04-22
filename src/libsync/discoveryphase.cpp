@@ -585,11 +585,11 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
     }
 
     if (result.isDirectory && map.contains("quota-used-bytes")) {
-        result.quotaUsed = map.value("quota-used-bytes").toLongLong();
+        result.folderQuota.bytesUsed = map.value("quota-used-bytes").toLongLong();
     }
 
     if (result.isDirectory && map.contains("quota-available-bytes")) {
-        result.quotaAvailable = map.value("quota-available-bytes").toLongLong();
+        result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toLongLong();
     }
 }
 
@@ -625,11 +625,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (map.contains("size")) {
             _size = map.value("size").toInt();
         }
-        if (map.contains("quota-used-bytes")) {
-            _quotaUsed = map.value("quota-used-bytes").toLongLong();
-        }
-        if (map.contains("quota-available-bytes")) {
-            _quotaAvailable = map.value("quota-available-bytes").toLongLong();
+
+        // all folders will contain both
+        if (map.contains("quota-used-bytes") && map.contains("quota-available-bytes")) {
+            emit setfolderQuota(FolderQuota{map.value("quota-used-bytes").toLongLong(), map.value("quota-available-bytes").toLongLong()});
         }
     } else {
         RemoteInfo result;
@@ -637,10 +636,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         result.name = file.mid(slash + 1);
         result.size = -1;
         if (map.contains("quota-used-bytes")) {
-            result.quotaUsed = map.value("quota-used-bytes").toInt();
+            result.folderQuota.bytesUsed = map.value("quota-used-bytes").toInt();
         }
         if (map.contains("quota-available-bytes")) {
-            result.quotaAvailable = map.value("quota-available-bytes").toInt();
+            result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toInt();
         }
         propertyMapToRemoteInfo(map,
                                 _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,

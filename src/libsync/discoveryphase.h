@@ -46,6 +46,15 @@ class ProcessDirectoryJob;
 enum class ErrorCategory;
 
 /**
+ * Represent the quota for each folder retrieved from the server
+ */
+struct FolderQuota
+{
+    int64_t bytesUsed = 0;
+    int64_t bytesAvailable = 0;
+};
+
+/**
  * Represent all the meta-data about a file in the server
  */
 struct RemoteInfo
@@ -84,8 +93,7 @@ struct RemoteInfo
     bool isLivePhoto = false;
     QString livePhotoFile;
 
-    int64_t quotaUsed = 0;
-    int64_t quotaAvailable = 0;
+    FolderQuota folderQuota;
 };
 
 struct LocalInfo
@@ -104,8 +112,6 @@ struct LocalInfo
     bool isMetadataMissing = false;
     bool isPermissionsInvalid = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
-    int64_t quotaUsed = 0;
-    int64_t quotaAailable = 0;
 };
 
 /**
@@ -169,6 +175,7 @@ signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
+    void setfolderQuota(FolderQuota folderQuota);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -211,11 +218,9 @@ private:
     // store top level E2EE folder paths as they are used later when discovering nested folders
     QSet<QString> _topLevelE2eeFolderPaths;
 
-    int64_t _quotaUsed = 0;
-    int64_t _quotaAvailable = 0;
-
 public:
     QByteArray _dataFingerprint;
+    FolderQuota _folderQuota;
 };
 
 class DiscoveryPhase : public QObject

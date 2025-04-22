@@ -579,7 +579,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | (db/local/remote)"
                            << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                            << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
-                           << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
                            << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
                            << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                            << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
@@ -591,7 +590,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
                            << " | file lock type: " << localFileLockType << "//" << serverFileLockType
                            << " | live photo: " << dbEntry._isLivePhoto << "//" << serverEntry.isLivePhoto
-                           << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
+                           << " | metadata missing: /" << localEntry.isMetadataMissing << '/'
+                           << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
+                           << " | quota used: //" << serverEntry.folderQuota.bytesUsed
+                           << " | quota available: //" << serverEntry.folderQuota.bytesAvailable;
 
     qCInfo(lcDisco).nospace() << processingLog;
 
@@ -765,6 +767,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
     item->_isLivePhoto = serverEntry.isLivePhoto;
     item->_livePhotoFile = serverEntry.livePhotoFile;
+
+    item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
 
     // Check for missing server data
     {
@@ -1126,6 +1131,20 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
+        if (!item->isDirectory() && item->_direction == SyncFileItem::Up && item->_size > 0
+            && (item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_NEW)) {
+            if (const auto parentFolderQuotaAvailable = _dirItem ? _dirItem->_folderQuota.bytesAvailable
+                                                                 : _folderQuota.bytesAvailable;
+                item->_size > parentFolderQuotaAvailable) {
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                item->_errorString = tr("Upload of %1 exceeds the quota %2 for the folder %3.").arg(Utility::octetsToString(item->_size),
+                                                                                                    Utility::octetsToString(parentFolderQuotaAvailable),
+                                                                                                    _currentFolder._server);
+                item->_status = SyncFileItem::Status::NormalError;
+                _discoveryData->_anotherSyncNeeded = true;
+            }
+        }
+
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
             const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
             if (!foundEditorsKeepingFileBusy.isEmpty()) {
@@ -1280,8 +1299,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
-            item->_quotaUsed = localEntry.isDirectory ? localEntry.quotaUsed : 0;
-            item->_quotaAvailable = localEntry.isDirectory ? localEntry.quotaAailable : 0;
             _childModified = true;
         } else if (dbEntry._modtime > 0 && (localEntry.modtime <= 0 || localEntry.modtime >= 0xFFFFFFFF) && dbEntry._fileSize == localEntry.size) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1290,8 +1307,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_modtime = dbEntry._modtime;
             item->_previousModtime = dbEntry._modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
-            item->_quotaUsed = localEntry.isDirectory ? localEntry.quotaUsed : 0;
-            item->_quotaAvailable = localEntry.isDirectory ? localEntry.quotaAailable : 0;
             qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (dbEntry._modtime > 0 && localEntry.modtime <= 0)"
                              << "dbEntry._modtime:" << dbEntry._modtime
                              << "localEntry.modtime:" << localEntry.modtime;
@@ -2157,6 +2172,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     }
 
     connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
+    connect(serverJob, &DiscoverySingleDirectoryJob::setfolderQuota, this, &ProcessDirectoryJob::setFolderQuota);
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
@@ -2183,6 +2199,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             _serverQueryDone = true;
             if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
                 _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
+
             if (_localQueryDone)
                 this->process();
         } else {
@@ -2211,6 +2228,12 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         [this](const RemotePermissions &perms) { _rootPermissions = perms; });
     serverJob->start();
     return serverJob;
+}
+
+void ProcessDirectoryJob::setFolderQuota(FolderQuota folderQuota)
+{
+    _folderQuota.bytesUsed = folderQuota.bytesUsed;
+    _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 }
 
 void ProcessDirectoryJob::startAsyncLocalQuery()
@@ -2341,5 +2364,4 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     }
     return result;
 }
-
 }

@@ -343,6 +343,13 @@ public:
     /// if true, requests the file to be permanently deleted instead of moved to the trashbin
     /// only relevant for when `_instruction` is set to `CSYNC_INSTRUCTION_REMOVE`
     bool _wantsPermanentDeletion = false;
+
+    struct FolderQuota {
+        int64_t bytesUsed = 0;
+        int64_t bytesAvailable = 0;
+    };
+
+    FolderQuota _folderQuota;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
