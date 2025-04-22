@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les copies locales</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Copies locales</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Libérer de l’espace…</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
@@ -404,13 +404,14 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniser</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniser les modifications pour l&apos;environnement VFS.
+ macOS peut ignorer ou retarder cette demande.</translation>
     </message>
 </context>
 <context>
@@ -962,7 +963,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1357"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez accepter les conditions d&apos;utilisation ici %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
@@ -992,7 +993,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1648"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation>Il y a des dossiers qui ont augmenté de taille au-delà de %1MB: %2</translation>
+        <translation>Il y a des dossiers qui ont augmenté de taille au-delà de %1 Mo : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -1491,7 +1492,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Saisir le code PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
@@ -1506,7 +1507,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation type="unfinished"/>
+        <translation>La connexion au token a échoué après la saisie du code PIN. Il est peut-être invalide ou erroné. Veuillez réessayer !</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2223"/>
@@ -2006,7 +2007,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>La réponse du serveur ne contenait pas tous les champs attendus : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
 </context>
 <context>
@@ -2182,7 +2183,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1449"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation>Un dossier a dépassé la taille limite fixée de %1MB: %2.
+        <translation>Un dossier a dépassé la taille limite fixée de %1 Mo : %2.
 %3</translation>
     </message>
     <message>
@@ -2198,7 +2199,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1479"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation>Le dossier %1 a dépassé la taille limite fixée de %2MB.</translation>
+        <translation>Le dossier %1 a dépassé la taille limite fixée de %2 Mo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1480"/>
@@ -2224,7 +2225,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Les modifications apportées aux dossiers synchronisés ne peuvent pas être suivies de manière fiable.
 
-Cela signifie que le client de synchronisation ne va pas téléverser immédiatement les modifications locales, mais va à la place rechercher et téléverser les modifications locales qu&apos;occasionnellement (toutes les deux heures par défaut).
+Cela signifie que le client de bureau ne va pas téléverser immédiatement les modifications locales, mais va à la place rechercher et téléverser les modifications locales qu&apos;occasionnellement (toutes les deux heures par défaut).
 
 %1</translation>
     </message>
@@ -3360,7 +3361,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver un fichier à modifier localement. Assurez-vous que son chemin est valide et qu&apos;il est synchronisé localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
@@ -3674,7 +3675,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation type="unfinished"/>
+        <translation>Dans la section « Emplacements » de la barre latérale du Finder</translation>
     </message>
 </context>
 <context>
@@ -3903,17 +3904,17 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt; Compte basé sur un fournisseur de fichiers %1 créé avec succès ! &lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers virtuels activés</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>Votre compte est désormais synchronisé avec la prise en charge des fichiers virtuels. Cela signifie que tous vos fichiers sont par défaut accessibles en ligne uniquement et seront téléchargés à la demande à votre ouverture. Vous trouverez vos fichiers dans la section &lt;b&gt; Emplacement &lt;/b&gt; de la barre latérale du Finder.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="745"/>
@@ -4383,7 +4384,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur temporaire lors de la suppression d&apos;un élément local supprimé du serveur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -5289,7 +5290,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez accepter les conditions d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="141"/>
@@ -5414,27 +5415,27 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="134"/>
         <source>Waiting for terms to be accepted</source>
-        <translation type="unfinished"/>
+        <translation>En attente de l&apos;acceptation des conditions</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation type="unfinished"/>
+        <translation>Vote</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Lien copié dans le presse-papiers.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien</translation>
     </message>
 </context>
 <context>
@@ -5443,7 +5444,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 Version du client de bureau %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -6080,12 +6081,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="596"/>
         <source>File is already deleted</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier est déjà supprimé</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="611"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier est déjà supprimé</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
@@ -6374,7 +6375,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Accédez à votre navigateur pour accepter les conditions d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -6556,12 +6557,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Appliquer</translation>
     </message>
 </context>
 <context>
