@@ -12,8 +12,9 @@ import NextcloudKit
 
 public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
 
-    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
-        setup(delegate: delegate)
+    public var delegate: NextcloudKitDelegate? {
+        get { nkCommonInstance.delegate }
+        set { setup(delegate: newValue) }
     }
 
     public func createFolder(
