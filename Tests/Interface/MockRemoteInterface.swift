@@ -1138,8 +1138,9 @@ public class MockRemoteInterface: RemoteInterface {
         account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError) {
-        return (account.ncKitAccount, capabilities.data(using: .utf8), .success)
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        let capsData = capabilitiesString.data(using: .utf8)
+        return (account.ncKitAccount, Capabilities(data: capsData ?? Data()), capsData, .success)
     }
 
     public func fetchUserProfile(

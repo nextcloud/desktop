@@ -139,7 +139,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func configureNotifyPush() async {
-        let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, error) = await remoteInterface.fetchCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in
@@ -165,8 +165,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             return
         }
 
-        guard let capabilitiesData = capabilitiesData,
-              let capabilities = Capabilities(data: capabilitiesData),
+        guard let capabilities,
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
             logger.error(

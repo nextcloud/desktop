@@ -12,7 +12,7 @@ extension Item {
     func deleteLockFile(
         domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager
     ) async -> Error? {
-        let (_, capabilitiesData, capabilitiesError) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.fetchCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in
@@ -26,8 +26,7 @@ extension Item {
             }
         )
         guard capabilitiesError == .success,
-              let capabilitiesData,
-              let capabilities = Capabilities(data: capabilitiesData),
+              let capabilities,
               capabilities.files?.locking != nil
         else {
             uploadLogger.info(

@@ -380,10 +380,14 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, data: Data?, error: NKError) {
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
-                continuation.resume(returning: (account, data?.data, error))
+                let capabilities: Capabilities? = {
+                    guard let realData = data?.data else { return nil }
+                    return Capabilities(data: realData)
+                }()
+                continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
     }
