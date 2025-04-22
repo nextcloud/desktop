@@ -22,7 +22,7 @@ jobs:
       - name: Install Craft Master with Nextcloud Client Deps
         shell: pwsh
         run: |
-          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }} 2>&1"
+          & cmd /C "git clone -q --depth=1 https://invent.kde.org/ggadinger/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }} 2>&1"
           
           function craft() {
               python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c $args
