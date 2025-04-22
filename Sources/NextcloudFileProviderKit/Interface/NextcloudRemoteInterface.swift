@@ -10,7 +10,7 @@ import FileProvider
 import Foundation
 import NextcloudKit
 
-extension NextcloudKit: RemoteInterface {
+public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
 
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
