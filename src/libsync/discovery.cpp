@@ -587,6 +587,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                            << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
                            << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
+                           << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                            << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                            << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                            << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
