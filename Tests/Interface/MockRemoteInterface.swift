@@ -7,6 +7,7 @@
 
 import Alamofire
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudFileProviderKit
 import NextcloudKit
 
@@ -558,8 +559,9 @@ fileprivate let mockCapabilities = ##"""
 """##
 
 public class MockRemoteInterface: RemoteInterface {
-    public var capabilities = mockCapabilities
+    public var capabilitiesString = mockCapabilities
     public var rootItem: MockRemoteItem?
+    public var capabilities: Capabilities?
     public var delegate: NextcloudKitDelegate?
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]

@@ -7,7 +7,7 @@
 
 import Alamofire
 import FileProvider
-import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 
 public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
@@ -16,6 +16,8 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         get { nkCommonInstance.delegate }
         set { setup(delegate: newValue) }
     }
+
+    public var capabilities: Capabilities?
 
     public func createFolder(
         remotePath: String,
