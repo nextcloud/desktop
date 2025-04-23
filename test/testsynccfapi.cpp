@@ -1486,6 +1486,35 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, odtFile, CSYNC_INSTRUCTION_UPDATE_METADATA));
         QCOMPARE(*vfs->pinState(odtFile), PinState::Unspecified);
     }
+
+    void renameOnBothSides()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        auto vfs = setupVfs(fakeFolder);
+
+        // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
+
+        // 1) move the folder alphabetically before
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
+        fakeFolder.localModifier().rename("A", "_A");
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        fakeFolder.remoteModifier().rename("B", "_B");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("_A/a1m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("_B/b1m"));
+
+        // 2) move alphabetically after
+        fakeFolder.remoteModifier().rename("_A/a2", "_A/a2m");
+        fakeFolder.localModifier().rename("_B/b2", "_B/b2m");
+        fakeFolder.localModifier().rename("_A", "S/A");
+        fakeFolder.remoteModifier().rename("_B", "S/B");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
