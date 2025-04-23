@@ -1952,7 +1952,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="137"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>há %1 mês</numerusform><numerusform>há %1 mes</numerusform><numerusform>há %1 meses</numerusform></translation>
+        <translation><numerusform>há %1 mês</numerusform><numerusform>há %1 meses</numerusform><numerusform>há %1 meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="140"/>
