@@ -43,7 +43,7 @@ extension Item {
                 """
                 Received nil capabilities data.
                     Received error: \(capabilitiesError.errorDescription, privacy: .public)
-                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    Capabilities nil: \(capabilities == nil ? "YES" : "NO", privacy: .public)
                     (if capabilities are not nil the server may just not have files_lock enabled).
                     Will not proceed with locking for \(itemTemplate.filename, privacy: .public)
                 """
