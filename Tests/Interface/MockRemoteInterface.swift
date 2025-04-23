@@ -1148,6 +1148,14 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, capabilities, capsData, .success)
     }
 
+    public func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (URLSessionTask) -> Void
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
+    }
+
     public func fetchUserProfile(
         account: Account,
         options: NKRequestOptions = .init(),

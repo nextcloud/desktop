@@ -10,6 +10,8 @@ import FileProvider
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
+fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
+
 public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
 
     public var delegate: NextcloudKitDelegate? {
@@ -18,6 +20,7 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
     }
 
     public var capabilities: Capabilities?
+    private var capabilitiesFetchDate: Date?
 
     public func createFolder(
         remotePath: String,
@@ -388,9 +391,23 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
                     return Capabilities(data: realData)
                 }()
                 self.capabilities = capabilities
+                self.capabilitiesFetchDate = Date()
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+    }
+
+    public func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        guard let intervalSinceLastFetch = capabilitiesFetchDate?.timeIntervalSince(Date()),
+              intervalSinceLastFetch < -CapabilitiesFetchInterval
+        else {
+            return (account.ncKitAccount, capabilities, nil, .success)
+        }
+        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
     }
 
     public func fetchUserProfile(

@@ -157,6 +157,14 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
+    // This method should result in fetches only after a certain period of time.
+    // Alternatively, it should only fetch when capabilities are guaranteed to have changed.
+    func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
+
     func fetchUserProfile(
         account: Account,
         options: NKRequestOptions,
