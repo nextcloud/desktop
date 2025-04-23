@@ -192,6 +192,12 @@ public:
     bool isEncrypted = false;
     bool isLivePhoto = false;
 
+    struct FileInfoQuota {
+        int64_t bytesUsed = 0;
+        int64_t bytesAvailable = 5000000000;
+    };
+    FileInfoQuota quota;
+
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
     QString parentPath;
