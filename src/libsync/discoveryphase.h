@@ -47,6 +47,11 @@ enum class ErrorCategory;
 
 /**
  * Represent the quota for each folder retrieved from the server
+ * bytesUsed: space used in bytes
+ * bytesAvailale: free space available in bytes or
+ *                -1: Uncomputed free space - new folder (externally created) not yet scanned by the server
+ *                -2: Unknown free space
+ *                -3: Unlimited free space.
  */
 struct FolderQuota
 {
