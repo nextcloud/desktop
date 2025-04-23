@@ -47,7 +47,7 @@ func upload(
             uploadLogger.info("Using provided chunkSize: \(chunkSize, privacy: .public)")
             return chunkSize
         }
-        let (_, capabilities, _, error) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
             account: account, options: options, taskHandler: taskHandler
         )
         guard error == .success,

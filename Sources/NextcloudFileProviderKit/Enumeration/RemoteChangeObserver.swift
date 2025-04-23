@@ -139,7 +139,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func configureNotifyPush() async {
-        let (_, capabilities, _, error) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in

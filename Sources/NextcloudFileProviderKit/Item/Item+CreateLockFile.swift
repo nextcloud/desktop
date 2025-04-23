@@ -22,7 +22,7 @@ extension Item {
         progress.totalUnitCount = 1
 
         // Lock but don't upload, do not error
-        let (_, capabilities, _, capabilitiesError) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in
