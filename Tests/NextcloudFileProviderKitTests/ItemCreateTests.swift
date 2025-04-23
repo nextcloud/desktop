@@ -634,9 +634,11 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
-        remoteInterface.capabilities =
-            remoteInterface.capabilities.replacingOccurrences(of: ##""locking": "1.0","##, with: "")
+        XCTAssert(remoteInterface.capabilitiesString.contains(##""locking": "1.0","##))
+        remoteInterface.capabilitiesString =
+            remoteInterface.capabilitiesString.replacingOccurrences(
+                of: ##""locking": "1.0","##, with: ""
+            )
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(

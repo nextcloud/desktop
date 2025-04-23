@@ -222,7 +222,7 @@ final class UploadTests: XCTestCase {
 
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
-        remoteInterface.capabilities = capabilities
+        remoteInterface.capabilitiesString = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
@@ -301,7 +301,7 @@ final class UploadTests: XCTestCase {
 
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
-        remoteInterface.capabilities = capabilities
+        remoteInterface.capabilitiesString = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()

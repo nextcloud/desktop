@@ -7,7 +7,7 @@
 
 import Alamofire
 import FileProvider
-import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 
 public enum EnumerateDepth: String {
@@ -22,7 +22,8 @@ public enum AuthenticationAttemptResultState: Int {
 
 public protocol RemoteInterface {
 
-    func setDelegate(_ delegate: NextcloudKitDelegate)
+    var delegate: NextcloudKitDelegate? { get set }
+    var capabilities: Capabilities? { get set }
 
     func createFolder(
         remotePath: String,
@@ -154,7 +155,15 @@ public protocol RemoteInterface {
         account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError)
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
+
+    // This method should result in fetches only after a certain period of time.
+    // Alternatively, it should only fetch when capabilities are guaranteed to have changed.
+    func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
     func fetchUserProfile(
         account: Account,

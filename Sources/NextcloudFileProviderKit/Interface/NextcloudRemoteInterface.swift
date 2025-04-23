@@ -7,14 +7,20 @@
 
 import Alamofire
 import FileProvider
-import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 
-extension NextcloudKit: RemoteInterface {
+fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
-    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
-        setup(delegate: delegate)
+public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
+
+    public var delegate: NextcloudKitDelegate? {
+        get { nkCommonInstance.delegate }
+        set { setup(delegate: newValue) }
     }
+
+    public var capabilities: Capabilities?
+    private var capabilitiesFetchDate: Date?
 
     public func createFolder(
         remotePath: String,
@@ -377,12 +383,31 @@ extension NextcloudKit: RemoteInterface {
         account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, data: Data?, error: NKError) {
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
-                continuation.resume(returning: (account, data?.data, error))
+                let capabilities: Capabilities? = {
+                    guard let realData = data?.data else { return nil }
+                    return Capabilities(data: realData)
+                }()
+                self.capabilities = capabilities
+                self.capabilitiesFetchDate = Date()
+                continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+    }
+
+    public func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        guard let intervalSinceLastFetch = capabilitiesFetchDate?.timeIntervalSince(Date()),
+              intervalSinceLastFetch < -CapabilitiesFetchInterval
+        else {
+            return (account.ncKitAccount, capabilities, nil, .success)
+        }
+        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
     }
 
     public func fetchUserProfile(

@@ -47,11 +47,11 @@ func upload(
             uploadLogger.info("Using provided chunkSize: \(chunkSize, privacy: .public)")
             return chunkSize
         }
-        let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
             account: account, options: options, taskHandler: taskHandler
         )
-        guard let capabilitiesData,
-              let capabilities = Capabilities(data: capabilitiesData),
+        guard error == .success,
+              let capabilities,
               let serverChunkSize = capabilities.files?.chunkedUpload?.maxChunkSize,
               serverChunkSize > 0
         else {
@@ -59,7 +59,7 @@ func upload(
                 """
                 Received nil capabilities data.
                     Received error: \(error.errorDescription, privacy: .public)
-                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    Capabilities nil: \(capabilities == nil ? "YES" : "NO", privacy: .public)
                     (if capabilities are not nil the server may just not provide chunk size data).
                     Using default file chunk size: \(defaultFileChunkSize, privacy: .public)
                 """

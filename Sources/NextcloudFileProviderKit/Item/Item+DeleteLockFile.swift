@@ -12,7 +12,7 @@ extension Item {
     func deleteLockFile(
         domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager
     ) async -> Error? {
-        let (_, capabilitiesData, capabilitiesError) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in
@@ -26,15 +26,14 @@ extension Item {
             }
         )
         guard capabilitiesError == .success,
-              let capabilitiesData,
-              let capabilities = Capabilities(data: capabilitiesData),
+              let capabilities,
               capabilities.files?.locking != nil
         else {
             uploadLogger.info(
                 """
                 Received nil capabilities data.
                     Received error: \(capabilitiesError.errorDescription, privacy: .public)
-                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    Capabilities nil: \(capabilities == nil ? "YES" : "NO", privacy: .public)
                     (if capabilities are not nil the server may just not have files_lock enabled).
                     Will not proceed with unlocking for \(self.filename, privacy: .public)
                 """

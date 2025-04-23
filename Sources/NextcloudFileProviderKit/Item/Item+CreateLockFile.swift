@@ -22,7 +22,7 @@ extension Item {
         progress.totalUnitCount = 1
 
         // Lock but don't upload, do not error
-        let (_, capabilitiesData, capabilitiesError) = await remoteInterface.fetchCapabilities(
+        let (_, capabilities, _, capabilitiesError) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
             taskHandler: { task in
@@ -36,15 +36,14 @@ extension Item {
             }
         )
         guard capabilitiesError == .success,
-              let capabilitiesData,
-              let capabilities = Capabilities(data: capabilitiesData),
+              let capabilities,
               capabilities.files?.locking != nil
         else {
             uploadLogger.info(
                 """
                 Received nil capabilities data.
                     Received error: \(capabilitiesError.errorDescription, privacy: .public)
-                    Capabilities data: \(capabilitiesData == nil ? "YES" : "NO", privacy: .public)
+                    Capabilities nil: \(capabilities == nil ? "YES" : "NO", privacy: .public)
                     (if capabilities are not nil the server may just not have files_lock enabled).
                     Will not proceed with locking for \(itemTemplate.filename, privacy: .public)
                 """

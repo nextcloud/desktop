@@ -7,6 +7,7 @@
 
 import Alamofire
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudFileProviderKit
 import NextcloudKit
 
@@ -558,9 +559,10 @@ fileprivate let mockCapabilities = ##"""
 """##
 
 public class MockRemoteInterface: RemoteInterface {
-    public var capabilities = mockCapabilities
+    public var capabilitiesString = mockCapabilities
     public var rootItem: MockRemoteItem?
-    public var delegate: (any NextcloudKitDelegate)?
+    public var capabilities: Capabilities?
+    public var delegate: NextcloudKitDelegate?
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
@@ -1136,8 +1138,22 @@ public class MockRemoteInterface: RemoteInterface {
         account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NKError) {
-        return (account.ncKitAccount, capabilities.data(using: .utf8), .success)
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        let capsData = capabilitiesString.data(using: .utf8)
+        let capabilities: Capabilities? = {
+            guard let capsData else { return nil }
+            return Capabilities(data: capsData)
+        }()
+        self.capabilities = capabilities
+        return (account.ncKitAccount, capabilities, capsData, .success)
+    }
+
+    public func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (URLSessionTask) -> Void
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
     }
 
     public func fetchUserProfile(
