@@ -1135,7 +1135,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             && (item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             if (const auto parentFolderQuotaAvailable = _dirItem ? _dirItem->_folderQuota.bytesAvailable
                                                                  : _folderQuota.bytesAvailable;
-                item->_size > parentFolderQuotaAvailable) {
+                item->_size > parentFolderQuotaAvailable && parentFolderQuotaAvailable > -1) {
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
                 item->_errorString = tr("Upload of %1 exceeds the quota %2 for the folder %3.").arg(Utility::octetsToString(item->_size),
                                                                                                     Utility::octetsToString(parentFolderQuotaAvailable),
