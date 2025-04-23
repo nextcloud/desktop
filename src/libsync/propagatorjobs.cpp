@@ -302,8 +302,9 @@ void PropagateLocalRename::start()
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
     const auto existingFile = propagator()->fullLocalPath(previousNameInDb);
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
+    const auto originalFile = propagator()->fullLocalPath(_item->_originalFile);
 
-    const auto fileAlreadyMoved = !FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) && FileSystem::fileExists(existingFile);
+    const auto fileAlreadyMoved = (!FileSystem::fileExists(originalFile) || !FileSystem::fileExists(existingFile))&& FileSystem::fileExists(targetFile);
     auto pinState = OCC::PinState::Unspecified;
     if (!fileAlreadyMoved) {
         auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
@@ -315,6 +316,8 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
+    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(originalFile) ? "original file exists" : "orignal file is missing") << originalFile << _item->_originalFile;
+    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(existingFile) ? "existing file exists" : "existing file is missing") << existingFile << previousNameInDb;
     Q_ASSERT(FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) || FileSystem::fileExists(existingFile));
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
@@ -444,7 +447,7 @@ void PropagateLocalRename::start()
 
     if (fileAlreadyMoved && !deleteOldDbRecord(previousNameInDb)) {
         return;
-    } else if (!deleteOldDbRecord(_item->_originalFile)) {
+    } else if (!deleteOldDbRecord(previousNameInDb)) {
         qCWarning(lcPropagateLocalRename) << "Could not delete file from local DB" << _item->_originalFile;
         return;
     }
@@ -470,25 +473,28 @@ void PropagateLocalRename::start()
             done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
             return;
         }
-    } else {
-        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(oldFile.toUtf8(), [oldFile, this] (const SyncJournalFileRecord &record) -> void {
-            const auto oldFileName = record._path;
-            const auto oldFileNameString = QString::fromUtf8(oldFileName);
+    } else if (!fileAlreadyMoved) {
+        qCDebug(lcPropagateLocalRename) << "propagate child items after move from" << existingFile << "to" << targetFile;
+        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(previousNameInDb.toUtf8(), [previousNameInDb, this] (const SyncJournalFileRecord &record) -> void {
+            const auto oldFileNameString = propagator()->adjustRenamedPath(QString::fromUtf8(record._path));
             auto newFileNameString = oldFileNameString;
-            newFileNameString.replace(0, oldFile.length(), _item->_renameTarget);
+            newFileNameString.replace(0, previousNameInDb.length(), _item->_renameTarget);
+
+            qCDebug(lcPropagateLocalRename) << "child rename from" << oldFileNameString << "to" << newFileNameString;
 
             if (oldFileNameString == newFileNameString) {
+                Q_ASSERT(false);
                 return;
             }
 
             SyncJournalFileRecord oldRecord;
-            if (!propagator()->_journal->getFileRecord(oldFileName, &oldRecord)) {
-                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileName;
+            if (!propagator()->_journal->getFileRecord(oldFileNameString, &oldRecord)) {
+                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileNameString;
                 done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
-            if (!propagator()->_journal->deleteFileRecord(oldFileName)) {
-                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileName;
+            if (!propagator()->_journal->deleteFileRecord(oldFileNameString)) {
+                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileNameString;
                 done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
