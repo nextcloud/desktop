@@ -543,10 +543,11 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #endif
 
     try {
-        if (!std::filesystem::remove(std::filesystem::path{fileName.toUtf8().data()})) {
+        if (!std::filesystem::remove(std::filesystem::path{fileName.toStdWString()})) {
             if (errorString) {
                 *errorString = QObject::tr("File is already deleted");
             }
+            qCWarning(lcFileSystem()) << "File is already deleted" << fileName;
             return false;
         }
         qCInfo(lcFileSystem()) << "delete" << fileName;
@@ -556,6 +557,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
         if (errorString) {
             *errorString = QString::fromLatin1(e.what());
         }
+        qCWarning(lcFileSystem()) << e.what() << fileName;
         return false;
     }
     catch (...)
@@ -563,6 +565,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
         if (errorString) {
             *errorString = QObject::tr("Error deleting the file");
         }
+        qCWarning(lcFileSystem()) << "Error deleting the file" << fileName;
         return false;
     }
 
