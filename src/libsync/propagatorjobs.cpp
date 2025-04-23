@@ -490,12 +490,10 @@ void PropagateLocalRename::start()
             SyncJournalFileRecord oldRecord;
             if (!propagator()->_journal->getFileRecord(oldFileNameString, &oldRecord)) {
                 qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileNameString;
-                done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
             if (!propagator()->_journal->deleteFileRecord(oldFileNameString)) {
                 qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileNameString;
-                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
 
@@ -503,7 +501,6 @@ void PropagateLocalRename::start()
             newItem->_file = newFileNameString;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
-                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), OCC::ErrorCategory::GenericError);
                 return;
             }
         });
