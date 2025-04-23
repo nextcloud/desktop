@@ -1317,6 +1317,61 @@ private slots:
         QCOMPARE(counter.nMKCOL, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testRenameComplexScenarioNoRecordLeak()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().mkdir("0");
+        fakeFolder.remoteModifier().mkdir("0/00 without file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a without file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/aa with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/00 with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/new without file");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/00 with file/test.md");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/a/a with file/test.md");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/a/aa with file/test.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto itemsCounter = 0;
+        auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+        QVERIFY(dbResult);
+        QCOMPARE(itemsCounter, 12);
+
+        fakeFolder.remoteModifier().rename("0/00 without file/project", "project tests");
+        fakeFolder.remoteModifier().rename("project tests/a", "project tests/a empty");
+        fakeFolder.remoteModifier().rename("project tests/a empty/a with file", "project tests/a with file");
+        fakeFolder.remoteModifier().rename("project tests/a empty/a without file", "project tests/a without file");
+        fakeFolder.remoteModifier().rename("project tests/a empty/aa with file", "project tests/aa with file");
+        fakeFolder.remoteModifier().rename("project tests/new without file", "project tests/new without file");
+        fakeFolder.remoteModifier().rename("0/00 without file", "project tests/00 without file");
+        fakeFolder.remoteModifier().rename("0", "project tests/z 0 empty");
+
+        connect(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted, this, [&fakeFolder] () {
+            auto itemsCounter = 0;
+            auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+            QVERIFY(dbResult);
+            if (itemsCounter > 12) {
+                QVERIFY(itemsCounter <= 12);
+            }
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        itemsCounter = 0;
+        dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+        QVERIFY(dbResult);
+        QCOMPARE(itemsCounter, 12);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)
