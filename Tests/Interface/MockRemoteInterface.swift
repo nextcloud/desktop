@@ -559,10 +559,9 @@ fileprivate let mockCapabilities = ##"""
 """##
 
 public class MockRemoteInterface: RemoteInterface {
-    public var capabilitiesString = mockCapabilities
+    public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
-    public var capabilities: Capabilities?
-    public var delegate: NextcloudKitDelegate?
+    public var delegate: (any NextcloudKitDelegate)?
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
@@ -1139,13 +1138,8 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        let capsData = capabilitiesString.data(using: .utf8)
-        let capabilities: Capabilities? = {
-            guard let capsData else { return nil }
-            return Capabilities(data: capsData)
-        }()
-        self.capabilities = capabilities
-        return (account.ncKitAccount, capabilities, capsData, .success)
+        let capsData = capabilities.data(using: .utf8)
+        return (account.ncKitAccount, Capabilities(data: capsData ?? Data()), capsData, .success)
     }
 
     public func currentCapabilities(

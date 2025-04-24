@@ -7,20 +7,33 @@
 
 import Alamofire
 import FileProvider
+import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
 fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
-public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
+actor RetrievedCapabilitiesActor {
+    static let shared: RetrievedCapabilitiesActor = {
+        let instance = RetrievedCapabilitiesActor()
+        return instance
+    }()
+    var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
 
-    public var delegate: NextcloudKitDelegate? {
-        get { nkCommonInstance.delegate }
-        set { setup(delegate: newValue) }
+    func setCapabilities(
+        forAccount account: String,
+        capabilities: Capabilities,
+        retrievedAt: Date = Date()
+    ) async {
+        self.data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
     }
+}
 
-    public var capabilities: Capabilities?
-    private var capabilitiesFetchDate: Date?
+extension NextcloudKit: RemoteInterface {
+
+    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
+        setup(delegate: delegate)
+    }
 
     public func createFolder(
         remotePath: String,
@@ -384,17 +397,21 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        let result = await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
                 let capabilities: Capabilities? = {
                     guard let realData = data?.data else { return nil }
                     return Capabilities(data: realData)
                 }()
-                self.capabilities = capabilities
-                self.capabilitiesFetchDate = Date()
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+        if let capabilities = result.1 {
+            await RetrievedCapabilitiesActor.shared.setCapabilities(
+                forAccount: account.ncKitAccount, capabilities: capabilities
+            )
+        }
+        return result
     }
 
     public func currentCapabilities(
@@ -402,12 +419,15 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        guard let intervalSinceLastFetch = capabilitiesFetchDate?.timeIntervalSince(Date()),
-              intervalSinceLastFetch < -CapabilitiesFetchInterval
+        let ncKitAccount = account.ncKitAccount
+        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
+              lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
         else {
-            return (account.ncKitAccount, capabilities, nil, .success)
+            return await fetchCapabilities(
+                account: account, options: options, taskHandler: taskHandler
+            )
         }
-        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
+        return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
     }
 
     public func fetchUserProfile(
