@@ -133,14 +133,6 @@ namespace FileSystem {
         QString *errorString = nullptr);
 
     /**
-     * Rename the file \a originFileName to \a destinationFileName, and
-     * overwrite the destination if it already exists - without extra checks.
-     */
-    bool OCSYNC_EXPORT uncheckedRenameReplace(const QString &originFileName,
-        const QString &destinationFileName,
-        QString *errorString);
-
-    /**
      * Removes a file.
      *
      * Equivalent to QFile::remove(), except on Windows, where it will also
