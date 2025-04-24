@@ -1131,7 +1131,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        if (!item->isDirectory() && item->_direction == SyncFileItem::Up && item->_size > 0
+        if (_queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
+            && !item->isDirectory() && item->_direction == SyncFileItem::Up && item->_size > 0
             && (item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             if (const auto parentFolderQuotaAvailable = _dirItem ? _dirItem->_folderQuota.bytesAvailable
                                                                  : _folderQuota.bytesAvailable;
