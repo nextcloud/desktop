@@ -1479,9 +1479,9 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 try {
                     const auto permissionsChangeHelper = [] (const auto fileName)
                     {
-                        qCDebug(lcDirectory) << fileName << "permissions changed: old permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
-                        FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadWrite);
-                        qCDebug(lcDirectory) << fileName << "applied new permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
+                        if (FileSystem::isFolderReadOnly(std::filesystem::path{fileName.toStdWString()})) {
+                            FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadWrite);
+                        }
                     };
 
                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
