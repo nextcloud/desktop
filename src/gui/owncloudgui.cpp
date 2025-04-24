@@ -327,7 +327,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
             } else {
-                switch (const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+                switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
                     idleFileProviderAccounts.append(accountFpId);
