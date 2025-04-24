@@ -13,6 +13,22 @@ import NextcloudKit
 
 fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
+actor RetrievedCapabilitiesActor {
+    static let shared: RetrievedCapabilitiesActor = {
+        let instance = RetrievedCapabilitiesActor()
+        return instance
+    }()
+    var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
+
+    func setCapabilities(
+        forAccount account: String,
+        capabilities: Capabilities,
+        retrievedAt: Date = Date()
+    ) async {
+        self.data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
+    }
+}
+
 extension NextcloudKit: RemoteInterface {
 
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
@@ -381,7 +397,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        let result = await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
                 let capabilities: Capabilities? = {
                     guard let realData = data?.data else { return nil }
@@ -390,6 +406,12 @@ extension NextcloudKit: RemoteInterface {
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+        if let capabilities = result.1 {
+            await RetrievedCapabilitiesActor.shared.setCapabilities(
+                forAccount: account.ncKitAccount, capabilities: capabilities
+            )
+        }
+        return result
     }
 
     public func currentCapabilities(
@@ -397,7 +419,15 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
+        let ncKitAccount = account.ncKitAccount
+        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
+              lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
+        else {
+            return await fetchCapabilities(
+                account: account, options: options, taskHandler: taskHandler
+            )
+        }
+        return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
     }
 
     public func fetchUserProfile(
