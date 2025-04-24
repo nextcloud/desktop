@@ -26,7 +26,6 @@
 #include <QFile>
 #include <QCoreApplication>
 
-#include <filesystem>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -541,34 +540,19 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
     // allow that.
     setFileReadOnly(fileName, false);
 #endif
-
-    try {
-        if (!std::filesystem::remove(std::filesystem::path{fileName.toStdWString()})) {
-            if (errorString) {
-                *errorString = QObject::tr("File is already deleted");
-            }
-            qCWarning(lcFileSystem()) << "File is already deleted" << fileName;
-            return false;
-        }
-        qCInfo(lcFileSystem()) << "delete" << fileName;
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
-        if (errorString) {
-            *errorString = QString::fromLatin1(e.what());
-        }
-        qCWarning(lcFileSystem()) << e.what() << fileName;
-        return false;
-    }
-    catch (...)
-    {
-        if (errorString) {
-            *errorString = QObject::tr("Error deleting the file");
-        }
-        qCWarning(lcFileSystem()) << "Error deleting the file" << fileName;
-        return false;
+    const auto deletedFileInfo = QFileInfo{fileName};
+    if (!deletedFileInfo.exists()) {
+        qCWarning(lcFileSystem()) << fileName << "has been already deleted";
     }
 
+    QFile f(fileName);
+    if (!f.remove()) {
+        if (errorString) {
+            *errorString = f.errorString();
+        }
+        qCWarning(lcFileSystem()) << f.errorString() << fileName;
+        return false;
+    }
     return true;
 }
 
