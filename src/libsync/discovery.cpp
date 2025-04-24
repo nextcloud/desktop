@@ -1077,6 +1077,37 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
 }
 
+int64_t ProcessDirectoryJob::folderQuotaAvailable(const SyncFileItemPtr &item)
+{
+    if (const auto isNewItem = item->_instruction == CSYNC_INSTRUCTION_NEW;
+        _queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
+        && !item->isDirectory()
+        && item->_direction == SyncFileItem::Up
+        && item->_size > 0
+        && (item->_instruction == CSYNC_INSTRUCTION_SYNC || isNewItem)) {
+
+        if (!_dirItem) {
+            return _folderQuota.bytesAvailable;
+        }
+
+        const auto isDirItemRenamed = _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME;
+
+        // quota is unknown at this point - follow server values: -2: Unknown free space
+        if (isDirItemRenamed && isNewItem) {
+            return -2;
+        }
+
+        if (isDirItemRenamed) {
+            return _folderQuota.bytesAvailable;
+        }
+
+        return _dirItem->_folderQuota.bytesAvailable;
+    }
+
+    // -3: Unlimited free space
+    return -3;
+}
+
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
     const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
@@ -1131,21 +1162,13 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        if (_queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
-            && !item->isDirectory() && item->_direction == SyncFileItem::Up && item->_size > 0
-            && (item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_NEW)) {
-            int64_t parentFolderQuotaAvailable = _folderQuota.bytesAvailable;
-            if (_dirItem && _dirItem->_instruction != CSYNC_INSTRUCTION_RENAME) {
-                parentFolderQuotaAvailable = _dirItem->_folderQuota.bytesAvailable;
-            }
-            if (item->_size > parentFolderQuotaAvailable && parentFolderQuotaAvailable > -1) {
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                item->_errorString = tr("Upload of %1 exceeds the quota %2 for the folder %3.").arg(Utility::octetsToString(item->_size),
-                                                                                                    Utility::octetsToString(parentFolderQuotaAvailable),
-                                                                                                    _currentFolder._server);
-                item->_status = SyncFileItem::Status::NormalError;
-                _discoveryData->_anotherSyncNeeded = true;
-            }
+        if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Upload of %1 exceeds the %2 of space left in %3 folder.").arg(Utility::octetsToString(item->_size),
+                                                                                                Utility::octetsToString(folderQuota),
+                                                                                                _currentFolder._server);
+            item->_status = SyncFileItem::Status::NormalError;
+            _discoveryData->_anotherSyncNeeded = true;
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {

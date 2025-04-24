@@ -298,6 +298,8 @@ private:
 
     FolderQuota _folderQuota;
 
+    int64_t folderQuotaAvailable(const SyncFileItemPtr &item);
+
 signals:
     void finished();
     // The root etag of this directory was fetched
