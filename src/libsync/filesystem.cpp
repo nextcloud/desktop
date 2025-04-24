@@ -305,7 +305,25 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
         FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
         auto folderDeleteError = QString{};
-        allRemoved = FileSystem::remove(path, &folderDeleteError);
+
+        try {
+            if (!std::filesystem::remove(std::filesystem::path{fileInfo.filePath().toStdWString()})) {
+                qCWarning(lcFileSystem()) << "File is already deleted" << fileInfo.filePath();
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            folderDeleteError = QString::fromLatin1(e.what());
+            qCWarning(lcFileSystem()) << e.what() << fileInfo.filePath();
+            allRemoved = false;
+        }
+        catch (...)
+        {
+            folderDeleteError = QObject::tr("Error deleting the file");
+            qCWarning(lcFileSystem()) << "Error deleting the file" << fileInfo.filePath();
+            allRemoved = false;
+        }
+
         qCInfo(lcFileSystem()) << "delete" << path;
         if (allRemoved) {
             if (onDeleted)
