@@ -1134,9 +1134,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (_queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
             && !item->isDirectory() && item->_direction == SyncFileItem::Up && item->_size > 0
             && (item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_NEW)) {
-            if (const auto parentFolderQuotaAvailable = _dirItem ? _dirItem->_folderQuota.bytesAvailable
-                                                                 : _folderQuota.bytesAvailable;
-                item->_size > parentFolderQuotaAvailable && parentFolderQuotaAvailable > -1) {
+            int64_t parentFolderQuotaAvailable = _folderQuota.bytesAvailable;
+            if (_dirItem && _dirItem->_instruction != CSYNC_INSTRUCTION_RENAME) {
+                parentFolderQuotaAvailable = _dirItem->_folderQuota.bytesAvailable;
+            }
+            if (item->_size > parentFolderQuotaAvailable && parentFolderQuotaAvailable > -1) {
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
                 item->_errorString = tr("Upload of %1 exceeds the quota %2 for the folder %3.").arg(Utility::octetsToString(item->_size),
                                                                                                     Utility::octetsToString(parentFolderQuotaAvailable),
