@@ -686,7 +686,6 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         }
 
         auto folder = FolderMan::instance()->folder(activity._folder);
-        const auto folderDir = QDir(folder->path());
         const auto fileLocation = activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
             ? InvalidFilenameDialog::FileLocation::NewLocalFile
             : InvalidFilenameDialog::FileLocation::Default;
@@ -694,21 +693,8 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
             ? InvalidFilenameDialog::InvalidMode::ServerInvalid
             : InvalidFilenameDialog::InvalidMode::SystemInvalid;
 
-#ifdef Q_OS_WIN
-        // Edge case time!
-        // QDir::filePath checks whether the passed `fileName` is absolute (essentialy by using `!QFileInfo::isRelative()`).
-        // On Windows, if `fileName` starts with a letter followed by a colon (e.g. "A:BCDEF"), it is considered to be an
-        // absolute path.
-        // Since the complete desired path is required by InvalidFilenameDialog, catch that special case here and prefix it ourselves...
-        const auto filePath = activity._file.length() >= 2 && activity._file[1] == ':'
-                              ? folder->path() + activity._file
-                              : folderDir.filePath(activity._file);
-#else
-        const auto filePath = folderDir.filePath(activity._file);
-#endif
-
         _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
-            filePath, fileLocation, invalidMode);
+            folder->filePath(activity._file), fileLocation, invalidMode);
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
