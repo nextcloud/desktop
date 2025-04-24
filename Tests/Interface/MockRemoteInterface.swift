@@ -560,7 +560,7 @@ fileprivate let mockCapabilities = ##"""
 public class MockRemoteInterface: RemoteInterface {
     public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
-    public var delegate: NextcloudKitDelegate?
+    public var delegate: (any NextcloudKitDelegate)?
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]

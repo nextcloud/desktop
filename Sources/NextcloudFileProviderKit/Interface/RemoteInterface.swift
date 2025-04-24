@@ -22,7 +22,7 @@ public enum AuthenticationAttemptResultState: Int {
 
 public protocol RemoteInterface {
 
-    var delegate: NextcloudKitDelegate? { get set }
+    func setDelegate(_ delegate: NextcloudKitDelegate)
 
     func createFolder(
         remotePath: String,

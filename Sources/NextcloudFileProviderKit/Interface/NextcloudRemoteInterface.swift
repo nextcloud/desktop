@@ -14,9 +14,8 @@ fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
 public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
 
-    public var delegate: NextcloudKitDelegate? {
-        get { nkCommonInstance.delegate }
-        set { setup(delegate: newValue) }
+    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
+        setup(delegate: delegate)
     }
 
     public func createFolder(
