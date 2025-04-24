@@ -1164,9 +1164,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_errorString = tr("Upload of %1 exceeds the %2 of space left in %3 folder.").arg(Utility::octetsToString(item->_size),
-                                                                                                Utility::octetsToString(folderQuota),
-                                                                                                _currentFolder._server);
+            if (_currentFolder._server.isEmpty()) {
+                item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
+                                                                                                         Utility::octetsToString(folderQuota));
+            } else {
+                item->_errorString = tr("Upload of %1 exceeds %2 of space left in folder %3.").arg(Utility::octetsToString(item->_size),
+                                                                                                   Utility::octetsToString(folderQuota),
+                                                                                                   _currentFolder._server);
+            }
+
             item->_status = SyncFileItem::Status::NormalError;
             _discoveryData->_anotherSyncNeeded = true;
         }
