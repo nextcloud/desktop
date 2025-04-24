@@ -390,8 +390,6 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
                     guard let realData = data?.data else { return nil }
                     return Capabilities(data: realData)
                 }()
-                self.capabilities = capabilities
-                self.capabilitiesFetchDate = Date()
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }

@@ -1140,12 +1140,7 @@ public class MockRemoteInterface: RemoteInterface {
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let capsData = capabilitiesString.data(using: .utf8)
-        let capabilities: Capabilities? = {
-            guard let capsData else { return nil }
-            return Capabilities(data: capsData)
-        }()
-        self.capabilities = capabilities
-        return (account.ncKitAccount, capabilities, capsData, .success)
+        return (account.ncKitAccount, Capabilities(data: capsData ?? Data()), capsData, .success)
     }
 
     public func currentCapabilities(
