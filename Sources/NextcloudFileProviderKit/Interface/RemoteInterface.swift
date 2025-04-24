@@ -8,6 +8,7 @@
 import Alamofire
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 
 public enum EnumerateDepth: String {

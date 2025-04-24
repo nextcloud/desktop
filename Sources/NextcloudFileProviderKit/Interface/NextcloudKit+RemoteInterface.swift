@@ -8,11 +8,12 @@
 import Alamofire
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 
 fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
-public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
+extension NextcloudKit: RemoteInterface {
 
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
@@ -396,11 +397,6 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        guard let intervalSinceLastFetch = capabilitiesFetchDate?.timeIntervalSince(Date()),
-              intervalSinceLastFetch < -CapabilitiesFetchInterval
-        else {
-            return (account.ncKitAccount, capabilities, nil, .success)
-        }
         return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
     }
 
