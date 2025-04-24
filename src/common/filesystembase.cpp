@@ -540,6 +540,11 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
     // allow that.
     setFileReadOnly(fileName, false);
 #endif
+    const auto deletedFileInfo = QFileInfo{fileName};
+    if (!deletedFileInfo.exists()) {
+        qCWarning(lcFileSystem()) << fileName << "has been already deleted";
+    }
+
     QFile f(fileName);
     if (!f.remove()) {
         if (errorString) {
