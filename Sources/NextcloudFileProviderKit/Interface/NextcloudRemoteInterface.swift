@@ -7,7 +7,7 @@
 
 import Alamofire
 import FileProvider
-import NextcloudCapabilitiesKit
+import Foundation
 import NextcloudKit
 
 fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
@@ -18,9 +18,6 @@ public class NextcloudRemoteInterface: NextcloudKit, RemoteInterface {
         get { nkCommonInstance.delegate }
         set { setup(delegate: newValue) }
     }
-
-    public var capabilities: Capabilities?
-    private var capabilitiesFetchDate: Date?
 
     public func createFolder(
         remotePath: String,

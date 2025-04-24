@@ -45,7 +45,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testAuthentication() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
 
@@ -85,7 +85,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let incorrectAccount =
             Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
         remoteChangeObserver = RemoteChangeObserver(
             account: incorrectAccount,
             remoteInterface: remoteInterface,
@@ -117,7 +117,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let incorrectAccount =
             Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
         let remoteChangeObserver = RemoteChangeObserver(
             account: incorrectAccount,
             remoteInterface: remoteInterface,
@@ -142,7 +142,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testChangeRecognised() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
         var notified = false
@@ -182,7 +182,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testIgnoreNonFileNotifications() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
         var notified = false
@@ -225,7 +225,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     func testPolling() async throws {
         var notified = false
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = ""
+        remoteInterface.capabilities = ""
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
@@ -264,7 +264,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testRetryOnRemoteClose() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
 
@@ -304,7 +304,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testPinging() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
 
@@ -347,7 +347,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testRetryOnConnectionLoss() async throws {
         let remoteInterface = MockRemoteInterface()
-        remoteInterface.capabilitiesString = mockCapabilities
+        remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
         var notified = false

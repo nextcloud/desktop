@@ -7,7 +7,7 @@
 
 import Alamofire
 import FileProvider
-import NextcloudCapabilitiesKit
+import Foundation
 import NextcloudKit
 
 public enum EnumerateDepth: String {
@@ -23,7 +23,6 @@ public enum AuthenticationAttemptResultState: Int {
 public protocol RemoteInterface {
 
     var delegate: NextcloudKitDelegate? { get set }
-    var capabilities: Capabilities? { get set }
 
     func createFolder(
         remotePath: String,
