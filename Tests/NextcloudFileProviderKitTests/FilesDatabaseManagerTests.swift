@@ -71,6 +71,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         var metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
         metadata.downloaded = true
+        metadata.uploaded = true
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
@@ -124,6 +125,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         parent.directory = true
         parent.serverUrl = account.davFilesUrl
         parent.downloaded = true
+        parent.uploaded = true
         Self.dbManager.addItemMetadata(parent)
 
         // Insert a child item inside that directory
@@ -169,12 +171,16 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         // Simulate existing item in transit
         var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.uploaded = true
+        transit.downloaded = false
         transit.status = Status.downloading.rawValue
         transit.etag = "old-etag"
         Self.dbManager.addItemMetadata(transit)
 
         // Send an updated version of the same item
         var incoming = transit
+        incoming.uploaded = true
+        incoming.downloaded = false
         incoming.status = Status.normal.rawValue
         incoming.etag = "new-etag"
 
@@ -199,6 +205,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         // Simulate existing item in transit
         var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
+        transit.uploaded = true
+        transit.downloaded = false
         transit.status = Status.downloading.rawValue
         Self.dbManager.addItemMetadata(transit)
 
@@ -298,18 +306,24 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata1.fileName = "Existing.pdf"
         existingMetadata1.serverUrl = "https://example.com"
         existingMetadata1.account = "TestAccount"
+        existingMetadata1.downloaded = true
+        existingMetadata1.uploaded = true
 
         let existingMetadata2 = RealmItemMetadata()
         existingMetadata2.ocId = "id-2"
         existingMetadata2.fileName = "Existing2.pdf"
         existingMetadata2.serverUrl = "https://example.com"
         existingMetadata2.account = "TestAccount"
+        existingMetadata2.downloaded = true
+        existingMetadata2.uploaded = true
 
         let existingMetadata3 = RealmItemMetadata()
         existingMetadata3.ocId = "id-3"
         existingMetadata3.fileName = "Existing3.pdf"
         existingMetadata3.serverUrl = "https://example.com/folder" // Different child path
         existingMetadata3.account = "TestAccount"
+        existingMetadata3.downloaded = true
+        existingMetadata3.uploaded = true
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -351,6 +365,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
         existingMetadata.serverUrl = "https://example.com"
+        existingMetadata.downloaded = true
+        existingMetadata.uploaded = true
 
         // Simulate updated metadata that includes changes and a new entry
         let updatedMetadata =
