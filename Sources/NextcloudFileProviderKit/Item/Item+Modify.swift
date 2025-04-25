@@ -827,6 +827,22 @@ public extension Item {
         // refactors later on. Just use modifiedItem
         var modifiedItem = self
 
+        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
+            return await modifiedItem.modifyLockFile(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            )
+        }
+
         let relativePath = (
             metadata.serverUrl + "/" + metadata.fileName
         ).replacingOccurrences(of: account.davFilesUrl, with: "")
@@ -869,22 +885,6 @@ public extension Item {
                 """
             )
             return (nil, NSFileProviderError(.noSuchItem))
-        }
-
-        guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
-            return await modifiedItem.modifyLockFile(
-                itemTarget: itemTarget,
-                baseVersion: baseVersion,
-                changedFields: changedFields,
-                contents: newContents,
-                options: options,
-                request: request,
-                ignoredFiles: ignoredFiles,
-                domain: domain,
-                forcedChunkSize: forcedChunkSize,
-                progress: progress,
-                dbManager: dbManager
-            )
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
