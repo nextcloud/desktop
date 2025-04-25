@@ -1349,7 +1349,11 @@ final class ItemModifyTests: XCTestCase {
             ignoredFiles: ignoredMatcher,
             dbManager: Self.dbManager
         )
-        XCTAssertNil(error)
+        if #available(macOS 13.0, *) {
+            XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        } else {
+            XCTAssertNil(error)
+        }
         XCTAssertNotNil(resultItem)
         XCTAssertEqual(resultItem?.metadata.fileName, "error.bak")
     }
