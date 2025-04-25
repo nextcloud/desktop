@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 // writes a message to the MSI logs
 function logInfo(message) {
     var record = Session.Installer.CreateRecord(0);

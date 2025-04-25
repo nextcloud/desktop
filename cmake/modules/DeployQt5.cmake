@@ -65,8 +65,11 @@
 # See documentation of FIXUP_QT5_BUNDLE.
 
 #=============================================================================
-# Copyright 2011 Mike McQuaid <m...@mikemcquaid.com>
-# Copyright 2013 Mihai Moldovan <io...@ionic.de>
+# SPDX-FileCopyrightText: 2013 Mihai Moldovan <io...@ionic.de>
+# SPDX-FileCopyrightText: 2011 Mike McQuaid <m...@mikemcquaid.com>
+# SPDX-FileCopyrightText: 2000-2011 Kitware, Inc., Insight Software Consortium
+# SPDX-License-Identifier: BSD-3-Clause
+# 
 # CMake - Cross Platform Makefile Generator
 # Copyright 2000-2011 Kitware, Inc., Insight Software Consortium
 # All rights reserved.

@@ -69,6 +69,13 @@
 
 
 #=============================================================================
+# SPDX-FileCopyrightText: 2014 Alex Merry <alex.merry@kde.org>
+# SPDX-FileCopyrightText: 2014 Ralf Habacker <ralf.habacker@freenet.de>
+# SPDX-FileCopyrightText: 2006-2009 Alexander Neundorf, <neundorf@kde.org>
+# SPDX-FileCopyrightText: 2006, 2007, Laurent Montel, <montel@kde.org>
+# SPDX-FileCopyrightText: 2007 Matthias Kretz <kretz@kde.org>
+# SPDX-License-Identifier: BSD-3-Clause
+#
 # Copyright 2014 Alex Merry <alex.merry@kde.org>
 # Copyright 2014 Ralf Habacker <ralf.habacker@freenet.de>
 # Copyright 2006-2009 Alexander Neundorf, <neundorf@kde.org>

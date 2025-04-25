@@ -1,4 +1,6 @@
 @echo off
+REM SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+REM SPDX-License-Identifier: GPL-2.0-or-later
 set HarvestAppDir=%~1
 set BuildArch=@MSI_BUILD_ARCH@
 

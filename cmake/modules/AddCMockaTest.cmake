@@ -1,7 +1,8 @@
 # - ADD_CHECK_TEST(test_name test_source linklib1 ... linklibN)
 
-# Copyright (c) 2007      Daniel Gollub <dgollub@suse.de>
-# Copyright (c) 2007-2010 Andreas Schneider <asn@cynapses.org>
+# SPDX-FileCopyrightText: 2007 Daniel Gollub <dgollub@suse.de>
+# SPDX-FileCopyrightText: 2007-2010 Andreas Schneider <asn@cynapses.org>
+# SPDX-License-Identifier: BSD-3-Clause
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
