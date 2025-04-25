@@ -417,12 +417,12 @@ macOSはこの要求を無視したり、遅らせたりすることがありま
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="289"/>
+        <location filename="../src/libsync/filesystem.cpp" line="290"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>削除中のエラー &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="312"/>
+        <location filename="../src/libsync/filesystem.cpp" line="333"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>フォルダー %1を削除できませんでした</translation>
     </message>
@@ -4025,9 +4025,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>文字 &quot;%2&quot; を含む名前 %1 は、このファイルシステムではサポートされていません。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4036,8 +4048,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>名前 %1 はこのファイルシステム上で予約された名前です。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="428"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>ファイル名は少なくとも１つ以上の無効な文字を含んでいます</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="432"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -4118,89 +4150,89 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation> 理由: ファイル名に禁止文字 (%1) が含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="634"/>
+        <location filename="../src/libsync/discovery.cpp" line="635"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>ファイルの拡張子は仮想ファイル用に予約されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="775"/>
+        <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>size</source>
         <translation>サイズ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="777"/>
+        <location filename="../src/libsync/discovery.cpp" line="778"/>
         <source>permission</source>
         <translation>権限</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="781"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>file id</source>
         <translation>ファイルID</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>Server reported no %1</source>
         <translation>サーバーから no %1 と通知がありました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1127"/>
+        <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>修正日時が無効なため同期できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1137"/>
+        <location filename="../src/libsync/discovery.cpp" line="1138"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; で開いているので、ファイルをアップロードできませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1180"/>
+        <location filename="../src/libsync/discovery.cpp" line="1181"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>ファイルレコード %1 をデータベースから削除する際にエラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1458"/>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1459"/>
+        <location filename="../src/libsync/discovery.cpp" line="1915"/>
         <source>Moved to invalid target, restoring</source>
         <translation>無効なターゲットに移動し、復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1776"/>
+        <location filename="../src/libsync/discovery.cpp" line="1777"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>選択した証明書が有効でないため、暗号化されたアイテムを変更できません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1838"/>
+        <location filename="../src/libsync/discovery.cpp" line="1839"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;選択されたものを同期する&quot; のブラックリストにあるために無視されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1872"/>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="1873"/>
+        <location filename="../src/libsync/discovery.cpp" line="2076"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1879"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="1893"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバー上で読み取り専用のため、ファイルをアップロードできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1928"/>
+        <location filename="../src/libsync/discovery.cpp" line="1929"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除、復元は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2118"/>
+        <location filename="../src/libsync/discovery.cpp" line="2119"/>
         <source>Error while reading the database</source>
         <translation>データベースを読み込み中にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>サーバーでディレクトリ &quot;%1&quot; を読み取り中にエラーになりました: %2</translation>
     </message>
@@ -4396,54 +4428,51 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="336"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>ローカルファイルまたはフォルダー名が重複しているため、フォルダー%1の名前を変更できません!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="341"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>ファイル %1 がダウンロードされましたが、ローカルファイル名の衝突が発生しました！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="441"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="487"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="528"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="444"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="531"/>
         <source>Could not get file %1 from local DB</source>
         <translation>ローカルDBからファイル %1 を取得できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="454"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="457"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
         <source>Error setting pin state</source>
         <translation>お気に入りに設定エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="467"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="500"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="470"/>
         <source>Error updating metadata: %1</source>
         <translation>メタデータの更新中にエラーが発生しました：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="470"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="473"/>
         <source>The file %1 is currently in use</source>
         <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>ローカルDBからファイルレコード %1 を削除できませんでした</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="508"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>階層内のディレクトリ名の変更の伝播に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="513"/>
         <source>Failed to rename file</source>
         <translation>ファイル名を変更できませんでした</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="536"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>ローカルDBからファイルレコード %1 を削除できませんでした</translation>
     </message>
 </context>
 <context>
@@ -5673,6 +5702,11 @@ Server replied with error: %2</source>
         <source>Less than a minute</source>
         <translation>1分以内</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
@@ -5680,8 +5714,18 @@ Server replied with error: %2</source>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
         <translation><numerusform>%1分</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
+        <source>%n day(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -6079,16 +6123,6 @@ Server replied with error: %2</source>
         <source>Synced %1</source>
         <translation>%1 を同期しました</translation>
     </message>
-    <message>
-        <location filename="../src/common/filesystembase.cpp" line="596"/>
-        <source>File is already deleted</source>
-        <translation>ファイルはすでに削除されています</translation>
-    </message>
-    <message>
-        <location filename="../src/common/filesystembase.cpp" line="611"/>
-        <source>Error deleting the file</source>
-        <translation>ファイル削除エラー</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
         <source>%nd</source>
@@ -6127,6 +6161,11 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>Some time ago</source>
         <translation>数分前</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <source>Error deleting the file</source>
+        <translation>ファイル削除エラー</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>

@@ -417,12 +417,12 @@ macOS kan ignorera eller fördröja denna begäran.</translation>
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="289"/>
+        <location filename="../src/libsync/filesystem.cpp" line="290"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Kunde inte radera &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="312"/>
+        <location filename="../src/libsync/filesystem.cpp" line="333"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Kunde inte ta bort mappen &quot;%1&quot;</translation>
     </message>
@@ -4026,9 +4026,21 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>%1 namn som innehåller tecknet &quot;%2&quot; stöds inte i det här filsystemet.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4037,8 +4049,28 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 namnet är ett reserverat namn på det här filsystemet.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="428"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="432"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -4119,89 +4151,89 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Orsak: filnamnet innehåller ett förbjudet tecken (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="634"/>
+        <location filename="../src/libsync/discovery.cpp" line="635"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Filens ändelse är reserverad för virtuella filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="775"/>
+        <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>size</source>
         <translation>storlek</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="777"/>
+        <location filename="../src/libsync/discovery.cpp" line="778"/>
         <source>permission</source>
         <translation>behörighet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="781"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>file id</source>
         <translation>fil-ID</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>Server reported no %1</source>
         <translation>Servern svarade inte %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1127"/>
+        <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1137"/>
+        <location filename="../src/libsync/discovery.cpp" line="1138"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1180"/>
+        <location filename="../src/libsync/discovery.cpp" line="1181"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1458"/>
-        <location filename="../src/libsync/discovery.cpp" line="1914"/>
+        <location filename="../src/libsync/discovery.cpp" line="1459"/>
+        <location filename="../src/libsync/discovery.cpp" line="1915"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttade till ogiltigt mål, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1776"/>
+        <location filename="../src/libsync/discovery.cpp" line="1777"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Det går inte att ändra det krypterade objektet eftersom det valda certifikatet är ogiltigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1838"/>
+        <location filename="../src/libsync/discovery.cpp" line="1839"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1872"/>
-        <location filename="../src/libsync/discovery.cpp" line="2075"/>
+        <location filename="../src/libsync/discovery.cpp" line="1873"/>
+        <location filename="../src/libsync/discovery.cpp" line="2076"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1878"/>
+        <location filename="../src/libsync/discovery.cpp" line="1879"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="1893"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1928"/>
+        <location filename="../src/libsync/discovery.cpp" line="1929"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Borttagning tillåts ej, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2118"/>
+        <location filename="../src/libsync/discovery.cpp" line="2119"/>
         <source>Error while reading the database</source>
         <translation>Fel uppstod när databasen skulle läsas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Servern svarade med ett fel när mappen lästes &quot;%1&quot; : %2</translation>
     </message>
@@ -4397,54 +4429,51 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="336"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Mapp %1 kan inte byta namn på grund av en konflikt med ett lokalt fil- eller mappnamn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="341"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Fil %1 har laddats ner men det resulterade i en konflikt med ett lokalt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="441"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="487"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="528"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="444"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="531"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Kunde inte hämta filen %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="454"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="457"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="518"/>
         <source>Error setting pin state</source>
         <translation>Kunde inte sätta pin-status</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="467"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="500"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="470"/>
         <source>Error updating metadata: %1</source>
         <translation>Fel vid uppdatering av metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="470"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="473"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för tillfället</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="492"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunde inte ta bort filposten %1 från lokal DB</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="505"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="508"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Kunde inte propagera namnbyte på katalogen i hierarkin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="513"/>
         <source>Failed to rename file</source>
         <translation>Kunde inte döpa om filen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="536"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Kunde inte ta bort filposten %1 från lokal DB</translation>
     </message>
 </context>
 <context>
@@ -5674,6 +5703,11 @@ Servern svarade med fel: %2</translation>
         <source>Less than a minute</source>
         <translation>Mindre än en minut</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
@@ -5681,8 +5715,18 @@ Servern svarade med fel: %2</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
         <translation><numerusform>%1 minuter</numerusform><numerusform>%1 minuter</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
+        <source>%n day(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -6080,16 +6124,6 @@ Servern svarade med fel: %2</translation>
         <source>Synced %1</source>
         <translation>Synkroniserade %1</translation>
     </message>
-    <message>
-        <location filename="../src/common/filesystembase.cpp" line="596"/>
-        <source>File is already deleted</source>
-        <translation>Filen är redan borttagen</translation>
-    </message>
-    <message>
-        <location filename="../src/common/filesystembase.cpp" line="611"/>
-        <source>Error deleting the file</source>
-        <translation>Kunde inte ta bort filen</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="440"/>
         <source>%nd</source>
@@ -6128,6 +6162,11 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>Some time ago</source>
         <translation>För en tid sedan</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <source>Error deleting the file</source>
+        <translation>Kunde inte ta bort filen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>
