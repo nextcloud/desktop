@@ -88,7 +88,7 @@ extension Item {
                     Will proceed with creating item on server (if possible).
                 """
             )
-            return await modifiedItem.modifyUnuploaded(
+            return await modifiedItem.createUnuploadedRemotely(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
                 changedFields: changedFields,

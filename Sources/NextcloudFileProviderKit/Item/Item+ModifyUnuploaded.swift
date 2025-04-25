@@ -25,7 +25,7 @@ extension Item {
         guard newContents != nil || domain != nil else {
             Self.logger.error(
                 """
-                Unable to upload modified item that was previously ignored.
+                Unable to upload modified item that was previously unuploaded.
                     filename: \(self.filename, privacy: .public)
                     either the domain is nil, the provided contents are nil, or both.
                 """
@@ -39,7 +39,7 @@ extension Item {
             guard let domain, let localUrl = await localUrlForContents(domain: domain) else {
                 Self.logger.error(
                     """
-                    Unable to upload modified item that was previously ignored.
+                    Unable to upload modified item that was previously unuploaded.
                         filename: \(modifiedItem.filename, privacy: .public)
                         local url for contents could not be acquired.
                     """
