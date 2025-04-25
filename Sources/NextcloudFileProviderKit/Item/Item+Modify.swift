@@ -854,7 +854,11 @@ public extension Item {
                     Will delete locally with no remote effect.
                 """
             )
-            return (modifiedItem, nil)
+            if #available(macOS 13.0, *) {
+                return (modifiedItem, NSFileProviderError(.excludedFromSync))
+            } else {
+                return (modifiedItem, nil)
+            }
         }
 
         // We are handling an item that is available locally but not on the server -- so create it
