@@ -400,6 +400,75 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
     }
 
+    func testUnuploadedItemsAreNotDeletedDuringUpdate() throws {
+        let testAccount = "TestAccount"
+        let testServerUrl = "https://example.com/files/"
+
+        // 1. Item that exists locally and is marked as uploaded
+        let uploadedItem = RealmItemMetadata()
+        uploadedItem.ocId = "ocid-uploaded-123"
+        uploadedItem.fileName = "SyncedFile.txt"
+        uploadedItem.account = testAccount
+        uploadedItem.serverUrl = testServerUrl
+        uploadedItem.downloaded = true
+        uploadedItem.uploaded = true // IMPORTANT: Marked as uploaded
+
+        // 2. Item that exists locally but is NOT marked as uploaded (e.g., new local file)
+        let unuploadedItem = RealmItemMetadata()
+        unuploadedItem.ocId = "ocid-local-456" // May or may not have ocId yet
+        unuploadedItem.fileName = "NewLocalFile.txt"
+        unuploadedItem.account = testAccount
+        unuploadedItem.serverUrl = testServerUrl
+        unuploadedItem.downloaded = true
+        unuploadedItem.uploaded = false // IMPORTANT: Not marked as uploaded
+        unuploadedItem.status = Status.normal.rawValue // Ensure it's not in a transient state if relevant
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(uploadedItem)
+            realm.add(unuploadedItem)
+        }
+
+        // Verify initial state (optional but good practice)
+        XCTAssertEqual(realm.objects(RealmItemMetadata.self).where { $0.account == testAccount && $0.serverUrl == testServerUrl }.count, 2)
+
+        // Simulate an update from the server that contains NEITHER of these items.
+        // This means the server thinks 'SyncedFile.txt' was deleted,
+        // and it doesn't know about 'NewLocalFile.txt' yet.
+        let updatedMetadatasFromServer: [SendableItemMetadata] = []
+
+        let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: testAccount,
+            serverUrl: testServerUrl,
+            updatedMetadatas: updatedMetadatasFromServer,
+            updateDirectoryEtags: true, // Value doesn't strictly matter for this test logic
+            keepExistingDownloadState: true // Value doesn't strictly matter for this test logic
+        )
+
+        // --- Assertion ---
+        let remainingMetadatas = realm.objects(RealmItemMetadata.self)
+            .where { $0.account == testAccount && $0.serverUrl == testServerUrl }
+
+        // Check the returned delete list (based on the copy made before deletion)
+        XCTAssertEqual(results.deletedMetadatas?.count, 1, "Should identify the uploaded item as deleted.")
+        XCTAssertEqual(results.deletedMetadatas?.first?.ocId, "ocid-uploaded-123", "The correct uploaded item should be marked for deletion.")
+        XCTAssertTrue(results.deletedMetadatas?.first?.uploaded ?? false, "The item marked for deletion should have uploaded=true")
+
+
+        // Check the actual database state after the write transaction
+        XCTAssertEqual(remainingMetadatas.count, 1, "Only one item should remain in the database.")
+
+        let survivingItem = remainingMetadatas.first
+        XCTAssertNotNil(survivingItem, "An item should survive.")
+        XCTAssertEqual(survivingItem?.ocId, "ocid-local-456", "The surviving item should be the unuploaded one.")
+        XCTAssertEqual(survivingItem?.fileName, "NewLocalFile.txt", "Filename should match the unuploaded item.")
+        XCTAssertFalse(survivingItem!.uploaded, "The surviving item must be the one marked uploaded = false.")
+
+         // Check other return values are empty as expected
+        XCTAssertTrue(results.newMetadatas?.isEmpty ?? true, "No new items should have been created.")
+        XCTAssertTrue(results.updatedMetadatas?.isEmpty ?? true, "No items should have been updated.")
+    }
+
     func testConcurrencyOnDatabaseWrites() {
         let semaphore = DispatchSemaphore(value: 0)
         let count = 100
