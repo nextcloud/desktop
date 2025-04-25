@@ -483,7 +483,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
 
 void AbstractNetworkJob::retry()
 {
-    ENFORCE(_reply);
+    Q_ASSERT(_reply);
     auto req = _reply->request();
     QUrl requestedUrl = req.url();
     QByteArray verb = HttpLogger::requestVerb(*_reply);
