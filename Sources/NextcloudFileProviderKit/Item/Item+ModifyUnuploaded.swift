@@ -8,7 +8,8 @@
 import FileProvider
 
 extension Item {
-    func modifyUnuploaded(
+    // Creates a file that was previously unuploaded (e.g.a  previously ignored/lock file) on server
+    func createUnuploadedRemotely(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
         changedFields: NSFileProviderItemFields,
