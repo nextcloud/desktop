@@ -150,6 +150,9 @@ public:
     /// The name of the account as shown in the toolbar
     [[nodiscard]] QString displayName() const;
 
+    /// The name of the account as shown in the windows shortcut explorer
+    [[nodiscard]] QString shortcutName() const;
+
     /// User id in a form 'user@example.de, optionally port is added (if it is not 80 or 443)
     [[nodiscard]] QString userIdAtHostWithPort() const;
 
