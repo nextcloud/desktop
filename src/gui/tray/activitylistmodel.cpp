@@ -686,7 +686,6 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         }
 
         auto folder = FolderMan::instance()->folder(activity._folder);
-        const auto folderDir = QDir(folder->path());
         const auto fileLocation = activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
             ? InvalidFilenameDialog::FileLocation::NewLocalFile
             : InvalidFilenameDialog::FileLocation::Default;
@@ -695,7 +694,7 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
             : InvalidFilenameDialog::InvalidMode::SystemInvalid;
 
         _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
-            folderDir.filePath(activity._file), fileLocation, invalidMode);
+            folder->filePath(activity._file), fileLocation, invalidMode);
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
