@@ -131,12 +131,30 @@ public extension Item {
         dbManager: FilesDatabaseManager
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
+        guard metadata.classFile != "lock", !isLockFileName(filename) else {
+            Self.logger.info(
+                """
+                System requested fetch of lock file \(self.filename, privacy: .public)
+                    will just provide local contents URL if possible.
+                """
+            )
+            if let domain, let localUrl = await localUrlForContents(domain: domain) {
+                return (localUrl, self, nil)
+            } else if #available(macOS 13.0, *) {
+                Self.logger.error("Could not get local contents URL for lock file, erroring")
+                return (nil, self, NSFileProviderError(.excludedFromSync))
+            } else {
+                Self.logger.error("Could not get local contents URL for lock file, nilling")
+                return (nil, self, nil)
+            }
+        }
+
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
         Self.logger.debug(
             """
             Fetching item with name \(self.metadata.fileName, privacy: .public)
-            at URL: \(serverUrlFileName, privacy: .public)
+                at URL: \(serverUrlFileName, privacy: .public)
             """
         )
 
