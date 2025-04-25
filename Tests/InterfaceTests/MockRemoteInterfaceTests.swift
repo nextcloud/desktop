@@ -23,6 +23,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testItemForRemotePath() {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a", 
             versionIdentifier: "a",
@@ -84,6 +85,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testItemForRootPath() {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         XCTAssertEqual(
             remoteInterface.item(remotePath: Self.account.davFilesUrl, account: Self.account), rootItem
         )
@@ -91,6 +93,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testPathParentPath() {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let testPath = Self.account.davFilesUrl + "/a/B/c/d"
         let expectedPath = Self.account.davFilesUrl + "/a/B/c"
 
@@ -101,6 +104,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testRootPathParentPath() {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let testPath = Self.account.davFilesUrl + "/"
         let expectedPath = Self.account.davFilesUrl + "/"
 
@@ -111,6 +115,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testNameFromPath() throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let testPath = Self.account.davFilesUrl + "/a/b/c/d"
         let expectedName = "d"
         let name = try remoteInterface.name(from: testPath)
@@ -119,6 +124,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testCreateFolder() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let newFolderAPath = Self.account.davFilesUrl + "/A"
         let newFolderA_BPath = Self.account.davFilesUrl + "/A/B/"
 
@@ -145,6 +151,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testUpload() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let fileUrl = URL.temporaryDirectory.appendingPathComponent("file.txt", conformingTo: .text)
         let fileData = Data("Hello, World!".utf8)
         let fileSize = Int64(fileData.count)
@@ -170,6 +177,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testUploadTargetName() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let fileName = UUID().uuidString
         let fileUrl = URL.temporaryDirectory.appendingPathComponent(fileName)
         let fileData = Data("Hello, World!".utf8)
@@ -198,6 +206,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        debugPrint(remoteInterface)
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         let chunkSize = 3
         var uploadedChunks = [RemoteFileChunk]()
@@ -254,6 +263,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        debugPrint(remoteInterface)
         remoteInterface.currentChunks = [uploadUuid: previousUploadedChunks]
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
@@ -308,6 +318,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testMove() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a",
             name: "a",
@@ -372,6 +383,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testDownload() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(
             "file.txt", conformingTo: .text
         )
@@ -397,6 +409,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testEnumerate() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a", 
             name: "a",
@@ -551,6 +564,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testDelete() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a", 
             name: "a",
@@ -616,6 +630,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testTrashedItems() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a",
             name: "a (trashed)",
@@ -659,6 +674,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
     // post-trashing metadata)
     func testTrashingManglesIdentifiers() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let folderOriginalIdentifier = "folder"
         let folder = MockRemoteItem(
             identifier: folderOriginalIdentifier,
@@ -704,6 +720,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testRestoreFromTrash() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a",
             name: "a (trashed)",
@@ -732,6 +749,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testNoDirectMoveFromTrash() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let folder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -785,6 +803,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testEnforceOverwriteOnRestore() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
             identifier: "a",
             name: "a (trashed)",
@@ -819,6 +838,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testFetchUserProfile() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let (account, profile, _, error) = await remoteInterface.fetchUserProfile(
             account: Self.account
         )
@@ -829,6 +849,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testTryAuthenticationAttempt() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        debugPrint(remoteInterface)
         let state = await remoteInterface.tryAuthenticationAttempt(account: Self.account)
         XCTAssertEqual(state, .success)
         let failState = await remoteInterface.tryAuthenticationAttempt(
