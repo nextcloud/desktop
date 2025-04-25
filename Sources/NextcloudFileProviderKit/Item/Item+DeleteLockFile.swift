@@ -56,7 +56,7 @@ extension Item {
             return nil
         }
         let originalFileServerFileNameUrl = metadata.serverUrl + "/" + originalFileName
-        let (_, _, error) = await remoteInterface.setLockStateForFile(
+        let (_, _, error) = await remoteInterface.setLockStateForFile( // TODO: NOT WORKING
             remotePath: originalFileServerFileNameUrl,
             lock: false,
             account: account,

@@ -71,7 +71,7 @@ extension Item {
             return (nil, nil)
         }
         let targetFileRemotePath = parentItemRemotePath + "/" + targetFileName
-        let (_, _, error) = await remoteInterface.setLockStateForFile( // NOT WORKING
+        let (_, _, error) = await remoteInterface.setLockStateForFile( // TODO: NOT WORKING
             remotePath: targetFileRemotePath,
             lock: true,
             account: account,
