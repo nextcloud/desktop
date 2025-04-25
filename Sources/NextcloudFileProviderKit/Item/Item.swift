@@ -325,4 +325,51 @@ public class Item: NSObject, NSFileProviderItem {
             dbManager: dbManager
         )
     }
+
+    public func localUrlForContents(domain: NSFileProviderDomain) async -> URL? {
+        guard isDownloaded else {
+            Self.logger.error(
+                """
+                Unable to get local URL for item contents.
+                    filename: \(self.filename, privacy: .public)
+                    Item is not materialised.
+                """
+            )
+            return nil
+        }
+
+        guard let manager = NSFileProviderManager(for: domain),
+              let fileUrl = try? await manager.getUserVisibleURL(for: itemIdentifier)
+        else {
+            Self.logger.error(
+                """
+                Unable to get manager or user visible url for item.
+                    filename: \(self.filename, privacy: .public)
+                    Cannot provide local URL for contents.
+                """
+            )
+            return nil
+        }
+        
+        let fm = FileManager.default
+        let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let coordinator = NSFileCoordinator()
+        var readData: Data?
+        coordinator.coordinate(readingItemAt: fileUrl, options: [], error: nil) { readURL in
+            readData = try? Data(contentsOf: readURL)
+        }
+        guard let readData else { return nil }
+        do {
+            try readData.write(to: tempLocation)
+        } catch let error {
+            Self.logger.error(
+                """
+                Unable to write file item contents \(self.filename, privacy: .public) to temp url.
+                    error: \(error.localizedDescription, privacy: .public)
+                    Cannot provide local URL for contents.
+                """
+            )
+        }
+        return tempLocation
+    }
 }
