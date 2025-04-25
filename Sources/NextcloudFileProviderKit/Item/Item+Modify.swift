@@ -854,6 +854,25 @@ public extension Item {
                     Will delete locally with no remote effect.
                 """
             )
+            guard let modifiedIgnored = modifyUnuploaded(
+                itemTarget: itemTarget,
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ignoredFiles: ignoredFiles,
+                domain: domain,
+                forcedChunkSize: forcedChunkSize,
+                progress: progress,
+                dbManager: dbManager
+            ) else {
+                Self.logger.error(
+                    "Unable to modify ignored file, got nil item: \(relativePath, privacy: .public)"
+                )
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+            modifiedItem = modifiedIgnored
             if #available(macOS 13.0, *) {
                 return (modifiedItem, NSFileProviderError(.excludedFromSync))
             } else {
