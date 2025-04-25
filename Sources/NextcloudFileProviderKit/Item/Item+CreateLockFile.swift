@@ -54,7 +54,7 @@ extension Item {
         Self.logger.info(
             """
             Item to create:
-                \(itemTemplate.filename)
+                \(itemTemplate.filename, privacy: .public)
                 is a lock file. Will handle by remotely locking the target file.
             """
         )
