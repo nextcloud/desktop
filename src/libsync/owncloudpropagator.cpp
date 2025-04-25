@@ -1611,6 +1611,11 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         return;
     }
 
+    if (!_dirDeletionJobs._jobsToDo.empty()) {
+        _dirDeletionJobs.scheduleSelfOrChild();
+        return;
+    }
+
     if (status != SyncFileItem::Success
         && status != SyncFileItem::Restoration
         && status != SyncFileItem::BlacklistedError
