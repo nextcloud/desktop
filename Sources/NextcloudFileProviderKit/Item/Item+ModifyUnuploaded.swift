@@ -34,51 +34,18 @@ extension Item {
         let modifiedItem = self
         var contentsLocation = newContents
         if contentsLocation == nil {
-            assert(domain != nil, "The domain should not be nil!")
-            guard let manager = NSFileProviderManager(for: domain!),
-                  let fileUrl = try? await manager.getUserVisibleURL(
-                    for: modifiedItem.itemIdentifier
-                  )
-            else {
+            assert(domain != nil)
+            guard let domain, let localUrl = await localUrlForContents(domain: domain) else {
                 Self.logger.error(
                     """
                     Unable to upload modified item that was previously ignored.
                         filename: \(modifiedItem.filename, privacy: .public)
-                        Unable to get a file provider manager for the given domain, or item URL
+                        local url for contents could not be acquired.
                     """
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
-            let fm = FileManager.default
-            let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-            let coordinator = NSFileCoordinator()
-            var readData: Data?
-            coordinator.coordinate(readingItemAt: fileUrl, options: [], error: nil) { readURL in
-                readData = try? Data(contentsOf: readURL)
-            }
-            guard let readData else {
-                Self.logger.error(
-                    """
-                    Unable to upload modified item that was previously ignored.
-                        filename: \(modifiedItem.filename, privacy: .public)
-                        Unable to get ignored file item data from URL
-                    """
-                )
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
-            do {
-                try readData.write(to: tempLocation)
-            } catch let error {
-                Self.logger.error(
-                    """
-                    Unable to upload modified item that was previously ignored.
-                        filename: \(modifiedItem.filename, privacy: .public)
-                        Unable to write ignored file item contents to temp location.
-                        error: \(error.localizedDescription, privacy: .public)
-                    """
-                )
-            }
-            contentsLocation = tempLocation
+            contentsLocation = localUrl
         }
         return await Self.create(
             basedOn: itemTarget,
