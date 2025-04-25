@@ -129,6 +129,10 @@ extension Item {
         dbManager.addItemMetadata(metadata)
 
         progress.completedUnitCount = 1
+        var returnError = error.fileProviderError
+        if #available(macOS 13.0, *), error == .success {
+            returnError = NSFileProviderError(.excludedFromSync)
+        }
 
         return (
             Item(
@@ -138,7 +142,7 @@ extension Item {
                 remoteInterface: remoteInterface,
                 dbManager: dbManager
             ),
-            error.fileProviderError
+            returnError
         )
     }
 }
