@@ -54,7 +54,7 @@ extension Item {
         Self.logger.info(
             """
             Item to create:
-                \(itemTemplate.filename)
+                \(itemTemplate.filename, privacy: .public)
                 is a lock file. Will handle by remotely locking the target file.
             """
         )
@@ -70,8 +70,9 @@ extension Item {
             )
             return (nil, nil)
         }
-        let (_, _, error) = await remoteInterface.setLockStateForFile(
-            remotePath: parentItemRemotePath + "/" + targetFileName,
+        let targetFileRemotePath = parentItemRemotePath + "/" + targetFileName
+        let (_, _, error) = await remoteInterface.setLockStateForFile( // TODO: NOT WORKING
+            remotePath: targetFileRemotePath,
             lock: true,
             account: account,
             options: .init(),
@@ -93,6 +94,8 @@ extension Item {
                     received error: \(error.errorDescription)
                 """
             )
+        } else {
+            Self.logger.info("Locked file at: \(targetFileRemotePath, privacy: .public)")
         }
 
         let metadata = SendableItemMetadata(
@@ -126,6 +129,10 @@ extension Item {
         dbManager.addItemMetadata(metadata)
 
         progress.completedUnitCount = 1
+        var returnError = error.fileProviderError
+        if #available(macOS 13.0, *), error == .success {
+            returnError = NSFileProviderError(.excludedFromSync)
+        }
 
         return (
             Item(
@@ -135,7 +142,7 @@ extension Item {
                 remoteInterface: remoteInterface,
                 dbManager: dbManager
             ),
-            error.fileProviderError
+            returnError
         )
     }
 }

@@ -103,6 +103,10 @@ extension Item {
             )
         }
 
-        return (modifiedItem, nil)
+        var returnError: Error? = nil
+        if #available(macOS 13.0, *) {
+            returnError = NSFileProviderError(.excludedFromSync)
+        }
+        return (modifiedItem, returnError)
     }
 }

@@ -627,7 +627,11 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertNotNil(createdItem)
         XCTAssertEqual(createdItem?.isUploaded, false)
         XCTAssertEqual(createdItem?.isDownloaded, true)
-        XCTAssertNil(error)
+        if #available(macOS 13.0, *) {
+            XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        } else {
+            XCTAssertNil(error)
+        }
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
         XCTAssertTrue(targetRemote.locked)
     }

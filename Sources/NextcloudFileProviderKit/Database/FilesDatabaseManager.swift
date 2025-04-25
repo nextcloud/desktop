@@ -322,9 +322,14 @@ public final class FilesDatabaseManager: Sendable {
         let database = ncDatabase()
 
         do {
+            // Find the metadatas that we previously knew to be on the server for this account
+            // (we need to check if they were uploaded to prevent deleting ignored/lock files)
+            //
+            // - the ones that do exist remotely still are either the same or have been updated
+            // - the ones that don't have been deleted
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where { $0.account == account && $0.serverUrl == serverUrl }
+                .where { $0.account == account && $0.serverUrl == serverUrl && $0.uploaded }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
