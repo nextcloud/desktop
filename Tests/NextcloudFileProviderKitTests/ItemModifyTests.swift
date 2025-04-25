@@ -1454,7 +1454,11 @@ final class ItemModifyTests: XCTestCase {
             dbManager: Self.dbManager
         )
 
-        XCTAssertNil(error)
+        if #available(macOS 13.0, *) {
+            XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        } else {
+            XCTAssertNil(error)
+        }
         XCTAssertEqual(modifiedItem?.itemIdentifier, lockItem.itemIdentifier)
         XCTAssertEqual(modifiedItem?.filename, modifiedMetadata.fileName)
         XCTAssertEqual(modifiedItem?.documentSize?.intValue, tempData.count)
