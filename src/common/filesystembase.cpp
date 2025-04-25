@@ -111,36 +111,43 @@ static QFile::Permissions getDefaultWritePermissions()
 void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
 {
 #ifdef  Q_OS_WIN
-    if (isLnkFile(filename)) {
-        if (!fileExists(filename)) {
-            return;
-        }
-        try {
-            const auto permissions = filePermissionsWin(filename);
+    if (!fileExists(filename)) {
+        Q_ASSERT(false);
+        return;
+    }
 
-            std::filesystem::perms allWritePermissions = std::filesystem::perms::_All_write;
-            static std::filesystem::perms defaultWritePermissions = std::filesystem::perms::others_write;
-
-            std::filesystem::permissions(filename.toStdWString(), allWritePermissions, std::filesystem::perm_options::remove);
-
-            if (!readonly) {
-                std::filesystem::permissions(filename.toStdWString(), defaultWritePermissions, std::filesystem::perm_options::add);
-            }
-        }
-        catch (const std::filesystem::filesystem_error &e)
-        {
-            qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
-        }
-        catch (const std::system_error &e)
-        {
-            qCWarning(lcFileSystem()) << filename << e.what();
-        }
-        catch (...)
-        {
-            qCWarning(lcFileSystem()) << filename;
+    const auto fileAttributes = GetFileAttributesW(filename.toStdWString().c_str());
+    if (fileAttributes == INVALID_FILE_ATTRIBUTES) {
+        const auto lastError = GetLastError();
+        auto errorMessage = static_cast<char*>(nullptr);
+        if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                          nullptr, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errorMessage, 0, nullptr) == 0) {
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << errorMessage;
+        } else {
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
         }
         return;
     }
+
+    auto newFileAttributes = fileAttributes;
+    if (readonly) {
+        newFileAttributes = newFileAttributes | FILE_ATTRIBUTE_READONLY;
+    } else {
+        newFileAttributes = newFileAttributes & (~FILE_ATTRIBUTE_READONLY);
+    }
+
+    if (SetFileAttributesW(filename.toStdWString().c_str(), newFileAttributes) == 0) {
+        const auto lastError = GetLastError();
+        auto errorMessage = static_cast<char*>(nullptr);
+        if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                           nullptr, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errorMessage, 0, nullptr) == 0) {
+            qCWarning(lcFileSystem()) << "SetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << errorMessage;
+        } else {
+            qCWarning(lcFileSystem()) << "SetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
+        }
+    }
+
+    return;
 #endif
     QFile file(filename);
     QFile::Permissions permissions = file.permissions();
