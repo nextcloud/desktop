@@ -29,56 +29,24 @@ extension Item {
         )
         assert(isLockFileName(filename), "Should not handle non-lock files here.")
 
-        var modifiedParentItemIdentifier = parentItemIdentifier
-        var modifiedMetadata = metadata
-
-        if changedFields.contains(.filename) {
-            modifiedMetadata.fileName = itemTarget.filename
-            if !isLockFileName(modifiedMetadata.fileName) {
-                modifiedMetadata.classFile = ""
-                // Do the actual upload at the end, not yet
-            }
-        }
-        if changedFields.contains(.contents),
-           let newSize = try? newContents?.resourceValues(forKeys: [.fileSizeKey]).fileSize
-        {
-            modifiedMetadata.size = Int64(newSize)
-        }
-        if changedFields.contains(.parentItemIdentifier) {
-            guard let parentMetadata = dbManager.itemMetadata(
-                ocId: itemTarget.parentItemIdentifier.rawValue
-            ) else {
-                Self.logger.error(
-                    """
-                    Unable to find new parent item identifier during lock file modification.
-                        Lock file: \(self.filename, privacy: .public)
-                    """
-                )
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
-            modifiedMetadata.serverUrl = parentMetadata.serverUrl + "/" + parentMetadata.fileName
-            modifiedParentItemIdentifier = .init(parentMetadata.ocId)
-        }
-        if changedFields.contains(.creationDate),
-           let newCreationDate = itemTarget.creationDate,
-           let newCreationDate
-        {
-            modifiedMetadata.creationDate = newCreationDate
-        }
-        if changedFields.contains(.contentModificationDate),
-           let newModificationDate = itemTarget.contentModificationDate,
-           let newModificationDate
-        {
-            modifiedMetadata.date = newModificationDate
-        }
-
-        let modifiedItem = Item(
-            metadata: modifiedMetadata,
-            parentItemIdentifier: modifiedParentItemIdentifier,
-            account: account,
-            remoteInterface: remoteInterface,
+        guard let modifiedItem = modifyUnuploaded(
+            itemTarget: itemTarget,
+            baseVersion: baseVersion,
+            changedFields: changedFields,
+            contents: newContents,
+            options: options,
+            request: request,
+            ignoredFiles: ignoredFiles,
+            domain: domain,
+            forcedChunkSize: forcedChunkSize,
+            progress: progress,
             dbManager: dbManager
-        )
+        ) else {
+            Self.logger.info(
+                "Cannot modify lock file: \(self.filename) as received a nil modified item"
+            )
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
 
         if !isLockFileName(modifiedItem.filename) {
             Self.logger.info(
@@ -88,7 +56,7 @@ extension Item {
                     Will proceed with creating item on server (if possible).
                 """
             )
-            return await modifiedItem.modifyUnuploaded(
+            return await modifiedItem.createUnuploaded(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
                 changedFields: changedFields,

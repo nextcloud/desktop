@@ -8,6 +8,7 @@
 import FileProvider
 
 extension Item {
+    // Just modifies metadata
     func modifyUnuploaded(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
@@ -20,42 +21,55 @@ extension Item {
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager
-    ) async -> (Item?, Error?) {
-        guard newContents != nil || domain != nil else {
-            Self.logger.error(
-                """
-                Unable to upload modified item that was previously ignored.
-                    filename: \(self.filename, privacy: .public)
-                    either the domain is nil, the provided contents are nil, or both.
-                """
-            )
-            return (nil, NSFileProviderError(.cannotSynchronize))
+    ) -> Item? {
+        var modifiedParentItemIdentifier = parentItemIdentifier
+        var modifiedMetadata = metadata
+
+        if changedFields.contains(.filename) {
+            modifiedMetadata.fileName = itemTarget.filename
+            if !isLockFileName(modifiedMetadata.fileName) {
+                modifiedMetadata.classFile = ""
+                // Do the actual upload at the end, not yet
+            }
         }
-        let modifiedItem = self
-        var contentsLocation = newContents
-        if contentsLocation == nil {
-            assert(domain != nil)
-            guard let domain, let localUrl = await localUrlForContents(domain: domain) else {
+        if changedFields.contains(.contents),
+           let newSize = try? newContents?.resourceValues(forKeys: [.fileSizeKey]).fileSize
+        {
+            modifiedMetadata.size = Int64(newSize)
+        }
+        if changedFields.contains(.parentItemIdentifier) {
+            guard let parentMetadata = dbManager.itemMetadata(
+                ocId: itemTarget.parentItemIdentifier.rawValue
+            ) else {
                 Self.logger.error(
                     """
-                    Unable to upload modified item that was previously ignored.
-                        filename: \(modifiedItem.filename, privacy: .public)
-                        local url for contents could not be acquired.
+                    Unable to find new parent item identifier during unuploaded item modification.
+                        Filename: \(self.filename, privacy: .public)
                     """
                 )
-                return (nil, NSFileProviderError(.cannotSynchronize))
+                return nil
             }
-            contentsLocation = localUrl
+            modifiedMetadata.serverUrl = parentMetadata.serverUrl + "/" + parentMetadata.fileName
+            modifiedParentItemIdentifier = .init(parentMetadata.ocId)
         }
-        return await Self.create(
-            basedOn: itemTarget,
-            contents: contentsLocation,
-            domain: domain,
+        if changedFields.contains(.creationDate),
+           let newCreationDate = itemTarget.creationDate,
+           let newCreationDate
+        {
+            modifiedMetadata.creationDate = newCreationDate
+        }
+        if changedFields.contains(.contentModificationDate),
+           let newModificationDate = itemTarget.contentModificationDate,
+           let newModificationDate
+        {
+            modifiedMetadata.date = newModificationDate
+        }
+
+        return Item(
+            metadata: modifiedMetadata,
+            parentItemIdentifier: modifiedParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            ignoredFiles: ignoredFiles,
-            forcedChunkSize: forcedChunkSize,
-            progress: progress,
             dbManager: dbManager
         )
     }
