@@ -1366,6 +1366,7 @@ PropagatorJob::JobParallelism PropagateDirectory::parallelism() const
 bool PropagateDirectory::scheduleSelfOrChild()
 {
     if (_state == Finished) {
+        qCDebug(lcDirectory) << "folder job finished";
         return false;
     }
 
@@ -1374,15 +1375,32 @@ bool PropagateDirectory::scheduleSelfOrChild()
     }
 
     if (_firstJob && _firstJob->_state == NotYetStarted) {
-        return _firstJob->scheduleSelfOrChild();
+        const auto result = _firstJob->scheduleSelfOrChild();
+
+        if (result) {
+            qCDebug(lcDirectory) << "folder first job has more work to do";
+        } else {
+            qCDebug(lcDirectory) << "folder first job is done";
+        }
+
+        return result;
     }
 
     if (_firstJob && _firstJob->_state == Running) {
         // Don't schedule any more job until this is done.
+        qCDebug(lcDirectory) << "first job is running";
         return false;
     }
 
-    return _subJobs.scheduleSelfOrChild();
+    const auto result = _subJobs.scheduleSelfOrChild();
+
+    if (result) {
+        qCDebug(lcDirectory) << "folder child jobs have more work to do";
+    } else {
+        qCDebug(lcDirectory) << "folder child jobs are done";
+    }
+
+    return result;
 }
 
 void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
@@ -1527,6 +1545,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         }
     }
     _state = Finished;
+    qCDebug(lcDirectory()) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
 }
 
@@ -1579,28 +1598,36 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 void PropagateRootDirectory::appendDirDeletionJob(PropagatorJob *job)
 {
+    if (auto directoryJob = qobject_cast<PropagateDirectory*>(job)) {
+        qCDebug(lcRootDirectory) << "new folder deletion job" << directoryJob->_item->_file;
+    }
     _dirDeletionJobs.appendJob(job);
 }
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
     if (_state == Finished) {
+        qCDebug(lcRootDirectory) << "root folder fully propagated";
         return false;
     }
 
     if (PropagateDirectory::scheduleSelfOrChild() && propagator()->delayedTasks().empty()) {
+        qCDebug(lcRootDirectory) << "root folder has more jobs to do";
         return true;
     }
 
     // Important: Finish _subJobs before scheduling any deletes.
     if (_subJobs._state != Finished) {
+        qCDebug(lcRootDirectory) << "root folder has running jobs to do";
         return false;
     }
 
     if (!propagator()->delayedTasks().empty()) {
+        qCDebug(lcRootDirectory) << "root folder has more delayed jobs to do";
         return scheduleDelayedJobs();
     }
 
+    qCDebug(lcRootDirectory) << "schedule folder deletions step";
     return _dirDeletionJobs.scheduleSelfOrChild();
 }
 
@@ -1625,6 +1652,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             // Synchronously abort
             abort(AbortType::Synchronous);
             _state = Finished;
+            qCInfo(lcRootDirectory()) << "PropagateRootDirectory::slotSubJobsFinished" << "emit finished" << status;
             emit finished(status);
         }
         return;
