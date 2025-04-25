@@ -173,6 +173,7 @@ namespace FileSystem {
      */
     QString OCSYNC_EXPORT pathtoUNC(const QString &str);
 
+    std::filesystem::perms OCSYNC_EXPORT filePermissionsWinSymlinkSafe(const QString &filename);
     std::filesystem::perms OCSYNC_EXPORT filePermissionsWin(const QString &filename);
     void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
 #endif

@@ -320,6 +320,11 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 }
 
 #ifdef Q_OS_WIN
+std::filesystem::perms FileSystem::filePermissionsWinSymlinkSafe(const QString &filename)
+{
+    return std::filesystem::symlink_status(filename.toStdWString()).permissions();
+}
+
 std::filesystem::perms FileSystem::filePermissionsWin(const QString &filename)
 {
     return std::filesystem::status(filename.toStdWString()).permissions();
@@ -551,6 +556,31 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
             *errorString = f.errorString();
         }
         qCWarning(lcFileSystem()) << f.errorString() << fileName;
+
+#if defined Q_OS_WIN
+        const auto permissionsDisplayHelper = [] (std::filesystem::perms currentPermissions) {
+            const auto unitaryHelper = [currentPermissions] (std::filesystem::perms testedPermission, char permissionChar) {
+                return (static_cast<bool>(currentPermissions & testedPermission) ? permissionChar : '-');
+            };
+
+            qCInfo(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r')
+                                   << unitaryHelper(std::filesystem::perms::owner_write, 'w')
+                                   << unitaryHelper(std::filesystem::perms::owner_exec, 'x')
+                                   << unitaryHelper(std::filesystem::perms::group_read, 'r')
+                                   << unitaryHelper(std::filesystem::perms::group_write, 'w')
+                                   << unitaryHelper(std::filesystem::perms::group_exec, 'x')
+                                   << unitaryHelper(std::filesystem::perms::others_read, 'r')
+                                   << unitaryHelper(std::filesystem::perms::others_write, 'w')
+                                   << unitaryHelper(std::filesystem::perms::others_exec, 'x');
+        };
+
+        const auto unsafeFilePermissions = filePermissionsWin(fileName);
+        permissionsDisplayHelper(unsafeFilePermissions);
+
+        const auto safeFilePermissions = filePermissionsWinSymlinkSafe(fileName);
+        permissionsDisplayHelper(safeFilePermissions);
+#endif
+
         return false;
     }
     return true;
