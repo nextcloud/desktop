@@ -70,8 +70,9 @@ extension Item {
             )
             return (nil, nil)
         }
-        let (_, _, error) = await remoteInterface.setLockStateForFile(
-            remotePath: parentItemRemotePath + "/" + targetFileName,
+        let targetFileRemotePath = parentItemRemotePath + "/" + targetFileName
+        let (_, _, error) = await remoteInterface.setLockStateForFile( // NOT WORKING
+            remotePath: targetFileRemotePath,
             lock: true,
             account: account,
             options: .init(),
@@ -93,6 +94,8 @@ extension Item {
                     received error: \(error.errorDescription)
                 """
             )
+        } else {
+            Self.logger.info("Locked file at: \(targetFileRemotePath, privacy: .public)")
         }
 
         let metadata = SendableItemMetadata(
