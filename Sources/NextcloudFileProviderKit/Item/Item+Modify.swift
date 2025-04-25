@@ -864,7 +864,7 @@ public extension Item {
         // We are handling an item that is available locally but not on the server -- so create it
         // This can happen when a previously ignored file is no longer ignored
         if !modifiedItem.isUploaded, modifiedItem.isDownloaded, modifiedItem.metadata.etag == "" {
-            return await modifiedItem.createUnuploadedRemotely(
+            return await modifiedItem.createUnuploaded(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
                 changedFields: changedFields,
