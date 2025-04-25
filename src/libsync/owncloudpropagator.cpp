@@ -1638,16 +1638,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         return;
     }
 
-    if (!_dirDeletionJobs._jobsToDo.empty()) {
-        _dirDeletionJobs.scheduleSelfOrChild();
-        return;
-    }
-
-    if (status != SyncFileItem::Success
-        && status != SyncFileItem::Restoration
-        && status != SyncFileItem::BlacklistedError
-        && status != SyncFileItem::FileNameClash
-        && status != SyncFileItem::Conflict) {
+    if (status == SyncFileItem::FatalError) {
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
@@ -1661,18 +1652,18 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     if (_errorStatus == SyncFileItem::NoStatus) {
         switch (status) {
         case SyncFileItem::NoStatus:
-        case SyncFileItem::FatalError:
-        case SyncFileItem::NormalError:
-        case SyncFileItem::SoftError:
-        case SyncFileItem::Conflict:
         case SyncFileItem::FileIgnored:
-        case SyncFileItem::FileLocked:
         case SyncFileItem::Restoration:
-        case SyncFileItem::FileNameInvalid:
-        case SyncFileItem::FileNameInvalidOnServer:
-        case SyncFileItem::DetailError:
         case SyncFileItem::Success:
             break;
+        case SyncFileItem::FileLocked:
+        case SyncFileItem::DetailError:
+        case SyncFileItem::SoftError:
+        case SyncFileItem::Conflict:
+        case SyncFileItem::FatalError:
+        case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::FileNameInvalidOnServer:
+        case SyncFileItem::NormalError:
         case SyncFileItem::FileNameClash:
         case SyncFileItem::BlacklistedError:
             _errorStatus = status;
