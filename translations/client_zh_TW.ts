@@ -3195,6 +3195,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>系統不允許以下字元：* &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 以及前導或結尾空格</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation>無法同步檔案「%1」，因為名稱包含了伺服器上不允許的字元。</translation>

@@ -3191,6 +3191,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>다음 문자들은 시스템에서 허용되지 않습니다. * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 선행/후행 공백</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation>&quot;%1&quot; 파일의 이름에 서버에서 허용되지 않는 문자가 포함되어 있어 동기화할 수 없습니다.</translation>
