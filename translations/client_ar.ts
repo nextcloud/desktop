@@ -3182,6 +3182,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>الأحرف التالية غير مسموح بها: * &quot;| &amp;؟،؛: \ / ~ &lt;&gt; بالإضافة إلى الفراغات في البداية و النهاية.</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation>الملف &quot;%1&quot; لا يمكن مزامنته؛ لأن اسمه يحتوي على حروف غير مسموح بها في هذا الخادوم.</translation>

@@ -3195,6 +3195,11 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
         <translation>Følgende tegn er ikke tilladt på systemet: * &quot;Note 124; &amp;?,;:\ / ~ &lt; &gt; indledende / afsluttende mellemrum</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn som ikke er tilladt på serveren.</translation>
