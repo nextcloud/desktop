@@ -6,7 +6,8 @@
 #  LIBSSH_LIBRARIES - Link these to use LibSSH
 #  LIBSSH_DEFINITIONS - Compiler switches required for using LibSSH
 #
-#  Copyright (c) 2009 Andreas Schneider <asn@cryptomilk.org>
+#  SPDX-FileCopyrightText: 2009 Andreas Schneider <asn@cryptomilk.org>
+#  SPDX-License-Identifier: BSD-3-Clause
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.

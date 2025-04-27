@@ -3,7 +3,9 @@
 # Once done this will define
 #  SPARKLE_FOUND - system has Sparkle
 #  SPARKLE_LIBRARY - The framework needed to use Sparkle
-# Copyright (c) 2009, Vittorio Giovara <vittorio.giovara@gmail.com>
+#
+# SPDX-FileCopyrightText: 2009 Vittorio Giovara <vittorio.giovara@gmail.com>
+# SPDX-License-Identifier: BSD-3-Clause
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
