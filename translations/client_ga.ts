@@ -3197,7 +3197,7 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Ní cheadaítear na carachtair seo a leanas ar an gcóras: \ / : ? * &quot; &lt; &gt; | spásanna tosaigh/i ndiaidh a chéile</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -4033,7 +4033,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4045,7 +4045,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4055,7 +4055,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
@@ -4070,12 +4070,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -5711,7 +5711,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
@@ -5721,7 +5721,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n uair(eanna)</numerusform><numerusform>%n uair(eanna)</numerusform><numerusform>%n uair(eanna)</numerusform><numerusform>%n uair(eanna)</numerusform><numerusform>%n uair(eanna)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
@@ -5731,7 +5731,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n lá(anna)</numerusform><numerusform>%n lá(anna)</numerusform><numerusform>%n lá(anna)</numerusform><numerusform>%n lá(anna)</numerusform><numerusform>%n lá(anna)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
