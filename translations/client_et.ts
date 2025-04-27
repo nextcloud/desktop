@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>Tuvastan sinu USB-pääsmikus leiduvaid sertifikaate</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>USB-pääsmiku võtmevalija</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Viska materialiseerunud failid välja</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="52"/>
         <source>Materialised items</source>
-        <translation type="unfinished"/>
+        <translation>Materialiseerunud objektid</translation>
     </message>
 </context>
 <context>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>Kiirsünkroniseerimine sünkroonib vaid nende failide ja kaustade muudatused, millega oled just tegelenud. See võib märgatavalt parandada  reageerimisvõimet virtuaalsete failide algseadistamise ajal. Siiski põhjustab see liigseid allalaadimisi, kui failid teisaldatalse uurimata kausta. </translation>
     </message>
 </context>
 <context>
@@ -645,7 +645,7 @@ Kas peaksin selle kasutajakonto importima?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sa tundud siin kaustas kasutama virtuaalsete failide funktsionaalsust. Hetkel ei ole võimalik kaudselt alla laadida virtuaalseid faile, mis on läbivalt krüptitud. Et virtuaalsed failid ja läbiv krüptimine toimis parimal viisil, siis kontrolli, et krüptitud kausta omadustes on märgitud „Tee alati saadavaks kohalikus seadmes“.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="109"/>
@@ -1137,7 +1137,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna sertifikaatide koopia salvestub seadistusfailis, siis tungivalt soovitame, et kasutad krüptitud pkcs12 sertifikaate.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1255,7 +1255,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Parool:</translation>
+        <translation>&amp;Salasõna:</translation>
     </message>
 </context>
 <context>
@@ -1654,7 +1654,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="171"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Autentimise tõrge: Kasutajanimi või parool on vale</translation>
+        <translation>Viga autentimisel: Kasutajanimi või salasõna on vale</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="183"/>
@@ -2224,7 +2224,11 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroonitud kaustas toimunud muudatuste üle ei õnnestunud usaldusväärsel viisil arvet pidada.
+
+See tähendab, et sünkroonimisklient ei laadi kohalikke muudatusi kohe üles ning otsib muudatusi ja laadib need üles mingi aja tagant (vaikimisi on se kaks tundi).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1607"/>
@@ -2445,7 +2449,10 @@ Alternatiivina saad nad taasta serverist uuesti allalaadides.</translation>
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ on seotud mitme kasutajakontoga.
+Selline lahendus võib põhjustada andmekadu ja pole enam toetatud.
+Olukorra lahendamiseks palun eemalda „%1“ kõikide peale ühe kasutajakonto juurest ja lisa neil uus sünkroniseerimiskaust
+Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes kaustas on mitu mitu sünkroniseerimise andmebaasi. Palun vaata „%1“ kausta ja otsi kasutamata .sync_*.db faile ning eemalda nad.</translation>
     </message>
 </context>
 <context>
@@ -2623,7 +2630,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="132"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Jälgimiskiht ei saanud testteavitust.</translation>
     </message>
 </context>
 <context>
@@ -2631,7 +2638,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="88"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>See probleem juhtub tavaliselt siis, kui „inotify“ alamsüsteemi „watch“ objektide lubatud arv on täis saanud. Lisateavet leiad meie dokumentatsioonist Korduma kippuvate küsimuste alajaotusest.</translation>
     </message>
 </context>
 <context>
@@ -2954,7 +2961,10 @@ For advanced users: this issue might be related to multiple sync database files 
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beetaversioon: selles leidub uut funktsionaalsust, mis veel pole põhjalikult testitud
+- igaöine kompileerimisjärk: luuakse kord päevad testimise ja arenduse jaoks
+
+Kui võtad mõne neist kasutusele, siis eelmise versiooni juurde ei ole võimalik otse tagasi pöörduda - pead ootama kuni eelmine versioon paigaldatule järgi jõuab.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="458"/>
@@ -2962,7 +2972,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- versioon äriklientide jaoks: sisaldab suurklientidele vajalikku funktsionaalsust
+
+Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse tagasi pöörduda - pead ootama kuni eelmine versioon paigaldatule järgi jõuab.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
@@ -2975,7 +2987,8 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Paigalduskanal määratleb mis uuendusi sinu arvutis oleva seadme jaoks pakutakse:
+- stabiilne versioon: sisaldab testitud lahendusi, mida me loeme töökindlaks</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="472"/>
@@ -3045,7 +3058,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="83"/>
         <source>Enter Password</source>
-        <translation>Sisesta parool</translation>
+        <translation>Sisesta salasõna</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -3183,7 +3196,7 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Järgnevad tähemärgid pole siin arvutis/seadmes failide nimedes lubatud: \ / : ? * &quot; &lt; &gt; |  tühikud alguses ja lõpus</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -3302,7 +3315,9 @@ Kui objekti puhul on kustutamine lubatud, siis nad kustutatakse olukorras, kus n
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>See klientrakendus oskab veaotsingulogisid kirjutada ajutisse kausta. Sellised logid on abiks probleemide lahendamisel ja veaotsingul.
+Kuna logid võivad minna hiidsuureks, siis klientrakendus loob iga sünkroonimiskorra jaoks eraldi logifaili ja pakib kokku eelmised logifailid. Lisaks kustutab ta paari tunni möödumisel andmeruumi säästmise nimel vanad logifailid.
+Kui see funktsionaalsus on kasutusel, siis logifailid leiduvad siin: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -3944,7 +3959,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Kui virtuaalsete failide režiim on kasutusel, siis ühtegi faili ei laadita vaikimisi alla. Selle asemel luuakse iga serveris leiduvad faili kohta pisikene „%1“ fail. Sisu allalaadimine toimib konkreetse faili käivitamisel/avamisel või vastavast valikust nende kontekstimenüüs.
+
+Virtuaalsete failide režiim ja valikuline sünkroonimine on omavahel välistavad võimalused. Hetkel valimata kaustad muutuvad vaid võrgus leiduvateks kaustadeks ja sinu valikulise sünkroonimise seadistused lähtestuvad.
+
+Selle režiimi kasutuselevõtmisega katkevad ka kõik hetkel toimivad sünkroonimised.
+
+Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun anna arendajatele teada kõikidest probleemidest ja vigadest, mida sa märkad.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="506"/>
@@ -4091,7 +4112,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Käivitatud „stat“ käsk ei toiminud.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464"/>
@@ -4690,7 +4711,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation>Parool:</translation>
+        <translation>Salasõna:</translation>
     </message>
 </context>
 <context>
@@ -5875,7 +5896,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ kasutajakonto serveris on paigaldatud mittetoetatud tarkvaraversioon %2. Selle kliendi kasutamine mittetoetatud serveriga pole testitud ning võib põhjustada andmekadu ja muid ohtlikke vigu. Kui seda lahendust kasutad, siis teed seda omal vastutusel.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
@@ -6174,7 +6195,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="57"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 fail konfliktis</numerusform><numerusform>%1 faili konfliktis</numerusform></translation>
+        <translation><numerusform>%1 fail onkonfliktis</numerusform><numerusform>%1 faili on konfliktis</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="64"/>
@@ -6518,7 +6539,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="179"/>
         <source>Remove account</source>
-        <translation>Eemalda konto</translation>
+        <translation>Eemalda kasutajakonto</translation>
     </message>
 </context>
 <context>
@@ -6909,7 +6930,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="99"/>
         <source>Make always available locally</source>
-        <translation>Muuda alati saadavaks kohalikus seadmes</translation>
+        <translation>Tee alati saadavaks kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="104"/>
