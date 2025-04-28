@@ -2725,7 +2725,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Iš serverio negauta „E-Tag“ žymė, patikrinkite įgaliotąjį serverį/tinklų sietuvą.</translation>
+        <translation>Iš serverio negauta „E-Tag“ žyma, patikrinkite įgaliotąjį serverį/tinklų sietuvą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="199"/>
