@@ -249,10 +249,10 @@ void DiscoveryPhase::markPermanentDeletionRequests()
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
-    ENFORCE(!_currentRootJob);
+    Q_ASSERT(!_currentRootJob);
     connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
-        ENFORCE(_currentRootJob == sender());
+        Q_ASSERT(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);

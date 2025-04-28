@@ -839,7 +839,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_size = sizeOnServer;
 
             if (serverEntry.isDirectory) {
-                ENFORCE(dbEntry.isDirectory());
+                Q_ASSERT(dbEntry.isDirectory());
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
                 // Deleted locally, changed on server
