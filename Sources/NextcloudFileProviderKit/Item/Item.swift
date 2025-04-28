@@ -152,6 +152,10 @@ public class Item: NSObject, NSFileProviderItem {
         }
     }
 
+    public var isShared: Bool {
+        !metadata.shareType.isEmpty
+    }
+
     public var childItemCount: NSNumber? {
         if metadata.directory {
             NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
