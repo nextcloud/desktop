@@ -253,4 +253,54 @@ final class ItemPropertyTests: XCTestCase {
         )
         XCTAssertFalse(item.capabilities.contains(.allowsTrashing))
     }
+
+    func testItemShared() {
+        var sharedMetadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        sharedMetadata.shareType = [ShareType.publicLink.rawValue]
+        sharedMetadata.ownerId = Self.account.id
+        sharedMetadata.ownerDisplayName = "Mr. Tester Testarino"
+        let sharedItem = Item(
+            metadata: sharedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertTrue(sharedItem.isShared)
+        XCTAssertTrue(sharedItem.isSharedByCurrentUser)
+        XCTAssertNil(sharedItem.ownerNameComponents) // Should be nil if it is shared by us
+
+        var sharedByOtherMetadata = sharedMetadata
+        sharedByOtherMetadata.ownerId = "claucambra"
+        sharedByOtherMetadata.ownerDisplayName = "Claudio Cambra"
+        let sharedByOtherTime = Item(
+            metadata: sharedByOtherMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertTrue(sharedByOtherTime.isShared)
+        XCTAssertFalse(sharedByOtherTime.isSharedByCurrentUser)
+        XCTAssertNotNil(sharedByOtherTime.ownerNameComponents)
+        XCTAssertEqual(sharedByOtherTime.ownerNameComponents?.givenName, "Claudio")
+        XCTAssertEqual(sharedByOtherTime.ownerNameComponents?.familyName, "Cambra")
+
+        var notSharedMetadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        notSharedMetadata.ownerId = Self.account.id
+        notSharedMetadata.ownerDisplayName = "Mr. Tester Testarino"
+        let notSharedItem = Item(
+            metadata: notSharedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        debugPrint(notSharedMetadata.shareType)
+        XCTAssertFalse(notSharedItem.isShared)
+        XCTAssertFalse(notSharedItem.isSharedByCurrentUser)
+        XCTAssertNil(notSharedItem.ownerNameComponents)
+    }
 }
