@@ -162,10 +162,8 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var ownerNameComponents: PersonNameComponents? {
         guard isShared, !isSharedByCurrentUser else { return nil }
-        if #available(macOS 12.0, iOS 15.0, *) {
-            return try? PersonNameComponents(metadata.ownerDisplayName, strategy: .name)
-        }
-        return nil
+        let formatter = PersonNameComponentsFormatter()
+        return formatter.personNameComponents(from: metadata.ownerDisplayName)
     }
 
     public var childItemCount: NSNumber? {
