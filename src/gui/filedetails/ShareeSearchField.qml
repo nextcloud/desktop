@@ -152,7 +152,6 @@ TextField {
         id: suggestionsPopup
 
         width: root.width
-        height: 100
         y: root.height
 
         contentItem: ScrollView {
@@ -160,6 +159,11 @@ TextField {
 
             clip: true
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: shareeListView.contentHeight > shareeListView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+            // need to take the popup's padding in account for the max height
+            // remove bottomPadding twice to leave some space between the window border
+            implicitHeight: Math.min(Window.height - parent.y - parent.topPadding - parent.bottomPadding * 2, contentHeight)
 
             ListView {
                 id: shareeListView
