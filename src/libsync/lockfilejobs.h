@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #ifndef LOCKFILEJOBS_H
 #define LOCKFILEJOBS_H
 
