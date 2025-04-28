@@ -157,7 +157,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isSharedByCurrentUser: Bool {
-        metadata.ownerId == account.id
+        isShared && metadata.ownerId == account.id
     }
 
     public var ownerNameComponents: PersonNameComponents? {
