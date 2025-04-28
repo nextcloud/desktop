@@ -160,6 +160,14 @@ public class Item: NSObject, NSFileProviderItem {
         metadata.ownerId == account.id
     }
 
+    public var ownerNameComponents: PersonNameComponents? {
+        guard isShared, !isSharedByCurrentUser else { return nil }
+        if #available(macOS 12.0, iOS 15.0, *) {
+            return try? PersonNameComponents(metadata.ownerDisplayName, strategy: .name)
+        }
+        return nil
+    }
+
     public var childItemCount: NSNumber? {
         if metadata.directory {
             NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
