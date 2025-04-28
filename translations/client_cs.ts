@@ -3195,7 +3195,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Následující znaky nejsou systémem dovoleny: \ / : ? * &quot; &lt; &gt; | úvodní a navazující mezery</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>

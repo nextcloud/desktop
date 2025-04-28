@@ -4031,7 +4031,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; karakterinin bulunduğu klasör adları bu sistemde desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4043,7 +4043,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; karakterinin bulunduğu dosya adları bu sistemde desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4053,7 +4053,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Klasör adında en az bir geçersiz karakter var</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
@@ -4068,12 +4068,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Klasör adı bu dosya sisteminde ayrılmış ve kullanılamaz.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı bu dosya sisteminde ayrılmış ve kullanılamaz.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -4421,7 +4421,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="130"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan silinen yerel öge silinirken geçici bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="139"/>
@@ -5709,7 +5709,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dakika</numerusform><numerusform>%n dakika</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
@@ -5719,7 +5719,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saat</numerusform><numerusform>%n saat</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
@@ -5729,7 +5729,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n gün</numerusform><numerusform>%n gün</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -6169,7 +6169,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="322"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Dosya silinirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>

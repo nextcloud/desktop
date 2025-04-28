@@ -3197,7 +3197,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>系統不允許使用以下字元：\ / : ? * &quot; &lt; &gt; | 以及前導或結尾空格</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -4033,7 +4033,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>此檔案系統不支援包含「%1」字元的資料夾名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4045,7 +4045,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4055,7 +4055,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>資料夾名稱包含了至少一個無效字元</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
@@ -4070,12 +4070,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾名稱是此檔案系統上的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱是此檔案系統上的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
@@ -5711,7 +5711,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n分鐘</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
@@ -5721,7 +5721,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n小時</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
@@ -5731,7 +5731,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n天</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
