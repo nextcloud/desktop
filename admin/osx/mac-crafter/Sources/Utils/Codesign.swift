@@ -107,7 +107,9 @@ func saveCodesignEntitlements(target: String, path: String) throws {
 }
 
 func codesignClientAppBundle(
-    at clientAppDir: String, withCodeSignIdentity codeSignIdentity: String
+    at clientAppDir: String,
+    withCodeSignIdentity codeSignIdentity: String,
+    usingEntitlements entitlementsPath: String? = nil
 ) throws {
     print("Code-signing Nextcloud Desktop Client libraries, frameworks and plugins...")
 
@@ -197,5 +199,13 @@ func codesignClientAppBundle(
     let mainExecutableName = String(appName.dropLast(".app".count))
     let mainExecutablePath = "\(binariesDir)/\(mainExecutableName)"
     try recursivelyCodesign(path: binariesDir, identity: codeSignIdentity, skip: [mainExecutablePath])
-    try codesign(identity: codeSignIdentity, path: mainExecutablePath)
+
+    var mainExecutableCodesignOptions = defaultCodesignOptions
+    if let entitlementsPath {
+        mainExecutableCodesignOptions =
+            "--timestamp --force --verbose=4 --options runtime --entitlements \"\(entitlementsPath)\""
+    }
+    try codesign(
+        identity: codeSignIdentity, path: mainExecutablePath, options: mainExecutableCodesignOptions
+    )
 }
