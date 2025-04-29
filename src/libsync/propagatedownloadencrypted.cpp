@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #include "propagatedownloadencrypted.h"
 #include "clientsideencryptionjobs.h"
 #include "encryptedfoldermetadatahandler.h"
