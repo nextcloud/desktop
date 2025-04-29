@@ -1480,7 +1480,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1710"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1734"/>
         <source>Error writing metadata to the database</source>
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
@@ -4243,38 +4243,38 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1420"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1438"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Não foi possível remover o arquivo %1 do BD local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1434"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1464"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1470"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1476"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1498"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1504"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1482"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1488"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1516"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1522"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1528"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>A pasta %1 não pode ser tornada somente leitura: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1476"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1528"/>
         <source>unknown exception</source>
         <translation>exceção desconhecida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1520"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1542"/>
         <source>File is currently in use</source>
         <translation>O arquivo está em uso no momento</translation>
     </message>
