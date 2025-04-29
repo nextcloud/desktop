@@ -244,7 +244,12 @@ struct Build: ParsableCommand {
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
-            try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+            let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
+            try codesignClientAppBundle(
+                at: clientAppDir,
+                withCodeSignIdentity: codeSignIdentity,
+                usingEntitlements: entitlementsPath
+            )
         }
 
         print("Placing Nextcloud Desktop Client in \(productPath)...")
