@@ -26,6 +26,7 @@ class TestFolderStatusModel;
 class ShareTestHelper;
 class EndToEndTestHelper;
 class TestSyncConflictsModel;
+class TestMigration;
 
 namespace OCC {
 
@@ -413,6 +414,7 @@ private:
     friend class ::ShareTestHelper;
     friend class ::EndToEndTestHelper;
     friend class ::TestFolderStatusModel;
+    friend class ::TestMigration;
 };
 
 } // namespace OCC
