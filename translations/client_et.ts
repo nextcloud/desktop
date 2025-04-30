@@ -4017,6 +4017,28 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <translation>Failinimed, mis lõppevad punktiga pole selles failisüsteemis toetatud.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>Kaustanimed, milles leidub tähemärk „%1“, pole selles failisüsteemis toetatud.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>Failinimed, milles leidub tähemärk „%1“, pole selles failisüsteemis toetatud.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation>Kaustanimes on vähemalt üks keelatud tähemärk</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Failinimes on vähemalt üks keelatud tähemärk</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
@@ -4030,9 +4052,8 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>Kaustanimed, milles leidub tähemärk „%1“, pole selles failisüsteemis toetatud.</translation>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Kaustanimi on selles failisüsteemis reserveeritud nime staatuses.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4042,9 +4063,8 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>Failinimed, milles leidub tähemärk „%1“, pole selles failisüsteemis toetatud.</translation>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Failinimi on selles failisüsteemis reserveeritud nime staatuses.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4053,28 +4073,8 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>Folder name contains at least one invalid character</source>
-        <translation>Kaustanimes on vähemalt üks keelatud tähemärk</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Failinimi „%1“ on selles failisüsteemis reserveeritud nime staatuses.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Failinimes on vähemalt üks keelatud tähemärk</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="431"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Kaustanimi on selles failisüsteemis reserveeritud nime staatuses.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Failinimi on selles failisüsteemis reserveeritud nime staatuses.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
