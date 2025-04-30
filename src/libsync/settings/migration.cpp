@@ -9,6 +9,18 @@
 #include "theme.h"
 #include "configfile.h"
 #include "version.h"
+#include "common/utility.h"
+
+#include <QSettings>
+#include <QDir>
+#include <QStandardPaths>
+
+namespace {
+    constexpr auto legacyCfgFileNameC = "owncloud.cfg";
+    constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
+    constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
+    constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
+}
 
 namespace OCC {
 
