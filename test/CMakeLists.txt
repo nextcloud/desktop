@@ -149,6 +149,7 @@ nextcloud_add_test(Account)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
+nextcloud_add_test(Migration)
 
 if(NOT BUILD_FILE_PROVIDER_MODULE)
     # the File Provider build crashes this test in CI for some reason
