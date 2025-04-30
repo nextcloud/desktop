@@ -4016,6 +4016,28 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Les noms de fichier se terminant par un point ne sont pas pris en charge sur votre système.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Le nom du fichier contient au moins un caractère interdit</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
@@ -4029,8 +4051,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
+        <source>Folder name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4041,8 +4062,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
+        <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4052,28 +4072,8 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Le nom %1 est un nom réservé sur ce système de fichiers.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Le nom du fichier contient au moins un caractère interdit</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="431"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>

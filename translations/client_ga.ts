@@ -4018,6 +4018,28 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le hainmneacha comhaid a chríochnaíonn le tréimhse ar an gcóras comhad seo.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Tá carachtar neamhbhailí amháin ar a laghad san ainm comhaid</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
@@ -4031,9 +4053,8 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4043,9 +4064,8 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4054,28 +4074,8 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>Folder name contains at least one invalid character</source>
-        <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Is ainm forchoimeádta é % 1 ar an gcóras comhad seo.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Tá carachtar neamhbhailí amháin ar a laghad san ainm comhaid</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="431"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>

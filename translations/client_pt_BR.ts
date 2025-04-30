@@ -3986,7 +3986,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>Por favor digite uma senha para o seu compartilhamento:</translation>
+        <translation>Por favor, digite uma senha para seu compartilhamento:</translation>
     </message>
 </context>
 <context>
@@ -4012,7 +4012,29 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>File names ending with a period are not supported on this file system.</translation>
+        <translation>Os nomes de arquivos que terminam com um ponto final não são compatíveis com esse sistema de arquivos.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>O nome do arquivo contém pelo menos um caractere inválido </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4028,8 +4050,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
+        <source>Folder name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4040,8 +4061,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
+        <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4051,33 +4071,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 nome é um nome reservado neste sistema de arquivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>O nome do arquivo contém pelo menos um caractere inválido </translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="431"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do arquivo contém espaços deixados para trás . </translation>
+        <translation>O nome do arquivo contém espaços finais. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="436"/>
@@ -4105,7 +4105,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Arquivo/pasta será ignorado porque está oculto. </translation>
+        <translation>Arquivo/Pasta será ignorado porque está oculto. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="461"/>
@@ -5708,7 +5708,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
@@ -5718,7 +5718,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform><numerusform>%n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
@@ -5728,7 +5728,7 @@ Servidor respondeu com erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dia</numerusform><numerusform>%n dias</numerusform><numerusform>%n dias</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -6265,12 +6265,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
-        <translation>Permitir recompartilhar</translation>
+        <translation>Permitir recompartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="441"/>
         <source>Hide download</source>
-        <translation>Ocultar enviar</translation>
+        <translation>Ocultar download</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="468"/>
@@ -6338,7 +6338,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="313"/>
         <source>Sharing is disabled</source>
-        <translation>O compartilhamento está desativado</translation>
+        <translation>Compartilhamento está desativado</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="320"/>
@@ -6348,7 +6348,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="328"/>
         <source>Sharing is disabled.</source>
-        <translation>O compartilhamento está desativado.</translation>
+        <translation>Compartilhamento está desativado.</translation>
     </message>
 </context>
 <context>

@@ -4018,6 +4018,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案系統不支援以「.」結尾的檔案名。</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>此檔案系統不支援包含「%1」字元的資料夾名稱。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
+        <comment>%1: the invalid character</comment>
+        <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <source>Folder name contains at least one invalid character</source>
+        <translation>資料夾名稱包含了至少一個無效字元</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>檔案名稱包含至少一個無效的字元</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
@@ -4031,9 +4053,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>此檔案系統不支援包含「%1」字元的資料夾名稱。</translation>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>資料夾名稱是此檔案系統上的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4043,9 +4064,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <comment>%1: the invalid character</comment>
-        <translation>此檔案系統不支援包含「%1」字元的檔案名稱。</translation>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>檔案名稱是此檔案系統上的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4054,28 +4074,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>Folder name contains at least one invalid character</source>
-        <translation>資料夾名稱包含了至少一個無效字元</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 名稱是此檔案系統上的保留名稱。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="428"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>檔案名稱包含至少一個無效的字元</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="431"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>資料夾名稱是此檔案系統上的保留名稱。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="432"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>檔案名稱是此檔案系統上的保留名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="433"/>
