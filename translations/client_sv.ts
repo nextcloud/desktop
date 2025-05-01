@@ -4822,7 +4822,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
         <source>Secure file drop link</source>
-        <translation>Säker gömd fillista-länk</translation>
+        <translation>Säker filinkast-länk</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
@@ -4842,7 +4842,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="769"/>
         <source>Secure file drop</source>
-        <translation>Säker gömd fillista</translation>
+        <translation>Säkert filinkast</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="969"/>
@@ -6263,7 +6263,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="382"/>
         <source>File drop (upload only)</source>
-        <translation>Gömd fillista (endast uppladdning)</translation>
+        <translation>Filinkast (endast uppladdning)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
