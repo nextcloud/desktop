@@ -1548,7 +1548,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation>Klicken um die Datei zu öffnen</translation>
+        <translation>Klicken, um die Datei zu öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -2658,7 +2658,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="85"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Hier klicken um einen lokalen Ordner zum Synchronisieren auszuwählen.</translation>
+        <translation>Hier klicken, um einen lokalen Ordner zum Synchronisieren auszuwählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="92"/>

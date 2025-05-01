@@ -3044,7 +3044,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Noklikšķiniet šeit&lt;/a&gt;, lai pieprasītu lietotnes paroli no tīmekļa saskarnes.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klikšķināt šeit&lt;/a&gt;, lai tīmekļa saskarnē pieprasītu lietotnes paroli.</translation>
     </message>
 </context>
 <context>
