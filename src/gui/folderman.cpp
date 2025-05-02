@@ -170,6 +170,10 @@ void FolderMan::registerFolderWithSocketApi(Folder *folder)
 
 int FolderMan::setupFolders()
 {
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        return 0;
+    }
+
     Utility::registerUriHandlerForLocalEditing();
 
     unloadAndDeleteAllFolders();
@@ -186,7 +190,6 @@ int FolderMan::setupFolders()
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
-    // this is done in Application::configVersionMigration
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
     const auto accounts = AccountManager::instance()->accounts();
@@ -225,7 +228,10 @@ int FolderMan::setupFolders()
         folder->processSwitchedToVirtualFiles();
     }
 
-    return _folderMap.size();
+    const auto foldersListSize = _folderMap.size();
+    qCWarning(lcFolderMan) << "Folders migrated: " << foldersListSize;
+
+    return foldersListSize;
 }
 
 void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders)

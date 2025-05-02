@@ -525,9 +525,9 @@ AccountPtr AccountManager::createAccount()
     const auto acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
-        ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
+            ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     connect(acc.data(), &Account::lockFileError,
-        Systray::instance(), &Systray::showErrorMessageDialog);
+            Systray::instance(), &Systray::showErrorMessageDialog);
 
     return acc;
 }
@@ -604,82 +604,57 @@ void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
     Q_EMIT forceLegacyImportChanged();
 }
 
-void AccountManager::setupAccountsAndFolders()
+
+int AccountManager::setupAccounts()
 {
-    const auto accountsRestoreResult = restoreExistingAccounts();
-
-    const auto foldersListSize = FolderMan::instance()->setupFolders();
-
-    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
-        QStringList list;
-        for (const auto &account : accounts) {
-            list << account->account()->prettyName().prepend("- ");
-        }
-        return list.join("\n");
-    };
-
-    if (const auto accounts = AccountManager::instance()->accounts();
-        accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
-        && !accounts.isEmpty()) {
-
-        const auto accountsListSize = accounts.size();
-        if (Theme::instance()->displayLegacyImportDialog()) {
-            const auto accountsRestoreMessage = accountsListSize > 1
-                ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
-                : tr("1 account");
-            const auto foldersRestoreMessage = foldersListSize > 1
-                ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
-                : tr("1 folder");
-            const auto messageBox = new QMessageBox(QMessageBox::Information,
-                                                    tr("Legacy import"),
-                                                    tr("Imported %1 and %2 from a legacy desktop client.\n%3",
-                                                       "number of accounts and folders imported. list of users.")
-                                                        .arg(accountsRestoreMessage,
-                                                             foldersRestoreMessage,
-                                                             prettyNamesList(accounts))
-                                                    );
-            messageBox->setWindowModality(Qt::NonModal);
-            messageBox->open();
-        }
-
-        qCWarning(lcAccountManager) << "Migration result AccountManager::AccountsRestoreResult:" << accountsRestoreResult;
-        qCWarning(lcAccountManager) << "Folders migrated: " << foldersListSize;
-        qCWarning(lcAccountManager) << accountsListSize << "account(s) were migrated:" << prettyNamesList(accounts);
-
-    } else {
-        qCWarning(lcAccountManager) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
-        qCWarning(lcAccountManager) << "Folders migrated: " << foldersListSize;
-        qCWarning(lcAccountManager) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
+    if (!confirmRestoreExistingAccounts()) {
+        return 0;
     }
-}
 
-AccountManager::AccountsRestoreResult AccountManager::restoreExistingAccounts()
-{
     ConfigFile configFile;
     const auto tryMigrate = configFile.overrideServerUrl().isEmpty();
-
-    auto isALegacyClientRestore = false;
-    const auto whichConfigFileToRestore = [&](){
-        const auto legacyConfigFile = configFile.discoveredLegacyConfigFile();
-        if (legacyConfigFile.isEmpty()) {
-            return configFile.configFile();
+    const auto configFileToRestore = configFile.configFileToRestore();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreResult::AccountsRestoreSuccess;
+    if (accountsRestoreResult = restore(configFileToRestore, tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (accountsRestoreResult = restore(configFileToRestore, tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+            qCCritical(lcAccountManager) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your system account.")
+                    .arg(ConfigFile().configFile()),
+                QMessageBox::Ok
+                );
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+            return 0;
         }
+    }
 
-        isALegacyClientRestore = true;
-        return legacyConfigFile;
-    };
+    const auto accountsMigrated = AccountManager::instance()->accounts().size();
+    qCWarning(lcAccountManager) << "Migration result AccountManager::AccountsRestoreResult:" << accountsRestoreResult;
+    qCWarning(lcAccountManager) << "Accounts migrated:" << accountsMigrated;
 
-    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
-    const auto configFileToRestore = whichConfigFileToRestore();
+    return accountsMigrated;
+}
+
+bool AccountManager::confirmRestoreExistingAccounts() const
+{
+    ConfigFile configFile;
+    const auto configFileToRestore = configFile.configFileToRestore();
     auto oCSettings = std::make_unique<QSettings>(configFileToRestore, QSettings::IniFormat);
     oCSettings->beginGroup(QLatin1String(accountsC));
     const auto accountsListSize = oCSettings->childGroups().size();
     oCSettings->endGroup();
-    auto showDialogs = false;
     if (!forceLegacyImport() && accountsListSize > 0
         && Theme::instance()->displayLegacyImportDialog()
-        && isALegacyClientRestore) {
-        showDialogs = true;
+        && !configFile.discoveredLegacyConfigFile().isEmpty()) {
         const auto importQuestion = accountsListSize > 1
             ? tr("%1 accounts were detected from a legacy desktop client.\n"
                  "Should the accounts be imported?").arg(QString::number(accountsListSize))
@@ -693,33 +668,11 @@ AccountManager::AccountsRestoreResult AccountManager::restoreExistingAccounts()
             QMessageBox::information(nullptr,
                                      tr("Legacy import"),
                                      tr("Could not import accounts from legacy client configuration."));
-            return accountsRestoreResult;
+            return false;
         }
     }
 
-    if (accountsRestoreResult = restore(configFileToRestore, tryMigrate);
-        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (accountsRestoreResult = AccountManager::instance()->restore(configFileToRestore, tryMigrate);
-            accountsRestoreResult == AccountManager::AccountsRestoreFailure
-            && showDialogs) {
-            qCCritical(lcAccountManager) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your system account.")
-                    .arg(ConfigFile().configFile()),
-                QMessageBox::Ok
-                );
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-        }
-    }
-
-    return accountsRestoreResult;
+    return true;
 }
 
 }

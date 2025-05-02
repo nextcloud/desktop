@@ -100,11 +100,9 @@ private:
 
     void handleEditLocallyFromOptions();
 
-    /**
-     * Maybe a newer version of the client was used with this config file:
-     * if so, backup, confirm with user and remove the config that can't be read.
-     */
-    bool configVersionMigration();
+    bool makeConfigSettingsBackwardCompatible();
+    bool confirmConfigChangesOrQuitApp(bool isDeleteKeysEmpty, const QStringList backupFilesList);
+    void setupAccountsAndFolders();
 
     QPointer<ownCloudGui> _gui;
 
