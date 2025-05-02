@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2011 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 

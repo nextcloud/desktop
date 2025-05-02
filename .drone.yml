@@ -2,6 +2,9 @@
 kind: pipeline
 name: Debian
 
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 steps:
 - name: build
   image: ghcr.io/nextcloud/continuous-integration-client-debian:client-debian-3
@@ -20,5 +23,5 @@ trigger:
     - push
 ---
 kind: signature
-hmac: e8978756454c02822b9b6b1b05013594fc5a6db04ac18537ef696fbf49700f7e
+hmac: 93c5b346ab89a97fab839c71cf8b32e79c78b72105acb59a1848ece230047f7f
 ...

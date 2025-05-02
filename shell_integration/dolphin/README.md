@@ -1,3 +1,7 @@
+<!--
+  - SPDX-FileCopyrightText: 2014 ownCloud GmbH
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 - Recompile and install recent enough version of dolphin and kio (git from oct 2015)
 
 - Build and install the plugin

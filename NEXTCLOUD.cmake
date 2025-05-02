@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # keep the application name and short name the same or different for dev and prod build
 # or some migration logic will behave differently for each build
 if(NEXTCLOUD_DEV)

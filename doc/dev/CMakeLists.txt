@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2015 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

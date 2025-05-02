@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )

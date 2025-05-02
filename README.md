@@ -1,3 +1,8 @@
+<!--
+  - SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-FileCopyrightText: 2011 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 # Nextcloud Desktop Client
 
 The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server with your computer.
