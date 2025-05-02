@@ -250,18 +250,24 @@ Application::Application(int &argc, char **argv)
     parseOptions(arguments());
 
     ConfigFile configFile;
-    if (configFile.exists()) {
-        if (const auto genericConfigLocation = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
-            configFile.setupConfigFolderFromLegacyLocation(genericConfigLocation)) {
-            qCWarning(lcApplication) << "Setup of config folder and files from legacy location" << genericConfigLocation << "failed.";
-        }
+
+    // First check if there is an existing config from a previous version
+    if (configFile.exists() && configVersionMigration()) {
+        qCWarning(lcApplication) << "Config version migration was not possible.";
     } else {
+        // check legacy location for existing config files
+        // if (const auto genericConfigLocation = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
+        //     !configFile.setupConfigFolderFromLegacyLocation(genericConfigLocation)) {
+        //     qCWarning(lcApplication) << "Setup of config folder and files from legacy location" << genericConfigLocation << "failed.";
+        // } else
+
         if (const auto appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-            configFile.setupConfigFolderFromLegacyLocation(appDataLocation)) {
+            !configFile.setupConfigFolderFromLegacyLocation(appDataLocation)) {
             qCWarning(lcApplication) << "Setup of config folder and files from legacy location" << appDataLocation << "failed.";
         }
     }
 
+<<<<<<< HEAD
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
         for (const auto &accountState : AccountManager::instance()->accounts()) {
@@ -271,6 +277,8 @@ Application::Application(int &argc, char **argv)
         }
     }
 
+=======
+>>>>>>> 94a1ec663e (fix(migration): run client with --conf-dir after upgrade.)
     //no need to waste time;
     if (_helpOnly || _versionOnly) {
         return;
@@ -353,7 +361,7 @@ Application::Application(int &argc, char **argv)
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    // create accounts and folders from a legacy desktop client or from the current config file
+    // create accounts and folders from a legacy desktop client or for a new config file
     _folderManager.reset(new FolderMan);
     FolderMan::instance()->setSyncEnabled(true);
     AccountManager::instance()->setupAccountsAndFolders();

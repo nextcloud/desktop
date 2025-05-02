@@ -606,7 +606,7 @@ void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
 
 void AccountManager::setupAccountsAndFolders()
 {
-    const auto accountsRestoreResult = restoreLegacyAccount();
+    const auto accountsRestoreResult = restoreExistingAccounts();
 
     const auto foldersListSize = FolderMan::instance()->setupFolders();
 
@@ -653,25 +653,32 @@ void AccountManager::setupAccountsAndFolders()
     }
 }
 
-AccountManager::AccountsRestoreResult AccountManager::restoreLegacyAccount()
+AccountManager::AccountsRestoreResult AccountManager::restoreExistingAccounts()
 {
     ConfigFile configFile;
     const auto tryMigrate = configFile.overrideServerUrl().isEmpty();
 
-    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
-    const auto legacyConfigFile = ConfigFile().findLegacyConfigFile();
-    if (legacyConfigFile.isEmpty()) {
-        return accountsRestoreResult;
-    }
+    auto isALegacyClientRestore = false;
+    const auto whichConfigFileToRestore = [&](){
+        const auto legacyConfigFile = configFile.discoveredLegacyConfigFile();
+        if (legacyConfigFile.isEmpty()) {
+            return configFile.configFile();
+        }
 
-    const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
-    auto oCSettings = std::make_unique<QSettings>(legacyConfigFile, QSettings::IniFormat);
+        isALegacyClientRestore = true;
+        return legacyConfigFile;
+    };
+
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    const auto configFileToRestore = whichConfigFileToRestore();
+    auto oCSettings = std::make_unique<QSettings>(configFileToRestore, QSettings::IniFormat);
     oCSettings->beginGroup(QLatin1String(accountsC));
     const auto accountsListSize = oCSettings->childGroups().size();
     oCSettings->endGroup();
-
     auto showDialogs = false;
-    if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
+    if (!forceLegacyImport() && accountsListSize > 0
+        && Theme::instance()->displayLegacyImportDialog()
+        && isALegacyClientRestore) {
         showDialogs = true;
         const auto importQuestion = accountsListSize > 1
             ? tr("%1 accounts were detected from a legacy desktop client.\n"
@@ -688,27 +695,27 @@ AccountManager::AccountsRestoreResult AccountManager::restoreLegacyAccount()
                                      tr("Could not import accounts from legacy client configuration."));
             return accountsRestoreResult;
         }
+    }
 
-        if (accountsRestoreResult = restore(legacyConfigFile, tryMigrate);
-            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-            // If there is an error reading the account settings, try again
-            // after a couple of seconds, if that fails, give up.
-            // (non-existence is not an error)
-            Utility::sleep(5);
-            if (accountsRestoreResult = AccountManager::instance()->restore(legacyConfigFile, tryMigrate);
-                accountsRestoreResult == AccountManager::AccountsRestoreFailure
-                && showDialogs) {
-                qCCritical(lcAccountManager) << "Could not read the account settings, quitting";
-                QMessageBox::critical(
-                    nullptr,
-                    tr("Error accessing the configuration file"),
-                    tr("There was an error while accessing the configuration "
-                       "file at %1. Please make sure the file can be accessed by your system account.")
-                        .arg(ConfigFile().configFile()),
-                    QMessageBox::Ok
-                    );
-                QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            }
+    if (accountsRestoreResult = restore(configFileToRestore, tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (accountsRestoreResult = AccountManager::instance()->restore(configFileToRestore, tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure
+            && showDialogs) {
+            qCCritical(lcAccountManager) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your system account.")
+                    .arg(ConfigFile().configFile()),
+                QMessageBox::Ok
+                );
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         }
     }
 
