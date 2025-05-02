@@ -180,27 +180,27 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Apturēt sinhronizēšanu visiem</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Pievienot kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Pievienot jaunu kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Iziet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
@@ -587,7 +587,7 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Neatzīmētās mapes tiks &lt;b&gt;noņemtas&lt;/b&gt; no lokālās datņu sistēmas un vairs netiks sinhronizētas ar šo datoru</translation>
+        <translation>Neatzīmētās mapes tiks &lt;b&gt;noņemtas&lt;/b&gt; no vietējās datņu sistēmas un šajā datorā vairs netiks sinhronizētas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="124"/>
@@ -634,7 +634,7 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Savienojuma iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -1668,7 +1668,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="298"/>
         <source>The configured server for this client is too old</source>
-        <translation>Konfigurētais serveris ir par vecu priekš šī klienta</translation>
+        <translation>Šī klienta konfigurētais serveris ir pārāk vecs</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="299"/>
@@ -1719,7 +1719,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="327"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Mape klientam nav pieejama, atļauja liegta</translation>
+        <translation>Mape klientā nav pieejama, atļauja liegta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
@@ -1885,8 +1885,8 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <location filename="../src/libsync/encryptfolderjob.cpp" line="129"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Nevarēja ģenerēt metadatus šifrēšanai, atslēdz mapi.
-Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
+        <translation>Nevarēja izveidot metadatus šifrēšanai, atslēdz mapi.
+Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     </message>
 </context>
 <context>
@@ -2113,7 +2113,7 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="478"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 tika pārvietota uz %2 un %n citas datne(s) tika pārvietotas.</numerusform><numerusform>%1 tika pārvietota uz %2 un %n citas datne(s) tika pārvietotas.</numerusform><numerusform>%1 tika pārvietota uz %2 un %n citas datne(s) tika pārvietotas.</numerusform></translation>
+        <translation><numerusform>%1 tika pārvietota uz %2 un %n citas datne(s) tika pārvietotas.</numerusform><numerusform>%1 tika pārvietota uz %2 un %n citas datne(s) tika pārvietotas.</numerusform><numerusform>%1 tika pārvietota uz %2, un tika pāŗvietota(s) %n cita(s) datne(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="480"/>
@@ -2183,7 +2183,8 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
         <location filename="../src/gui/folder.cpp" line="1449"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Mape ir pārsniegusi iestatīto mapju lieluma ierobežojumu (%1 MB): %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1460"/>
@@ -2198,12 +2199,12 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1479"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>Mape %1 ir pārsniegusi iestatīto mapju lieluma ierobežojumu (%2 MB).</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1480"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Vai apturēt šīs mapes sinhronizēšanu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1555"/>
@@ -2919,7 +2920,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Jūs nevarat atspējot automātisko startu, jo sistēmas līmeņa automātiskais starts ir iespējots.</translation>
+        <translation>Nevar atspējot automātisko palaišanu, jo tā ir iespējota sistēmas līmenī.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3360,7 +3361,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
         <source>The file identifier is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Datnes identifikators ir tukšs</translation>
     </message>
 </context>
 <context>
@@ -3416,7 +3417,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="45"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Starpniekservera iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="51"/>
@@ -3911,7 +3912,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Pievienot %1 kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
@@ -4300,12 +4301,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Datni nevarēja pilnībā lejupielādēt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="947"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Lejupielādētā datne ir tukša, bet serveris sacīja, ka tai vajadzētu būt %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1210"/>
@@ -4747,7 +4748,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="104"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="122"/>
@@ -5400,12 +5401,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="194"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Iziet no %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="200"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Apturēt sinhronizēšanu visiem</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="206"/>
@@ -6089,7 +6090,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
         <source>You changed %1</source>
-        <translation>Tu mainīji %1</translation>
+        <translation>Tu izmainīji %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="835"/>
@@ -6347,7 +6348,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="94"/>
         <source>Sync now</source>
-        <translation>Sinhronizēt tūlīt</translation>
+        <translation>Sinhronizēt tagad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
