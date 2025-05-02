@@ -261,21 +261,54 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
 
     if (!ConfigFile().exists()) {
-        if (const auto genericConfigLocation = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
-            setupConfigFolderFromLegacyLocation(genericConfigLocation)) {
-            qCWarning(lcApplication) << "Setup of config folder and files from legacy location" << genericConfigLocation << "failed.";
+        setApplicationName(_theme->appNameGUI());
+        QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
+
+        if (legacyDir.endsWith('/')) {
+            legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        }
+        setApplicationName(_theme->appName());
+        if (QFileInfo(legacyDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
+            qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
+
+            if (!QFile::rename(legacyDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, legacyDir);
+#endif
+            }
         }
     } else {
-        if (const auto appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-            setupConfigFolderFromLegacyLocation(appDataLocation)) {
-            qCWarning(lcApplication) << "Setup of config folder and files from legacy location" << appDataLocation << "failed.";
-        }
+        setupConfigFile();
     }
 
-    // try to migrate legacy accounts and folders from a previous client version
-    // only copy the settings and check what should be skipped
-    if (ConfigFile().exists() && !configVersionMigration()) {
-        qCWarning(lcApplication) << "Config version migration was not possible.";
+    if (_theme->doNotUseProxy()) {
+        ConfigFile().setProxyType(QNetworkProxy::NoProxy);
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            if (accountState && accountState->account()) {
+                accountState->account()->setNetworkProxySetting(Account::AccountNetworkProxySetting::GlobalProxy);
+            }
+        }
     }
 
     parseOptions(arguments());
@@ -307,6 +340,12 @@ Application::Application(int &argc, char **argv)
 
     setupLogging();
     setupTranslations();
+
+    // try to migrate legacy accounts and folders from a previous client version
+    // only copy the settings and check what should be skipped
+    if (!configVersionMigration()) {
+        qCWarning(lcApplication) << "Config version migration was not possible.";
+    }
 
     ConfigFile cfg;
     {
@@ -377,14 +416,6 @@ Application::Application(int &argc, char **argv)
     _gui->setupCloudProviders();
 #endif
 
-    if (_theme->doNotUseProxy()) {
-        ConfigFile().setProxyType(QNetworkProxy::NoProxy);
-        for (const auto &accountState : AccountManager::instance()->accounts()) {
-            if (accountState && accountState->account()) {
-                accountState->account()->setNetworkProxySetting(Account::AccountNetworkProxySetting::GlobalProxy);
-            }
-        }
-    }
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
@@ -508,7 +539,7 @@ void Application::setupAccountsAndFolders()
     }
 }
 
-bool Application::setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const
+void Application::setupConfigFile()
 {
     // Migrate from version <= 2.4
     setApplicationName(_theme->appNameGUI());
@@ -520,45 +551,44 @@ bool Application::setupConfigFolderFromLegacyLocation(const QString &legacyLocat
     QT_WARNING_POP
     setApplicationName(_theme->appName());
 
-    auto legacyDir = legacyLocation;
-    if (legacyDir.endsWith('/')) {
-        legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (oldDir.endsWith('/')) {
+        oldDir.chop(1);
     }
 
-    if (!QFileInfo(legacyDir).isDir()) {
-        return false;
+    if (!QFileInfo(oldDir).isDir()) {
+        return;
     }
 
     auto confDir = ConfigFile().configPath();
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
     if (confDir.endsWith('/')) {
         confDir.chop(1);
     }
 
-    qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
-    if (!QFile::rename(legacyDir, confDir)) {
-        qCWarning(lcApplication) << "Failed to move the old config directory" << legacyDir << "to new location" << confDir;
+    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    if (!QFile::rename(oldDir, confDir)) {
+        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+        // Try to move the files one by one
         if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-            const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
-            qCInfo(lcApplication) << "Will move the individual files:" << filesList;
-            auto setupCompleted = false;
+            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+            qCInfo(lcApplication) << "Will move the individual files" << filesList;
             for (const auto &name : filesList) {
-                if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
-                    qCDebug(lcApplication) << "Fallback move of " << name << "also failed";
-                    continue;
+                if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
                 }
-                setupCompleted = true;
-                qCInfo(lcApplication)  << "Move of " << name << "succeeded.";
             }
-            return setupCompleted;
         }
     } else {
 #ifndef Q_OS_WIN
         // Create a symbolic link so a downgrade of the client would still find the config.
-        return QFile::link(confDir, legacyDir);
+        QFile::link(confDir, oldDir);
 #endif
     }
-
-    return false;
 }
 
 AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
