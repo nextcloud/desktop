@@ -1191,14 +1191,13 @@ void User::slotFetchGroupFolders()
 
 void User::slotUpdateQuota(qint64 total, qint64 used)
 {
-    if (total <= 0) {
+    if (total <= 0 || !ConfigFile().showQuotaWarningNotifications()) {
         return;
     }
 
-    _notifiedNotifications.clear();
     const auto percent = used / (double)total * 100;
     const auto percentInt = qMin(qRound(percent), 100);
-    qCDebug(lcActivity) << tr("Quota is updated; %1\% of the total space is used.").arg(QString::number(percentInt));
+    qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
     if (percentInt >= 80) {
         const auto localFolderName = getFolder();
 
@@ -1207,13 +1206,15 @@ void User::slotUpdateQuota(qint64 total, qint64 used)
         activity._syncResultStatus = SyncResult::Success;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = "Quota Warning";
-        activity._message = tr("More than %1\% of storage in use").arg(QString::number(80));
+        activity._message = tr("More than %1 percent of storage in use").arg(QString::number(80));
         activity._link = localFolderName->shortGuiLocalPath();
         activity._accName = localFolderName->accountState()->account()->displayName();
         activity._folder = localFolderName->alias();
         activity._id = qHash(tr("%1-quota-threshold-reached").arg(80));
-        _activityModel->addNotificationToActivityList(activity);
-        showDesktopNotification(activity);
+        if (!_notifiedNotifications.contains(activity._id)) {
+            _activityModel->addNotificationToActivityList(activity);
+            showDesktopNotification(activity);
+        }
     }
 }
 
