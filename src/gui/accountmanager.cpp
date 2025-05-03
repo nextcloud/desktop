@@ -260,6 +260,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setPromptDeleteFiles(settings->value(configFile.promptDeleteC).toBool());
     configFile.setShowCallNotifications(settings->value(configFile.showCallNotificationsC).toBool());
     configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC).toBool());
+    configFile.setShowQuotaWarningNotifications(settings->value(configFile.showQuotaWarningNotificationsC).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC).toBool());
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
 
