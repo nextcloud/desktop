@@ -59,7 +59,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QCheckBox" name="quotaWarningNotificationCheckBox">
+       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
         <property name="text">
          <string>Show &amp;Quota Warning Notifications</string>
         </property>
