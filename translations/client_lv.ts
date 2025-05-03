@@ -4789,7 +4789,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="583"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Šodien</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
