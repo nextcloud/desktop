@@ -164,6 +164,9 @@ public:
     [[nodiscard]] bool showCallNotifications() const;
     void setShowCallNotifications(bool show);
 
+    [[nodiscard]] bool showQuotaWarningNotifications() const;
+    void setShowQuotaWarningNotifications(bool show);
+
     [[nodiscard]] bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
@@ -250,6 +253,7 @@ public:
     static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
     static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
     static constexpr char showCallNotificationsC[] = "showCallNotifications";
+    static constexpr char showQuotaWarningNotificationsC[] = "showQuotaWarningNotifications";
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 
