@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="235"/>
         <source>Answer Talk call notification</source>
-        <translation>Atender a notificação de chamada do Talk</translation>
+        <translation>Atender à notificação de chamada do Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
@@ -546,19 +546,21 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>%1 contas foram detectadas em um cliente de desktop legado. As contas devem ser importadas?</translation>
+        <translation>%1 contas foram detectadas de um cliente de desktop legado.
+As contas devem ser importadas?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="234"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>1 conta foi detectada em um cliente de desktop legado. A conta deve ser importada?</translation>
+        <translation>1 conta foi detectada de um cliente de desktop legado.
+A conta deve ser importada?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
         <location filename="../src/gui/accountmanager.cpp" line="282"/>
         <source>Legacy import</source>
-        <translation>Importação herdada</translation>
+        <translation>Importação de configurações legadas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
@@ -573,7 +575,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="283"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation>Não foi possível importar contas da configuração do cliente herdado.</translation>
+        <translation>Não foi possível importar contas da configuração de clientes legados.</translation>
     </message>
 </context>
 <context>
@@ -1212,14 +1214,15 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/application.cpp" line="489"/>
         <source>Legacy import</source>
-        <translation>Importação legada</translation>
+        <translation>Importação de configurações legadas</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="490"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>Importados %1 e %2 de um cliente de desktop legado. %3</translation>
+        <translation>%1 e %2 importados de um cliente de desktop legado.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="580"/>
@@ -1972,12 +1975,12 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>A URL de polling não começa com HTTPS. No entanto, a URL de login começava com HTTPS. Não será possível fazer login, pois isto pode ser um risco de segurança. Por favor contate seu administrador de sistemas.</translation>
+        <translation>O URL de sondagem não começa com HTTPS. No entanto, o URL de login começava com HTTPS. Não será possível fazer login, pois isto pode ser um risco de segurança. Por favor, contate seu administrador.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>A URL do servidor não começa com HTTPS. No entanto, a URL de login começava com HTTPS. Não será possível fazer login, pois isto pode ser um risco de segurança. Por favor contate seu administrador de sistemas.</translation>
+        <translation>O URL do servidor não começa com HTTPS. No entanto, o URL de login começava com HTTPS. Não será possível fazer login, pois isto pode ser um risco de segurança. Por favor, contate seu administrador.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -2024,7 +2027,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="166"/>
         <source>Polling for authorization</source>
-        <translation>Votando autorização</translation>
+        <translation>Sondando autorização</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="171"/>
@@ -2731,7 +2734,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Arquivos virtuais não são suportados como partição raiz do Windows como pasta local. Escolha uma subpasta válida na letra da unidade. </translation>
+        <translation>Os arquivos virtuais não são compatíveis com as raízes da partição do Windows como pasta local. Escolha uma subpasta válida na letra da partição.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="634"/>
@@ -2853,7 +2856,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
-        <translation>Intervalo de pesquisa do servidor</translation>
+        <translation>Intervalo de sondagem do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -3046,12 +3049,12 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="62"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Por favor, digite %1 senha:&lt;br&gt;&lt;br&gt;Nome de Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>Por favor, digite a senha de %1:&lt;br&gt;&lt;br&gt;Nome de Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="76"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation>A leitura das chaves falhou com o erro: &quot;%1&quot; </translation>
+        <translation>A leitura do chaveiro falhou com erro: &quot;%1&quot; </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="83"/>
@@ -3320,7 +3323,7 @@ Se habilitado, os logs serão gravados em  %1</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation>Habilite o registro na pasta temporária </translation>
+        <translation>Ativar o registro na pasta temporária</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -3460,7 +3463,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
-        <translation>Especifique manualmente o proxy</translation>
+        <translation>Especificar manualmente o proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="259"/>
@@ -3565,7 +3568,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation>Não foi possível baixar a atualização. Por favor abra &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;para baixar a atualização manualmente. </translation>
+        <translation>Não foi possível baixar a atualização. Por favor, abra &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; para baixar a atualização manualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
@@ -3625,17 +3628,17 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="127"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Use os arquivos &amp;virtuais em vez de baixar o conteúdo imediatamente %1 </translation>
+        <translation>Use arquivos &amp;virtuais em vez de fazer o download imediato do conteúdo %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Arquivos virtuais não são suportados como partição raiz do Windows como pasta local. Escolha uma subpasta válida na letra da unidade. </translation>
+        <translation>Os arquivos virtuais não são compatíveis com as raízes da partição do Windows como pasta local. Escolha uma subpasta válida na letra da partição.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="319"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>%1 pasta &quot;%2&quot; está sincronizada com a pasta local &quot;%3&quot; </translation>
+        <translation>Pasta de %1 &quot;%2&quot; está sincronizada com a pasta local &quot;%3&quot; </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="322"/>
@@ -3645,7 +3648,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Aviso: A pasta local não está vazia. Escolha uma opção!</translation>
+        <translation>Aviso: A pasta local não está vazia. Escolha uma resolução!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
@@ -3930,7 +3933,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Add %1 account</source>
-        <translation>Adicionar conta %1</translation>
+        <translation>Adicionar conta de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
@@ -3994,7 +3997,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="149"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Resposta JSON inválida do conjunto de URL</translation>
+        <translation>Resposta JSON inválida do UR de sondagem</translation>
     </message>
 </context>
 <context>
@@ -4007,7 +4010,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File is listed on the ignore list.</source>
-        <translation>O arquivo está listado na lista de ignorados. </translation>
+        <translation>O arquivo está listado na lista de ignorados.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
@@ -4018,18 +4021,18 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Os nomes de pastas que contêm o caractere &quot;%1&quot; não são compatíveis com esse sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Os nomes de arquivos que contêm o caractere &quot;%1&quot; não são compatíveis com esse sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>O nome da pasta contém pelo menos um caractere inválido</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="420"/>
@@ -4051,7 +4054,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome da pasta é um nome reservado nesse sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
@@ -4062,7 +4065,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo é um nome reservado nesse sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4115,22 +4118,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="464"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Conflito: versão do servidor baixada, cópia local renomeada e não carregada. </translation>
+        <translation>Conflito: Versão do servidor baixada, cópia local renomeada e não carregada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Conflito de conflito de caso: arquivo do servidor baixado e renomeado para evitar conflitos.</translation>
+        <translation>Conflito de Letras Maiúsculas e Minúsculas: Arquivo do servidor baixado e renomeado para evitar conflitos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="472"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>O nome do arquivo não pode ser codificado em seu sistema de arquivos. </translation>
+        <translation>O nome do arquivo não pode ser codificado em seu sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>O nome do arquivo está na lista negra do servidor. </translation>
+        <translation>O nome do arquivo está na lista negra do servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="478"/>
@@ -4140,7 +4143,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motivo: o nome do arquivo tem um nome base proibido (nome do arquivo inicial).</translation>
+        <translation>Motivo: o nome do arquivo tem um nome base proibido (início do nome do arquivo).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="484"/>
@@ -4150,12 +4153,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="487"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Razão: o nome do arquivo contém um caractere proibido (%1).</translation>
+        <translation>Motivo: o nome do arquivo contém um caractere proibido (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="635"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation>O arquivo tem extensão reservada para arquivos virtuais. </translation>
+        <translation>O arquivo tem uma extensão reservada para arquivos virtuais. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="776"/>
@@ -4175,12 +4178,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>Server reported no %1</source>
-        <translation>Servidor relatou não %1</translation>
+        <translation>Servidor relatou nenhum %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation>Não é possível sincronizar devido ao horário de modificação inválido</translation>
+        <translation>Não é possível sincronizar devido à hora de modificação inválida</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>
@@ -4196,7 +4199,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/discovery.cpp" line="1459"/>
         <location filename="../src/libsync/discovery.cpp" line="1915"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Movido para destino inválido, restaurando </translation>
+        <translation>Movido para destino inválido, restaurando</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1777"/>
@@ -4222,7 +4225,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1893"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Não é permitido fazer upload deste arquivo porque ele é somente leitura no servidor, restaurando </translation>
+        <translation>Não é permitido fazer upload deste arquivo porque ele é somente leitura no servidor, restaurando</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1929"/>
@@ -4250,7 +4253,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
+        <translation>Erro ao atualizar os metadados devido a uma hora de modificação inválida</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1482"/>
@@ -4284,7 +4287,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation>Não foi possível obter de arquivo %1 do BD local</translation>
+        <translation>Não foi possível obter o arquivo %1 do BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
@@ -4331,7 +4334,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="947"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
+        <translation>O arquivo baixado está vazio, mas o servidor disse que ele deveria ter %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1210"/>
@@ -4444,7 +4447,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagatorjobs.cpp" line="444"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="531"/>
         <source>Could not get file %1 from local DB</source>
-        <translation>Não foi possível obter de arquivo %1 do BD local</translation>
+        <translation>Não foi possível obter o arquivo %1 do BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="457"/>
@@ -4460,7 +4463,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="473"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está correntemente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="508"/>
@@ -4475,7 +4478,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="536"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Não foi possível excluir o registro de arquivo %1 do BD local</translation>
+        <translation>Não foi possível excluir o registro do arquivo %1 do BD local</translation>
     </message>
 </context>
 <context>
@@ -4488,7 +4491,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="132"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Não foi possível excluir o registro de arquivo %1 do BD local</translation>
+        <translation>Não foi possível excluir o registro do arquivo %1 do BD local</translation>
     </message>
 </context>
 <context>
@@ -4509,17 +4512,17 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation>Não foi possível encriptar uma pasta %1</translation>
+        <translation>Falha ao criptografar uma pasta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="283"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation>Erro ao gravar metadados no banco de dados:  %1</translation>
+        <translation>Erro ao gravar metadados no banco de dados: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="286"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está atualmente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
 </context>
 <context>
@@ -4527,7 +4530,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>Não foi possível renomear  %1 para %2, erro: %3</translation>
+        <translation>Não foi possível renomear %1 para %2, erro: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="225"/>
@@ -4539,7 +4542,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagateremotemove.cpp" line="228"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está correntemente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="242"/>
@@ -4549,17 +4552,17 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation>Não foi possível obter de arquivo %1 do BD local</translation>
+        <translation>Não foi possível obter o arquivo %1 do BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="273"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Não foi possível excluir o registro de arquivo %1 do BD local</translation>
+        <translation>Não foi possível excluir o registro do arquivo %1 do BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
         <source>Error setting pin state</source>
-        <translation>Erro ao definir o estado do pin </translation>
+        <translation>Erro ao definir o estado do pin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
@@ -4572,7 +4575,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="252"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Falha ao fazer upload do arquivo criptografado. </translation>
+        <translation>Falha ao fazer upload do arquivo criptografado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="287"/>
@@ -4590,7 +4593,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
         <location filename="../src/libsync/propagateupload.cpp" line="431"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>O arquivo %1 tem hora de modificação inválida. Não envie para o servidor.</translation>
+        <translation>O arquivo %1 tem uma hora de modificação inválida. Não fazendo upload para o servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
@@ -4610,12 +4613,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="462"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Falha ao desbloquear a pasta criptografada. </translation>
+        <translation>Falha ao desbloquear a pasta criptografada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="735"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation>Unable to upload an item with invalid characters</translation>
+        <translation>Não é possível carregar um item com caracteres inválidos</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="837"/>
@@ -4625,7 +4628,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="840"/>
         <source>The file %1 is currently in use</source>
-        <translation>O arquivo %1 está correntemente em uso</translation>
+        <translation>O arquivo %1 está em uso no momento</translation>
     </message>
 </context>
 <context>
@@ -4643,7 +4646,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="515"/>
         <source>Poll URL missing</source>
-        <translation>Falta o URL da enquete</translation>
+        <translation>Falta o URL de sondagem</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
@@ -4666,7 +4669,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="236"/>
         <source>Poll URL missing</source>
-        <translation>Faltando conjunto de URL</translation>
+        <translation>Falta o URL de sondagem</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="260"/>
@@ -5453,7 +5456,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="140"/>
         <source>Polling</source>
-        <translation>Consultando</translation>
+        <translation>Sondando</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="146"/>
@@ -6029,7 +6032,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
-        <translation>Escolha o que quer sincronizar</translation>
+        <translation>Escolher o que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
