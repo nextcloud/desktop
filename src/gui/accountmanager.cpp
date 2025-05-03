@@ -262,6 +262,10 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC).toBool());
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
+    configFile.setUseUploadLimit(settings->value(configFile.useUploadLimitC).toInt());
+    configFile.setUploadLimit(settings->value(configFile.uploadLimitC).toInt());
+    configFile.setUseDownloadLimit(settings->value(configFile.useDownloadLimitC).toInt());
+    configFile.setDownloadLimit(settings->value(configFile.downloadLimitC).toInt());
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {

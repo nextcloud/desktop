@@ -260,6 +260,11 @@ public:
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 
+    static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
+    static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
+    static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
+    static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
+
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
