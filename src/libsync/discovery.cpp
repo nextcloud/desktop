@@ -31,6 +31,7 @@ namespace
 constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
 constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
 constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
+constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
 }
 
 namespace OCC {
@@ -1175,6 +1176,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
             item->_status = SyncFileItem::Status::NormalError;
             _discoveryData->_anotherSyncNeeded = true;
+            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
