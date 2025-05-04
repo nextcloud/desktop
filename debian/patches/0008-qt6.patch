@@ -525,17 +525,19 @@ index be44601c7..e446ddae8 100644
  import QtQuick.Controls
  import QtQuick.Layouts
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
-index 72ec2eede..7f8536d79 100644
+index 887102427..5c58e4045 100644
 --- a/src/libsync/CMakeLists.txt
 +++ b/src/libsync/CMakeLists.txt
-@@ -1,5 +1,5 @@
+@@ -2,7 +2,7 @@
+ # SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ # SPDX-License-Identifier: GPL-2.0-or-later
  project(libsync)
 -find_package(KF6Archive REQUIRED)
 +find_package(KF6Archive)
  include(DefinePlatformDefaults)
  
  set(CMAKE_AUTOMOC TRUE)
-@@ -157,6 +157,8 @@ set(libsync_SRCS
+@@ -160,6 +160,8 @@ set(libsync_SRCS
      creds/keychainchunk.cpp
      caseclashconflictsolver.h
      caseclashconflictsolver.cpp
@@ -544,7 +546,7 @@ index 72ec2eede..7f8536d79 100644
  )
  
  if (WIN32)
-@@ -223,10 +225,15 @@ target_link_libraries(nextcloudsync
+@@ -226,10 +228,15 @@ target_link_libraries(nextcloudsync
    Qt::Gui
    Qt::Svg
    Qt::Widgets
@@ -562,10 +564,10 @@ index 72ec2eede..7f8536d79 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 06432ee29..a96689434 100644
+index be9688306..2e7d6492b 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
-@@ -28,7 +28,7 @@
+@@ -18,7 +18,7 @@
  
  #include <qt6keychain/keychain.h>
  
@@ -574,7 +576,7 @@ index 06432ee29..a96689434 100644
  
  #include <QDebug>
  #include <QLoggingCategory>
-@@ -2698,26 +2698,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
+@@ -2688,26 +2688,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
  
  QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
  {
@@ -604,7 +606,7 @@ index 06432ee29..a96689434 100644
      return outputData;
  }
  
-@@ -2729,23 +2715,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
+@@ -2719,23 +2705,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
          return {};
      }
  
@@ -630,10 +632,10 @@ index 06432ee29..a96689434 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 5371ae35a..fe157d89d 100644
+index f428b9f69..716c2abd7 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
-@@ -15,6 +15,7 @@
+@@ -7,6 +7,7 @@
  #include "filesystem.h"
  
  #include "common/utility.h"
@@ -837,10 +839,10 @@ index 000000000..ba7eb4406
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index 5237800a7..84904e186 100644
+index ce3e5d271..532147e53 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
-@@ -42,6 +42,7 @@
+@@ -33,6 +33,7 @@
  #include "owncloudpropagator.h"
  #include "clientsideencryption.h"
  
@@ -848,7 +850,7 @@ index 5237800a7..84904e186 100644
  #include "creds/abstractcredentials.h"
  #include "creds/httpcredentials.h"
  #include "configfile.h"
-@@ -664,7 +665,7 @@ bool PropfindJob::finished()
+@@ -655,7 +656,7 @@ bool PropfindJob::finished()
          // Parse DAV response
          auto domDocument = QDomDocument();
  
@@ -858,18 +860,18 @@ index 5237800a7..84904e186 100644
              emit finishedWithError(reply());
  
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
-index 6bfad9d62..ca34f0ada 100644
+index c7c259ab0..e7ab6d6ad 100644
 --- a/src/libsync/pushnotifications.cpp
 +++ b/src/libsync/pushnotifications.cpp
-@@ -12,6 +12,7 @@
-  * for more details.
+@@ -3,6 +3,7 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
   */
  
 +#include "common/qtcompat.h"
  #include "pushnotifications.h"
  #include "creds/abstractcredentials.h"
  #include "account.h"
-@@ -30,7 +31,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
+@@ -21,7 +22,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
      , _account(account)
      , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
  {
@@ -878,7 +880,7 @@ index 6bfad9d62..ca34f0ada 100644
      connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
      connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
      connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
-@@ -76,7 +77,7 @@ void PushNotifications::closeWebSocket()
+@@ -67,7 +68,7 @@ void PushNotifications::closeWebSocket()
          _reconnectTimer->stop();
      }
  
@@ -887,7 +889,7 @@ index 6bfad9d62..ca34f0ada 100644
      disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
  
      _webSocket->close();
-@@ -174,7 +175,7 @@ void PushNotifications::openWebSocket()
+@@ -165,7 +166,7 @@ void PushNotifications::openWebSocket()
      const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
  
      qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
@@ -897,10 +899,10 @@ index 6bfad9d62..ca34f0ada 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index f1a7108bd..4fd5d74bc 100644
+index cf7271963..56d3d8bdd 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
-@@ -18,6 +18,7 @@
+@@ -10,6 +10,7 @@
  #include "version.h"
  #include "configfile.h"
  #include "common/vfs.h"
@@ -908,7 +910,7 @@ index f1a7108bd..4fd5d74bc 100644
  
  #include <QtCore>
  #ifndef TOKEN_AUTH_ONLY
-@@ -858,14 +859,12 @@ QString Theme::versionSwitchOutput() const
+@@ -850,14 +851,12 @@ QString Theme::versionSwitchOutput() const
  
  double Theme::getColorDarkness(const QColor &color)
  {
@@ -925,7 +927,7 @@ index f1a7108bd..4fd5d74bc 100644
  }
  
  QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
-@@ -973,7 +972,7 @@ QColor Theme::defaultColor()
+@@ -965,7 +964,7 @@ QColor Theme::defaultColor()
  void Theme::connectToPaletteSignal() const
  {
      if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
@@ -934,7 +936,7 @@ index f1a7108bd..4fd5d74bc 100644
      }
  }
  
-@@ -1016,19 +1015,6 @@ QVariantMap Theme::systemPalette() const
+@@ -1008,19 +1007,6 @@ QVariantMap Theme::systemPalette() const
  bool Theme::darkMode() const
  {
      connectToPaletteSignal();
@@ -954,7 +956,7 @@ index f1a7108bd..4fd5d74bc 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1039,7 +1025,8 @@ bool Theme::darkMode() const
+@@ -1031,7 +1017,8 @@ bool Theme::darkMode() const
          }
      }
  #endif
@@ -965,10 +967,10 @@ index f1a7108bd..4fd5d74bc 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
-index 96f2ba1da..aab73a0d9 100644
+index 850e9c919..fc0371170 100644
 --- a/test/testdatefieldbackend.cpp
 +++ b/test/testdatefieldbackend.cpp
-@@ -19,6 +19,7 @@
+@@ -10,6 +10,7 @@
  #include <QTest>
  #include <QSignalSpy>
  #include <QStandardPaths>
