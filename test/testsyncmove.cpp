@@ -1372,6 +1372,54 @@ private slots:
         QVERIFY(dbResult);
         QCOMPARE(itemsCounter, 12);
     }
+
+    void testRenameFileThatExistsInMultiplePaths()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QObject parent;
+
+        fakeFolder.setServerOverride([&parent](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::CustomOperation
+                && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
+                return new FakeErrorReply(op, request, &parent, 507);
+            }
+            return nullptr;
+        });
+
+        fakeFolder.remoteModifier().mkdir("FolderA");
+        fakeFolder.remoteModifier().mkdir("FolderA/folderParent");
+        fakeFolder.remoteModifier().insert("FolderA/folderParent/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderB");
+        fakeFolder.remoteModifier().mkdir("FolderB/folderChild");
+        fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderC");
+
+        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+        const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
+        const auto fileAInFolderAEtag = fileAFileInfo->etag;
+        const auto duplicatedFileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+
+        duplicatedFileAFileInfo->fileId = fileAInFolderAFolderFileId;
+        duplicatedFileAFileInfo->etag = fileAInFolderAEtag;
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().rename("FolderA/folderParent/FileA.txt", "FolderC/FileA.txt");
+
+        qDebug() << fakeFolder.currentLocalState();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(!fakeFolder.syncOnce());
+
+        qDebug() << fakeFolder.currentLocalState();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        qDebug() << fakeFolder.currentLocalState();
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)
