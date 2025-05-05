@@ -50,7 +50,7 @@ QString Sharee::format() const
     } else if (_type == Type::Federated) {
         formatted += QLatin1String(" (remote)");
     } else if (_type == Type::Circle) {
-        formatted += QLatin1String(" (circle)");
+        formatted += QLatin1String(" (team)");
     } else if (_type == Type::Room) {
         formatted += QLatin1String(" (conversation)");
     }
