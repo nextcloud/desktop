@@ -18,12 +18,13 @@
 #pragma once
 
 #include <shlobj.h>
+#include <fstream>
 
 class NCOverlay : public IShellIconOverlayIdentifier
 
 {
 public:
-    NCOverlay(int state);
+    explicit NCOverlay(int state);
 
     IFACEMETHODIMP_(ULONG) AddRef();
     IFACEMETHODIMP GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
@@ -38,6 +39,7 @@ protected:
 private:
     long _referenceCount;
     int _state;
+    std::ofstream m_logger;
 };
 
 #endif

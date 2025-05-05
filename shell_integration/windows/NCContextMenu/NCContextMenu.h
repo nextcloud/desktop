@@ -16,9 +16,13 @@
 #define NCCONTEXTMENU_H
 
 #pragma once
-#include <shlobj.h>     // For IShellExtInit and IContextMenu
-#include <string>
 #include "NCClientInterface.h"
+
+#include <shlobj.h>     // For IShellExtInit and IContextMenu
+
+#include <string>
+#include <fstream>
+#include <iostream>
 
 class NCContextMenu : public IShellExtInit, public IContextMenu
 {
@@ -48,6 +52,8 @@ private:
 	// The name of the selected files (separated by '\x1e')
 	std::wstring m_selectedFiles;
 	NCClientInterface::ContextMenuInfo m_info;
+
+    std::ofstream m_logger;
 };
 	
 #endif //NCCONTEXTMENU_H
