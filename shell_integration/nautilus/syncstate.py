@@ -1,19 +1,10 @@
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 #
-# Copyright (C) by Klaas Freitag <freitag@owncloud.com>
-#
-# This program is the core of OwnCloud integration to Nautilus
-# It will be installed on /usr/share/nautilus-python/extensions/ with the paquet owncloud-client-nautilus
-# (https://github.com/owncloud/client/edit/master/shell_integration/nautilus/syncstate.py)
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-# for more details.
+# This program is the core of the nextcloud integration to Nautilus
+# It will be installed on /usr/share/nautilus-python/extensions/ with the paquet Nextcloud-client-nautilus
+# (https://github.com/nextcloud/desktop/edit/master/shell_integration/nautilus/syncstate.py)
 
 import sys
 python3 = sys.version_info[0] >= 3

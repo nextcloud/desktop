@@ -24,10 +24,46 @@ SPDX-FileCopyrightText = "2022 Nextcloud GmbH and Nextcloud translators"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
+path = ["shell_integration/windows/NCOverlays/resource.h", "shell_integration/windows/NCOverlays/NCOverlays.def", "shell_integration/icons/SVG/Error.svg", "shell_integration/icons/SVG/Error_Shared.svg", "shell_integration/icons/SVG/OK.svg", "shell_integration/icons/SVG/OK_Shared.svg", "shell_integration/icons/SVG/Sync.svg", "shell_integration/icons/SVG/Sync_Shared.svg", "shell_integration/icons/SVG/Warning.svg", "shell_integration/icons/SVG/Warning_Shared.svg", "shell_integration/icons/Sidebar/sidebar_icon_*_18.png", "shell_integration/icons/icns/*.icns", "shell_integration/icons/*x*/oC_*.png"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2014 ownCloud GmbH"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = ["shell_integration/MacOSX/Nextcloud.xcworkspace/contents.xcworkspacedata", "shell_integration/MacOSX/Nextcloud.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist", "shell_integration/MacOSX/Nextcloud.xcworkspace/xcshareddata/OwnCloud.xccheckout"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2014 ownCloud GmbH, 2022 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = ["shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.pbxproj", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/contents.xcworkspacedata", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/xcshareddata/xcschemes/FinderSyncExt.xcscheme"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2015 ownCloud GmbH, 2022 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = ["shell_integration/icons/nopadding/*/*.png", "shell_integration/icons/nopadding/SVG/*.svg"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2015 ownCloud GmbH"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
+path = ["shell_integration/windows/NCContextMenu/NCContextMenu.rc", "shell_integration/windows/NCOverlays/NCOverlay.rc", "shell_integration/windows/NCUtil/NCUtil.rc"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SPDX-FileCopyrightText: 2015 ownCloud GmbH, 2023 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+
+[[annotations]]
 path = ["doc/images/mac-share.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2016 ownCloud GmbH"
 SPDX-License-Identifier = "CC-BY-3.0"
+
+[[annotations]]
+path = ["shell_integration/windows/NCOverlays/ico/Error.ico", "shell_integration/windows/NCOverlays/ico/OK.ico", "shell_integration/windows/NCOverlays/ico/OK_Shared.ico", "shell_integration/windows/NCOverlays/ico/Sync.ico", "shell_integration/windows/NCOverlays/ico/Warning.ico", ""]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2016 ownCloud GmbH"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
 
 [[annotations]]
 path = ["doc/images/checksums/client-activity.png", "doc/images/checksums/testing-checksums.png", "doc/images/create_debug_archive.png", "doc/images/dev/desktop-development-with-cpp.png", "doc/images/dev/path.png", "doc/images/dev/visual-studio-installer.png", "doc/images/folderwizard_local.png", "doc/images/folderwizard_remote.png", "doc/images/general_settings_folder_context_menu.png", "doc/images/icon-error.png", "doc/images/icon-information.png", "doc/images/icon-offline.png", "doc/images/icon-paused.png", "doc/images/icon-syncing.png", "doc/images/icon.png", "doc/images/ignored_files_editor.png", "doc/images/log_output_window.png", "doc/images/macosvfs-file-locking.png", "doc/images/macosvfs-file-sharing.png", "doc/images/macosvfs-finder-sidebar.png", "doc/images/macosvfs-settings.png", "doc/images/macosvfs-sync-status-icons.png", "doc/images/main_dialog.png", "doc/images/main_dialog_christine.png", "doc/images/open-share-dialog.png", "doc/images/save_log_file.png", "doc/images/set-user-status-menu.png", "doc/images/set-user-status.png", "doc/images/settings_general.png", "doc/images/settings_network.png", "doc/images/settingsdialog.png", "doc/images/setup/confirm.png", "doc/images/setup/remove.png", "doc/images/setup/wizard.png", "doc/images/share-dialog-view-profile.png", "doc/images/share_context_menu.png", "doc/images/share_dialog.png", "doc/images/status_feature_example.png", "doc/images/sync-state-paused.png", "doc/images/sync-state-synced.png", "doc/images/sync-state-syncing.png", "doc/images/sync-state-warnings.png", "doc/images/traymenu.png", "doc/images/unified-search-events.png", "doc/images/unified-search-files.png", "doc/images/unified-search-talk.png", "doc/images/user-account-options.png", "doc/images/user_status-selector_dialog.png", "doc/images/user_status_selector_main_dialog.png", "doc/images/vfs_context_menu_options.png", "doc/images/vfs_hydration_progress_bar.png", "doc/images/wizard_advanced.png", "doc/images/wizard_flow2.png", "doc/images/wizard_setup.png", "doc/images/wizard_welcome.png"]
@@ -126,7 +162,7 @@ SPDX-FileCopyrightText = "2021 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["admin/osx/installer-background.png","admin/osx/installer-background.svg","admin/osx/installer-background_2x.png", "doc/_shared_assets/themes/nextcloud_com/static/img/logo.svg", "doc/_shared_assets/static/logo-blue.pdf","doc/_shared_assets/static/logo-blue.png", "doc/logo-blue.pdf", "theme/talk-app.svg", "theme/*/deck.svg", "theme/*/talk-app.svg","theme/*/wizard-nextcloud.png","theme/*/wizard-nextcloud.svg","theme/*/wizard-nextcloud@2x.png","theme/*/wizard-talk.png","theme/*/wizard-talk.svg","theme/*/wizard-talk@2x.png", "theme/colored/talk-bordered.svg", "theme/colored/icons/Nextcloud-icon-win-folder.svg", "theme/colored/Nextcloud-icon-square.svg", "theme/colored/Nextcloud-icon.svg", "theme/colored/Nextcloud-macOS-icon.svg", "theme/colored/Nextcloud-macOS-sidebar.svg", "theme/colored/Nextcloud-w10startmenu.svg", "theme/colored/Nextcloud-w10starttile.png", "theme/colored/wizard_logo.png", "theme/colored/wizard_logo.svg", "theme/colored/wizard_logo@2x.png"]
+path = ["admin/osx/installer-background.png","admin/osx/installer-background.svg","admin/osx/installer-background_2x.png", "admin/win/msi/gui/banner.bmp","admin/win/msi/gui/banner.svg","admin/win/msi/gui/dialog.bmp", "admin/win/nsi/installer.ico", "admin/win/nsi/page_header.bmp", "admin/win/nsi/welcome.bmp", "doc/_shared_assets/themes/nextcloud_com/static/img/logo.svg", "doc/_shared_assets/static/logo-blue.pdf","doc/_shared_assets/static/logo-blue.png", "doc/logo-blue.pdf", "theme/talk-app.svg", "theme/*/deck.svg", "theme/*/talk-app.svg","theme/*/wizard-nextcloud.png","theme/*/wizard-nextcloud.svg","theme/*/wizard-nextcloud@2x.png","theme/*/wizard-talk.png","theme/*/wizard-talk.svg","theme/*/wizard-talk@2x.png", "theme/colored/talk-bordered.svg", "theme/colored/icons/Nextcloud-icon-win-folder.svg", "theme/colored/Nextcloud-icon-square.svg", "theme/colored/Nextcloud-icon.svg", "theme/colored/Nextcloud-macOS-icon.svg", "theme/colored/Nextcloud-macOS-sidebar.svg", "theme/colored/Nextcloud-w10startmenu.svg", "theme/colored/Nextcloud-w10starttile.png", "theme/colored/wizard_logo.png", "theme/colored/wizard_logo.svg", "theme/colored/wizard_logo@2x.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2016 Nextcloud GmbH"
 SPDX-License-Identifier = "LicenseRef-NextcloudTrademarks"

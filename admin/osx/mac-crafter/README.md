@@ -1,3 +1,7 @@
+<!--
+  - SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 # mac-crafter
 
 mac-crafter is a tool to easily build a fully functional Nextcloud Desktop Client for macOS. It automates cloning, configuring, crafting, codesigning, packaging, and even DMG creation of the client. The tool is built with Swift’s ArgumentParser, and it drives the KDE Craft build system, along with some Python scripts and shell commands.

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# SPDX-FileCopyrightText: 2015 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 import logging, os, re, subprocess, sys
 import os.path
 import pdb, pprint
