@@ -1,3 +1,7 @@
+<!--
+  - SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 # Desktop client documentation
 
 The main nextcloud Documentation is found at https://github.com/nextcloud/documentation
