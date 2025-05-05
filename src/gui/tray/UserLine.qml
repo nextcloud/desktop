@@ -73,9 +73,9 @@ AbstractButton {
 
         ColumnLayout {
             id: accountLabels
-            Layout.leftMargin: Style.accountLabelsSpacing
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: Style.extraExtraSmallSpacing
 
             EnforcedPlainTextLabel {
                 id: accountUser
@@ -100,7 +100,6 @@ AbstractButton {
                     id: emoji
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
-                    topPadding: -Style.accountLabelsSpacing
                 }
 
                 EnforcedPlainTextLabel {
@@ -110,7 +109,6 @@ AbstractButton {
                     text: statusMessage
                     elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
-                    leftPadding: Style.accountLabelsSpacing
                 }
             }
 
