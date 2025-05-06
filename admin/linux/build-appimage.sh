@@ -49,9 +49,9 @@ cd /app
 
 [ -d usr/lib/x86_64-linux-gnu ] && mv usr/lib/x86_64-linux-gnu/* usr/lib/
 
-mkdir usr/plugins
-mv usr/lib64/*sync_vfs_suffix.so usr/plugins || mv usr/lib/*sync_vfs_suffix.so usr/plugins
-mv usr/lib64/*sync_vfs_xattr.so usr/plugins  || mv usr/lib/*sync_vfs_xattr.so usr/plugins
+mkdir -p AppDir/usr/plugins
+mv usr/lib64/*sync_vfs_suffix.so AppDir/usr/plugins || mv usr/lib/*sync_vfs_suffix.so AppDir/usr/plugins
+mv usr/lib64/*sync_vfs_xattr.so  AppDir/usr/plugins || mv usr/lib/*sync_vfs_xattr.so  AppDir/usr/plugins
 
 rm -rf usr/lib/cmake
 rm -rf usr/include
