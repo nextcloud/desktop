@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2017 ownCloud GmbH
+# SPDX-License-Identifier: LGPL-2.1-or-later
 if(SPHINX_FOUND)
 
     # Sphinx cache with pickled ReST documents

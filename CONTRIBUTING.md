@@ -1,9 +1,16 @@
+<!--
+  - SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-FileCopyrightText: 2013 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 ## Contributing by reporting issues
+
 * **Always report bugs via Github**: that is the most reliable way to contacts us since we do not follow any process to check the forum and social media. 
 * **For questions about the Nextcloud Desktop Client**, use the [📋 Forum](https://help.nextcloud.com) and the [:speech_balloon: Desktop public Talk chat room](https://cloud.nextcloud.com/call/d8k2r6p6).
 * Alternativately, we also have [🐣 Twitter](https://twitter.com/Nextclouders) and [🐘 Mastodon](https://mastodon.xyz/@nextcloud) accounts. 
 
 ### Bug Reporting Guidelines
+
 * __Important__: [Complete the bug report form](https://github.com/nextcloud/desktop/issues/new/choose). If you fill it correctly, it should give us enough information to start working on the issue.
 * __SECURITY__: **Please do _not_ report security vulnerabilities through public GitHub issues.** 
 If you have discovered a security matter with Nextcloud, please first read our [responsible disclosure guidelines](https://nextcloud.com/security/) and our [security policy](https://github.com/nextcloud/server/blob/9459724e72d647bb21d0bc36c6dc56b751771130/SECURITY.md). Then contact us at [hackerone.com/nextcloud](https://hackerone.com/nextcloud).
@@ -18,6 +25,7 @@ If you have discovered a security matter with Nextcloud, please first read our [
   Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
 ## Contributing to Source Code
+
 Thanks for wanting to contribute source code to Nextcloud. That's great!
 
 We ask that you follow our [Code of Conduct](https://nextcloud.com/code-of-conduct/).
@@ -46,4 +54,5 @@ like `git config --global alias.ci 'commit -s'`. Now you can commit with
 
 
 ## Translations
+
 Please submit translations via [Transifex](https://www.transifex.com/nextcloud/nextcloud/).

@@ -1,7 +1,9 @@
 /*
  * c_jhash.c Jenkins Hash
  *
- * Copyright (c) 1997 Bob Jenkins <bob_jenkins@burtleburtle.net>
+ * SPDX-FileCopyrightText: 2017 ownCloud GmbH
+ * SPDX-FileCopyrightText: 1997 Bob Jenkins <bob_jenkins@burtleburtle.net>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
  * lookup8.c, by Bob Jenkins, January 4 1997, Public Domain.
  * hash(), hash2(), hash3, and _c_mix() are externally useful functions.

@@ -82,6 +82,7 @@
 - Daniel Hansson <daniel@techandme.se>
 - Daniel Hansson <github@hanssonit.se>
 - Daniel Hansson <github@techandme.se>
+- Daniel Heule <daniel.heule@gmail.com>
 - Daniel Kesselberg <mail@danielkesselberg.de>
 - Daniel Molkentin <daniel@molkentin.de>
 - Daniel Molkentin <danimo@linux-l86e.site>
@@ -92,8 +93,6 @@
 - David Kahles <david.kahles96@gmail.com>
 - David Prévot <taffit@debian.org>
 - Denis Dzyubenko <denis@ddenis.info>
-- dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
-- dheule <daniel.heule@gmail.com>
 - Dimitri Papadopoulos <3234522+DimitriPapadopoulos@users.noreply.github.com>
 - Dmitry Mayorov <voroyam@owncloud.com>
 - Dmytro Korchynskyi <kdl.dima@gmail.com>

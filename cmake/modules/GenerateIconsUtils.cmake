@@ -1,4 +1,6 @@
 # UPSTREAM our ECMAddAppIcon.cmake then require that version here
+# SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: BSD-3-Clause
 # find_package(ECM 1.7.0 REQUIRED NO_MODULE)
 # list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(ECMAddAppIcon)

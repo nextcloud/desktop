@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2017 ownCloud GmbH
+# SPDX-License-Identifier: LGPL-2.1-or-later
 include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckFunctionExists)

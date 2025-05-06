@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2011 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # ------------------------------------
 # Version information
 # ------------------------------------

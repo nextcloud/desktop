@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: LGPL-2.1-or-later
 project(libcsync)
 set(CMAKE_AUTOMOC TRUE)
 add_definitions(-DQT_NO_CAST_TO_ASCII

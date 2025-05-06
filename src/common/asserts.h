@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2017 ownCloud GmbH
+// SPDX-License-Identifier: GPL-2.0-or-later
 #ifndef OWNCLOUD_ASSERTS_H
 #define OWNCLOUD_ASSERTS_H
 

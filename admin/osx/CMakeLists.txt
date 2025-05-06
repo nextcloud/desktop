@@ -1,4 +1,7 @@
-
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # Check if variable MAC_INSTALLER_BACKGROUND_FILE is defined.
 # Make sure that the MAC_INSTALLER_BACKGROUND_FILE contains the full path, ie.
 # includes CMAKE_SOURCE_DIR or so.

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2017 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # Just list files to build as part of the csync dynamic lib.
 # Essentially they could be in the same directory but are separate to
 # help keep track of the different code licenses.
