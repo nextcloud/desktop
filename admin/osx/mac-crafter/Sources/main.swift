@@ -235,7 +235,12 @@ struct Build: ParsableCommand {
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
-            try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+            let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
+            try codesignClientAppBundle(
+                at: clientAppDir,
+                withCodeSignIdentity: codeSignIdentity,
+                usingEntitlements: entitlementsPath
+            )
         }
 
         print("Placing Nextcloud Desktop Client in \(productPath)...")
@@ -277,11 +282,19 @@ struct Codesign: ParsableCommand {
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String
 
+    @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
+    var entitlementsPath: String?
+
     mutating func run() throws {
         let absolutePath = appBundlePath.hasPrefix("/")
             ? appBundlePath
             : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
-        try codesignClientAppBundle(at: absolutePath, withCodeSignIdentity: codeSignIdentity)
+
+        try codesignClientAppBundle(
+            at: absolutePath,
+            withCodeSignIdentity: codeSignIdentity,
+            usingEntitlements: entitlementsPath
+        )
     }
 }
 
