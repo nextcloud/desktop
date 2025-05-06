@@ -2064,7 +2064,7 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 e %n àteros archìvios nche sunt bogados.</numerusform><numerusform>%1 e %n àteros archìvios nche sunt bogados.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

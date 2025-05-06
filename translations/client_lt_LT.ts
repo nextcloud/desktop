@@ -2059,7 +2059,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>Pašalintas %1 ir dar %n failas.</numerusform><numerusform>Pašalintas %1 ir dar %n failai.</numerusform><numerusform>Pašalintas %1 ir dar %n failų.</numerusform><numerusform>Pašalintas %1 ir dar %n failas.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

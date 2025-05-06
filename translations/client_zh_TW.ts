@@ -2070,7 +2070,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>已移除 %1 跟 %n 個其他檔案。</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

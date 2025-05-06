@@ -2070,7 +2070,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 и још %n други фајл је уклоњен.</numerusform><numerusform>%1 и још %n друга фајла су уклоњени.</numerusform><numerusform>%1 и још %n других фајлова су уклоњени.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

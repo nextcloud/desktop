@@ -2064,7 +2064,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila izbrisana.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili izbrisani.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile izbrisane.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo izbrisanih.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

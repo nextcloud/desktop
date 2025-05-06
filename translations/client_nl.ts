@@ -2066,7 +2066,7 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 en %n ander bestand(en) zijn verwijderd.</numerusform><numerusform>%1 en %n andere bestand(en) zijn verwijderd.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

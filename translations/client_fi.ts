@@ -2063,7 +2063,7 @@ OpenSSL-kirjastosi kanssa saattaa olla ongelma.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 ja %n muu tiedosto on poistettu.</numerusform><numerusform>%1 ja %n muuta tiedostoa on poistettu.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

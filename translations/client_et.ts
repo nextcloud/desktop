@@ -2070,7 +2070,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 ja %n muud faili on eemaldatud.</numerusform><numerusform>%1 ja %n muud faili on eemaldatud.</numerusform></translation>
+        <translation><numerusform>„%1“ ja %n muu fail on eemaldatud.</numerusform><numerusform>„%1“ ja %n muud faili on eemaldatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -2134,7 +2134,7 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="492"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>„%1“ ja %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform><numerusform>„%1“ ja  %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform></translation>
+        <translation><numerusform>„%1“ ja %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform><numerusform>„%1“ ja %n muu faili sünkroniseerimine ei õnnestunud vigade tõttu. Lisateavet leiad logist.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="494"/>

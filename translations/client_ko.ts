@@ -2068,7 +2068,7 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1과 %n 다른 파일(들)이 삭제되었습니다.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>

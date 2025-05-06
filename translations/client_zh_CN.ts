@@ -1928,13 +1928,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>%1秒前</numerusform></translation>
+        <translation><numerusform>%1 秒前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>%1分钟前</numerusform></translation>
+        <translation><numerusform>%1 分钟前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
@@ -2067,7 +2067,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 和 %n 其它文件已被移除。</numerusform></translation>
+        <translation><numerusform>%1 和 %n 个其他文件已被移除。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -2089,7 +2089,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="464"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 和 %n 其它文件已更新。</numerusform></translation>
+        <translation><numerusform>%1 和 %n 个其他文件已更新。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="466"/>
@@ -2100,7 +2100,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="471"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 已经更名为 %2，%n 其它文件也已更名。</numerusform></translation>
+        <translation><numerusform>%1 已经更名为 %2，%n 个其他文件也已更名。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="473"/>
@@ -2111,7 +2111,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="478"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 已移动到 %2，%n 其它文件也已移动。</numerusform></translation>
+        <translation><numerusform>%1 已移动到 %2，%n 个其他文件也已移动。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="480"/>
@@ -2121,7 +2121,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="485"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 和 %n 其他文件有同步冲突。</numerusform></translation>
+        <translation><numerusform>%1 和 %n 个其他文件有同步冲突。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
@@ -2131,7 +2131,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="492"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 和 %n 其他文件由于错误不能同步。详细信息请查看日志。</numerusform></translation>
+        <translation><numerusform>%1 和 %n 个其他文件由于错误无法同步。详情请查看日志。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="494"/>
@@ -2141,7 +2141,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="499"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 与 %n 其他文件目前均已被锁定。</numerusform></translation>
+        <translation><numerusform>%1 和 %n 个其他文件目前均已被锁定。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="501"/>
