@@ -2070,7 +2070,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 e %n outro arquivo foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -6508,7 +6508,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
-        <translation>O status da conta atual é online</translation>
+        <translation>O status da conta atual é on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
@@ -6548,12 +6548,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
         <source>Online status</source>
-        <translation>Status online</translation>
+        <translation>Status on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
-        <translation>Online</translation>
+        <translation>On-line</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
@@ -6921,7 +6921,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
         <source>Some available online only</source>
-        <translation>Alguns disponíveis apenas online </translation>
+        <translation>Alguns disponíveis apenas on-line </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>
