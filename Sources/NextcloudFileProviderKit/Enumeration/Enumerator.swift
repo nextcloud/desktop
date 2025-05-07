@@ -193,10 +193,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
                 """
             )
-            listener?.enumerationActionFailed(
-                actionId: actionId, error: NSFileProviderError(.noSuchItem)
+            let error = NSError.fileProviderErrorForNonExistentItem(
+                withIdentifier: self.enumeratedItemIdentifier
             )
-            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+            listener?.enumerationActionFailed(actionId: actionId, error: error)
+            observer.finishEnumeratingWithError(error)
             return
         }
 
@@ -367,6 +368,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
+                    enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
@@ -498,6 +500,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.completeChangesObserver(
                         observer,
                         anchor: anchor,
+                        enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
@@ -534,6 +537,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.completeChangesObserver(
                 observer,
                 anchor: anchor,
+                enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -591,6 +595,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
+        enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -602,10 +607,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.error(
                 """
                 Received invalid newMetadatas, updatedMetadatas or deletedMetadatas.
-                Finished enumeration of changes with error.
+                    Finished enumeration of changes with error.
                 """
             )
-            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+            observer.finishEnumeratingWithError(
+                NSError.fileProviderErrorForNonExistentItem(
+                    withIdentifier: enumeratedItemIdentifier
+                )
+            )
             return
         }
 
