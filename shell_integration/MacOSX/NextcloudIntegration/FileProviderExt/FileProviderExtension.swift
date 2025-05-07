@@ -426,7 +426,7 @@ import OSLog
             Logger.fileProviderExtension.warning(
                 """
                 System requested deletion of item in trash, but deleting trash items is disabled.
-                    item: \(item.filename)
+                    item: \(item.filename, privacy: .public)
                 """
             )
             completionHandler(NSFileProviderError(.deletionRejected))
