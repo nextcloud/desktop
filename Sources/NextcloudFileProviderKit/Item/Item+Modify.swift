@@ -44,12 +44,16 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not move file or folder: \(oldRemotePath, privacy: .public)
-                to \(newRemotePath, privacy: .public),
-                received error: \(moveError.errorCode, privacy: .public)
-                \(moveError.errorDescription, privacy: .public)
+                    to \(newRemotePath, privacy: .public),
+                    received error: \(moveError.errorCode, privacy: .public)
+                    \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, moveError.fileProviderError)
+            return (nil, moveError.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: newRemotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
 
         if isFolder {
@@ -173,7 +177,13 @@ public extension Item {
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
-            return (nil, error.fileProviderError)
+            // Moving should be done before uploading and should catch collisions already, but,
+            // it is painless to check here too just in case
+            return (nil, error.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
 
         Self.logger.info(
@@ -246,11 +256,7 @@ public extension Item {
         )
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            if let error = error.fileProviderError {
-                return error
-            } else {
-                return NSFileProviderError(.cannotSynchronize)
-            }
+            return error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
 
         // 1. Scan the remote contents of the bundle (recursively)
@@ -287,9 +293,9 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not read server url for item with ocID
-                    \(self.itemIdentifier.rawValue, privacy: .public)
-                    (\(self.filename, privacy: .public)),
-                    received nil metadatas
+                        \(self.itemIdentifier.rawValue, privacy: .public)
+                        (\(self.filename, privacy: .public)),
+                        received nil metadatas
                     """
                 )
                 throw NSFileProviderError(.serverUnreachable)
@@ -484,7 +490,7 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not read new bpi folder at: \(remotePath, privacy: .public),
-                    received error: \(readError.errorDescription, privacy: .public)
+                        received error: \(readError.errorDescription, privacy: .public)
                     """
                 )
                 throw remoteErrorToThrow(readError)
@@ -514,6 +520,7 @@ public extension Item {
         )
     }
 
+    // Note: When handling trashing, the server handles filename conflicts for us
     private static func trash(
         _ modifiedItem: Item,
         account: Account,
@@ -571,7 +578,7 @@ public extension Item {
             Self.logger.error(
                 """
                 Received bad error from post-trashing remote scan:
-                \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                    \(error.errorDescription, privacy: .public) \(files, privacy: .public)
                 """
             )
             return (dirtyItem, error.fileProviderError)
@@ -667,6 +674,7 @@ public extension Item {
         return (postDeleteItem, nil)
     }
 
+    // Note: When restoring from the trash, the server handles filename conflicts for us
     private static func restoreFromTrash(
         _ modifiedItem: Item,
         account: Account,
@@ -711,7 +719,7 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not restore item \(modifiedItem.filename, privacy: .public) from trash
-                Received error: \(restoreError.errorDescription, privacy: .public)
+                    Received error: \(restoreError.errorDescription, privacy: .public)
                 """
             )
             return (modifiedItem, restoreError.fileProviderError)
