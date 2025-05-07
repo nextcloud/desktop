@@ -12,6 +12,7 @@ import OSLog
 
 public extension Item {
     private func fetchDirectoryContents(
+        itemIdentifier: NSFileProviderItemIdentifier,
         directoryLocalPath: String,
         directoryRemotePath: String,
         domain: NSFileProviderDomain?,
@@ -44,7 +45,9 @@ public extension Item {
                     \(readError.errorDescription, privacy: .public)
                     """
                 )
-                throw readError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                throw readError.fileProviderError(
+                    handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+                ) ??  NSFileProviderError(.cannotSynchronize)
             }
 
             guard let metadatas else {
@@ -105,7 +108,9 @@ public extension Item {
                         metadata.status = Status.downloadError.rawValue
                         metadata.sessionError = error.errorDescription
                         dbManager.addItemMetadata(metadata)
-                        throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                        throw error.fileProviderError(
+                            handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+                        ) ??  NSFileProviderError(.cannotSynchronize)
                     }
                 }
 
@@ -207,6 +212,7 @@ public extension Item {
 
             do {
                 try await fetchDirectoryContents(
+                    itemIdentifier: itemIdentifier,
                     directoryLocalPath: localPath.path,
                     directoryRemotePath: serverUrlFileName,
                     domain: domain,
@@ -243,17 +249,19 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not acquire contents of item with identifier: \(ocId, privacy: .public)
-                    and fileName: \(updatedMetadata.fileName, privacy: .public)
-                    at \(serverUrlFileName, privacy: .public)
-                    error: \(error.errorCode, privacy: .public)
-                    \(error.errorDescription, privacy: .public)
+                        and fileName: \(updatedMetadata.fileName, privacy: .public)
+                        at \(serverUrlFileName, privacy: .public)
+                        error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
                     """
                 )
 
                 updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.errorDescription
                 dbManager.addItemMetadata(updatedMetadata)
-                return (nil, nil, error.fileProviderError)
+                return (nil, nil, error.fileProviderError(
+                    handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+                ))
             }
         }
 
@@ -348,6 +356,8 @@ public extension Item {
             )
         }
 
-        return (data, error.fileProviderError)
+        return (data, error.fileProviderError(
+            handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+        ))
     }
 }
