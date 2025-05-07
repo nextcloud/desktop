@@ -5,6 +5,8 @@
 -->
 # Nextcloud Desktop Client
 
+[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/desktop)](https://api.reuse.software/info/github.com/nextcloud/desktop)
+
 The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server with your computer.
 
 <p align="center">
