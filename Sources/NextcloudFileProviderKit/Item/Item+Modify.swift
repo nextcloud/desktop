@@ -74,10 +74,13 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not acquire metadata of item with identifier: \(ocId, privacy: .public),
-                cannot correctly inform of modification
+                    cannot correctly inform of modification
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let modifiedItem = Item(
@@ -106,17 +109,23 @@ public extension Item {
             Self.logger.error(
                 """
                 ERROR. Could not upload modified contents as was provided nil contents url.
-                ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
+                    ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
@@ -126,7 +135,10 @@ public extension Item {
                 unable to update item status to uploading
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let (_, _, etag, date, size, _, error) = await upload(
@@ -491,10 +503,10 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
-                \(contentsPath, privacy: .public)
+                    \(contentsPath, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
         }
 
         progress.completedUnitCount += 1
@@ -903,11 +915,14 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not modify item: \(ocId, privacy: .public), different identifier to the
-                item the modification was targeting
-                (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
+                    item the modification was targeting
+                    (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
@@ -939,11 +954,14 @@ public extension Item {
                 Self.logger.error(
                     """
                     Not modifying item: \(ocId, privacy: .public),
-                    could not find metadata for target parentItemIdentifier
+                        could not find metadata for target parentItemIdentifier
                         \(newParentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
-                return (nil, NSFileProviderError(.noSuchItem))
+                return (
+                    nil,
+                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                )
             }
 
             newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
