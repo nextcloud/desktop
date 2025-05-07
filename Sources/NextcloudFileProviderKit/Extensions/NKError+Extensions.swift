@@ -63,6 +63,8 @@ extension NKError {
             NSFileProviderError(.notAuthenticated)
         } else if isGoingOverQuotaError {
             NSFileProviderError(.insufficientQuota)
+        } else if matchesCollisionError {
+            NSFileProviderError(.filenameCollision)
         } else {
             NSFileProviderError(.cannotSynchronize)
         }
