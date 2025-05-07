@@ -122,7 +122,9 @@ import OSLog
         ) {
             completionHandler(item, nil)
         } else {
-            completionHandler(nil, NSFileProviderError(.noSuchItem))
+            completionHandler(
+                nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+            )
         }
         return Progress()
     }
@@ -188,7 +190,11 @@ import OSLog
                 as item not found.
                 """
             )
-            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+            completionHandler(
+                nil,
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            )
             insertErrorAction(actionId)
             return Progress()
         }
@@ -335,7 +341,12 @@ import OSLog
                 "Not modifying item: \(ocId, privacy: .public) as item not found."
             )
             insertErrorAction(actionId)
-            completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
+            completionHandler(
+                item,
+                [],
+                false,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
+            )
             return Progress()
         }
 
@@ -404,7 +415,9 @@ import OSLog
                 "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
             )
             insertErrorAction(actionId)
-            completionHandler(NSFileProviderError(.noSuchItem))
+            completionHandler(
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+            )
             return Progress()
         }
 
