@@ -116,14 +116,14 @@ private slots:
 
 private slots:
     void displayMnemonic(const QString &mnemonic);
-    void disableEncryptionForAccount(const OCC::AccountPtr &account) const;
+    void forgetEncryptionOnDeviceForAccount(const OCC::AccountPtr &account) const;
     void migrateCertificateForAccount(const OCC::AccountPtr &account);
     void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
-    void initializeE2eEncryption();
-    void resetE2eEncryption();
+    void setupE2eEncryption();
+    void forgetE2eEncryption();
     void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
 
@@ -131,7 +131,7 @@ private:
     bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
-    void initializeE2eEncryptionSettingsMessage();
+    void setupE2eEncryptionMessage();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
