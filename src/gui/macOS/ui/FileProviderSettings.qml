@@ -131,6 +131,12 @@ Page {
                         }
                     }
                 }
+
+                CheckBox {
+                    text: qsTr("Allow deletion of items in Trash")
+                    checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
+                    onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
+                }
             }
         }
     }
