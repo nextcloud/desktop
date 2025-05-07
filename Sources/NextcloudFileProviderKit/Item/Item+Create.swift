@@ -40,11 +40,15 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not create new folder at: \(remotePath, privacy: .public),
-                received error: \(createError.errorCode, privacy: .public)
-                \(createError.errorDescription, privacy: .public)
+                    received error: \(createError.errorCode, privacy: .public)
+                    \(createError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, createError.fileProviderError)
+            return (nil, createError.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
         
         // Read contents after creation
@@ -71,11 +75,15 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not read new folder at: \(remotePath, privacy: .public),
-                received error: \(readError.errorCode, privacy: .public)
-                \(readError.errorDescription, privacy: .public)
+                    received error: \(readError.errorCode, privacy: .public)
+                    \(readError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, readError.fileProviderError)
+            return (nil, readError.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
         
         guard var (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
@@ -138,12 +146,16 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename, privacy: .public),
-                received error: \(error.errorCode, privacy: .public)
-                \(error.errorDescription, privacy: .public)
-                received ocId: \(ocId ?? "empty", privacy: .public)
+                    received error: \(error.errorCode, privacy: .public)
+                    \(error.errorDescription, privacy: .public)
+                    received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
-            return (nil, error.fileProviderError)
+            return (nil, error.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
         
         Self.logger.info(
@@ -253,11 +265,7 @@ public extension Item {
         }
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            if let error = error.fileProviderError {
-                return error
-            } else {
-                return NSFileProviderError(.cannotSynchronize)
-            }
+            return error.fileProviderError ??  NSFileProviderError(.cannotSynchronize)
         }
 
         let contentsPath = contents.path
@@ -551,8 +559,8 @@ public extension Item {
                 Self.logger.debug(
                     """
                     Item: \(newServerUrlFileName, privacy: .public),
-                    is a bundle or package whose root folder already exists, ignoring errors.
-                    Fetching remote information and proceeding with creation of internal contents.
+                        is a bundle or package whose root folder already exists, ignoring errors.
+                        Fetching remote information, proceeding with creation of internal contents.
                     """
                 )
                 let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(

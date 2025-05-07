@@ -129,7 +129,7 @@ extension Item {
         dbManager.addItemMetadata(metadata)
 
         progress.completedUnitCount = 1
-        var returnError = error.fileProviderError
+        var returnError = error.fileProviderError // No need to handle problem cases, no upload here
         if #available(macOS 13.0, *), error == .success {
             returnError = NSFileProviderError(.excludedFromSync)
         }
