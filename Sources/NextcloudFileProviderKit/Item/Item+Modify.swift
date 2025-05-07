@@ -49,11 +49,7 @@ public extension Item {
                 \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (
-                nil,
-                moveError.matchesCollisionError ?
-                    NSFileProviderError(.filenameCollision) : moveError.fileProviderError
-            )
+            return (nil, moveError.fileProviderError)
         }
 
         if isFolder {
@@ -250,9 +246,7 @@ public extension Item {
         )
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            if error.matchesCollisionError {
-                return NSFileProviderError(.filenameCollision)
-            } else if let error = error.fileProviderError {
+            if let error = error.fileProviderError {
                 return error
             } else {
                 return NSFileProviderError(.cannotSynchronize)

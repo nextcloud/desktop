@@ -44,11 +44,7 @@ public extension Item {
                 \(createError.errorDescription, privacy: .public)
                 """
             )
-            return (
-                nil,
-                createError.matchesCollisionError ?
-                    NSFileProviderError(.filenameCollision) : createError.fileProviderError
-            )
+            return (nil, createError.fileProviderError)
         }
         
         // Read contents after creation
@@ -147,11 +143,7 @@ public extension Item {
                 received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
-            return (
-                nil,
-                error.matchesCollisionError ?
-                    NSFileProviderError(.filenameCollision) : error.fileProviderError
-            )
+            return (nil, error.fileProviderError)
         }
         
         Self.logger.info(
@@ -261,9 +253,7 @@ public extension Item {
         }
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            if error.matchesCollisionError {
-                return NSFileProviderError(.filenameCollision)
-            } else if let error = error.fileProviderError {
+            if let error = error.fileProviderError {
                 return error
             } else {
                 return NSFileProviderError(.cannotSynchronize)
