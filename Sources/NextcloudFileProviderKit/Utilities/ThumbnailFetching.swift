@@ -48,7 +48,11 @@ public func fetchThumbnails(
                 unable to download thumbnail!
                 """
             )
-            perThumbnailCompletionHandler(itemIdentifier, nil, NSFileProviderError(.noSuchItem))
+            perThumbnailCompletionHandler(
+                itemIdentifier,
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            )
             finishCurrent()
             continue
         }
