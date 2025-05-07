@@ -348,7 +348,8 @@ public extension Item {
                     progressHandler: { _ in }
                 )
 
-                guard error == .success else {
+                // Do not fail on existing item, just keep going
+                guard error == .success || error.matchesCollisionError else {
                     Self.logger.error(
                         """
                         Could not upload bpi file at: \(childUrlPath, privacy: .public),
