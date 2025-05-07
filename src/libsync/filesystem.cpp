@@ -416,7 +416,9 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
     if (permissions == FileSystem::FolderPermissions::ReadOnly) {
         qCInfo(lcFileSystem) << path << "will be read only";
-        if (!AddAccessDeniedAce(newDacl.get(), ACL_REVISION, FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA | FILE_DELETE_CHILD, sid)) {
+
+        if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE,
+                                  FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA, sid)) {
             qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce << path" << GetLastError();
             return false;
         }
@@ -468,8 +470,18 @@ bool FileSystem::setFolderPermissions(const QString &path,
         return false;
     }
 
-    if (!SetFileSecurityW(path.toStdWString().c_str(), info, &newSecurityDescriptor)) {
-        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << path << GetLastError();
+    auto currentFolder = QDir{path};
+    const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
+    for (const auto &oneEntry : childFiles) {
+        const auto childFile = QDir::toNativeSeparators(path + QDir::separator() + oneEntry);
+        if (!SetFileSecurityW(childFile.toStdWString().c_str(), info, &newSecurityDescriptor)) {
+            qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << childFile << GetLastError();
+            return false;
+        }
+    }
+
+    if (!SetFileSecurityW(QDir::toNativeSeparators(path).toStdWString().c_str(), info, &newSecurityDescriptor)) {
+        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << QDir::toNativeSeparators(path) << GetLastError();
         return false;
     }
 #else
