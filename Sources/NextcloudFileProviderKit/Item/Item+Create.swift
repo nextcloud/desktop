@@ -85,7 +85,7 @@ public extension Item {
         guard var (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
         else {
             Self.logger.error("Received nil directory read metadatas during conversion")
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (nil, NSFileProviderError(.cannotSynchronize))
         }
         directoryMetadata.downloaded = true
         dbManager.addItemMetadata(directoryMetadata)
@@ -398,7 +398,12 @@ public extension Item {
                     \(contentsPath, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            // Yes, it's weird to throw a "non-existent item" error during an item's creation.
+            // No, it's not the wrong solution. Thanks to the peculiar way we have to handle bundles
+            // things can happen as we are populating the bundle remotely and then checking it.
+            throw NSError.fileProviderErrorForNonExistentItem(
+                withIdentifier: rootItem.itemIdentifier
+            )
         }
 
         progress.completedUnitCount += 1
@@ -443,7 +448,7 @@ public extension Item {
                 as it may already exist
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (nil, NSFileProviderError(.cannotSynchronize))
         }
 
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
@@ -461,11 +466,11 @@ public extension Item {
                 Self.logger.error(
                     """
                     Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public),
-                    could not find metadata for parentItemIdentifier:
+                        could not find metadata for parentItemIdentifier:
                         \(parentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
-                return (nil, NSFileProviderError(.noSuchItem))
+                return (nil, NSFileProviderError(.cannotSynchronize))
             }
             parentItemRemotePath = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
@@ -543,10 +548,10 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not create item with identifier: \(tempId, privacy: .public),
-                    as it is a bundle or package but could not create the folder.
-                    item: \(item, privacy: .public)
-                    error: \(error?.localizedDescription ?? "nil", privacy: .public)
-                    file provider error code: \(fpErrorCode?.rawValue ?? -1, privacy: .public)
+                        as it is a bundle or package but could not create the folder.
+                        item: \(item, privacy: .public)
+                        error: \(error?.localizedDescription ?? "nil", privacy: .public)
+                        file provider error code: \(fpErrorCode?.rawValue ?? -1, privacy: .public)
                     """
                 )
                 return (item, error)
@@ -584,10 +589,15 @@ public extension Item {
                     Self.logger.error(
                         """
                         Could not create item with identifier: \(tempId, privacy: .public),
-                        for remotely-existing bundle or package. This should not happen.
+                            for remotely-existing bundle or package. This should not happen.
                         """
                     )
-                    return (nil, NSFileProviderError(.noSuchItem))
+                    return (
+                        nil,
+                        NSError.fileProviderErrorForNonExistentItem(
+                            withIdentifier: itemTemplate.itemIdentifier
+                        )
+                    )
                 }
 
                 item = Item(
@@ -599,24 +609,25 @@ public extension Item {
                 )
             }
 
-            guard let item = item else {
+            guard let item else {
                 Self.logger.error(
                     """
                     Could not create item with identifier: \(tempId, privacy: .public),
-                    for remotely-existing bundle or package as item is null. This should not happen.
+                        for remotely-existing bundle or package as item is null.
+                        This should not happen!
                     """
                 )
-                return (nil, NSFileProviderError(.noSuchItem))
+                return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
             guard let url else {
                 Self.logger.error(
                     """
                     Could not create item with identifier: \(tempId, privacy: .public),
-                    as it is a bundle or package and no contents were provided
+                        as it is a bundle or package and no contents were provided
                     """
                 )
-                return (nil, NSFileProviderError(.noSuchItem))
+                return (nil, NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL))
             }
 
             // Bundles and packages are given to us as if they were files -- i.e. we don't get
