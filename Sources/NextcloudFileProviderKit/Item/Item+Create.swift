@@ -244,20 +244,20 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not create enumerator for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         guard let enumeratorArray = enumerator.allObjects as? [URL] else {
             Self.logger.error(
                 """
                 Could not create enumerator array for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
@@ -391,11 +391,11 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
-                \(remotePath, privacy: .public)
-                of account:
-                \(account.ncKitAccount, privacy: .public)
-                with contents located at:
-                \(contentsPath, privacy: .public)
+                    \(remotePath, privacy: .public)
+                    of account:
+                    \(account.ncKitAccount, privacy: .public)
+                    with contents located at:
+                    \(contentsPath, privacy: .public)
                 """
             )
             throw NSFileProviderError(.noSuchItem)

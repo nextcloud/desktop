@@ -318,20 +318,20 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not create enumerator for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         guard let enumeratorArray = enumerator.allObjects as? [URL] else {
             Self.logger.error(
                 """
                 Could not create enumerator array for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         // Add one more total unit count to signify final reconciliation of bundle modify process
