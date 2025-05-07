@@ -1,3 +1,8 @@
+<!--
+  - SPDX-FileCopyrightText: 2012 ownCloud GmbH
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+
 Test Plan
 =========
 
