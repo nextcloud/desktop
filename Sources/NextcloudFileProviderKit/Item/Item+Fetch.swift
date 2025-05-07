@@ -166,7 +166,11 @@ public extension Item {
                 unable to update item status to downloading
                 """
             )
-            return (nil, nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let isDirectory = contentType.conforms(to: .directory)
@@ -278,7 +282,11 @@ public extension Item {
                 Could not find parent item id for file \(self.metadata.fileName, privacy: .public)
                 """
             )
-            return (nil, nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let fpItem = Item(
@@ -302,7 +310,10 @@ public extension Item {
                 fileName: \(self.filename, privacy: .public)
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         Self.logger.debug(
