@@ -80,7 +80,9 @@ extension Item {
                     \(error.errorDescription, privacy: .public)
                 """
             )
-            return error.fileProviderError
+            return error.fileProviderError(
+                handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+            )
         }
         Self.logger.info(
             """
