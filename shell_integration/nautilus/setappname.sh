@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2015 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # this script replaces the line
 #  appname = 'Nextcloud'
 # with the correct branding name in the syncstate.py script

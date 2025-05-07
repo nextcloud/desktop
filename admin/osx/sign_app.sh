@@ -1,5 +1,8 @@
 #!/bin/sh -xe
 
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 [ "$#" -lt 2 ] && echo "Usage: sign_app.sh <app> <identity> <team_identifier>" && exit
 
 src_app="$1"

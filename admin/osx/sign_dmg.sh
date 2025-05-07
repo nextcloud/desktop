@@ -1,5 +1,8 @@
 #!/bin/sh -x
 
+# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 [ "$#" -lt 2 ] && echo "Usage: sign_dmg.sh <dmg> <identity>" && exit
 
 src_dmg="$1"

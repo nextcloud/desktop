@@ -1,3 +1,7 @@
+<!--
+  - SPDX-FileCopyrightText: 2014 ownCloud GmbH
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
 # Windows Installer Translations
 
 ## Introduction

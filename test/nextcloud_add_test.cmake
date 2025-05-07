@@ -1,5 +1,9 @@
 find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
 
+# SPDX-FileCopyrightText: 2028 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 macro(nextcloud_build_test test_class)
     set(CMAKE_AUTOMOC TRUE)
     set(OWNCLOUD_TEST_CLASS ${test_class})

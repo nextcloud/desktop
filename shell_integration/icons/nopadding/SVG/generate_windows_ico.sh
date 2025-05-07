@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2016 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # Dimensions taken from https://www.apriorit.com/dev-blog/357-shell-extentions-basics-samples-common-problems#_Toc408244375
 convert -background transparent attention.svg -gravity SouthWest \( -clone 0 -resize 10x10 -extent 16x16 \) \( -clone 0 -resize 16x16 -extent 32x32 \) \( -clone 0 -resize 24x24 -extent 48x48 \) \( -clone 0 -resize 128x128 -extent 256x256 \) -delete 0 ../../../windows/OCOverlays/ico/Warning.ico
 convert -background transparent error.svg -gravity SouthWest \( -clone 0 -resize 10x10 -extent 16x16 \) \( -clone 0 -resize 16x16 -extent 32x32 \) \( -clone 0 -resize 24x24 -extent 48x48 \) \( -clone 0 -resize 128x128 -extent 256x256 \) -delete 0 ../../../windows/OCOverlays/ico/Error.ico

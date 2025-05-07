@@ -1,6 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
  * SPDX-FileCopyrightText: 2008-2013 Andreas Schneider <asn@cryptomilk.org>
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */

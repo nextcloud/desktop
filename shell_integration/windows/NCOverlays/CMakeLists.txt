@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: LGPL-2.1-or-later
 add_library(NCOverlays MODULE
     DllMain.cpp
     NCOverlay.cpp

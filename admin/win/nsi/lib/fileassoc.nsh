@@ -1,5 +1,7 @@
 ; fileassoc.nsh
 ; File association helper macros
+; SPDX-FileCopyrightText: 1999-2025 NSIS Contributors, Saivert
+; SPDX-License-Identifier: Zlib
 ; Written by Saivert
 ; See http://nsis.sourceforge.net/FileAssoc
 ;
