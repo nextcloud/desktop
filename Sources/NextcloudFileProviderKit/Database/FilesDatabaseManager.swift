@@ -25,8 +25,8 @@ public let databaseFilename = "fileproviderextdatabase.realm"
 
 public final class FilesDatabaseManager: Sendable {
     private static let schemaVersion = stable2_0SchemaVersion
-
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
+    let account: Account
 
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
@@ -36,6 +36,8 @@ public final class FilesDatabaseManager: Sendable {
         fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
         relativeDatabaseFolderPath: String = relativeDatabaseFolderPath
     ) {
+        self.account = account
+
         let fm = FileManager.default
         let dbPath = realmConfig.fileURL?.path
         let migrate = dbPath != nil && !fm.fileExists(atPath: dbPath!)
