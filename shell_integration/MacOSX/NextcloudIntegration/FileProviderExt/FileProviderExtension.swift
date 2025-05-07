@@ -429,7 +429,7 @@ import OSLog
                     item: \(item.filename, privacy: .public)
                 """
             )
-            completionHandler(NSFileProviderError(.deletionRejected))
+            completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
             return progress
         }
 
