@@ -69,4 +69,13 @@ extension NKError {
             NSFileProviderError(.cannotSynchronize)
         }
     }
+
+    func fileProviderError(
+        handlingNoSuchItemErrorUsingItemIdentifier identifier: NSFileProviderItemIdentifier
+    ) -> Error? {
+        guard fileProviderError?.code == .noSuchItem else {
+            return fileProviderError as Error?
+        }
+        return NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+    }
 }
