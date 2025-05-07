@@ -46,6 +46,20 @@ class ProcessDirectoryJob;
 enum class ErrorCategory;
 
 /**
+ * Represent the quota for each folder retrieved from the server
+ * bytesUsed: space used in bytes
+ * bytesAvailale: free space available in bytes or
+ *                -1: Uncomputed free space - new folder (externally created) not yet scanned by the server
+ *                -2: Unknown free space
+ *                -3: Unlimited free space.
+ */
+struct FolderQuota
+{
+    int64_t bytesUsed = 0;
+    int64_t bytesAvailable = 0;
+};
+
+/**
  * Represent all the meta-data about a file in the server
  */
 struct RemoteInfo
@@ -83,6 +97,8 @@ struct RemoteInfo
 
     bool isLivePhoto = false;
     QString livePhotoFile;
+
+    FolderQuota folderQuota;
 };
 
 struct LocalInfo
@@ -164,6 +180,7 @@ signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
+    void setfolderQuota(const FolderQuota &folderQuota);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -208,6 +225,7 @@ private:
 
 public:
     QByteArray _dataFingerprint;
+    FolderQuota _folderQuota;
 };
 
 class DiscoveryPhase : public QObject

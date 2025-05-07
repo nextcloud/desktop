@@ -409,6 +409,8 @@ void DiscoverySingleDirectoryJob::start()
           << "getlastmodified"
           << "getcontentlength"
           << "getetag"
+          << "quota-available-bytes"
+          << "quota-used-bytes"
           << "http://owncloud.org/ns:size"
           << "http://owncloud.org/ns:id"
           << "http://owncloud.org/ns:fileid"
@@ -581,6 +583,14 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
     if (result.isDirectory && map.contains("size")) {
         result.sizeOfFolder = map.value("size").toInt();
     }
+
+    if (result.isDirectory && map.contains("quota-used-bytes")) {
+        result.folderQuota.bytesUsed = map.value("quota-used-bytes").toLongLong();
+    }
+
+    if (result.isDirectory && map.contains("quota-available-bytes")) {
+        result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toLongLong();
+    }
 }
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
@@ -615,11 +625,22 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (map.contains("size")) {
             _size = map.value("size").toInt();
         }
+
+        // all folders will contain both
+        if (map.contains("quota-used-bytes") && map.contains("quota-available-bytes")) {
+            emit setfolderQuota(FolderQuota{map.value("quota-used-bytes").toLongLong(), map.value("quota-available-bytes").toLongLong()});
+        }
     } else {
         RemoteInfo result;
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
+        if (map.contains("quota-used-bytes")) {
+            result.folderQuota.bytesUsed = map.value("quota-used-bytes").toInt();
+        }
+        if (map.contains("quota-available-bytes")) {
+            result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toInt();
+        }
         propertyMapToRemoteInfo(map,
                                 _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                 result);

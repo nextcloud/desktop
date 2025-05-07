@@ -31,6 +31,7 @@ namespace
 constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
 constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
 constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
+constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
 }
 
 namespace OCC {
@@ -766,6 +767,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isLivePhoto = serverEntry.isLivePhoto;
     item->_livePhotoFile = serverEntry.livePhotoFile;
 
+    item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
+
     // Check for missing server data
     {
         QStringList missingData;
@@ -1072,6 +1076,40 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
 }
 
+int64_t ProcessDirectoryJob::folderQuotaAvailable(const SyncFileItemPtr &item)
+{
+    const auto unlimitedFreeSpace = -3;
+    if (const auto isNewItem = item->_instruction == CSYNC_INSTRUCTION_NEW;
+        _queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
+        && !item->isDirectory()
+        && item->_direction == SyncFileItem::Up
+        && item->_size > 0
+        && (item->_instruction == CSYNC_INSTRUCTION_SYNC || isNewItem)) {
+
+        const auto unknownFreeSpace = -2;
+        const auto bytesAvailable = _folderQuota.bytesAvailable;
+
+        if (!_dirItem) {
+            return bytesAvailable;
+        }
+
+        const auto isDirItemRenamed = _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME;
+
+        // quota is unknown at this point
+        if (isDirItemRenamed && isNewItem) {
+            return unknownFreeSpace;
+        }
+
+        if (isDirItemRenamed) {
+            return bytesAvailable;
+        }
+
+        return _dirItem->_folderQuota.bytesAvailable;
+    }
+
+    return unlimitedFreeSpace;
+}
+
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
     const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
@@ -1124,6 +1162,25 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Cannot sync due to invalid modification time");
             item->_status = SyncFileItem::Status::NormalError;
+        }
+
+        if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
+            qCDebug(lcDisco) << "Folder" << item->_file
+                             << "- quota used: " << serverEntry.folderQuota.bytesUsed
+                             << "- quota available: " << serverEntry.folderQuota.bytesAvailable;
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            if (_currentFolder._server.isEmpty()) {
+                item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
+                                                                                                         Utility::octetsToString(folderQuota));
+            } else {
+                item->_errorString = tr("Upload of %1 exceeds %2 of space left in folder %3.").arg(Utility::octetsToString(item->_size),
+                                                                                                   Utility::octetsToString(folderQuota),
+                                                                                                   _currentFolder._server);
+            }
+
+            item->_status = SyncFileItem::Status::NormalError;
+            _discoveryData->_anotherSyncNeeded = true;
+            _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForFilesExceedQuotaSeconds);
         }
 
         if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
@@ -2153,6 +2210,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     }
 
     connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
+    connect(serverJob, &DiscoverySingleDirectoryJob::setfolderQuota, this, &ProcessDirectoryJob::setFolderQuota);
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
@@ -2179,6 +2237,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             _serverQueryDone = true;
             if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
                 _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
+
             if (_localQueryDone)
                 this->process();
         } else {
@@ -2207,6 +2266,12 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         [this](const RemotePermissions &perms) { _rootPermissions = perms; });
     serverJob->start();
     return serverJob;
+}
+
+void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
+{
+    _folderQuota.bytesUsed = folderQuota.bytesUsed;
+    _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 }
 
 void ProcessDirectoryJob::startAsyncLocalQuery()
@@ -2337,5 +2402,4 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     }
     return result;
 }
-
 }

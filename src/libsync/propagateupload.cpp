@@ -753,8 +753,9 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 // This function is used whenever there is an error occurring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
-    if (_aborting)
+    if (_aborting) {
         return;
+    }
     abort(AbortType::Synchronous);
     done(status, error);
 }

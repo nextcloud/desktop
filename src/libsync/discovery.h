@@ -296,9 +296,16 @@ private:
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
     bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
 
+    FolderQuota _folderQuota;
+
+    int64_t folderQuotaAvailable(const SyncFileItemPtr &item);
+
 signals:
     void finished();
     // The root etag of this directory was fetched
     void etag(const QByteArray &, const QDateTime &time);
+
+private slots:
+    void setFolderQuota(const FolderQuota &folderQuota);
 };
 }
