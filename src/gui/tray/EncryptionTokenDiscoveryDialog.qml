@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import Style 1.0
