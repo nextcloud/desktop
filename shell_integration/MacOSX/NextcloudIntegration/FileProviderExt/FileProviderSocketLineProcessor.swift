@@ -5,6 +5,7 @@
 
 import Foundation
 import NCDesktopClientSocketKit
+import NextcloudFileProviderKit
 import OSLog
 
 class FileProviderSocketLineProcessor: NSObject, LineProcessor {
@@ -36,7 +37,10 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
         } else if command == "ACCOUNT_NOT_AUTHENTICATED" {
             delegate.removeAccountConfig()
         } else if command == "ACCOUNT_DETAILS" {
-            guard let accountDetailsSubsequence = splitLine.last else { return }
+            guard let accountDetailsSubsequence = splitLine.last else {
+                Logger.desktopClientConnection.error("Account details did not have a first element")
+                return
+            }
             let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 4)
 
             let userAgent = String(splitAccountDetails[0])
@@ -52,6 +56,13 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
                 password: password,
                 userAgent: userAgent
             )
+        } else if command == "IGNORE_LIST" {
+            guard let ignoreListSubsequence = splitLine.last else {
+                Logger.desktopClientConnection.error("Ignore list missing contents!")
+                return
+            }
+            let ignoreList = ignoreListSubsequence.split(separator: "\n").map { String($0) }
+            delegate.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
         }
     }
 }

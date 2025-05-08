@@ -16,6 +16,7 @@ import OSLog
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
     var changeObserver: RemoteChangeObserver?
+    var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
