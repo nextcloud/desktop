@@ -39,15 +39,21 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         completionHandler(accountUserId, nil)
     }
 
-    func configureAccount(withUser user: String,
-                          userId: String,
-                          serverUrl: String,
-                          password: String) {
+    func configureAccount(
+        withUser user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String
+    ) {
         Logger.desktopClientConnection.info("Received configure account information over client communication service")
-        self.fpExtension.setupDomainAccount(user: user,
-                                            userId: userId,
-                                            serverUrl: serverUrl,
-                                            password: password)
+        self.fpExtension.setupDomainAccount(
+            user: user,
+            userId: userId,
+            serverUrl: serverUrl,
+            password: password,
+            userAgent: userAgent
+        )
     }
 
     func removeAccountConfig() {
