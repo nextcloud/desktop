@@ -28,10 +28,6 @@ class QMessageBox;
 class QSystemTrayIcon;
 class QSocket;
 
-namespace CrashReporter {
-class Handler;
-}
-
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcApplication)
@@ -144,9 +140,6 @@ private:
     QString _overrideLocalDir;
     QString _setLanguage;
 
-#if defined(WITH_CRASHREPORTER)
-    QScopedPointer<CrashReporter::Handler> _crashHandler;
-#endif
     QScopedPointer<FolderMan> _folderManager;
 #if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;

@@ -46,7 +46,6 @@ static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterva
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static constexpr char monoIconsC[] = "monoIcons";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
-static constexpr char crashReporterC[] = "crashReporter";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
@@ -1085,19 +1084,6 @@ void ConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
-}
-
-bool ConfigFile::crashReporter() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    const auto fallback = settings.value(QLatin1String(crashReporterC), true);
-    return getPolicySetting(QLatin1String(crashReporterC), fallback).toBool();
-}
-
-void ConfigFile::setCrashReporter(bool enabled)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(crashReporterC), enabled);
 }
 
 bool ConfigFile::automaticLogDir() const

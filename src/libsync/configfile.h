@@ -90,9 +90,6 @@ public:
     [[nodiscard]] int deleteFilesThreshold() const;
     void setDeleteFilesThreshold(int thresholdValue);
 
-    [[nodiscard]] bool crashReporter() const;
-    void setCrashReporter(bool enabled);
-
     [[nodiscard]] bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
 

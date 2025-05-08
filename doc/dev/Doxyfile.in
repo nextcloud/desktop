@@ -744,7 +744,6 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @CMAKE_SOURCE_DIR@/src/cmd \
-                         @CMAKE_SOURCE_DIR@/src/crashreporter \
                          @CMAKE_SOURCE_DIR@/src/gui \
                          @CMAKE_SOURCE_DIR@/src/libsync \
                          @CMAKE_CURRENT_SOURCE_DIR@ # for main README.md
