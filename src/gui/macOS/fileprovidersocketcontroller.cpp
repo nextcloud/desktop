@@ -18,6 +18,7 @@
 #include <QLoggingCategory>
 
 #include "accountmanager.h"
+#include "common/utility.h"
 #include "fileproviderdomainmanager.h"
 
 namespace OCC {
@@ -237,6 +238,7 @@ void FileProviderSocketController::sendAccountDetails() const
 
     // We cannot use colons as separators here due to "https://" in the url
     const auto message = QString(QStringLiteral("ACCOUNT_DETAILS:") +
+                                 Utility::userAgentString() + "~" +
                                  accountUser + "~" +
                                  accountUserId + "~" +
                                  accountUrl + "~" +
