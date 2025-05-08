@@ -95,6 +95,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
                 Logger.sharesDataSource.error("Service connection interrupted")
             })
+            if let acquiredUserAgent = await connection.userAgent() {
+                userAgent = acquiredUserAgent as String
+            }
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = Account(dictionary: credentials),
