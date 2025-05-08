@@ -100,6 +100,9 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
         reportSyncState(argument);
         return;
+    } else if (command == "IGNORE_LIST_REQUEST") {
+        sendIgnoreList();
+        return;
     }
 
     qCWarning(lcFileProviderSocketController) << "Unknown command or reply:" << receivedLine;
