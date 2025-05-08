@@ -401,13 +401,13 @@ QString UserStatusSelectorModel::timeDifferenceToString(int differenceSecs) cons
         return tr("Less than a minute");
     } else if (differenceSecs < 60 * 60) {
         const auto minutesLeft = static_cast<int>(std::ceil(differenceSecs / 60.0));
-        return tr("%n minute(s)", "", minutesLeft);
+        return tr("%n minute", "", minutesLeft);
     } else if (differenceSecs < 60 * 60 * 24) {
         const auto hoursLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0));
-        return tr("%n hour(s)", "", hoursLeft);
+        return tr("%n hour", "", hoursLeft);
     } else {
         const auto daysLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0 / 24.0));
-        return tr("%n day(s)", "", daysLeft);
+        return tr("%n day", "", daysLeft);
     }
 }
 
