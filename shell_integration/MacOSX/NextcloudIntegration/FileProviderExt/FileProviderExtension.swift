@@ -244,6 +244,19 @@ import OSLog
             return Progress()
         }
 
+        guard let ignoredFiles else {
+            Logger.fileProviderExtension.error(
+                """
+                Not creating item for identifier:
+                    \(itemTemplate.itemIdentifier.rawValue, privacy: .public)
+                    as ignore list not set up yet.
+                """
+            )
+            insertErrorAction(actionId)
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
         guard let dbManager else {
             Logger.fileProviderExtension.error(
                 """
@@ -316,6 +329,15 @@ import OSLog
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as account not set up yet."
+            )
+            insertErrorAction(actionId)
+            completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
+        guard let ignoredFiles else {
+            Logger.fileProviderExtension.error(
+                "Not modifying item: \(ocId, privacy: .public) as ignore list not set up yet."
             )
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
@@ -396,6 +418,15 @@ import OSLog
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), account not set up yet"
+            )
+            insertErrorAction(actionId)
+            completionHandler(NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
+        guard let ignoredFiles else {
+            Logger.fileProviderExtension.error(
+                "Not deleting \(identifier.rawValue, privacy: .public), ignore list not received"
             )
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
