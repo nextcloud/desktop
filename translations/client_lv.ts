@@ -394,7 +394,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="58"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="58"/>
@@ -676,6 +676,11 @@ Vai konts jāimportē?</translation>
         <translation>Nav konfigurēts konts.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="298"/>
+        <source>Forget encryption setup</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Disable encryption</source>
         <translation>Atspējot šifrēšanu</translation>
@@ -684,6 +689,11 @@ Vai konts jāimportē?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Display mnemonic</source>
         <translation>Attēlot mnemoniku</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
+        <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -709,6 +719,12 @@ Vai konts jāimportē?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mapei ir sinhronizēšanas kļūda. Šīs mapes šifrēšana būs iespējama tikai tad, kad tā būs sekmīgi sinhronizēta.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="409"/>
+        <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
+Would you like to do this now?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -826,7 +842,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vai tiešām vēlaties apturēt mapes &lt;i&gt;%1&lt;/i&gt; sinhronizēšanu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu dzēšanu.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vai tiešām vēlaties apturēt mapes &lt;i&gt;%1&lt;/i&gt; sinhronizēšanu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu izdzēšanu.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="893"/>
@@ -862,9 +878,29 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation>Pilnīgas šifrēšanas mnemonika</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1093"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Lai aizsargātu jūsu kriptogrāfiskās identitātes, mēs to šifrējam ar 12 vārdu mnemoniku no vārdnīcas. Lūdzu, ierakstiet tos un glabājiet drošībā. Tie būs nepieciešami, lai pievienotu citas ierīces savam kontam (piemēram, mobilais telefons vai klēpjdators).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1118"/>
+        <source>Forget the end-to-end encryption on this device</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
+        <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -997,19 +1033,29 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation>Ir mapes, kas ir palielinājušās izmērā pāri %1MB: %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1690"/>
+        <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>Pilnīga šifrēšana šajā kontā tika iespējota ar citu ierīci.&lt;br&gt;To var iespējot šajā ierīcē ar savas mnemonikas ievadīšanu.&lt;br&gt;Tas ļaus sinhronizēt esošās šifrētās mapes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1758"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Šis konts atbalsta pilnīgu šifrēšanu.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1747"/>
+        <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
         <source>Set up encryption</source>
         <translation>Iestatīt šifrēšanu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1758"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Šis konts atbalsta pilnīgu šifrēšanu.</translation>
     </message>
 </context>
 <context>
@@ -1189,34 +1235,34 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation>Turpināt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="483"/>
+        <location filename="../src/gui/application.cpp" line="514"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="484"/>
+        <location filename="../src/gui/application.cpp" line="515"/>
         <source>1 account</source>
         <translation>1 konts</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="486"/>
+        <location filename="../src/gui/application.cpp" line="517"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mapes</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="518"/>
         <source>1 folder</source>
         <translation>1 mape</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>Legacy import</source>
         <translation>Mantojuma imports</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1224,12 +1270,12 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="580"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>Kļūda piekļūstot konfigurācijas datnei</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="581"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Notika kļūda, piekļūstot konfigurācijas datnei %1. Lūdzu, pārliecinieties, vai datne ir pieejama jūsu sistēmas kontam.</translation>
     </message>
@@ -1936,7 +1982,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>pirms %1 minūtēm</numerusform><numerusform>pirms %1 minūtes</numerusform><numerusform>pirms %1 minūtes/ēm</numerusform></translation>
+        <translation><numerusform>pirms %1 minūtēm</numerusform><numerusform>pirms %1 minūtes</numerusform><numerusform>pirms %1 minūtēm</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
@@ -2006,7 +2052,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -2333,32 +2379,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1799"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1 no %2  (atlikušas dažas sekundes)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1802"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1 no %2  (%3 atlikušas)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1805"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1 no %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1811"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1 (atlikušas dažas sekundes)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1 (%2 atlikušas)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1816"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1821"/>
@@ -2527,7 +2573,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē vietējās un attālās izmaiņas</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -2600,7 +2646,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Grasās uzsākt sinhronizēšanu</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
@@ -3171,12 +3217,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
-        <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation>Šīs rakstzīmes sistēmā nav atļautas: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; atstarpes sākumā/beigās</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
         <translation type="unfinished"/>
     </message>
@@ -3184,6 +3225,11 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
+        <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
+        <translation>Šīs rakstzīmes sistēmā nav atļautas: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; atstarpes sākumā/beigās</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
@@ -3837,7 +3883,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Attālā mape %1 jau pastāv. Savienojas ar to, lai sinhronizētu.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="613"/>
@@ -3990,24 +4036,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>File name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
@@ -4025,17 +4071,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
@@ -4155,6 +4201,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <source>Upload of %1 exceeds %2 of space left in personal files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4575,7 +4631,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="441"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Vietējā datne sinhronizēšanas laikā tika izmainīta. Tā tiks atsākta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="452"/>
@@ -5245,7 +5301,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/syncengine.cpp" line="567"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Pieejami tikai %1, nepieciešami vismaz %2, lai uzsāktu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="600"/>
@@ -5292,7 +5348,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="128"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
@@ -5306,7 +5362,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="151"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Dažas datnes nevarēja sinhronizēt.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="152"/>
@@ -5316,12 +5372,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="160"/>
         <source>Checking folder changes</source>
-        <translation type="unfinished"/>
+        <translation>Pārbauda mapju izmaiņas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē izmaiņas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
@@ -5341,7 +5397,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="221"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
@@ -5356,7 +5412,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="243"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē %1. datni no %2</translation>
     </message>
 </context>
 <context>
@@ -5676,11 +5732,6 @@ Server replied with error: %2</source>
         <source>Less than a minute</source>
         <translation>Mazāk par minūti</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
-        <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
@@ -5688,17 +5739,7 @@ Server replied with error: %2</source>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
-        <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
-        <source>%n day(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
@@ -5714,6 +5755,21 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <source>%n day(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
@@ -5984,7 +6040,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt pirms sinhronizēt mapes, kas lielākas par</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -5995,7 +6051,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt pirms ārēju krātuvju sinhronizēšanas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
@@ -6811,7 +6867,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Gaida sinhronizēšanas uzsākšanu</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
