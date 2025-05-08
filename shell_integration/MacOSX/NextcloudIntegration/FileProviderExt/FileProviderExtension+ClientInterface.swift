@@ -105,7 +105,11 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     }
 
     @objc func setupDomainAccount(
-        user: String, userId: String, serverUrl: String, password: String
+        user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String = "Nextcloud-macOS/FileProviderExt"
     ) {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
         guard account != ncAccount else { return }
@@ -117,7 +121,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 user: user,
                 userId: userId,
                 password: password,
-                userAgent: "Nextcloud-macOS/FileProviderExt",
+                userAgent: userAgent,
                 nextcloudVersion: 25,
                 groupIdentifier: ""
             )
