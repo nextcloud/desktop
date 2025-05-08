@@ -62,6 +62,9 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
                 return
             }
             let ignoreList = ignoreListSubsequence.split(separator: "\n").map { String($0) }
+            Logger.desktopClientConnection.debug(
+                "Applying \(ignoreList.count, privacy: .public) ignore file patterns"
+            )
             delegate.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
         }
     }
