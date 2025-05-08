@@ -72,8 +72,10 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
     metadata._capabilities = bridgedNsFileProviderItem.capabilities;
     metadata._fileSystemFlags = bridgedNsFileProviderItem.fileSystemFlags;
     metadata._childItemCount = bridgedNsFileProviderItem.childItemCount.unsignedIntegerValue;
-    metadata._typeOsCode = bridgedNsFileProviderItem.typeAndCreator.type;
-    metadata._creatorOsCode = bridgedNsFileProviderItem.typeAndCreator.creator;
+    if (@available(macOS 12.0, *)) {
+        metadata._typeOsCode = bridgedNsFileProviderItem.typeAndCreator.type;
+        metadata._creatorOsCode = bridgedNsFileProviderItem.typeAndCreator.creator;
+    }
     metadata._documentSize = bridgedNsFileProviderItem.documentSize.unsignedLongLongValue;
     metadata._mostRecentVersionDownloaded = bridgedNsFileProviderItem.mostRecentVersionDownloaded;
     metadata._uploading = bridgedNsFileProviderItem.uploading;
