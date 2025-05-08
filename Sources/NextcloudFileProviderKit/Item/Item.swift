@@ -152,6 +152,20 @@ public class Item: NSObject, NSFileProviderItem {
         }
     }
 
+    public var isShared: Bool {
+        !metadata.shareType.isEmpty
+    }
+
+    public var isSharedByCurrentUser: Bool {
+        isShared && metadata.ownerId == account.id
+    }
+
+    public var ownerNameComponents: PersonNameComponents? {
+        guard isShared, !isSharedByCurrentUser else { return nil }
+        let formatter = PersonNameComponentsFormatter()
+        return formatter.personNameComponents(from: metadata.ownerDisplayName)
+    }
+
     public var childItemCount: NSNumber? {
         if metadata.directory {
             NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
