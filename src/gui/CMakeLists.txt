@@ -724,15 +724,6 @@ if (APPLE)
     endif()
 endif()
 
-if(WITH_CRASHREPORTER)
-    target_link_libraries(nextcloudCore PUBLIC crashreporter-handler)
-
-    if(UNIX AND NOT MAC)
-        find_package(Threads REQUIRED)
-        target_link_libraries(nextcloudCore PUBLIC Threads::Threads)
-    endif()
-endif()
-
 install(TARGETS nextcloud
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib

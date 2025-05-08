@@ -45,10 +45,6 @@
 #include "macOS/fileprovider.h"
 #endif
 
-#if defined(WITH_CRASHREPORTER)
-#include <libcrashreporter-handler/Handler.h>
-#endif
-
 #include <QLocale>
 #include <QTranslator>
 #include <QMenu>
@@ -316,18 +312,6 @@ Application::Application(int &argc, char **argv)
     if (isRunning()) {
         return;
     }
-
-#if defined(WITH_CRASHREPORTER)
-    if (ConfigFile().crashReporter()) {
-        auto reporter = QStringLiteral(CRASHREPORTER_EXECUTABLE);
-#ifdef Q_OS_WIN
-        if (!reporter.endsWith(QLatin1String(".exe"))) {
-            reporter.append(QLatin1String(".exe"));
-        }
-#endif
-        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, reporter));
-    }
-#endif
 
     setupLogging();
     setupTranslations();
