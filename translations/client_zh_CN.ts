@@ -678,6 +678,11 @@ Should the account be imported?</source>
         <translation>没有配置账号。</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="298"/>
+        <source>Forget encryption setup</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Disable encryption</source>
         <translation>禁用加密</translation>
@@ -686,6 +691,11 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Display mnemonic</source>
         <translation>显示助记符</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
+        <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -711,6 +721,12 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>文件夹有同步错误。同步成功后即可加密该文件夹。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="409"/>
+        <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
+Would you like to do this now?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -860,9 +876,29 @@ This action will abort any currently running synchronization.</source>
         <translation>端到端加密助记符</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1093"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>为了保护你的加密身份，我们用 12 个字典中的助记符对其进行加密。请记下这些并妥善保管。在向你的账号添加其他设备（如您的手机或笔记本电脑）时将需要它们。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1118"/>
+        <source>Forget the end-to-end encryption on this device</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1119"/>
+        <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1120"/>
+        <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -995,19 +1031,29 @@ This action will abort any currently running synchronization.</source>
         <translation>有些文件夹的大小已超过 %1MB: %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1690"/>
+        <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>在这个账号上已经在另一个设备上启用了端到端加密。&lt;br&gt;可以通过输入你的助记符在这个设备上启用它。&lt;br&gt;这将使现有的加密文件夹得到同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1758"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>此账号支持端到端加密</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1747"/>
+        <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
         <source>Set up encryption</source>
         <translation>设置加密</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1758"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>此账号支持端到端加密</translation>
     </message>
 </context>
 <context>
@@ -1187,34 +1233,34 @@ This action will abort any currently running synchronization.</source>
         <translation>继续</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="483"/>
+        <location filename="../src/gui/application.cpp" line="514"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 个账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="484"/>
+        <location filename="../src/gui/application.cpp" line="515"/>
         <source>1 account</source>
         <translation>1 个账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="486"/>
+        <location filename="../src/gui/application.cpp" line="517"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 个文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="518"/>
         <source>1 folder</source>
         <translation>1 个文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>Legacy import</source>
         <translation>旧版导入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1222,12 +1268,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="580"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>访问配置文件时发生错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="581"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>访问 %1 的配置文件时发生错误，请确保您的系统账号可以访问该文件。</translation>
     </message>
@@ -2004,7 +2050,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>从服务器返回的应答没有包含所有预期的字段</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="268"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>服务器的回复并未包含所有预期的字段：&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
@@ -3187,12 +3233,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>无法同步文件“%1”，因为名称包含了此系统中不允许的字符。</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
-        <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation>系统不允许以下字符：* &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 以及前导或尾部空格</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
         <translation>系统不允许使用以下字符：\ / : ? * &quot; &lt; &gt; | 前导/尾随空格</translation>
     </message>
@@ -3200,6 +3241,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
         <translation>无法同步文件 &quot;%1&quot; ，因为其名称包含服务器不允许的字符。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
+        <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
+        <translation>系统不允许以下字符：* &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 以及前导或尾部空格</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
@@ -4007,24 +4053,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此文件系统不支持以句点结尾的文件名。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>此文件系统不支持包含字符“%1”的文件夹名称。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>此文件系统不支持包含字符“%1”的文件名称。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>文件夹名称至少包含一个无效字符</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="421"/>
         <source>File name contains at least one invalid character</source>
         <translation>文件名包含至少一个无效字符</translation>
     </message>
@@ -4042,17 +4088,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>文件夹名称是此文件系统上的保留名称。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>%1 此文件系统不支持包含字符 &quot;%2&quot; 的名称。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>文件夹名称是此文件系统上的保留名称。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>文件名称是此文件系统上的保留名称。</translation>
     </message>
@@ -4173,6 +4219,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>由于修改时间无效，因此无法同步</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <source>Upload of %1 exceeds %2 of space left in personal files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>
@@ -5313,7 +5369,7 @@ Server replied with error: %2</source>
         <translation>离线</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="137"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="128"/>
         <source>You need to accept the terms of service</source>
         <translation>您需要接受服务条款</translation>
     </message>
@@ -5697,11 +5753,6 @@ Server replied with error: %2</source>
         <source>Less than a minute</source>
         <translation>不到一分钟</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="413"/>
-        <source>%n minute(s)</source>
-        <translation><numerusform>%n 分钟</numerusform></translation>
-    </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
@@ -5709,18 +5760,8 @@ Server replied with error: %2</source>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
-        <source>%n hour(s)</source>
-        <translation><numerusform>%n 小时</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
         <translation><numerusform>%1 分钟</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="419"/>
-        <source>%n day(s)</source>
-        <translation><numerusform>%n 天</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -5736,6 +5777,21 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
         <translation><numerusform>%1 天</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n 分钟</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n 小时</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <source>%n day(s)</source>
+        <translation><numerusform>%n 天</numerusform></translation>
     </message>
 </context>
 <context>
