@@ -673,6 +673,7 @@ QByteArray FolderMetadata::encryptedMetadata()
     if (!folderUsers.isEmpty()) {
         metaObject.insert(usersKey, folderUsers);
     }
+    Q_ASSERT(!_isRootEncryptedFolder || !folderUsers.isEmpty());
 
     if (!_fileDrop.isEmpty()) {
         // if we did not consume _fileDrop, we must keep it where it was, on the server

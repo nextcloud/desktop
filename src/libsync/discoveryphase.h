@@ -164,6 +164,7 @@ public:
         sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
         inside*/
                                          const QSet<QString> &topLevelE2eeFolderPaths,
+                                         SyncFileItem::EncryptionStatus parentEncryptionStatus,
                                          QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }

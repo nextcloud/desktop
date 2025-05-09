@@ -75,7 +75,7 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
     }
 
     if (rec.isValid() && !rec.isE2eEncrypted()) {
-        rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::Encrypted;
+        rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0;
         rec._e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
         const auto result = _journal->setFileRecord(rec);
         if (!result) {
