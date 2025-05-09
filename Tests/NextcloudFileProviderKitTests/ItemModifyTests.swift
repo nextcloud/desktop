@@ -1540,4 +1540,38 @@ final class ItemModifyTests: XCTestCase {
 
         XCTAssertNotEqual(modifiedItem?.metadata.classFile, "lock")
     }
+
+    func testMoveToTrashFailsWhenNoTrashInCapabilities() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
+        remoteInterface.capabilities =
+            remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let trashItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (_, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNotNil(error)
+        XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
+    }
 }
