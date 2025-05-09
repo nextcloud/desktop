@@ -19,10 +19,16 @@ public extension Item {
     // the newly-trashed target item
     func delete(
         trashing: Bool = false,
+        options: NSFileProviderDeleteItemOptions = [.recursive],
         domain: NSFileProviderDomain? = nil,
         ignoredFiles: IgnoredFilesMatcher? = nil,
         dbManager: FilesDatabaseManager
     ) async -> Error? {
+        let isEmptyDirOrIsFile = childItemCount == nil || childItemCount == 0
+        guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
+            return NSFileProviderError(.directoryNotEmpty)
+        }
+
         let ocId = itemIdentifier.rawValue
         let relativePath = (
             metadata.serverUrl + "/" + metadata.fileName
