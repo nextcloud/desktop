@@ -341,4 +341,57 @@ final class ItemDeleteTests: XCTestCase {
             targetRemote.locked, "Expected the target file to still be locked"
         )
     }
+
+    func testFailOnNonRecursiveNonEmptyDirDelete() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "file",
+            name: "file",
+            remotePath: Self.account.davFilesUrl + "/folder/file",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        XCTAssertFalse(rootItem.children.isEmpty)
+        XCTAssertFalse(remoteFolder.children.isEmpty)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        let remoteItemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(remoteItemMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+
+        let folder = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await folder.delete(options: [], dbManager: Self.dbManager)
+        XCTAssertNotNil(error)
+        XCTAssertEqual(error as? NSFileProviderError?, NSFileProviderError(.directoryNotEmpty))
+        XCTAssertFalse(rootItem.children.isEmpty)
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
+    }
 }
