@@ -490,6 +490,29 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
         } while (nextFolderInTreeIt != std::end(items) && (*nextFolderInTreeIt)->_file != (*it)->_file);
     }
 }
+void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items)
+{
+    // TODO: this method is not the fastest we could do, but, for now it works, maybe add a flag "_isAnyMultipleRenameUploads" in discovery
+    // so this could be skipped if no moves discovered?
+    QMap<QString, QString> renamedDirectories;
+    for (const auto &item : items) {
+        // TODO: for now, let's only process uploads (for downloads, we need to also adjust PropagateLocalRename such that correct DB records and pin states are set)
+        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME && item->_direction == SyncFileItem::Up) {
+            renamedDirectories.insert(item->_file, item->_renameTarget);
+        }
+    }
+
+    if (renamedDirectories.isEmpty()) {
+        return;
+    }
+
+    // get rid of nested items that are inside already moved folders such that we only run one move job (for parent, and just update children in DB during sync)
+    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&renamedDirectories](const SyncFileItemPtr &item) {
+        const auto origin = staticAdjustRenamedPath(renamedDirectories, item->_file);
+        return origin == item->_renameTarget;
+    });
+    items.erase(eraseBeginIt, std::end(items));
+}
 
 qint64 OwncloudPropagator::smallFileSize()
 {
@@ -507,6 +530,12 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
      * Each directory is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
      * When we enter a directory, we can create the directory job and push it on the stack. */
+
+    qCInfo(lcPropagator) << "BEGIN ITEMS SYNC";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:" << item->_originalFile << "item->_renameTarget" << item->_renameTarget << "item->_direction"
+                             << item->_direction << "item->_instruction:" << item->_instruction;
+    }
 
     const auto regex = syncOptions().fileRegex();
     if (regex.isValid()) {
@@ -528,14 +557,39 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             items.end());
     }
 
-    QStringList files;
-
-    for (const auto &item : items) {
-        files.push_back(item->_file);
-    }
-
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
+    qCInfo(lcPropagator) << "BEGIN ITEMS CLEANUP";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:"
+                             << item->_originalFile
+                             << "item->_renameTarget"
+                             << item->_renameTarget
+                             << "item->_direction"
+                             << item->_direction
+                             << "item->_instruction:"
+                             << item->_instruction;
+    }
+
+    // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
+    cleanupLocallyMovedFoldersFromNestedItems(items);
+
+    //TODO: After cleanup, in case items size changes, we need to update the progress info (maybe in: void SyncEngine::slotDiscoveryFinished or move this code to slotDiscoveryFinished)
+
+    qCInfo(lcPropagator) << "END ITEMS CLEANUP";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:"
+                             << item->_originalFile
+                             << "item->_renameTarget"
+                             << item->_renameTarget
+                             << "item->_direction"
+                             << item->_direction
+                             << "item->_instruction:"
+                             << item->_instruction;
+    }
+
+    // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
+    cleanupLocallyMovedFoldersFromNestedItems(items);
 
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
@@ -1050,7 +1104,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
 
 QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
 {
-    return OCC::adjustRenamedPath(_renamedDirectories, original);
+    return staticAdjustRenamedPath(_renamedDirectories, original);
 }
 
 Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, Vfs::UpdateMetadataTypes updateType)
@@ -1078,6 +1132,11 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
         return Vfs::ConvertToPlaceholderResult::Locked;
     }
     return Vfs::ConvertToPlaceholderResult::Ok;
+}
+
+QString OwncloudPropagator::staticAdjustRenamedPath(const QMap<QString, QString> &renamedDirectories, const QString &original)
+{
+    return OCC::adjustRenamedPath(renamedDirectories, original);
 }
 
 bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const

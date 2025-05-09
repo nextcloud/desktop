@@ -621,6 +621,8 @@ public:
                                                                                  SyncJournalDb * const journal,
                                                                                  Vfs::UpdateMetadataTypes updateType);
 
+    static QString staticAdjustRenamedPath(const QMap<QString, QString> &renamedDirectories, const QString &original);
+
     Q_REQUIRED_RESULT bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 
     Q_REQUIRED_RESULT const std::deque<SyncFileItemPtr>& delayedTasks() const
@@ -687,6 +689,7 @@ private:
     void resetDelayedUploadTasks();
 
     static void adjustDeletedFoldersWithNewChildren(SyncFileItemVector &items);
+    static void cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items);
 
     AccountPtr _account;
     QScopedPointer<PropagateRootDirectory> _rootJob;
