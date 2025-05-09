@@ -155,6 +155,8 @@ set(cppWinRtExe "${WindowsSDKBinPathForTools}\\cppwinrt.exe")
 message("cppWinRtExe: ${cppWinRtExe}")
 message("midlExe: ${midlExe}")
 
+configure_file(Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+
 # use midl.exe and cppwinrt.exe to generate files for CustomStateProvider (WinRT class)
 add_custom_command(OUTPUT ${MidlOutputPathHeader}
    COMMAND ${midlExe} /winrt /h nul /tlb ${MidlOutputPathTlb} /winmd ${MidlOutputPathWinmd} /metadata_dir "${WindowsSDKReferencesPath}\\Windows.Foundation.FoundationContract\\${WindowsFoundationContractVersion}" /nomidl /reference "${WindowsSDKReferencesPath}\\Windows.Foundation.FoundationContract\\${WindowsFoundationContractVersion}\\Windows.Foundation.FoundationContract.winmd" /reference "${WindowsSDKReferencesPath}\\Windows.Storage.Provider.CloudFilesContract\\${WindowsStorageProviderCloudFilesContractVersion}\\Windows.Storage.Provider.CloudFilesContract.winmd" /I ${MidleFileFolder} customstateprovider.idl
@@ -172,6 +174,7 @@ add_library(CfApiShellExtensions MODULE
     ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp
     customstateprovider.cpp
     CfApiShellIntegration.def
+    CfApiShellIntegration.rc
 )
 
 message("CUSTOM_STATE_ICON_LOCKED_OUT: ${CUSTOM_STATE_ICON_LOCKED_OUT}")
@@ -206,6 +209,10 @@ set_target_properties(CfApiShellExtensions
             ${BIN_OUTPUT_DIRECTORY}
         RUNTIME_OUTPUT_DIRECTORY
             ${BIN_OUTPUT_DIRECTORY}
+        VERSION
+            ${WINDOWS_INTEGRATION_VERSION}
+        SOVERSION
+            ${WINDOWS_INTEGRATION_SOVERSION}
 )
 
 install(TARGETS CfApiShellExtensions 
