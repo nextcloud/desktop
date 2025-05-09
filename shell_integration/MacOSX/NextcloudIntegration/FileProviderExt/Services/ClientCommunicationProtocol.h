@@ -14,7 +14,8 @@
 - (void)configureAccountWithUser:(NSString *)user
                           userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl
-                        password:(NSString *)password;
+                        password:(NSString *)password
+                       userAgent:(NSString *)userAgent;
 - (void)removeAccountConfig;
 - (void)createDebugLogStringWithCompletionHandler:(void(^)(NSString *debugLogString, NSError *error))completionHandler;
 - (void)getFastEnumerationStateWithCompletionHandler:(void(^)(BOOL enabled, BOOL set))completionHandler;

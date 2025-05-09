@@ -37,6 +37,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private(set) var shares: [NKShare] = [] {
         didSet { Task { @MainActor in sharesTableView?.reloadData() } }
     }
+    private(set) var userAgent: String = "Nextcloud-macOS/FileProviderUIExt"
     private(set) var account: Account? {
         didSet {
             guard let account = account else { return }
@@ -46,7 +47,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 user: account.username,
                 userId: account.username,
                 password: account.password,
-                userAgent: "Nextcloud-macOS/FileProviderUIExt",
+                userAgent: userAgent,
                 nextcloudVersion: 25,
                 groupIdentifier: ""
             )
@@ -94,6 +95,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
                 Logger.sharesDataSource.error("Service connection interrupted")
             })
+            if let acquiredUserAgent = await connection.userAgent() {
+                userAgent = acquiredUserAgent as String
+            }
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = Account(dictionary: credentials),
