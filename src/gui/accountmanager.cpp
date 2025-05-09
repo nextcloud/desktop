@@ -124,6 +124,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
                 const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
                 Q_ASSERT(jar);
                 if (jar) {
+                    acc->tryMigrateCookieJar();
                     jar->restore(acc->cookieJarPath());
                 }
                 addAccountState(accState);
