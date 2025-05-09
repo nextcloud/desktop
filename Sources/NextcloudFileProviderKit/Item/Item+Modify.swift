@@ -44,16 +44,16 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not move file or folder: \(oldRemotePath, privacy: .public)
-                to \(newRemotePath, privacy: .public),
-                received error: \(moveError.errorCode, privacy: .public)
-                \(moveError.errorDescription, privacy: .public)
+                    to \(newRemotePath, privacy: .public),
+                    received error: \(moveError.errorCode, privacy: .public)
+                    \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (
-                nil,
-                moveError.matchesCollisionError ?
-                    NSFileProviderError(.filenameCollision) : moveError.fileProviderError
-            )
+            return (nil, moveError.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: newRemotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
 
         if isFolder {
@@ -74,10 +74,13 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not acquire metadata of item with identifier: \(ocId, privacy: .public),
-                cannot correctly inform of modification
+                    cannot correctly inform of modification
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let modifiedItem = Item(
@@ -106,17 +109,23 @@ public extension Item {
             Self.logger.error(
                 """
                 ERROR. Could not upload modified contents as was provided nil contents url.
-                ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
+                    ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
@@ -126,7 +135,10 @@ public extension Item {
                 unable to update item status to uploading
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let (_, _, etag, date, size, _, error) = await upload(
@@ -165,7 +177,13 @@ public extension Item {
             metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
-            return (nil, error.fileProviderError)
+            // Moving should be done before uploading and should catch collisions already, but,
+            // it is painless to check here too just in case
+            return (nil, error.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: remotePath,
+                dbManager: dbManager,
+                remoteInterface: remoteInterface
+            ))
         }
 
         Self.logger.info(
@@ -238,13 +256,7 @@ public extension Item {
         )
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            if error.matchesCollisionError {
-                return NSFileProviderError(.filenameCollision)
-            } else if let error = error.fileProviderError {
-                return error
-            } else {
-                return NSFileProviderError(.cannotSynchronize)
-            }
+            return error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
 
         // 1. Scan the remote contents of the bundle (recursively)
@@ -281,9 +293,9 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not read server url for item with ocID
-                    \(self.itemIdentifier.rawValue, privacy: .public)
-                    (\(self.filename, privacy: .public)),
-                    received nil metadatas
+                        \(self.itemIdentifier.rawValue, privacy: .public)
+                        (\(self.filename, privacy: .public)),
+                        received nil metadatas
                     """
                 )
                 throw NSFileProviderError(.serverUnreachable)
@@ -318,20 +330,20 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not create enumerator for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         guard let enumeratorArray = enumerator.allObjects as? [URL] else {
             Self.logger.error(
                 """
                 Could not create enumerator array for contents of bundle or package
-                at: \(contents.path, privacy: .public)
+                    at: \(contents.path, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         // Add one more total unit count to signify final reconciliation of bundle modify process
@@ -373,7 +385,8 @@ public extension Item {
                         }
                     }
                 )
-                guard createError == .success else {
+                // Don't error if there is a collision
+                guard createError == .success || createError.matchesCollisionError else {
                     Self.logger.error(
                         """
                         Could not create new bpi folder at: \(remotePath, privacy: .public),
@@ -478,7 +491,7 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not read new bpi folder at: \(remotePath, privacy: .public),
-                    received error: \(readError.errorDescription, privacy: .public)
+                        received error: \(readError.errorDescription, privacy: .public)
                     """
                 )
                 throw remoteErrorToThrow(readError)
@@ -491,10 +504,10 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
-                \(contentsPath, privacy: .public)
+                    \(contentsPath, privacy: .public)
                 """
             )
-            throw NSFileProviderError(.noSuchItem)
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
         }
 
         progress.completedUnitCount += 1
@@ -508,6 +521,7 @@ public extension Item {
         )
     }
 
+    // Note: When handling trashing, the server handles filename conflicts for us
     private static func trash(
         _ modifiedItem: Item,
         account: Account,
@@ -565,7 +579,7 @@ public extension Item {
             Self.logger.error(
                 """
                 Received bad error from post-trashing remote scan:
-                \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                    \(error.errorDescription, privacy: .public) \(files, privacy: .public)
                 """
             )
             return (dirtyItem, error.fileProviderError)
@@ -661,6 +675,7 @@ public extension Item {
         return (postDeleteItem, nil)
     }
 
+    // Note: When restoring from the trash, the server handles filename conflicts for us
     private static func restoreFromTrash(
         _ modifiedItem: Item,
         account: Account,
@@ -705,7 +720,7 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not restore item \(modifiedItem.filename, privacy: .public) from trash
-                Received error: \(restoreError.errorDescription, privacy: .public)
+                    Received error: \(restoreError.errorDescription, privacy: .public)
                 """
             )
             return (modifiedItem, restoreError.fileProviderError)
@@ -903,11 +918,14 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not modify item: \(ocId, privacy: .public), different identifier to the
-                item the modification was targeting
-                (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
+                    item the modification was targeting
+                    (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
                 """
             )
-            return (nil, NSFileProviderError(.noSuchItem))
+            return (
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            )
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
@@ -939,11 +957,14 @@ public extension Item {
                 Self.logger.error(
                     """
                     Not modifying item: \(ocId, privacy: .public),
-                    could not find metadata for target parentItemIdentifier
+                        could not find metadata for target parentItemIdentifier
                         \(newParentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
-                return (nil, NSFileProviderError(.noSuchItem))
+                return (
+                    nil,
+                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                )
             }
 
             newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName

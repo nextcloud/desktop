@@ -41,7 +41,7 @@ public extension Item {
 
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
-            return NSFileProviderError(.noSuchItem)
+            return NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
         }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
@@ -71,7 +71,9 @@ public extension Item {
                 \(error.errorDescription, privacy: .public)
                 """
             )
-            return error.fileProviderError
+            return error.fileProviderError(
+                handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
+            )
         }
 
         Self.logger.info(

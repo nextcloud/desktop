@@ -52,7 +52,9 @@ func item(
     if let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) {
         completionHandler(item, nil)
     } else {
-        completionHandler(nil, NSFileProviderError(.noSuchItem))
+        completionHandler(
+            nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+        )
     }
     return Progress()
 }
@@ -77,7 +79,9 @@ func fetchContents(
     }
 
     guard let item = Item.storedItem(identifier: itemIdentifier, remoteInterface: ncKit) else {
-        completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+        completionHandler(
+            nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+        )
         return Progress()
     }
 
@@ -131,7 +135,12 @@ func modifyItem(
     completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void
 ) -> Progress {
     guard let existingItem = Item.storedItem(identifier: item.itemIdentifier, remoteInterface: ncKit) else {
-        completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
+        completionHandler(
+            item,
+            [],
+            false,
+            NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
+        )
         return Progress()
     }
 
@@ -164,7 +173,7 @@ func deleteItem(
     completionHandler: @escaping (Error?) -> Void
 ) -> Progress {
     guard let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) else {
-        completionHandler(NSFileProviderError(.noSuchItem))
+        completionHandler(NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier))
         return Progress()
     }
 

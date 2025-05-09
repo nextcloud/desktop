@@ -159,8 +159,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 guard trashReadError == .success else {
-                    let error =
-                        trashReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    let error = trashReadError.fileProviderError(
+                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                    ) ?? NSFileProviderError(.cannotSynchronize)
                     listener?.enumerationActionFailed(actionId: actionId, error: error)
                     observer.finishEnumeratingWithError(error)
                     return
@@ -193,10 +194,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
                 """
             )
-            listener?.enumerationActionFailed(
-                actionId: actionId, error: NSFileProviderError(.noSuchItem)
+            let error = NSError.fileProviderErrorForNonExistentItem(
+                withIdentifier: self.enumeratedItemIdentifier
             )
-            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+            listener?.enumerationActionFailed(actionId: actionId, error: error)
+            observer.finishEnumeratingWithError(error)
             return
         }
 
@@ -229,8 +231,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     )
 
                     // TODO: Refactor for conciseness
-                    let error =
-                        readError?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    let error = readError?.fileProviderError(
+                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                    ) ?? NSFileProviderError(.cannotSynchronize)
                     listener?.enumerationActionFailed(actionId: actionId, error: error)
                     observer.finishEnumeratingWithError(error)
                     return
@@ -350,8 +353,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         """
                     )
                     // TODO: Refactor for conciseness
-                    let fpError =
-                        error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    let fpError = error?.fileProviderError(
+                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                    ) ?? NSFileProviderError(.cannotSynchronize)
                     listener?.enumerationActionFailed(actionId: actionId, error: fpError)
                     observer.finishEnumeratingWithError(fpError)
                     return
@@ -367,6 +371,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
+                    enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
@@ -398,8 +403,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 guard trashReadError == .success else {
-                    let error =
-                        trashReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    let error = trashReadError.fileProviderError(
+                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                    ) ?? NSFileProviderError(.cannotSynchronize)
                     listener?.enumerationActionFailed(actionId: actionId, error: error)
                     observer.finishEnumeratingWithError(error)
                     return
@@ -454,7 +460,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     """
                 )
 
-                let error = readError!.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError?.fileProviderError(
+                    handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                ) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError!.isNotFoundError {
                     Self.logger.info(
@@ -498,6 +506,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.completeChangesObserver(
                         observer,
                         anchor: anchor,
+                        enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
@@ -534,6 +543,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.completeChangesObserver(
                 observer,
                 anchor: anchor,
+                enumeratedItemIdentifier: self.enumeratedItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -591,6 +601,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
+        enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -602,10 +613,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.error(
                 """
                 Received invalid newMetadatas, updatedMetadatas or deletedMetadatas.
-                Finished enumeration of changes with error.
+                    Finished enumeration of changes with error.
                 """
             )
-            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+            observer.finishEnumeratingWithError(
+                NSError.fileProviderErrorForNonExistentItem(
+                    withIdentifier: enumeratedItemIdentifier
+                )
+            )
             return
         }
 
