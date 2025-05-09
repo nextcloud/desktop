@@ -41,8 +41,7 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsReading,
                 .allowsDeleting,
                 .allowsReparenting,
-                .allowsRenaming,
-                .allowsTrashing
+                .allowsRenaming
             ]
 
 #if os(macOS)
@@ -55,6 +54,11 @@ public class Item: NSObject, NSFileProviderItem {
             if #unavailable(macOS 13.0) {
                 directoryCapabilities.insert(.allowsEvicting)
             }
+
+            if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true {
+                directoryCapabilities.insert(.allowsTrashing)
+            }
+
             return directoryCapabilities
         }
         guard !metadata.lock else {
@@ -69,7 +73,9 @@ public class Item: NSObject, NSFileProviderItem {
             .allowsReparenting,
             .allowsEvicting,
         ]
-        if !isLockFileName(filename) {
+        if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true,
+           !isLockFileName(filename)
+        {
             itemCapabilities.insert(.allowsTrashing)
         }
         return itemCapabilities
