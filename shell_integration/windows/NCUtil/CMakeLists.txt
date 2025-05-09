@@ -7,5 +7,6 @@ add_library(NCUtil STATIC
 
 target_include_directories(NCUtil
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}"
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
 )
