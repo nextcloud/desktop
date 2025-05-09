@@ -12,6 +12,9 @@ import NextcloudKit
 import OSLog
 
 public extension Item {
+    // NOTE: The trashing parameter does not affect whether the server will trash this or not.
+    // That's out of our hands. Instead, this is used internally to properly handle the metadata
+    // update automatically when we conduct a move of an item to the trash.
     func delete(
         trashing: Bool = false,
         domain: NSFileProviderDomain? = nil,
