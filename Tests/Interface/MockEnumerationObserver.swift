@@ -28,6 +28,7 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
 
     public func finishEnumeratingWithError(_ error: Error) {
         self.error = error
+        isComplete = true
     }
 
     public func enumerateItems() async throws {
