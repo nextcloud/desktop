@@ -144,6 +144,26 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
 
             Task {
+                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
+                    account: account, options: .init(), taskHandler: { _ in }
+                )
+                guard let capabilities, error == .success else {
+                    Self.logger.error(
+                        """
+                        Could not acquire capabilities, cannot check trash.
+                            Error: \(error, privacy: .public)
+                        """)
+                    observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
+                    return
+                }
+                guard capabilities.files?.undelete == true else {
+                    Self.logger.error("Trash is unsupported on server, cannot enumerate items.")
+                    observer.finishEnumeratingWithError(
+                        NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
+                    )
+                    return
+                }
+
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
                     account: account,
                     options: .init(),
@@ -388,6 +408,26 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
 
             Task {
+                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
+                    account: account, options: .init(), taskHandler: { _ in }
+                )
+                guard let capabilities, error == .success else {
+                    Self.logger.error(
+                        """
+                        Could not acquire capabilities, cannot check trash.
+                            Error: \(error, privacy: .public)
+                        """)
+                    observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
+                    return
+                }
+                guard capabilities.files?.undelete == true else {
+                    Self.logger.error("Trash is unsupported on server, cannot enumerate changes.")
+                    observer.finishEnumeratingWithError(
+                        NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
+                    )
+                    return
+                }
+
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
                     account: account,
                     options: .init(),
