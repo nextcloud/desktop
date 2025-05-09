@@ -17,6 +17,7 @@ else()
 endif()
 
 set( APPLICATION_CONFIG_NAME "${APPLICATION_EXECUTABLE}" )
+set( APPLICATION_SYNC_FOLDER_NAME "Nextcloud Folder" )
 set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
