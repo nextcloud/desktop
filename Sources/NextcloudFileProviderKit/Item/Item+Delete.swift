@@ -17,10 +17,16 @@ public extension Item {
     // update automatically when we conduct a move of an item to the trash.
     func delete(
         trashing: Bool = false,
+        options: NSFileProviderDeleteItemOptions = [.recursive],
         domain: NSFileProviderDomain? = nil,
         ignoredFiles: IgnoredFilesMatcher? = nil,
         dbManager: FilesDatabaseManager
     ) async -> Error? {
+        let isEmptyDirOrIsFile = childItemCount == nil || childItemCount == 0
+        guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
+            return NSFileProviderError(.directoryNotEmpty)
+        }
+
         let ocId = itemIdentifier.rawValue
         let relativePath = (
             metadata.serverUrl + "/" + metadata.fileName
