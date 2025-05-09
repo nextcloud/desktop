@@ -179,7 +179,7 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
         const auto renameSuccess = QFile::rename(originalFilePathAbsolute, newFilePathAbsolute);
 
         if (!renameSuccess) {
-            done(item, SyncFileItem::NormalError, "File contains trailing spaces and couldn't be renamed", ErrorCategory::GenericError);
+            done(item, SyncFileItem::NormalError, tr("File contains leading or trailing spaces and couldn't be renamed"), ErrorCategory::GenericError);
             return;
         }
 
