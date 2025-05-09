@@ -422,6 +422,17 @@ import OSLog
         }
 
         let progress = Progress(totalUnitCount: 1)
+        guard config.trashDeletionEnabled || item.parentItemIdentifier != .trashContainer else {
+            Logger.fileProviderExtension.warning(
+                """
+                System requested deletion of item in trash, but deleting trash items is disabled.
+                    item: \(item.filename, privacy: .public)
+                """
+            )
+            completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
+            return progress
+        }
+
         Task {
             let error = await item.delete(dbManager: dbManager)
             if error != nil {

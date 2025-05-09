@@ -235,4 +235,38 @@ void FileProviderXPC::setFastEnumerationEnabledForExtension(const QString &exten
     [service setFastEnumerationEnabled:enabled];
 }
 
+std::optional<std::pair<bool, bool>> FileProviderXPC::trashDeletionEnabledStateForExtension(const QString &extensionAccountId) const
+{
+    qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for extension" << extensionAccountId;
+        return std::nullopt;
+    }
+
+    __block BOOL receivedTrashDeletionEnabled = YES; // What is the value of the setting being used by the extension?
+    __block BOOL receivedTrashDeletionEnabledSet = NO; // Has the setting been set by the user?
+    __block BOOL receivedResponse = NO;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service getTrashDeletionEnabledStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
+        receivedTrashDeletionEnabled = enabled;
+        receivedTrashDeletionEnabledSet = set;
+        receivedResponse = YES;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    if (!receivedResponse) {
+        qCWarning(lcFileProviderXPC) << "Did not receive response for fast enumeration state";
+        return std::nullopt;
+    }
+    return std::optional<std::pair<bool, bool>>{{receivedTrashDeletionEnabled, receivedTrashDeletionEnabledSet}};
+}
+
+void FileProviderXPC::setTrashDeletionEnabledForExtension(const QString &extensionAccountId, bool enabled) const
+{
+    qCInfo(lcFileProviderXPC) << "Setting trash deletion enabled for extension" << extensionAccountId << "to" << enabled;
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    [service setTrashDeletionEnabled:enabled];
+}
+
 } // namespace OCC::Mac
