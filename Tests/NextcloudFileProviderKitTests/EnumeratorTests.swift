@@ -867,4 +867,50 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemC.identifier))
     }
+
+    func testTrashItemEnumerationFailWhenNoTrashInCapabilities() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
+        remoteInterface.capabilities =
+            remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
+
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        do {
+            try await observer.enumerateItems()
+            XCTFail("Item enumeration should have failed!")
+        } catch let error {
+            XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
+        }
+    }
+
+    func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
+        remoteInterface.capabilities =
+            remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
+
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        do {
+            try await observer.enumerateChanges()
+            XCTFail("Item enumeration should have failed!")
+        } catch let error {
+            XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
+        }
+    }
 }

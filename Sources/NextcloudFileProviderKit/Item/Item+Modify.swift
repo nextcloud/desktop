@@ -709,6 +709,26 @@ public extension Item {
             )
             return (modifiedItem, nil)
         } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
+            let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
+                account: account, options: .init(), taskHandler: { _ in }
+            )
+            guard let capabilities, error == .success else {
+                Self.logger.error(
+                    """
+                    Could not acquire capabilities during item move to trash, won't proceed.
+                        Error: \(error, privacy: .public)
+                        Item: \(modifiedItem.filename)
+                    """
+                )
+                return (nil, error.fileProviderError)
+            }
+            guard capabilities.files?.undelete == true else {
+                Self.logger.error(
+                    "Cannot delete \(modifiedItem.filename) as server does not support trashing."
+                )
+                return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
+            }
+
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
             // Rename the item if necessary before doing the trashing procedures
             if (changedFields.contains(.filename)) {

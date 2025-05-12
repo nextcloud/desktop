@@ -10,6 +10,7 @@ import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import OSLog
 
 fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
@@ -428,6 +429,23 @@ extension NextcloudKit: RemoteInterface {
             )
         }
         return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
+    }
+
+    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
+        let semaphore = DispatchSemaphore(value: 0)
+        var capabilities: Capabilities?
+        Task {
+            let (_, fetchedCapabilities, _, error) = await currentCapabilities(account: account)
+            if error != .success {
+                Logger
+                    .init(subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface")
+                    .error("Error during sync capabilities fetch: \(error, privacy: .public)")
+            }
+            capabilities = fetchedCapabilities
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return capabilities
     }
 
     public func fetchUserProfile(

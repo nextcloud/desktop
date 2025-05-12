@@ -33,6 +33,7 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
 
     public func finishEnumeratingWithError(_ error: Error) {
         self.error = error
+        isComplete = true
     }
 
     public func enumerateChanges() async throws {

@@ -1144,10 +1144,22 @@ public class MockRemoteInterface: RemoteInterface {
 
     public func currentCapabilities(
         account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
+    }
+
+    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
+        let semaphore = DispatchSemaphore(value: 0)
+        var capabilities: Capabilities?
+        Task {
+            let result = await currentCapabilities(account: account)
+            capabilities = result.capabilities
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return capabilities
     }
 
     public func fetchUserProfile(
