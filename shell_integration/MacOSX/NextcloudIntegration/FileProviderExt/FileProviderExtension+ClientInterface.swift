@@ -53,10 +53,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         socketClient?.sendMessage(message)
     }
 
-    func requestIgnoreList() {
-        socketClient?.sendMessage("IGNORE_LIST_REQUEST")
-    }
-
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
             Logger.fileProviderExtension.error(
@@ -165,8 +161,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                     domain: domain
                 )
                 ncKit.setup(delegate: changeObserver)
-                
-                requestIgnoreList()
                 signalEnumeratorAfterAccountSetup()
             }
         }

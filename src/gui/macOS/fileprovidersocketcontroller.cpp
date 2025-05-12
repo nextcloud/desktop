@@ -94,14 +94,12 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         }
 
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
+        sendIgnoreList();
         sendAccountDetails();
         reportSyncState("SYNC_PREPARING");
         return;
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
         reportSyncState(argument);
-        return;
-    } else if (command == "IGNORE_LIST_REQUEST") {
-        sendIgnoreList();
         return;
     }
 
