@@ -61,7 +61,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
                 Logger.desktopClientConnection.error("Ignore list missing contents!")
                 return
             }
-            let ignoreList = ignoreListSubsequence.split(separator: "\n").map { String($0) }
+            let ignoreList = ignoreListSubsequence.components(separatedBy: "_~IL$~_")
             Logger.desktopClientConnection.debug(
                 "Applying \(ignoreList.count, privacy: .public) ignore file patterns"
             )

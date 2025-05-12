@@ -256,7 +256,8 @@ void FileProviderSocketController::sendIgnoreList() const
         qCWarning(lcFileProviderSocketController) << "No active ignore list patterns, not sending.";
         return;
     }
-    const auto message = QString(QStringLiteral("IGNORE_LIST:") + patterns.join('\n'));
+    // Try to come up with a separator that won't clash. I am hoping this is it
+    const auto message = QString(QStringLiteral("IGNORE_LIST:") + patterns.join("_~IL$~_"));
     sendMessage(message);
 }
 
