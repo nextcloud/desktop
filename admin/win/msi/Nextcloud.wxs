@@ -78,9 +78,6 @@
 
         <!-- Uninstall: Cleanup the Registry -->
         <Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
-
-        <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
-        <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
