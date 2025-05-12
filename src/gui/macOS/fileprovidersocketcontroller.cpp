@@ -250,6 +250,7 @@ void FileProviderSocketController::sendIgnoreList() const
 
     ExcludedFiles ignoreList;
     ConfigFile::setupDefaultExcludeFilePaths(ignoreList);
+    ignoreList.reloadExcludeFiles();
     const auto patterns = ignoreList.activeExcludePatterns();
     if (patterns.isEmpty()) {
         qCWarning(lcFileProviderSocketController) << "No active ignore list patterns, not sending.";

@@ -279,6 +279,7 @@ void FileProviderXPC::setIgnoreList() const
 {
     ExcludedFiles ignoreList;
     ConfigFile::setupDefaultExcludeFilePaths(ignoreList);
+    ignoreList.reloadExcludeFiles();
     const auto qPatterns = ignoreList.activeExcludePatterns();
     qCInfo(lcFileProviderXPC) << "Updating ignore list with" << qPatterns.size() << "patterns";
 
