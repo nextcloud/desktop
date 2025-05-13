@@ -30,7 +30,7 @@ jobs:
           }
           
           craft --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|stable-3.17|"
-          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|bugfix/libp11-use-pkgconf|"
+          craft --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|stable-3.17|"
           craft craft
           craft --install-deps nextcloud-client
           
