@@ -216,6 +216,22 @@ final class ItemPropertyTests: XCTestCase {
             format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
         )
         XCTAssertTrue(canEvictPredicate.evaluate(with: fileproviderItems))
+
+        metadata.keepOffline = true
+        let keepOfflineItem = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertNotNil(keepOfflineItem.userInfo?["displayEvict"])
+
+        let fileproviderKeepOfflineItems = ["fileproviderItems": [keepOfflineItem]]
+        let cannotEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
+        )
+        XCTAssertFalse(cannotEvictPredicate.evaluate(with: fileproviderKeepOfflineItems))
     }
 
     func testItemUserInfoNoDisplayEvictState() {
