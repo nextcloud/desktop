@@ -13,15 +13,7 @@ public extension Item {
     }
 
     func set(keepOffline: Bool, domain: NSFileProviderDomain) async throws {
-        var dirtyMetadata = metadata
-        dirtyMetadata.keepOffline = keepOffline
-        if #unavailable(macOS 13.0, iOS 16.0) {
-            // We don't have a targeted method to force an update on this item on older OSes
-            // So we will have to signal the enumerator in general to force an item on this update
-            // (and assign a bad etag so we enumerate an update)
-            dirtyMetadata.etag = "dirty"
-        }
-        dbManager.addItemMetadata(dirtyMetadata)
+        try dbManager.set(keepOffline: keepOffline, for: metadata)
 
         guard let manager = NSFileProviderManager(for: domain) else {
             if #available(macOS 14.1, *) {
