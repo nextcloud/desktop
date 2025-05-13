@@ -92,6 +92,7 @@ public protocol ItemMetadata: Equatable {
     var tags: [String] { get set }
     var downloaded: Bool { get set }
     var uploaded: Bool { get set }
+    var keepOffline: Bool { get set }
     var trashbinFileName: String { get set }
     var trashbinOriginalLocation: String { get set }
     var trashbinDeletionTime: Date { get set }

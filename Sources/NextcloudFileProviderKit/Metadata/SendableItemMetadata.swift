@@ -63,6 +63,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var tags: [String]
     public var downloaded: Bool
     public var uploaded: Bool
+    public var keepOffline: Bool
     public var trashbinFileName: String
     public var trashbinOriginalLocation: String
     public var trashbinDeletionTime: Date
@@ -125,6 +126,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         tags: [String] = [],
         downloaded: Bool = false,
         uploaded: Bool = false,
+        keepOffline: Bool = false,
         trashbinFileName: String = "",
         trashbinOriginalLocation: String = "",
         trashbinDeletionTime: Date = Date(),
@@ -186,6 +188,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.tags = tags
         self.downloaded = downloaded
         self.uploaded = uploaded
+        self.keepOffline = keepOffline
         self.trashbinFileName = trashbinFileName
         self.trashbinOriginalLocation = trashbinOriginalLocation
         self.trashbinDeletionTime = trashbinDeletionTime
@@ -248,6 +251,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.status = value.status
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
+        self.keepOffline = value.keepOffline
         self.tags = value.tags
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation

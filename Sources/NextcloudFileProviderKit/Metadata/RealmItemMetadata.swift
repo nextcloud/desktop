@@ -84,6 +84,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
     }
     @Persisted public var downloaded = false
     @Persisted public var uploaded = false
+    @Persisted public var keepOffline = false
     @Persisted public var trashbinFileName = ""
     @Persisted public var trashbinOriginalLocation = ""
     @Persisted public var trashbinDeletionTime = Date()
@@ -157,6 +158,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
         self.tags = value.tags
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
+        self.keepOffline = value.keepOffline
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation
         self.trashbinDeletionTime = value.trashbinDeletionTime
