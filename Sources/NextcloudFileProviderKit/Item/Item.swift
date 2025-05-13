@@ -202,13 +202,17 @@ public class Item: NSObject, NSFileProviderItem {
         return userInfoDict
     }
 
-    @available(macOS 13.0, *)
+    @available(macOS 13.0, iOS 16.0, visionOS 1.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
-        #if os(macOS)
-        .downloadLazily
-        #else
-        .downloadLazilyAndEvictOnRemoteUpdate
-        #endif
+        if metadata.keepOffline {
+            return .downloadEagerlyAndKeepDownloaded
+        }
+        return .inherited
+    }
+
+    public var keepOffline: Bool {
+        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else { return false }
+        return metadata.keepOffline
     }
 
     public static func rootContainer(
