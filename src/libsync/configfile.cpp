@@ -1379,12 +1379,12 @@ void ConfigFile::findLegacyClientConfigFile()
     // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
         // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
-        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
-        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
+        const auto legacyStandardPaths = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
+        const auto legacyStandardPathsParentFolder = legacyStandardPaths.left(legacyStandardPaths.lastIndexOf('/'));
 
         // 2.5+ (rest of 2.x series)
-        const auto legacy2_5CfgSettingsLocation = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
-        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
+        const auto standardPaths = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        const auto standardPathsParentFolder = standardPaths.left(standardPaths.lastIndexOf('/'));
 
         // Now try the locations we use today
         const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
@@ -1394,16 +1394,20 @@ void ConfigFile::findLegacyClientConfigFile()
         const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
         const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
 
-        auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                legacyCfgFileParentFolder + legacyCfgFileNamePath,
-                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+        auto legacyLocations = QVector<QString>{legacyStandardPathsParentFolder + legacyCfgFileRelativePath,
+                                                standardPathsParentFolder + legacyCfgFileRelativePath,
+                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath,
+                                                legacyCfgFileParentFolder + legacyCfgFileNamePath};
 
         if (Theme::instance()->isBranded()) {
             const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
             const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
-            legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
+            legacyLocations.append({standardPathsParentFolder + unbrandedCfgFileRelativePath,
+                                    legacyCfgFileParentFolder + unbrandedCfgFileNamePath,
+                                    legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
         }
+
+        qCInfo(lcConfigFile) << "Paths:" << legacyLocations;
 
         for (const auto &configFile : legacyLocations) {
             auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
