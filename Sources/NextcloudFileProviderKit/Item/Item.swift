@@ -198,6 +198,8 @@ public class Item: NSObject, NSFileProviderItem {
             userInfoDict["locked"] = metadata.lock
         }
         if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
+            userInfoDict["displayKeepOffline"] = !metadata.keepOffline
+            userInfoDict["displayAllowAutoEvicting"] = metadata.keepOffline
             userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepOffline
         } else {
             userInfoDict["displayEvict"] = metadata.downloaded
