@@ -397,4 +397,30 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertFalse(notSharedItem.isSharedByCurrentUser)
         XCTAssertNil(notSharedItem.ownerNameComponents)
     }
+
+    func testContentPolicy() {
+        var metadataA =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadataA.keepOffline = true
+
+        let itemA = Item(
+            metadata: metadataA,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemA.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+
+        let metadataB =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        let itemB = Item(
+            metadata: metadataB,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemB.contentPolicy, .inherited)
+    }
 }
