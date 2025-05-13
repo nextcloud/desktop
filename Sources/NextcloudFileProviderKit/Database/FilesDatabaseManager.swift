@@ -436,58 +436,6 @@ public final class FilesDatabaseManager: Sendable {
         return nil
     }
 
-    public func set(
-        keepOffline: Bool, for metadata: SendableItemMetadata
-    ) -> SendableItemMetadata? {
-        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
-            Self.logger.error(
-                """
-                Could not update keepOffline status for item: \(metadata.fileName, privacy: .public)
-                    as the system does not support this state.
-                """
-            )
-            return nil
-        }
-
-        guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
-            Self.logger.debug(
-                """
-                Did not update keepOffline for item metadata as it was not found.
-                    ocID: \(metadata.ocId, privacy: .public)
-                    filename: \(metadata.fileName, privacy: .public)
-                """
-            )
-            return nil
-        }
-
-        do {
-            let database = ncDatabase()
-            try database.write {
-                result.keepOffline = keepOffline
-
-                Self.logger.debug(
-                    """
-                    Updated keepOffline status for item metadata.
-                        ocID: \(metadata.ocId, privacy: .public)
-                        fileName: \(metadata.fileName, privacy: .public)
-                    """
-                )
-            }
-            return SendableItemMetadata(value: result)
-        } catch {
-            Self.logger.error(
-                """
-                Could not update keepOffline status for item metadata.
-                    ocID: \(metadata.ocId, privacy: .public)
-                    fileName: \(metadata.fileName, privacy: .public)
-                    received error: \(error.localizedDescription, privacy: .public)
-                """
-            )
-        }
-
-        return nil
-    }
-
     public func addItemMetadata(_ metadata: SendableItemMetadata) {
         let database = ncDatabase()
 
