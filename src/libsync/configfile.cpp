@@ -1412,15 +1412,16 @@ void ConfigFile::findLegacyClientConfigFile()
                 break;
             }
 
-            if (const QFileInfo configFileInfo(configFile);
-                configFileInfo.exists() && configFileInfo.isReadable()) {
-                qCInfo(lcConfigFile) << "Migrate: saving old config file" << configFile;
-                setDiscoveredLegacyConfigFile(configFileInfo.filePath());
-                setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
-                break;
-            } else {
+            const QFileInfo configFileInfo(configFile);
+            if (!configFileInfo.exists() || !configFileInfo.isReadable()) {
                 qCInfo(lcConfigFile()) << "Migrate: could not read old config " << configFile;
+                continue;
             }
+
+            qCInfo(lcConfigFile) << "Migrate: old config file" << configFile;
+            setDiscoveredLegacyConfigFile(configFileInfo.filePath());
+            setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+            break;
         }
     }
 }
