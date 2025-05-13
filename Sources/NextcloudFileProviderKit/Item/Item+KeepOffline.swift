@@ -8,6 +8,10 @@
 import FileProvider
 
 public extension Item {
+    func toggle(keepOfflineIn domain: NSFileProviderDomain) async throws {
+        try await set(keepOffline: !keepOffline, domain: domain)
+    }
+
     func set(keepOffline: Bool, domain: NSFileProviderDomain) async throws {
         var dirtyMetadata = metadata
         dirtyMetadata.keepOffline = keepOffline
