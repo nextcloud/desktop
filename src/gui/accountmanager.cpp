@@ -656,10 +656,10 @@ bool AccountManager::confirmRestoreExistingAccounts() const
         && Theme::instance()->displayLegacyImportDialog()
         && !configFile.discoveredLegacyConfigFile().isEmpty()) {
         const auto importQuestion = accountsListSize > 1
-            ? tr("%1 accounts were detected from a legacy desktop client.\n"
-                 "Should the accounts be imported?").arg(QString::number(accountsListSize))
-            : tr("1 account was detected from a legacy desktop client.\n"
-                 "Should the account be imported?");
+            ? tr("%1 accounts were detected from a legacy desktop client at %2.\n"
+                 "Should the accounts be imported?").arg(QString::number(accountsListSize), configFile.discoveredLegacyConfigFile())
+            : tr("1 account was detected from a legacy desktop client at %1.\n"
+                 "Should the account be imported?").arg(configFile.discoveredLegacyConfigFile());
         const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
         importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
         const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
