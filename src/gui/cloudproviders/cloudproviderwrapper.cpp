@@ -22,7 +22,8 @@
 using namespace OCC;
 
 GSimpleActionGroup *actionGroup = nullptr;
-int preferredTextWidth = 0;
+
+int CloudProviderWrapper::preferredTextWidth = 0;
 
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
@@ -207,7 +208,7 @@ void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
 static GMenuItem* addMenuItem(const QString text, const gchar *action)
 {
     QFontMetrics fm = QApplication::fontMetrics();
-    preferredTextWidth = MAX (preferredTextWidth, (fm.boundingRect (text)).width ());
+    CloudProviderWrapper::preferredTextWidth = MAX (CloudProviderWrapper::preferredTextWidth, (fm.boundingRect (text)).width ());
     return menu_item_new (text, action);
 }
 

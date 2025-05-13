@@ -29,6 +29,8 @@ class CloudProviderWrapper : public QObject
 {
     Q_OBJECT
 public:
+    static int preferredTextWidth;
+
     explicit CloudProviderWrapper(QObject *parent = nullptr, Folder *folder = nullptr, int folderId = 0, CloudProvidersProviderExporter* cloudprovider = nullptr);
     ~CloudProviderWrapper() override;
     CloudProvidersAccountExporter* accountExporter();
