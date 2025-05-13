@@ -88,7 +88,7 @@ WebView::WebView(QWidget *parent)
     _interceptor = new WebViewPageUrlRequestInterceptor(this);
     _schemeHandler = new WebViewPageUrlSchemeHandler(this);
 
-    const QString userAgent(Utility::userAgentString());
+    const QString userAgent(Utility::userAgentString(QStringLiteral("login")));
     _profile->setHttpUserAgent(userAgent);
     QWebEngineProfile::defaultProfile()->setHttpUserAgent(userAgent);
     _profile->setUrlRequestInterceptor(_interceptor);

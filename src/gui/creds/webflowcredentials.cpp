@@ -46,6 +46,7 @@ public:
         : AccessManager(parent)
         , _cred(cred)
     {
+        setSynchronizationType(QStringLiteral("login"));
     }
 
 protected:

@@ -68,7 +68,7 @@ namespace Utility {
 
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(const qint64 octets);
-    OCSYNC_EXPORT QByteArray userAgentString();
+    OCSYNC_EXPORT QByteArray userAgentString(const QString &synchronizationType);
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
     /**
       * @brief Return whether launch on startup is enabled system wide.

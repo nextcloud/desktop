@@ -972,6 +972,7 @@ AccessManagerFactory::AccessManagerFactory()
 QNetworkAccessManager* AccessManagerFactory::create(QObject *parent)
 {
     const auto am = new AccessManager(parent);
+    am->setSynchronizationType(QStringLiteral("Systray"));
     const auto diskCache = new QNetworkDiskCache(am);
     diskCache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     am->setCache(diskCache);

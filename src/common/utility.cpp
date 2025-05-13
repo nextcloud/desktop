@@ -151,16 +151,17 @@ static QLatin1String platform()
 #endif
 }
 
-QByteArray Utility::userAgentString()
+QByteArray Utility::userAgentString(const QString &synchronizationType)
 {
-    return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
-        .arg(platform(),
-            QStringLiteral(MIRALL_VERSION_STRING),
-            qApp->applicationName(),
-            QSysInfo::productType(),
-            QSysInfo::kernelVersion(),
-            QSysInfo::buildCpuArchitecture(),
-            QSysInfo::currentCpuArchitecture())
+    return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7 SyncType: %8)")
+    .arg(platform(),
+         QStringLiteral(MIRALL_VERSION_STRING),
+         qApp->applicationName(),
+         QSysInfo::productType(),
+         QSysInfo::kernelVersion(),
+         QSysInfo::buildCpuArchitecture(),
+         QSysInfo::currentCpuArchitecture(),
+         synchronizationType)
         .toLatin1();
 }
 

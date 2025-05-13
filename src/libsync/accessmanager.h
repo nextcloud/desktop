@@ -28,8 +28,15 @@ public:
 
     AccessManager(QObject *parent = nullptr);
 
+    [[nodiscard]] const QString& synchronizationType() const;
+
+    void setSynchronizationType(const QString &type);
+
 protected:
     QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = nullptr) override;
+
+private:
+    QString _synchronizationType;
 };
 
 } // namespace OCC
