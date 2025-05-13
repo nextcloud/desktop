@@ -197,8 +197,11 @@ public class Item: NSObject, NSFileProviderItem {
             // Note that only files, not folders, should be lockable/unlockable
             userInfoDict["locked"] = metadata.lock
         }
-        // I suspect this is already exposed by Apple but the documentation is so vague I don't know
-        userInfoDict["downloaded"] = metadata.downloaded
+        if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
+            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepOffline
+        } else {
+            userInfoDict["displayEvict"] = metadata.downloaded
+        }
         return userInfoDict
     }
 

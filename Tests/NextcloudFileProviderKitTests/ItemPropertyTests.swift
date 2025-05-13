@@ -196,7 +196,7 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
 
-    func testItemUserInfoDownloadedState() {
+    func testItemUserInfoDisplayEvictState() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.downloaded = true
@@ -209,16 +209,16 @@ final class ItemPropertyTests: XCTestCase {
             dbManager: Self.dbManager
         )
 
-        XCTAssertNotNil(item.userInfo?["downloaded"])
+        XCTAssertNotNil(item.userInfo?["displayEvict"])
 
         let fileproviderItems = ["fileproviderItems": [item]]
-        let downloadedPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count > 0"
+        let canEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
         )
-        XCTAssertTrue(downloadedPredicate.evaluate(with: fileproviderItems))
+        XCTAssertTrue(canEvictPredicate.evaluate(with: fileproviderItems))
     }
 
-    func testItemUserInfoUndownloadedState() {
+    func testItemUserInfoNoDisplayEvictState() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.downloaded = false
@@ -231,11 +231,11 @@ final class ItemPropertyTests: XCTestCase {
             dbManager: Self.dbManager
         )
 
-        XCTAssertNotNil(item.userInfo?["downloaded"])
+        XCTAssertNotNil(item.userInfo?["displayEvict"])
 
         let fileproviderItems = ["fileproviderItems": [item]]
         let undownloadedPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == false ).@count > 0"
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == false ).@count > 0"
         )
         XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
     }
