@@ -257,6 +257,10 @@ if(BUILD_CLIENT)
     endif()
 endif()
 
+if (LINUX)
+    find_package(KF6DBusAddons)
+endif()
+
 option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
 if (BUILD_WITH_WEBENGINE)
     find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
