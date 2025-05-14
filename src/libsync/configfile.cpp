@@ -1314,59 +1314,6 @@ void ConfigFile::setDiscoveredLegacyConfigFile(const QString &discoveredLegacyCo
     _discoveredLegacyConfigFile = discoveredLegacyConfigFile;
 }
 
-bool ConfigFile::setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const
-{
-    // Migrate from version <= 2.4
-    qApp->setApplicationName(Theme::instance()->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_POP
-    qApp->setApplicationName(Theme::instance()->appName());
-
-    auto legacyDir = legacyLocation;
-    if (legacyDir.endsWith('/')) {
-        legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
-    }
-
-    if (!QFileInfo(legacyDir).isDir()) {
-        return false;
-    }
-
-    auto confDir = ConfigFile().configPath();
-    if (confDir.endsWith('/')) {
-        confDir.chop(1);
-    }
-
-    qCInfo(lcConfigFile) << "Migrating old config from" << legacyDir << "to" << confDir;
-    if (!QFile::rename(legacyDir, confDir)) {
-        qCWarning(lcConfigFile) << "Failed to move the old config directory" << legacyDir << "to new location" << confDir;
-        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-            const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
-            qCInfo(lcConfigFile) << "Will move the individual files:" << filesList;
-            auto setupCompleted = false;
-            for (const auto &name : filesList) {
-                if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
-                    qCDebug(lcConfigFile) << "Fallback move of " << name << "also failed";
-                    continue;
-                }
-                setupCompleted = true;
-                qCInfo(lcConfigFile)  << "Move of " << name << "succeeded.";
-            }
-            return setupCompleted;
-        }
-    } else {
-#ifndef Q_OS_WIN
-        // Create a symbolic link so a downgrade of the client would still find the config.
-        return QFile::link(confDir, legacyDir);
-#endif
-    }
-
-    return false;
-}
-
 void ConfigFile::findLegacyClientConfigFile()
 {
     qCInfo(lcConfigFile) << "Migrate: findLegacyClientConfigFile" << Theme::instance()->appName();
@@ -1395,7 +1342,10 @@ void ConfigFile::findLegacyClientConfigFile()
     if (Theme::instance()->isBranded()) {
         const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
         const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
-        legacyLocations.append({standardPathsParentFolder + unbrandedCfgFileRelativePath,
+        const auto brandedLegacyCfgFilePath = QString(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/") + APPLICATION_SHORTNAME + QStringLiteral("/"));
+        const auto brandedLegacyCfgFile = QString(APPLICATION_CONFIG_NAME + QStringLiteral(".cfg"));
+        legacyLocations.append({brandedLegacyCfgFilePath + brandedLegacyCfgFile,
+                                standardPathsParentFolder + unbrandedCfgFileRelativePath,
                                 legacyCfgFileParentFolder + unbrandedCfgFileNamePath,
                                 legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
     }

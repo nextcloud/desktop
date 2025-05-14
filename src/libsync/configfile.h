@@ -259,8 +259,6 @@ public:
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
     static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
-    [[nodiscard]]  bool setupConfigFolderFromLegacyLocation(const QString &legacyLocation) const;
-
     /**
      * Looks for config files with different names from older client versions
      * in different locations
