@@ -2002,19 +2002,19 @@ This can be an issue with your OpenSSL libraries.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="137"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>%1 month(s) ago</numerusform><numerusform>%1 month(s) ago</numerusform></translation>
+        <translation><numerusform>%1 month ago</numerusform><numerusform>%1 months ago</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="140"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>%1 year(s) ago</numerusform><numerusform>%1 year(s) ago</numerusform></translation>
+        <translation><numerusform>%1 year ago</numerusform><numerusform>%1 years ago</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="172"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Locked by %1 - Expires in %2 minute(s)</numerusform><numerusform>Locked by %1 - Expires in %2 minute(s)</numerusform></translation>
+        <translation><numerusform>Locked by %1 - Expires in %2 minute</numerusform><numerusform>Locked by %1 - Expires in %2 minutes</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2664,7 +2664,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1189"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Waiting for %n other folder(s) …</numerusform><numerusform>Waiting for %n other folder(s) …</numerusform></translation>
+        <translation><numerusform>Waiting for %n other folder …</numerusform><numerusform>Waiting for %n other folders …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1194"/>
@@ -5049,7 +5049,7 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1259"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Expires in %1 minutes</numerusform><numerusform>Expires in %1 minutes</numerusform></translation>
+        <translation><numerusform>Expires in %1 minute</numerusform><numerusform>Expires in %1 minutes</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
@@ -5642,7 +5642,7 @@ Server replied with error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation><numerusform>%n notification(s)</numerusform><numerusform>%n notification(s)</numerusform></translation>
+        <translation><numerusform>%n notification</numerusform><numerusform>%n notifications</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5773,12 +5773,12 @@ Server replied with error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation><numerusform>%1 minutes</numerusform><numerusform>%1 minutes</numerusform></translation>
+        <translation><numerusform>%1 minute</numerusform><numerusform>%1 minutes</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation><numerusform>%1 hours</numerusform><numerusform>%1 hours</numerusform></translation>
+        <translation><numerusform>%1 hour</numerusform><numerusform>%1 hours</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
@@ -5788,22 +5788,22 @@ Server replied with error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation><numerusform>%1 days</numerusform><numerusform>%1 days</numerusform></translation>
+        <translation><numerusform>%1 day</numerusform><numerusform>%1 days</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minute(s)</numerusform><numerusform>%n minute(s)</numerusform></translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hour(s)</numerusform><numerusform>%n hour(s)</numerusform></translation>
+        <translation><numerusform>%n hour</numerusform><numerusform>%n hours</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n day(s)</numerusform><numerusform>%n day(s)</numerusform></translation>
+        <translation><numerusform>%n day</numerusform><numerusform>%n days</numerusform></translation>
     </message>
 </context>
 <context>
@@ -6253,7 +6253,7 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="57"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 files in conflict</numerusform><numerusform>%1 files in conflict</numerusform></translation>
+        <translation><numerusform>%1 file in conflict</numerusform><numerusform>%1 files in conflict</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="64"/>
@@ -6698,32 +6698,32 @@ Server replied with error: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="299"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n year(s)</numerusform><numerusform>%n year(s)</numerusform></translation>
+        <translation><numerusform>%n year</numerusform><numerusform>%n years</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="300"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n month(s)</numerusform><numerusform>%n month(s)</numerusform></translation>
+        <translation><numerusform>%n month</numerusform><numerusform>%n months</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="301"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n day(s)</numerusform><numerusform>%n day(s)</numerusform></translation>
+        <translation><numerusform>%n day</numerusform><numerusform>%n days</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="302"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hour(s)</numerusform><numerusform>%n hour(s)</numerusform></translation>
+        <translation><numerusform>%n hour</numerusform><numerusform>%n hours</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="303"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minute(s)</numerusform><numerusform>%n minute(s)</numerusform></translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="304"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n second(s)</numerusform><numerusform>%n second(s)</numerusform></translation>
+        <translation><numerusform>%n second</numerusform><numerusform>%n seconds</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="328"/>
