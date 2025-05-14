@@ -16,6 +16,7 @@
 #include <mutex>
 #include <atomic>
 #include <condition_variable>
+#include <fstream>
 
 class CommunicationSocket;
 
@@ -31,8 +32,8 @@ public:
         };
         std::vector<MenuItem> menuItems;
     };
-    static ContextMenuInfo FetchInfo(const std::wstring &files);
-    static void SendRequest(const wchar_t *verb, const std::wstring &path);
+    static ContextMenuInfo FetchInfo(const std::wstring &files, std::ofstream &logger);
+    static void SendRequest(const wchar_t *verb, const std::wstring &path, std::ofstream &logger);
 };
 
 #endif //ABSTRACTSOCKETHANDLER_H

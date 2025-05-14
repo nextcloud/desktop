@@ -13,16 +13,22 @@
 #include <StringUtil.h>
 #include <strsafe.h>
 
+#include <iostream>
+#include <fstream>
+
 extern long g_cDllRef;
 
 NCContextMenu::NCContextMenu(void) 
     : m_cRef(1)
 {
     InterlockedIncrement(&g_cDllRef);
+    m_logger.open("c:\\test.log");
+    m_logger << "hello world" << std::endl;
 }
 
 NCContextMenu::~NCContextMenu(void)
 {
+    m_logger << "NCContextMenu::~NCContextMenu" << std::endl;
     InterlockedDecrement(&g_cDllRef);
 }
 
@@ -31,6 +37,7 @@ NCContextMenu::~NCContextMenu(void)
 // Query to the interface the component supported.
 IFACEMETHODIMP NCContextMenu::QueryInterface(REFIID riid, void **ppv)
 {
+    m_logger << "NCContextMenu::QueryInterface" << std::endl;
     static const QITAB qit[] =
     {
         QITABENT(NCContextMenu, IContextMenu),
@@ -43,12 +50,14 @@ IFACEMETHODIMP NCContextMenu::QueryInterface(REFIID riid, void **ppv)
 // Increase the reference count for an interface on an object.
 IFACEMETHODIMP_(ULONG) NCContextMenu::AddRef()
 {
+    m_logger << "NCContextMenu::AddRef" << std::endl;
     return InterlockedIncrement(&m_cRef);
 }
 
 // Decrease the reference count for an interface on an object.
 IFACEMETHODIMP_(ULONG) NCContextMenu::Release()
 {
+    m_logger << "NCContextMenu::Release" << std::endl;
     ULONG cRef = InterlockedDecrement(&m_cRef);
     if (0 == cRef) {
         delete this;
@@ -66,6 +75,7 @@ IFACEMETHODIMP_(ULONG) NCContextMenu::Release()
 IFACEMETHODIMP NCContextMenu::Initialize(
     LPCITEMIDLIST, LPDATAOBJECT pDataObj, HKEY)
 {
+    m_logger << "NCContextMenu::Initialize" << std::endl;
     m_selectedFiles.clear();
 
     if (!pDataObj) {
@@ -121,17 +131,20 @@ void InsertSeperator(HMENU hMenu, UINT indexMenu)
 
 IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags)
 {
+    m_logger << "NCContextMenu::QueryContextMenu" << std::endl;
     // If uFlags include CMF_DEFAULTONLY then we should not do anything.
     if (CMF_DEFAULTONLY & uFlags)
     {
         return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(0));
     }
 
-    m_info = NCClientInterface::FetchInfo(m_selectedFiles);
+    m_info = NCClientInterface::FetchInfo(m_selectedFiles, m_logger);
     if (m_info.menuItems.empty()) {
+        m_logger << "NCContextMenu::QueryContextMenu " << "empty info" << std::endl;
         return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(0));
     }
 
+    m_logger << "NCContextMenu::QueryContextMenu" << "insert separator" << std::endl;
     InsertSeperator(hMenu, indexMenu++);
 
     HMENU hSubmenu = CreateMenu();
@@ -145,6 +158,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         if (!InsertMenuItem(hMenu, indexMenu++, TRUE, &mii))
             return HRESULT_FROM_WIN32(GetLastError());
     }
+    m_logger << "NCContextMenu::QueryContextMenu" << "insert separator" << std::endl;
     InsertSeperator(hMenu, indexMenu++);
 
     UINT indexSubMenu = 0;
@@ -171,6 +185,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
 IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
 {
+    m_logger << "NCContextMenu::InvokeCommand" << std::endl;
     std::wstring command;
 
     CMINVOKECOMMANDINFOEX *piciEx = nullptr;
@@ -207,13 +222,14 @@ IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
         return E_FAIL;
     }
 
-    NCClientInterface::SendRequest(command.data(), m_selectedFiles);
+    NCClientInterface::SendRequest(command.data(), m_selectedFiles, m_logger);
     return S_OK;
 }
 
 IFACEMETHODIMP NCContextMenu::GetCommandString(UINT_PTR idCommand,
     UINT uFlags, UINT *pwReserved, LPSTR pszName, UINT cchMax)
 {
+    m_logger << "NCContextMenu::GetCommandString" << std::endl;
     if (idCommand < m_info.menuItems.size() && uFlags == GCS_VERBW) {
         return StringCchCopyW(reinterpret_cast<PWSTR>(pszName), cchMax,
             m_info.menuItems[idCommand].command.data());
