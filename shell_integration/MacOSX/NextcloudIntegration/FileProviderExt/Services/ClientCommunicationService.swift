@@ -101,4 +101,17 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
             }
         }
     }
+
+    func getTrashDeletionEnabledState(completionHandler: @escaping (Bool, Bool) -> Void) {
+        let enabled = fpExtension.config.trashDeletionEnabled
+        let set = fpExtension.config.trashDeletionSet
+        completionHandler(enabled, set)
+    }
+
+    func setTrashDeletionEnabled(_ enabled: Bool) {
+        fpExtension.config.trashDeletionEnabled = enabled
+        Logger.fileProviderExtension.info(
+            "Trash deletion setting changed to: \(enabled, privacy: .public)"
+        )
+    }
 }

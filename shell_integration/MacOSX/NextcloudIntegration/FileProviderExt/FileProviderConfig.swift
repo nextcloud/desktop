@@ -12,6 +12,7 @@ import Foundation
 struct FileProviderConfig {
     private enum ConfigKey: String {
         case fastEnumerationEnabled = "fastEnumerationEnabled"
+        case trashDeletionEnabled = "trashDeletionEnabled"
     }
 
     let domainIdentifier: NSFileProviderDomainIdentifier
@@ -31,6 +32,13 @@ struct FileProviderConfig {
             defaults.setValue(newValue, forKey: domainIdentifier.rawValue)
         }
     }
+
+    var trashDeletionEnabled: Bool {
+        get { internalConfig[ConfigKey.trashDeletionEnabled.rawValue] as? Bool ?? true }
+        set { internalConfig[ConfigKey.trashDeletionEnabled.rawValue] = newValue }
+    }
+
+    lazy var trashDeletionSet = internalConfig[ConfigKey.trashDeletionEnabled.rawValue] != nil
 
     var fastEnumerationEnabled: Bool {
         get { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] as? Bool ?? true }

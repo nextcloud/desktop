@@ -412,6 +412,44 @@ void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const Q
     emit fastEnumerationSetForAccountChanged(userIdAtHost);
 }
 
+bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        return true;
+    }
+    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForExtension(userIdAtHost)) {
+        return trashDeletionState->first;
+    }
+    return true;
+}
+
+bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        return false;
+    }
+    if (const auto state = xpc->trashDeletionEnabledStateForExtension(userIdAtHost)) {
+        return state->second;
+    }
+    return false;
+}
+
+void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        // Reset state of UI elements
+        emit trashDeletionEnabledForAccountChanged(userIdAtHost);
+        emit trashDeletionSetForAccountChanged(userIdAtHost);
+        return;
+    }
+    xpc->setTrashDeletionEnabledForExtension(userIdAtHost, setEnabled);
+    emit trashDeletionEnabledForAccountChanged(userIdAtHost);
+    emit trashDeletionSetForAccountChanged(userIdAtHost);
+}
+
 unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
 {
     return d->localStorageUsageForAccount(userIdAtHost);
