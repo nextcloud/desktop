@@ -24,7 +24,12 @@ public let relativeDatabaseFolderPath = "Database/"
 public let databaseFilename = "fileproviderextdatabase.realm"
 
 public final class FilesDatabaseManager: Sendable {
+    enum ErrorCode: Int {
+        case metadataNotFound = -1000
+    }
+
     private static let schemaVersion = stable2_0SchemaVersion
+    static let errorDomain = "FilesDatabaseManager"
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
     let account: Account
 

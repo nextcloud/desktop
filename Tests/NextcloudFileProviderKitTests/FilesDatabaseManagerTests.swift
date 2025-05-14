@@ -1031,4 +1031,28 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         try FileManager.default.removeItem(at: tempDir)
     }
+
+    func testKeepDownloadedSetting() throws {
+        let existingMetadata = RealmItemMetadata()
+        existingMetadata.ocId = "id-1"
+        existingMetadata.fileName = "File.pdf"
+        existingMetadata.account = "TestAccount"
+        existingMetadata.serverUrl = "https://example.com"
+        XCTAssertFalse(existingMetadata.keepDownloaded)
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(existingMetadata)
+        }
+
+        let sendable = SendableItemMetadata(value: existingMetadata)
+        var updatedMetadata =
+            try XCTUnwrap(try Self.dbManager.set(keepDownloaded: true, for: sendable))
+        XCTAssertTrue(updatedMetadata.keepDownloaded)
+
+        updatedMetadata.keepDownloaded = false
+        let finalMetadata =
+            try XCTUnwrap(try Self.dbManager.set(keepDownloaded: false, for: updatedMetadata))
+        XCTAssertFalse(finalMetadata.keepDownloaded)
+    }
 }

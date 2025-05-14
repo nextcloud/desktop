@@ -196,7 +196,7 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
 
-    func testItemUserInfoDownloadedState() {
+    func testItemUserInfoDisplayEvictState() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.downloaded = true
@@ -209,16 +209,32 @@ final class ItemPropertyTests: XCTestCase {
             dbManager: Self.dbManager
         )
 
-        XCTAssertNotNil(item.userInfo?["downloaded"])
+        XCTAssertNotNil(item.userInfo?["displayEvict"])
 
         let fileproviderItems = ["fileproviderItems": [item]]
-        let downloadedPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == true ).@count > 0"
+        let canEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
         )
-        XCTAssertTrue(downloadedPredicate.evaluate(with: fileproviderItems))
+        XCTAssertTrue(canEvictPredicate.evaluate(with: fileproviderItems))
+
+        metadata.keepDownloaded = true
+        let keepDownloadedItem = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertNotNil(keepDownloadedItem.userInfo?["displayEvict"])
+
+        let fileproviderKeepDownloadedItems = ["fileproviderItems": [keepDownloadedItem]]
+        let cannotEvictPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count > 0"
+        )
+        XCTAssertFalse(cannotEvictPredicate.evaluate(with: fileproviderKeepDownloadedItems))
     }
 
-    func testItemUserInfoUndownloadedState() {
+    func testItemUserInfoNoDisplayEvictState() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.downloaded = false
@@ -231,13 +247,74 @@ final class ItemPropertyTests: XCTestCase {
             dbManager: Self.dbManager
         )
 
-        XCTAssertNotNil(item.userInfo?["downloaded"])
+        XCTAssertNotNil(item.userInfo?["displayEvict"])
 
         let fileproviderItems = ["fileproviderItems": [item]]
         let undownloadedPredicate = NSPredicate(
-            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.downloaded == false ).@count > 0"
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == false ).@count > 0"
         )
         XCTAssertTrue(undownloadedPredicate.evaluate(with: fileproviderItems))
+    }
+
+    func testItemUserInfoKeepDownloadedProperties() {
+        var metadataA =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadataA.keepDownloaded = true
+
+        let itemA = Item(
+            metadata: metadataA,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemA.userInfo?["displayKeepDownloaded"] as? Bool, false)
+        XCTAssertEqual(itemA.userInfo?["displayAllowAutoEvicting"] as? Bool, true)
+        XCTAssertEqual(itemA.userInfo?["displayEvict"] as? Bool, false)
+
+        let metadataB =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        let itemB = Item(
+            metadata: metadataB,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertTrue(itemB.userInfo?["displayKeepDownloaded"] as? Bool == true)
+        XCTAssertTrue(itemB.userInfo?["displayAllowAutoEvicting"] as? Bool == false)
+        XCTAssertEqual(itemB.userInfo?["displayEvict"] as? Bool, false)
+
+        var metadataC =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadataC.keepDownloaded = true
+        metadataC.downloaded = true
+
+        let itemC = Item(
+            metadata: metadataC,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemC.userInfo?["displayKeepDownloaded"] as? Bool, false)
+        XCTAssertEqual(itemC.userInfo?["displayAllowAutoEvicting"] as? Bool, true)
+        XCTAssertEqual(itemC.userInfo?["displayEvict"] as? Bool, false)
+
+        var metadataD =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadataD.downloaded = true
+
+        let itemD = Item(
+            metadata: metadataD,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemD.userInfo?["displayKeepDownloaded"] as? Bool, true)
+        XCTAssertEqual(itemD.userInfo?["displayAllowAutoEvicting"] as? Bool, false)
+        XCTAssertEqual(itemD.userInfo?["displayEvict"] as? Bool, true)
     }
 
     func testItemLockFileUntrashable() {
@@ -319,5 +396,31 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertFalse(notSharedItem.isShared)
         XCTAssertFalse(notSharedItem.isSharedByCurrentUser)
         XCTAssertNil(notSharedItem.ownerNameComponents)
+    }
+
+    func testContentPolicy() {
+        var metadataA =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadataA.keepDownloaded = true
+
+        let itemA = Item(
+            metadata: metadataA,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemA.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+
+        let metadataB =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        let itemB = Item(
+            metadata: metadataB,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(itemB.contentPolicy, .inherited)
     }
 }
