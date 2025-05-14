@@ -18,6 +18,10 @@
 #include <KDSingleApplication>
 #endif
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+#include <KDBusService>
+#endif
+
 #include <QApplication>
 #include <QPointer>
 #include <QQueue>
@@ -121,6 +125,10 @@ private:
     OCC::SingleInstanceManager _singleApp;
 #else
     KDSingleApplication _singleApp;
+#endif
+
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    KDBusService _dbusService;
 #endif
 
     Theme *_theme;

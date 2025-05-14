@@ -544,6 +544,10 @@ if(KF6GuiAddons_FOUND)
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
+if(KF6DBusAddons_FOUND)
+    target_link_libraries(nextcloudCore PUBLIC KF6::DBusAddons)
+endif()
+
 add_subdirectory(socketapi)
 
 # skip unity inclusion for files which cause problems with a CMake unity build

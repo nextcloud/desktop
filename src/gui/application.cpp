@@ -218,6 +218,9 @@ ownCloudGui *Application::gui() const
 Application::Application(int &argc, char **argv)
     : QApplication{argc, argv}
     , _gui(nullptr)
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    , _dbusService{KDBusService::StartupOption::NoExitOnFailure | KDBusService::StartupOption::Unique}
+#endif
     , _theme(Theme::instance())
 {
     _startedAt.start();
@@ -264,6 +267,12 @@ Application::Application(int &argc, char **argv)
         QTimer::singleShot(0, qApp, &QApplication::quit);
         return;
     }
+
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    if (!_dbusService.isRegistered()) {
+        return;
+    }
+#endif
 
     if (!_singleApp.isPrimaryInstance()) {
         return;
