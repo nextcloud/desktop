@@ -198,9 +198,9 @@ public class Item: NSObject, NSFileProviderItem {
             userInfoDict["locked"] = metadata.lock
         }
         if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            userInfoDict["displayKeepOffline"] = !metadata.keepOffline
-            userInfoDict["displayAllowAutoEvicting"] = metadata.keepOffline
-            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepOffline
+            userInfoDict["displayKeepDownloaded"] = !metadata.keepDownloaded
+            userInfoDict["displayAllowAutoEvicting"] = metadata.keepDownloaded
+            userInfoDict["displayEvict"] = metadata.downloaded && !metadata.keepDownloaded
         } else {
             userInfoDict["displayEvict"] = metadata.downloaded
         }
@@ -209,15 +209,15 @@ public class Item: NSObject, NSFileProviderItem {
 
     @available(macOS 13.0, iOS 16.0, visionOS 1.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
-        if metadata.keepOffline {
+        if metadata.keepDownloaded {
             return .downloadEagerlyAndKeepDownloaded
         }
         return .inherited
     }
 
-    public var keepOffline: Bool {
+    public var keepDownloaded: Bool {
         guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else { return false }
-        return metadata.keepOffline
+        return metadata.keepDownloaded
     }
 
     public static func rootContainer(

@@ -1,5 +1,5 @@
 //
-//  FilesDatabaseManager+KeepOffline.swift
+//  FilesDatabaseManager+KeepDownloaded.swift
 //  NextcloudFileProviderKit
 //
 //  Created by Claudio Cambra on 13/5/25.
@@ -10,11 +10,11 @@ import RealmSwift
 
 public extension FilesDatabaseManager {
     func set(
-        keepOffline: Bool, for metadata: SendableItemMetadata
+        keepDownloaded: Bool, for metadata: SendableItemMetadata
     ) throws -> SendableItemMetadata? {
         guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
             let errorString = """
-                Could not update keepOffline status for item: \(metadata.fileName)
+                Could not update keepDownloaded status for item: \(metadata.fileName)
                     as the system does not support this state.
             """
             Self.logger.error("\(errorString, privacy: .public)")
@@ -27,7 +27,7 @@ public extension FilesDatabaseManager {
 
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             let errorString = """
-                Did not update keepOffline for item metadata as it was not found.
+                Did not update keepDownloaded for item metadata as it was not found.
                     ocID: \(metadata.ocId)
                     filename: \(metadata.fileName)
             """
@@ -40,11 +40,11 @@ public extension FilesDatabaseManager {
         }
 
         try ncDatabase().write {
-            result.keepOffline = keepOffline
+            result.keepDownloaded = keepDownloaded
 
             Self.logger.debug(
                 """
-                Updated keepOffline status for item metadata.
+                Updated keepDownloaded status for item metadata.
                     ocID: \(metadata.ocId, privacy: .public)
                     fileName: \(metadata.fileName, privacy: .public)
                 """

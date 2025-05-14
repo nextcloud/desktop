@@ -1032,13 +1032,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
         try FileManager.default.removeItem(at: tempDir)
     }
 
-    func testKeepOfflineSetting() throws {
+    func testKeepDownloadedSetting() throws {
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
         existingMetadata.serverUrl = "https://example.com"
-        XCTAssertFalse(existingMetadata.keepOffline)
+        XCTAssertFalse(existingMetadata.keepDownloaded)
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -1047,12 +1047,12 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         let sendable = SendableItemMetadata(value: existingMetadata)
         var updatedMetadata =
-            try XCTUnwrap(try Self.dbManager.set(keepOffline: true, for: sendable))
-        XCTAssertTrue(updatedMetadata.keepOffline)
+            try XCTUnwrap(try Self.dbManager.set(keepDownloaded: true, for: sendable))
+        XCTAssertTrue(updatedMetadata.keepDownloaded)
 
-        updatedMetadata.keepOffline = false
+        updatedMetadata.keepDownloaded = false
         let finalMetadata =
-            try XCTUnwrap(try Self.dbManager.set(keepOffline: false, for: updatedMetadata))
-        XCTAssertFalse(finalMetadata.keepOffline)
+            try XCTUnwrap(try Self.dbManager.set(keepDownloaded: false, for: updatedMetadata))
+        XCTAssertFalse(finalMetadata.keepDownloaded)
     }
 }
