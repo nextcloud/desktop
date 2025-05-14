@@ -476,6 +476,9 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
     case Vfs::WindowsCfApi:
         callback(true);
         return;
+    case Vfs::DBusApi:
+        callback(true);
+        return;
     case Vfs::WithSuffix:
         msgBox = new QMessageBox(
             QMessageBox::Warning,

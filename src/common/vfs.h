@@ -96,6 +96,7 @@ public:
         WithSuffix,
         WindowsCfApi,
         XAttr,
+        DBusApi,
     };
     Q_ENUM(Mode)
     enum class ConvertToPlaceholderResult {
