@@ -37,8 +37,17 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "CraftMaster git url.")
     var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
 
-    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint git url.")
+    @Option(name: [.long], help: "KDE Craft blueprints git url.")
+    var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
+
+    @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
+    var kdeBlueprintsGitRef = "stable-3.17"
+
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints git url.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints git ref/branch.")
+    var clientBlueprintsGitRef = "stable-3.17"
 
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
@@ -144,9 +153,12 @@ struct Build: ParsableCommand {
                 }
             }
 
-            print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
-            guard shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)") == 0 else {
-                throw MacCrafterError.craftError("Error adding blueprint repository.")
+            print("Configuring required KDE Craft blueprint repositories...")
+            guard shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
+                throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
+            }
+            guard shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
+                throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
 
             print("Crafting KDE Craft...")
