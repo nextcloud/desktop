@@ -110,6 +110,9 @@ void PropagateLocalRemove::start()
     if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
         const auto fileInfo = QFileInfo{filename};
         if (FileSystem::fileExists(filename, fileInfo)) {
+            const auto parentFolderPath = fileInfo.dir().absolutePath();
+            const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+
             if (!FileSystem::moveToTrash(filename, &removeError)) {
                 qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
