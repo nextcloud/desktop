@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */; };
 		5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E52965C6FA001E0C6A /* NextcloudKit */; };
 		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
@@ -152,6 +153,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+CustomActions.swift"; sourceTree = "<group>"; };
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
 		531EDE562D897B4F00FD91F9 /* Eviction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eviction.swift; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				53D666602B70C9A70042C03D /* FileProviderConfig.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */,
+				530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */,
 				5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
@@ -710,6 +713,7 @@
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
 				535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,
+				530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */,
 				5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */,
 				5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */,
 			);
