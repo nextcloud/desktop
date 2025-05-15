@@ -110,6 +110,7 @@ void PropagateLocalRemove::start()
     if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
+            qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
             done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
             return;
         }
@@ -127,6 +128,7 @@ void PropagateLocalRemove::start()
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
                 if (!FileSystem::remove(filename, &removeError)) {
+                    qCWarning(lcPropagateLocalRemove()) << "remove failed" << filename << removeError;
                     done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                     return;
                 }
