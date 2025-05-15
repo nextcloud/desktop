@@ -55,9 +55,17 @@ func isExecutable(_ path: String) throws -> Bool {
 func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \"\(path)\""
-    guard shell(command) == 0 else {
-        throw CodeSigningError.failedToCodeSign("Failed to code-sign \(path).")
+    for _ in 1...5 {
+        guard shell(command) == 0 else {
+            print("Code-signing failed, retrying ...")
+            continue
+        }
+
+        // code signing was successful
+        return
     }
+
+    throw CodeSigningError.failedToCodeSign("Failed to code-sign \(path).")
 }
 
 func recursivelyCodesign(
