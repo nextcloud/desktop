@@ -108,23 +108,26 @@ void PropagateLocalRemove::start()
 
     QString removeError;
     if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
-        if ((QDir(filename).exists() || FileSystem::fileExists(filename))
-            && !FileSystem::moveToTrash(filename, &removeError)) {
-            qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
-            done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
-            return;
-        }
-    } else {
-        if (_item->isDirectory()) {
-            if (QDir(filename).exists() && !removeRecursively(QString())) {
+        const auto fileInfo = QFileInfo{filename};
+        if (FileSystem::fileExists(filename, fileInfo)) {
+            if (!FileSystem::moveToTrash(filename, &removeError)) {
+                qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename)) {
-                const auto fileInfo = QFileInfo{filename};
+            qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << "was already deleted";
+        }
+    } else {
+        if (_item->isDirectory()) {
+            if (FileSystem::fileExists(filename) && !removeRecursively(QString())) {
+                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
+                return;
+            }
+        } else {
+            const auto fileInfo = QFileInfo{filename};
+            if (FileSystem::fileExists(filename, fileInfo)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
-
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
                 if (!FileSystem::remove(filename, &removeError)) {
