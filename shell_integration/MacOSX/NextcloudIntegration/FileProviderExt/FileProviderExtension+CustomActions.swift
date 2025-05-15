@@ -1,9 +1,7 @@
-//
-//  FileProviderExtension+CustomActions.swift
-//  NextcloudIntegration
-//
-//  Created by Claudio Cambra on 14/5/25.
-//
+/*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 
 import FileProvider
 import NextcloudFileProviderKit
