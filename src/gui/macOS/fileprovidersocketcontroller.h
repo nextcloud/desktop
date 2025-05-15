@@ -44,6 +44,7 @@ private slots:
     void requestFileProviderDomainInfo() const;
     void sendAccountDetails() const;
     void sendNotAuthenticated() const;
+    void sendIgnoreList() const;
 
     void reportSyncState(const QString &receivedState) const;
 

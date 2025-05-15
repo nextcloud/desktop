@@ -40,6 +40,7 @@ public slots:
     void unauthenticateExtension(const QString &extensionAccountId) const;
     void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename);
 
+    void setIgnoreList() const;
     void setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
     void setTrashDeletionEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
 

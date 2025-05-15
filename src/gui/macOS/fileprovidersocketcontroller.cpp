@@ -8,6 +8,9 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+#include "csync/csync_exclude.h"
+#include "libsync/configfile.h"
+
 #include "accountmanager.h"
 #include "common/utility.h"
 #include "fileproviderdomainmanager.h"
@@ -91,6 +94,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         }
 
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
+        sendIgnoreList();
         sendAccountDetails();
         reportSyncState("SYNC_PREPARING");
         return;
@@ -234,6 +238,26 @@ void FileProviderSocketController::sendAccountDetails() const
                                  accountUserId + "~" +
                                  accountUrl + "~" +
                                  accountPassword);
+    sendMessage(message);
+}
+
+void FileProviderSocketController::sendIgnoreList() const
+{
+    if (!_accountState) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to send ignore list, stopping";
+        return;
+    }
+
+    ExcludedFiles ignoreList;
+    ConfigFile::setupDefaultExcludeFilePaths(ignoreList);
+    ignoreList.reloadExcludeFiles();
+    const auto patterns = ignoreList.activeExcludePatterns();
+    if (patterns.isEmpty()) {
+        qCWarning(lcFileProviderSocketController) << "No active ignore list patterns, not sending.";
+        return;
+    }
+    // Try to come up with a separator that won't clash. I am hoping this is it
+    const auto message = QString(QStringLiteral("IGNORE_LIST:") + patterns.join("_~IL$~_"));
     sendMessage(message);
 }
 
