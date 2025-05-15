@@ -767,8 +767,13 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isLivePhoto = serverEntry.isLivePhoto;
     item->_livePhotoFile = serverEntry.livePhotoFile;
 
-    item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
-    item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
+    if (serverEntry.isValid()) {
+        item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+        item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
+    } else {
+        item->_folderQuota.bytesUsed = -1;
+        item->_folderQuota.bytesAvailable = -1;
+    }
 
     // Check for missing server data
     {
@@ -1128,6 +1133,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
                      << "noServerEntry:" << noServerEntry;
 
+    if (serverEntry.isValid()) {
+        item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+        item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
+    } else {
+        item->_folderQuota.bytesUsed = -1;
+        item->_folderQuota.bytesAvailable = -1;
+    }
+
     // Decay server modifications to UPDATE_METADATA if the local virtual exists
     bool hasLocalVirtual = localEntry.isVirtualFile || (_queryLocal == ParentNotChanged && dbEntry.isVirtualFile());
     bool virtualFileDownload = item->_type == ItemTypeVirtualFileDownload;
@@ -1166,6 +1179,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
             qCDebug(lcDisco) << "Folder" << item->_file
+                             << "item used:" << item->_folderQuota.bytesUsed
+                             << "item available:" << item->_folderQuota.bytesAvailable
                              << "- quota used: " << serverEntry.folderQuota.bytesUsed
                              << "- quota available: " << serverEntry.folderQuota.bytesAvailable;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
