@@ -8,7 +8,7 @@ jobs:
   build:
     name: macOS Build and Test
     timeout-minutes: 60
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
         matrix:
           craft_options: [
