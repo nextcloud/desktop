@@ -1120,6 +1120,22 @@ QByteArray Account::encryptionCertificateFingerprint() const
     return _encryptionCertificateFingerprint;
 }
 
+QDateTime Account::hstsExpirationTime() const
+{
+    return _hstsExpirationTime;
+}
+
+void Account::setHstsExpirationTime(const QDateTime &expirationTime)
+{
+    _hstsExpirationTime = expirationTime;
+    emit wantsAccountSaved(sharedFromThis());
+}
+
+bool Account::isHstsActive() const
+{
+    return _hstsExpirationTime.isValid() && _hstsExpirationTime > QDateTime::currentDateTime();
+}
+
 void Account::setEncryptionCertificateFingerprint(const QByteArray &fingerprint)
 {
     if (_encryptionCertificateFingerprint == fingerprint) {
