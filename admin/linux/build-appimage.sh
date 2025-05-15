@@ -63,6 +63,10 @@ rm -rf usr/share/caja-python/
 rm -rf usr/share/nautilus-python/
 rm -rf usr/share/nemo-python/
 
+# The client-specific data dir also contains the translations, we want to have those in the AppImage.
+mkdir -p AppDir/usr/share
+mv usr/share/${EXECUTABLE_NAME} AppDir/usr/share/${EXECUTABLE_NAME}
+
 # Move sync exclude to right location
 mv /app/etc/*/sync-exclude.lst usr/bin/
 rm -rf etc
