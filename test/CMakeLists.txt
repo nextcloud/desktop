@@ -140,6 +140,7 @@ nextcloud_add_benchmark(LargeSync)
 nextcloud_add_test(Account)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
+nextcloud_add_test(Migration)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

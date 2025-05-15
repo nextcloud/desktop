@@ -115,93 +115,7 @@ namespace {
 
 // ----------------------------------------------------------------------------------
 
-bool Application::configVersionMigration()
-{
-    QStringList deleteKeys, ignoreKeys;
-    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
 
-    ConfigFile configFile;
-
-    // Did the client version change?
-    // (The client version is adjusted further down)
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
-    const auto versionChanged = previousVersion != currentVersion;
-    const auto downgrading = previousVersion > currentVersion;
-
-    if (versionChanged) {
-        qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
-        configFile.cleanUpdaterConfiguration();
-    }
-
-    if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
-        return true;
-    }
-
-    // 'Launch on system startup' defaults to true > 3.11.x
-    const auto theme = Theme::instance();
-    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
-
-    // default is now off to displaying dialog warning user of too many files deletion
-    configFile.setPromptDeleteFiles(false);
-
-    // back up all old config files
-    QStringList backupFilesList;
-    QDir configDir(configFile.configPath());
-    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
-    for (const auto &oldConfig : anyConfigFileNameList) {
-        const auto oldConfigFileName = oldConfig.fileName();
-        const auto oldConfigFilePath = oldConfig.filePath();
-        const auto newConfigFileName = configFile.configFile();
-        backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFilePath != newConfigFileName) {
-            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
-            }
-        }
-    }
-
-    // We want to message the user either for destructive changes,
-    // or if we're ignoring something and the client version changed.
-    if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
-        QMessageBox box(
-            QMessageBox::Warning,
-            APPLICATION_SHORTNAME,
-            tr("Some settings were configured in %1 versions of this client and "
-               "use features that are not available in this version.<br>"
-               "<br>"
-               "Continuing will mean <b>%2 these settings</b>.<br>"
-               "<br>"
-               "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
-                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
-                     backupFilesList.join("<br>")));
-        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
-        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
-
-        box.exec();
-        if (box.clickedButton() != continueBtn) {
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            return false;
-        }
-    }
-
-    if (!deleteKeys.isEmpty()) {
-        auto settings = ConfigFile::settingsWithGroup("foo");
-        settings->endGroup();
-
-        // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : std::as_const(deleteKeys)) {
-            settings->remove(badKey);
-            qCInfo(lcApplication) << "Migration: removed" << badKey << "key from settings.";
-        }
-    }
-
-    configFile.setClientVersionString(MIRALL_VERSION_STRING);
-    return true;
-}
 
 ownCloudGui *Application::gui() const
 {
@@ -247,47 +161,26 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (!ConfigFile().exists()) {
-        setApplicationName(_theme->appNameGUI());
-        QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
+    parseOptions(arguments());
 
-        if (legacyDir.endsWith('/')) {
-            legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
-        }
-        setApplicationName(_theme->appName());
-        if (QFileInfo(legacyDir).isDir()) {
-            auto confDir = ConfigFile().configPath();
-
-            // macOS 10.11.x does not like trailing slash for rename/move.
-            if (confDir.endsWith('/')) {
-                confDir.chop(1);
-            }
-
-            qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
-
-            if (!QFile::rename(legacyDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
-
-                // Try to move the files one by one
-                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                    const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                    for (const auto &name : filesList) {
-                        if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                        }
-                    }
-                }
-            } else {
-#ifndef Q_OS_WIN
-                // Create a symbolic link so a downgrade of the client would still find the config.
-                QFile::link(confDir, legacyDir);
-#endif
-            }
-        }
-    } else {
-        setupConfigFile();
+    //no need to waste time;
+    if (_helpOnly || _versionOnly) {
+        return;
     }
+
+    ConfigFile configFile;
+    if (const auto configExists = configFile.exists(); configExists && makeConfigSettingsBackwardCompatible()) {
+        qCWarning(lcApplication) << "Existing config is compatible with current version.";
+    } else if (!configExists) {
+        configFile.findLegacyClientConfigFile();
+    }
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
+    setupAccountsAndFolders();
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
@@ -298,29 +191,12 @@ Application::Application(int &argc, char **argv)
         }
     }
 
-    parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly) {
-        return;
-    }
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
-
     if (isRunning()) {
         return;
     }
 
     setupLogging();
     setupTranslations();
-
-    // try to migrate legacy accounts and folders from a previous client version
-    // only copy the settings and check what should be skipped
-    if (!configVersionMigration()) {
-        qCWarning(lcApplication) << "Config version migration was not possible.";
-    }
 
     ConfigFile cfg;
     {
@@ -380,9 +256,6 @@ Application::Application(int &argc, char **argv)
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
-
-    // create accounts and folders from a legacy desktop client or from the current config file
-    setupAccountsAndFolders();
 
     setQuitOnLastWindowClosed(false);
 
@@ -454,6 +327,114 @@ Application::Application(int &argc, char **argv)
 #endif
 }
 
+bool Application::confirmConfigChangesOrQuitApp(bool isDeleteKeysEmpty, const QStringList backupFilesList)
+{
+    // Message the user about changes
+    QMessageBox box(
+        QMessageBox::Warning,
+        APPLICATION_SHORTNAME,
+        tr("Some settings were configured in %1 versions of this client and "
+           "use features that are not available in this version.<br>"
+           "<br>"
+           "Continuing will mean <b>%2 these settings</b>.<br>"
+           "<br>"
+           "The current configuration file was already backed up to <i>%3</i>.")
+            .arg((ConfigFile().isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
+                 isDeleteKeysEmpty? tr("ignoring") : tr("deleting"),
+                 backupFilesList.join("<br>")));
+    box.addButton(tr("Quit"), QMessageBox::AcceptRole);
+    auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+
+    box.exec();
+    if (box.clickedButton() != continueBtn) {
+        _quitInstance = true;
+        return false;
+    }
+
+    return true;
+}
+
+void Application::setupAccountsAndFolders()
+{
+    // create accounts and folders from a legacy desktop client or for a new config file
+    _folderManager.reset(new FolderMan);
+    FolderMan::instance()->setSyncEnabled(true);
+    const auto accounts = AccountManager::instance()->setupAccounts();
+    const auto folders = FolderMan::instance()->setupFolders();
+    if (accounts > 0 && Theme::instance()->displayLegacyImportDialog()) {
+        const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
+            QStringList list;
+            for (const auto &account : accounts) {
+                list << account->account()->prettyName().prepend("- ");
+            }
+            return list.join("\n");
+        };
+
+        const auto accountsRestoreMessage = accounts > 1
+            ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accounts))
+            : tr("1 account");
+        const auto foldersRestoreMessage = folders > 1
+            ? tr("%1 folders", "number of folders imported").arg(QString::number(folders))
+            : tr("1 folder");
+        const auto messageBox = new QMessageBox(QMessageBox::Information,
+                                                tr("Legacy import"),
+                                                tr("Imported %1 and %2 from a legacy desktop client.\n%3",
+                                                   "number of accounts and folders imported. list of users.")
+                                                    .arg(accountsRestoreMessage,
+                                                         foldersRestoreMessage,
+                                                         prettyNamesList(AccountManager::instance()->accounts()))
+                                                );
+        messageBox->setWindowModality(Qt::NonModal);
+        messageBox->open();
+    }
+
+    ConfigFile().setClientVersionString(MIRALL_VERSION_STRING);
+}
+
+bool Application::makeConfigSettingsBackwardCompatible()
+{
+    ConfigFile configFile;
+    const auto didVersionChanged = configFile.isUpgrade() || configFile.isDowngrade();
+    if (!didVersionChanged) {
+        qCInfo(lcApplication) << "No upgrade or downgrade detected.";
+        return true;
+    }
+
+    configFile.cleanUpdaterConfiguration();
+
+    QStringList deleteKeys, ignoreKeys;
+    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    if (!didVersionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && didVersionChanged))) {
+        qCInfo(lcApplication) << "There are no settings to delete or to ignore. No need to change the current config file.";
+        return true;
+    }
+
+    const auto isDeleteKeysEmpty = deleteKeys.isEmpty();
+    if (const auto backupFilesList = configFile.backupConfigFiles();
+        configFile.showConfigBackupWarning()
+        && backupFilesList.size() > 0
+        && !confirmConfigChangesOrQuitApp(isDeleteKeysEmpty, backupFilesList)) {
+        return false;
+    }
+
+    if (!isDeleteKeysEmpty) {
+        auto settings = configFile.settingsWithGroup("foo");
+        settings->endGroup();
+
+        // Wipe confusing keys from the future, ignore the others
+        for (const auto &badKey : std::as_const(deleteKeys)) {
+            settings->remove(badKey);
+            qCDebug(lcApplication) << "Migration: removed" << badKey << "key from settings.";
+        }
+    }
+
+    configFile.setClientVersionString(MIRALL_VERSION_STRING);
+    qCDebug(lcApplication) << "Client version changed to" << configFile.clientVersionString();
+
+    return true;
+}
+
 Application::~Application()
 {
     // Make sure all folders are gone, otherwise removing the
@@ -466,138 +447,6 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
-}
-
-void Application::setupAccountsAndFolders()
-{
-    _folderManager.reset(new FolderMan);
-    FolderMan::instance()->setSyncEnabled(true);
-
-    const auto accountsRestoreResult = restoreLegacyAccount();
-
-    const auto foldersListSize = FolderMan::instance()->setupFolders();
-
-    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
-        QStringList list;
-        for (const auto &account : accounts) {
-            list << account->account()->prettyName().prepend("- ");
-        }
-        return list.join("\n");
-    };
-
-    if (const auto accounts = AccountManager::instance()->accounts();
-        accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
-        && !accounts.isEmpty()) {
-
-        const auto accountsListSize = accounts.size();
-        if (Theme::instance()->displayLegacyImportDialog()) {
-            const auto accountsRestoreMessage = accountsListSize > 1
-                ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
-                : tr("1 account");
-            const auto foldersRestoreMessage = foldersListSize > 1
-                ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
-                : tr("1 folder");
-            const auto messageBox = new QMessageBox(QMessageBox::Information,
-                                                    tr("Legacy import"),
-                                                    tr("Imported %1 and %2 from a legacy desktop client.\n%3",
-                                                       "number of accounts and folders imported. list of users.")
-                                                        .arg(accountsRestoreMessage,
-                                                             foldersRestoreMessage,
-                                                             prettyNamesList(accounts))
-                                                    );
-            messageBox->setWindowModality(Qt::NonModal);
-            messageBox->open();
-        }
-
-        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult:" << accountsRestoreResult;
-        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
-        qCWarning(lcApplication) << accountsListSize << "account(s) were migrated:" << prettyNamesList(accounts);
-
-    } else {
-        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
-        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
-        qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
-    }
-}
-
-void Application::setupConfigFile()
-{
-    // Migrate from version <= 2.4
-    setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-    QT_WARNING_PUSH
-    QT_WARNING_DISABLE_DEPRECATED
-    QT_WARNING_POP
-    setApplicationName(_theme->appName());
-
-    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-
-    // macOS 10.11.x does not like trailing slash for rename/move.
-    if (oldDir.endsWith('/')) {
-        oldDir.chop(1);
-    }
-
-    if (!QFileInfo(oldDir).isDir()) {
-        return;
-    }
-
-    auto confDir = ConfigFile().configPath();
-
-    // macOS 10.11.x does not like trailing slash for rename/move.
-    if (confDir.endsWith('/')) {
-        confDir.chop(1);
-    }
-
-    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-    if (!QFile::rename(oldDir, confDir)) {
-        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
-
-        // Try to move the files one by one
-        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-            qCInfo(lcApplication) << "Will move the individual files" << filesList;
-            for (const auto &name : filesList) {
-                if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                }
-            }
-        }
-    } else {
-#ifndef Q_OS_WIN
-        // Create a symbolic link so a downgrade of the client would still find the config.
-        QFile::link(confDir, oldDir);
-#endif
-    }
-}
-
-AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
-{
-    ConfigFile cfg;
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
-    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
-    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your system account.")
-                    .arg(ConfigFile().configFile()),
-                QMessageBox::Ok
-            );
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-        }
-    }
-    return accountsRestoreResult;
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
