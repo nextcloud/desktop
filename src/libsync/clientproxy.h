@@ -15,6 +15,7 @@
 #include <csync.h>
 #include "common/utility.h"
 #include "owncloudlib.h"
+#include "account.h"
 
 namespace OCC {
 
@@ -39,6 +40,7 @@ public:
 public slots:
     void setupQtProxyFromConfig();
     void saveProxyConfigurationFromSettings(const QSettings &settings);
+    void cleanupGlobalNetworkConfiguration();
 };
 
 class OWNCLOUDSYNC_EXPORT SystemProxyRunnable : public QObject, public QRunnable
