@@ -48,6 +48,7 @@
 #include <QProcess>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QStorageInfo>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -636,6 +637,19 @@ void SyncEngine::startSync()
     _remnantReadOnlyFolders.clear();
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
+
+#if defined Q_OS_LINUX
+    const auto fileSystemInfo = QStorageInfo{_localPath};
+    qCInfo(lcEngine()) << "File system type for current sync folder:" << fileSystemInfo.fileSystemType();
+    if (fileSystemInfo.fileSystemType() == "NTFS") {
+        _discoveryPhase->_fileSystemReliablePermissions = false;
+    } else {
+        _discoveryPhase->_fileSystemReliablePermissions = true;
+    }
+#else
+    _discoveryPhase->_fileSystemReliablePermissions = true;
+#endif
+
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
