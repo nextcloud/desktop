@@ -193,20 +193,6 @@ void NetworkSettings::saveProxySettings()
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
         AccountManager::instance()->saveAccount(_account);
-    } else {
-        ConfigFile().setProxyType(proxyType, host, port, needsAuth, user, password);
-        ClientProxy proxy;
-        proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
-        // quota check can happen all the time.
-
-        // ...and set the folders dirty, they refresh their proxy next time they
-        // start the sync.
-        FolderMan::instance()->setDirtyProxy();
-
-        const auto accounts = AccountManager::instance()->accounts();
-        for (const auto &accountState : accounts) {
-            accountState->freshConnectionAttempt();
-        }
     }
 }
 
@@ -244,12 +230,6 @@ void NetworkSettings::saveBWLimitSettings()
         _account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
         _account->setUploadLimit(uploadLimit);
         AccountManager::instance()->saveAccount(_account);
-    } else {
-        ConfigFile cfg;
-        cfg.setUseDownloadLimit(useDownloadLimit);
-        cfg.setUseUploadLimit(useUploadLimit);
-        cfg.setDownloadLimit(downloadLimit);
-        cfg.setUploadLimit(uploadLimit);
     }
 
     FolderMan::instance()->setDirtyNetworkLimits(_account);
