@@ -212,7 +212,7 @@ void OCUpdater::slotStartInstaller()
             return QDir::toNativeSeparators(path);
         };
 
-        QString msiLogFile = cfg.configPath() + "msi.log";
+        QString msiLogFile = cfg.logDir() + "msi.log";
         QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
