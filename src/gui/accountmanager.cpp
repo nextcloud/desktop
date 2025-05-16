@@ -117,22 +117,25 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     for (const auto &accountId : settingsChildGroups) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
-            if (const auto acc = loadAccountHelper(*settings)) {
-                acc->_id = accountId;
-                const auto accState = new AccountState(acc);
-                const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
-                Q_ASSERT(jar);
-                if (jar) {
-                    jar->restore(acc->cookieJarPath());
-                }
-                addAccountState(accState);
+            const auto acc = loadAccountHelper(*settings);
+            if (!acc) {
+                continue;
             }
+            acc->_id = accountId;
+            const auto accState = new AccountState(acc);
+            const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
+            Q_ASSERT(jar);
+            if (jar) {
+                jar->restore(acc->cookieJarPath());
+            }
+            addAccountState(accState);
+            settings->endGroup();
+            moveNetworkSettingsFromGlobalToAccount(acc);
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
             _additionalBlockedAccountIds.insert(accountId);
             result = AccountsRestoreSuccessWithSkipped;
         }
-        settings->endGroup();
     }
 
     return result;
@@ -264,10 +267,13 @@ bool AccountManager::restoreFromLegacySettings()
         const auto childGroups = settings->childGroups();
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
-            if (const auto acc = loadAccountHelper(*settings)) {
-                addAccount(acc);
+            const auto acc = loadAccountHelper(*settings);
+            if (!acc) {
+                continue;
             }
+            addAccount(acc);
             settings->endGroup();
+            moveNetworkSettingsFromGlobalToAccount(acc);
         }
         return true;
     }
@@ -335,6 +341,7 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     } else {
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), account->_skipE2eeMetadataChecksumValidation);
     }
+
     settings.setValue(networkProxyTypeC, account->proxyType());
     settings.setValue(networkProxyHostNameC, account->proxyHostName());
     settings.setValue(networkProxyPortC, account->proxyPort());
@@ -425,6 +432,34 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     }
 }
 
+void AccountManager::moveNetworkSettingsFromGlobalToAccount(const AccountPtr &account)
+{
+    ConfigFile configFile;
+    const auto hostname = configFile.proxyHostName();
+
+    if (!hostname.isEmpty()) {
+        account->setProxySettings(static_cast<QNetworkProxy::ProxyType>(configFile.proxyType()),
+                                  hostname,
+                                  configFile.proxyPort(),
+                                  configFile.proxyNeedsAuth(),
+                                  configFile.proxyUser(),
+                                  configFile.proxyPassword());
+        ClientProxy().cleanupGlobalNetworkConfiguration();
+    }
+
+    const auto useUploadLimit = configFile.useUploadLimit();
+    const auto useDownloadLimit = configFile.useDownloadLimit();
+    if (useUploadLimit == 0 && useDownloadLimit == 0) {
+        return;
+    }
+
+    account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
+    account->setUploadLimit(configFile.uploadLimit());
+    account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
+    account->setDownloadLimit(configFile.downloadLimit());
+    configFile.cleanupGlobalNetworkConfiguration();
+}
+
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 {
     const auto urlConfig = settings.value(QLatin1String(urlC));
@@ -498,7 +533,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
-
     acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
     acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
     acc->setProxyPort(settings.value(networkProxyPortC).toInt());
@@ -514,6 +548,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             networkDownloadLimitSettingC,
             QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
         ).value<Account::AccountNetworkTransferLimitSetting>());
+
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 

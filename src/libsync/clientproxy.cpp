@@ -5,8 +5,8 @@
  */
 
 #include "clientproxy.h"
-
 #include "configfile.h"
+
 #include <QLoggingCategory>
 #include <QUrl>
 #include <QThreadPool>
@@ -145,6 +145,19 @@ void ClientProxy::saveProxyConfigurationFromSettings(const QSettings &settings)
                             settings.value(QLatin1String(proxyNeedsAuthC)).toBool(),
                             settings.value(QLatin1String(proxyUserC)).toString(),
                             settings.value(QLatin1String(proxyPassC)).toString());
+}
+
+void ClientProxy::cleanupGlobalNetworkConfiguration()
+{
+    OCC::ConfigFile configFile;
+    QSettings settings(configFile.configFile(), QSettings::IniFormat);
+    settings.remove(proxyTypeC);
+    settings.remove(proxyHostC);
+    settings.remove(proxyPortC);
+    settings.remove(proxyUserC);
+    settings.remove(proxyPassC);
+    settings.remove(proxyNeedsAuthC);
+    settings.sync();
 }
 
 void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)

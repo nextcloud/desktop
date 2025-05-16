@@ -448,6 +448,16 @@ void OCC::ConfigFile::cleanUpdaterConfiguration()
     settings.sync();
 }
 
+void OCC::ConfigFile::cleanupGlobalNetworkConfiguration()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.remove(useUploadLimitC);
+    settings.remove(useDownloadLimitC);
+    settings.remove(uploadLimitC);
+    settings.remove(downloadLimitC);
+    settings.sync();
+}
+
 QString ConfigFile::backup(const QString &fileName) const
 {
     const QString baseFilePath = configPath() + fileName;
