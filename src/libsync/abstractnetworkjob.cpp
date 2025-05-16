@@ -223,6 +223,11 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
 
+    // Check for HSTS header in successful responses
+    if (_reply->error() == QNetworkReply::NoError) {
+        parseHstsHeader();
+    }
+
     QUrl requestedUrl = reply()->request().url();
     QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (_followRedirects && !redirectUrl.isEmpty()) {
@@ -373,6 +378,50 @@ void AbstractNetworkJob::onTimedOut()
         reply()->abort();
     } else {
         deleteLater();
+    }
+}
+
+void AbstractNetworkJob::parseHstsHeader()
+{
+    if (!_reply || !_account) {
+        return;
+    }
+
+    // Only apply HSTS for HTTPS connections
+    if (_reply->url().scheme() != "https") {
+        return;
+    }
+
+    // Check if the response has a Strict-Transport-Security header
+    if (_reply->hasRawHeader("Strict-Transport-Security")) {
+        const auto hstsHeader = _reply->rawHeader("Strict-Transport-Security");
+        
+        // Parse the max-age directive
+        static QRegularExpression maxAgeRegex("max-age=(\\d+)");
+        auto match = maxAgeRegex.match(QString::fromUtf8(hstsHeader));
+        
+        if (match.hasMatch()) {
+            bool ok;
+            const auto maxAge = match.captured(1).toInt(&ok);
+            
+            if (ok) {
+                if (maxAge > 0) {
+                    // Calculate expiration time (current time + max-age in seconds)
+                    const auto expirationTime = QDateTime::currentDateTime().addSecs(maxAge);
+                    
+                    // Update the account's HSTS expiration time
+                    _account->setHstsExpirationTime(expirationTime);
+                    
+                    qCDebug(lcNetworkJob) << "HSTS policy set for" << _account->url().host() 
+                                          << "with max-age" << maxAge << "seconds"
+                                          << "expiring at" << expirationTime;
+                } else if (maxAge == 0) {
+                    // max-age=0 means to remove the HSTS policy
+                    _account->setHstsExpirationTime(QDateTime());
+                    qCInfo(lcNetworkJob) << "HSTS policy removed for" << _account->url().host();
+                }
+            }
+        }
     }
 }
 

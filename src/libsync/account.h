@@ -418,6 +418,11 @@ public:
     [[nodiscard]] QByteArray encryptionCertificateFingerprint() const;
     void setEncryptionCertificateFingerprint(const QByteArray &fingerprint);
 
+    // HSTS (HTTP Strict Transport Security) support
+    [[nodiscard]] QDateTime hstsExpirationTime() const;
+    void setHstsExpirationTime(const QDateTime &expirationTime);
+    [[nodiscard]] bool isHstsActive() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -571,6 +576,9 @@ private:
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
     QByteArray _encryptionCertificateFingerprint;
+    
+    // HSTS (HTTP Strict Transport Security) support
+    QDateTime _hstsExpirationTime;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

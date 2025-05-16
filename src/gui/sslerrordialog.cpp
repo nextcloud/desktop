@@ -32,6 +32,12 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return false;
     }
 
+    // If HSTS is active, don't show the dialog and don't accept the certificate
+    if (account->isHstsActive()) {
+        qCInfo(lcSslErrorDialog) << "SSL certificate error, but HSTS is active. Rejecting connection.";
+        return false;
+    }
+
     SslErrorDialog dlg(account);
     // whether the failing certs have previously been accepted
     if (dlg.checkFailingCertsKnown(errors)) {
