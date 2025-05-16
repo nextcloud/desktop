@@ -388,11 +388,13 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
                                                          const QString &path,
                                                          const QString &remoteRootFolderPath,
                                                          const QSet<QString> &topLevelE2eeFolderPaths,
+                                                         SyncFileItem::EncryptionStatus parentEncryptionStatus,
                                                          QObject *parent)
     : QObject(parent)
     , _subPath(remoteRootFolderPath + path)
     , _remoteRootFolderPath(remoteRootFolderPath)
     , _account(account)
+    , _encryptionStatusCurrent{parentEncryptionStatus}
     , _topLevelE2eeFolderPaths(topLevelE2eeFolderPaths)
 {
     Q_ASSERT(!_remoteRootFolderPath.isEmpty());
@@ -618,7 +620,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _fileId = map.value("id").toUtf8();
         }
         if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
-            _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::Encrypted;
+            _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
             Q_ASSERT(!_fileId.isEmpty());
         }
         if (map.contains("size")) {
@@ -771,6 +773,9 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         _e2eCertificateFingerprint = e2EeFolderMetadata->certificateSha256Fingerprint();
         _encryptionStatusRequired = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion());
         _encryptionStatusCurrent = e2EeFolderMetadata->existingMetadataEncryptionStatus();
+
+        Q_ASSERT(_encryptionStatusCurrent != SyncFileItem::EncryptionStatus::Encrypted);
+        Q_ASSERT(_encryptionStatusCurrent != SyncFileItem::EncryptionStatus::NotEncrypted);
 
         const auto encryptedFiles = e2EeFolderMetadata->files();
 

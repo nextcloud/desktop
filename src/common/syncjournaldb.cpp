@@ -1013,6 +1013,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
     query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
+    Q_ASSERT(record._e2eEncryptionStatus != EncryptionStatusEnums::JournalDbEncryptionStatus::Encrypted);
+
     query->bindValue(19, record._e2eCertificateFingerprint);
     query->bindValue(20, record._lockstate._locked ? 1 : 0);
     query->bindValue(21, record._lockstate._lockOwnerType);
