@@ -164,8 +164,15 @@ QString OCUpdater::statusString(UpdateStatusStringFormat format) const
         return tr("Update status is unknown: Did not check for new updates.");
     case UpToDate:
     // fall through
-    default:
-        return tr("No updates available. Your installation is at the latest version.");
+    default: {
+        ConfigFile configFile;
+        if (configFile.serverHasValidSubscription()) {
+            return tr("You are using the %1 update channel. Your installation is the latest version.")
+                .arg(configFile.currentUpdateChannel());
+        }
+
+        return tr("No updates available. Your installation is the latest version.");
+    }
     }
 }
 
