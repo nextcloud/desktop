@@ -167,6 +167,7 @@ private slots:
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
     void showDesktopNotification(const OCC::ActivityList &activityList);
+    void showDesktopNotification(Activity &activity, const bool showAcitivityOnlyOnce);
     void showDesktopTalkNotification(const OCC::Activity &activity);
 
 private:
@@ -209,6 +210,9 @@ private:
     int _lastTalkNotificationsReceivedCount = 0;
 
     bool _isNotificationFetchRunning = false;
+
+    // used for quota warnings
+    int _lastStoragePercent = 0; 
 };
 
 class UserModel : public QAbstractListModel
