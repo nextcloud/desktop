@@ -625,7 +625,8 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
 
         // all folders will contain both
         if (map.contains("quota-used-bytes") && map.contains("quota-available-bytes")) {
-            emit setfolderQuota(FolderQuota{map.value("quota-used-bytes").toLongLong(), map.value("quota-available-bytes").toLongLong()});
+            _folderQuota = {map.value("quota-used-bytes").toLongLong(), map.value("quota-available-bytes").toLongLong()};
+            emit setfolderQuota(_folderQuota);
         }
     } else {
         RemoteInfo result;
