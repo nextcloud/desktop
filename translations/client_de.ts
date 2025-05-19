@@ -102,7 +102,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
-        <translation>Keine kürzlich geänderte Dateien</translation>
+        <translation>Keine kürzlich geänderten Dateien</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>Virtuelle Dateien aktivieren</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -419,7 +424,7 @@ macOS kann diese Anforderung ignorieren oder verzögern.</translation>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="290"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation>Fehler beim Entfernen &quot;%1&quot;: %2</translation>
+        <translation>Fehler beim Entfernen von &quot;%1&quot;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="333"/>
@@ -679,7 +684,7 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Verschlüsselungseinrichtung vergessen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
@@ -694,7 +699,7 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>Die Verschlüsselung ist eingerichtet. Nicht vergessen, einen Ordner zu &lt;b&gt;verschlüsseln&lt;/b&gt;, um alle neu hinzugefügten Dateien Ende-zu-Ende zu verschlüsseln.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -714,18 +719,19 @@ Soll das Konto importiert werden?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="404"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>Der Ordner weist ein geringfügiges Synchronisierungsproblem auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er erfolgreich synchronisiert wurde</translation>
+        <translation>Der Ordner weist ein geringfügiges Synchronisierungsproblem auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er synchronisiert wurde</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>Der Ordner weist einen Synchronisierungsfehler auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er erfolgreich synchronisiert wurde</translation>
+        <translation>Der Ordner weist einen Synchronisierungsfehler auf. Die Verschlüsselung dieses Ordners ist möglich, sobald er synchronisiert wurde</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Ordner kann nicht verschlüsselt werden, da die Ende-zu-Ende-Verschlüsselung auf diesem Gerät noch nicht eingerichtet ist.
+Möchten Sie dies jetzt tun?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -880,7 +886,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Um Ihre kryptografische Identität zu schützen, verschlüsseln wir sie mit einer Eselsbrücke aus zwölf Wörtern aus dem Wörterbuch. Bitte notieren Sie sich diese und bewahren Sie sie sicher auf. Sie benötigen sie, um die Synchronisierung verschlüsselter Ordner auf Ihren anderen Geräten einzurichten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
@@ -890,17 +896,17 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Die Ende-zu-Ende-Verschlüsselung auf diesem Gerät vergessen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Soll die Ende-zu-Ende-Verschlüsselungseinstellungen für %1 auf diesem Gerät vergessen werden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn die Ende-zu-Ende-Verschlüsselung vergessen wird, werden die vertraulichen Daten und alle verschlüsselten Dateien von diesem Gerät entfernt. Die verschlüsselten Dateien verbleiben jedoch auf dem Server und allen Ihren anderen Geräten, sofern eingerichtet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -1035,7 +1041,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>Die Ende-zu-Ende-Verschlüsselung wurde für dieses Konto mit einem anderen Gerät initialisiert. &lt;br&gt;Geben Sie den eindeutigen Mnemonic ein, um die verschlüsselten Ordner auch auf diesem Gerät zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -1045,7 +1051,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Konto unterstützt die Ende-zu-Ende-Verschlüsselung, diese muss aber zuerst eingerichtet werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
@@ -1322,6 +1328,11 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Die Datei %1 kann nicht hochgeladen werden, da eine andere Datei mit demselben Namen, nur unterschiedlicher Groß-/Kleinschreibung, existiert</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -1658,21 +1669,6 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; und dessen Inhalte dauerhaft löschen?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Möchten Sie die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft löschen?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>Löschen bestätigen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1687,6 +1683,21 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Verschieben der Datei fehlgeschlagen:
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; und dessen Inhalte dauerhaft löschen?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>Möchten Sie die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft löschen?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>Löschen bestätigen</translation>
     </message>
 </context>
 <context>
@@ -2860,7 +2871,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Um eine Bestätigung bitten, bevor Sie neue Ordner synchronisieren, die größer sind als</translation>
+        <translation>Bestätigung erfragen, bevor neue Ordner synchronisiert werden, die größer sind als</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -2871,7 +2882,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Benachrichtigen, wenn synchronisierte Ordner größer werden als die angegebene Grenze</translation>
+        <translation>Benachrichtigen, wenn synchronisierte Ordner größer werden als das angegebene Limit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
@@ -2894,14 +2905,14 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <translation>Synchronisierungsordner im Navigationsbereich des &amp;Explorers anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>&amp;Crash-Reporter anzeigen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation>Serverabrufintervall</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>&amp;Crash-Reporter anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -3898,7 +3909,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="596"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Entfernter Ordner %1 erfolgreich erstellt.</translation>
+        <translation>Entfernter Ordner %1 erstellt.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
@@ -3935,7 +3946,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="646"/>
         <source>Successfully connected to %1!</source>
-        <translation>Erfolgreich verbunden mit %1!</translation>
+        <translation>Erfolgreich mit %1 verbunden!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="653"/>
@@ -3955,7 +3966,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Dateianbieter-basiertes Konto %1 erfolgreich erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Dateianbieter-basiertes Konto %1 erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
@@ -3970,7 +3981,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="745"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokaler Sync-Ordner %1 erfolgreich erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokaler Sync-Ordner %1 erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -4230,14 +4241,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Synchronisierung wegen ungültiger Änderungszeit nicht möglich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>Hochladen von %1 übersteigt %2 des in den persönlichen Dateien verfügbaren Speicherplatzes.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>Hochladen von %1 übersteigt %2 des in dem Ordner %3 verfügbaren Speicherplatzes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>
@@ -4958,12 +4969,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="579"/>
         <source>Folder encrypted successfully</source>
-        <translation>Ordner erfolgreich verschlüsselt</translation>
+        <translation>Ordner verschlüsselt</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="580"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>Der folgende Ordner wurde erfolgreich verschlüsselt: &quot;%1&quot;</translation>
+        <translation>Der folgende Ordner wurde verschlüsselt: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="785"/>

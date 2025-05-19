@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>Activer les fichiers virtuels</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -679,7 +684,7 @@ Le compte doit-il être importé ?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Oublier la configuration du chiffrement</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
@@ -694,7 +699,7 @@ Le compte doit-il être importé ?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>Le chiffrement est configuré. Souvenez-vous de &lt;b&gt;Chiffrer&lt;/b&gt; un dossier pour chiffrer de bout en bout chaque nouveau fichier qui lui sera ajouté.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -725,7 +730,7 @@ Le compte doit-il être importé ?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Vous ne pouvez pas chiffrer ce dossier puisque le chiffrement n&apos;est pas encore configuré sur cet appareil. Voulez-vous le faire maintenant ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -878,7 +883,7 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une phrase secrète de 12 mots du dictionnaire. Veuillez la noter et la garder en sécurité. Elle sera nécessaire pour configurer la synchronisation de dossiers chiffrés sur vos autres appareils.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
@@ -888,17 +893,17 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Oublier le chiffrement de bout en bout sur cet appareil</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous oublier les paramètres de chiffrement de bout en bout pour %1 sur cet appareil ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Oublier le chiffrement de bout en bout supprimera les données sensibles et tous les fichiers chiffrés sur cet appareil. &lt;br&gt; Cependant, les fichiers chiffrés resteront sur le serveur et sur vos autres appareils, si le chiffrement est configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -1034,7 +1039,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>Le chiffrement de bout en bout a été activé sur ce compte avec un autre appareil.&lt;br&gt;Entrez votre phrase secrète pour synchroniser les dossiers chiffrés sur cet appareil.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -1044,7 +1049,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Ce compte supporte le chiffrement de bout en bout, mais il est d&apos;abord nécessaire de le configurer.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
@@ -1321,6 +1326,11 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Le fichier %1 ne peut être téléversé parce qu&apos;un autre fichier avec le même nom hormis la casse existe</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -1657,21 +1667,6 @@ Vous prenez vos propres risques.</translation>
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Voulez-vous supprimer le dossier &lt;i&gt;%1&lt;/i&gt; et tout son contenu définitivement ?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Voulez-vous supprimer le fichier &lt;i&gt;%1&lt;/i&gt; définitivement ?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>Confirmer la suppression</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1686,6 +1681,21 @@ Vous prenez vos propres risques.</translation>
         <translation>Déplacement du fichier échoué
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>Voulez-vous supprimer le dossier &lt;i&gt;%1&lt;/i&gt; et tout son contenu définitivement ?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>Voulez-vous supprimer le fichier &lt;i&gt;%1&lt;/i&gt; définitivement ?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>Confirmer la suppression</translation>
     </message>
 </context>
 <context>
@@ -2114,7 +2124,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a été supprimé.</numerusform><numerusform>%1 et %n autres fichiers ont été supprimés.</numerusform><numerusform>%1 et %n autre(s) fichier(s) ont été supprimés.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -2894,14 +2904,14 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <translation>Afficher les dossiers synchronisés dans le panneau de navigation de l&apos;&amp;Explorateur de fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>Affic&amp;her le rapport d&apos;incident</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation>Intervalle de vérification du serveur</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>Affic&amp;her le rapport d&apos;incident</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -3236,7 +3246,7 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Les caractères suivants ne sont pas autorisés sur ce système : \ / : ? * &quot; &lt; &gt; | espaces en début et fin de chaîne</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
@@ -4065,18 +4075,18 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Les noms de dossiers contenant le caractère &quot;%1&quot; ne sont pas pris en charge par ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Les noms de fichiers contenant le caractère &quot;%1&quot; ne sont pas pris en charge par ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Le nom du dossier contient au moins un caractère interdit</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4104,12 +4114,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="424"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Le nom du dossier est un nom réservé sur ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Le nom du fichier est un nom réservé sur ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4230,14 +4240,14 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Impossible de synchroniser à cause d&apos;une date de modification invalide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>Le téléversement de %1 dépasse les %2 d&apos;espace restant de l&apos;espace personnel.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>Le téléversement de %1 dépasse les %2 d&apos;espace restant du dossier %3.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>
@@ -5639,7 +5649,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification</numerusform><numerusform>%n notifications</numerusform><numerusform>%n notification(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="673"/>
@@ -5790,17 +5800,17 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform><numerusform>%n minute(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n heure</numerusform><numerusform>%n heures</numerusform><numerusform>%n heure(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n jour</numerusform><numerusform>%n jours</numerusform><numerusform>%n jour(s)</numerusform></translation>
     </message>
 </context>
 <context>

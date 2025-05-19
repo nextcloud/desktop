@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>Cumasaigh comhaid fhíorúla</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -679,7 +684,7 @@ Ar cheart an cuntas a iompórtáil?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Déan dearmad ar shocrú criptithe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
@@ -694,7 +699,7 @@ Ar cheart an cuntas a iompórtáil?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an criptiú socraithe. Cuimhnigh fillteán a &lt;b&gt;Chriptiú&lt;/b&gt; chun aon chomhaid nua a chuirtear leis a chriptiú ó cheann ceann.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -725,7 +730,8 @@ Ar cheart an cuntas a iompórtáil?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir leat an fillteán seo a chriptiú mar níl an criptiú ó cheann ceann socraithe ar an ngléas seo go fóill.
+Ar mhaith leat é seo a dhéanamh anois?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -881,7 +887,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Chun d’Aitheantas Cripteagrafach a chosaint, criptímid í le mnemonic de 12 fhocal foclóra. Scríobh síos é agus coinnigh slán é. Beidh sé de dhíth ort chun sioncrónú fillteán criptithe a shocrú ar do ghléasanna eile.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
@@ -891,17 +897,17 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Déan dearmad ar an gcriptiú ó cheann ceann ar an ngléas seo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Ar mhaith leat dearmad a dhéanamh ar shocruithe criptithe foirceann go foirceann do %1 ar an ngléas seo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Má dhéanann tú dearmad ar chriptiú ó cheann ceann go ceann, bainfear na sonraí íogaire agus na comhaid chriptithe go léir den ghléas seo.&lt;br&gt;Mar sin féin, fanfaidh na comhaid chriptithe ar an bhfreastalaí agus ar do ghléasanna eile go léir, má tá siad cumraithe.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -1036,7 +1042,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>Tá criptiú ó cheann ceann tosaithe ar an gcuntas seo le gléas eile.&lt;br&gt;Cuir isteach an cuimhneolaíoch uathúil chun na fillteáin chriptithe a shioncrónú ar an ngléas seo chomh maith.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -1046,7 +1052,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Tacaíonn an cuntas seo le criptiú ó cheann ceann, ach ní mór é a shocrú ar dtús.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
@@ -1323,6 +1329,11 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Ní féidir comhad % 1 a uaslódáil toisc go bhfuil comhad eile leis an ainm céanna, difriúil ar eagla na heagla</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -1659,21 +1670,6 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Ar mhaith leat eolaire &lt;i&gt;%1&lt;/i&gt; agus a bhfuil ann go léir a scriosadh go buan?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Ar mhaith leat an comhad  &lt;i&gt;%1&lt;/i&gt; a scriosadh go buan?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>Deimhnigh scriosadh</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1688,6 +1684,21 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Theip ar bhogadh an chomhaid:
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>Ar mhaith leat eolaire &lt;i&gt;%1&lt;/i&gt; agus a bhfuil ann go léir a scriosadh go buan?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>Ar mhaith leat an comhad  &lt;i&gt;%1&lt;/i&gt; a scriosadh go buan?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>Deimhnigh scriosadh</translation>
     </message>
 </context>
 <context>
@@ -2116,7 +2127,7 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="452"/>
@@ -2895,14 +2906,14 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Taispeáin fillteáin shioncronaithe i bpána nascleanúna &amp;Explorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>S&amp;how tuairisceoir tuairteála</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation>Eatramh vótaíochta freastalaí</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>S&amp;how tuairisceoir tuairteála</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -4232,14 +4243,14 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i gcomhaid phearsanta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i bhfillteán %3.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>

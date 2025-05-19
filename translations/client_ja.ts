@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>仮想ファイルを有効化</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -1325,6 +1330,11 @@ This action will abort any currently running synchronization.</source>
         <translation>ファイル %1 は、大文字と小文字の区別が違う同じ名前のファイルが存在するためアップロードできません</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>ファイル %1 の更新日時が無効です。サーバにアップロードしないでください。</translation>
@@ -1659,21 +1669,6 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>ディレクトリ&lt;i&gt;%1&lt;/i&gt;と内部のファイルを永久に削除しますか?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>ファイル&lt;i&gt;%1&lt;/i&gt;を永久に削除しますか?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>削除の確認</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1688,6 +1683,21 @@ This action will abort any currently running synchronization.</source>
         <translation>ファイルの移動に失敗しました:
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>ディレクトリ&lt;i&gt;%1&lt;/i&gt;と内部のファイルを永久に削除しますか?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>ファイル&lt;i&gt;%1&lt;/i&gt;を永久に削除しますか?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>削除の確認</translation>
     </message>
 </context>
 <context>
@@ -2896,14 +2906,14 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>エクスプローラのナビゲーションペインに同期フォルダを表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>クラッシュ報告を表示(&amp;H)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation>サーバーのポーリング間隔</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>クラッシュ報告を表示(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -4231,12 +4241,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>修正日時が無効なため同期できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>Использовать виртуальные файлы</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -1323,6 +1328,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Файл %1 не может быть загружен, потому что существует другой файл с таким же именем, отличающийся только регистром</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>Файл %1 имеет недопустимое время изменения. Не загружайте его на сервер.</translation>
@@ -1657,21 +1667,6 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Действительно удалить папку &lt;i&gt;%1&lt;/i&gt; и всё её содержимое навсегда? </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Действительно удалить файл &lt;i&gt;%1&lt;/i&gt; навсегда? </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>Подтвердить удаление</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1686,6 +1681,21 @@ This action will abort any currently running synchronization.</source>
         <translation>Не удалось переместить файл:
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>Действительно удалить папку &lt;i&gt;%1&lt;/i&gt; и всё её содержимое навсегда? </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>Действительно удалить файл &lt;i&gt;%1&lt;/i&gt; навсегда? </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>Подтвердить удаление</translation>
     </message>
 </context>
 <context>
@@ -2887,14 +2897,14 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Показывать синхронизируемые папки в панели навигации &amp;Проводника</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>Показать отчёты об ошибках</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>Показать отчёты об ошибках</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -4223,12 +4233,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Синхронизация невозможна по причине некорректного времени изменения файла</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

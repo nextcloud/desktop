@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -1324,6 +1329,11 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation>Datni %1 nevar augšupielādēt, jo pastāv datne ar tādu pašu nosaukumu. Atšķiras tikai lielie/mazie burti. </translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>Datnei %1 ir nederīgs modificēšanas laiks. Neaugšupielādēt uz serveri.</translation>
@@ -1336,7 +1346,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="380"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Datnei %1 ir nederīgs modificēšanas laiks. Neaugšupielādēt uz serveri.</translation>
+        <translation>Datnei %1 ir nederīgs labošanas laiks. Neaugšupielādēt serverī.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="393"/>
@@ -1658,21 +1668,6 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Vai neatgriezeniski izdzēst mapi &lt;i&gt;%1&lt;/i&gt; un visu tās saturu?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Vai neatgriezeniski izdzēst datni &lt;i&gt;%1&lt;/i&gt;?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>Apstiprināt dzēšanu</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1687,6 +1682,21 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <translation>Datnes pārvietošana neizdevās:
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>Vai neatgriezeniski izdzēst mapi &lt;i&gt;%1&lt;/i&gt; un visu tās saturu?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>Vai neatgriezeniski izdzēst datni &lt;i&gt;%1&lt;/i&gt;?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>Apstiprināt dzēšanu</translation>
     </message>
 </context>
 <context>
@@ -2179,12 +2189,12 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="492"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 un %n citu datņu nevarēja sinhronizēt kļūdu dēļ. Jāapskata žurnāls, lai uzzinātu vairāk.</numerusform><numerusform>%1 un %n citu datni nevarēja sinhronizēt kļūdu dēļ. Jāapskata žurnāls, lai uzzinātu vairāk.</numerusform><numerusform>%1 un %n citas datnes nevarēja sinhronizēt kļūdu dēļ. Jāapskata žurnāls, lai uzzinātu vairāk.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 nevarēja sinhronizēt kļūdas dēļ. Jāapskata žurnāls, lai uzzinātu vairāk.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="499"/>
@@ -2883,14 +2893,14 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>P&amp;arādīt avārijas ziņojumu </translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>P&amp;arādīt avārijas ziņojumu </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -3766,7 +3776,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="937"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1014"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Nav iespējams iegūt labošanas laiku nesaderīgajai datnei %1</translation>
     </message>
 </context>
 <context>
@@ -4201,15 +4211,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1128"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Nevar sinhronizēt nederīga labošanas laika dēļ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
@@ -4281,7 +4291,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Kļūda metadatu atjaunināšanā nederīga labošanas laika dēļ</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1482"/>
@@ -4621,7 +4631,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="418"/>
         <location filename="../src/libsync/propagateupload.cpp" line="431"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Datnei %1 ir nederīgs labošanas laiks. Neaugšupielādēt serverī.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
@@ -5835,7 +5845,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="91"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Kļūda metadatu atjaunināšanā nederīga labošanas laika dēļ</translation>
     </message>
 </context>
 <context>
@@ -5844,7 +5854,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Kļūda metadatu atjaunināšanā nederīga labošanas laika dēļ</translation>
     </message>
 </context>
 <context>
@@ -6511,7 +6521,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="40"/>
         <source>No results for</source>
-        <translation>Nav rezultātu</translation>
+        <translation>Nav iznākuma</translation>
     </message>
 </context>
 <context>
