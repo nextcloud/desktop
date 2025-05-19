@@ -38,6 +38,8 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
     }
 
     public func enumerateItems() async throws {
+        isComplete = false
+        currentPageComplete = false
         observedPages = []
         page = NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
 
@@ -50,6 +52,7 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
             if let error {
                 throw error
             }
+            currentPageComplete = false
         }
     }
 }
