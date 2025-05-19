@@ -10,6 +10,7 @@ import Foundation
 
 public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     public var items: [NSFileProviderItem] = []
+    public var observedPages: [NSFileProviderPage] = []
     private var error: Error?
     private var isComplete = false
     private var currentPageComplete = false
@@ -37,8 +38,11 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
     }
 
     public func enumerateItems() async throws {
-        page = NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
+        observedPages = []
+        page = NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
+
         while let page, !isComplete {
+            observedPages.append(page)
             enumerator.enumerateItems(for: self, startingAt: page)
             while !currentPageComplete {
                 try await Task.sleep(nanoseconds: 1_000_000)
