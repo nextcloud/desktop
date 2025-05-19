@@ -269,7 +269,7 @@ public extension Item {
         var directoriesToRead = [remotePath]
         while !directoriesToRead.isEmpty {
             let remoteDirectoryPath = directoriesToRead.removeFirst()
-            let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+            let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -482,7 +482,7 @@ public extension Item {
 
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
-            let (_, _, _, _, readError) = await Enumerator.readServerUrl(
+            let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,

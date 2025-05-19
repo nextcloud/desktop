@@ -368,7 +368,7 @@ public extension Item {
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
             Self.logger.debug("Reading bpi folder at: \(remoteDirectoryPath, privacy: .public)")
-            let (_, _, _, _, readError) = await Enumerator.readServerUrl(
+            let (_, _, _, _, _, readError) = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -567,7 +567,7 @@ public extension Item {
                         Fetching remote information, proceeding with creation of internal contents.
                     """
                 )
-                let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+                let (metadatas, _, _, _, _, readError) = await Enumerator.readServerUrl(
                     newServerUrlFileName,
                     account: account,
                     remoteInterface: remoteInterface,

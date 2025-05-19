@@ -234,7 +234,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
 
             Task {
-                let (metadatas, _, _, _, readError) = await Self.readServerUrl(
+                let (metadatas, _, _, _, _, readError) = await Self.readServerUrl(
                     serverUrl,
                     account: account,
                     remoteInterface: remoteInterface,
@@ -476,7 +476,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         // TODO: Move to the sync engine extension
         Task {
             let (
-                _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
+                _, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
             ) = await Self.readServerUrl(
                 serverUrl,
                 account: account,

@@ -99,7 +99,7 @@ extension Enumerator {
         Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
 
         let (
-            metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
+            metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
         ) = await Self.readServerUrl(
             itemServerUrl,
             account: account,
@@ -285,7 +285,6 @@ extension Enumerator {
             """
         )
 
-
         guard var (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
         else {
@@ -327,6 +326,7 @@ extension Enumerator {
 
     static func readServerUrl(
         _ serverUrl: String,
+        pageSettings: (page: NSFileProviderPage, index: Int, size: Int)? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -339,6 +339,7 @@ extension Enumerator {
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
         deletedMetadatas: [SendableItemMetadata]?,
+        nextPage: EnumeratorPageResponse?,
         readError: NKError?
     ) {
         let ncKitAccount = account.ncKitAccount
@@ -346,22 +347,33 @@ extension Enumerator {
         Self.logger.debug(
             """
             Starting to read serverUrl: \(serverUrl, privacy: .public)
-            for user: \(ncKitAccount, privacy: .public)
-            at depth \(depth.rawValue, privacy: .public).
-            username: \(account.username, privacy: .public),
-            password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
-            serverUrl: \(account.serverUrl, privacy: .public)
+                for user: \(ncKitAccount, privacy: .public)
+                at depth \(depth.rawValue, privacy: .public).
+                username: \(account.username, privacy: .public),
+                password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
+                serverUrl: \(account.serverUrl, privacy: .public)
             """
         )
 
-        let (_, files, _, error) = await remoteInterface.enumerate(
+        let options: NKRequestOptions
+        if let pageSettings {
+            options = .init(
+                page: pageSettings.page,
+                offset: pageSettings.index * pageSettings.size,
+                count: pageSettings.size
+            )
+        } else {
+            options = .init()
+        }
+
+        let (_, files, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
             showHiddenFiles: true,
             includeHiddenFiles: [],
             requestBody: nil,
             account: account,
-            options: .init(),
+            options: options,
             taskHandler: { task in
                 if let domain, let enumeratedItemIdentifier {
                     NSFileProviderManager(for: domain)?.register(
@@ -380,8 +392,24 @@ extension Enumerator {
                 did not complete successfully, error: \(error.errorDescription, privacy: .public)
                 """
             )
-            return (nil, nil, nil, nil, error)
+            return (nil, nil, nil, nil, nil, error)
         }
+
+        guard let data else {
+            Self.logger.error(
+                """
+                \(depth.rawValue, privacy: .public) depth read of url \(serverUrl, privacy: .public)
+                    did not return data.
+                """
+            )
+            return (nil, nil, nil, nil, nil, error)
+        }
+
+        // This will be nil if the page settings were also nil, as the server will not give us the
+        // pagination-related headers.
+        let nextPage = EnumeratorPageResponse(
+            nkResponseData: data, index: (pageSettings?.index ?? 0) + 1
+        )
 
         guard let receivedFile = files.first else {
             Self.logger.error(
@@ -390,7 +418,7 @@ extension Enumerator {
                 not much we can do...
                 """
             )
-            return (nil, nil, nil, nil, error)
+            return (nil, nil, nil, nil, nextPage, error)
         }
 
         guard receivedFile.directory else {
@@ -407,7 +435,7 @@ extension Enumerator {
             let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
             metadata.downloaded = existing?.downloaded == true
             dbManager.addItemMetadata(metadata)
-            return ([metadata], newItems, updatedItems, nil, nil)
+            return ([metadata], newItems, updatedItems, nil, nextPage, nil)
         }
 
         if stopAtMatchingEtags,
@@ -429,12 +457,12 @@ extension Enumerator {
             // Return all database metadatas under the current serverUrl (including target)
             let metadatas =
                 dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
-            return (metadatas, nil, nil, nil, nkError)
+            return (metadatas, nil, nil, nil, nextPage, nkError)
         }
 
         if depth == .target {
             if serverUrl == account.davFilesUrl {
-                return (nil, nil, nil, nil, nil)
+                return (nil, nil, nil, nil, nextPage, nil)
             } else {
                 var metadata = receivedFile.toItemMetadata()
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
@@ -445,7 +473,7 @@ extension Enumerator {
                 metadata.downloaded = existing?.downloaded == true
                 dbManager.addItemMetadata(metadata)
 
-                return ([metadata], newMetadatas, updatedMetadatas, nil, nil)
+                return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
             }
         } else {
             let (
@@ -457,7 +485,7 @@ extension Enumerator {
                 files: files
             )
 
-            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError)
+            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
         }
     }
 }

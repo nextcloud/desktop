@@ -591,7 +591,7 @@ public final class FilesDatabaseManager: Sendable {
             return parentItemIdentifier
         }
 
-        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+        let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
             metadata.serverUrl,
             account: account,
             remoteInterface: remoteInterface,
