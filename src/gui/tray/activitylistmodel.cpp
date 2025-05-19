@@ -699,6 +699,9 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         return;
     } else if (activity._type == Activity::OpenSettingsNotificationType) {
         Q_EMIT showSettingsDialog();
+    } else if (activity._type == Activity::OpenFolderNotificationType) {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(activity._folder));
+        return;
     }
 
     if (!path.isEmpty()) {

@@ -212,7 +212,7 @@ private:
     bool _isNotificationFetchRunning = false;
 
     // used for quota warnings
-    int _lastStoragePercent = 0; 
+    int _lastQuotaPercent = 0;
 };
 
 class UserModel : public QAbstractListModel
