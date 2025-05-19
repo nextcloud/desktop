@@ -565,10 +565,17 @@ public class MockRemoteInterface: RemoteInterface {
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
     public var completedChunkTransferSize: [String: Int64] = [:]
+    public var pagination: Bool
+    public var expectedEnumerationPaginationTokens: [String: String] = [:]
 
-    public init(rootItem: MockRemoteItem? = nil, rootTrashItem: MockRemoteItem? = nil) {
+    public init(
+        rootItem: MockRemoteItem? = nil,
+        rootTrashItem: MockRemoteItem? = nil,
+        pagination: Bool = false
+    ) {
         self.rootItem = rootItem
         self.rootTrashItem = rootTrashItem
+        self.pagination = pagination
     }
 
     func sanitisedPath(_ path: String, account: Account) -> String? {
@@ -1031,30 +1038,64 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, [], nil, .urlError)
         }
 
-        let responseData = AFDataResponse<Data>(
-            request: nil,
-            response: HTTPURLResponse(
-                url: URL(string: account.davFilesUrl + remotePath)!,
-                statusCode: 200,
-                httpVersion: "HTTP/1.1",
-                headerFields: [:]
-            ),
-            data: Data(),
-            metrics: nil,
-            serializationDuration: 0,
-            result: .success(Data())
-        )
+        func generateResponse(itemCount: Int, finalPage: Bool) -> AFDataResponse<Data>? {
+            var responseHeaders: [String: String] = [:]
+            if pagination && options.paginate {
+                responseHeaders["X-NC-PAGINATE"] = "true"
+                if options.paginateToken == nil {
+                    responseHeaders["X-NC-PAGINATE-TOTAL"] = String(itemCount)
+                }
+                if finalPage {
+                    expectedEnumerationPaginationTokens.removeValue(forKey: account.ncKitAccount)
+                } else {
+                    let token = UUID().uuidString
+                    responseHeaders["X-NC-PAGINATE-TOKEN"] = token
+                    expectedEnumerationPaginationTokens[account.ncKitAccount] = token
+                }
+            }
+
+            return AFDataResponse<Data>(
+                request: nil,
+                response: HTTPURLResponse(
+                    url: URL(string: account.davFilesUrl + remotePath)!,
+                    statusCode: 200,
+                    httpVersion: "HTTP/1.1",
+                    headerFields: responseHeaders
+                ),
+                data: Data(),
+                metrics: nil,
+                serializationDuration: 0,
+                result: .success(Data())
+            )
+        }
+
+        let itemCount = options.paginateCount ?? .max
+        let firstItem = options.paginateOffset ?? 0
+
+        func generateReturn(files: [NKFile]) -> (
+            account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError
+        ) {
+            if pagination &&
+               options.paginate &&
+               options.paginateOffset != nil &&
+               options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
+            {
+                return (account.ncKitAccount, [], nil, .invalidData)
+            }
+            let reachedEnd = firstItem + itemCount >= files.count
+            let lastItem = min(firstItem + itemCount, files.count) - 1
+            let itemsPage = Array(files[firstItem...lastItem])
+            let responseData = generateResponse(itemCount: itemCount, finalPage: reachedEnd)
+            return (account.ncKitAccount, itemsPage, responseData, .success)
+        }
 
         switch depth {
         case .target:
+            let responseData = generateResponse(itemCount: 1, finalPage: true)
             return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
         case .targetAndDirectChildren:
-            return (
-                account.ncKitAccount,
-                [item.toNKFile()] + item.children.map { $0.toNKFile() },
-                responseData,
-                .success
-            )
+            let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }
+            return generateReturn(files: files)
         case .targetAndAllChildren:
             var files = [NKFile]()
             var queue = [item]
@@ -1066,7 +1107,7 @@ public class MockRemoteInterface: RemoteInterface {
                 }
                 queue = nextQueue
             }
-            return (account.ncKitAccount, files, responseData, .success)
+            return generateReturn(files: files)
         }
     }
 
