@@ -439,7 +439,7 @@ extension NextcloudKit: RemoteInterface {
             if error != .success {
                 Logger
                     .init(subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface")
-                    .error("Error during sync capabilities fetch: \(error, privacy: .public)")
+                    .error("Error during sync capabilities fetch: \(error.errorDescription, privacy: .public)")
             }
             capabilities = fetchedCapabilities
             semaphore.signal()

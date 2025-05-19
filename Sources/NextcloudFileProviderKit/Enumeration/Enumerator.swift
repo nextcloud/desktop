@@ -151,7 +151,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.error(
                         """
                         Could not acquire capabilities, cannot check trash.
-                            Error: \(error, privacy: .public)
+                            Error: \(error.errorDescription, privacy: .public)
                         """)
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
@@ -415,7 +415,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.error(
                         """
                         Could not acquire capabilities, cannot check trash.
-                            Error: \(error, privacy: .public)
+                            Error: \(error.errorDescription, privacy: .public)
                         """)
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
