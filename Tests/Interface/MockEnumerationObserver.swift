@@ -12,7 +12,9 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
     public var items: [NSFileProviderItem] = []
     private var error: Error?
     private var isComplete = false
+    private var currentPageComplete = false
     private var enumerator: NSFileProviderEnumerator
+    private var page: NSFileProviderPage? = nil
 
     public init(enumerator: NSFileProviderEnumerator) {
         self.enumerator = enumerator
@@ -23,22 +25,27 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
     }
 
     public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
-        isComplete = true
+        page = nextPage
+        isComplete = page == nil
+        currentPageComplete = true
     }
 
     public func finishEnumeratingWithError(_ error: Error) {
         self.error = error
         isComplete = true
+        currentPageComplete = true
     }
 
     public func enumerateItems() async throws {
-        let startPage = NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
-        enumerator.enumerateItems(for: self, startingAt: startPage)
-        while !isComplete {
-            try await Task.sleep(nanoseconds: 1_000_000)
-        }
-        if let error {
-            throw error
+        page = NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
+        while let page, !isComplete {
+            enumerator.enumerateItems(for: self, startingAt: page)
+            while !currentPageComplete {
+                try await Task.sleep(nanoseconds: 1_000_000)
+            }
+            if let error {
+                throw error
+            }
         }
     }
 }
