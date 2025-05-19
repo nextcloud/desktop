@@ -1077,7 +1077,6 @@ public class MockRemoteInterface: RemoteInterface {
         ) {
             if pagination &&
                options.paginate &&
-               options.paginateOffset != nil &&
                options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
             {
                 return (account.ncKitAccount, [], nil, .invalidData)
@@ -1085,7 +1084,8 @@ public class MockRemoteInterface: RemoteInterface {
             let reachedEnd = firstItem + itemCount >= files.count
             let lastItem = min(firstItem + itemCount, files.count) - 1
             let itemsPage = Array(files[firstItem...lastItem])
-            let responseData = generateResponse(itemCount: itemCount, finalPage: reachedEnd)
+            let realItemCount = itemsPage.count
+            let responseData = generateResponse(itemCount: realItemCount, finalPage: reachedEnd)
             return (account.ncKitAccount, itemsPage, responseData, .success)
         }
 
