@@ -278,7 +278,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (
-        account: String, files: [NKFile], data: Data?, error: NKError
+        account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError
     ) {
         return await withCheckedContinuation { continuation in
             readFileOrFolder(
@@ -291,7 +291,7 @@ extension NextcloudKit: RemoteInterface {
                 options: options,
                 taskHandler: taskHandler
             ) { account, files, data, error in
-                continuation.resume(returning: (account, files ?? [], data?.data, error))
+                continuation.resume(returning: (account, files ?? [], data, error))
             }
         }
     }
