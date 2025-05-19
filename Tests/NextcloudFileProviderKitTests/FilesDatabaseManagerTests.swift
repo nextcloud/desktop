@@ -630,7 +630,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testChildItemsForRootDirectory() throws {
-        var rootMetadata = SendableItemMetadata(
+        let rootMetadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             fileName: "",
             account: Account(
