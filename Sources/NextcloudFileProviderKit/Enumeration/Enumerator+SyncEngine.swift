@@ -266,11 +266,15 @@ extension Enumerator {
         )
     }
 
+    // With paginated requests, you do not have a way to know what has changed remotely when
+    // handling the result of an individual PROPFIND request. When handling a paginated read this
+    // therefore only returns the acquired metadatas.
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
         account: Account,
         dbManager: FilesDatabaseManager,
-        files: [NKFile]
+        files: [NKFile],
+        pageIndex: Int?
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         newMetadatas: [SendableItemMetadata]?,
@@ -281,9 +285,36 @@ extension Enumerator {
         Self.logger.debug(
             """
             Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public)
-            for user: \(account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
             """
         )
+
+        if let pageIndex {
+            // First PROPFIND contains the target item, but we do not want to report this in the
+            // retrieved metadatas (the enumeration observers don't expect you to enumerate the
+            // target item, hence why we always strip the target item out)
+            let startIndex = pageIndex > 0 ? 0 : 1
+            if pageIndex == 0 {
+                guard let firstFile = files.first else {
+                    return (nil, nil, nil, nil, .invalidResponseError)
+                }
+                dbManager.addItemMetadata(firstFile.toItemMetadata())
+            }
+            let metadatas = files[startIndex..<files.count].map {
+                var metadata = $0.toItemMetadata()
+                if metadata.directory {
+                    // Wipe etag for non-visited folders
+                    let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                    if existing == nil || existing?.etag.isEmpty == true {
+                        metadata.etag = ""
+                    }
+                }
+                print(metadata.fileName, metadata.etag)
+                return metadata
+            }
+            metadatas.forEach { dbManager.addItemMetadata($0) }
+            return (metadatas, nil, nil, nil, nil)
+        }
 
         guard var (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
@@ -421,43 +452,51 @@ extension Enumerator {
             return (nil, nil, nil, nil, nextPage, error)
         }
 
-        guard receivedFile.directory else {
-            Self.logger.debug(
-                """
-                Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
-            let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
-            metadata.downloaded = existing?.downloaded == true
-            dbManager.addItemMetadata(metadata)
-            return ([metadata], newItems, updatedItems, nil, nextPage, nil)
-        }
+        // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
+        // That is NOT the case for paginated results with offsets
+        let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
+        if !isFollowUpPaginatedRequest {
+            guard receivedFile.directory else {
+                Self.logger.debug(
+                    """
+                    Read item is a file.
+                        Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
+                        for user: \(account.ncKitAccount, privacy: .public)
+                    """
+                )
+                var metadata = receivedFile.toItemMetadata()
+                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                let isNew = existing == nil
+                let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                metadata.downloaded = existing?.downloaded == true
+                dbManager.addItemMetadata(metadata)
+                return ([metadata], newItems, updatedItems, nil, nextPage, nil)
+            }
 
-        if stopAtMatchingEtags,
-           let dir = dbManager.itemMetadata(account: ncKitAccount, locatedAtRemoteUrl: serverUrl),
-           dir.etag != "",
-           dir.etag == receivedFile.etag
-        {
-            Self.logger.debug(
-                """
-                Read server url called with flag to stop enumerating at matching etags.
-                Returning and providing soft error.
-                """
-            )
+            if stopAtMatchingEtags,
+               let dir = dbManager.itemMetadata(
+                account: ncKitAccount, locatedAtRemoteUrl: serverUrl
+               ),
+               dir.etag != "",
+               dir.etag == receivedFile.etag
+            {
+                Self.logger.debug(
+                    """
+                    Read server url called with flag to stop enumerating at matching etags.
+                        Returning and providing soft error.
+                    """
+                )
 
-            let description = "Fetched directory etag same as local copy. Ignoring child items."
-            let nkError = NKError(
-                errorCode: NKError.noChangesErrorCode, errorDescription: description
-            )
-            // Return all database metadatas under the current serverUrl (including target)
-            let metadatas =
-                dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
-            return (metadatas, nil, nil, nil, nextPage, nkError)
+                let description = "Fetched directory etag same as local copy. Ignoring child items."
+                let nkError = NKError(
+                    errorCode: NKError.noChangesErrorCode, errorDescription: description
+                )
+                // Return all database metadatas under the current serverUrl (including target)
+                let metadatas =
+                    dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
+                return (metadatas, nil, nil, nil, nextPage, nkError)
+            }
         }
 
         if depth == .target {
@@ -482,7 +521,8 @@ extension Enumerator {
                 serverUrl: serverUrl, 
                 account: account,
                 dbManager: dbManager,
-                files: files
+                files: files,
+                pageIndex: pageSettings?.index
             )
 
             return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
