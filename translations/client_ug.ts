@@ -365,6 +365,11 @@
         <source>Enable virtual files</source>
         <translation>مەۋھۇم ھۆججەتلەرنى قوزغىتىڭ</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
+        <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -1324,6 +1329,11 @@ This action will abort any currently running synchronization.</source>
         <translation>% 1 ھۆججىتىنى يۈكلەشكە بولمايدۇ ، چۈنكى ئوخشاش ئىسىمدىكى باشقا ھۆججەت مەۋجۇت</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
+        <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>% 1 ھۆججەتنىڭ ئۆزگەرتىلگەن ۋاقتى ئىناۋەتسىز. مۇلازىمېتىرغا يۈكلىمەڭ.</translation>
@@ -1658,21 +1668,6 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConflictSolver</name>
     <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
-        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>مۇندەرىجە &lt;i&gt;% 1 &lt;/i&gt; ۋە ئۇنىڭدىكى بارلىق مەزمۇنلارنى مەڭگۈلۈك ئۆچۈرمەكچىمۇ؟</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
-        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>ھۆججەتنى &lt;i&gt;% 1 &lt;/i&gt; مەڭگۈلۈك ئۆچۈرمەكچىمۇ؟</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
-        <source>Confirm deletion</source>
-        <translation>ئۆچۈرۈشنى جەزملەشتۈرۈڭ</translation>
-    </message>
-    <message>
         <location filename="../src/gui/conflictsolver.cpp" line="135"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
@@ -1687,6 +1682,21 @@ This action will abort any currently running synchronization.</source>
         <translation>ھۆججەت يۆتكەش مەغلۇب بولدى:
 
 % 1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="89"/>
+        <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
+        <translation>مۇندەرىجە &lt;i&gt;% 1 &lt;/i&gt; ۋە ئۇنىڭدىكى بارلىق مەزمۇنلارنى مەڭگۈلۈك ئۆچۈرمەكچىمۇ؟</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="90"/>
+        <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
+        <translation>ھۆججەتنى &lt;i&gt;% 1 &lt;/i&gt; مەڭگۈلۈك ئۆچۈرمەكچىمۇ؟</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/conflictsolver.cpp" line="91"/>
+        <source>Confirm deletion</source>
+        <translation>ئۆچۈرۈشنى جەزملەشتۈرۈڭ</translation>
     </message>
 </context>
 <context>
@@ -2891,14 +2901,14 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>&amp; Explorer نىڭ يولباشچى تاختىسىدا ماسقەدەم ھۆججەت قىسقۇچنى كۆرسىتىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>S&amp;how crash reporter</source>
-        <translation>S ۋە قانداق چۈشۈپ كەتكەن مۇخبىر</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Server poll interval</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>S&amp;how crash reporter</source>
+        <translation>S ۋە قانداق چۈشۈپ كەتكەن مۇخبىر</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="254"/>
@@ -4228,12 +4238,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ئۆزگەرتىش ۋاقتى ئىناۋەتسىز بولغاچقا ماسقەدەملىيەلمەيدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1176"/>
+        <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
