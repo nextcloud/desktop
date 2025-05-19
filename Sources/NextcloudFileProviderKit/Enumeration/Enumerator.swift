@@ -27,7 +27,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
-    private let pageItemCount = 100
+    private let pageItemCount: Int
     private var pageNum = 0
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
@@ -48,7 +48,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         fastEnumeration: Bool = true,
-        listener: EnumerationListener? = nil
+        listener: EnumerationListener? = nil,
+        pageSize: Int = 100
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
@@ -57,6 +58,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         self.domain = domain
         self.fastEnumeration = fastEnumeration
         self.listener = listener
+        self.pageItemCount = pageSize
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             Self.logger.debug(
