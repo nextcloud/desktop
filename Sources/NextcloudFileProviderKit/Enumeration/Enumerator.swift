@@ -27,7 +27,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
-    private static let maxItemsPerFileProviderPage = 100
+    private let pageItemCount = 100
+    private var pageNum = 0
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
     let remoteInterface: RemoteInterface
@@ -222,92 +223,69 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
-        // TODO: Make better use of pagination and handle paging properly
-        if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
-            || page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
-        {
-            Self.logger.debug(
-                """
-                Enumerating initial page for user: \(self.account.ncKitAccount, privacy: .public)
+        Self.logger.debug(
+            """
+            Enumerating page: \(self.pageNum, privacy: .public)
+                for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
+            """
+        )
+
+        Task {
+            let (metadatas, _, _, _, nextPage, readError) = await Self.readServerUrl(
+                serverUrl,
+                pageSettings: (page: page, index: pageNum, size: pageItemCount),
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+
+            guard readError == nil else {
+                Self.logger.error(
+                    """
+                    Finishing enumeration for page: \(self.pageNum, privacy: .public)
+                        for: \(self.account.ncKitAccount, privacy: .public)
+                        with serverUrl: \(self.serverUrl, privacy: .public) 
+                        with error \(readError!.errorDescription, privacy: .public)
+                    """
+                )
+
+                // TODO: Refactor for conciseness
+                let error = readError?.fileProviderError(
+                    handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                ) ?? NSFileProviderError(.cannotSynchronize)
+                listener?.enumerationActionFailed(actionId: actionId, error: error)
+                observer.finishEnumeratingWithError(error)
+                return
+            }
+
+            guard let metadatas else {
+                Self.logger.error(
+                    """
+                    Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
+                    with serverUrl: \(self.serverUrl, privacy: .public)
+                    with invalid metadatas.
+                    """
+                )
+                listener?.enumerationActionFailed(
+                    actionId: actionId, error: NSFileProviderError(.cannotSynchronize)
+                )
+                observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                return
+            }
+
+            Self.logger.info(
+                """
+                Finished reading page: \(self.pageNum, privacy: .public)
+                    serverUrl: \(self.serverUrl, privacy: .public)
+                    for user: \(self.account.ncKitAccount, privacy: .public).
+                    Processed \(metadatas.count) metadatas
                 """
             )
 
-            Task {
-                let (metadatas, _, _, _, _, readError) = await Self.readServerUrl(
-                    serverUrl,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager
-                )
-
-                guard readError == nil else {
-                    Self.logger.error(
-                        """
-                        "Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
-                        with serverUrl: \(self.serverUrl, privacy: .public) 
-                        with error \(readError!.errorDescription, privacy: .public)
-                        """
-                    )
-
-                    // TODO: Refactor for conciseness
-                    let error = readError?.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
-                    listener?.enumerationActionFailed(actionId: actionId, error: error)
-                    observer.finishEnumeratingWithError(error)
-                    return
-                }
-
-                guard let metadatas else {
-                    Self.logger.error(
-                        """
-                        Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
-                        with serverUrl: \(self.serverUrl, privacy: .public)
-                        with invalid metadatas.
-                        """
-                    )
-                    listener?.enumerationActionFailed(
-                        actionId: actionId, error: NSFileProviderError(.cannotSynchronize)
-                    )
-                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
-                    return
-                }
-
-                Self.logger.info(
-                    """
-                    Finished reading serverUrl: \(self.serverUrl, privacy: .public)
-                    for user: \(self.account.ncKitAccount, privacy: .public).
-                    Processed \(metadatas.count) metadatas
-                    """
-                )
-
-                Self.completeEnumerationObserver(
-                    observer,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    numPage: 1,
-                    itemMetadatas: metadatas
-                )
-                listener?.enumerationActionFinished(actionId: actionId)
-            }
-
-            return
+            completeEnumerationObserver(observer, nextPage: nextPage, itemMetadatas: metadatas)
+            listener?.enumerationActionFinished(actionId: actionId)
         }
-
-        let numPage = Int(String(data: page.rawValue, encoding: .utf8)!)!
-        Self.logger.debug(
-            """
-            Enumerating page \(numPage, privacy: .public)
-            for user: \(self.account.ncKitAccount, privacy: .public)
-            with serverUrl: \(self.serverUrl, privacy: .public)
-            """
-        )
-        // TODO: Handle paging properly
-        // Self.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil)
-        listener?.enumerationActionFinished(actionId: actionId)
-        observer.finishEnumerating(upTo: nil)
     }
 
     public func enumerateChanges(
@@ -606,12 +584,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         // NSFileProviderPage("\(numPage)".data(using: .utf8)!)
     }
 
-    private static func completeEnumerationObserver(
+    private func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        numPage: Int,
+        nextPage: EnumeratorPageResponse?,
         itemMetadatas: [SendableItemMetadata],
         handleInvalidParent: Bool = true
     ) {
@@ -624,18 +599,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Task { @MainActor in
                     observer.didEnumerate(items)
                     Self.logger.info("Did enumerate \(items.count) items")
-
-                    // TODO: Handle paging properly
-                    /*
-                     if items.count == maxItemsPerFileProviderPage {
-                     let nextPage = numPage + 1
-                     let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-                     observer.finishEnumerating(upTo: providerPage)
-                     } else {
-                     observer.finishEnumerating(upTo: nil)
-                     }
-                     */
-                    observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                    if let nextPage, let nextPageData = nextPage.token.data(using: .utf8) {
+                        self.pageNum = nextPage.index
+                        observer.finishEnumerating(upTo: NSFileProviderPage(nextPageData))
+                    } else {
+                        observer.finishEnumerating(upTo: nil)
+                    }
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
@@ -650,12 +619,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
-                    Self.completeEnumerationObserver(
+                    completeEnumerationObserver(
                         observer,
-                        account: account,
-                        remoteInterface: remoteInterface,
-                        dbManager: dbManager,
-                        numPage: numPage,
+                        nextPage: nextPage,
                         itemMetadatas: [metadata] + itemMetadatas,
                         handleInvalidParent: false
                     )
@@ -787,7 +753,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.info(
             "Recovering from invalid parent identifier at \(urlToEnumerate, privacy: .public)"
         )
-        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+        let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
             urlToEnumerate,
             account: account,
             remoteInterface: remoteInterface,
