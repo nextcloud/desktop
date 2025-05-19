@@ -120,6 +120,8 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._lockstate._lockToken = _lockToken;
     rec._isLivePhoto = _isLivePhoto;
     rec._livePhotoFile = _livePhotoFile;
+    rec._folderQuota.bytesUsed = _folderQuota.bytesUsed;
+    rec._folderQuota.bytesAvailable = _folderQuota.bytesAvailable;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -163,6 +165,8 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
     item->_isLivePhoto = rec._isLivePhoto;
     item->_livePhotoFile = rec._livePhotoFile;
+    item->_folderQuota.bytesUsed = rec._folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = rec._folderQuota.bytesAvailable;
     return item;
 }
 
@@ -236,6 +240,11 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     if (properties.contains(QStringLiteral("metadata-files-live-photo"))) {
         item->_isLivePhoto = true;
         item->_livePhotoFile = properties.value(QStringLiteral("metadata-files-live-photo"));
+    }
+
+    if (isDirectory && properties.contains(QStringLiteral("quota-used-bytes")) && properties.contains(QStringLiteral("quota-available-bytes"))) {
+        item->_folderQuota.bytesUsed = properties.value(QStringLiteral("quota-used-byte")).toLongLong();
+        item->_folderQuota.bytesAvailable = properties.value(QStringLiteral("quota-available-bytes")).toLongLong();
     }
 
     // direction and instruction are decided later
