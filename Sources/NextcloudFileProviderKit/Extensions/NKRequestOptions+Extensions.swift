@@ -9,10 +9,14 @@ import FileProvider
 import NextcloudKit
 
 extension NKRequestOptions {
-    convenience init(page: NSFileProviderPage, offset: Int? = nil, count: Int? = nil) {
+    convenience init(page: NSFileProviderPage?, offset: Int? = nil, count: Int? = nil) {
+        var token: String? = nil
+        if let page {
+            token = String(data: page.rawValue, encoding: .utf8)
+        }
         self.init(
             paginate: true,
-            paginateToken: String(data: page.rawValue, encoding: .utf8),
+            paginateToken: token,
             paginateOffset: offset,
             paginateCount: count
         )

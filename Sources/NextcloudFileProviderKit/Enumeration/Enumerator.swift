@@ -232,9 +232,17 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         )
 
         Task {
+            // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
+            // pagination tokens
+            var providedPage: NSFileProviderPage? = nil
+            if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
+               page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
+            {
+                providedPage = page
+            }
             let (metadatas, _, _, _, nextPage, readError) = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: (page: page, index: pageNum, size: pageItemCount),
+                pageSettings: (page: providedPage, index: pageNum, size: pageItemCount),
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager
