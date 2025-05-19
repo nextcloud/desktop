@@ -1031,14 +1031,28 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, [], nil, .urlError)
         }
 
+        let responseData = AFDataResponse<Data>(
+            request: nil,
+            response: HTTPURLResponse(
+                url: URL(string: account.davFilesUrl + remotePath)!,
+                statusCode: 200,
+                httpVersion: "HTTP/1.1",
+                headerFields: [:]
+            ),
+            data: Data(),
+            metrics: nil,
+            serializationDuration: 0,
+            result: .success(Data())
+        )
+
         switch depth {
         case .target:
-            return (account.ncKitAccount, [item.toNKFile()], nil, .success)
+            return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
         case .targetAndDirectChildren:
             return (
                 account.ncKitAccount,
                 [item.toNKFile()] + item.children.map { $0.toNKFile() },
-                nil,
+                responseData,
                 .success
             )
         case .targetAndAllChildren:
@@ -1052,7 +1066,7 @@ public class MockRemoteInterface: RemoteInterface {
                 }
                 queue = nextQueue
             }
-            return (account.ncKitAccount, files, nil, .success)
+            return (account.ncKitAccount, files, responseData, .success)
         }
     }
 
