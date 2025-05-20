@@ -127,7 +127,8 @@ namespace FileSystem {
                                                const std::function<void(const QString &path, bool isDir)> &onError = nullptr);
 
     bool OWNCLOUDSYNC_EXPORT setFolderPermissions(const QString &path,
-                                                  FileSystem::FolderPermissions permissions) noexcept;
+                                                  FileSystem::FolderPermissions permissions,
+                                                  bool *permissionsChanged = nullptr) noexcept;
 
     bool OWNCLOUDSYNC_EXPORT isFolderReadOnly(const std::filesystem::path &path) noexcept;
 

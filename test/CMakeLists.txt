@@ -95,6 +95,8 @@ nextcloud_add_test(SyncConflictsModel)
 nextcloud_add_test(DateFieldBackend)
 nextcloud_add_test(ClientStatusReporting)
 
+nextcloud_add_test(FileSystem)
+
 nextcloud_add_test(FolderStatusModel)
 
 target_link_libraries(SecureFileDropTest PRIVATE Nextcloud::sync)
