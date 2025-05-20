@@ -716,8 +716,8 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not acquire capabilities during item move to trash, won't proceed.
-                        Error: \(error, privacy: .public)
-                        Item: \(modifiedItem.filename)
+                        Error: \(error.errorDescription, privacy: .public)
+                        Item: \(modifiedItem.filename, privacy: .public)
                     """
                 )
                 return (nil, error.fileProviderError)

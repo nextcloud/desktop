@@ -121,7 +121,7 @@ public class MockRemoteItem: Equatable {
     }
 
     public func toNKFile() -> NKFile {
-        let file = NKFile()
+        var file = NKFile()
         file.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
         file.date = creationDate

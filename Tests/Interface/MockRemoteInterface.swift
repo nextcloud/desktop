@@ -843,7 +843,7 @@ public class MockRemoteInterface: RemoteInterface {
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }
 
-        let file = NKFile()
+        var file = NKFile()
         file.fileName = remoteUrl.lastPathComponent
         file.etag = etag ?? ""
         file.size = size
