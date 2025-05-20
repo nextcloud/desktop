@@ -76,12 +76,17 @@ int main(int argc, char **argv)
 #if defined Q_OS_MAC
     qmlStyle = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
-    if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
+    if (const auto osVersion = QOperatingSystemVersion::current().version(); osVersion < QOperatingSystemVersion::Windows11.version()) {
         qmlStyle = QStringLiteral("Universal");
         widgetsStyle = QStringLiteral("Fusion");
         if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_UNIVERSAL_THEME")) {
             // initialise theme with the light/dark mode setting from the OS
             qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "System");
+        }
+
+        if (osVersion < QOperatingSystemVersion::Windows10_1809.version() && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
+            // for Windows Server 2016 to display text as expected, see #8064
+            qputenv("QT_QPA_PLATFORM", "windows:nodirectwrite");
         }
     } else {
         qmlStyle = QStringLiteral("FluentWinUI3");
