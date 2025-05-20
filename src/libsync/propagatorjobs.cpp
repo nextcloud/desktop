@@ -107,8 +107,35 @@ void PropagateLocalRemove::start()
     }
 
     QString removeError;
-    if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
-        const auto fileInfo = QFileInfo{filename};
+    auto moveToTrashIsFeasible = true;
+    if (propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
+        moveToTrashIsFeasible = false;
+    }
+    const auto fileInfo = QFileInfo{filename};
+    if (fileInfo.isDir()) {
+        try {
+            if (FileSystem::isFolderReadOnly(fileInfo.filesystemAbsolutePath())) {
+                moveToTrashIsFeasible = false;
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status" << e.what() << e.path1().c_str() << e.path2().c_str();
+        }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status" << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status";
+        }
+    } else {
+        if (!FileSystem::isWritable(filename, fileInfo)) {
+            moveToTrashIsFeasible = false;
+        }
+    }
+    if (_moveToTrash && moveToTrashIsFeasible) {
         if (FileSystem::fileExists(filename, fileInfo)) {
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
@@ -123,12 +150,11 @@ void PropagateLocalRemove::start()
         }
     } else {
         if (_item->isDirectory()) {
-            if (FileSystem::fileExists(filename) && !removeRecursively(QString())) {
+            if (FileSystem::fileExists(filename, fileInfo) && !removeRecursively(QString())) {
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            const auto fileInfo = QFileInfo{filename};
             if (FileSystem::fileExists(filename, fileInfo)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
