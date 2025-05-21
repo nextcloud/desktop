@@ -1332,7 +1332,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation>Datei enthält Leerzeichen am Anfang oder am Ende und konnte nicht umbenannt werden</translation>
+        <translation>Dateiname enthält Leerzeichen am Anfang oder am Ende und konnte nicht umbenannt werden</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
