@@ -219,8 +219,23 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+
+    void testLocalDelete_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testLocalDelete() {
+        QFETCH(bool, moveToTrashEnabled);
+
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
@@ -237,9 +252,22 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testLocalDeleteWithReuploadForNewLocalFiles_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testLocalDeleteWithReuploadForNewLocalFiles()
     {
+        QFETCH(bool, moveToTrashEnabled);
+
         FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // create folders hierarchy with some nested dirs and files
         fakeFolder.localModifier().mkdir("A");
@@ -1566,9 +1594,23 @@ private slots:
         QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
     }
 
+    void testFolderRemovalWithCaseClash_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testFolderRemovalWithCaseClash()
     {
-        FakeFolder fakeFolder{ FileInfo{} };
+        QFETCH(bool, moveToTrashEnabled);
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().mkdir("toDelete");
         fakeFolder.remoteModifier().insert("A/file");
@@ -1851,8 +1893,17 @@ private slots:
         }
     }
 
+    void testServer_caseClash_createConflict_thenRemoveOneRemoteFile_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testServer_caseClash_createConflict_thenRemoveOneRemoteFile()
     {
+        QFETCH(bool, moveToTrashEnabled);
+
         constexpr auto testLowerCaseFile = "test";
         constexpr auto testUpperCaseFile = "TEST";
 
@@ -1863,6 +1914,10 @@ private slots:
 #endif
 
         FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         fakeFolder.remoteModifier().insert("otherFile.txt");
         fakeFolder.remoteModifier().insert(testLowerCaseFile);
