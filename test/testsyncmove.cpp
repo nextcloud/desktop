@@ -812,7 +812,7 @@ private slots:
     {
         QFETCH(bool, local);
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
-        auto &modifier = local ? fakeFolder.localModifier() : fakeFolder.remoteModifier();
+        auto &modifier = local ? static_cast<FileModifier&>(fakeFolder.localModifier()) : fakeFolder.remoteModifier();
 
         modifier.mkdir("FolA");
         modifier.mkdir("FolA/FolB");
