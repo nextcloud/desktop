@@ -439,7 +439,9 @@ QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &binaryData
 QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Data,
                                                      const QByteArray &certificateFingerprint) const
 {
-    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformationByFingerprint(certificateFingerprint), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
+    Q_UNUSED(certificateFingerprint)
+
+    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
     if (!decryptBase64Result) {
         qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
