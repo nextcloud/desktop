@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Permitir a exclusão de itens na Lixeira</translation>
     </message>
 </context>
 <context>
@@ -897,7 +897,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation>Esquecer a criptografia de ponta-a-ponta nesse dispositivo</translation>
+        <translation>Esquecer a criptografia de ponta-a-ponta neste dispositivo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
@@ -1333,7 +1333,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo contém espaços inicias ou finais e não pôde ser renomeado</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>

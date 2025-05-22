@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Umožnit mazání položek v Koši</translation>
     </message>
 </context>
 <context>
@@ -1332,7 +1332,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Název souboru obsahuje mezery na začátku nebo na konci a není možné ho přejmenovat</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>

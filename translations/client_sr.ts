@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Дозволи брисање ставки у Отпаду</translation>
     </message>
 </context>
 <context>
@@ -684,7 +684,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Заборави подешавања шифирања</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
@@ -699,7 +699,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>Шифрирање је подешено. Не заборавите да &lt;b&gt;Шифрујете&lt;/b&gt; фолдер да би се шифровали с-краја-на-крај сви нови фајлови који се у њега додају.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="323"/>
@@ -730,7 +730,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Овај фолдер не можете да шифрујете јер на уређају није подешено шифровање ц-краја-на-крај.
+Желите ли сада да то подесите?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="417"/>
@@ -886,7 +887,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Да бисмо заштитили ваш Криптографски идентитет, шифровали смо га са подсетником од 12 речи из речника. Молимо вас да их забележите и да их чувате на сигурном. Биће вам потребне да подесите синхронизацију шифрованих фолдера на вашим осталим уређајима.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
@@ -896,17 +897,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Заборави шифрирање од почетка-до-краја ка овом уређају</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Желите ли да се забораве подешавања шифрирања од почетка-до-краја за %1 на овом уређају?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Заборављање шифрирања од почетка-до-краја ће уклонити осетљиве податке и све шифроване фајлове са овог уређаја.&lt;br&gt;Међутим, шифровани фајлови ће остати на серверу и свим вашим другим уређајима који су подешени.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1127"/>
@@ -1041,7 +1042,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>Шифрирање од почетка-до-краја је иницијализовано на овом налогу са другим уређајем.&lt;br&gt;Унесите јединствени подсетник да би се шифровани фолдери синхронизовали и на овом уређају.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -1051,7 +1052,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Овај налог подржава шифрирање са краја-на-крај, али прво мора да е подеси.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1762"/>
@@ -1332,7 +1333,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Фајл садржи размаке на почетку или на крају и не може да му се промени име.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -4244,12 +4245,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>Отпремање %1 премашује %2 простора преосталог у личним фајловима.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1191"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>Отпремање %1 премашује %2 простора преосталог у фолдеру %3.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1138"/>
