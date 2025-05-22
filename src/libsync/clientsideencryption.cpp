@@ -879,12 +879,15 @@ void ClientSideEncryption::setPrivateKey(const QByteArray &privateKey)
 
 const CertificateInformation &ClientSideEncryption::getCertificateInformation() const
 {
+    Q_ASSERT( _encryptionCertificate.canDecrypt() &&  _encryptionCertificate.canDecrypt());
     return _encryptionCertificate;
 }
 
 CertificateInformation ClientSideEncryption::getCertificateInformationByFingerprint(const QByteArray &certificateFingerprint) const
 {
     CertificateInformation result;
+
+    Q_ASSERT(!certificateFingerprint.isEmpty());
 
     if (_encryptionCertificate.sha256Fingerprint() == certificateFingerprint) {
         result = _encryptionCertificate;
@@ -896,6 +899,8 @@ CertificateInformation ClientSideEncryption::getCertificateInformationByFingerpr
             }
         }
     }
+
+    Q_ASSERT(result.canDecrypt() && result.canDecrypt());
 
     return result;
 }
