@@ -18,11 +18,22 @@ extension Array<SendableItemMetadata> {
 
         return await concurrentChunkedCompactMap { itemMetadata in
             guard !itemMetadata.e2eEncrypted else {
-                logger.error(
+                logger.warning(
                     """
                     Skipping encrypted metadata in enumeration:
-                    \(itemMetadata.ocId, privacy: .public)
-                    \(itemMetadata.fileName, privacy: .public)
+                        ocId: \(itemMetadata.ocId, privacy: .public)
+                        fileName: \(itemMetadata.fileName, privacy: .public)
+                    """
+                )
+                return nil
+            }
+
+            guard !isLockFileName(itemMetadata.fileName) else {
+                logger.warning(
+                    """
+                    Skipping remote lock file item metadata in enumeration:
+                        ocId: \(itemMetadata.ocId, privacy: .public)
+                        fileName: \(itemMetadata.fileName, privacy: .public)
                     """
                 )
                 return nil
