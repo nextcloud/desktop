@@ -27,7 +27,7 @@ struct MissingPermissionsPropfindReply : FakePropfindReply {
                                const QNetworkRequest &request, QObject *parent)
         : FakePropfindReply(remoteRootFileInfo, op, request, parent) {
         // If the propfind contains a single file without permissions, this is a server error
-        const char toRemove[] = "<oc:permissions>RDNVCKW</oc:permissions>";
+        const char toRemove[] = "<oc:permissions>GRDNVCKW</oc:permissions>";
         auto pos = payload.indexOf(toRemove, payload.size()/2);
         QVERIFY(pos > 0);
         payload.remove(pos, sizeof(toRemove) - 1);

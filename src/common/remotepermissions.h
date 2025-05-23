@@ -41,18 +41,19 @@ private:
 
 public:
     enum Permissions {
-        CanWrite = 1,             // W
-        CanDelete = 2,            // D
-        CanRename = 3,            // N
-        CanMove = 4,              // V
-        CanAddFile = 5,           // C
-        CanAddSubDirectories = 6, // K
-        CanReshare = 7,           // R
+        CanRead = 1,              // G
+        CanWrite,                 // W
+        CanDelete,                // D
+        CanRename,                // N
+        CanMove,                  // V
+        CanAddFile,               // C
+        CanAddSubDirectories,     // K
+        CanReshare,               // R
         // Note: on the server, this means SharedWithMe, but in discoveryphase.cpp we also set
         // this permission when the server reports the any "share-types"
-        IsShared = 8,             // S
-        IsMounted = 9,            // M
-        IsMountedSub = 10,        // m (internal: set if the parent dir has IsMounted)
+        IsShared,                 // S
+        IsMounted,                // M
+        IsMountedSub,             // m (internal: set if the parent dir has IsMounted)
 
         // Note: when adding support for more permissions, we need to invalid the cache in the database.
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)

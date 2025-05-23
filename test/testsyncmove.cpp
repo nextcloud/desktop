@@ -326,7 +326,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("external-storage");
         auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
         externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRMG"));
         QVERIFY(fakeFolder.syncOnce());
 
         OperationCounter operationCounter;
@@ -1159,7 +1159,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("FolA");
         auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
         groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
         fakeFolder.remoteModifier().mkdir("FolA/FolB");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
@@ -1196,7 +1196,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("FolA");
         auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
         groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
         fakeFolder.remoteModifier().mkdir("FolA/FolB");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
