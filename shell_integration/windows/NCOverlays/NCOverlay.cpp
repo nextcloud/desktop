@@ -28,22 +28,25 @@ namespace {
 
 unique_ptr<RemotePathChecker> s_instance;
 
-RemotePathChecker *getGlobalChecker()
+RemotePathChecker *getGlobalChecker(ofstream &logger)
 {
     // On Vista we'll run into issue #2680 if we try to create the thread+pipe connection
     // on any DllGetClassObject of our registered classes.
     // Work around the issue by creating the static RemotePathChecker only once actually needed.
     static once_flag s_onceFlag;
-    call_once(s_onceFlag, [] { s_instance.reset(new RemotePathChecker); });
+    call_once(s_onceFlag, [&logger] { s_instance.reset(new RemotePathChecker{logger}); });
 
     return s_instance.get();
 }
 
 }
-NCOverlay::NCOverlay(int state) 
+NCOverlay::NCOverlay(int state)
     : _referenceCount(1)
     , _state(state)
 {
+    // it is saved under %userprofile%
+    m_logger.open("C:\\overlay.log");
+    m_logger << "debug" << std::endl;
 }
 
 NCOverlay::~NCOverlay(void)
@@ -113,10 +116,11 @@ IFACEMETHODIMP NCOverlay::GetPriority(int *pPriority)
 
 IFACEMETHODIMP NCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
-    RemotePathChecker* checker = getGlobalChecker();
+    auto checker = getGlobalChecker(m_logger);
     std::shared_ptr<const std::vector<std::wstring>> watchedDirectories = checker->WatchedDirectories();
 
     if (watchedDirectories->empty()) {
+        m_logger << "list of watched directories are empty" << std::endl;
         return MAKE_HRESULT(S_FALSE, 0, 0);
     }
 
@@ -129,13 +133,16 @@ IFACEMETHODIMP NCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
     }
 
     if (!watched) {
+        m_logger << "watched is false" << std::endl;
         return MAKE_HRESULT(S_FALSE, 0, 0);
     }
 
     int state = 0;
     if (!checker->IsMonitoredPath(pwszPath, &state)) {
+        m_logger << "not monitored path: " << pwszPath << std::endl;
         return MAKE_HRESULT(S_FALSE, 0, 0);
     }
+
     return MAKE_HRESULT(state == _state ? S_OK : S_FALSE, 0, 0);
 }
 
