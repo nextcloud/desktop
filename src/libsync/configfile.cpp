@@ -97,6 +97,11 @@ static const QString defaultEnterpriseChannel = "enterprise";
 static constexpr char languageC[] = "language";
 
 static constexpr int deleteFilesThresholdDefaultValue = 100;
+
+constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
+constexpr auto legacyCfgFileNameC = "owncloud.cfg";
+constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
+constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 }
 
 namespace OCC {
@@ -107,6 +112,7 @@ Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
 QString ConfigFile::_discoveredLegacyConfigPath = {};
+QString ConfigFile::_discoveredLegacyConfigFile = {};
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -1294,4 +1300,124 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
+QString ConfigFile::discoveredLegacyConfigFile()
+{
+    return _discoveredLegacyConfigFile;
+}
+
+void ConfigFile::setDiscoveredLegacyConfigFile(const QString &discoveredLegacyConfigFile)
+{
+    if (_discoveredLegacyConfigFile == discoveredLegacyConfigFile) {
+        return;
+    }
+
+    _discoveredLegacyConfigFile = discoveredLegacyConfigFile;
+}
+
+void ConfigFile::findLegacyClientConfigFile()
+{
+    qCInfo(lcConfigFile) << "Migrate: findLegacyClientConfigFile" << Theme::instance()->appName();
+
+    // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
+    const auto legacyStandardPaths = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
+    const auto legacyStandardPathsParentFolder = legacyStandardPaths.left(legacyStandardPaths.lastIndexOf('/'));
+
+    // 2.5+ (rest of 2.x series)
+    const auto standardPaths = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+    const auto standardPathsParentFolder = standardPaths.left(standardPaths.lastIndexOf('/'));
+
+    // Now try the locations we use today
+    const auto fullLegacyCfgFile = QDir::fromNativeSeparators(configFile());
+    const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
+    const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
+
+    const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
+    const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
+
+    auto legacyLocations = QVector<QString>{legacyStandardPathsParentFolder + legacyCfgFileRelativePath,
+                                            standardPathsParentFolder + legacyCfgFileRelativePath,
+                                            legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath,
+                                            legacyCfgFileParentFolder + legacyCfgFileNamePath};
+
+    if (Theme::instance()->isBranded()) {
+        const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
+        const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
+        const auto brandedLegacyCfgFilePath = QString(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/") + APPLICATION_SHORTNAME + QStringLiteral("/"));
+        const auto brandedLegacyCfgFile = QString(APPLICATION_CONFIG_NAME + QStringLiteral(".cfg"));
+        legacyLocations.append({brandedLegacyCfgFilePath + brandedLegacyCfgFile,
+                                standardPathsParentFolder + unbrandedCfgFileRelativePath,
+                                legacyCfgFileParentFolder + unbrandedCfgFileNamePath,
+                                legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
+    }
+
+    qCDebug(lcConfigFile) << "Looking for existing config files at:" << legacyLocations;
+
+    for (const auto &configFile : legacyLocations) {
+        auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+        if (oCSettings->status() != QSettings::Status::NoError) {
+            qCInfo(lcConfigFile) << "Error reading legacy configuration file" << oCSettings->status();
+            break;
+        }
+
+        const QFileInfo configFileInfo(configFile);
+        if (!configFileInfo.exists() || !configFileInfo.isReadable()) {
+            qCInfo(lcConfigFile()) << "Migrate: could not read old config " << configFile;
+            continue;
+        }
+
+        qCInfo(lcConfigFile) << "Migrate: old config file" << configFile;
+        setDiscoveredLegacyConfigFile(configFileInfo.filePath());
+        setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
+        break;
+    }
+}
+
+bool ConfigFile::isUpgrade() const
+{
+    return QVersionNumber::fromString(MIRALL_VERSION_STRING) > QVersionNumber::fromString(clientVersionString());
+}
+
+bool ConfigFile::isDowngrade() const
+{
+    return QVersionNumber::fromString(clientVersionString()) > QVersionNumber::fromString(MIRALL_VERSION_STRING);
+}
+
+QString ConfigFile::configFileToRestore() const
+{
+    const auto legacyConfigFile = discoveredLegacyConfigFile();
+    if (legacyConfigFile.isEmpty()) {
+        return configFile();
+    }
+
+    return legacyConfigFile;
+}
+
+QStringList ConfigFile::backupConfigFiles()
+{
+    // 'Launch on system startup' defaults to true > 3.11.x
+    const auto theme = Theme::instance();
+    setLaunchOnSystemStartup(launchOnSystemStartup());
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), launchOnSystemStartup());
+
+    // default is now off to displaying dialog warning user of too many files deletion
+    setPromptDeleteFiles(false);
+
+    // back up all old config files
+    QStringList backupFilesList;
+    QDir configDir(configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFileName = configFile();
+        backupFilesList.append(backup(oldConfigFileName));
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcConfigFile) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
+            }
+        }
+    }
+
+    return backupFilesList;
+}
 }
