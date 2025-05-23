@@ -153,6 +153,7 @@ void ShareTestHelper::setup()
 
     const auto fakeFileInfo = fakeFolder.remoteModifier().find(testFileName);
     QVERIFY(fakeFileInfo);
+    fakeFileInfo->permissions.setPermission(RemotePermissions::CanRead);
     fakeFileInfo->permissions.setPermission(RemotePermissions::CanReshare);
     QVERIFY(fakeFolder.syncOnce());
     QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
