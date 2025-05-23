@@ -413,10 +413,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 }
             }
 
-            if (rec.isE2eEncrypted()) {
-                rec._e2eCertificateFingerprint = _account->encryptionCertificateFingerprint();
-            }
-
             // Updating the db happens on success
             if (!_journal->setFileRecord(rec)) {
                 item->_status = SyncFileItem::Status::NormalError;

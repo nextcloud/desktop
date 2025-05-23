@@ -78,16 +78,6 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
-    if (isInsideEncryptedTree()) {
-        auto folderDbRecord = SyncJournalFileRecord{};
-        if (_discoveryData->_statedb->getFileRecord(_currentFolder._local, &folderDbRecord) && folderDbRecord.isValid()) {
-            if (_discoveryData->_account->encryptionCertificateFingerprint() != folderDbRecord._e2eCertificateFingerprint) {
-                qCDebug(lcDisco) << "encryption certificate needs update. Forcing full discovery";
-                _queryServer = NormalQuery;
-            }
-        }
-    }
-
     _discoveryData->_noCaseConflictRecordsInDb = _discoveryData->_statedb->caseClashConflictRecordPaths().isEmpty();
 
     if (_queryServer == NormalQuery) {
@@ -741,7 +731,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_e2eEncryptionStatus = serverEntry.isE2eEncrypted() ? SyncFileItem::EncryptionStatus::Encrypted : SyncFileItem::EncryptionStatus::NotEncrypted;
     if (serverEntry.isE2eEncrypted()) {
         item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
-        item->_e2eCertificateFingerprint = serverEntry.e2eCertificateFingerprint;
     }
     item->_encryptedFileName = [=, this] {
         if (serverEntry.e2eMangledName.isEmpty()) {
@@ -1278,10 +1267,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (dbEntry.isValid()) {
         bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
-        if (localEntry.isDirectory && dbEntry.isValid() && dbEntry.isE2eEncrypted() && dbEntry._e2eCertificateFingerprint != _discoveryData->_account->encryptionCertificateFingerprint()) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_ENCRYPTION_METADATA;
-            item->_direction = SyncFileItem::Up;
-        } else if (!typeChange && localEntry.isVirtualFile) {
+        if (!typeChange && localEntry.isVirtualFile) {
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
@@ -1535,7 +1521,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
             item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
             item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
-            item->_e2eCertificateFingerprint = base._e2eCertificateFingerprint;
         }
         postProcessLocalNew();
         finalize();
@@ -2237,7 +2222,6 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 const auto alreadyDownloaded = _discoveryData->_statedb->getFileRecord(_dirItem->_file, &record) && record.isValid();
                 // we need to make sure we first download all e2ee files/folders before migrating
                 _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
-                _dirItem->_e2eCertificateFingerprint = serverJob->certificateSha256Fingerprint();
                 _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
