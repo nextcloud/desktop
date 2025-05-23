@@ -79,21 +79,21 @@ final class ChunkedArrayTests: XCTestCase {
     }
 
     // MARK: - concurrentChunkedCompactMap(into:transform:)
-    func testConcurrentChunkedCompactMap() async {
+    func testConcurrentChunkedCompactMap() async throws {
         let array = [1, 2, 3, 4, 5, 6]
-        let results = await array.concurrentChunkedCompactMap(into: 2) { $0 % 2 == 0 ? $0 : nil }
+        let results = try await array.concurrentChunkedCompactMap(into: 2) { $0 % 2 == 0 ? $0 : nil }
         XCTAssertEqual(results.sorted(), [2, 4, 6])
     }
 
-    func testConcurrentChunkedCompactMapEmptyArray() async {
+    func testConcurrentChunkedCompactMapEmptyArray() async throws {
         let emptyArray: [Int] = []
-        let results = await emptyArray.concurrentChunkedCompactMap(into: 2) { $0 }
+        let results = try await emptyArray.concurrentChunkedCompactMap(into: 2) { $0 }
         XCTAssertTrue(results.isEmpty)
     }
 
-    func testConcurrentChunkedCompactMapInvalidSize() async {
+    func testConcurrentChunkedCompactMapInvalidSize() async throws {
         let array = [1, 2, 3]
-        let results = await array.concurrentChunkedCompactMap(into: 0) { $0 }
+        let results = try await array.concurrentChunkedCompactMap(into: 0) { $0 }
         XCTAssertTrue(results.isEmpty)
     }
 }

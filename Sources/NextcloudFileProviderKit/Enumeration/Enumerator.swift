@@ -615,25 +615,29 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         itemMetadatas: [SendableItemMetadata]
     ) {
         Task {
-            let items = await itemMetadatas.toFileProviderItems(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
-            )
+            do {
+                let items = try await itemMetadatas.toFileProviderItems(
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                )
 
-            Task { @MainActor in
-                observer.didEnumerate(items)
-                Self.logger.info("Did enumerate \(items.count) items")
+                Task { @MainActor in
+                    observer.didEnumerate(items)
+                    Self.logger.info("Did enumerate \(items.count) items")
 
-                // TODO: Handle paging properly
-                /*
-                 if items.count == maxItemsPerFileProviderPage {
-                 let nextPage = numPage + 1
-                 let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-                 observer.finishEnumerating(upTo: providerPage)
-                 } else {
-                 observer.finishEnumerating(upTo: nil)
-                 }
-                 */
-                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                    // TODO: Handle paging properly
+                    /*
+                     if items.count == maxItemsPerFileProviderPage {
+                     let nextPage = numPage + 1
+                     let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+                     observer.finishEnumerating(upTo: providerPage)
+                     } else {
+                     observer.finishEnumerating(upTo: nil)
+                     }
+                     */
+                    observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                }
+            } catch let error as NSError { // This error can only mean a missing parent item identifier
+                    observer.finishEnumeratingWithError(error)
             }
         }
     }
@@ -687,22 +691,26 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         Task { [allUpdatedMetadatas, allDeletedMetadatas] in
-            let updatedItems = await allUpdatedMetadatas.toFileProviderItems(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
-            )
+            do {
+                let updatedItems = try await allUpdatedMetadatas.toFileProviderItems(
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                )
 
-            Task { @MainActor in
-                if !updatedItems.isEmpty {
-                    observer.didUpdate(updatedItems)
-                }
+                Task { @MainActor in
+                    if !updatedItems.isEmpty {
+                        observer.didUpdate(updatedItems)
+                    }
 
-                Self.logger.info(
+                    Self.logger.info(
                     """
                     Processed \(updatedItems.count) new or updated metadatas.
-                    \(allDeletedMetadatas.count) deleted metadatas.
+                        \(allDeletedMetadatas.count) deleted metadatas.
                     """
-                )
-                observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                    )
+                    observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                }
+            } catch let error as NSError { // This error can only mean a missing parent item identifier
+                    observer.finishEnumeratingWithError(error)
             }
         }
     }

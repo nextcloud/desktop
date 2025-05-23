@@ -36,19 +36,19 @@ extension Array {
     }
 
     func concurrentChunkedCompactMap<T>(
-        into size: Int = defaultChunkSize, transform: @escaping (Element) -> T?
-    ) async -> [T] {
-        await withTaskGroup(of: [T].self) { group in
+        into size: Int = defaultChunkSize, transform: @escaping (Element) throws -> T?
+    ) async throws -> [T] {
+        try await withThrowingTaskGroup(of: [T].self) { group in
             var results = [T]()
             results.reserveCapacity(self.count)
 
             for chunk in chunked(into: size) {
                 group.addTask {
-                    return chunk.compactMap { transform($0) }
+                    return try chunk.compactMap { try transform($0) }
                 }
             }
 
-            for await chunkResult in group {
+            for try await chunkResult in group {
                 results += chunkResult
             }
 

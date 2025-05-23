@@ -11,12 +11,12 @@ import OSLog
 extension Array<SendableItemMetadata> {
     func toFileProviderItems(
         account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager
-    ) async -> [Item] {
+    ) async throws -> [Item] {
         let logger = Logger(
             subsystem: Logger.subsystem, category: "itemMetadataToFileProviderItems"
         )
 
-        return await concurrentChunkedCompactMap { itemMetadata in
+        return try await concurrentChunkedCompactMap { itemMetadata in
             guard !itemMetadata.e2eEncrypted else {
                 logger.warning(
                     """
