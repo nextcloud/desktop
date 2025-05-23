@@ -162,13 +162,23 @@ public extension ItemMetadata {
         guard hasPreview else {
             return nil
         }
-        let urlBase = urlBase.urlEncoded!
-        // Leave the leading slash in webdavUrl
-        let webdavUrl = urlBase + Account.webDavFilesUrlSuffix + user
-        let serverFileRelativeUrl =
-            serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
-        return URL(
-            string: "\(urlBase)/index.php/core/preview?fileId=\(fileId)&x=\(size.width)&y=\(size.height)&a=1"
-        )
+        guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
+            let urlBase = urlBase.urlEncoded!
+            // Leave the leading slash in webdavUrl
+            let webdavUrl = urlBase + Account.webDavFilesUrlSuffix + user
+            let serverFileRelativeUrl =
+                serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
+            return URL(
+                string: "\(urlBase)/index.php/core/preview?fileId=\(fileId)&x=\(size.width)&y=\(size.height)&a=1"
+            )
+        }
+        return URL(string: urlBase)?
+            .appending(components: "index.php", "core", "preview")
+            .appending(queryItems: [
+                .init(name: "fileId", value: fileId),
+                .init(name: "x", value: "\(size.width)"),
+                .init(name: "y", value: "\(size.height)"),
+                .init(name: "a", value: "true")
+            ])
     }
 }
