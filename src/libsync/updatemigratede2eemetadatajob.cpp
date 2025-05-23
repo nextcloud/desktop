@@ -47,7 +47,6 @@ void UpdateMigratedE2eeMetadataJob::start()
         if (code == 200) {
             _item->_e2eEncryptionStatus = updateMedatadaAndSubfoldersJob->encryptionStatus();
             _item->_e2eEncryptionStatusRemote = updateMedatadaAndSubfoldersJob->encryptionStatus();
-            _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
             propagator()->updateMetadata(*_item, Vfs::UpdateMetadataType::DatabaseMetadata);
             emit finished(SyncFileItem::Status::Success);
         } else {
