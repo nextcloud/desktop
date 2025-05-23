@@ -15,7 +15,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcRemotePermissions, "nextcloud.sync.remotepermissions", QtInfoMsg)
 
-static const char letters[] = " WDNVCKRSMm";
+static const char letters[] = " GWDNVCKRSMm";
 
 
 template <typename Char>
@@ -90,6 +90,7 @@ RemotePermissions RemotePermissions::fromServerString(const QString &value,
                                                       MountedPermissionAlgorithm algorithm,
                                                       const QMap<QString, QString> &otherProperties)
 {
+    qCInfo(lcRemotePermissions()) << "decoding" << value;
     return internalFromServerString(value, otherProperties, algorithm);
 }
 
@@ -97,6 +98,7 @@ RemotePermissions RemotePermissions::fromServerString(const QString &value,
                                                       MountedPermissionAlgorithm algorithm,
                                                       const QVariantMap &otherProperties)
 {
+    qCInfo(lcRemotePermissions()) << "decoding" << value;
     return internalFromServerString(value, otherProperties, algorithm);
 }
 
