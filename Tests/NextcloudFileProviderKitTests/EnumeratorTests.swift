@@ -913,4 +913,38 @@ final class EnumeratorTests: XCTestCase {
             XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
         }
     }
+
+    func testRemoteLockFilesNotEnumerated() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+
+        let remoteLockFileItem = MockRemoteItem(
+            identifier: "lock-file",
+            name: "~$lock-file.docx",
+            remotePath: Self.account.davFilesUrl + "/" + remoteFolder.name + "/~$lock-file.docx",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children.append(remoteLockFileItem)
+        remoteLockFileItem.parent = rootItem
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 1)
+        XCTAssertFalse(
+            observer.items.contains(where: { $0.itemIdentifier.rawValue == "lock-file" })
+        )
+    }
 }
