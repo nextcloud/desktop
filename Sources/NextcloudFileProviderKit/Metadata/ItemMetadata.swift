@@ -162,15 +162,13 @@ public extension ItemMetadata {
         guard hasPreview else {
             return nil
         }
-
         let urlBase = urlBase.urlEncoded!
         // Leave the leading slash in webdavUrl
         let webdavUrl = urlBase + Account.webDavFilesUrlSuffix + user
         let serverFileRelativeUrl =
             serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
-
-        let urlString =
-            "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
-        return URL(string: urlString)
+        return URL(
+            string: "\(urlBase)/index.php/core/preview?fileId=\(fileId)&x=\(size.width)&y=\(size.height)&a=1"
+        )
     }
 }
