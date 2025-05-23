@@ -706,4 +706,31 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
         }
     }
+
+    private static func attemptInvalidParentRecovery(
+        error: NSError,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager
+    ) async throws -> SendableItemMetadata {
+        // Try to recover from errors involving missing metadata for a parent
+        guard let urlToEnumerate =
+            (error as NSError).userInfo["MissingParentServerUrlAndFileName"] as? String
+        else {
+            assert(false)
+            throw NSError()
+        }
+
+        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+            urlToEnumerate,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            depth: .target
+        )
+        guard error == .success, let metadata = metadatas?.first else {
+            throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+        }
+        return metadata
+    }
 }
