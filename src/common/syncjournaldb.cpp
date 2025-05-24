@@ -56,7 +56,6 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
     rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
-    rec._e2eCertificateFingerprint = query.baValue(12);
     rec._lockstate._locked = query.intValue(13) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(14);
     rec._lockstate._lockOwnerId = query.stringValue(15);
@@ -1013,7 +1012,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
     query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
-    query->bindValue(19, record._e2eCertificateFingerprint);
+    query->bindValue(19, {});
     query->bindValue(20, record._lockstate._locked ? 1 : 0);
     query->bindValue(21, record._lockstate._lockOwnerType);
     query->bindValue(22, record._lockstate._lockOwnerDisplayName);

@@ -64,7 +64,6 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
         if (_propagator && _item) {
             qCWarning(lcEncryptFolderJob) << "No valid record found in local DB for fileId" << fileId << "going to create it now...";
             _item->_e2eEncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus::EncryptedMigratedV2_0;
-            _item->_e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
             const auto updateResult = _propagator->updateMetadata(*_item.data());
             if (updateResult) {
                 [[maybe_unused]] const auto result = _journal->getFileRecord(currentPath, &rec);
@@ -76,7 +75,6 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 
     if (rec.isValid() && !rec.isE2eEncrypted()) {
         rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::Encrypted;
-        rec._e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
         const auto result = _journal->setFileRecord(rec);
         if (!result) {
             qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
