@@ -185,6 +185,13 @@ protected:
      */
     virtual void onTimedOut();
 
+    /** Parse HSTS header and update account settings.
+     *
+     * This checks for the Strict-Transport-Security header in successful responses
+     * and updates the account's HSTS expiration time accordingly.
+     */
+    void parseHstsHeader();
+
     QByteArray _responseTimestamp;
     bool _timedout = false; // set to true when the timeout slot is received
 

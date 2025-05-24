@@ -74,6 +74,7 @@ constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
+constexpr auto hstsExpirationTimeC = "hstsExpirationTime";
 
 constexpr auto generalC = "General";
 }
@@ -330,6 +331,7 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(QLatin1String(serverColorC), account->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), account->_serverTextColor);
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
+    settings.setValue(QLatin1String(hstsExpirationTimeC), account->hstsExpirationTime());
     settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
@@ -487,6 +489,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+    acc->setHstsExpirationTime(settings.value(QLatin1String(hstsExpirationTimeC)).toDateTime());
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->setDavDisplayName(settings.value(QLatin1String(displayNameC), "").toString());
