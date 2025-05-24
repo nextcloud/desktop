@@ -82,7 +82,6 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
-    Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
     Q_PROPERTY(QNetworkProxy::ProxyType proxyType READ proxyType WRITE setProxyType NOTIFY proxyTypeChanged)
     Q_PROPERTY(QString proxyHostName READ proxyHostName WRITE setProxyHostName NOTIFY proxyHostNameChanged)
     Q_PROPERTY(int proxyPort READ proxyPort WRITE setProxyPort NOTIFY proxyPortChanged)
@@ -98,17 +97,8 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
 
 public:
-    // We need to decide whether to use the client's global proxy settings or whether to use
-    // a specific setting for each account. Hence this enum
-    enum class AccountNetworkProxySetting {
-        GlobalProxy = 0,
-        AccountSpecificProxy,
-    };
-    Q_ENUM(AccountNetworkProxySetting)
-
     enum class AccountNetworkTransferLimitSetting {
-        GlobalLimit = -2,
-        AutoLimit, // Value under 0 is interpreted as auto in general
+        AutoLimit = -1, // Value under 0 is interpreted as auto in general
         NoLimit,
         ManualLimit,
     };
@@ -366,9 +356,6 @@ public:
     void updateDesktopEnterpriseChannel();
 
     // Network-related settings
-    [[nodiscard]] AccountNetworkProxySetting networkProxySetting() const;
-    void setNetworkProxySetting(AccountNetworkProxySetting networkProxySetting);
-
     [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
     void setProxyType(QNetworkProxy::ProxyType proxyType);
 
@@ -387,8 +374,7 @@ public:
     [[nodiscard]] QString proxyPassword() const;
     void setProxyPassword(const QString &password);
 
-    void setProxySettings(const AccountNetworkProxySetting networkProxySetting,
-                          const QNetworkProxy::ProxyType proxyType,
+    void setProxySettings(const QNetworkProxy::ProxyType proxyType,
                           const QString &proxyHostName,
                           const int proxyPort,
                           const bool proxyNeedsAuth,
@@ -558,15 +544,14 @@ private:
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
-    AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
     QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
     QString _proxyHostName;
     int _proxyPort = 0;
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
-    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
-    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
+    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;
