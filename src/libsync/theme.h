@@ -116,6 +116,12 @@ public:
     [[nodiscard]] QString appName() const;
 
     /**
+     * @brief appSyncFolderName - Default sync folder name
+     * @return QString with sync folder name.
+     */
+    [[nodiscard]] QString appSyncFolderName() const;
+
+    /**
      * @brief Returns full path to an online state icon
      * @return QUrl full path to an icon
      */
