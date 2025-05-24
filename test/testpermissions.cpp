@@ -494,10 +494,10 @@ private slots:
         rm.insert("zallowed/sub/file");
         rm.insert("zallowed/sub2/file");
 
-        setAllPerm(rm.find("norename"), RemotePermissions::fromServerString("WDVCK"));
-        setAllPerm(rm.find("nomove"), RemotePermissions::fromServerString("WDNCK"));
-        setAllPerm(rm.find("nocreatefile"), RemotePermissions::fromServerString("WDNVK"));
-        setAllPerm(rm.find("nocreatedir"), RemotePermissions::fromServerString("WDNVC"));
+        setAllPerm(rm.find("norename"), RemotePermissions::fromServerString("GWDVCK"));
+        setAllPerm(rm.find("nomove"), RemotePermissions::fromServerString("GWDNCK"));
+        setAllPerm(rm.find("nocreatefile"), RemotePermissions::fromServerString("GWDNVK"));
+        setAllPerm(rm.find("nocreatedir"), RemotePermissions::fromServerString("GWDNVC"));
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -753,7 +753,7 @@ private slots:
 
         remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
         remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
-        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -783,7 +783,7 @@ private slots:
 
         remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
         remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
-        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -850,13 +850,13 @@ private slots:
 
         remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
         remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
-        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("mG");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         remote.insert("readOnlyFolder/test/newFile.txt");
-        remote.find("readOnlyFolder/test/newFile.txt")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/test/newFile.txt")->permissions = RemotePermissions::fromServerString("mG");
         remote.mkdir("readOnlyFolder/test/newFolder");
         remote.find("readOnlyFolder/test/newFolder")->permissions = RemotePermissions::fromServerString("m");
         remote.appendByte("readOnlyFolder/readOnlyFile.txt");
@@ -873,6 +873,69 @@ private slots:
         QVERIFY(ensureReadOnlyItem("/readOnlyFolder/readOnlyFile.txt"));
         QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test/newFile.txt"));
         QVERIFY(ensureReadOnlyItem("/readOnlyFolder/newFolder"));
+    }
+
+    void testForbiddenDownload()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QObject parent;
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            if (op == QNetworkAccessManager::GetOperation) {
+                return new FakeErrorReply(op, request, &parent, 403, "Access to this shared resource has been denied because its download permission is disabled.");
+            }
+
+            return nullptr;
+        });
+
+        fakeFolder.remoteModifier().insert("file");
+
+        setAllPerm(fakeFolder.remoteModifier().find("file"), RemotePermissions::fromServerString("DNVRS"));
+
+        // also hook into discovery!!
+        SyncFileItemVector discovery;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&discovery](auto v) { discovery = v; });
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(itemInstruction(completeSpy, "file", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(discoveryInstruction(discovery, "file", CSYNC_INSTRUCTION_IGNORE));
+    }
+
+    void testExistingFileBecomeForbiddenDownload()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QObject parent;
+
+        fakeFolder.remoteModifier().insert("file");
+        auto fileInfo = fakeFolder.remoteModifier().find("file");
+        Q_ASSERT(fileInfo);
+        fileInfo->isShared = true;
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            if (op == QNetworkAccessManager::GetOperation) {
+                return new FakeErrorReply(op, request, &parent, 403, "Access to this shared resource has been denied because its download permission is disabled.");
+            }
+
+            return nullptr;
+        });
+
+        setAllPerm(fileInfo, RemotePermissions::fromServerString("DNVRS"));
+
+        // also hook into discovery!!
+        SyncFileItemVector discovery;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&discovery](auto v) { discovery = v; });
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(itemInstruction(completeSpy, "file", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(discoveryInstruction(discovery, "file", CSYNC_INSTRUCTION_REMOVE));
     }
 };
 
