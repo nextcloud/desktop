@@ -730,7 +730,7 @@ A conta deve ser importada?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation>Você não pode criptografar essa pasta porque a criptografia de ponta-a-ponta ainda não está configurada nesse dispositivo.
+        <translation>Você não pode criptografar esta pasta porque a criptografia de ponta-a-ponta ainda não está configurada neste dispositivo.
 Você gostaria de fazer isso agora?</translation>
     </message>
     <message>
@@ -861,7 +861,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation>Para proteger sua Identidade Criptográfica, nós a criptografamos com um mnemônico de 12 palavras do dicionário. Anote-o e mantenha-o em segurança. Você precisará dela para configurar a sincronização de pastas criptografadas em seus outros dispositivos.</translation>
+        <translation>Para proteger sua Identidade Criptográfica, nós a criptografamos com um mnemônico de 12 palavras do dicionário. Anote-o e mantenha-o em segurança. Você precisará dele para configurar a sincronização de pastas criptografadas em seus outros dispositivos.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
@@ -871,12 +871,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation>Deseja esquecer as configurações de criptografia de ponta-a-ponta para %1 nesse dispositivo?</translation>
+        <translation>Deseja esquecer as configurações de criptografia de ponta-a-ponta para %1 neste dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation>Esquecer a criptografia de ponta-a-ponta removerá os dados confidenciais e todos os arquivos criptografados desse dispositivo.&lt;br&gt;Mas os arquivos criptografados permanecerão no servidor e em todos os seus outros dispositivos, se configurados.</translation>
+        <translation>Esquecer a criptografia de ponta-a-ponta removerá os dados confidenciais e todos os arquivos criptografados deste dispositivo.&lt;br&gt;Mas os arquivos criptografados permanecerão no servidor e em todos os seus outros dispositivos, se configurados.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1201"/>
@@ -906,7 +906,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation>A criptografia de ponta-a-ponta foi inicializada nesta conta com outro dispositivo.&lt;br&gt;Digite o mnemônico único para que as pastas criptografadas também sejam sincronizadas nesse dispositivo.</translation>
+        <translation>A criptografia de ponta-a-ponta foi inicializada nesta conta com outro dispositivo.&lt;br&gt;Digite o mnemônico único para que as pastas criptografadas também sejam sincronizadas neste dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
@@ -3353,7 +3353,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Direitos autorais 2017-2025 Nextcloud GmbH&lt;br /&gt;Direitos autorais 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -3963,7 +3963,7 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="667"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Não foi possível remover e fazer o backup da pasta porque a pasta ou algum arquivo presente dentro desta pasta está aberto em outro programa. Por favor feche o arquivo ou a pasta e tente novamente ou cancele a operação.</translation>
+        <translation>Não foi possível remover e fazer o backup da pasta porque a pasta ou algum arquivo presente dentro desta pasta está aberto em outro programa. Por favor, feche o arquivo ou a pasta e tente novamente ou cancele a operação.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
@@ -4017,10 +4017,9 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>
-Quando o modo &quot;arquivos virtuais&quot; está habilitado, nenhum arquivo será baixado inicialmente. Em vez disso, um minúsculo arquivo &quot;% 1&quot; será criado para cada arquivo existente no servidor. O conteúdo pode ser baixado executando esses arquivos ou usando seu menu de contexto. 
+        <translation>Quando o modo &quot;arquivos virtuais&quot; está habilitado, nenhum arquivo será baixado inicialmente. Em vez disso, será criado um pequeno arquivo de &quot;%1&quot; para cada arquivo existente no servidor. O conteúdo pode ser baixado executando estes arquivos ou usando seu menu de contexto. 
 
-O modo de arquivos virtuais é mutuamente exclusivo com sincronização seletiva. As pastas não selecionadas no momento serão traduzidas para pastas somente online e suas configurações de sincronização seletiva serão redefinidas. 
+O modo de arquivos virtuais é mutuamente exclusivo com sincronização seletiva. As pastas atualmente não selecionadas serão convertidas em pastas somente on-line e suas configurações de sincronização seletiva serão redefinidas.
 
 Mudar para este modo abortará qualquer sincronização em execução. 
 
@@ -4895,12 +4894,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="757"/>
         <source>Share link</source>
-        <translation>Compartilhar link</translation>
+        <translation>Link do compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="765"/>
         <source>Link share</source>
-        <translation>Link para compartilhar</translation>
+        <translation>Compartilhamento por link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="767"/>
@@ -4979,7 +4978,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="552"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>A conta %1 não tem criptografia de ponta a ponta configurada. Configure isso nas configurações da sua conta para habilitar a criptografia de pastas.</translation>
+        <translation>A conta %1 não tem criptografia de ponta-a-ponta configurada. Configure isso nas configurações da sua conta para ativar a criptografia de pastas.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
@@ -5446,7 +5445,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 de %2 · %3 faltando</translation>
+        <translation>%1 de %2 · %3 restantes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
@@ -5548,7 +5547,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation>%1 Versão do Cliente para Desktop %2 (%3)</translation>
+        <translation>Versão do Cliente %1 para Desktop %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5558,7 +5557,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="629"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Esta versão foi fornecida por %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5576,7 +5575,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation>A pesquisa por &apos;%2&apos; falhou.</translation>
+        <translation>A pesquisa falhou para &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
@@ -5625,12 +5624,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="97"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation>Não foi possível encontrar a pasta raiz encriptada para a pasta %1</translation>
+        <translation>Não foi possível encontrar a pasta raiz criptografada para a pasta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation>Não foi possível adicionar ou remover o utilizador %1 para acessar  à pasta %2</translation>
+        <translation>Não foi possível adicionar ou remover o usuário %1 para acessar à pasta %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
@@ -5648,7 +5647,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="105"/>
         <source>Trigger the migration</source>
-        <translation>Acione a migração</translation>
+        <translation>Acionar a migração</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="176"/>
@@ -5715,7 +5714,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Não foi possível verificar o status. Verifique se você está conectado ao servidor.</translation>
+        <translation>Não foi possível obter o status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -5850,7 +5849,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation>não foi possível baixar</translation>
+        <translation>não pôde ser baixado</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -5879,7 +5878,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="91"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
+        <translation>Erro ao atualizar os metadados devido a uma marca temporal de modificação inválida</translation>
     </message>
 </context>
 <context>
@@ -5888,7 +5887,7 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
+        <translation>Erro ao atualizar os metadados devido a uma marca temporal de modificação inválida</translation>
     </message>
 </context>
 <context>
@@ -5980,7 +5979,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>O servidor na conta %1 executa uma versão não suportada %2. Usar este cliente com versões de servidor não suportadas não foi testado e é potencialmente perigoso. Prossiga por sua conta e risco. </translation>
+        <translation>O servidor na conta %1 executa uma versão %2 sem suporte. O uso deste cliente com versões de servidor sem suporte não foi testado e pode ser perigoso. Prossiga por sua própria conta e risco.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
@@ -5990,7 +5989,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Sua conta %1 exige que você aceite os termos de serviço do seu servidor. Você será redirecionado para %2 para reconhecer que leu e concorda com ele.</translation>
+        <translation>Sua conta %1 exige que você aceite os termos de serviço do seu servidor. Você será redirecionado para %2 para reconhecer que leu e concorda com eles.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
@@ -6074,17 +6073,17 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation>Sincronizar tudo a partir do servidor</translation>
+        <translation>Sincronizar tudo do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation>Pergunte antes de sincronizar pastas maiores do que</translation>
+        <translation>Perguntar antes de sincronizar pastas com mais de</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation>Pergunte antes de sincronizar armazenamentos externos</translation>
+        <translation>Perguntar antes de sincronizar armazenamentos externos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
@@ -6137,12 +6136,12 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="356"/>
         <source>TextLabel</source>
-        <translation>Rótulo de Texto</translation>
+        <translation>Texto do Rótulo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation>Logo</translation>
+        <translation>Logotipo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
@@ -6326,7 +6325,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="356"/>
         <source>View only</source>
-        <translation>Somente ver</translation>
+        <translation>Somente visualização</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="382"/>
@@ -6497,12 +6496,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation>Abra pastas locais ou de grupo</translation>
+        <translation>Abrir pastas locais ou de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local folder</source>
-        <translation>Abra a pasta local</translation>
+        <translation>Abrir pasta local</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
@@ -6517,12 +6516,12 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation>Abra a pasta local &quot;%1&quot;</translation>
+        <translation>Abrir pasta local &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation> Abra a pasta do grupo &quot;%1</translation>
+        <translation>Abrir pasta de grupo &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="222"/>
@@ -6532,7 +6531,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
         <source>User group and local folders menu</source>
-        <translation>Grupo de usuários e menu de pastas locais</translation>
+        <translation>Menu de pastas de grupos de usuários e pastas locais</translation>
     </message>
 </context>
 <context>
@@ -6558,7 +6557,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="40"/>
         <source>Search files, messages, events …</source>
-        <translation>Pesquise arquivos, mensagens, eventos ... </translation>
+        <translation>Pesquise arquivos, mensagens, eventos …</translation>
     </message>
 </context>
 <context>
@@ -6582,7 +6581,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="29"/>
         <source>Search result skeleton.</source>
-        <translation>Esqueleto do resultado da pesquisa. </translation>
+        <translation>Esqueleto de resultados de pesquisa.</translation>
     </message>
 </context>
 <context>
@@ -6619,7 +6618,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
         <source>Current account status is online</source>
-        <translation>O status da conta atual é on-line</translation>
+        <translation>O status atual da conta é on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="70"/>
@@ -6813,7 +6812,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="51"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 requer uma área de notificação em funcionamento. Se você estiver executando o XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instruções&lt;/a&gt;. Caso contrário, instale um aplicativo de área de notificação, como o &quot;trayer&quot; e tente novamente.</translation>
+        <translation>%1 requer uma área de notificação em funcionamento. Se você estiver executando o XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instruções&lt;/a&gt;. Caso contrário, instale um aplicativo de área de notificação, como o &quot;trayer&quot;, e tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -6854,7 +6853,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Versão do servidor baixada, copiada arquivo local alterado para arquivo de conflito de caso</translation>
+        <translation>Versão do servidor baixada, arquivo local alterado foi copiado para arquivo de conflito de letras maiúsculas e minúsculas</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -7032,7 +7031,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
         <source>Some available online only</source>
-        <translation>Alguns disponíveis apenas on-line </translation>
+        <translation>Alguns disponíveis apenas on-line</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>

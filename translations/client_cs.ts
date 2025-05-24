@@ -6494,42 +6494,42 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít místní nebo skupinové složky</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít místní složku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Připojeno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Odpojeno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít místní složku „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít skupinovou složku „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="222"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít %1 ve správci souborů</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Nabídka skupin uživatelů a místních složek</translation>
     </message>
 </context>
 <context>

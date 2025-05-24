@@ -6474,42 +6474,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>فتح المجلدات المحلية أو مجلدات المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>فتح المجلد المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>غيرَ مُتّصِلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>فتح المجلد المحلي &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>فتح مجلد المجموعة &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="222"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>فتح %1 في مستكشف الملفات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>قائمة مجموعة المستخدمين و المجلدات المحلية</translation>
     </message>
 </context>
 <context>
