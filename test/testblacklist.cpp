@@ -49,7 +49,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
 
-        auto &modifier = remote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
+        auto &modifier = remote ? fakeFolder.remoteModifier() : static_cast<FileModifier&>(fakeFolder.localModifier());
 
         int counter = 0;
         const QByteArray testFileName = QByteArrayLiteral("A/new");
