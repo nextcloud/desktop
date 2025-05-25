@@ -566,12 +566,12 @@ public final class FilesDatabaseManager: Sendable {
             return .trashContainer
         }
 
-        guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
+        guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
             Self.logger.error(
                 """
-                Could not get item parent directory metadata for metadata.
+                Could not get item parent directory item metadata for metadata.
                     ocID: \(metadata.ocId, privacy: .public),
-                    etag: \(metadata.etag, privacy: .public),
+                    etag: \(metadata.etag, privacy: .public), 
                     fileName: \(metadata.fileName, privacy: .public),
                     serverUrl: \(metadata.serverUrl, privacy: .public),
                     account: \(metadata.account, privacy: .public),
@@ -579,21 +579,6 @@ public final class FilesDatabaseManager: Sendable {
             )
             return nil
         }
-
-        if let parentDirectoryMetadata = itemMetadata(ocId: itemParentDirectory.ocId) {
-            return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
-        }
-
-        Self.logger.error(
-            """
-            Could not get item parent directory item metadata for metadata.
-                ocID: \(metadata.ocId, privacy: .public),
-                etag: \(metadata.etag, privacy: .public), 
-                fileName: \(metadata.fileName, privacy: .public),
-                serverUrl: \(metadata.serverUrl, privacy: .public),
-                account: \(metadata.account, privacy: .public),
-            """
-        )
-        return nil
+        return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
     }
 }
