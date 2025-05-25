@@ -722,9 +722,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         dbManager: FilesDatabaseManager
     ) async throws -> SendableItemMetadata {
         // Try to recover from errors involving missing metadata for a parent
-        guard let urlToEnumerate =
-            (error as NSError).userInfo["MissingParentServerUrlAndFileName"] as? String
-        else {
+        let userInfoKey =
+            FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
+        guard let urlToEnumerate = (error as NSError).userInfo[userInfoKey] as? String else {
             assert(false)
             throw NSError()
         }
