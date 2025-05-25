@@ -26,10 +26,20 @@ public let databaseFilename = "fileproviderextdatabase.realm"
 public final class FilesDatabaseManager: Sendable {
     public enum ErrorCode: Int {
         case metadataNotFound = -1000
+        case parentMetadataNotFound = -1001
+    }
+    public enum ErrorUserInfoKey: String {
+        case missingParentServerUrlAndFileName = "MissingParentServerUrlAndFileName"
     }
     static let errorDomain = "FilesDatabaseManager"
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
         NSError(domain: Self.errorDomain, code: code.rawValue, userInfo: userInfo)
+    }
+    static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
+        error(
+            code: .parentMetadataNotFound,
+            userInfo: [ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: itemUrl]
+        )
     }
 
     private static let schemaVersion = stable2_0SchemaVersion
