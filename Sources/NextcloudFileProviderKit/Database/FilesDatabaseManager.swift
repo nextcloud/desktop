@@ -581,4 +581,35 @@ public final class FilesDatabaseManager: Sendable {
         }
         return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
     }
+
+    public func parentItemIdentifierWithRemoteFallback(
+        fromMetadata metadata: SendableItemMetadata,
+        remoteInterface: RemoteInterface,
+        account: Account
+    ) async -> NSFileProviderItemIdentifier? {
+        if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
+            return parentItemIdentifier
+        }
+
+        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+            metadata.serverUrl,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: self,
+            depth: .target
+        )
+        guard error == nil, let parentMetadata = metadatas?.first else {
+            Self.logger.error(
+                """
+                Could not retrieve parent item identifier remotely, received error.
+                    target metadata: \(metadata.ocId, privacy: .public)
+                    target filename: \(metadata.fileName, privacy: .public)
+                    received metadatas: \(metadatas?.count ?? 0, privacy: .public)
+                    error: \(error?.errorDescription ?? "NO ERROR", privacy: .public)
+                """
+            )
+            return nil
+        }
+        return NSFileProviderItemIdentifier(parentMetadata.ocId)
+    }
 }
