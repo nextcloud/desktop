@@ -39,34 +39,34 @@ extension Array<SendableItemMetadata> {
                 return nil
             }
 
-            if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+            guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
                 itemMetadata
-            ) {
-                let item = Item(
-                    metadata: itemMetadata,
-                    parentItemIdentifier: parentItemIdentifier,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager
-                )
-                logger.debug(
-                    """
-                    Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
-                    and name: \(itemMetadata.fileName, privacy: .public)
-                    """
-                )
-
-                return item
-            } else {
+            ) else {
                 logger.error(
                     """
                     Could not get valid parentItemIdentifier for item with ocId:
-                    \(itemMetadata.ocId, privacy: .public)
-                    and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
+                        \(itemMetadata.ocId, privacy: .public)
+                        and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
                     """
                 )
+                let targetUrl = itemMetadata.serverUrl
+                throw FilesDatabaseManager.parentMetadataNotFoundError(itemUrl: targetUrl)
             }
-            return nil
+            let item = Item(
+                metadata: itemMetadata,
+                parentItemIdentifier: parentItemIdentifier,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+            logger.debug(
+                """
+                Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
+                    and name: \(itemMetadata.fileName, privacy: .public)
+                """
+            )
+
+            return item
         }
     }
 }
