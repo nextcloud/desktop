@@ -6495,42 +6495,42 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalik või grupikaust</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalik kaust</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Ühendatud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Ühendus on katkestatud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ava kohalik kaust „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ava grupikaust „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="222"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Ava „%1“ failihalduris</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Kasutajagruppide ja kohalike kaustade menüü</translation>
     </message>
 </context>
 <context>

@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="136"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Consenti l&apos;eliminazione degli elementi nel Cestino</translation>
     </message>
 </context>
 <context>
@@ -1333,7 +1333,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Il file contiene spazi iniziali o finali e non può essere rinominato</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
