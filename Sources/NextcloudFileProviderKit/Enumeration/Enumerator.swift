@@ -612,7 +612,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
-        itemMetadatas: [SendableItemMetadata]
+        itemMetadatas: [SendableItemMetadata],
+        handleInvalidParent: Bool = true
     ) {
         Task {
             do {
@@ -637,7 +638,29 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
+                guard handleInvalidParent else {
                     observer.finishEnumeratingWithError(error)
+                    return
+                }
+                do {
+                    let metadata = try await Self.attemptInvalidParentRecovery(
+                        error: error,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager
+                    )
+                    Self.completeEnumerationObserver(
+                        observer,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        numPage: numPage,
+                        itemMetadatas: [metadata] + itemMetadatas,
+                        handleInvalidParent: false
+                    )
+                } catch let error {
+                    observer.finishEnumeratingWithError(error)
+                }
             }
         }
     }
@@ -651,7 +674,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         dbManager: FilesDatabaseManager,
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?
+        deletedMetadatas: [SendableItemMetadata]?,
+        handleInvalidParent: Bool = true
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             Self.logger.error(
@@ -710,7 +734,34 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
+                guard handleInvalidParent else {
                     observer.finishEnumeratingWithError(error)
+                    return
+                }
+                do {
+                    let metadata = try await Self.attemptInvalidParentRecovery(
+                        error: error,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager
+                    )
+                    var modifiedNewMetadatas = newMetadatas
+                    modifiedNewMetadatas?.append(metadata)
+                    Self.completeChangesObserver(
+                        observer,
+                        anchor: anchor,
+                        enumeratedItemIdentifier: enumeratedItemIdentifier,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        newMetadatas: modifiedNewMetadatas,
+                        updatedMetadatas: updatedMetadatas,
+                        deletedMetadatas: deletedMetadatas,
+                        handleInvalidParent: false
+                    )
+                } catch let error {
+                    observer.finishEnumeratingWithError(error)
+                }
             }
         }
     }
