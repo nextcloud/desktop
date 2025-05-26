@@ -200,12 +200,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
-        // Handle the working set as if it were the root container
-        // If we do a full server scan per the recommendations of the File Provider documentation,
-        // we will be stuck for a huge period of time without being able to access files as the
-        // entire server gets scanned. Instead, treat the working set as the root container here.
-        // Then, when we enumerate changes, we'll go through everything -- while we can still
-        // navigate a little bit in Finder, file picker, etc
+        if enumeratedItemIdentifier == .workingSet {
+            Self.logger.info("Upcoming enumeration is of working set.")
+        }
 
         guard serverUrl != "" else {
             Self.logger.error(
@@ -239,12 +236,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             {
                 providedPage = page
             }
+            let depth: EnumerateDepth = enumeratedItemIdentifier == .workingSet ?
+                .targetAndAllChildren : .targetAndDirectChildren
             let (metadatas, _, _, _, nextPage, readError) = await Self.readServerUrl(
                 serverUrl,
                 pageSettings: (page: providedPage, index: pageNum, size: pageItemCount),
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                depth: depth
             )
 
             guard readError == nil else {
