@@ -489,7 +489,7 @@ extension Enumerator {
 
                 return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
             }
-        } else {
+        } else if depth == .targetAndDirectChildren {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await handleDepth1ReadFileOrFolder(
@@ -501,6 +501,14 @@ extension Enumerator {
             )
 
             return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
+        } else if let pageIndex = pageSettings?.index {
+            let (metadatas, error) = handlePagedReadResults(
+                files: files, pageIndex: pageIndex, dbManager: dbManager
+            )
+            return (metadatas, nil, nil, nil, nextPage, error)
+        } else {
+            // Infinite depth unpaged reads are a bad idea
+            return (nil, nil, nil, nil, nil, .forbiddenError)
         }
     }
 }
