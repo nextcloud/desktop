@@ -106,20 +106,19 @@ extension Enumerator {
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             domain: domain,
-            enumeratedItemIdentifier: enumeratedItemIdentifier,
-            stopAtMatchingEtags: scanChangesOnly
+            enumeratedItemIdentifier: enumeratedItemIdentifier
         )
 
         if let readError, readError != .success {
             // Is the error is that we have found matching etags on this item, then ignore it
             // if we are doing a full rescan
-            if readError.isNoChangesError && scanChangesOnly {
+            if readError.isNoChangesError, scanChangesOnly {
                 Self.logger.info("No changes in \(self.serverUrl) and only scanning changes.")
             } else {
                 Self.logger.error(
                     """
                     Finishing enumeration of changes at \(itemServerUrl, privacy: .public)
-                    with \(readError.errorDescription, privacy: .public)
+                        with \(readError.errorDescription, privacy: .public)
                     """
                 )
 
@@ -127,7 +126,7 @@ extension Enumerator {
                     Self.logger.info(
                         """
                         404 error means item no longer exists.
-                        Deleting metadata and reporting as deletion without error
+                            Deleting metadata and reporting as deletion without error.
                         """
                     )
 
@@ -212,9 +211,7 @@ extension Enumerator {
         var childDirectoriesToScan: [SendableItemMetadata] = []
         var candidateMetadatas: [SendableItemMetadata]
 
-        if scanChangesOnly, fastEnumeration {
-            candidateMetadatas = allUpdatedMetadatas
-        } else if scanChangesOnly {
+        if scanChangesOnly {
             candidateMetadatas = allUpdatedMetadatas + allNewMetadatas
         } else {
             candidateMetadatas = allMetadatas
@@ -225,7 +222,7 @@ extension Enumerator {
         }
 
         Self.logger.debug(
-            "Candidate metadatas for further scan: \(candidateMetadatas, privacy: .public)"
+            "Candidate metadatas for further scan: \(childDirectoriesToScan, privacy: .public)"
         )
 
         if childDirectoriesToScan.isEmpty {
@@ -239,10 +236,11 @@ extension Enumerator {
         }
 
         for childDirectory in childDirectoriesToScan {
+            let childDirectoryUrl = childDirectory.serverUrl + "/" + childDirectory.fileName
             Self.logger.debug(
                 """
-                About to recursively scan: \(childDirectory.urlBase, privacy: .public)
-                with etag: \(childDirectory.etag, privacy: .public)
+                About to recursively scan: \(childDirectoryUrl, privacy: .public)
+                    with etag: \(childDirectory.etag, privacy: .public)
                 """
             )
             let childScanResult = await scanRecursively(
@@ -324,8 +322,6 @@ extension Enumerator {
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        // We have now scanned this directory's contents, so update with etag in order to not check 
-        // again if not needed unless it's the root container
         if serverUrl != account.davFilesUrl {
             if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
                 directoryMetadata.downloaded = existingMetadata.downloaded
@@ -333,16 +329,10 @@ extension Enumerator {
             dbManager.addItemMetadata(directoryMetadata)
         }
 
-        // Don't update the etags for folders as we haven't checked their contents.
-        // When we do a recursive check, if we update the etags now, we will think
-        // that our local copies are up to date -- instead, leave them as the old.
-        // They will get updated when they are the subject of a readServerUrl call.
-        // (See above)
         let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
-            updateDirectoryEtags: false,
             keepExistingDownloadState: true
         )
 
@@ -376,7 +366,6 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
-        stopAtMatchingEtags: Bool = false,
         depth: EnumerateDepth = .targetAndDirectChildren
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -485,30 +474,6 @@ extension Enumerator {
                 metadata.downloaded = existing?.downloaded == true
                 dbManager.addItemMetadata(metadata)
                 return ([metadata], newItems, updatedItems, nil, nextPage, nil)
-            }
-
-            if stopAtMatchingEtags,
-               let dir = dbManager.itemMetadata(
-                account: ncKitAccount, locatedAtRemoteUrl: serverUrl
-               ),
-               dir.etag != "",
-               dir.etag == receivedFile.etag
-            {
-                Self.logger.debug(
-                    """
-                    Read server url called with flag to stop enumerating at matching etags.
-                        Returning and providing soft error.
-                    """
-                )
-
-                let description = "Fetched directory etag same as local copy. Ignoring child items."
-                let nkError = NKError(
-                    errorCode: NKError.noChangesErrorCode, errorDescription: description
-                )
-                // Return all database metadatas under the current serverUrl (including target)
-                let metadatas =
-                    dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
-                return (metadatas, nil, nil, nil, nextPage, nkError)
             }
         }
 

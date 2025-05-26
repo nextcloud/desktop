@@ -32,7 +32,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
     let remoteInterface: RemoteInterface
-    let fastEnumeration: Bool
     var serverUrl: String = ""
     var isInvalidated = false
     weak var listener: EnumerationListener?
@@ -47,7 +46,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
-        fastEnumeration: Bool = true,
         listener: EnumerationListener? = nil,
         pageSize: Int = 100
     ) {
@@ -56,7 +54,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         self.account = account
         self.dbManager = dbManager
         self.domain = domain
-        self.fastEnumeration = fastEnumeration
         self.listener = listener
         self.pageItemCount = pageSize
 
@@ -469,8 +466,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 serverUrl,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                stopAtMatchingEtags: true
+                dbManager: dbManager
             )
 
             // If we get a 404 we might add more deleted metadatas
