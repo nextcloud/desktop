@@ -639,6 +639,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
+                    Self.logger.info("Not handling invalid parent in enumeration")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -735,6 +736,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
+                    Self.logger.info("Not handling invalid parent in change enumeration")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -802,6 +804,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
             throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
+        // Provide it to the caller method so it can ingest it into the database and fix future errs
         return metadata
     }
 }
