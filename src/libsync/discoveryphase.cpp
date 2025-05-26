@@ -476,11 +476,6 @@ SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::requiredEncryptionSt
     return _encryptionStatusRequired;
 }
 
-QByteArray DiscoverySingleDirectoryJob::certificateSha256Fingerprint() const
-{
-    return _e2eCertificateFingerprint;
-}
-
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
@@ -768,7 +763,6 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
         _isFileDropDetected = e2EeFolderMetadata->isFileDropPresent();
         _encryptedMetadataNeedUpdate = e2EeFolderMetadata->encryptedMetadataNeedUpdate();
-        _e2eCertificateFingerprint = e2EeFolderMetadata->certificateSha256Fingerprint();
         _encryptionStatusRequired = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion());
         _encryptionStatusCurrent = e2EeFolderMetadata->existingMetadataEncryptionStatus();
 

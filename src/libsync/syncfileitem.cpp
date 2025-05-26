@@ -110,7 +110,6 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
     rec._e2eEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(_e2eEncryptionStatus);
-    rec._e2eCertificateFingerprint = _e2eCertificateFingerprint;
     rec._lockstate._locked = _locked == LockStatus::LockedItem;
     rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
     rec._lockstate._lockOwnerId = _lockOwnerId;
@@ -151,7 +150,6 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_encryptedFileName = rec.e2eMangledName();
     item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);
     item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
-    item->_e2eCertificateFingerprint = rec._e2eCertificateFingerprint;
     item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
     item->_lockOwnerId = rec._lockstate._lockOwnerId;

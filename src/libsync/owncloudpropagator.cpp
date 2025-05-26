@@ -1520,9 +1520,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
             if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
-                if (_item->isEncrypted()) {
-                    _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
-                }
                 const auto result = propagator()->updateMetadata(*_item);
                 if (!result) {
                     status = _item->_status = SyncFileItem::FatalError;

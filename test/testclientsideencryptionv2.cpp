@@ -130,7 +130,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, certificate.digest(QCryptographicHash::Sha256));
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
@@ -269,7 +269,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, certificate.digest(QCryptographicHash::Sha256));
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
@@ -370,7 +370,7 @@ private slots:
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
-                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey, certificate.digest(QCryptographicHash::Sha256));
+                const auto decryptedMetadataKey = metadata->decryptDataWithPrivateKey(encryptedMetadataKey);
                 if (decryptedMetadataKey.isEmpty()) {
                     break;
                 }
