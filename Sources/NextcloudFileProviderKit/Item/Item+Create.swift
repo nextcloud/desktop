@@ -44,7 +44,7 @@ public extension Item {
                     \(createError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, createError.fileProviderError(
+            return (nil, await createError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface
@@ -79,7 +79,7 @@ public extension Item {
                     \(readError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, readError.fileProviderError(
+            return (nil, await readError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface
@@ -151,7 +151,7 @@ public extension Item {
                     received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
-            return (nil, error.fileProviderError(
+            return (nil, await error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface

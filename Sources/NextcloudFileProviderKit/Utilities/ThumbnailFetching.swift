@@ -36,28 +36,28 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
-        guard let item = Item.storedItem(
-            identifier: itemIdentifier,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager
-        ) else {
-            logger.error(
-                """
-                Could not find item with identifier: \(itemIdentifier.rawValue, privacy: .public),
-                unable to download thumbnail!
-                """
-            )
-            perThumbnailCompletionHandler(
-                itemIdentifier,
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-            )
-            finishCurrent()
-            continue
-        }
-
         Task {
+            guard let item = await Item.storedItem(
+                identifier: itemIdentifier,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            ) else {
+                logger.error(
+                    """
+                    Could not find item with identifier: \(itemIdentifier.rawValue, privacy: .public),
+                    unable to download thumbnail!
+                    """
+                )
+                perThumbnailCompletionHandler(
+                    itemIdentifier,
+                    nil,
+                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+                )
+                finishCurrent()
+                return
+            }
+
             let (data, error) = await item.fetchThumbnail(size: size)
             perThumbnailCompletionHandler(itemIdentifier, data, error)
             finishCurrent()

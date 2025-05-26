@@ -49,7 +49,7 @@ public extension Item {
                     \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, moveError.fileProviderError(
+            return (nil, await moveError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: newRemotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface
@@ -179,7 +179,7 @@ public extension Item {
             dbManager.addItemMetadata(metadata)
             // Moving should be done before uploading and should catch collisions already, but,
             // it is painless to check here too just in case
-            return (nil, error.fileProviderError(
+            return (nil, await error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface

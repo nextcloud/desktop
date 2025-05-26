@@ -321,7 +321,7 @@ public class Item: NSObject, NSFileProviderItem {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
-    ) -> Item? {
+    ) async -> Item? {
         // resolve the given identifier to a record in the model
         guard identifier != .rootContainer else {
             return Item.rootContainer(
@@ -342,7 +342,11 @@ public class Item: NSObject, NSFileProviderItem {
         if metadata.isTrashed {
             parentItemIdentifier = .trashContainer
         } else {
-            parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+            parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
+                fromMetadata: metadata,
+                remoteInterface: remoteInterface,
+                account: account
+            )
         }
         guard let parentItemIdentifier else { return nil }
 
