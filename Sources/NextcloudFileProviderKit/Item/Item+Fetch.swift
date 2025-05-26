@@ -282,8 +282,10 @@ public extension Item {
 
         dbManager.addItemMetadata(updatedMetadata)
 
-        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-            updatedMetadata
+        guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
+            fromMetadata: metadata,
+            remoteInterface: remoteInterface,
+            account: account
         ) else {
             Self.logger.error(
                 """
