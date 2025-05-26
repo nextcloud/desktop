@@ -8,6 +8,7 @@
 import FileProvider
 import Foundation
 import RealmSwift
+import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
 
@@ -1054,5 +1055,47 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let finalMetadata =
             try XCTUnwrap(try Self.dbManager.set(keepDownloaded: false, for: updatedMetadata))
         XCTAssertFalse(finalMetadata.keepDownloaded)
+    }
+
+    func testParentItemIdentifierWithRemoteFallback() async throws {
+        let rootItem = MockRemoteItem.rootItem(account: Self.account)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "NEW",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "item",
+            versionIdentifier: "NEW",
+            name: "item",
+            remotePath: Self.account.davFilesUrl + "/folder/item",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let remoteItemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(remoteItemMetadata)
+        XCTAssertNil(Self.dbManager.parentItemIdentifierFromMetadata(remoteItemMetadata))
+
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let retrievedParentIdentifier = await Self.dbManager.parentItemIdentifierWithRemoteFallback(
+            fromMetadata: remoteItemMetadata,
+            remoteInterface: remoteInterface,
+            account: Self.account
+        )
+        XCTAssertNotNil(retrievedParentIdentifier)
+        XCTAssertEqual(retrievedParentIdentifier?.rawValue, remoteFolder.identifier)
     }
 }
