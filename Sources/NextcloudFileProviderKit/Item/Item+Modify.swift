@@ -770,7 +770,11 @@ public extension Item {
                 modifiedItem.metadata.isTrashed
             {
                 let (restoredItem, restoreError) = await Self.restoreFromTrash(
-                    modifiedItem, account: account, dbManager: dbManager, domain: domain
+                    modifiedItem,
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    domain: domain
                 )
                 guard restoreError == nil else {
                     return (modifiedItem, restoreError)

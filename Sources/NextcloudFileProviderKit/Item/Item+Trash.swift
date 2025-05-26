@@ -167,14 +167,17 @@ extension Item {
     static func restoreFromTrash(
         _ modifiedItem: Item,
         account: Account,
+        remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain?
     ) async -> (Item, Error?) {
 
-        func finaliseRestore(target: NKFile) -> (Item, Error?) {
+        func finaliseRestore(target: NKFile) async -> (Item, Error?) {
             let restoredItemMetadata = target.toItemMetadata()
-            guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                restoredItemMetadata
+            guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
+                fromMetadata: restoredItemMetadata,
+                remoteInterface: remoteInterface,
+                account: account
             ) else {
                 Self.logger.error("Could not find parent item identifier for \(originalLocation)")
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
@@ -307,9 +310,9 @@ extension Item {
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
             }
 
-            return finaliseRestore(target: actualTarget)
+            return await finaliseRestore(target: actualTarget)
         }
 
-        return finaliseRestore(target: target)
+        return await finaliseRestore(target: target)
     }
 }
