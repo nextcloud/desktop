@@ -772,14 +772,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) async throws -> SendableItemMetadata {
+        Self.logger.info("Attempting recovery from invalid parent identifier.")
         // Try to recover from errors involving missing metadata for a parent
         let userInfoKey =
             FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
         guard let urlToEnumerate = (error as NSError).userInfo[userInfoKey] as? String else {
+            Self.logger.fault("No missing parent server url and filename in error user info.")
             assert(false)
             throw NSError()
         }
 
+        Self.logger.info(
+            "Recovering from invalid parent identifier at \(urlToEnumerate, privacy: .public)"
+        )
         let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
             urlToEnumerate,
             account: account,
@@ -787,7 +792,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             dbManager: dbManager,
             depth: .target
         )
-        guard error == .success, let metadata = metadatas?.first else {
+        guard error == nil || error == .success, let metadata = metadatas?.first else {
+            Self.logger.error(
+                """
+                Problem retrieving parent for metadata.
+                    Error: \(error?.errorDescription ?? "NONE", privacy: .public)
+                    Metadatas: \(metadatas?.count ?? -1, privacy: .public)
+                """
+            )
             throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
         return metadata
