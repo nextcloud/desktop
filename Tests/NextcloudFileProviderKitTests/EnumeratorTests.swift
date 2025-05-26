@@ -947,4 +947,58 @@ final class EnumeratorTests: XCTestCase {
             observer.items.contains(where: { $0.itemIdentifier.rawValue == "lock-file" })
         )
     }
+
+    // Tests situation where we are enumerating files and we can no longer find the parent item
+    // in the database. So we need to simulate a situation where this takes place.
+    func testCorrectEnumerateFileWithMissingParentInDb() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        itemAMetadata.etag = "OLD"
+
+        Self.dbManager.addItemMetadata(itemAMetadata)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 2) // Must include the folder that was missing
+        XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
+
+        let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
+            where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
+        ))
+        XCTAssertEqual(retrievedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(
+            Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
+
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(storedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(storedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(
+            Int(storedItemA.contentModificationDate?.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
+    }
 }
