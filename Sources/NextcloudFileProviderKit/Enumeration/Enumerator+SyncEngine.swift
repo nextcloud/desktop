@@ -264,6 +264,24 @@ extension Enumerator {
         )
     }
 
+    static func handlePagedReadResults(
+        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager
+    ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+        // First PROPFIND contains the target item, but we do not want to report this in the
+        // retrieved metadatas (the enumeration observers don't expect you to enumerate the
+        // target item, hence why we always strip the target item out)
+        let startIndex = pageIndex > 0 ? 0 : 1
+        if pageIndex == 0 {
+            guard let firstFile = files.first else {
+                return (nil, .invalidResponseError)
+            }
+            dbManager.addItemMetadata(firstFile.toItemMetadata())
+        }
+        let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
+        metadatas.forEach { dbManager.addItemMetadata($0) }
+        return (metadatas, nil)
+    }
+
     // With paginated requests, you do not have a way to know what has changed remotely when
     // handling the result of an individual PROPFIND request. When handling a paginated read this
     // therefore only returns the acquired metadatas.
@@ -288,30 +306,9 @@ extension Enumerator {
         )
 
         if let pageIndex {
-            // First PROPFIND contains the target item, but we do not want to report this in the
-            // retrieved metadatas (the enumeration observers don't expect you to enumerate the
-            // target item, hence why we always strip the target item out)
-            let startIndex = pageIndex > 0 ? 0 : 1
-            if pageIndex == 0 {
-                guard let firstFile = files.first else {
-                    return (nil, nil, nil, nil, .invalidResponseError)
-                }
-                dbManager.addItemMetadata(firstFile.toItemMetadata())
-            }
-            let metadatas = files[startIndex..<files.count].map {
-                var metadata = $0.toItemMetadata()
-                if metadata.directory {
-                    // Wipe etag for non-visited folders
-                    let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-                    if existing == nil || existing?.etag.isEmpty == true {
-                        metadata.etag = ""
-                    }
-                }
-                print(metadata.fileName, metadata.etag)
-                return metadata
-            }
-            metadatas.forEach { dbManager.addItemMetadata($0) }
-            return (metadatas, nil, nil, nil, nil)
+            let (metadatas, error) =
+                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
+            return (metadatas, nil, nil, nil, error)
         }
 
         guard var (directoryMetadata, _, metadatas) =
