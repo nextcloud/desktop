@@ -46,7 +46,7 @@ extension Array<SendableItemMetadata> {
                     """
                     Could not get valid parentItemIdentifier for item with ocId:
                         \(itemMetadata.ocId, privacy: .public)
-                        and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
+                        and name: \(itemMetadata.fileName, privacy: .public)
                     """
                 )
                 let targetUrl = itemMetadata.serverUrl
