@@ -19,14 +19,40 @@ actor RetrievedCapabilitiesActor {
         let instance = RetrievedCapabilitiesActor()
         return instance
     }()
+    var ongoingFetches: Set<String> = []
     var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
+
+    private var ongoingFetchContinuations: [String: [CheckedContinuation<Void, Never>]] = [:]
 
     func setCapabilities(
         forAccount account: String,
         capabilities: Capabilities,
         retrievedAt: Date = Date()
-    ) async {
+    ) {
         self.data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
+    }
+
+    func setOngoingFetch(forAccount account: String, ongoing: Bool) {
+        if ongoing {
+            ongoingFetches.insert(account)
+        } else {
+            ongoingFetches.remove(account)
+            // If there are any continuations waiting for this account, resume them.
+            if let continuations = ongoingFetchContinuations.removeValue(forKey: account) {
+                continuations.forEach { $0.resume() }
+            }
+        }
+    }
+
+    func awaitFetchCompletion(forAccount account: String) async {
+        guard ongoingFetches.contains(account) else { return }
+
+        // If a fetch is ongoing, create a continuation and store it.
+        await withCheckedContinuation { continuation in
+            var existingContinuations = ongoingFetchContinuations[account, default: []]
+            existingContinuations.append(continuation)
+            ongoingFetchContinuations[account] = existingContinuations
+        }
     }
 }
 
@@ -398,6 +424,10 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        let ncKitAccount = account.ncKitAccount
+        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
+            forAccount: ncKitAccount, ongoing: true
+        )
         let result = await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
                 let capabilities: Capabilities? = {
@@ -407,6 +437,9 @@ extension NextcloudKit: RemoteInterface {
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
+            forAccount: ncKitAccount, ongoing: false
+        )
         if let capabilities = result.1 {
             await RetrievedCapabilitiesActor.shared.setCapabilities(
                 forAccount: account.ncKitAccount, capabilities: capabilities
@@ -421,6 +454,7 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let ncKitAccount = account.ncKitAccount
+        await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: ncKitAccount)
         guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
               lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
         else {
