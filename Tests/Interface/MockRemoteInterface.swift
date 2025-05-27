@@ -1150,18 +1150,6 @@ public class MockRemoteInterface: RemoteInterface {
         return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
     }
 
-    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
-        let semaphore = DispatchSemaphore(value: 0)
-        var capabilities: Capabilities?
-        Task {
-            let result = await currentCapabilities(account: account)
-            capabilities = result.capabilities
-            semaphore.signal()
-        }
-        semaphore.wait()
-        return capabilities
-    }
-
     public func fetchUserProfile(
         account: Account,
         options: NKRequestOptions = .init(),

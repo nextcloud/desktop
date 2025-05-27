@@ -29,6 +29,8 @@ public class Item: NSObject, NSFileProviderItem {
     public let account: Account
     public let remoteInterface: RemoteInterface
 
+    private let serverSupportsTrash: Bool = false
+
     public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
     }
@@ -55,7 +57,7 @@ public class Item: NSObject, NSFileProviderItem {
                 directoryCapabilities.insert(.allowsEvicting)
             }
 
-            if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true {
+            if serverSupportsTrash {
                 directoryCapabilities.insert(.allowsTrashing)
             }
 
@@ -73,9 +75,7 @@ public class Item: NSObject, NSFileProviderItem {
             .allowsReparenting,
             .allowsEvicting,
         ]
-        if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true,
-           !isLockFileName(filename)
-        {
+        if serverSupportsTrash, !isLockFileName(filename) {
             itemCapabilities.insert(.allowsTrashing)
         }
         return itemCapabilities

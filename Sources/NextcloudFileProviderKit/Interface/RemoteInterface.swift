@@ -165,8 +165,6 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
-    func currentCapabilitiesSync(account: Account) -> Capabilities?
-
     func fetchUserProfile(
         account: Account,
         options: NKRequestOptions,

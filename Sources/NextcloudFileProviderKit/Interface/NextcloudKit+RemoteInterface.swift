@@ -431,23 +431,6 @@ extension NextcloudKit: RemoteInterface {
         return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
     }
 
-    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
-        let semaphore = DispatchSemaphore(value: 0)
-        var capabilities: Capabilities?
-        Task {
-            let (_, fetchedCapabilities, _, error) = await currentCapabilities(account: account)
-            if error != .success {
-                Logger
-                    .init(subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface")
-                    .error("Error during sync capabilities fetch: \(error.errorDescription, privacy: .public)")
-            }
-            capabilities = fetchedCapabilities
-            semaphore.signal()
-        }
-        semaphore.wait()
-        return capabilities
-    }
-
     public func fetchUserProfile(
         account: Account,
         options: NKRequestOptions = .init(),
