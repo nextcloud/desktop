@@ -347,9 +347,48 @@ final class ItemPropertyTests: XCTestCase {
             parentItemIdentifier: .rootContainer,
             account: Self.account,
             remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: remoteSupportsTrash
+        )
+        XCTAssertTrue(item.capabilities.contains(.allowsTrashing))
+    }
+
+    func testStoredItemTrashabilityFalseAffectedByCapabilities() async {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface()
+        XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
+        remoteInterface.capabilities =
+            remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
+        let metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = await Item.storedItem(
+            identifier: .init(metadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
-        XCTAssertFalse(item.capabilities.contains(.allowsTrashing))
+        XCTAssertEqual(item?.capabilities.contains(.allowsTrashing), false)
+    }
+
+    func testStoredItemTrashabilityTrueAffectedByCapabilities() async {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface()
+        XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
+        let metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = await Item.storedItem(
+            identifier: .init(metadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        XCTAssertEqual(item?.capabilities.contains(.allowsTrashing), true)
     }
 
     func testItemShared() {
