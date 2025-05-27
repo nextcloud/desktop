@@ -24,12 +24,25 @@ public let relativeDatabaseFolderPath = "Database/"
 public let databaseFilename = "fileproviderextdatabase.realm"
 
 public final class FilesDatabaseManager: Sendable {
-    enum ErrorCode: Int {
+    public enum ErrorCode: Int {
         case metadataNotFound = -1000
+        case parentMetadataNotFound = -1001
+    }
+    public enum ErrorUserInfoKey: String {
+        case missingParentServerUrlAndFileName = "MissingParentServerUrlAndFileName"
+    }
+    static let errorDomain = "FilesDatabaseManager"
+    static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
+        NSError(domain: Self.errorDomain, code: code.rawValue, userInfo: userInfo)
+    }
+    static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
+        error(
+            code: .parentMetadataNotFound,
+            userInfo: [ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: itemUrl]
+        )
     }
 
     private static let schemaVersion = stable2_0SchemaVersion
-    static let errorDomain = "FilesDatabaseManager"
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
     let account: Account
 
@@ -553,12 +566,12 @@ public final class FilesDatabaseManager: Sendable {
             return .trashContainer
         }
 
-        guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
+        guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
             Self.logger.error(
                 """
-                Could not get item parent directory metadata for metadata.
+                Could not get item parent directory item metadata for metadata.
                     ocID: \(metadata.ocId, privacy: .public),
-                    etag: \(metadata.etag, privacy: .public),
+                    etag: \(metadata.etag, privacy: .public), 
                     fileName: \(metadata.fileName, privacy: .public),
                     serverUrl: \(metadata.serverUrl, privacy: .public),
                     account: \(metadata.account, privacy: .public),
@@ -566,21 +579,37 @@ public final class FilesDatabaseManager: Sendable {
             )
             return nil
         }
+        return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
+    }
 
-        if let parentDirectoryMetadata = itemMetadata(ocId: itemParentDirectory.ocId) {
-            return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
+    public func parentItemIdentifierWithRemoteFallback(
+        fromMetadata metadata: SendableItemMetadata,
+        remoteInterface: RemoteInterface,
+        account: Account
+    ) async -> NSFileProviderItemIdentifier? {
+        if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
+            return parentItemIdentifier
         }
 
-        Self.logger.error(
-            """
-            Could not get item parent directory item metadata for metadata.
-                ocID: \(metadata.ocId, privacy: .public),
-                etag: \(metadata.etag, privacy: .public), 
-                fileName: \(metadata.fileName, privacy: .public),
-                serverUrl: \(metadata.serverUrl, privacy: .public),
-                account: \(metadata.account, privacy: .public),
-            """
+        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+            metadata.serverUrl,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: self,
+            depth: .target
         )
-        return nil
+        guard error == nil, let parentMetadata = metadatas?.first else {
+            Self.logger.error(
+                """
+                Could not retrieve parent item identifier remotely, received error.
+                    target metadata: \(metadata.ocId, privacy: .public)
+                    target filename: \(metadata.fileName, privacy: .public)
+                    received metadatas: \(metadatas?.count ?? 0, privacy: .public)
+                    error: \(error?.errorDescription ?? "NO ERROR", privacy: .public)
+                """
+            )
+            return nil
+        }
+        return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 }

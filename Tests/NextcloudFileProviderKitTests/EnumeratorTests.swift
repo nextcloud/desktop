@@ -165,14 +165,13 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbFolder.userId, Self.account.id)
         XCTAssertEqual(dbFolder.urlBase, Self.account.serverUrl)
 
-        let storedFolderItem = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteFolder.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedFolderItemMaybe = await Item.storedItem(
+            identifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedFolderItem = try XCTUnwrap(storedFolderItemMaybe)
         XCTAssertEqual(storedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(storedFolderItem.filename, remoteFolder.name)
         XCTAssertEqual(storedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
@@ -318,14 +317,13 @@ final class EnumeratorTests: XCTestCase {
         let dbFolderMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteFolder.identifier)
         )
-        let storedFolderItem = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteFolder.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedFolderItemMaybe = await Item.storedItem(
+            identifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedFolderItem = try XCTUnwrap(storedFolderItemMaybe)
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertNotEqual(dbFolderMetadata.etag, oldEtag)
         XCTAssertEqual(storedFolderItem.childItemCount?.intValue, remoteFolder.children.count)
@@ -487,14 +485,13 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbItemCMetadata.urlBase, Self.account.serverUrl)
         XCTAssertFalse(dbItemCMetadata.downloaded)
 
-        XCTAssertNotNil(
-            Item.storedItem(
-                identifier: .init(remoteFolder.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedFolderItemMaybe = await Item.storedItem(
+            identifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        XCTAssertNotNil(storedFolderItemMaybe)
 
         let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
             where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
@@ -577,14 +574,13 @@ final class EnumeratorTests: XCTestCase {
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
 
-        let storedItemA = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteItemA.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
         XCTAssertEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
@@ -600,14 +596,13 @@ final class EnumeratorTests: XCTestCase {
         print(storedRootItem.metadata.serverUrl)
         XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
 
-        let storedFolder = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteFolder.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedFolderMaybe = await Item.storedItem(
+            identifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedFolder = try XCTUnwrap(storedFolderMaybe)
         XCTAssertEqual(storedFolder.childItemCount?.intValue, remoteFolder.children.count)
     }
 
@@ -669,30 +664,27 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbItemCMetadata.lockOwner, remoteItemC.lockOwner)
         XCTAssertEqual(dbItemCMetadata.lockTimeOut, remoteItemC.lockTimeOut)
 
-        let storedItemA = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteItemA.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        let storedItemB = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteItemB.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
+        let storedItemBMaybe = await Item.storedItem(
+            identifier: .init(remoteItemB.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
-        let storedItemC = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteItemC.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemB = try XCTUnwrap(storedItemBMaybe)
+        let storedItemCMaybe = await Item.storedItem(
+            identifier: .init(remoteItemC.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemC = try XCTUnwrap(storedItemCMaybe)
 
         // Should be able to write to files locked by self
         XCTAssertTrue(storedItemA.fileSystemFlags.contains(.userWritable))
@@ -731,14 +723,13 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbItemAMetadata.ocId, remoteItemA.identifier)
         XCTAssertEqual(dbItemAMetadata.fileName, remoteItemA.name)
 
-        let storedItemA = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteItemA.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
         XCTAssertNotEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertFalse(storedItemA.filename.isEmpty)
@@ -782,42 +773,39 @@ final class EnumeratorTests: XCTestCase {
         try await observer.enumerateItems()
         XCTAssertEqual(observer.items.count, 3)
 
-        let storedItemA = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteTrashItemA.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteTrashItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
         XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteTrashItemA.identifier)
         XCTAssertEqual(storedItemA.filename, remoteTrashItemA.name)
         XCTAssertEqual(storedItemA.documentSize?.int64Value, remoteTrashItemA.size)
         XCTAssertEqual(storedItemA.isDownloaded, false)
         XCTAssertEqual(storedItemA.isUploaded, true)
 
-        let storedItemB = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteTrashItemB.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemBMaybe = await Item.storedItem(
+            identifier: .init(remoteTrashItemB.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemB = try XCTUnwrap(storedItemBMaybe)
         XCTAssertEqual(storedItemB.itemIdentifier.rawValue, remoteTrashItemB.identifier)
         XCTAssertEqual(storedItemB.filename, remoteTrashItemB.name)
         XCTAssertEqual(storedItemB.documentSize?.int64Value, remoteTrashItemB.size)
         XCTAssertEqual(storedItemB.isDownloaded, false)
         XCTAssertEqual(storedItemB.isUploaded, true)
 
-        let storedItemC = try XCTUnwrap(
-            Item.storedItem(
-                identifier: .init(remoteTrashItemC.identifier),
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager
-            )
+        let storedItemCMaybe = await Item.storedItem(
+            identifier: .init(remoteTrashItemC.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
         )
+        let storedItemC = try XCTUnwrap(storedItemCMaybe)
         XCTAssertEqual(storedItemC.itemIdentifier.rawValue, remoteTrashItemC.identifier)
         XCTAssertEqual(storedItemC.filename, remoteTrashItemC.name)
         XCTAssertEqual(storedItemC.documentSize?.int64Value, remoteTrashItemC.size)
@@ -945,6 +933,60 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(observer.items.count, 1)
         XCTAssertFalse(
             observer.items.contains(where: { $0.itemIdentifier.rawValue == "lock-file" })
+        )
+    }
+
+    // Tests situation where we are enumerating files and we can no longer find the parent item
+    // in the database. So we need to simulate a situation where this takes place.
+    func testCorrectEnumerateFileWithMissingParentInDb() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        itemAMetadata.etag = "OLD"
+
+        Self.dbManager.addItemMetadata(itemAMetadata)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 2) // Must include the folder that was missing
+        XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
+
+        let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
+            where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
+        ))
+        XCTAssertEqual(retrievedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(
+            Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
+
+        let storedItemAMaybe = await Item.storedItem(
+            identifier: .init(remoteItemA.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let storedItemA = try XCTUnwrap(storedItemAMaybe)
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(storedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(storedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(
+            Int(storedItemA.contentModificationDate?.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
     }
 }

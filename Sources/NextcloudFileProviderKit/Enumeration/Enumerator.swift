@@ -612,28 +612,56 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
-        itemMetadatas: [SendableItemMetadata]
+        itemMetadatas: [SendableItemMetadata],
+        handleInvalidParent: Bool = true
     ) {
         Task {
-            let items = await itemMetadatas.toFileProviderItems(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
-            )
+            do {
+                let items = try await itemMetadatas.toFileProviderItems(
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                )
 
-            Task { @MainActor in
-                observer.didEnumerate(items)
-                Self.logger.info("Did enumerate \(items.count) items")
+                Task { @MainActor in
+                    observer.didEnumerate(items)
+                    Self.logger.info("Did enumerate \(items.count) items")
 
-                // TODO: Handle paging properly
-                /*
-                 if items.count == maxItemsPerFileProviderPage {
-                 let nextPage = numPage + 1
-                 let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-                 observer.finishEnumerating(upTo: providerPage)
-                 } else {
-                 observer.finishEnumerating(upTo: nil)
-                 }
-                 */
-                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                    // TODO: Handle paging properly
+                    /*
+                     if items.count == maxItemsPerFileProviderPage {
+                     let nextPage = numPage + 1
+                     let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+                     observer.finishEnumerating(upTo: providerPage)
+                     } else {
+                     observer.finishEnumerating(upTo: nil)
+                     }
+                     */
+                    observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                }
+            } catch let error as NSError { // This error can only mean a missing parent item identifier
+                guard handleInvalidParent else {
+                    Self.logger.info("Not handling invalid parent in enumeration")
+                    observer.finishEnumeratingWithError(error)
+                    return
+                }
+                do {
+                    let metadata = try await Self.attemptInvalidParentRecovery(
+                        error: error,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager
+                    )
+                    Self.completeEnumerationObserver(
+                        observer,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        numPage: numPage,
+                        itemMetadatas: [metadata] + itemMetadatas,
+                        handleInvalidParent: false
+                    )
+                } catch let error {
+                    observer.finishEnumeratingWithError(error)
+                }
             }
         }
     }
@@ -647,7 +675,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         dbManager: FilesDatabaseManager,
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
-        deletedMetadatas: [SendableItemMetadata]?
+        deletedMetadatas: [SendableItemMetadata]?,
+        handleInvalidParent: Bool = true
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             Self.logger.error(
@@ -687,23 +716,95 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         Task { [allUpdatedMetadatas, allDeletedMetadatas] in
-            let updatedItems = await allUpdatedMetadatas.toFileProviderItems(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
-            )
+            do {
+                let updatedItems = try await allUpdatedMetadatas.toFileProviderItems(
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                )
 
-            Task { @MainActor in
-                if !updatedItems.isEmpty {
-                    observer.didUpdate(updatedItems)
-                }
+                Task { @MainActor in
+                    if !updatedItems.isEmpty {
+                        observer.didUpdate(updatedItems)
+                    }
 
-                Self.logger.info(
+                    Self.logger.info(
                     """
                     Processed \(updatedItems.count) new or updated metadatas.
-                    \(allDeletedMetadatas.count) deleted metadatas.
+                        \(allDeletedMetadatas.count) deleted metadatas.
                     """
-                )
-                observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                    )
+                    observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                }
+            } catch let error as NSError { // This error can only mean a missing parent item identifier
+                guard handleInvalidParent else {
+                    Self.logger.info("Not handling invalid parent in change enumeration")
+                    observer.finishEnumeratingWithError(error)
+                    return
+                }
+                do {
+                    let metadata = try await Self.attemptInvalidParentRecovery(
+                        error: error,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager
+                    )
+                    var modifiedNewMetadatas = newMetadatas
+                    modifiedNewMetadatas?.append(metadata)
+                    Self.completeChangesObserver(
+                        observer,
+                        anchor: anchor,
+                        enumeratedItemIdentifier: enumeratedItemIdentifier,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        newMetadatas: modifiedNewMetadatas,
+                        updatedMetadatas: updatedMetadatas,
+                        deletedMetadatas: deletedMetadatas,
+                        handleInvalidParent: false
+                    )
+                } catch let error {
+                    observer.finishEnumeratingWithError(error)
+                }
             }
         }
+    }
+
+    private static func attemptInvalidParentRecovery(
+        error: NSError,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager
+    ) async throws -> SendableItemMetadata {
+        Self.logger.info("Attempting recovery from invalid parent identifier.")
+        // Try to recover from errors involving missing metadata for a parent
+        let userInfoKey =
+            FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
+        guard let urlToEnumerate = (error as NSError).userInfo[userInfoKey] as? String else {
+            Self.logger.fault("No missing parent server url and filename in error user info.")
+            assert(false)
+            throw NSError()
+        }
+
+        Self.logger.info(
+            "Recovering from invalid parent identifier at \(urlToEnumerate, privacy: .public)"
+        )
+        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+            urlToEnumerate,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            depth: .target
+        )
+        guard error == nil || error == .success, let metadata = metadatas?.first else {
+            Self.logger.error(
+                """
+                Problem retrieving parent for metadata.
+                    Error: \(error?.errorDescription ?? "NONE", privacy: .public)
+                    Metadatas: \(metadatas?.count ?? -1, privacy: .public)
+                """
+            )
+            throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+        }
+        // Provide it to the caller method so it can ingest it into the database and fix future errs
+        return metadata
     }
 }

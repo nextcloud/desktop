@@ -49,7 +49,7 @@ public extension Item {
                     \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, moveError.fileProviderError(
+            return (nil, await moveError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: newRemotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface
@@ -179,7 +179,7 @@ public extension Item {
             dbManager.addItemMetadata(metadata)
             // Moving should be done before uploading and should catch collisions already, but,
             // it is painless to check here too just in case
-            return (nil, error.fileProviderError(
+            return (nil, await error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface
@@ -770,7 +770,11 @@ public extension Item {
                 modifiedItem.metadata.isTrashed
             {
                 let (restoredItem, restoreError) = await Self.restoreFromTrash(
-                    modifiedItem, account: account, dbManager: dbManager, domain: domain
+                    modifiedItem,
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    domain: domain
                 )
                 guard restoreError == nil else {
                     return (modifiedItem, restoreError)

@@ -83,13 +83,13 @@ extension NKError {
         handlingCollisionAgainstItemInRemotePath problemRemotePath: String,
         dbManager: FilesDatabaseManager,
         remoteInterface: RemoteInterface
-    ) -> Error? {
+    ) async -> Error? {
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }
         guard let collidingItemMetadata = dbManager.itemMetadata(
             account: dbManager.account.ncKitAccount, locatedAtRemoteUrl: problemRemotePath
-        ), let collidingItem = Item.storedItem(
+        ), let collidingItem = await Item.storedItem(
             identifier: .init(collidingItemMetadata.ocId),
             account: dbManager.account,
             remoteInterface: remoteInterface,

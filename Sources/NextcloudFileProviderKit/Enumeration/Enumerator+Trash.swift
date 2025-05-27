@@ -25,14 +25,18 @@ extension Enumerator {
         }
 
         Task { [metadatas] in
-            let items = await metadatas.toFileProviderItems(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
-            )
-
-            Task { @MainActor in
-                observer.didEnumerate(items)
-                Self.logger.info("Did enumerate \(items.count) trash items")
-                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            do {
+                let items = try await metadatas.toFileProviderItems(
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                )
+                Task { @MainActor in
+                    observer.didEnumerate(items)
+                    Self.logger.info("Did enumerate \(items.count) trash items")
+                    observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+                }
+            } catch let error {
+                Self.logger.info("Unexpected error enumerating trash items, observing error.")
+                Task { @MainActor in observer.finishEnumeratingWithError(error) }
             }
         }
     }
