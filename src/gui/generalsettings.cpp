@@ -340,7 +340,7 @@ void GeneralSettings::loadUpdateChannelsList() {
     }
 
     const auto defaultUpdateChannel = cfgFile.defaultUpdateChannel();
-    _ui->restoreUpdateChannelButton->setText(tr("Restore to &%1").arg(defaultUpdateChannel));
+    _ui->restoreUpdateChannelButton->setText(tr("Restore to &%1").arg(updateChannelToLocalized(defaultUpdateChannel)));
     _ui->restoreUpdateChannelButton->setEnabled(currentUpdateChannel != defaultUpdateChannel);
     connect(_ui->restoreUpdateChannelButton, &QPushButton::clicked, this, &GeneralSettings::slotRestoreUpdateChannel);
 }
@@ -490,7 +490,7 @@ void GeneralSettings::slotUpdateChannelChanged()
     connect(msgBox, &QMessageBox::finished, msgBox, [this, newChannel, currentUpdateChannel, msgBox, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
-            updateChannelToLocalized(newChannel);
+            setAndCheckNewUpdateChannel(newChannel);
         } else {
             _ui->updateChannel->setCurrentText(updateChannelToLocalized(currentUpdateChannel));
         }

@@ -38,7 +38,7 @@ public slots:
     void slotStyleChanged();
 #if defined(BUILD_UPDATER)
     void loadUpdateChannelsList();
-    QString updateChannelToLocalized(const QString &channel) const;
+    [[nodiscard]] QString updateChannelToLocalized(const QString &channel) const;
     void setAndCheckNewUpdateChannel(const QString &newChannel);
     void restoreUpdateChannel();
 #endif
