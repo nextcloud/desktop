@@ -12,11 +12,11 @@ import NextcloudFileProviderKit
 public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let account: Account
     let dbManager: FilesDatabaseManager
-    let remoteInterface: any RemoteInterface
+    let remoteInterface: MockRemoteInterface
     public var enumeratorItems: [SendableItemMetadata] = []
 
     public init(
-        account: Account, dbManager: FilesDatabaseManager, remoteInterface: any RemoteInterface
+        account: Account, dbManager: FilesDatabaseManager, remoteInterface: MockRemoteInterface
     ) {
         self.account = account
         self.dbManager = dbManager
