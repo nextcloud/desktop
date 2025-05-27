@@ -36,8 +36,8 @@ constexpr auto e2eeSignatureHeaderName = "X-NC-E2EE-SIGNATURE";
 namespace OCC {
 
 GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
-                                    const QByteArray& fileId,
-                                    QObject* parent)
+                                     const QByteArray& fileId,
+                                     QObject* parent)
     : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent)
     , _fileId(fileId)
 {
@@ -142,16 +142,16 @@ bool StoreMetaDataApiJob::finished()
 }
 
 UpdateMetadataApiJob::UpdateMetadataApiJob(const AccountPtr& account,
-                                                 const QByteArray& fileId,
-                                                 const QByteArray& b64Metadata,
-                                                 const QByteArray& token,
-                                                 const QByteArray& signature,
-                                                 QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent)
-, _fileId(fileId),
-_b64Metadata(b64Metadata),
-_token(token),
-_signature(signature)
+                                           const QByteArray& fileId,
+                                           const QByteArray& b64Metadata,
+                                           const QByteArray& token,
+                                           const QByteArray& signature,
+                                           QObject* parent)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent)
+    , _fileId(fileId),
+    _b64Metadata(b64Metadata),
+    _token(token),
+    _signature(signature)
 {
 }
 
@@ -194,22 +194,22 @@ void UpdateMetadataApiJob::start()
 bool UpdateMetadataApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-		if (retCode != 200) {
-			qCInfo(lcCseJob()) << "error updating the metadata" << path() << errorString() << retCode;
-			emit error(_fileId, retCode);
-            return false;
-		}
+    if (retCode != 200) {
+        qCInfo(lcCseJob()) << "error updating the metadata" << path() << errorString() << retCode;
+        emit error(_fileId, retCode);
+        return false;
+    }
 
-		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
-		emit success(_fileId);
+    qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
+    emit success(_fileId);
     return true;
 }
 
 UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
-                                                 const QByteArray& fileId,
-                                                 const QByteArray& token,
-                                                 SyncJournalDb *journalDb,
-                                                 QObject* parent)
+                                                     const QByteArray& fileId,
+                                                     const QByteArray& token,
+                                                     SyncJournalDb *journalDb,
+                                                     QObject* parent)
     : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("lock/") + fileId, parent)
     , _fileId(fileId)
     , _token(token)
@@ -274,9 +274,9 @@ bool UnlockEncryptFolderApiJob::finished()
 
 
 DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account, const QByteArray& fileId, const QByteArray &token, QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent), 
-_fileId(fileId),
-_token(token)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent),
+    _fileId(fileId),
+    _token(token)
 {
 }
 
@@ -399,7 +399,7 @@ void LockEncryptFolderApiJob::setCounter(quint64 counter)
 }
 
 SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, FlagAction flagAction, QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
 {
 }
 
@@ -459,8 +459,9 @@ void StorePublicKeyApiJob::start()
 bool StorePublicKeyApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    if (retCode != 200) {
         qCInfo(lcStorePublicKeyApiJob()) << "Sending public key ended with"  << path() << errorString() << retCode;
+    }
 
     QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
@@ -469,7 +470,7 @@ bool StorePublicKeyApiJob::finished()
 }
 
 StorePrivateKeyApiJob::StorePrivateKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
-: AbstractNetworkJob(account, path, parent)
+    : AbstractNetworkJob(account, path, parent)
 {
 }
 
@@ -497,8 +498,9 @@ void StorePrivateKeyApiJob::start()
 bool StorePrivateKeyApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    if (retCode != 200) {
         qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << retCode;
+    }
 
     QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
@@ -507,7 +509,7 @@ bool StorePrivateKeyApiJob::finished()
 }
 
 SignPublicKeyApiJob::SignPublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
-: AbstractNetworkJob(account, path, parent)
+    : AbstractNetworkJob(account, path, parent)
 {
 }
 
