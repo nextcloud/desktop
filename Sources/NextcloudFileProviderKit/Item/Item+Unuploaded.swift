@@ -75,7 +75,7 @@ extension Item {
         forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager
-    ) -> Item? {
+    ) async -> Item? {
         var modifiedParentItemIdentifier = parentItemIdentifier
         var modifiedMetadata = metadata
 
@@ -124,7 +124,8 @@ extension Item {
             parentItemIdentifier: modifiedParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
     }
 }

@@ -48,7 +48,7 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         trashItems: [NKTrash]
-    ) {
+    ) async {
         var newTrashedItems = [NSFileProviderItem]()
 
         // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
@@ -71,7 +71,8 @@ extension Enumerator {
                 parentItemIdentifier: .trashContainer,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
             )
             newTrashedItems.append(item)
 

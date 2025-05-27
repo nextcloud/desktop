@@ -31,7 +31,10 @@ extension Enumerator {
     ) {
         let results = await self.scanRecursively(
             Item.rootContainer(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
             ).metadata,
             account: account,
             remoteInterface: remoteInterface,

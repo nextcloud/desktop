@@ -331,11 +331,10 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertFalse(item.capabilities.contains(.allowsTrashing))
     }
 
-    func testItemTrashabilityAffectedByCapabilities() {
+    func testItemTrashabilityAffectedByCapabilities() async {
         let remoteInterface = MockRemoteInterface()
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
-        remoteInterface.capabilities =
-            remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: Self.account)
         let metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
         let item = Item(

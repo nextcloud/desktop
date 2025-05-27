@@ -451,7 +451,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                Self.completeChangesObserver(
+                await Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
                     account: account,

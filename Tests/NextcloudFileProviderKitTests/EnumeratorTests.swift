@@ -591,7 +591,10 @@ final class EnumeratorTests: XCTestCase {
         )
 
         let storedRootItem = Item.rootContainer(
-            account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: Self.account)
         )
         print(storedRootItem.metadata.serverUrl)
         XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items

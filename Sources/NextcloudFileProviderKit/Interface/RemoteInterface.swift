@@ -180,7 +180,7 @@ public protocol RemoteInterface {
 }
 
 public extension RemoteInterface {
-    
+
     private var logger: Logger {
         Logger(subsystem: Logger.subsystem, category: "RemoteInterface")
     }
@@ -190,15 +190,15 @@ public extension RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> Bool {
-        var serverSupportsTrash = false
+        var remoteSupportsTrash = false
         let (_, capabilities, _, error) = await currentCapabilities(
             account: account, options: .init(), taskHandler: { _ in }
         )
         if let filesCapabilities = capabilities?.files {
-            serverSupportsTrash = filesCapabilities.undelete
+            remoteSupportsTrash = filesCapabilities.undelete
         } else {
             logger.warning("Could not get capabilities, will assume trash is unavailable.")
         }
-        return serverSupportsTrash
+        return remoteSupportsTrash
     }
 }

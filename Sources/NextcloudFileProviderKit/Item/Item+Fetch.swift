@@ -304,7 +304,8 @@ public extension Item {
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
 
         return (localPath, fpItem, nil)
