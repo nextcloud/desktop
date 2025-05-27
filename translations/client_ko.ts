@@ -1321,6 +1321,45 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorDownloadJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
+        <source>File has changed since discovery</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
+        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
@@ -2962,6 +3001,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>법적 고지</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="455"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>업데이트 재시작</translation>
@@ -2985,6 +3029,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>시스템 단위 자동 시작이 활성화되어 있으므로 자동 시작을 비활성화할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="343"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3654,6 +3703,16 @@ Note that using any logging command line options will override this setting.</so
         <translation>업데이트 상태를 알 수 없습니다: 새 업데이트를 확인하지 않았습니다.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
+        <source>You are using the %1 update channel. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <source>No updates available. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>사용 가능한 업데이트가 없습니다. 최신 버전입니다.</translation>
@@ -4071,26 +4130,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>마침표로 끝나는 파일 이름은 이 파일 시스템에서 지원되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="421"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
         <translation>파일 이름에 잘못된 글자가 한 자 이상 있음</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>파일 이름 뒤에 공백이 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4111,13 +4185,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>&quot;%2&quot; 문자가 포함된 %1 이름은 이 파일 시스템에서 지원되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425"/>
-        <source>File name is a reserved name on this file system.</source>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4129,19 +4201,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>파일 이름 뒤에 공백이 있습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -4239,12 +4298,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1187"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1190"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

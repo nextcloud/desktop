@@ -1317,6 +1317,45 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorDownloadJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
+        <source>File has changed since discovery</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
+        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
@@ -2952,6 +2991,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Pravno obvestilo</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="455"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Ponovno zaženi in posodobi</translation>
@@ -2975,6 +3019,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Samodejnega zagona ni mogoče izklopiti, ker je ta omogočen sistemsko.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="343"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3637,6 +3686,16 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
         <translation>Stanje posodobitve ni znano: ni mogoče preveriti za nove posodobitve.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
+        <source>You are using the %1 update channel. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <source>No updates available. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Trenutno ni novih posodobitev. Nameščena je najnovejša različica.</translation>
@@ -4053,26 +4112,41 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Imena datotek, ki vsebujejo končno piko, na tem sistemu niso podprta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="421"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
         <translation>Ime datoteke vsebuje vsaj en neveljaven znak.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Datoteka vsebuje pripete presledne znake.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4093,13 +4167,11 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425"/>
-        <source>File name is a reserved name on this file system.</source>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4110,19 +4182,6 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>Datoteka vsebuje pripete presledne znake.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4221,12 +4280,12 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1187"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1190"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

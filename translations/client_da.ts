@@ -1323,6 +1323,45 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorDownloadJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
+        <source>File has changed since discovery</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
+        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
@@ -2966,6 +3005,11 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <translation>Juridisk Notits</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="455"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Genstart &amp;&amp; Opdater</translation>
@@ -2989,6 +3033,11 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Du kan ikke deaktivere autostart, fordi system- wide autostart er aktiveret.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="343"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3658,6 +3707,16 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
         <translation>Opdateringsstatus ukendt. Søgte ikke efter opdateringer.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
+        <source>You are using the %1 update channel. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <source>No updates available. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Ingen opdateringer tilgængelige. Din installation kører nyeste version.</translation>
@@ -4074,26 +4133,41 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <translation>Filnavne der slutter med en periode er ikke understøttet på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="421"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4114,14 +4188,12 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <translation>%1 navn som indeholder tegnet &quot;%2&quot; er ikke understøttet på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kan ikke omdøbes eller uploades.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4132,19 +4204,6 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 navn er et reserveret navn på dette filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kan ikke omdøbes eller uploades.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -4242,12 +4301,12 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
         <translation>Kan ikke synkronisere på grund af ugyldig ændringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1187"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1190"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

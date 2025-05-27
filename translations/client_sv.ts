@@ -1324,6 +1324,45 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorDownloadJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
+        <source>File has changed since discovery</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
+        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
@@ -2967,6 +3006,11 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Rättsligt meddelande</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="455"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Starta om &amp;&amp; Uppdatera</translation>
@@ -2990,6 +3034,11 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Du kan inte deaktivera autostart eftersom autostart är aktiverat på systemnivå.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="343"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3659,6 +3708,16 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <translation>Uppdateringsstatus är okänd: Gjorde ingen kontroll av nya uppdateringar.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
+        <source>You are using the %1 update channel. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <source>No updates available. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Inga uppdateringar tillgängliga. Din installation är redan den senaste versionen.</translation>
@@ -4075,26 +4134,41 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Filnamn som slutar med en punkt stöds inte på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Mappnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Filnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Mappnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="421"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Mappnamnet är ett reserverat namn i detta filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Filnamnet är ett reserverat namn i detta filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Filnamnet innehåller inledande blanksteg.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4115,14 +4189,12 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>%1 namn som innehåller tecknet &quot;%2&quot; stöds inte i det här filsystemet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Mappnamnet är ett reserverat namn i detta filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Filnamnet är ett reserverat namn i detta filsystem.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kan inte bytas namn på eller laddas upp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4133,19 +4205,6 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 namnet är ett reserverat namn på det här filsystemet.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>Filnamnet innehåller inledande blanksteg.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kan inte bytas namn på eller laddas upp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -4243,12 +4302,12 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1187"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1190"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
     </message>

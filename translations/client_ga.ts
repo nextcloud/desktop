@@ -1324,6 +1324,45 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     </message>
 </context>
 <context>
+    <name>OCC::BulkPropagatorDownloadJob</name>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
+        <source>File has changed since discovery</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
+        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <source>Error updating metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::BulkPropagatorJob</name>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="150"/>
@@ -2967,6 +3006,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Fógra Dlíthiúil</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="455"/>
+        <source>Restore &amp;Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Atosaigh &amp;&amp; Nuashonraigh</translation>
@@ -2990,6 +3034,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Ní féidir leat uath-thús a dhíchumasú toisc go bhfuil uath-tús ar fud an chórais cumasaithe.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="343"/>
+        <source>Restore to &amp;%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3659,6 +3708,16 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
         <translation>Ní fios stádas an nuashonraithe: Níor sheiceáil le haghaidh nuashonruithe nua.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
+        <source>You are using the %1 update channel. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
+        <source>No updates available. Your installation is the latest version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Níl aon nuashonruithe ar fáil. Tá do shuiteáil ag an leagan is déanaí.</translation>
@@ -4075,26 +4134,41 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le hainmneacha comhaid a chríochnaíonn le tréimhse ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="416"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="417"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="420"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="421"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad san ainm comhaid</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Tá spásanna leanúnacha san ainm comhaid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4115,14 +4189,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le % 1 ainm ina bhfuil an carachtar &quot;% 2&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="424"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="425"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Ní féidir é a athainmniú ná a uaslódáil.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4133,19 +4205,6 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Is ainm forchoimeádta é % 1 ar an gcóras comhad seo.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>Tá spásanna leanúnacha san ainm comhaid.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Ní féidir é a athainmniú ná a uaslódáil.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
@@ -4243,12 +4302,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1187"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i gcomhaid phearsanta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1190"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i bhfillteán %3.</translation>
     </message>
