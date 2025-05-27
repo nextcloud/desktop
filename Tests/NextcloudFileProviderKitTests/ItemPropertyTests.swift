@@ -21,6 +21,11 @@ final class ItemPropertyTests: XCTestCase {
         realmConfig: .defaultConfiguration, account: account
     )
 
+    override func setUp() {
+        super.setUp()
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    }
+
     func testMetadataContentType() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
