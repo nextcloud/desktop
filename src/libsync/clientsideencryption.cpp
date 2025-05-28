@@ -1599,7 +1599,7 @@ void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(getPrivateKey());
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
     });
@@ -1618,7 +1618,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_encryptionCertificate.getCertificate().toPem());
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
     });
@@ -1633,7 +1633,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account, const QSt
     job->setInsecureFallback(false);
     job->setKey(keyChainKey);
     job->setBinaryData(certificate.toPem());
-    connect(job, &WritePasswordJob::finished, [this, certificate](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [this, certificate](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
         emit certificateWriteComplete(certificate);
@@ -1756,11 +1756,15 @@ void ClientSideEncryption::getUsersPublicKeyFromServer(const AccountPtr &account
 {
     qCInfo(lcCse()) << "Retrieving public keys from server, for users:" << userIds;
     const auto job = new JsonApiJob(account, e2eeBaseUrl(account) + QStringLiteral("public-key"), this);
-    connect(job, &JsonApiJob::jsonReceived, [this, account, userIds](const QJsonDocument &doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, job, [this, account, userIds](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
             QHash<QString, NextcloudSslCertificate> results;
-            const auto publicKeys = doc.object()[QStringLiteral("ocs")].toObject()[QStringLiteral("data")].toObject()[QStringLiteral("public-keys")].toObject();
-            for (const auto &userId : publicKeys.keys()) {
+            const auto &docObj = doc.object();
+            const auto &ocsObj = docObj[QStringLiteral("ocs")].toObject();
+            const auto &dataObj = ocsObj[QStringLiteral("data")].toObject();
+            const auto &publicKeys = dataObj[QStringLiteral("public-keys")].toObject();
+            const auto &allKeys = publicKeys.keys();
+            for (const auto &userId : allKeys) {
                 if (userIds.contains(userId)) {
                     results.insert(userId, QSslCertificate(publicKeys.value(userId).toString().toLocal8Bit(), QSsl::Pem));
                 }
@@ -1860,7 +1864,7 @@ void ClientSideEncryption::saveCertificateIdentification(const AccountPtr &accou
 void ClientSideEncryption::cacheTokenPin(const QString pin)
 {
     _cachedPin = pin;
-    QTimer::singleShot(86400000, [this] () {
+    QTimer::singleShot(86400000, this, [this] () {
         _cachedPin.clear();
     });
 }
@@ -1952,7 +1956,7 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(const AccountPtr &
     };
 
     int ret = 0;
-    int nVersion = 1;
+    int nVersion = 0; // X.509 certificate requests only support version 1
 
     // 2. set version of x509 req
     auto x509_req = X509_REQ_new();
@@ -2049,7 +2053,7 @@ void ClientSideEncryption::sendPublicKey(const AccountPtr &account)
     // Send public key to the server
     auto job = new StorePublicKeyApiJob(account, e2eeBaseUrl(account) + "public-key", this);
     job->setPublicKey(_encryptionCertificate.getCertificate().toPem());
-    connect(job, &StorePublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+    connect(job, &StorePublicKeyApiJob::jsonReceived, job, [this, account](const QJsonDocument& doc, int retCode) {
         Q_UNUSED(doc);
         switch(retCode) {
         case 200:
@@ -2094,7 +2098,7 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
     privateKeyJob->setInsecureFallback(false);
     privateKeyJob->setKey(privateKeyKeychainId);
     privateKeyJob->setBinaryData(bytearrayPrivateKey);
-    connect(privateKeyJob, &WritePasswordJob::finished, [keyPair = std::move(keyPair), publicKeyKeychainId, account, csrContent, this] (Job *incoming) mutable {
+    connect(privateKeyJob, &WritePasswordJob::finished, privateKeyJob, [keyPair = std::move(keyPair), publicKeyKeychainId, account, csrContent, this] (Job *incoming) mutable {
         if (incoming->error() != Error::NoError) {
             failedToInitialize(account);
             return;
@@ -2113,7 +2117,7 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
         publicKeyJob->setInsecureFallback(false);
         publicKeyJob->setKey(publicKeyKeychainId);
         publicKeyJob->setBinaryData(bytearrayPublicKey);
-        connect(publicKeyJob, &WritePasswordJob::finished, [account, keyPair = std::move(keyPair), csrContent, this](Job *incoming) mutable {
+        connect(publicKeyJob, &WritePasswordJob::finished, publicKeyJob, [account, keyPair = std::move(keyPair), csrContent, this](Job *incoming) mutable {
             if (incoming->error() != Error::NoError) {
                 failedToInitialize(account);
                 return;
