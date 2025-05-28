@@ -474,7 +474,17 @@ bool FileSystem::setFolderPermissions(const QString &path,
     const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
     for (const auto &oneEntry : childFiles) {
         const auto childFile = QDir::toNativeSeparators(path + QDir::separator() + oneEntry);
-        if (!SetFileSecurityW(childFile.toStdWString().c_str(), info, &newSecurityDescriptor)) {
+
+        const auto &childFileStdWString = childFile.toStdWString();
+        const auto attributes = GetFileAttributes(childFileStdWString.c_str());
+
+        // testing if that could be a pure virtual placeholder file (i.e. CfApi file without data)
+        // we do not want to trigger implicit hydration ourself
+        if ((attributes & FILE_ATTRIBUTE_SPARSE_FILE) != 0) {
+            continue;
+        }
+
+        if (!SetFileSecurityW(childFileStdWString.c_str(), info, &newSecurityDescriptor)) {
             qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << childFile << GetLastError();
             return false;
         }
