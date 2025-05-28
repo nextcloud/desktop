@@ -143,7 +143,8 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 
     QString dir = QFileDialog::getExistingDirectory(this,
         tr("Select the source folder"),
-        sf);
+        sf,
+        QFileDialog::ShowDirsOnly);
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
