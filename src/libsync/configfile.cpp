@@ -83,11 +83,6 @@ static constexpr char proxyUserC[] = "Proxy/user";
 static constexpr char proxyPassC[] = "Proxy/pass";
 static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
 
-static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
-static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
-static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
-static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
-
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
