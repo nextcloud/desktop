@@ -1329,37 +1329,37 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>File has changed since discovery</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Could not delete file record %1 from local DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 can not be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 can not be downloaded because it is non virtual!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>could not get file %1 from local DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>File %1 cannot be downloaded because encryption information is missing.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
 </context>
 <context>
@@ -3008,7 +3008,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Restore &amp;Default</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -3038,7 +3038,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Restore to &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3710,12 +3710,12 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>You are using the %1 update channel. Your installation is the latest version.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>No updates available. Your installation is the latest version.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>

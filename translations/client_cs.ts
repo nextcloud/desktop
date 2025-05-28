@@ -1328,37 +1328,37 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Soubor byl od prvního nalezení změněn</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nezdařilo se smazat záznam souboru %1 z místní databáze</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 can not be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nemůže být stažen, protože není virtuální!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>nepodařilo se získat soubor %1 z místní databáze</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nemůže být stažen, protože chybí informace o šifrování.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při aktualizaci metadat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 se právě používá</translation>
     </message>
 </context>
 <context>
@@ -3708,12 +3708,12 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Využíváte aktualizační kanál %1. Vaše instalace využívá nejnovější verzi.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Nejsou žádné dostupné aktualizace. Vaše instalace běží na nejnovější verzi.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>

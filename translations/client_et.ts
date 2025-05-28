@@ -1329,37 +1329,37 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Peale tuvastamist on fail muutunud</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 can not be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili ei saa alla laadida, sest ta on mittevirtuaalne fail!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ei õnnestunud laadida „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ faili ei saa alla laadida, sest krüptimise teave on puudu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>„%1“ fail on juba kasutusel</translation>
     </message>
 </context>
 <context>
@@ -3008,7 +3008,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Taasta &amp;vaikeseadistused</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -3038,7 +3038,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Taasta: &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3709,12 +3709,12 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris on kasutusel uuenduskanal „%1“. Kasutad kõige viimast versiooni.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Uuendusi pole saadaval. Kasutad kõige viimast versiooni.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
