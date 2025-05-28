@@ -15,7 +15,7 @@ public extension Item {
         parentItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
+        dbManager: FilesDatabaseManager
     ) {
         self.init(
             metadata: metadata,
