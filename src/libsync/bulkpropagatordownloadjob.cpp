@@ -175,7 +175,7 @@ void BulkPropagatorDownloadJob::startAfterIsEncryptedIsChecked(const SyncFileIte
     } else {
         // we should never get here, as BulkPropagatorDownloadJob must only ever be instantiated and only contain virtual files
         qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(item->_file) << "can not be downloaded because it is non virtual!";
-        abortWithError(item, SyncFileItem::NormalError, tr("File %1 can not be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(item->_file)));
+        abortWithError(item, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(item->_file)));
         return;
     }
     
@@ -226,7 +226,7 @@ void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
     SyncJournalFileRecord parentRec;
     if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
         qCWarning(lcBulkPropagatorDownloadJob) << "could not get file from local DB" << parentPath;
-        abortWithError(item, SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath));
+        abortWithError(item, SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(parentPath));
         return;
     }
  
