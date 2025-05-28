@@ -32,6 +32,27 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return false;
     }
 
+    if (!account) {
+        return false;
+    }
+
+    // Check if HSTS is active for this host
+    auto qnam = account->networkAccessManager();
+    if (qnam && qnam->isStrictTransportSecurityEnabled()) {
+        // Get the host from the account URL
+        QString host = account->url().host();
+
+        // Check if this host has an active HSTS policy
+        auto hstsPolicies = qnam->strictTransportSecurityHosts();
+        for (const auto &policy : hstsPolicies) {
+            if (policy.host() == host && !policy.isExpired()) {
+                // HSTS is active for this host, don't show the dialog
+                qCInfo(lcSslErrorDialog) << "SSL certificate error, but HSTS is active. Rejecting connection.";
+                return false;
+            }
+        }
+    }
+
     SslErrorDialog dlg(account);
     // whether the failing certs have previously been accepted
     if (dlg.checkFailingCertsKnown(errors)) {
