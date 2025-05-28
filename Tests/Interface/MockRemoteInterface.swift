@@ -11,7 +11,7 @@ import NextcloudCapabilitiesKit
 import NextcloudFileProviderKit
 import NextcloudKit
 
-fileprivate let mockCapabilities = ##"""
+let mockCapabilities = ##"""
 {
   "ocs": {
     "meta": {
