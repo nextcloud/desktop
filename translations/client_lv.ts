@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
         <source>Sync paused</source>
-        <translation>Sinhronizācija pārtraukta</translation>
+        <translation>Sinhronizēšana apturēta</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Pause synchronization</source>
-        <translation>Apturēt sinhronizāciju</translation>
+        <translation>Apturēt sinhronizēšanu</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
@@ -147,7 +147,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
         <source>Quit sync client</source>
-        <translation>Iziet no sinhronizācijas klienta</translation>
+        <translation>Iziet no sinhronizēšanas klienta</translation>
     </message>
 </context>
 <context>
@@ -602,12 +602,12 @@ Vai konts jāimportē?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
         <source>Apply manual changes</source>
-        <translation>Pielietot manuālās izmaiņas</translation>
+        <translation>Pielietot pašrocīgās izmaiņas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Standarta datņu sinhronizēšana</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="314"/>
@@ -796,7 +796,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="710"/>
         <source>Remove folder sync connection</source>
-        <translation>Noņemt mapes sinhronizācijas savienojumu</translation>
+        <translation>Noņemt mapes sinhronizēšanas savienojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="723"/>
@@ -899,7 +899,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1648"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation>Ir mapes, kas ir palielinājušās izmērā pāri %1MB: %2</translation>
+        <translation>Ir mapes, kuru lielums ir pārsniedzis %1MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
@@ -985,7 +985,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vai tiešām vēlaties apturēt mapes &lt;i&gt;%1&lt;/i&gt; sinhronizēšanu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu izdzēšanu.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vai tiešām apturēt mapes &lt;i&gt;%1&lt;/i&gt; sinhronizēšanu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu izdzēšanu.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1102"/>
@@ -1045,7 +1045,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1343"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Nevar savienoties ar %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1348"/>
@@ -2218,7 +2218,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="485"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 un %n citām datnēm ir sinhronizācijas konflikts.</numerusform><numerusform>%1 un %n citām datnēm ir sinhronizācijas konflikts.</numerusform><numerusform>%1 un %n citām datnēm ir sinhronizēšanas nesaderības.</numerusform></translation>
+        <translation><numerusform>%1 un %n citām datnēm ir sinhronizēšanas nesaderības.</numerusform><numerusform>%1 un %n citai datnei ir sinhronizēšanas nesaderības</numerusform><numerusform>%1 un %n citām datnēm ir sinhronizēšanas nesaderības.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
@@ -2543,7 +2543,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="55"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Pievienot mapes sinhronizēšanas savienojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="297"/>
@@ -2561,7 +2561,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Klikšķināt šo pogu, lai pievienotu mapi, kuru sinhronizēt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="175"/>
@@ -2577,7 +2577,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="220"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Kļūda mapju saraksta ielādēšanas no servera laikā.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
@@ -2592,12 +2592,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē virtuālas datnes vietējā mapē</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="330"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizē datnes vietējā mapē</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
@@ -2729,7 +2729,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="693"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Pievienot mapes sinhronizēšanas savienojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="695"/>
@@ -3737,7 +3737,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="322"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizēt mapi &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="327"/>
@@ -4851,7 +4851,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="310"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Apakšmapju saraksta ielādēšanas laikā atgadījās kļūda.</translation>
     </message>
 </context>
 <context>
@@ -4878,7 +4878,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="122"/>
         <source>General</source>
-        <translation>Vispārīgs</translation>
+        <translation>Vispārīgi</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="137"/>
@@ -5451,7 +5451,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="171"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinhronizēšana ir apturēta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
@@ -5499,13 +5499,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt galveno dialoglogu</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="190"/>
         <location filename="../src/gui/systray.cpp" line="200"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Apturēt sinhronizēšanu</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="191"/>
@@ -6255,7 +6255,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="809"/>
         <source>You created %1</source>
-        <translation>Jūs izveidojāt %1</translation>
+        <translation>Tu izveidoji %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="811"/>
@@ -6522,12 +6522,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation>Atvērt lokālās vai grupas mapes</translation>
+        <translation>Atvērt vietējās vai grupas mapes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="66"/>
         <source>Open local folder</source>
-        <translation>Atvērt lokālo mapi</translation>
+        <translation>Atvērt vietējo mapi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
@@ -6542,7 +6542,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation>Atvērt lokālo mapi &quot;%1&quot;</translation>
+        <translation>Atvērt vietējo mapi &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
@@ -6557,7 +6557,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
         <source>User group and local folders menu</source>
-        <translation>Lietotāja grupas un lokālo mapju izvēlne</translation>
+        <translation>Lietotāja grupas un vietējo mapju izvēlne</translation>
     </message>
 </context>
 <context>
