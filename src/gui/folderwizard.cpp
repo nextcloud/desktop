@@ -76,10 +76,12 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     connect(_ui.localFolderChooseBtn, &QAbstractButton::clicked, this, &FolderWizardLocalPath::slotChooseLocalFolder);
     _ui.localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
 
-    QUrl serverUrl = _account->url();
+    auto serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
-    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl, FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->defaultClientFolder();
+    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath,
+                                                                      serverUrl,
+                                                                      FolderMan::GoodPathStrategy::AllowOnlyNewPath);
     _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
@@ -103,51 +105,47 @@ void FolderWizardLocalPath::cleanupPage()
 
 bool FolderWizardLocalPath::isComplete() const
 {
-    QUrl serverUrl = _account->url();
+    auto serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
 
-    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
-
-
-    bool isOk = errorStr.isEmpty();
-    QStringList warnStrings;
-    if (!isOk) {
-        warnStrings << errorStr;
-    }
-
+    const auto errorMessage = FolderMan::instance()->checkPathValidityForNewFolder(QDir::fromNativeSeparators(
+                                                                                       _ui.localFolderLineEdit->text()),
+                                                                                   serverUrl).second;
+    const auto noErrorMessage = errorMessage.isEmpty();
     _ui.warnLabel->setWordWrap(true);
-    if (isOk) {
+    if (noErrorMessage) {
         _ui.warnLabel->hide();
         _ui.warnLabel->clear();
     } else {
         _ui.warnLabel->show();
-        QString warnings = formatWarnings(warnStrings);
-        _ui.warnLabel->setText(warnings);
+        _ui.warnLabel->setText(formatWarnings({errorMessage}));
     }
-    return isOk;
+
+    return noErrorMessage;
 }
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
-    QString sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QDir d(sf);
+    auto homeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    // open the first entry of the home dir. Otherwise the dir picker comes
-    // up with the closed home dir icon, stupid Qt default...
-    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks,
-        QDir::DirsFirst | QDir::Name);
+    // open the first entry of the home dir, otherwise the dir picker comes up with the closed home dir icon
+    const auto homeDirectoryList = QDir(homeDirectoryName).entryList(QDir::Dirs |
+                                                                         QDir::NoDotAndDotDot |
+                                                                         QDir::NoSymLinks,
+                                                                     QDir::DirsFirst | QDir::Name);
 
-    if (dirs.count() > 0)
-        sf += "/" + dirs.at(0); // Take the first dir in home dir.
-
-    QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
-        sf);
-    if (!dir.isEmpty()) {
-        // set the last directory component name as alias
-        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+    if (homeDirectoryList.count() > 0) {
+        homeDirectoryName += "/" + homeDirectoryList.at(0); // Take the first dir in home dir.
     }
+
+    const auto userSelectedDirectory = QFileDialog::getExistingDirectory(this,
+                                                                         tr("Select the source folder"),
+                                                                         homeDirectoryName);
+
+    if (!userSelectedDirectory.isEmpty()) {
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(userSelectedDirectory));
+    }
+
     emit completeChanged();
 }
 
@@ -204,18 +202,14 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
 {
-    QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
-
-    QString parent('/');
-    if (current) {
-        parent = current->data(0, Qt::UserRole).toString();
-    }
-
+    const auto *currentItem = _ui.folderTreeWidget->currentItem();
     auto *dlg = new QInputDialog(this);
 
     dlg->setWindowTitle(tr("Create Remote Folder"));
     dlg->setLabelText(tr("Enter the name of the new folder to be created below \"%1\":")
-                          .arg(parent));
+                          .arg(currentItem?
+                                   currentItem->data(0, Qt::UserRole).toString() :
+                                   QStringLiteral("/")));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -585,8 +579,9 @@ void FolderWizardSelectiveSync::initializePage()
         targetPath = targetPath.mid(1);
     }
     QString alias = QFileInfo(targetPath).fileName();
-    if (alias.isEmpty())
-        alias = Theme::instance()->appName();
+    if (alias.isEmpty()) {
+        alias = Theme::instance()->defaultClientFolder();
+    }
     QStringList initialBlacklist;
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         initialBlacklist = QStringList("/");
