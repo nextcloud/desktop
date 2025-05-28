@@ -54,27 +54,59 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         }
 
         let progress = Progress()
-        for identifier in itemIdentifiers {
-            guard let item = Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager
-            ) else {
-                let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                completionHandler(error)
-                return progress
-            }
 
-            let childProgress = Progress()
-            progress.addChild(childProgress, withPendingUnitCount: 1)
-            Task {
-                do {
-                    try await item.set(keepDownloaded: keepDownloaded, domain: domain)
-                    childProgress.completedUnitCount = 1
-                } catch let error {
-                    completionHandler(error)
+        // If there are no items, complete successfully immediately.
+        if itemIdentifiers.isEmpty {
+            Logger.fileProviderExtension.info("No items to process for keepDownloaded action.")
+            completionHandler(nil)
+            return progress
+        }
+
+        // Explicitly set totalUnitCount for clarity, though addChild with pendingUnitCount also defines this.
+        progress.totalUnitCount = Int64(itemIdentifiers.count)
+
+        Task {
+            let localNcKit = self.ncKit
+            let localDomain = self.domain
+
+            do {
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    for identifier in itemIdentifiers {
+                        group.addTask {
+                            // This task processes one item.
+                            guard let item = await Item.storedItem(
+                                identifier: identifier,
+                                account: ncAccount,
+                                remoteInterface: localNcKit,
+                                dbManager: dbManager
+                            ) else {
+                                throw NSError.fileProviderErrorForNonExistentItem(
+                                    withIdentifier: identifier
+                                )
+                            }
+                            try await item.set(keepDownloaded: keepDownloaded, domain: localDomain)
+                        }
+                    }
+
+                    for try await result in group {
+                        progress.completedUnitCount = 1
+                    }
                 }
+                Logger.fileProviderExtension.info(
+                    """
+                    All items successfully processed for
+                        keepDownloaded=\(keepDownloaded, privacy: .public)
+                    """
+                )
+                completionHandler(nil)
+            } catch let error {
+                Logger.fileProviderExtension.error(
+                    """
+                    Error during keepDownloaded=\(keepDownloaded, privacy: .public)
+                        action: \(error.localizedDescription, privacy: .public)
+                    """
+                )
+                completionHandler(error)
             }
         }
         return progress
