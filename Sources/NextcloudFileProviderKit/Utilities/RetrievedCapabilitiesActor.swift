@@ -50,4 +50,10 @@ actor RetrievedCapabilitiesActor {
             ongoingFetchContinuations[account] = existingContinuations
         }
     }
+
+    func reset() {
+        ongoingFetches = []
+        ongoingFetchContinuations = [:]
+        data = [:]
+    }
 }
