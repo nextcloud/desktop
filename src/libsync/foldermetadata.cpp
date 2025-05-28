@@ -51,7 +51,10 @@ const auto metadataKeySize = 16;
 
 QString metadataStringFromOCsDocument(const QJsonDocument &ocsDoc)
 {
-    return ocsDoc.object()["ocs"].toObject()["data"].toObject()["meta-data"].toString();
+    const auto &ocsDocObj = ocsDoc.object();
+    const auto &ocsObj = ocsDocObj["ocs"].toObject();
+    const auto &dataObj = ocsObj["data"].toObject();
+    return dataObj["meta-data"].toString();
 }
 }
 
@@ -203,9 +206,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &metaDataObj = metaDataDoc.object();
+    const auto &metadataObj = metaDataObj[metadataJsonKey].toObject();
     _metadataNonce = QByteArray::fromBase64(metadataObj[nonceKey].toString().toLocal8Bit());
-    const auto cipherTextEncrypted = metadataObj[cipherTextKey].toString().toLocal8Bit();
+    const auto &cipherTextEncrypted = metadataObj[cipherTextKey].toString().toLocal8Bit();
 
     // for compatibility, the format is "cipheredpart|initializationVector", so we need to extract the "cipheredpart"
     const auto cipherTextPartExtracted = cipherTextEncrypted.split('|').at(0);
@@ -238,10 +242,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
-    const auto files = cipherTextDocument.object()[filesKey].toObject();
-    const auto folders = cipherTextDocument.object()[foldersKey].toObject();
+    const auto &cipherTextObj = cipherTextDocument.object();
+    const auto &files = cipherTextObj[filesKey].toObject();
+    const auto &folders = cipherTextObj[foldersKey].toObject();
 
-    const auto counterVariantFromJson = cipherTextDocument.object().value(counterKey).toVariant();
+    const auto counterVariantFromJson = cipherTextObj.value(counterKey).toVariant();
     if (counterVariantFromJson.isValid() && counterVariantFromJson.canConvert<quint64>()) {
         // TODO: We need to check counter: new counter must be greater than locally stored counter
         // What does that mean? We store the counter in metadata, should we now store it in local database as we do for all file records in SyncJournal?
@@ -273,14 +278,15 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     const auto doc = QJsonDocument::fromJson(metadata);
     qCDebug(lcCseMetadata()) << "Setting up legacy existing metadata version" << _existingMetadataVersion << doc.toJson(QJsonDocument::Compact);
 
-    const auto metaDataStr = metadataStringFromOCsDocument(doc);
-    const auto metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &metaDataStr = metadataStringFromOCsDocument(doc);
+    const auto &metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
+    const auto &metaDataObj = metaDataDoc.object();
+    const auto &fullMetaDataObj = metaDataObj[metadataJsonKey].toObject();
 
     // we will use metadata key from metadata to decrypt legacy metadata, so let's clear the decryption key if any provided by top-level folder
     _metadataKeyForDecryption.clear();
 
-    const auto metadataKeyFromJson = metadataObj[metadataKeyKey].toString().toLocal8Bit();
+    const auto metadataKeyFromJson = fullMetaDataObj[metadataKeyKey].toString().toLocal8Bit();
     if (!metadataKeyFromJson.isEmpty()) {
         // parse version 1.1 and 1.2 (both must have a single "metadataKey"), not "metadataKeys" as 1.0
         const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(metadataKeyFromJson, _account->e2e()->certificateSha256Fingerprint());
@@ -294,14 +300,15 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         // parse version 1.0 (before security-vulnerability fix for metadata keys was released
         qCDebug(lcCseMetadata()) << "Migrating from" << _existingMetadataVersion << "to"
                                  << latestSupportedMetadataVersion();
-        const auto metadataKeys = metadataObj["metadataKeys"].toObject();
+        const auto metadataKeys = fullMetaDataObj["metadataKeys"].toObject();
         if (metadataKeys.isEmpty()) {
             qCDebug(lcCseMetadata()) << "Could not migrate. No metadata keys found!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
 
-        const auto lastMetadataKeyFromJson = metadataKeys.keys().last().toLocal8Bit();
+        const auto &allKeys = metadataKeys.keys();
+        const auto &lastMetadataKeyFromJson = allKeys.last().toLocal8Bit();
         if (!lastMetadataKeyFromJson.isEmpty()) {
             const auto lastMetadataKeyValueFromJson = metadataKeys.value(lastMetadataKeyFromJson).toString().toLocal8Bit();
             if (!lastMetadataKeyValueFromJson.isEmpty()) {
@@ -323,12 +330,11 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         _metadataKeyForEncryption = metadataKeyForDecryption();
     }
 
-    const auto sharing = metadataObj["sharing"].toString().toLocal8Bit();
-    const auto files = metaDataDoc.object()[filesKey].toObject();
-    const auto metadataKey = metaDataDoc.object()[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
-    const auto metadataKeyChecksum = metaDataDoc.object()[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
+    const auto &files = metaDataObj[filesKey].toObject();
+    const auto &metadataKey = metaDataObj[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
+    const auto &metadataKeyChecksum = metaDataObj[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
 
-    setFileDrop(metaDataDoc.object().value("filedrop").toObject());
+    setFileDrop(metaDataObj.value("filedrop").toObject());
     // for unit tests
     _fileDropFromServer = _fileDrop;
 
@@ -383,10 +389,10 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
 
 void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata)
 {
-    const auto doc = QJsonDocument::fromJson(metadata);
-    const auto metaDataStr = metadataStringFromOCsDocument(doc);
-    const auto metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &doc = QJsonDocument::fromJson(metadata);
+    const auto &metaDataStr = metadataStringFromOCsDocument(doc);
+    const auto &metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit()).object();
+    const auto &metadataObj = metaDataDoc[metadataJsonKey].toObject();
 
     QString versionStringFromMetadata;
 
@@ -398,8 +404,8 @@ void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata
             versionStringFromMetadata = QString::number(metadataVersionValue.toDouble(), 'f', 1);
         }
     }
-    else if (metaDataDoc.object().contains(versionKey)) {
-        const auto metadataVersionValue = metaDataDoc.object()[versionKey].toVariant();
+    else if (metaDataDoc.contains(versionKey)) {
+        const auto metadataVersionValue = metaDataDoc[versionKey].toVariant();
         if (metadataVersionValue.metaType() == QMetaType(QMetaType::QString)) {
             versionStringFromMetadata = metadataVersionValue.toString();
         } else if (metadataVersionValue.metaType() == QMetaType(QMetaType::Double)) {
@@ -577,8 +583,6 @@ void FolderMetadata::initEmptyMetadataLegacy()
 {
     _metadataKeyForEncryption = EncryptionHelper::generateRandom(metadataKeySize);
     _metadataKeyForDecryption = _metadataKeyForEncryption;
-    QString publicKey = _account->e2e()->getPublicKey().toPem().toBase64();
-    QString displayName = _account->displayName();
 
     _isMetadataValid = true;
 
@@ -782,8 +786,8 @@ FolderMetadata::MetadataVersion FolderMetadata::latestSupportedMetadataVersion()
 
 bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
 {
-    const auto fileDropObject = doc.object().value(filedropKey).toObject();
-    const auto fileDropMap = fileDropObject.toVariantMap();
+    const auto &fileDropObject = doc.object().value(filedropKey).toObject();
+    const auto &fileDropMap = fileDropObject.toVariantMap();
 
     for (auto it = std::cbegin(fileDropMap); it != std::cend(fileDropMap); ++it) {
         const auto fileDropEntryParsed = it.value().toMap();
