@@ -1142,14 +1142,6 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, directMockCapabilities(), capsData, .success)
     }
 
-    public func currentCapabilities(
-        account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
-    }
-
     public func directMockCapabilities() -> Capabilities? {
         let capsData = capabilities.data(using: .utf8)
         return Capabilities(data: capsData ?? Data())
