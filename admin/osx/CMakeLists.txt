@@ -28,4 +28,7 @@ foreach(TS_FILE ${TS_FILES})
     string(REPLACE "_" "-" LANG_CODE ${LANG_CODE}) # en-GB
     set(LOCALIZATIONS_LIST "${LOCALIZATIONS_LIST}        <string>${LANG_CODE}</string>\n")
 endforeach()
+if(LOCALIZATIONS_LIST)
+    string(STRIP "${LOCALIZATIONS_LIST}" LOCALIZATIONS_LIST)
+endif()
 set(MACOSX_BUNDLE_LOCALIZATIONS "${LOCALIZATIONS_LIST}" CACHE INTERNAL "Generated list of localizations for macOS bundle" FORCE)
