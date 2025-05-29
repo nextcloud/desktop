@@ -562,7 +562,7 @@ Chcete ho naimportovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
-        <location filename="../src/gui/accountmanager.cpp" line="282"/>
+        <location filename="../src/gui/accountmanager.cpp" line="286"/>
         <source>Legacy import</source>
         <translation>Import z dřívějšího</translation>
     </message>
@@ -577,7 +577,7 @@ Chcete ho naimportovat?</translation>
         <translation>Přeskočit</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="283"/>
+        <location filename="../src/gui/accountmanager.cpp" line="287"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Nepodařilo se naimportovat účty z nastavení původního klienta.</translation>
     </message>
@@ -1337,13 +1337,13 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 can not be downloaded because it is non virtual!</source>
-        <translation>Soubor %1 nemůže být stažen, protože není virtuální!</translation>
+        <source>File %1 cannot be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>could not get file %1 from local DB</source>
-        <translation>nepodařilo se získat soubor %1 z místní databáze</translation>
+        <source>Could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
@@ -1358,7 +1358,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation>Soubor %1 se právě používá</translation>
+        <translation>Soubor %1 je právě využíván</translation>
     </message>
 </context>
 <context>
@@ -3006,7 +3006,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Vrátit na &amp;výchozí</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -3036,7 +3036,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Obnovit do &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3713,7 +3713,7 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation>Nejsou žádné dostupné aktualizace. Vaše instalace běží na nejnovější verzi.</translation>
+        <translation>Nejsou k dispozici žádné nové aktualizace. Vaše instalace je provozována na nejnovější verzi.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>

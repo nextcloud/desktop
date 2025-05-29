@@ -562,7 +562,7 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
-        <location filename="../src/gui/accountmanager.cpp" line="282"/>
+        <location filename="../src/gui/accountmanager.cpp" line="286"/>
         <source>Legacy import</source>
         <translation>예전 버전에서 가져오기</translation>
     </message>
@@ -577,7 +577,7 @@ Should the account be imported?</source>
         <translation>건너뛰기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="283"/>
+        <location filename="../src/gui/accountmanager.cpp" line="287"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>예전 버전의 클라이언트에서 계정을 가져올 수 없습니다.</translation>
     </message>
@@ -1335,12 +1335,12 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>could not get file %1 from local DB</source>
+        <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>

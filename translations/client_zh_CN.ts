@@ -563,7 +563,7 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
-        <location filename="../src/gui/accountmanager.cpp" line="282"/>
+        <location filename="../src/gui/accountmanager.cpp" line="286"/>
         <source>Legacy import</source>
         <translation>旧版本导入</translation>
     </message>
@@ -578,7 +578,7 @@ Should the account be imported?</source>
         <translation>跳过</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="283"/>
+        <location filename="../src/gui/accountmanager.cpp" line="287"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>无法从旧版客户端配置中导入账号。</translation>
     </message>
@@ -1326,37 +1326,37 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>文件自发现以来已更改</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>无法从本地数据库中删除文件记录 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>could not get file %1 from local DB</source>
+        <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>无法下载文件 %1，因为缺少加密信息。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>更新元数据时出错：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 当前正在使用中</translation>
     </message>
 </context>
 <context>
@@ -2980,12 +2980,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="359"/>
         <source>Update channel</source>
-        <translation>更新频道</translation>
+        <translation>更新通道</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>&amp;Automatically check for updates</source>
-        <translation>自动检查更新（&amp;A）</translation>
+        <translation>自动检查更新(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="428"/>
@@ -3005,7 +3005,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>恢复默认(&amp;D)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -3035,27 +3035,27 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>恢复至 &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
         <source>stable</source>
-        <translation>稳定版</translation>
+        <translation>stable</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>beta</source>
-        <translation>测试版</translation>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="421"/>
         <source>daily</source>
-        <translation>每天</translation>
+        <translation>daily</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="425"/>
         <source>enterprise</source>
-        <translation>企业</translation>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="453"/>
@@ -3082,7 +3082,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="465"/>
         <source>Changing update channel?</source>
-        <translation>更改更新频道？</translation>
+        <translation>更改更新通道？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="466"/>
@@ -3090,14 +3090,14 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation>渠道决定将提供哪些升级进行安装：
+        <translation>通道决定将提供哪些升级进行安装：
 - stable：包含被认为可靠的测试版本
 </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="472"/>
         <source>Change update channel</source>
-        <translation>更改更新频道</translation>
+        <translation>更改更新通道</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
@@ -3705,12 +3705,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>您正在使用 %1 更新通道。您的安装是最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>没有可用更新。您的安装是最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
@@ -6559,12 +6559,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="95"/>
         <source>Disconnected</source>
-        <translation>连接已断开</translation>
+        <translation>已断开连接</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation>打开本地文件夹 “%1”</translation>
+        <translation>打开本地文件夹“%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="207"/>

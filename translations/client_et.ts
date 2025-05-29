@@ -563,7 +563,7 @@ Kas peaksin selle kasutajakonto importima?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
-        <location filename="../src/gui/accountmanager.cpp" line="282"/>
+        <location filename="../src/gui/accountmanager.cpp" line="286"/>
         <source>Legacy import</source>
         <translation>Import rakenduse vanast pärandversioonist</translation>
     </message>
@@ -578,7 +578,7 @@ Kas peaksin selle kasutajakonto importima?</translation>
         <translation>Jäta vahele</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="283"/>
+        <location filename="../src/gui/accountmanager.cpp" line="287"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Ei õnnestunud importida kasutajakontosid rakenduse vanast pärandversioonist seadistustest.</translation>
     </message>
@@ -1338,13 +1338,13 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 can not be downloaded because it is non virtual!</source>
-        <translation>„%1“ faili ei saa alla laadida, sest ta on mittevirtuaalne fail!</translation>
+        <source>File %1 cannot be downloaded because it is non virtual!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>could not get file %1 from local DB</source>
-        <translation>Ei õnnestunud laadida „%1“ faili kohalikust andmebaasist</translation>
+        <source>Could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>

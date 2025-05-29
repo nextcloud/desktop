@@ -563,7 +563,7 @@ Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
-        <location filename="../src/gui/accountmanager.cpp" line="282"/>
+        <location filename="../src/gui/accountmanager.cpp" line="286"/>
         <source>Legacy import</source>
         <translation>Legacy import</translation>
     </message>
@@ -578,7 +578,7 @@ Skal kontoen importeres?</translation>
         <translation>Spring over</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="283"/>
+        <location filename="../src/gui/accountmanager.cpp" line="287"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Kunne ikke importere konti fra ældre klientkonfiguration.</translation>
     </message>
@@ -1337,12 +1337,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 can not be downloaded because it is non virtual!</source>
+        <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>could not get file %1 from local DB</source>
+        <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
