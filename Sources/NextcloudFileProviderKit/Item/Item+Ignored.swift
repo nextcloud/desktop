@@ -17,7 +17,7 @@ extension Item {
         remoteInterface: RemoteInterface,
         progress: Progress,
         dbManager: FilesDatabaseManager
-    ) -> (Item?, Error?) {
+    ) async -> (Item?, Error?) {
         let filename = itemTemplate.filename
         Self.logger.info(
             """
@@ -60,7 +60,8 @@ extension Item {
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
 
         if #available(macOS 13.0, *) {

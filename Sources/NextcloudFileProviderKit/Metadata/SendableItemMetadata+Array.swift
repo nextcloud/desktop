@@ -15,6 +15,7 @@ extension Array<SendableItemMetadata> {
         let logger = Logger(
             subsystem: Logger.subsystem, category: "itemMetadataToFileProviderItems"
         )
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
 
         return try await concurrentChunkedCompactMap { itemMetadata in
             guard !itemMetadata.e2eEncrypted else {
@@ -57,7 +58,8 @@ extension Array<SendableItemMetadata> {
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                remoteSupportsTrash: remoteSupportsTrash
             )
             logger.debug(
                 """

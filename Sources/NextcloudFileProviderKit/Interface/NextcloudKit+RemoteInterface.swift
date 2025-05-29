@@ -12,24 +12,6 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
-fileprivate let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
-
-actor RetrievedCapabilitiesActor {
-    static let shared: RetrievedCapabilitiesActor = {
-        let instance = RetrievedCapabilitiesActor()
-        return instance
-    }()
-    var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
-
-    func setCapabilities(
-        forAccount account: String,
-        capabilities: Capabilities,
-        retrievedAt: Date = Date()
-    ) async {
-        self.data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
-    }
-}
-
 extension NextcloudKit: RemoteInterface {
 
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
@@ -398,6 +380,10 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        let ncKitAccount = account.ncKitAccount
+        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
+            forAccount: ncKitAccount, ongoing: true
+        )
         let result = await withCheckedContinuation { continuation in
             getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
                 let capabilities: Capabilities? = {
@@ -407,45 +393,15 @@ extension NextcloudKit: RemoteInterface {
                 continuation.resume(returning: (account, capabilities, data?.data, error))
             }
         }
+        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
+            forAccount: ncKitAccount, ongoing: false
+        )
         if let capabilities = result.1 {
             await RetrievedCapabilitiesActor.shared.setCapabilities(
                 forAccount: account.ncKitAccount, capabilities: capabilities
             )
         }
         return result
-    }
-
-    public func currentCapabilities(
-        account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        let ncKitAccount = account.ncKitAccount
-        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
-              lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
-        else {
-            return await fetchCapabilities(
-                account: account, options: options, taskHandler: taskHandler
-            )
-        }
-        return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
-    }
-
-    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
-        let semaphore = DispatchSemaphore(value: 0)
-        var capabilities: Capabilities?
-        Task {
-            let (_, fetchedCapabilities, _, error) = await currentCapabilities(account: account)
-            if error != .success {
-                Logger
-                    .init(subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface")
-                    .error("Error during sync capabilities fetch: \(error.errorDescription, privacy: .public)")
-            }
-            capabilities = fetchedCapabilities
-            semaphore.signal()
-        }
-        semaphore.wait()
-        return capabilities
     }
 
     public func fetchUserProfile(

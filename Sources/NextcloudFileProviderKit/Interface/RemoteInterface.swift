@@ -10,6 +10,8 @@ import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
+import OSLog
+
 
 public enum EnumerateDepth: String {
     case target = "0"
@@ -157,16 +159,6 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
-    // This method should result in fetches only after a certain period of time.
-    // Alternatively, it should only fetch when capabilities are guaranteed to have changed.
-    func currentCapabilities(
-        account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
-
-    func currentCapabilitiesSync(account: Account) -> Capabilities?
-
     func fetchUserProfile(
         account: Account,
         options: NKRequestOptions,
@@ -178,4 +170,45 @@ public protocol RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> AuthenticationAttemptResultState
+}
+
+public extension RemoteInterface {
+
+    private var logger: Logger {
+        Logger(subsystem: Logger.subsystem, category: "RemoteInterface")
+    }
+
+    func currentCapabilities(
+        account: Account,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        let ncKitAccount = account.ncKitAccount
+        await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: ncKitAccount)
+        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
+              lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
+        else {
+            return await fetchCapabilities(
+                account: account, options: options, taskHandler: taskHandler
+            )
+        }
+        return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
+    }
+
+    func supportsTrash(
+        account: Account,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> Bool {
+        var remoteSupportsTrash = false
+        let (_, capabilities, _, _) = await currentCapabilities(
+            account: account, options: .init(), taskHandler: { _ in }
+        )
+        if let filesCapabilities = capabilities?.files {
+            remoteSupportsTrash = filesCapabilities.undelete
+        } else {
+            logger.warning("Could not get capabilities, will assume trash is unavailable.")
+        }
+        return remoteSupportsTrash
+    }
 }

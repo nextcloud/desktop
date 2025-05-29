@@ -11,7 +11,7 @@ import NextcloudCapabilitiesKit
 import NextcloudFileProviderKit
 import NextcloudKit
 
-fileprivate let mockCapabilities = ##"""
+let mockCapabilities = ##"""
 {
   "ocs": {
     "meta": {
@@ -1139,27 +1139,12 @@ public class MockRemoteInterface: RemoteInterface {
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let capsData = capabilities.data(using: .utf8)
-        return (account.ncKitAccount, Capabilities(data: capsData ?? Data()), capsData, .success)
+        return (account.ncKitAccount, directMockCapabilities(), capsData, .success)
     }
 
-    public func currentCapabilities(
-        account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
-        return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
-    }
-
-    public func currentCapabilitiesSync(account: Account) -> Capabilities? {
-        let semaphore = DispatchSemaphore(value: 0)
-        var capabilities: Capabilities?
-        Task {
-            let result = await currentCapabilities(account: account)
-            capabilities = result.capabilities
-            semaphore.signal()
-        }
-        semaphore.wait()
-        return capabilities
+    public func directMockCapabilities() -> Capabilities? {
+        let capsData = capabilities.data(using: .utf8)
+        return Capabilities(data: capsData ?? Data())
     }
 
     public func fetchUserProfile(

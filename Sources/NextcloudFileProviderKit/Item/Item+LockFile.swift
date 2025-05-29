@@ -140,7 +140,8 @@ extension Item {
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
             ),
             returnError
         )
@@ -167,7 +168,7 @@ extension Item {
         )
         assert(isLockFileName(filename), "Should not handle non-lock files here.")
 
-        guard let modifiedItem = modifyUnuploaded(
+        guard let modifiedItem = await modifyUnuploaded(
             itemTarget: itemTarget,
             baseVersion: baseVersion,
             changedFields: changedFields,

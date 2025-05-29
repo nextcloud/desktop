@@ -29,6 +29,8 @@ public class Item: NSObject, NSFileProviderItem {
     public let account: Account
     public let remoteInterface: RemoteInterface
 
+    private let remoteSupportsTrash: Bool
+
     public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
     }
@@ -55,7 +57,7 @@ public class Item: NSObject, NSFileProviderItem {
                 directoryCapabilities.insert(.allowsEvicting)
             }
 
-            if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true {
+            if remoteSupportsTrash {
                 directoryCapabilities.insert(.allowsTrashing)
             }
 
@@ -73,9 +75,7 @@ public class Item: NSObject, NSFileProviderItem {
             .allowsReparenting,
             .allowsEvicting,
         ]
-        if remoteInterface.currentCapabilitiesSync(account: account)?.files?.undelete == true,
-           !isLockFileName(filename)
-        {
+        if remoteSupportsTrash, !isLockFileName(filename) {
             itemCapabilities.insert(.allowsTrashing)
         }
         return itemCapabilities
@@ -223,7 +223,8 @@ public class Item: NSObject, NSFileProviderItem {
     public static func rootContainer(
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        remoteSupportsTrash: Bool
     ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
@@ -256,14 +257,16 @@ public class Item: NSObject, NSFileProviderItem {
             parentItemIdentifier: .rootContainer,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: remoteSupportsTrash
         )
     }
 
     public static func trashContainer(
         remoteInterface: RemoteInterface,
         account: Account,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        remoteSupportsTrash: Bool
     ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
@@ -295,7 +298,8 @@ public class Item: NSObject, NSFileProviderItem {
             parentItemIdentifier: .trashContainer,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: remoteSupportsTrash
         )
     }
 
@@ -306,13 +310,15 @@ public class Item: NSObject, NSFileProviderItem {
         parentItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        remoteSupportsTrash: Bool
     ) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
         self.remoteInterface = remoteInterface
         self.dbManager = dbManager
+        self.remoteSupportsTrash = remoteSupportsTrash
         super.init()
     }
 
@@ -323,14 +329,23 @@ public class Item: NSObject, NSFileProviderItem {
         dbManager: FilesDatabaseManager
     ) async -> Item? {
         // resolve the given identifier to a record in the model
+
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+
         guard identifier != .rootContainer else {
             return Item.rootContainer(
-                account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                remoteSupportsTrash: remoteSupportsTrash
             )
         }
         guard identifier != .trashContainer else {
             return Item.trashContainer(
-                remoteInterface: remoteInterface, account: account, dbManager: dbManager
+                remoteInterface: remoteInterface,
+                account: account,
+                dbManager: dbManager,
+                remoteSupportsTrash: remoteSupportsTrash
             )
         }
 
@@ -355,7 +370,8 @@ public class Item: NSObject, NSFileProviderItem {
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: remoteSupportsTrash
         )
     }
 

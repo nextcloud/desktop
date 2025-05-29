@@ -88,7 +88,8 @@ public extension Item {
             parentItemIdentifier: newParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
         return (modifiedItem, nil)
     }
@@ -224,7 +225,8 @@ public extension Item {
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
         return (modifiedItem, nil)
     }
@@ -517,7 +519,8 @@ public extension Item {
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
     }
 
@@ -565,7 +568,7 @@ public extension Item {
                     Will delete locally with no remote effect.
                 """
             )
-            guard let modifiedIgnored = modifyUnuploaded(
+            guard let modifiedIgnored = await modifyUnuploaded(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
                 changedFields: changedFields,

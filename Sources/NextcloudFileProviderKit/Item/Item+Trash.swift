@@ -45,7 +45,8 @@ extension Item {
             parentItemIdentifier: .trashContainer,
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
         )
 
         // The server may have renamed the trashed file so we need to scan the entire trash
@@ -106,7 +107,8 @@ extension Item {
             parentItemIdentifier: .trashContainer,
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
         )
 
         // Now we can directly update info on the child items
@@ -197,7 +199,8 @@ extension Item {
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: modifiedItem.remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
             ), nil)
         }
 

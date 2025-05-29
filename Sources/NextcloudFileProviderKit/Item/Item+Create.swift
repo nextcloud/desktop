@@ -99,7 +99,8 @@ public extension Item {
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
         
         return (fpItem, nil)
@@ -216,7 +217,8 @@ public extension Item {
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
         
         return (fpItem, nil)
@@ -412,7 +414,8 @@ public extension Item {
             parentItemIdentifier: rootItem.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
         )
     }
 
@@ -495,7 +498,7 @@ public extension Item {
 
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            return Item.createIgnored(
+            return await Item.createIgnored(
                 basedOn: itemTemplate,
                 parentItemRemotePath: parentItemRemotePath,
                 contents: url,
@@ -604,7 +607,8 @@ public extension Item {
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
-                    dbManager: dbManager
+                    dbManager: dbManager,
+                    remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
                 )
             }
 

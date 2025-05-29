@@ -12,11 +12,11 @@ import NextcloudFileProviderKit
 public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let account: Account
     let dbManager: FilesDatabaseManager
-    let remoteInterface: any RemoteInterface
+    let remoteInterface: MockRemoteInterface
     public var enumeratorItems: [SendableItemMetadata] = []
 
     public init(
-        account: Account, dbManager: FilesDatabaseManager, remoteInterface: any RemoteInterface
+        account: Account, dbManager: FilesDatabaseManager, remoteInterface: MockRemoteInterface
     ) {
         self.account = account
         self.dbManager = dbManager
@@ -26,6 +26,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     public func enumerateItems(
         for observer: any NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
     ) {
+        let remoteSupportsTrash = remoteInterface.directMockCapabilities()?.files?.undelete ?? false
         var items: [Item] = []
         for item in enumeratorItems {
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(item) else {
@@ -37,7 +38,8 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                remoteSupportsTrash: remoteSupportsTrash
             )
             items.append(item)
         }
