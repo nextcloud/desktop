@@ -1084,8 +1084,7 @@ public class MockRemoteInterface: RemoteInterface {
             let reachedEnd = firstItem + itemCount >= files.count
             let lastItem = min(firstItem + itemCount, files.count) - 1
             let itemsPage = Array(files[firstItem...lastItem])
-            let realItemCount = itemsPage.count
-            let responseData = generateResponse(itemCount: realItemCount, finalPage: reachedEnd)
+            let responseData = generateResponse(itemCount: files.count, finalPage: reachedEnd)
             return (account.ncKitAccount, itemsPage, responseData, .success)
         }
 
