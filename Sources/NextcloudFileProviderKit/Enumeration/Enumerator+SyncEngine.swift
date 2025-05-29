@@ -508,7 +508,7 @@ extension Enumerator {
             return (metadatas, nil, nil, nil, nextPage, error)
         } else {
             // Infinite depth unpaged reads are a bad idea
-            return (nil, nil, nil, nil, nil, .forbiddenError)
+            return (nil, nil, nil, nil, nil, .invalidResponseError)
         }
     }
 }
