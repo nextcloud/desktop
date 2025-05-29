@@ -18,3 +18,14 @@ configure_file(macosx.entitlements.cmake ${CMAKE_CURRENT_BINARY_DIR}/macosx.enti
 configure_file(macosx.pkgproj.cmake ${CMAKE_CURRENT_BINARY_DIR}/macosx.pkgproj)
 configure_file(pre_install.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/pre_install.sh)
 configure_file(post_install.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/post_install.sh)
+
+# Generate CFBundleLocalizations for MacOSXBundleInfo.plist.in
+file(GLOB_RECURSE TS_FILES RELATIVE ${CMAKE_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/translations/client_*.ts")
+set(LOCALIZATIONS_LIST "")
+foreach(TS_FILE ${TS_FILES})
+    get_filename_component(LANG_CODE ${TS_FILE} NAME_WE) # client_en_GB
+    string(REPLACE "client_" "" LANG_CODE ${LANG_CODE}) # en_GB
+    string(REPLACE "_" "-" LANG_CODE ${LANG_CODE}) # en-GB
+    set(LOCALIZATIONS_LIST "${LOCALIZATIONS_LIST}        <string>${LANG_CODE}</string>\n")
+endforeach()
+set(MACOSX_BUNDLE_LOCALIZATIONS "${LOCALIZATIONS_LIST}" CACHE INTERNAL "Generated list of localizations for macOS bundle" FORCE)

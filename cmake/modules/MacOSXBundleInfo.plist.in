@@ -12,6 +12,10 @@
     <string>en</string>
     <key>CFBundleAllowMixedLocalizations</key>
     <true/>
+    <key>CFBundleLocalizations</key>
+    <array>
+@MACOSX_BUNDLE_LOCALIZATIONS@
+    </array>
     <key>CFBundleExecutable</key>
     <string>@APPLICATION_NAME@</string>
     <key>CFBundleIconFile</key>
