@@ -374,44 +374,6 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
-bool FileProviderSettingsController::fastEnumerationSetForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
-    if (!xpc) {
-        return false;
-    }
-    if (const auto state = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
-        return state->second;
-    }
-    return false;
-}
-
-bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
-    if (!xpc) {
-        return true;
-    }
-    if (const auto fastEnumerationState = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
-        return fastEnumerationState->first;
-    }
-    return true;
-}
-
-void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
-{
-    const auto xpc = FileProvider::instance()->xpc();
-    if (!xpc) {
-        // Reset state of UI elements
-        emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
-        emit fastEnumerationSetForAccountChanged(userIdAtHost);
-        return;
-    }
-    xpc->setFastEnumerationEnabledForExtension(userIdAtHost, setEnabled);
-    emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
-    emit fastEnumerationSetForAccountChanged(userIdAtHost);
-}
-
 bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();

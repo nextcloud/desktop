@@ -73,39 +73,6 @@ Page {
                     onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                 }
 
-                FileProviderFastEnumerationSettings {
-                    id: fastEnumerationSettings
-
-                    Layout.fillWidth: true
-
-                    fastEnumerationSet: root.controller.fastEnumerationSetForAccount(root.accountUserIdAtHost)
-                    fastEnumerationEnabled: root.controller.fastEnumerationEnabledForAccount(root.accountUserIdAtHost)
-                    onFastEnumerationEnabledToggled: root.controller.setFastEnumerationEnabledForAccount(root.accountUserIdAtHost, enabled)
-
-                    padding: 0
-
-                    Connections {
-                        target: root.controller
-
-                        function updateFastEnumerationValues() {
-                            fastEnumerationSettings.fastEnumerationEnabled = root.controller.fastEnumerationEnabledForAccount(root.accountUserIdAtHost);
-                            fastEnumerationSettings.fastEnumerationSet = root.controller.fastEnumerationSetForAccount(root.accountUserIdAtHost);
-                        }
-
-                        function onFastEnumerationEnabledForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost === accountUserIdAtHost) {
-                                updateFastEnumerationValues();
-                            }
-                        }
-
-                        function onFastEnumerationSetForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost === accountUserIdAtHost) {
-                                updateFastEnumerationValues();
-                            }
-                        }
-                    }
-                }
-
                 FileProviderStorageInfo {
                     id: storageInfo
                     localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)

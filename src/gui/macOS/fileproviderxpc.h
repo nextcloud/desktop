@@ -28,9 +28,6 @@ public:
 
     [[nodiscard]] bool fileProviderExtReachable(const QString &extensionAccountId, bool retry = true, bool reconfigureOnFail = true);
 
-    // Returns enabled and set state of fast enumeration for the given extension
-    [[nodiscard]] std::optional<std::pair<bool, bool>> fastEnumerationStateForExtension(const QString &extensionAccountId) const;
-
     [[nodiscard]] std::optional<std::pair<bool, bool>> trashDeletionEnabledStateForExtension(const QString &extensionAccountId) const;
 
 public slots:
@@ -41,7 +38,6 @@ public slots:
     void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename);
 
     void setIgnoreList() const;
-    void setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
     void setTrashDeletionEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
 
 private slots:
