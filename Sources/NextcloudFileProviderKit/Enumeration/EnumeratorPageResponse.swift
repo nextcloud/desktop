@@ -20,7 +20,6 @@ struct EnumeratorPageResponse: Sendable {
 
         let normalisedHeaders =
             Dictionary(uniqueKeysWithValues: headers.map { ($0.key.lowercased(), $0.value) })
-        print(normalisedHeaders)
         guard Bool(normalisedHeaders["x-nc-paginate"]?.lowercased() ?? "false") == true,
               let responsePaginateToken = normalisedHeaders["x-nc-paginate-token"]
         else { return nil }
@@ -32,5 +31,11 @@ struct EnumeratorPageResponse: Sendable {
         } else {
             total = nil
         }
+    }
+
+    init(nextServerUrl: String) {
+        self.token = nextServerUrl
+        self.index = -1
+        self.total = nil
     }
 }
