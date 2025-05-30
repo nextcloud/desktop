@@ -1330,37 +1330,37 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>檔案自發現後已變更</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>無法下載檔案 %1，因為其不是虛擬檔案！</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>無法下載檔案 %1，因為缺少加密資訊。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>更新中介資料時發生錯誤：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 正在使用中</translation>
     </message>
 </context>
 <context>
@@ -3009,7 +3009,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>還原為預設值(&amp;D)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
@@ -3039,7 +3039,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>還原至 &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="413"/>
@@ -3711,12 +3711,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>您正在使用 %1 更新頻道。您的安裝是最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>無可用更新。您的安裝為最新版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
