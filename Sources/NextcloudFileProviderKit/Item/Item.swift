@@ -204,6 +204,12 @@ public class Item: NSObject, NSFileProviderItem {
         } else {
             userInfoDict["displayEvict"] = metadata.downloaded
         }
+        // https://docs.nextcloud.com/server/latest/developer_manual/client_apis/WebDAV/basic.html
+        if metadata.permissions.uppercased().contains("R"), // Shareable
+           ![.rootContainer, .trashContainer].contains(itemIdentifier)
+        {
+            userInfoDict["displayShare"] = true
+        }
         return userInfoDict
     }
 
