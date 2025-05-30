@@ -998,6 +998,26 @@ void Folder::migrateBlackListPath(const QString &legacyPath)
     }
 }
 
+QString Folder::filePath(const QString& fileName)
+{
+    const auto folderDir = QDir(_canonicalLocalPath);
+
+#ifdef Q_OS_WIN
+    // Edge case time!
+    // QDir::filePath checks whether the passed `fileName` is absolute (essentialy by using `!QFileInfo::isRelative()`).
+    // In the case it's absolute, the `fileName` will be returned instead of the complete file path.
+    //
+    // On Windows, if `fileName` starts with a letter followed by a colon (e.g. "A:BCDEF"), it is considered to be an
+    // absolute path.
+    // Since this method should return the file name file path starting with the canonicalLocalPath, catch that special case here and prefix it ourselves...
+    return fileName.length() >= 2 && fileName[1] == ':'
+           ? _canonicalLocalPath + fileName
+           : folderDir.filePath(fileName);
+#else
+    return folderDir.filePath(fileName);
+#endif
+}
+
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
     return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
