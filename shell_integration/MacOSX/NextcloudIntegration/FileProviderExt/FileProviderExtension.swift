@@ -118,24 +118,16 @@ import OSLog
             return Progress()
         }
 
-        let progress = Progress()
-        Task {
-            progress.totalUnitCount = 1
-            if let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager
-            ) {
-                progress.completedUnitCount = 1
-                completionHandler(item, nil)
-            } else {
-                completionHandler(
-                    nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
-            }
+        if let item = Item.storedItem(
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
+        ) {
+            completionHandler(item, nil)
+        } else {
+            completionHandler(
+                nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+            )
         }
-        return progress
+        return Progress()
     }
 
     func fetchContents(
@@ -187,30 +179,29 @@ import OSLog
             return Progress()
         }
 
+        guard let item = Item.storedItem(
+            identifier: itemIdentifier,
+            account: ncAccount,
+            remoteInterface: ncKit,
+            dbManager: dbManager
+        ) else {
+            Logger.fileProviderExtension.error(
+                """
+                Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
+                as item not found.
+                """
+            )
+            completionHandler(
+                nil,
+                nil,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            )
+            insertErrorAction(actionId)
+            return Progress()
+        }
 
         let progress = Progress()
         Task {
-            guard let item = await Item.storedItem(
-                identifier: itemIdentifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager
-            ) else {
-                Logger.fileProviderExtension.error(
-                    """
-                    Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
-                        as item not found.
-                    """
-                )
-                completionHandler(
-                    nil,
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-                )
-                insertErrorAction(actionId)
-                return
-            }
-
             let (localUrl, updatedItem, error) = await item.fetchContents(
                 domain: self.domain, progress: progress, dbManager: dbManager
             )
@@ -367,26 +358,24 @@ import OSLog
             return Progress()
         }
 
+        guard let existingItem = Item.storedItem(
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
+        ) else {
+            Logger.fileProviderExtension.error(
+                "Not modifying item: \(ocId, privacy: .public) as item not found."
+            )
+            insertErrorAction(actionId)
+            completionHandler(
+                item,
+                [],
+                false,
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
+            )
+            return Progress()
+        }
+
         let progress = Progress()
         Task {
-            guard let existingItem = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager
-            ) else {
-                Logger.fileProviderExtension.error(
-                    "Not modifying item: \(ocId, privacy: .public) as item not found."
-                )
-                insertErrorAction(actionId)
-                completionHandler(
-                    item,
-                    [],
-                    false,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
-                )
-                return
-            }
             let (modifiedItem, error) = await existingItem.modify(
                 itemTarget: item,
                 baseVersion: baseVersion,
@@ -453,34 +442,32 @@ import OSLog
             return Progress()
         }
 
-        let progress = Progress(totalUnitCount: 1)
-        Task {
-            guard let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager
-            ) else {
-                Logger.fileProviderExtension.error(
-                    "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
-                )
-                insertErrorAction(actionId)
-                completionHandler(
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
-                return
-            }
+        guard let item = Item.storedItem(
+            identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager
+        ) else {
+            Logger.fileProviderExtension.error(
+                "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
+            )
+            insertErrorAction(actionId)
+            completionHandler(
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+            )
+            return Progress()
+        }
 
-            guard config.trashDeletionEnabled || item.parentItemIdentifier != .trashContainer else {
-                Logger.fileProviderExtension.warning(
-                    """
-                    System requested deletion of item in trash, but deleting trash items is disabled.
-                        item: \(item.filename, privacy: .public)
-                    """
-                )
-                completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
-                return
-            }
+        let progress = Progress(totalUnitCount: 1)
+        guard config.trashDeletionEnabled || item.parentItemIdentifier != .trashContainer else {
+            Logger.fileProviderExtension.warning(
+                """
+                System requested deletion of item in trash, but deleting trash items is disabled.
+                    item: \(item.filename, privacy: .public)
+                """
+            )
+            completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
+            return progress
+        }
+
+        Task {
             let error = await item.delete(
                 domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager
             )
