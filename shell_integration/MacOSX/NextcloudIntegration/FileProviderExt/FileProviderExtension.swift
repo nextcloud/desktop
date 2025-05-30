@@ -526,8 +526,7 @@ import OSLog
             account: ncAccount,
             remoteInterface: ncKit,
             dbManager: dbManager,
-            domain: domain,
-            fastEnumeration: config.fastEnumerationEnabled
+            domain: domain
         )
     }
 
