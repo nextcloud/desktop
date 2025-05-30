@@ -424,8 +424,16 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
         // Test by trying to fetch user profile
+        let logger = Logger(
+            subsystem: Logger.subsystem,
+            category: "NextcloudKitRemoteInterfaceAuthenticationAttempt"
+        )
         let (_, _, _, error) =
             await enumerate(remotePath: account.davFilesUrl + "/", depth: .target, account: account)
+
+        if error != .success {
+            logger.error("Error in auth check: \(error.errorDescription, privacy: .public)")
+        }
 
         if error == .success {
             return .success
