@@ -5,7 +5,6 @@
 
 import Foundation
 import FileProvider
-import NextcloudFileProviderKit
 import OSLog
 
 class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, ClientCommunicationProtocol {
@@ -114,10 +113,5 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         Logger.fileProviderExtension.info(
             "Trash deletion setting changed to: \(enabled, privacy: .public)"
         )
-    }
-
-    func setIgnoreList(_ ignoreList: [String]) {
-        self.fpExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
-        Logger.fileProviderExtension.info("Ignore list updated.")
     }
 }

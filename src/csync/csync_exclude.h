@@ -132,11 +132,6 @@ public:
      */
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QString &path, ItemType filetype);
 
-    /**
-     * @brief Provide all active exclude patterns.
-     */
-    [[nodiscard]] QStringList activeExcludePatterns() const;
-
 public slots:
     /**
      * Reloads the exclude patterns from the registered paths.

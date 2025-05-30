@@ -861,15 +861,3 @@ void ExcludedFiles::prepare(const BasePathString & basePath)
     _fullRegexDir[basePath].setPatternOptions(patternOptions);
     _fullRegexDir[basePath].optimize();
 }
-
-QStringList ExcludedFiles::activeExcludePatterns() const
-{
-    QSet<QString> patternSet;
-    const auto pathWiseExcludes = _allExcludes.values();
-    for (const auto &excludes : pathWiseExcludes) {
-        for (const auto &exclude : excludes) {
-            patternSet.insert(exclude);
-        }
-    }
-    return patternSet.values();
-}

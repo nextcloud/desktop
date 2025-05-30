@@ -13,11 +13,6 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileprovider.h"
-#include "macOS/fileproviderxpc.h"
-#endif
-
 namespace OCC {
 
 static constexpr int patternCol = 0;
@@ -118,10 +113,6 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    Mac::FileProvider::instance()->xpc()->setIgnoreList();
-#endif
 }
 
 void IgnoreListTableWidget::slotAddPattern()

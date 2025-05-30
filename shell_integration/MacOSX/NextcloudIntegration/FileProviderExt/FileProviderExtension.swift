@@ -16,7 +16,6 @@ import OSLog
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
     var changeObserver: RemoteChangeObserver?
-    var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
@@ -244,19 +243,6 @@ import OSLog
             return Progress()
         }
 
-        guard let ignoredFiles else {
-            Logger.fileProviderExtension.error(
-                """
-                Not creating item for identifier:
-                    \(itemTemplate.itemIdentifier.rawValue, privacy: .public)
-                    as ignore list not set up yet.
-                """
-            )
-            insertErrorAction(actionId)
-            completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
         guard let dbManager else {
             Logger.fileProviderExtension.error(
                 """
@@ -279,7 +265,6 @@ import OSLog
                 domain: self.domain,
                 account: ncAccount,
                 remoteInterface: ncKit,
-                ignoredFiles: ignoredFiles,
                 progress: progress,
                 dbManager: dbManager
             )
@@ -335,15 +320,6 @@ import OSLog
             return Progress()
         }
 
-        guard let ignoredFiles else {
-            Logger.fileProviderExtension.error(
-                "Not modifying item: \(ocId, privacy: .public) as ignore list not set up yet."
-            )
-            insertErrorAction(actionId)
-            completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
 
         guard let dbManager else {
             Logger.fileProviderExtension.error(
@@ -383,7 +359,6 @@ import OSLog
                 contents: newContents,
                 options: options,
                 request: request,
-                ignoredFiles: ignoredFiles,
                 domain: domain,
                 progress: progress,
                 dbManager: dbManager
@@ -418,15 +393,6 @@ import OSLog
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), account not set up yet"
-            )
-            insertErrorAction(actionId)
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let ignoredFiles else {
-            Logger.fileProviderExtension.error(
-                "Not deleting \(identifier.rawValue, privacy: .public), ignore list not received"
             )
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
@@ -468,9 +434,7 @@ import OSLog
         }
 
         Task {
-            let error = await item.delete(
-                domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager
-            )
+            let error = await item.delete(dbManager: dbManager)
             if error != nil {
                 insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
