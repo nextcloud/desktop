@@ -94,9 +94,23 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    void t7pl_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void t7pl()
     {
+        QFETCH(bool, moveToTrashEnabled);
+
         FakeFolder fakeFolder{ FileInfo() };
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Some of this test depends on the order of discovery. With threading
