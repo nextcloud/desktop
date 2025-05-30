@@ -322,6 +322,28 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertEqual(itemD.userInfo?["displayEvict"] as? Bool, true)
     }
 
+    func testItemUserInfoDisplayShare() {
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+        metadata.permissions = "GDNVW" // No "R" for shareable
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(item.userInfo?["displayShare"])
+
+        let fileproviderItems = ["fileproviderItems": [item]]
+        let lockPredicate = NSPredicate(
+            format: "SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayShare == nil ).@count > 0"
+        )
+        XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
+    }
+
     func testItemLockFileUntrashable() {
         let metadata = SendableItemMetadata(
             ocId: "test-id", fileName: ".~lock.test.doc#", account: Self.account
