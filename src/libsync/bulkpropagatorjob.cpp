@@ -115,13 +115,13 @@ bool BulkPropagatorJob::handleBatchSize()
 
     // we already tried to upload with half of the batch size
     if(_currentBatchSize == halfBatchSize) {
-        qCDebug(lcBulkPropagatorJob) << "There was another error, stop syncing now!";
+        qCWarning(lcBulkPropagatorJob) << "There was another error, stop syncing now!";
         return false;
     }
 
     // try to upload with half of the batch size
     _currentBatchSize = halfBatchSize;
-    qCDebug(lcBulkPropagatorJob) << "There was an error, sync again with bulk upload batch size cut to half!";
+    qCWarning(lcBulkPropagatorJob) << "There was an error, sync again with bulk upload batch size cut to half!";
     return true;
 }
 

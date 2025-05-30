@@ -593,7 +593,7 @@ void OwncloudSetupWizard::createRemoteFolder()
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 {
     auto error = reply->error();
-    qCDebug(lcWizard) << "** webdav mkdir request finished " << error;
+    qCWarning(lcWizard) << "** webdav mkdir request finished " << error;
     //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
     //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 

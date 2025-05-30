@@ -13,7 +13,7 @@ QByteArray clientStatusstatusStringFromNumber(const ClientStatusReportingStatus 
 {
     Q_ASSERT(static_cast<int>(status) >= 0 && static_cast<int>(status) < static_cast<int>(ClientStatusReportingStatus::Count));
     if (static_cast<int>(status) < 0 || static_cast<int>(status) >= static_cast<int>(ClientStatusReportingStatus::Count)) {
-        qCDebug(lcClientStatusReportingCommon) << "Invalid status:" << static_cast<int>(status);
+        qCWarning(lcClientStatusReportingCommon) << "Invalid status:" << static_cast<int>(status);
         return {};
     }
 

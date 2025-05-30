@@ -210,7 +210,7 @@ void PropagateRemoteMkdir::slotMkdir()
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
       this, &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-      []{ qCDebug(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
+      []{ qCWarning(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
     _uploadEncryptedHelper->start();
 }
 

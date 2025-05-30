@@ -847,7 +847,7 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *reply)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
-        qCDebug(lcFolderStatus) << reply->errorString();
+        qCWarning(lcFolderStatus) << reply->errorString();
         parentInfo->_lastErrorString = reply->errorString();
 
         parentInfo->resetSubs(this, idx);

@@ -180,7 +180,7 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
             qCDebug(lcMacSystrayUserNotifications) << "Authorization for notifications not granted.";
             if (error) {
                 const auto errorDescription = QString::fromNSString(error.localizedDescription);
-                qCDebug(lcMacSystrayUserNotifications) << "Error from notification center: " << errorDescription;
+                qCWarning(lcMacSystrayUserNotifications) << "Error from notification center: " << errorDescription;
             }
         }
     }];

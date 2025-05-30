@@ -1135,7 +1135,7 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
     while (!pathComponents.isEmpty()) {
         const auto pathCompontentsJointed = pathComponents.join(QLatin1Char('/'));
         if (!getFileRecord(pathCompontentsJointed, rec)) {
-            qCDebug(lcDb) << "could not get file from local DB" << pathCompontentsJointed;
+            qCWarning(lcDb) << "could not get file from local DB" << pathCompontentsJointed;
             return false;
         }
 

@@ -47,7 +47,7 @@ void ClientStatusReporting::reportClientStatus(const ClientStatusReportingStatus
 
     Q_ASSERT(static_cast<int>(status) >= 0 && static_cast<int>(status) < static_cast<int>(ClientStatusReportingStatus::Count));
     if (static_cast<int>(status) < 0 || static_cast<int>(status) >= static_cast<int>(ClientStatusReportingStatus::Count)) {
-        qCDebug(lcClientStatusReporting) << "Trying to report invalid status:" << static_cast<int>(status);
+        qCWarning(lcClientStatusReporting) << "Trying to report invalid status:" << static_cast<int>(status);
         return;
     }
 
@@ -57,7 +57,7 @@ void ClientStatusReporting::reportClientStatus(const ClientStatusReportingStatus
     record._lastOccurence = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
     const auto result = _database->setClientStatusReportingRecord(record);
     if (!result.isValid()) {
-        qCDebug(lcClientStatusReporting) << "Could not report client status:" << result.error();
+        qCWarning(lcClientStatusReporting) << "Could not report client status:" << result.error();
     }
 }
 }
