@@ -278,11 +278,7 @@ private slots:
 
         //4. File should be updated, that's tested by assertLocalAndRemoteDir
         QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/canBeModified_PERM_W_.data")->size, canBeModifiedSize + 1);
-#if defined Q_OS_WINDOWS
-        QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data")->size, canBeModifiedSize);
-#else
         QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data")->size, canBeModifiedSize + 1);
-#endif
 
         //5.
         // the file should be in the server and local

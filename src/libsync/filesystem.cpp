@@ -648,12 +648,13 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, 
 {
     try
     {
-        const auto stdStrPath = _path.toStdWString();
-        _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
-        if (_initialPermissions != temporaryPermissions) {
+        const auto &stdStrPath = _path.toStdWString();
+        const auto fsPath = std::filesystem::path{stdStrPath};
+        if ((temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadOnly && !FileSystem::isFolderReadOnly(fsPath)) ||
+            (temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadWrite && FileSystem::isFolderReadOnly(fsPath))) {
+            FileSystem::setFolderPermissions(_path, temporaryPermissions);
             _rollbackNeeded = true;
         }
-        FileSystem::setFolderPermissions(_path, temporaryPermissions);
     }
     catch (const std::filesystem::filesystem_error &e)
     {
