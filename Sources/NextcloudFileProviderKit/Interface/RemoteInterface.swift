@@ -116,7 +116,7 @@ public protocol RemoteInterface {
         account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, files: [NKFile], data: Data?, error: NKError)
+    ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError)
 
     func delete(
         remotePath: String,

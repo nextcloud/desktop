@@ -154,9 +154,8 @@ final class EnumeratorTests: XCTestCase {
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
 
-        // Important to keep in mind. Default behaviour is fast enumeration, not deep enumeration
         let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertEqual(dbFolder.etag, "") // Folder is not visited yet, should not have etag
+        XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
         XCTAssertEqual(dbFolder.fileName, remoteFolder.name)
         XCTAssertEqual(dbFolder.fileNameView, remoteFolder.name)
         XCTAssertEqual(dbFolder.serverUrl + "/" + dbFolder.fileName, remoteFolder.remotePath)
@@ -196,7 +195,7 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
         try await observer.enumerateItems()
-        XCTAssertEqual(observer.items.count, 1) // Should only get the folder in root
+        XCTAssertEqual(observer.items.count, 3)
 
         let retrievedFolderItem = try XCTUnwrap(observer.items.first)
         XCTAssertEqual(retrievedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
@@ -211,10 +210,10 @@ final class EnumeratorTests: XCTestCase {
 
         // Ensure the newly discovered folder has no etag
         let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertTrue(dbFolder.etag.isEmpty)
+        XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
     }
 
-    func testWorkingSetFastChangeEnumeration() async throws {
+    func testWorkingSetChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
@@ -224,52 +223,6 @@ final class EnumeratorTests: XCTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
-        )
-        let observer = MockChangeObserver(enumerator: enumerator)
-        try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 1) // Should only get the folder in root
-
-        let retrievedFolderItem = try XCTUnwrap(observer.changedItems.first)
-        XCTAssertEqual(retrievedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
-        XCTAssertEqual(retrievedFolderItem.filename, remoteFolder.name)
-        XCTAssertEqual(retrievedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
-        XCTAssertEqual(retrievedFolderItem.creationDate, remoteFolder.creationDate)
-        XCTAssertEqual(
-            Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
-            Int(remoteFolder.modificationDate.timeIntervalSince1970)
-        )
-        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
-
-        // Ensure the newly discovered folder has no etag
-        var dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertTrue(dbFolder.etag.isEmpty)
-
-        // Having an etag marks a folder as visited. 
-        // We should get the two remaining files now, as the etag does not match the server but is
-        // present, marking the folder as explored
-        dbFolder.etag = "Not server etag"
-        Self.dbManager.addItemMetadata(dbFolder)
-
-        let newObserver = MockChangeObserver(enumerator: enumerator)
-        try await newObserver.enumerateChanges()
-        XCTAssertEqual(newObserver.changedItems.count, 3)
-
-        let newNewObsever = MockChangeObserver(enumerator: enumerator)
-        try await newNewObsever.enumerateChanges()
-        XCTAssertEqual(newNewObsever.changedItems.count, 0)
-    }
-
-    func testWorkingSetSlowChangeEnumeration() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
-        debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-
-        let enumerator = Enumerator(
-            enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            fastEnumeration: false
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
@@ -753,7 +706,6 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
         try await observer.enumerateItems()
-        XCTAssertEqual(observer.items.count, 1) // Should only get the folder in root
 
         // Check enumeration actions
         XCTAssertEqual(listener.startActions.count, 1)
@@ -991,5 +943,51 @@ final class EnumeratorTests: XCTestCase {
             Int(storedItemA.contentModificationDate?.timeIntervalSince1970 ?? 0),
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
+    }
+
+    func testFolderPaginatedEnumeration() async throws {
+        remoteFolder.children = []
+        for i in 0...20 {
+            let childItem = MockRemoteItem(
+                identifier: "folderChild\(i)",
+                name: "folderChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "folder/folderChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
+
+        let oldEtag = "OLD"
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.etag = oldEtag
+
+        Self.dbManager.addItemMetadata(folderMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 21)
+
+        for item in observer.items {
+            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
+        }
+
+        XCTAssertEqual(observer.observedPages.first, NSFileProviderPage.initialPageSortedByName as NSFileProviderPage)
+        XCTAssertEqual(observer.observedPages.count, 5)
     }
 }

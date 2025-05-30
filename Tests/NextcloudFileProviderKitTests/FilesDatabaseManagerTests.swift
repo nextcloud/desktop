@@ -78,7 +78,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -92,7 +91,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -109,7 +107,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -152,7 +149,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [renamedParent],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -189,7 +185,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [incoming],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -215,7 +210,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -340,7 +334,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -385,7 +378,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: "TestAccount",
             serverUrl: "https://example.com",
             updatedMetadatas: [updatedMetadata, newMetadata],
-            updateDirectoryEtags: true,
             keepExistingDownloadState: true
         )
 
@@ -442,7 +434,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: testAccount,
             serverUrl: testServerUrl,
             updatedMetadatas: updatedMetadatasFromServer,
-            updateDirectoryEtags: true, // Value doesn't strictly matter for this test logic
             keepExistingDownloadState: true // Value doesn't strictly matter for this test logic
         )
 

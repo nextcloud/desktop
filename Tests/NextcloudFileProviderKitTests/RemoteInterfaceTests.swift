@@ -107,7 +107,7 @@ fileprivate struct TestableRemoteInterface: RemoteInterface {
         account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, files: [NKFile], data: Data?, error: NKError) {
+    ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
         ("", [], nil, .invalidResponseError)
     }
     

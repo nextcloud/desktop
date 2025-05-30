@@ -99,27 +99,26 @@ extension Enumerator {
         Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
 
         let (
-            metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
+            metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
         ) = await Self.readServerUrl(
             itemServerUrl,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             domain: domain,
-            enumeratedItemIdentifier: enumeratedItemIdentifier,
-            stopAtMatchingEtags: scanChangesOnly
+            enumeratedItemIdentifier: enumeratedItemIdentifier
         )
 
         if let readError, readError != .success {
             // Is the error is that we have found matching etags on this item, then ignore it
             // if we are doing a full rescan
-            if readError.isNoChangesError && scanChangesOnly {
+            if readError.isNoChangesError, scanChangesOnly {
                 Self.logger.info("No changes in \(self.serverUrl) and only scanning changes.")
             } else {
                 Self.logger.error(
                     """
                     Finishing enumeration of changes at \(itemServerUrl, privacy: .public)
-                    with \(readError.errorDescription, privacy: .public)
+                        with \(readError.errorDescription, privacy: .public)
                     """
                 )
 
@@ -127,7 +126,7 @@ extension Enumerator {
                     Self.logger.info(
                         """
                         404 error means item no longer exists.
-                        Deleting metadata and reporting as deletion without error
+                            Deleting metadata and reporting as deletion without error.
                         """
                     )
 
@@ -212,9 +211,7 @@ extension Enumerator {
         var childDirectoriesToScan: [SendableItemMetadata] = []
         var candidateMetadatas: [SendableItemMetadata]
 
-        if scanChangesOnly, fastEnumeration {
-            candidateMetadatas = allUpdatedMetadatas
-        } else if scanChangesOnly {
+        if scanChangesOnly {
             candidateMetadatas = allUpdatedMetadatas + allNewMetadatas
         } else {
             candidateMetadatas = allMetadatas
@@ -225,7 +222,7 @@ extension Enumerator {
         }
 
         Self.logger.debug(
-            "Candidate metadatas for further scan: \(candidateMetadatas, privacy: .public)"
+            "Candidate metadatas for further scan: \(childDirectoriesToScan, privacy: .public)"
         )
 
         if childDirectoriesToScan.isEmpty {
@@ -239,10 +236,11 @@ extension Enumerator {
         }
 
         for childDirectory in childDirectoriesToScan {
+            let childDirectoryUrl = childDirectory.serverUrl + "/" + childDirectory.fileName
             Self.logger.debug(
                 """
-                About to recursively scan: \(childDirectory.urlBase, privacy: .public)
-                with etag: \(childDirectory.etag, privacy: .public)
+                About to recursively scan: \(childDirectoryUrl, privacy: .public)
+                    with etag: \(childDirectory.etag, privacy: .public)
                 """
             )
             let childScanResult = await scanRecursively(
@@ -266,11 +264,33 @@ extension Enumerator {
         )
     }
 
+    static func handlePagedReadResults(
+        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager
+    ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+        // First PROPFIND contains the target item, but we do not want to report this in the
+        // retrieved metadatas (the enumeration observers don't expect you to enumerate the
+        // target item, hence why we always strip the target item out)
+        let startIndex = pageIndex > 0 ? 0 : 1
+        if pageIndex == 0 {
+            guard let firstFile = files.first else {
+                return (nil, .invalidResponseError)
+            }
+            dbManager.addItemMetadata(firstFile.toItemMetadata())
+        }
+        let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
+        metadatas.forEach { dbManager.addItemMetadata($0) }
+        return (metadatas, nil)
+    }
+
+    // With paginated requests, you do not have a way to know what has changed remotely when
+    // handling the result of an individual PROPFIND request. When handling a paginated read this
+    // therefore only returns the acquired metadatas.
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
         account: Account,
         dbManager: FilesDatabaseManager,
-        files: [NKFile]
+        files: [NKFile],
+        pageIndex: Int?
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         newMetadatas: [SendableItemMetadata]?,
@@ -281,10 +301,15 @@ extension Enumerator {
         Self.logger.debug(
             """
             Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public)
-            for user: \(account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
             """
         )
 
+        if let pageIndex {
+            let (metadatas, error) =
+                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager)
+            return (metadatas, nil, nil, nil, error)
+        }
 
         guard var (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
@@ -294,8 +319,6 @@ extension Enumerator {
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        // We have now scanned this directory's contents, so update with etag in order to not check 
-        // again if not needed unless it's the root container
         if serverUrl != account.davFilesUrl {
             if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
                 directoryMetadata.downloaded = existingMetadata.downloaded
@@ -303,16 +326,10 @@ extension Enumerator {
             dbManager.addItemMetadata(directoryMetadata)
         }
 
-        // Don't update the etags for folders as we haven't checked their contents.
-        // When we do a recursive check, if we update the etags now, we will think
-        // that our local copies are up to date -- instead, leave them as the old.
-        // They will get updated when they are the subject of a readServerUrl call.
-        // (See above)
         let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
-            updateDirectoryEtags: false,
             keepExistingDownloadState: true
         )
 
@@ -325,20 +342,34 @@ extension Enumerator {
         )
     }
 
+    // READ THIS CAREFULLY.
+    //
+    // This method supports paginated and non-paginated reads. Handled by the pageSettings argument.
+    // Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
+    //
+    // Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
+    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED LOCALLY.
+    // This means that if you decide to use this method to implement change enumeration, you will
+    // have to collect the full results of all the pages before proceeding with discovering what
+    // has changed relative to the state of the local database -- manually!
+    //
+    // Non-paginated reads will update the database with all of the discovered files and folders
+    // that have been found to be created, updated, and deleted. No extra work required.
     static func readServerUrl(
         _ serverUrl: String,
+        pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
-        stopAtMatchingEtags: Bool = false,
         depth: EnumerateDepth = .targetAndDirectChildren
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         newMetadatas: [SendableItemMetadata]?,
         updatedMetadatas: [SendableItemMetadata]?,
         deletedMetadatas: [SendableItemMetadata]?,
+        nextPage: EnumeratorPageResponse?,
         readError: NKError?
     ) {
         let ncKitAccount = account.ncKitAccount
@@ -346,22 +377,33 @@ extension Enumerator {
         Self.logger.debug(
             """
             Starting to read serverUrl: \(serverUrl, privacy: .public)
-            for user: \(ncKitAccount, privacy: .public)
-            at depth \(depth.rawValue, privacy: .public).
-            username: \(account.username, privacy: .public),
-            password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
-            serverUrl: \(account.serverUrl, privacy: .public)
+                for user: \(ncKitAccount, privacy: .public)
+                at depth \(depth.rawValue, privacy: .public).
+                username: \(account.username, privacy: .public),
+                password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
+                serverUrl: \(account.serverUrl, privacy: .public)
             """
         )
 
-        let (_, files, _, error) = await remoteInterface.enumerate(
+        let options: NKRequestOptions
+        if let pageSettings {
+            options = .init(
+                page: pageSettings.page,
+                offset: pageSettings.index * pageSettings.size,
+                count: pageSettings.size
+            )
+        } else {
+            options = .init()
+        }
+
+        let (_, files, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
             showHiddenFiles: true,
             includeHiddenFiles: [],
             requestBody: nil,
             account: account,
-            options: .init(),
+            options: options,
             taskHandler: { task in
                 if let domain, let enumeratedItemIdentifier {
                     NSFileProviderManager(for: domain)?.register(
@@ -380,8 +422,24 @@ extension Enumerator {
                 did not complete successfully, error: \(error.errorDescription, privacy: .public)
                 """
             )
-            return (nil, nil, nil, nil, error)
+            return (nil, nil, nil, nil, nil, error)
         }
+
+        guard let data else {
+            Self.logger.error(
+                """
+                \(depth.rawValue, privacy: .public) depth read of url \(serverUrl, privacy: .public)
+                    did not return data.
+                """
+            )
+            return (nil, nil, nil, nil, nil, error)
+        }
+
+        // This will be nil if the page settings were also nil, as the server will not give us the
+        // pagination-related headers.
+        let nextPage = EnumeratorPageResponse(
+            nkResponseData: data, index: (pageSettings?.index ?? 0) + 1
+        )
 
         guard let receivedFile = files.first else {
             Self.logger.error(
@@ -390,51 +448,35 @@ extension Enumerator {
                 not much we can do...
                 """
             )
-            return (nil, nil, nil, nil, error)
+            return (nil, nil, nil, nil, nextPage, error)
         }
 
-        guard receivedFile.directory else {
-            Self.logger.debug(
-                """
-                Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
-            let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
-            metadata.downloaded = existing?.downloaded == true
-            dbManager.addItemMetadata(metadata)
-            return ([metadata], newItems, updatedItems, nil, nil)
-        }
-
-        if stopAtMatchingEtags,
-           let dir = dbManager.itemMetadata(account: ncKitAccount, locatedAtRemoteUrl: serverUrl),
-           dir.etag != "",
-           dir.etag == receivedFile.etag
-        {
-            Self.logger.debug(
-                """
-                Read server url called with flag to stop enumerating at matching etags.
-                Returning and providing soft error.
-                """
-            )
-
-            let description = "Fetched directory etag same as local copy. Ignoring child items."
-            let nkError = NKError(
-                errorCode: NKError.noChangesErrorCode, errorDescription: description
-            )
-            // Return all database metadatas under the current serverUrl (including target)
-            let metadatas =
-                dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
-            return (metadatas, nil, nil, nil, nkError)
+        // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
+        // That is NOT the case for paginated results with offsets
+        let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
+        if !isFollowUpPaginatedRequest {
+            guard receivedFile.directory else {
+                Self.logger.debug(
+                    """
+                    Read item is a file.
+                        Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
+                        for user: \(account.ncKitAccount, privacy: .public)
+                    """
+                )
+                var metadata = receivedFile.toItemMetadata()
+                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                let isNew = existing == nil
+                let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                metadata.downloaded = existing?.downloaded == true
+                dbManager.addItemMetadata(metadata)
+                return ([metadata], newItems, updatedItems, nil, nextPage, nil)
+            }
         }
 
         if depth == .target {
             if serverUrl == account.davFilesUrl {
-                return (nil, nil, nil, nil, nil)
+                return (nil, nil, nil, nil, nextPage, nil)
             } else {
                 var metadata = receivedFile.toItemMetadata()
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
@@ -445,19 +487,28 @@ extension Enumerator {
                 metadata.downloaded = existing?.downloaded == true
                 dbManager.addItemMetadata(metadata)
 
-                return ([metadata], newMetadatas, updatedMetadatas, nil, nil)
+                return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
             }
-        } else {
+        } else if depth == .targetAndDirectChildren {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl, 
                 account: account,
                 dbManager: dbManager,
-                files: files
+                files: files,
+                pageIndex: pageSettings?.index
             )
 
-            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError)
+            return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)
+        } else if let pageIndex = pageSettings?.index {
+            let (metadatas, error) = handlePagedReadResults(
+                files: files, pageIndex: pageIndex, dbManager: dbManager
+            )
+            return (metadatas, nil, nil, nil, nextPage, error)
+        } else {
+            // Infinite depth unpaged reads are a bad idea
+            return (nil, nil, nil, nil, nil, .invalidResponseError)
         }
     }
 }

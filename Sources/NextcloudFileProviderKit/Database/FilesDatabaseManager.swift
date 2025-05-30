@@ -250,7 +250,6 @@ public final class FilesDatabaseManager: Sendable {
     private func processItemMetadatasToUpdate(
         existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool,
         keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata],
@@ -268,16 +267,11 @@ public final class FilesDatabaseManager: Sendable {
                 if existingMetadata.status == Status.normal.rawValue,
                     !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
                 {
-                    if updatedMetadata.directory {
-                        if updatedMetadata.serverUrl != existingMetadata.serverUrl
-                            || updatedMetadata.fileName != existingMetadata.fileName
-                        {
-                            directoriesNeedingRename.append(updatedMetadata)
-                            updatedMetadata.etag = ""  // Renaming doesn't change the etag so reset
-
-                        } else if !updateDirectoryEtags {
-                            updatedMetadata.etag = existingMetadata.etag
-                        }
+                    if updatedMetadata.directory,
+                       updatedMetadata.serverUrl != existingMetadata.serverUrl ||
+                        updatedMetadata.fileName != existingMetadata.fileName
+                    {
+                        directoriesNeedingRename.append(updatedMetadata)
                     }
 
                     if keepExistingDownloadState {
@@ -305,11 +299,7 @@ public final class FilesDatabaseManager: Sendable {
                     )
                 }
 
-            } else {  // This is a new metadata
-                if !updateDirectoryEtags, updatedMetadata.directory {
-                    updatedMetadata.etag = ""
-                }
-
+            } else { // This is a new metadata
                 returningNewMetadatas.append(updatedMetadata)
 
                 Self.logger.debug(
@@ -332,7 +322,6 @@ public final class FilesDatabaseManager: Sendable {
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
-        updateDirectoryEtags: Bool,
         keepExistingDownloadState: Bool
     ) -> (
         newMetadatas: [SendableItemMetadata]?,
@@ -360,7 +349,6 @@ public final class FilesDatabaseManager: Sendable {
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas,
-                updateDirectoryEtags: updateDirectoryEtags,
                 keepExistingDownloadState: keepExistingDownloadState
             )
 
@@ -591,7 +579,7 @@ public final class FilesDatabaseManager: Sendable {
             return parentItemIdentifier
         }
 
-        let (metadatas, _, _, _, error) = await Enumerator.readServerUrl(
+        let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
             metadata.serverUrl,
             account: account,
             remoteInterface: remoteInterface,
