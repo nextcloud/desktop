@@ -20,8 +20,6 @@
 - (void)createDebugLogStringWithCompletionHandler:(void(^)(NSString *debugLogString, NSError *error))completionHandler;
 - (void)getFastEnumerationStateWithCompletionHandler:(void(^)(BOOL enabled, BOOL set))completionHandler;
 - (void)setFastEnumerationEnabled:(BOOL)enabled;
-- (void)getTrashDeletionEnabledStateWithCompletionHandler:(void(^)(BOOL enabled, BOOL set))completionHandler;
-- (void)setTrashDeletionEnabled:(BOOL)enabled;
 
 @end
 
