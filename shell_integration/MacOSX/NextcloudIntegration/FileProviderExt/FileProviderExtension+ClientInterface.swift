@@ -153,7 +153,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
 
             Task { @MainActor in
                 ncAccount = account
-                dbManager = FilesDatabaseManager(account: account)
                 changeObserver = RemoteChangeObserver(
                     account: account,
                     remoteInterface: ncKit,
@@ -171,7 +170,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )
         ncAccount = nil
-        dbManager = nil
     }
 
     func updatedSyncStateReporting(oldActions: Set<UUID>) {
