@@ -6326,7 +6326,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="98"/>
         <source>All server versions</source>
-        <translation>Tutte le versionni del server</translation>
+        <translation>Tutte le versioni del server</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
