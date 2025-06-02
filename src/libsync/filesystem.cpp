@@ -474,7 +474,17 @@ bool FileSystem::setFolderPermissions(const QString &path,
     const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
     for (const auto &oneEntry : childFiles) {
         const auto childFile = QDir::toNativeSeparators(path + QDir::separator() + oneEntry);
-        if (!SetFileSecurityW(childFile.toStdWString().c_str(), info, &newSecurityDescriptor)) {
+
+        const auto &childFileStdWString = childFile.toStdWString();
+        const auto attributes = GetFileAttributes(childFileStdWString.c_str());
+
+        // testing if that could be a pure virtual placeholder file (i.e. CfApi file without data)
+        // we do not want to trigger implicit hydration ourself
+        if ((attributes & FILE_ATTRIBUTE_SPARSE_FILE) != 0) {
+            continue;
+        }
+
+        if (!SetFileSecurityW(childFileStdWString.c_str(), info, &newSecurityDescriptor)) {
             qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << childFile << GetLastError();
             return false;
         }
@@ -638,12 +648,13 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, 
 {
     try
     {
-        const auto stdStrPath = _path.toStdWString();
-        _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
-        if (_initialPermissions != temporaryPermissions) {
+        const auto &stdStrPath = _path.toStdWString();
+        const auto fsPath = std::filesystem::path{stdStrPath};
+        if ((temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadOnly && !FileSystem::isFolderReadOnly(fsPath)) ||
+            (temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadWrite && FileSystem::isFolderReadOnly(fsPath))) {
+            FileSystem::setFolderPermissions(_path, temporaryPermissions);
             _rollbackNeeded = true;
         }
-        FileSystem::setFolderPermissions(_path, temporaryPermissions);
     }
     catch (const std::filesystem::filesystem_error &e)
     {

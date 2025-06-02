@@ -546,22 +546,23 @@ QString FileSystem::fileSystemForPath(const QString &path)
 
 bool FileSystem::remove(const QString &fileName, QString *errorString)
 {
+    const auto &windowsSafeFileName = FileSystem::longWinPath(fileName);
 #ifdef Q_OS_WIN
     // You cannot delete a read-only file on windows, but we want to
     // allow that.
-    setFileReadOnly(fileName, false);
+    setFileReadOnly(windowsSafeFileName, false);
 #endif
-    const auto deletedFileInfo = QFileInfo{fileName};
+    const auto deletedFileInfo = QFileInfo{windowsSafeFileName};
     if (!deletedFileInfo.exists()) {
-        qCWarning(lcFileSystem()) << fileName << "has been already deleted";
+        qCWarning(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
     }
 
-    QFile f(fileName);
+    QFile f(windowsSafeFileName);
     if (!f.remove()) {
         if (errorString) {
             *errorString = f.errorString();
         }
-        qCWarning(lcFileSystem()) << f.errorString() << fileName;
+        qCWarning(lcFileSystem()) << f.errorString() << windowsSafeFileName;
 
 #if defined Q_OS_WIN
         const auto permissionsDisplayHelper = [] (std::filesystem::perms currentPermissions) {
@@ -580,10 +581,10 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
                                    << unitaryHelper(std::filesystem::perms::others_exec, 'x');
         };
 
-        const auto unsafeFilePermissions = filePermissionsWin(fileName);
+        const auto unsafeFilePermissions = filePermissionsWin(windowsSafeFileName);
         permissionsDisplayHelper(unsafeFilePermissions);
 
-        const auto safeFilePermissions = filePermissionsWinSymlinkSafe(fileName);
+        const auto safeFilePermissions = filePermissionsWinSymlinkSafe(windowsSafeFileName);
         permissionsDisplayHelper(safeFilePermissions);
 #endif
 
