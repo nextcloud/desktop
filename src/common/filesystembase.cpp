@@ -116,15 +116,16 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         return;
     }
 
-    const auto fileAttributes = GetFileAttributesW(filename.toStdWString().c_str());
+    const auto windowsFilename = QDir::toNativeSeparators(filename);
+    const auto fileAttributes = GetFileAttributesW(windowsFilename.toStdWString().c_str());
     if (fileAttributes == INVALID_FILE_ATTRIBUTES) {
         const auto lastError = GetLastError();
         auto errorMessage = static_cast<char*>(nullptr);
         if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                           nullptr, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errorMessage, 0, nullptr) == 0) {
-            qCWarning(lcFileSystem()) << "GetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << errorMessage;
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << windowsFilename << (readonly ? "readonly" : "read write") << errorMessage;
         } else {
-            qCWarning(lcFileSystem()) << "GetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
+            qCWarning(lcFileSystem()) << "GetFileAttributesW" << windowsFilename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
         }
         return;
     }
@@ -136,14 +137,14 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         newFileAttributes = newFileAttributes & (~FILE_ATTRIBUTE_READONLY);
     }
 
-    if (SetFileAttributesW(filename.toStdWString().c_str(), newFileAttributes) == 0) {
+    if (SetFileAttributesW(windowsFilename.toStdWString().c_str(), newFileAttributes) == 0) {
         const auto lastError = GetLastError();
         auto errorMessage = static_cast<char*>(nullptr);
         if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                            nullptr, lastError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errorMessage, 0, nullptr) == 0) {
-            qCWarning(lcFileSystem()) << "SetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << errorMessage;
+            qCWarning(lcFileSystem()) << "SetFileAttributesW" << windowsFilename << (readonly ? "readonly" : "read write") << errorMessage;
         } else {
-            qCWarning(lcFileSystem()) << "SetFileAttributesW" << filename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
+            qCWarning(lcFileSystem()) << "SetFileAttributesW" << windowsFilename << (readonly ? "readonly" : "read write") << "unknown error" << lastError;
         }
     }
 
