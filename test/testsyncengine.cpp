@@ -2345,6 +2345,78 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces6)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(extraFileNameWithoutSpaces)->_status, SyncFileItem::Status::Success);
     }
+
+    void testTouchedFilesWhenChangingFolderPermissionsDuringSync()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir("directory");
+        fakeFolder.localModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+
+        // perform an initial sync to ensure local and remote have the same state
+        QVERIFY(fakeFolder.syncOnce());
+
+        QStringList touchedFiles;
+
+        // syncEngine->_propagator is only set during a sync, which doesn't work with QSignalSpy :(
+        connect(&fakeFolder.syncEngine(), &SyncEngine::started, this, [&]() {
+            // at this point we have a propagator to connect signals to
+            connect(fakeFolder.syncEngine().getPropagator().get(), &OwncloudPropagator::touchedFile, this, [&touchedFiles](const QString& fileName) {
+                touchedFiles.append(fileName);
+            });
+        });
+
+        const auto syncAndExpectNoTouchedFiles = [&]() {
+            touchedFiles.clear();
+            QVERIFY(fakeFolder.syncOnce());
+            QCOMPARE(touchedFiles.size(), 0);
+        };
+
+        // when nothing changed expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // when the remote etag of a subsubdir changes expect the parent+subdirs to be touched
+        fakeFolder.remoteModifier().findInvalidatingEtags("directory/subdir");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 2);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory/subdir").fileName()));
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // nothing changed again, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // when subdir folder permissions change, expect the parent to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().find("directory")->permissions = RemotePermissions::fromServerString("S");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // another sync without changes, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // remote etag of the subdir changed, expect the parent to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().findInvalidatingEtags("directory");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // same as usual, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // remote rename of the subdir folder, expect the new name to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().rename("directory", "renamedDirectory");
+        QVERIFY(fakeFolder.syncOnce());
+        qDebug() << touchedFiles;
+        QCOMPARE_GT(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("renamedDirectory").fileName()));
+
+        // last sync without changes, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

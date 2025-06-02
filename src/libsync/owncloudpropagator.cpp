@@ -1468,11 +1468,14 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 try {
-                    if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
-                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadOnly);
+                    if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
+                        FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);
+                        Q_EMIT propagator()->touchedFile(fileName);
                     }
                     if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
-                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadOnly);
+                        const auto fileName = propagator()->fullLocalPath(_item->_renameTarget);
+                        FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);
+                        Q_EMIT propagator()->touchedFile(fileName);
                     }
                 }
                 catch (const std::filesystem::filesystem_error &e)
@@ -1495,10 +1498,11 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             } else {
                 try {
-                    const auto permissionsChangeHelper = [] (const auto fileName)
+                    const auto permissionsChangeHelper = [this] (const auto fileName)
                     {
                         qCDebug(lcDirectory) << fileName << "permissions changed: old permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
                         FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadWrite);
+                        Q_EMIT propagator()->touchedFile(fileName);
                         qCDebug(lcDirectory) << fileName << "applied new permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
                     };
 
