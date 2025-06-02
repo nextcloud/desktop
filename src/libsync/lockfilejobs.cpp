@@ -16,6 +16,7 @@
 
 #include "account.h"
 #include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
 
 #include <QLoggingCategory>
@@ -49,7 +50,16 @@ LockFileJob::LockFileJob(const AccountPtr account,
 
 void LockFileJob::start()
 {
-    qCInfo(lcLockFileJob()) << "start with path:" << path()
+    auto remotePath = path();
+
+    SyncJournalFileRecord record;
+    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
+    if (_journal->getFileRecord(relativePathInDb, &record) && record.isValid() && record.isE2eEncrypted()) {
+        remotePath = _remoteSyncPathWithTrailingSlash + record.e2eMangledName();
+        qCDebug(lcLockFileJob).nospace() << "will (un)lock e2ee file path=" << path() << " remotePath=" << remotePath;
+    }
+
+    qCInfo(lcLockFileJob()) << "start with path:" << remotePath
                             << "lock state:" <<  _requestedLockState
                             << "lock owner type:" << _requestedLockOwnerType;
 
@@ -77,7 +87,7 @@ void LockFileJob::start()
         verb = "UNLOCK";
         break;
     }
-    sendRequest(verb, makeDavUrl(path()), request);
+    sendRequest(verb, makeDavUrl(remotePath), request);
 
     AbstractNetworkJob::start();
 }
