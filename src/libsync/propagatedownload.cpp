@@ -37,6 +37,8 @@
 
 namespace OCC {
 
+static constexpr auto CustomDecompressedSafetyCheckThreshold = 20 * 1024 * 1024;
+
 Q_LOGGING_CATEGORY(lcGetJob, "nextcloud.sync.networkjob.get", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateDownload, "nextcloud.sync.propagator.download", QtInfoMsg)
 
@@ -122,6 +124,7 @@ void GETFileJob::start()
     }
 
     req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
+    req.setDecompressedSafetyCheckThreshold(CustomDecompressedSafetyCheckThreshold);
 
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
