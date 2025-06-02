@@ -209,7 +209,9 @@ void PropagateRemoteMove::slotMoveJobFinished()
             &propagator()->_anotherSyncNeeded);
         const auto filePath = propagator()->fullLocalPath(_item->_renameTarget);
         const auto filePathOriginal = propagator()->fullLocalPath(_item->_originalFile);
+        const auto oldFile = QFileInfo{filePathOriginal};
         QFile file(filePath);
+        auto permissionsHandler = FileSystem::FilePermissionsRestore{oldFile.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
         if (!file.rename(filePathOriginal)) {
             qCWarning(lcPropagateRemoteMove) << "Could not MOVE file" << filePathOriginal << " to" << filePath
                                              << " with error:" << _job->errorString() << " and failed to restore it !";
