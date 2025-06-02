@@ -207,40 +207,6 @@ bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId
     return response;
 }
 
-std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExtension(const QString &extensionAccountId) const
-{
-    qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
-    if (service == nil) {
-        qCWarning(lcFileProviderXPC) << "Could not get service for extension" << extensionAccountId;
-        return std::nullopt;
-    }
-
-    __block BOOL receivedFastEnumerationEnabled = YES; // What is the value of the setting being used by the extension?
-    __block BOOL receivedFastEnumerationSet = NO; // Has the setting been set by the user?
-    __block BOOL receivedResponse = NO;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [service getFastEnumerationStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
-        receivedFastEnumerationEnabled = enabled;
-        receivedFastEnumerationSet = set;
-        receivedResponse = YES;
-        dispatch_semaphore_signal(semaphore);
-    }];
-    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-    if (!receivedResponse) {
-        qCWarning(lcFileProviderXPC) << "Did not receive response for fast enumeration state";
-        return std::nullopt;
-    }
-    return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
-}
-
-void FileProviderXPC::setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const
-{
-    qCInfo(lcFileProviderXPC) << "Setting fast enumeration for extension" << extensionAccountId << "to" << enabled;
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
-    [service setFastEnumerationEnabled:enabled];
-}
-
 std::optional<std::pair<bool, bool>> FileProviderXPC::trashDeletionEnabledStateForExtension(const QString &extensionAccountId) const
 {
     qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;

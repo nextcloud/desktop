@@ -11,7 +11,6 @@ import Foundation
 
 struct FileProviderConfig {
     private enum ConfigKey: String {
-        case fastEnumerationEnabled = "fastEnumerationEnabled"
         case trashDeletionEnabled = "trashDeletionEnabled"
     }
 
@@ -39,11 +38,4 @@ struct FileProviderConfig {
     }
 
     lazy var trashDeletionSet = internalConfig[ConfigKey.trashDeletionEnabled.rawValue] != nil
-
-    var fastEnumerationEnabled: Bool {
-        get { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] as? Bool ?? true }
-        set { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] = newValue }
-    }
-
-    lazy var fastEnumerationSet = internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] != nil
 }

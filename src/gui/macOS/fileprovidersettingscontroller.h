@@ -35,8 +35,6 @@ public:
     [[nodiscard]] Q_INVOKABLE float localStorageUsageGbForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool fastEnumerationEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool fastEnumerationSetForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
 
@@ -45,7 +43,6 @@ public:
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
-    void setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
     void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
@@ -58,8 +55,6 @@ signals:
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
     void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
     void materialisedItemsForAccountChanged(const QString &userIdAtHost);
-    void fastEnumerationEnabledForAccountChanged(const QString &userIdAtHost);
-    void fastEnumerationSetForAccountChanged(const QString &userIdAtHost);
     void trashDeletionEnabledForAccountChanged(const QString &userIdAtHost);
     void trashDeletionSetForAccountChanged(const QString &userIdAtHost);
 

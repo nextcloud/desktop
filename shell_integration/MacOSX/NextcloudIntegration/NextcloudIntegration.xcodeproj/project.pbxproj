@@ -1511,7 +1511,7 @@
 			repositoryURL = "https://github.com/nextcloud/NextcloudKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.4;
+				minimumVersion = 6.0.9;
 			};
 		};
 		5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */ = {
@@ -1519,7 +1519,7 @@
 			repositoryURL = "https://github.com/claucambra/NextcloudCapabilitiesKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				minimumVersion = 2.3.0;
 			};
 		};
 		53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */ = {
@@ -1534,7 +1534,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/NextcloudFileProviderKit.git";
 			requirement = {
-				branch = "stable-2.1";
+				branch = "stable-3.0";
 				kind = branch;
 			};
 		};

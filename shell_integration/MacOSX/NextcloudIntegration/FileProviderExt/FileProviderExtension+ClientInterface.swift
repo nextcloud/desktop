@@ -103,7 +103,19 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         userAgent: String = "Nextcloud-macOS/FileProviderExt"
     ) {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
-        guard account != ncAccount else { return }
+        guard account != ncAccount, user != "", userId != "", serverUrl != "", password != "" else {
+            Logger.fileProviderExtension.warning(
+                """
+                Received repeated or invalid user account details.
+                    user: \(user, privacy: .public)
+                    id: \(userId, privacy: .public),
+                    serverUrl: \(serverUrl, privacy: .public)
+                    password: \(password.isEmpty ? "EMPTY" : "NOT EMPTY", privacy: .public)
+                    ncKitAccount: \(account.ncKitAccount, privacy: .public)
+                """
+            )
+            return
+        }
 
         Task {
             ncKit.appendSession(
