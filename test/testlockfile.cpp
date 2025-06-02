@@ -789,6 +789,83 @@ private slots:
 
         QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
     }
+
+    void testLockFile_verifyE2eeFilesUseCorrectPath()
+    {
+        const auto e2eeRoot = QStringLiteral("encrypted");
+        const auto cleartextFilePath = QStringLiteral("encrypted/document.odt");
+        const auto encryptedFilePath = QStringLiteral("encrypted/1e4c70c057994f9daf7bbab71b046d5b");
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.localModifier().mkdir(e2eeRoot);
+        fakeFolder.remoteModifier().mkdir(e2eeRoot);
+        fakeFolder.localModifier().insert(cleartextFilePath);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // modify local entry for the file to be locked to pretend it's E2E encrypted
+        OCC::SyncJournalFileRecord record;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(cleartextFilePath, &record));
+        record._e2eEncryptionStatus = OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0;
+        record._e2eMangledName = encryptedFilePath.toUtf8();
+        record._path = cleartextFilePath.toUtf8();
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+
+        // do something similar on the remote -- the encrypted file has a different name
+        fakeFolder.remoteModifier().rename(cleartextFilePath, encryptedFilePath);
+        fakeFolder.remoteModifier().setE2EE(encryptedFilePath, true);
+
+        // another sync run should not fail now, even with our pretended E2Ee setup :-)
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(),
+                                        QStringLiteral("/") + cleartextFilePath,
+                                        QStringLiteral("/"),
+                                        fakeFolder.localPath(),
+                                        {},
+                                        OCC::SyncFileItem::LockStatus::LockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
+
+        QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
+        QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
+
+        QString lockRequestPath;
+        connect(fakeFolder.networkAccessManager(), &QNetworkAccessManager::finished, [&lockRequestPath](QNetworkReply *reply) {
+            const auto request = reply->request();
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() != QStringLiteral("LOCK")) {
+                return;
+            }
+
+            QVERIFY(lockRequestPath.isEmpty());
+            lockRequestPath = request.url().path();
+        });
+
+        job->start();
+
+        QVERIFY(jobSuccess.wait());
+        QCOMPARE(jobFailure.count(), 0);
+
+        // expect the path of the LOCK request to have used the mangled name
+        QVERIFY(!lockRequestPath.isEmpty());
+        QVERIFY(lockRequestPath.contains(encryptedFilePath));
+        QVERIFY(!lockRequestPath.contains(cleartextFilePath));
+
+        auto fileRecord = OCC::SyncJournalFileRecord{};
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(cleartextFilePath, &fileRecord));
+        QVERIFY(fileRecord.isE2eEncrypted());
+        QCOMPARE(fileRecord.e2eMangledName(), encryptedFilePath);
+        QCOMPARE(fileRecord._lockstate._locked, true);
+        QCOMPARE(fileRecord._lockstate._lockEditorApp, QString{});
+        QCOMPARE(fileRecord._lockstate._lockOwnerDisplayName, QStringLiteral("John Doe"));
+        QCOMPARE(fileRecord._lockstate._lockOwnerId, QStringLiteral("admin"));
+        QCOMPARE(fileRecord._lockstate._lockOwnerType, static_cast<qint64>(OCC::SyncFileItem::LockOwnerType::UserLock));
+        QCOMPARE(fileRecord._lockstate._lockTime, 1234560);
+        QCOMPARE(fileRecord._lockstate._lockTimeout, 1800);
+
+        QVERIFY(fakeFolder.syncOnce());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLockFile)
