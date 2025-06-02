@@ -130,7 +130,6 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
             auto word = match.captured(1);
             word.remove(subjectRichParameterBracesRe);
 
-            Q_ASSERT(activity._subjectRichParameters.contains(word));
             displayString = displayString.replace(match.captured(1), activity._subjectRichParameters[word].value<Activity::RichSubjectParameter>().name);
         }
 
