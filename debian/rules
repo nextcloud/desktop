@@ -30,7 +30,6 @@ override_dh_auto_test-indep:
 
 override_dh_auto_build-indep:
 	dh_auto_build -- -C shell_integration/nautilus
-	dh_auto_build -- doc-html
 	dh_auto_build # unfortunatelly we don't get icons and translations otherwise.
 
 override_dh_auto_build-arch:
