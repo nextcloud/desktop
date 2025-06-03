@@ -34,7 +34,6 @@ override_dh_auto_build-indep:
 	dh_auto_build # unfortunatelly we don't get icons and translations otherwise.
 
 override_dh_auto_build-arch:
-	dh_auto_build -- doc-man
 	dh_auto_build --
 
 override_dh_missing:
