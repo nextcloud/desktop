@@ -15,6 +15,7 @@
 #include <memory>
 #include <mutex>
 #include <atomic>
+#include <fstream>
 #include <condition_variable>
 
 #pragma once    
@@ -29,7 +30,7 @@ public:
         StateWarning,
         StateNone
     };
-    RemotePathChecker();
+    explicit RemotePathChecker(std::ofstream &logger);
     ~RemotePathChecker();
     std::shared_ptr<const std::vector<std::wstring>> WatchedDirectories() const;
     bool IsMonitoredPath(const wchar_t* filePath, int* state);
@@ -57,7 +58,7 @@ private:
     HANDLE _newQueries;
 
     std::thread _thread;
-    void workerThreadLoop();
+    void workerThreadLoop(std::ofstream &logger);
 };
 
 #endif
