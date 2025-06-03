@@ -70,7 +70,6 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          ${misc:Depends},
          ${shlibs:Depends}
 Replaces: nextcloud-client (<< ${binary:Version})
-Recommends: nextcloud-desktop-doc
 Suggests: dolphin-nextcloud, nautilus-nextcloud, nemo-nextcloud, caja-nextcloud
 Description: Nextcloud folder synchronization tool
  The Nextcloud desktop app lets you always have your latest files wherever
@@ -81,20 +80,6 @@ Description: Nextcloud folder synchronization tool
  .
  nextcloud-desktop provides the graphical client specialising in
  synchronizing with cloud storage provided by Nextcloud.
-
-Package: nextcloud-desktop-doc
-Architecture: all
-Multi-Arch: foreign
-Depends: ${misc:Depends}, ${sphinxdoc:Depends}
-Section: doc
-Description: Nextcloud folder synchronization - documentation
- The Nextcloud desktop app lets you always have your latest files wherever
- you are. Just specify one or more folders on the local machine to and a server
- to synchronize to. You can configure more computers to synchronize to the same
- server and any change to the files on one computer will silently and reliably
- flow across to every other.
- .
- This package provides the documentation.
 
 Package: libnextcloudsync0
 Architecture: any
@@ -263,7 +248,7 @@ Package: nextcloud-client
 Section: oldlibs
 Priority: optional
 Architecture: any
-Depends: nextcloud-desktop (= ${binary:Version}), nextcloud-desktop-cmd (= ${binary:Version}),  nextcloud-desktop-doc (= ${source:Version}), ${misc:Depends}
+Depends: nextcloud-desktop (= ${binary:Version}), nextcloud-desktop-cmd (= ${binary:Version}), ${misc:Depends}
 Description: Nextcloud folder synchronization tool (transitional package)
  This is a transitional package for compatibility with the old Nextcloud
  client PPA packages names. It can be safely deleted.
