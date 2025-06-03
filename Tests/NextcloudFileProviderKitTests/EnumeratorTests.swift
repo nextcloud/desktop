@@ -691,29 +691,6 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertFalse(storedItemA.filename.isEmpty)
     }
 
-    func testListenerInvocations() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
-        debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let listener = MockEnumerationListener()
-
-        let enumerator = Enumerator(
-            enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            listener: listener
-        )
-        let observer = MockEnumerationObserver(enumerator: enumerator)
-        try await observer.enumerateItems()
-
-        // Check enumeration actions
-        XCTAssertEqual(listener.startActions.count, 1)
-        XCTAssertEqual(listener.finishActions.count, 1)
-        XCTAssertTrue(listener.errorActions.isEmpty)
-        XCTAssertTrue(listener.startActions.first!.value < listener.finishActions.first!.value)
-    }
-
     func testTrashEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
