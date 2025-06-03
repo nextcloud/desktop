@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5a1714f9c..aeba19ea2 100644
+index fec87849f..216ce91a4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+@@ -27,7 +27,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
  include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
  
  set(QT_VERSION_MAJOR "6")
@@ -11,7 +11,7 @@ index 5a1714f9c..aeba19ea2 100644
  
  # CfAPI Shell Extensions
  set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
-@@ -131,7 +131,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+@@ -134,7 +134,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
      add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
  endif()
  
@@ -21,10 +21,11 @@ index 5a1714f9c..aeba19ea2 100644
  
  # this option removes Http authentication, keychain, shibboleth etc and is intended for
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index fe9d4d9af..b86fdeb57 100644
+index f584246eb..efa56ae18 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -3,7 +3,7 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
  include(ECMEnableSanitizers)
  
 -set(REQUIRED_QT_VERSION "6.5.0")
@@ -33,10 +34,10 @@ index fe9d4d9af..b86fdeb57 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/common/common.cmake b/src/common/common.cmake
-index 126542769..94e2a035b 100644
+index 42dd5a0f6..3c79af8d2 100644
 --- a/src/common/common.cmake
 +++ b/src/common/common.cmake
-@@ -32,3 +32,5 @@ elseif(UNIX AND NOT APPLE)
+@@ -36,3 +36,5 @@ elseif(UNIX AND NOT APPLE)
  endif()
  
  configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
@@ -306,10 +307,10 @@ index 000000000..2303ce952
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index 2c23656f2..1dad0bdba 100644
+index 37ec12007..8089df0ec 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
-@@ -32,6 +32,7 @@
+@@ -21,6 +21,7 @@
  
  #include "common/utility.h"
  #include "common/filesystembase.h"
@@ -317,7 +318,7 @@ index 2c23656f2..1dad0bdba 100644
  #include "../version.h"
  
  #include <QString>
-@@ -461,10 +462,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+@@ -450,10 +451,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
          QRegularExpressionMatch m;
          if (filetype == ItemTypeDirectory
              && _bnameTraversalRegexDir.contains(basePath)) {
@@ -331,10 +332,11 @@ index 2c23656f2..1dad0bdba 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index a58117fcf..b7c85a443 100644
+index a92ee0424..fac362137 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -3,7 +3,7 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
  project(gui)
  find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 -find_package(KF6Archive REQUIRED)
@@ -342,7 +344,7 @@ index a58117fcf..b7c85a443 100644
  find_package(KF6GuiAddons)
  
  if (NOT TARGET Qt::GuiPrivate)
-@@ -568,9 +568,16 @@ target_link_libraries(nextcloudCore
+@@ -571,9 +571,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -360,7 +362,7 @@ index a58117fcf..b7c85a443 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -788,3 +795,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -782,3 +789,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -372,10 +374,10 @@ index a58117fcf..b7c85a443 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index f214322bc..565a61d99 100644
+index 38dac2153..f15754fc8 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
-@@ -46,6 +46,7 @@
+@@ -36,6 +36,7 @@
  #include "version.h"
  #include "csync_exclude.h"
  #include "common/vfs.h"
@@ -383,7 +385,7 @@ index f214322bc..565a61d99 100644
  
  #include "config.h"
  
-@@ -998,7 +999,7 @@ void Application::setupTranslations()
+@@ -1002,7 +1003,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -393,10 +395,10 @@ index f214322bc..565a61d99 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 4abfe8458..a5108b730 100644
+index c11c4f1f1..b0ead3b04 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
-@@ -24,6 +24,7 @@
+@@ -16,6 +16,7 @@
  #include "filesystem.h"
  #include "lockwatcher.h"
  #include "common/asserts.h"
@@ -405,10 +407,10 @@ index 4abfe8458..a5108b730 100644
  #include <pushnotifications.h>
  #include <syncengine.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 9f31cf4b7..638cb2540 100644
+index 6f45b736a..611f7bfdc 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
-@@ -23,6 +23,7 @@
+@@ -15,6 +15,7 @@
  #include "creds/abstractcredentials.h"
  #include "wizard/owncloudwizard.h"
  #include "common/asserts.h"
@@ -416,7 +418,7 @@ index 9f31cf4b7..638cb2540 100644
  
  #include <QDesktopServices>
  #include <QDir>
-@@ -575,7 +576,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+@@ -568,7 +569,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
      if (!Theme::instance()->disableVirtualFilesSyncFolder() && Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
          _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
          connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
@@ -426,10 +428,10 @@ index 9f31cf4b7..638cb2540 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index d9d0b5d2c..df1b2e088 100644
+index 34cfd0a66..70a608d25 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
-@@ -50,6 +50,7 @@
+@@ -42,6 +42,7 @@
  #include <QScopedValueRollback>
  #include <QMessageBox>
  
@@ -437,7 +439,7 @@ index d9d0b5d2c..df1b2e088 100644
  #include <KZip>
  #include <chrono>
  
-@@ -180,6 +181,7 @@ bool createDebugArchive(const QString &filename)
+@@ -172,6 +173,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -445,7 +447,7 @@ index d9d0b5d2c..df1b2e088 100644
  
  namespace OCC {
  
-@@ -275,7 +277,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -262,7 +264,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -457,7 +459,7 @@ index d9d0b5d2c..df1b2e088 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -599,6 +605,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -617,6 +623,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -465,7 +467,7 @@ index d9d0b5d2c..df1b2e088 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -620,6 +627,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -638,6 +645,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -474,10 +476,10 @@ index d9d0b5d2c..df1b2e088 100644
  void GeneralSettings::slotShowLegalNotice()
  {
 diff --git a/src/gui/generalsettings.h b/src/gui/generalsettings.h
-index 519a40b7f..16de2520c 100644
+index 2c52ff008..b03703e98 100644
 --- a/src/gui/generalsettings.h
 +++ b/src/gui/generalsettings.h
-@@ -56,7 +56,9 @@ private slots:
+@@ -51,7 +51,9 @@ private slots:
      void slotToggleCallNotifications(bool);
      void slotShowInExplorerNavigationPane(bool);
      void slotIgnoreFilesEditor();
@@ -488,10 +490,10 @@ index 519a40b7f..16de2520c 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
-index 6dd26b4c4..9e12b2bad 100644
+index 9b85245ae..76e9012fd 100644
 --- a/src/gui/sslerrordialog.cpp
 +++ b/src/gui/sslerrordialog.cpp
-@@ -14,6 +14,7 @@
+@@ -7,6 +7,7 @@
  #include "configfile.h"
  #include "sslerrordialog.h"
  #include "theme.h"
@@ -499,7 +501,7 @@ index 6dd26b4c4..9e12b2bad 100644
  
  #include <QtGui>
  #include <QtNetwork>
-@@ -201,7 +202,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
+@@ -215,7 +216,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
  
      msg += QL("<p>");
  
@@ -525,7 +527,7 @@ index be44601c7..e446ddae8 100644
  import QtQuick.Controls
  import QtQuick.Layouts
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
-index 887102427..5c58e4045 100644
+index 5820fc0c8..a70abc9c8 100644
 --- a/src/libsync/CMakeLists.txt
 +++ b/src/libsync/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -537,7 +539,7 @@ index 887102427..5c58e4045 100644
  include(DefinePlatformDefaults)
  
  set(CMAKE_AUTOMOC TRUE)
-@@ -160,6 +160,8 @@ set(libsync_SRCS
+@@ -162,6 +162,8 @@ set(libsync_SRCS
      creds/keychainchunk.cpp
      caseclashconflictsolver.h
      caseclashconflictsolver.cpp
@@ -546,7 +548,7 @@ index 887102427..5c58e4045 100644
  )
  
  if (WIN32)
-@@ -226,10 +228,15 @@ target_link_libraries(nextcloudsync
+@@ -228,10 +230,15 @@ target_link_libraries(nextcloudsync
    Qt::Gui
    Qt::Svg
    Qt::Widgets
@@ -632,7 +634,7 @@ index be9688306..2e7d6492b 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index f428b9f69..716c2abd7 100644
+index d3fe74268..5fc4953d5 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -979,7 +981,7 @@ index 850e9c919..fc0371170 100644
  using namespace OCC;
  
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index 77b17a390..c10d584c2 100644
+index f5d0983ab..a4aaa8f70 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
