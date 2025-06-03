@@ -261,6 +261,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
+    const auto isLocal = entries.localEntry.isValid();
+
     if (excluded == CSYNC_NOT_EXCLUDED) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
         if (endsWithSpace) {
@@ -415,21 +417,21 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
             item->_errorString = tr("Filename contains leading spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
             item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
@@ -471,7 +473,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             }
             item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
