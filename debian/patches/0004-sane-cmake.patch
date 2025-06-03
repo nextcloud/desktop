@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5b7448b2e..53abf9d0e 100644
+index 764df813d..fec87849f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -112,10 +112,6 @@ include(GNUInstallDirs)
+@@ -115,10 +115,6 @@ include(GNUInstallDirs)
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
  
@@ -13,7 +13,7 @@ index 5b7448b2e..53abf9d0e 100644
  add_definitions(
      -DQT_DISABLE_DEPRECATED_BEFORE=0x051200
      -DQT_DEPRECATED_WARNINGS
-@@ -123,19 +119,6 @@ add_definitions(
+@@ -126,19 +122,6 @@ add_definitions(
      -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
  )
  
@@ -33,7 +33,7 @@ index 5b7448b2e..53abf9d0e 100644
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
  set(SHAREDIR ${CMAKE_INSTALL_FULL_DATADIR})
  
-@@ -295,7 +278,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
+@@ -296,7 +279,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
@@ -84,10 +84,13 @@ index 5b7448b2e..53abf9d0e 100644
  add_definitions(-D_UNICODE)
 diff --git a/NextcloudCPack.cmake b/NextcloudCPack.cmake
 deleted file mode 100644
-index 0682090c0..000000000
+index d0e0f2da9..000000000
 --- a/NextcloudCPack.cmake
 +++ /dev/null
-@@ -1,63 +0,0 @@
+@@ -1,66 +0,0 @@
+-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+-# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+-# SPDX-License-Identifier: GPL-2.0-or-later
 -include( InstallRequiredSystemLibraries )
 -
 -set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
@@ -152,10 +155,10 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 76d07f623..39db50891 100644
+index e7ff4215f..d7f6779a5 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
-@@ -59,6 +59,10 @@ if(MIRALL_VERSION_BUILD)
+@@ -65,6 +65,10 @@ if(MIRALL_VERSION_BUILD)
      set(MIRALL_VERSION_STRING "${MIRALL_VERSION_STRING} (build ${MIRALL_VERSION_BUILD})")
  endif()
  
