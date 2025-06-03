@@ -29,11 +29,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private let pageItemCount: Int
     private var pageNum = 0
+    private var nextFoldersServerUrlsToEnumerateWorkingSet = [String]()
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
     let remoteInterface: RemoteInterface
-    var serverUrl: String = ""
     var isInvalidated = false
+    private(set) var serverUrl: String = ""
 
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
@@ -219,24 +220,40 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         )
 
         Task {
+            var serverUrl = serverUrl // The url that will be scanned
+            var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
+            var pageNum = pageNum // If we are paginating a new target server URL, reset to 0
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
-            var providedPage: NSFileProviderPage? = nil
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
                page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
             {
-                providedPage = page
+                if let pageString = String(data: page.rawValue, encoding: .utf8),
+                   let urlDetector = try? NSDataDetector(
+                    types: NSTextCheckingResult.CheckingType.link.rawValue
+                   ),
+                   !urlDetector.matches(
+                    in: pageString, options: [], range: .init(location: 0, length: pageString.count)
+                   ).isEmpty
+                {
+                    serverUrl = pageString
+                    pageNum = 0
+                } else {
+                    providedPage = page
+                }
             }
-            let depth: EnumerateDepth = enumeratedItemIdentifier == .workingSet ?
-                .targetAndAllChildren : .targetAndDirectChildren
-            let (metadatas, _, _, _, nextPage, readError) = await Self.readServerUrl(
+
+            let readResult = await Self.readServerUrl(
                 serverUrl,
                 pageSettings: (page: providedPage, index: pageNum, size: pageItemCount),
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                depth: depth
+                depth: .targetAndDirectChildren
             )
+            let metadatas = readResult.metadatas
+            let readError = readResult.readError
+            var nextPage = readResult.nextPage
 
             guard readError == nil else {
                 Self.logger.error(
@@ -268,11 +285,26 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
+            if enumeratedItemIdentifier == .workingSet {
+                for metadata in metadatas where metadata.directory {
+                    let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
+                    nextFoldersServerUrlsToEnumerateWorkingSet.append(metadataRemoteUrl)
+                }
+
+                // If we have finished paged enumeration of the current serverUrl, move to next
+                // child to scan
+                if nextPage == nil && !nextFoldersServerUrlsToEnumerateWorkingSet.isEmpty {
+                    let nextServerUrl = nextFoldersServerUrlsToEnumerateWorkingSet.removeFirst()
+                    nextPage = EnumeratorPageResponse(nextServerUrl: nextServerUrl)
+                }
+            }
+
             Self.logger.info(
                 """
                 Finished reading page: \(self.pageNum, privacy: .public)
                     serverUrl: \(self.serverUrl, privacy: .public)
                     for user: \(self.account.ncKitAccount, privacy: .public).
+                    Next page token is: \(nextPage?.token ?? "", privacy: .public)
                     Processed \(metadatas.count) metadatas
                 """
             )
