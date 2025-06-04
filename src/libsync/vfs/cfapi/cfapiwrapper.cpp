@@ -320,13 +320,12 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
 
     const auto previousPinState = cfPinStateToPinState(info->PinState);
 
-    CF_FS_METADATA metadata;
+    CF_FS_METADATA metadata = {};
     metadata.FileSize.QuadPart = size;
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.CreationTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastWriteTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
-    metadata.BasicInfo.FileAttributes = 0;
 
     OCC::CfApiWrapper::setPinState(path, OCC::PinState::Unspecified, OCC::CfApiWrapper::SetPinRecurseMode::NoRecurse);
 
@@ -653,17 +652,12 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
     const auto version = std::wstring(providerVersion.toStdWString().data());
 
     CF_SYNC_REGISTRATION info = {};
-    info.StructSize = static_cast<ULONG>(sizeof(info) + (name.length() + version.length()) * sizeof(wchar_t));
+    info.StructSize = sizeof(CF_SYNC_REGISTRATION);
     info.ProviderName = name.data();
     info.ProviderVersion = version.data();
-    info.SyncRootIdentity = nullptr;
-    info.SyncRootIdentityLength = 0;
-    info.FileIdentity = nullptr;
-    info.FileIdentityLength = 0;
-    info.ProviderId = QUuid::createUuid();
 
-    CF_SYNC_POLICIES policies;
-    policies.StructSize = sizeof(policies);
+    CF_SYNC_POLICIES policies = {};
+    policies.StructSize = sizeof(CF_SYNC_POLICIES);
     policies.Hydration.Primary = CF_HYDRATION_POLICY_FULL;
     policies.Hydration.Modifier = CF_HYDRATION_POLICY_MODIFIER_NONE;
     policies.Population.Primary = CF_POPULATION_POLICY_ALWAYS_FULL;
@@ -907,8 +901,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
     if (info) {
         setPinState(path, OCC::PinState::OnlineOnly, OCC::CfApiWrapper::NoRecurse);
 
-        CF_FILE_RANGE dehydrationRange;
-        dehydrationRange.StartingOffset.QuadPart = 0;
+        CF_FILE_RANGE dehydrationRange = {};
         dehydrationRange.Length.QuadPart = size;
 
         const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(), nullptr, fileId.data(), static_cast<DWORD>(fileId.size()), &dehydrationRange, 1,
