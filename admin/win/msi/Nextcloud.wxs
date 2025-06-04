@@ -47,6 +47,7 @@
     <MajorUpgrade Schedule="afterInstallExecute" AllowDowngrades="yes" />
     <Property Id="REINSTALLMODE" Value="dmus" />
     <Property Id="MSIRMSHUTDOWN" Value="1" />
+    <Property Id="REBOOT" Value="ReallySuppress" />
 
     <Media Id="1" Cabinet="$(var.AppShortName).cab" EmbedCab="yes" />
 
