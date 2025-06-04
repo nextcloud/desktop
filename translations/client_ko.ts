@@ -3104,6 +3104,11 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <source>Debug archive is created at %1</source>
         <translation>디버그 아카이브가 %1에 생성됨</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

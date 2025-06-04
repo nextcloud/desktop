@@ -3108,6 +3108,11 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
         <source>Debug archive is created at %1</source>
         <translation>Fejlarkivet oprettedes den %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

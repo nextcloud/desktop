@@ -3107,6 +3107,11 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
         <source>Debug archive is created at %1</source>
         <translation>O arquivo de depuración creouse en %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
