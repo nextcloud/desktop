@@ -3106,6 +3106,11 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
         <source>Debug archive is created at %1</source>
         <translation>%1 üzerinde hata ayıklama arşivi oluşturuldu</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
@@ -4055,7 +4060,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>&quot;Sanal dosyalar&quot; kipi kullanıma alındığında, başlangıçta hiç bir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
+        <translation>&quot;Sanal dosyalar&quot; kipi kullanıma alındığında, başlangıçta hiçbir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
 
 Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapırlır. Şu anda seçilmemiş klasörler yalnızca çevrim içi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
 

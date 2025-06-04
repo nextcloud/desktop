@@ -3107,6 +3107,11 @@ Přechod na konzervativnější verze není možný: změna ze stable na enterpr
         <source>Debug archive is created at %1</source>
         <translation>Archiv s ladicími informacemi je vytvořen v %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

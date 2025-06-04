@@ -3108,6 +3108,11 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
         <source>Debug archive is created at %1</source>
         <translation>Arhiivifail veaotsingu jaoks on loodud asukohta %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

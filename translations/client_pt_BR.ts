@@ -3109,6 +3109,11 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
         <source>Debug archive is created at %1</source>
         <translation>Arquivo de depuração é criado às %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

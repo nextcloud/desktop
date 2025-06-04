@@ -3107,6 +3107,11 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <source>Debug archive is created at %1</source>
         <translation>Archive de débogage créée à %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>

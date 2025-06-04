@@ -3109,6 +3109,11 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
         <source>Debug archive is created at %1</source>
         <translation>Felsökningsarkiv är skapat på %1</translation>
     </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="637"/>
+        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
