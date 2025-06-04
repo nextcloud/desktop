@@ -327,7 +327,6 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
-    OCC::CfApiWrapper::setPinState(path, OCC::PinState::Unspecified, OCC::CfApiWrapper::SetPinRecurseMode::NoRecurse);
 
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
     const qint64 result =

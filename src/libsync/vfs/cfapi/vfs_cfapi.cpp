@@ -177,19 +177,19 @@ bool VfsCfApi::isHydrating() const
     return !d->hydrationJobs.isEmpty();
 }
 
-Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile)
 {
     const auto localPath = QDir::toNativeSeparators(filePath);
-    if (cfapi::handleForPath(localPath)) {
-        auto result = cfapi::updatePlaceholderInfo(localPath, modtime, size, fileId);
-        if (result) {
-            return {};
-        } else {
-            return result.error();
-        }
+    const auto replacesPath = QDir::toNativeSeparators(replacesFile);
+
+    if (syncItem._type == ItemTypeVirtualFileDehydration) {
+        return cfapi::dehydratePlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId);
     } else {
-        qCWarning(lcCfApi) << "Couldn't update metadata for non existing file" << localPath;
-        return {QStringLiteral("Couldn't update metadata")};
+        if (cfapi::findPlaceholderInfo(localPath)) {
+            return cfapi::updatePlaceholderInfo(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+        } else {
+            return cfapi::convertToPlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+        }
     }
 }
 

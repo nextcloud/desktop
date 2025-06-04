@@ -60,15 +60,17 @@ bool VfsXAttr::isHydrating() const
     return false;
 }
 
-Result<void, QString> VfsXAttr::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsXAttr::updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile)
 {
-    if (modtime <= 0) {
+    Q_UNUSED(replacesFile)
+
+    if (syncItem._modtime <= 0) {
         return {tr("Error updating metadata due to invalid modification time")};
     }
 
-    qCDebug(lcVfsXAttr()) << "setModTime" << filePath << modtime;
-    FileSystem::setModTime(filePath, modtime);
-    return {};
+    qCDebug(lcVfsXAttr()) << "setModTime" << filePath << syncItem._modtime;
+    FileSystem::setModTime(filePath, syncItem._modtime);
+    return {OCC::Vfs::ConvertToPlaceholderResult::Ok};
 }
 
 Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
