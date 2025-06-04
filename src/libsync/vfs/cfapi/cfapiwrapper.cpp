@@ -938,17 +938,17 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
         return errorMessage;
     }
 
-    const auto originalInfo = findPlaceholderInfo(replacesPath);
-    if (!originalInfo) {
-        const auto stateResult = setPinState(path, PinState::Inherited, NoRecurse);
-        Q_ASSERT(stateResult);
-        return stateResult;
-    } else {
-        const auto state = cfPinStateToPinState(originalInfo->PinState);
-        const auto stateResult = setPinState(path, state, NoRecurse);
-        Q_ASSERT(stateResult);
-        return stateResult;
+    if (!replacesPath.isEmpty()) {
+        if (const auto originalInfo = findPlaceholderInfo(replacesPath)) {
+            const auto state = cfPinStateToPinState(originalInfo->PinState);
+            const auto stateResult = setPinState(path, state, NoRecurse);
+            Q_ASSERT(stateResult);
+            return stateResult;
+        }
     }
+    const auto stateResult = setPinState(path, PinState::Inherited, NoRecurse);
+    Q_ASSERT(stateResult);
+    return stateResult;
 }
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderMarkInSync(const QString &path, const QByteArray &fileId, const QString &replacesPath)
