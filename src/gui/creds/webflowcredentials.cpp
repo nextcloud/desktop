@@ -363,7 +363,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     const auto kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
-        qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
+        qCWarning(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 

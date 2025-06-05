@@ -320,7 +320,7 @@ public:
 
             [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError * const error) {
                 if(error) {
-                    qCDebug(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
+                    qCWarning(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
                                                             << error.code
                                                             << error.localizedDescription;
                     return;

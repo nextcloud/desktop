@@ -1622,7 +1622,7 @@ void FolderMan::leaveShare(const QString &localFile)
             _removeE2eeShareJob->start(true);
             connect(_removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [localFileNoTrailingSlash, this](int code, const QString &message) {   
                 if (code != 200) {
-                    qCDebug(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
+                    qCWarning(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
                     return;
                 }
                 slotLeaveShare(localFileNoTrailingSlash, _removeE2eeShareJob->folderToken());
