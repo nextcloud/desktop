@@ -3111,7 +3111,7 @@ Kui võtad selle kasutusele, siis eelmise versiooni juurde ei ole võimalik otse
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Enne jagamist eemalda privaatne ja delikaatne teave! Arhiiv on olemas siin: %1</translation>
     </message>
 </context>
 <context>

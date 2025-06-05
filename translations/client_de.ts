@@ -3110,7 +3110,7 @@ Ein Downgrade von Versionen ist nicht sofort möglich: Der Wechsel von Beta auf 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Informationen, die als vertraulich gelten, vor der Weitergabe redigieren! Debug-Archiv erstellt unter %1</translation>
     </message>
 </context>
 <context>
