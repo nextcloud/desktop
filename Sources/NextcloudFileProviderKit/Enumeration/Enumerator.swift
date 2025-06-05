@@ -221,7 +221,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         Task {
             var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
-            var pageNum = pageNum // If we are paginating a new target server URL, reset to 0
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
@@ -239,7 +238,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         "Setting enumerator server URL to \(self.serverUrl, privacy: .public)"
                     )
                     serverUrl = pageString
-                    pageNum = 0
+                    pageNum = 0 // If paginating new target server URL reset to 0
                 } else {
                     providedPage = page
                 }
