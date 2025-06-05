@@ -780,6 +780,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
 
     if (!FileSystem::fileExists(path)) {
         qCWarning(lcCfApiWrapper) << "does not exist" << path;
+        Q_ASSERT(false);
         return {};
     }
 
