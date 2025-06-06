@@ -53,7 +53,7 @@ public class Item: NSObject, NSFileProviderItem {
             capabilities.insert(.allowsWriting)
         }
         if permissions.contains("NV"), !metadata.lock { // Updateable, renameable, moveable
-            capabilities.insert([.allowsRenaming, .allowsReparenting])
+            capabilities.formUnion([.allowsRenaming, .allowsReparenting])
 
             if metadata.directory {
                 capabilities.insert(.allowsAddingSubItems)
