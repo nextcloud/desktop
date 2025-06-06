@@ -24,6 +24,7 @@ class QUrl;
 namespace OCC {
 
 class AbstractSslErrorHandler;
+class AccessManager;
 
 /**
  * @brief The AbstractNetworkJob class
