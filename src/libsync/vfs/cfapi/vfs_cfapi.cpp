@@ -188,7 +188,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updateMetad
         if (cfapi::findPlaceholderInfo(localPath)) {
             return cfapi::updatePlaceholderInfo(localPath, syncItem, replacesPath);
         } else {
-            return cfapi::convertToPlaceholder(localPath, syncItem, replacesPath);
+            return cfapi::convertToPlaceholder(localPath, syncItem, replacesPath, OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation);
         }
     }
 }
@@ -249,13 +249,13 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     const auto replacesPath = FileSystem::longWinPath(QDir::toNativeSeparators(replacesFile));
 
     if (cfapi::findPlaceholderInfo(localPath)) {
-        if (updateType & Vfs::UpdateMetadataType::FileMetadata) {
-            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath);
+        if (updateType.testFlag(Vfs::UpdateMetadataType::FileMetadata)) {
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
         } else {
             return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
     } else {
-        return cfapi::convertToPlaceholder(localPath, item, replacesPath);
+        return cfapi::convertToPlaceholder(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
     }
 }
 
