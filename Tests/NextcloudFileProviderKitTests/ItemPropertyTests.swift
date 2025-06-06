@@ -413,6 +413,446 @@ final class ItemPropertyTests: XCTestCase {
         XCTAssertEqual(item?.capabilities.contains(.allowsTrashing), true)
     }
 
+    func testCapabilitiesReadingFile() {
+        // 1. Setup metadata for a readable file
+        var metadata = SendableItemMetadata(
+            ocId: "reading-file-id", fileName: "readable.txt", account: Self.account
+        )
+        metadata.permissions = "G"
+        metadata.directory = false
+
+        // 2. Create the item
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+
+        // 3. Assertions
+        XCTAssertTrue(
+            item.capabilities.contains(.allowsReading),
+            "Item with 'G' permission should be readable."
+        )
+    }
+
+    func testCapabilitiesEnumeratingDirectory() {
+        // 1. Setup metadata for a readable directory
+        var metadata = SendableItemMetadata(
+            ocId: "enum-dir-id", fileName: "MyFolder", account: Self.account
+        )
+        metadata.permissions = "G"
+        metadata.directory = true
+
+        // 2. Create the item
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+
+        // 3. Assertions
+        XCTAssertTrue(
+            item.capabilities.contains(.allowsContentEnumerating),
+            "Directory with 'G' permission should allow enumerating."
+        )
+    }
+
+    func testCapabilitiesDeleting() {
+        // Case 1: Deletable
+        var deletableMetadata = SendableItemMetadata(
+            ocId: "deletable-id", fileName: "deletable.txt", account: Self.account
+        )
+        deletableMetadata.permissions = "D"
+        let canDeleteItem = Item(
+            metadata: deletableMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertTrue(
+            canDeleteItem.capabilities.contains(.allowsDeleting),
+            "Item with 'D' permission should be deletable."
+        )
+
+        // Case 2: Locked
+        var lockedMetadata = SendableItemMetadata(
+            ocId: "locked-deletable-id", fileName: "locked.txt", account: Self.account
+        )
+        lockedMetadata.permissions = "D"
+        lockedMetadata.lock = true
+        let cannotDeleteLockedItem = Item(
+            metadata: lockedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotDeleteLockedItem.capabilities.contains(.allowsDeleting),
+            "Locked item should not be deletable."
+        )
+
+        // Case 3: No permission
+        var noPermsMetadata = SendableItemMetadata(
+            ocId: "no-del-perm-id", fileName: "readonly.txt", account: Self.account
+        )
+        noPermsMetadata.permissions = "G"
+        let cannotDeleteNoPermsItem = Item(
+            metadata: noPermsMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotDeleteNoPermsItem.capabilities.contains(.allowsDeleting),
+            "Item without 'D' permission should not be deletable."
+        )
+    }
+
+    func testCapabilitiesTrashing() {
+        // Case 1: Can be trashed
+        let trashableMetadata = SendableItemMetadata(
+            ocId: "trashable-id", fileName: "trashable.txt", account: Self.account
+        )
+        let canTrashItem = Item(
+            metadata: trashableMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertTrue(
+            canTrashItem.capabilities.contains(.allowsTrashing),
+            "Item should be trashable if server supports it."
+        )
+
+        // Case 2: Server does not support trash
+        let cannotTrashItem = Item(
+            metadata: trashableMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: false
+        )
+        XCTAssertFalse(
+            cannotTrashItem.capabilities.contains(.allowsTrashing),
+            "Item should not be trashable if server does not support it."
+        )
+
+        // Case 3: Item is locked
+        var lockedMetadata = SendableItemMetadata(
+            ocId: "locked-trash-id", fileName: "locked.txt", account: Self.account
+        )
+        lockedMetadata.lock = true
+        let cannotTrashLockedItem = Item(
+            metadata: lockedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotTrashLockedItem.capabilities.contains(.allowsTrashing),
+            "Locked item should not be trashable."
+        )
+
+        // Case 4: Item is a lock file
+        let lockFileMetadata = SendableItemMetadata(
+            ocId: "lockfile-id", fileName: ".~lock.file.docx#", account: Self.account
+        )
+        let cannotTrashLockFileItem = Item(
+            metadata: lockFileMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotTrashLockFileItem.capabilities.contains(.allowsTrashing),
+            "Office lock files should not be trashable."
+        )
+    }
+
+    func testCapabilitiesWriting() {
+        // Case 1: Writable
+        var writableMetadata = SendableItemMetadata(
+            ocId: "writable-id", fileName: "writable.txt", account: Self.account
+        )
+        writableMetadata.permissions = "W"
+        let canWriteItem = Item(
+            metadata: writableMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertTrue(
+            canWriteItem.capabilities.contains(.allowsWriting),
+            "File with 'W' permission should be writable."
+        )
+
+        // Case 2: Locked
+        var lockedMetadata = writableMetadata
+        lockedMetadata.ocId = "locked-writable-id"
+        lockedMetadata.lock = true
+        let cannotWriteLockedItem = Item(
+            metadata: lockedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotWriteLockedItem.capabilities.contains(.allowsWriting),
+            "Locked file should not be writable."
+        )
+
+        // Case 3: Is a directory
+        var directoryMetadata = writableMetadata
+        directoryMetadata.ocId = "dir-writable-id"
+        directoryMetadata.directory = true
+        let cannotWriteDirectoryItem = Item(
+            metadata: directoryMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotWriteDirectoryItem.capabilities.contains(.allowsWriting),
+            "Directory should not be writable."
+        )
+    }
+
+    func testCapabilitiesRenamingAndReparenting() {
+        let expected: NSFileProviderItemCapabilities = [.allowsRenaming, .allowsReparenting]
+
+        // Case 1: Can be modified
+        var modifiableMetadata = SendableItemMetadata(
+            ocId: "modifiable-id", fileName: "moveme.txt", account: Self.account
+        )
+        modifiableMetadata.permissions = "NV"
+        let canModifyItem = Item(
+            metadata: modifiableMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertTrue(
+            canModifyItem.capabilities.isSuperset(of: expected),
+            "Item with 'NV' permission should be renamable and reparentable."
+        )
+
+        // Case 2: Is locked
+        var lockedMetadata = modifiableMetadata
+        lockedMetadata.ocId = "locked-modifiable-id"
+        lockedMetadata.lock = true
+        let cannotModifyLockedItem = Item(
+            metadata: lockedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotModifyLockedItem.capabilities.isSuperset(of: expected),
+            "Locked item should not be renamable or reparentable."
+        )
+    }
+
+    func testCapabilitiesAddingSubItems() {
+        // Case 1: Can add sub-items to a directory
+        var dirMetadata =
+            SendableItemMetadata(ocId: "dir-add-id", fileName: "MyFolder", account: Self.account)
+        dirMetadata.permissions = "NV"
+        dirMetadata.directory = true
+        let canAddSubItemsItem = Item(
+            metadata: dirMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertTrue(
+            canAddSubItemsItem.capabilities.contains(.allowsAddingSubItems),
+            "Directory with 'NV' should allow adding sub-items."
+        )
+
+        // Case 2: Cannot add sub-items to a file
+        var fileMetadata = dirMetadata
+        fileMetadata.ocId = "file-add-id"
+        fileMetadata.directory = false
+        let cannotAddToFileItem = Item(
+            metadata: fileMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotAddToFileItem.capabilities.contains(.allowsAddingSubItems),
+            "File should not allow adding sub-items."
+        )
+
+        // Case 3: Cannot add sub-items to a locked directory
+        var lockedDirMetadata = dirMetadata
+        lockedDirMetadata.ocId = "locked-dir-add-id"
+        lockedDirMetadata.lock = true
+        let cannotAddToLockedDirItem = Item(
+            metadata: lockedDirMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+        XCTAssertFalse(
+            cannotAddToLockedDirItem.capabilities.contains(.allowsAddingSubItems),
+            "Locked directory should not allow adding sub-items."
+        )
+    }
+
+    func testCapabilitiesFullPermissionsFile() {
+        var metadata = SendableItemMetadata(
+            ocId: "full-perms-file", fileName: "do-it-all.txt", account: Self.account
+        )
+        metadata.permissions = "RGDNVW"
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+
+        let expected: NSFileProviderItemCapabilities = [
+            .allowsReading,
+            .allowsDeleting,
+            .allowsTrashing,
+            .allowsWriting,
+            .allowsRenaming,
+            .allowsReparenting
+        ]
+
+        // Excluding from sync is macOS-specific and always added if available
+        var platformExpected = expected
+        #if os(macOS)
+        if #available(macOS 11.3, *) {
+            platformExpected.insert(.allowsExcludingFromSync)
+        }
+        #endif
+
+        XCTAssertEqual(item.capabilities, platformExpected)
+    }
+
+    func testCapabilitiesFullPermissionsFolder() {
+        var metadata = SendableItemMetadata(
+            ocId: "full-perms-folder", fileName: "SuperFolder", account: Self.account
+        )
+        metadata.permissions = "RGDNVW"
+        metadata.directory = true
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+
+        let expected: NSFileProviderItemCapabilities = [
+            .allowsContentEnumerating,
+            .allowsDeleting,
+            .allowsTrashing,
+            .allowsRenaming,
+            .allowsReparenting,
+            .allowsAddingSubItems
+        ]
+
+        var platformExpected = expected
+        #if os(macOS)
+        if #available(macOS 11.3, *) {
+            platformExpected.insert(.allowsExcludingFromSync)
+        }
+        #endif
+
+        XCTAssertEqual(item.capabilities, platformExpected)
+    }
+
+    func testCapabilitiesNoPermissions() {
+        var metadata =
+            SendableItemMetadata(ocId: "no-perms", fileName: "nothing.txt", account: Self.account)
+        metadata.permissions = "" // No permissions from server
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true
+        )
+
+        // Trashing and Excluding from Sync might still be allowed as they don't depend on the
+        // permission string
+        var expected: NSFileProviderItemCapabilities = [.allowsTrashing]
+
+        #if os(macOS)
+        if #available(macOS 11.3, *) {
+            expected.insert(.allowsExcludingFromSync)
+        }
+        #endif
+
+        XCTAssertEqual(item.capabilities, expected)
+    }
+
+    #if os(macOS)
+    func testCapabilitiesMacOSExclusion() {
+        if #available(macOS 11.3, *) {
+            var metadata = SendableItemMetadata(
+                ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
+            )
+            metadata.permissions = ""
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: MockRemoteInterface(),
+                dbManager: Self.dbManager,
+                remoteSupportsTrash: true
+            )
+
+            XCTAssertTrue(
+                item.capabilities.contains(.allowsExcludingFromSync),
+                "Should allow excluding from sync on supported macOS versions."
+            )
+        }
+    }
+    #endif
+
     func testItemShared() {
         var sharedMetadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
