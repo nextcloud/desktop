@@ -43,20 +43,22 @@ public class Item: NSObject, NSFileProviderItem {
         } else if permissions.contains("G") {
             capabilities.insert(.allowsReading)
         }
-        if permissions.contains("D"), !metadata.lock { // Deletable
-            capabilities.insert(.allowsDeleting)
-        }
-        if remoteSupportsTrash, !isLockFileName(filename), !metadata.lock {
-            capabilities.insert(.allowsTrashing)
-        }
-        if permissions.contains("W"), !metadata.directory, !metadata.lock { // Updateable (file)
-            capabilities.insert(.allowsWriting)
-        }
-        if permissions.contains("NV"), !metadata.lock { // Updateable, renameable, moveable
-            capabilities.formUnion([.allowsRenaming, .allowsReparenting])
+        if !metadata.lock {
+            if permissions.contains("D") { // Deletable
+                capabilities.insert(.allowsDeleting)
+            }
+            if remoteSupportsTrash, !isLockFileName(filename) {
+                capabilities.insert(.allowsTrashing)
+            }
+            if permissions.contains("W"), !metadata.directory { // Updateable (file)
+                capabilities.insert(.allowsWriting)
+            }
+            if permissions.contains("NV") { // Updateable, renameable, moveable
+                capabilities.formUnion([.allowsRenaming, .allowsReparenting])
 
-            if metadata.directory {
-                capabilities.insert(.allowsAddingSubItems)
+                if metadata.directory {
+                    capabilities.insert(.allowsAddingSubItems)
+                }
             }
         }
         // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
