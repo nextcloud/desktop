@@ -273,11 +273,13 @@ extension Enumerator {
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
-            var directoryMetadata = firstFile.toItemMetadata()
-            if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
-                directoryMetadata.downloaded = existingMetadata.downloaded
+            var metadata = firstFile.toItemMetadata()
+            if metadata.directory,
+               let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
+            {
+                metadata.downloaded = existingMetadata.downloaded
             }
-            dbManager.addItemMetadata(directoryMetadata)
+            dbManager.addItemMetadata(metadata)
         }
         let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
