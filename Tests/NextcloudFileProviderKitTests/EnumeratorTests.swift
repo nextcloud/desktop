@@ -518,6 +518,101 @@ final class EnumeratorTests: XCTestCase {
         )
     }
 
+    func testHandlePagedReadResults() throws {
+        // 1. Arrange
+        let dbManager = Self.dbManager
+        let db = dbManager.ncDatabase()
+        debugPrint(db)
+
+        let parentNKFile = remoteFolder.toNKFile()
+        let childrenNKFiles = (0..<5).map { i in
+            MockRemoteItem(
+                identifier: "pagedChild\(i)",
+                name: "pagedChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            ).toNKFile()
+        }
+        let followUpChildrenNKFiles = (5..<10).map { i in
+            MockRemoteItem(
+                identifier: "pagedChild\(i)",
+                name: "pagedChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            ).toNKFile()
+        }
+
+        // --- Scenario A: First Page (pageIndex == 0) ---
+        // 2. Act
+        let firstPageFiles = [parentNKFile] + childrenNKFiles
+        let (firstPageResult, firstPageError) = Enumerator.handlePagedReadResults(
+            files: firstPageFiles, pageIndex: 0, dbManager: dbManager
+        )
+
+        // 3. Assert
+        XCTAssertNil(firstPageError)
+        // Result should only contain the children, not the parent.
+        XCTAssertEqual(
+            firstPageResult?.count, 5, "First page result should only contain children."
+        )
+        // The parent's metadata should be processed and saved to the DB.
+        let parentMetadataFromDB = dbManager.itemMetadata(ocId: parentNKFile.ocId)
+        XCTAssertNotNil(
+            parentMetadataFromDB, "Parent folder metadata should be saved to DB from first page."
+        )
+        XCTAssertEqual(parentMetadataFromDB?.etag, parentNKFile.etag, "Parent etag should match.")
+        // The children's metadata should also be saved.
+        let childMetadataFromDB = dbManager.itemMetadata(ocId: "pagedChild0")
+        XCTAssertNotNil(
+            childMetadataFromDB, "Child metadata should be saved to DB from first page."
+        )
+
+        // --- Scenario B: Follow-up Page (pageIndex > 0) ---
+        // 4. Act
+        let (followUpPageResult, followUpPageError) = Enumerator.handlePagedReadResults(
+            files: followUpChildrenNKFiles, pageIndex: 1, dbManager: dbManager
+        )
+
+        // 5. Assert
+        XCTAssertNil(followUpPageError)
+        // Result should contain all items passed in, as the parent is not included.
+        XCTAssertEqual(
+            followUpPageResult?.count, 5, "Follow-up page result should contain all its items."
+        )
+        let followUpChildMetadata = dbManager.itemMetadata(ocId: "pagedChild5")
+        XCTAssertNotNil(
+            followUpChildMetadata, "Child metadata should be saved to DB from follow-up page."
+        )
+
+        // --- Scenario C: Root Folder (should not be ingested) ---
+        // 6. Act
+        var rootNKFile = MockRemoteItem.rootItem(account: Self.account).toNKFile()
+        // The check is based on URL string matching.
+        rootNKFile.path = Self.account.davFilesUrl
+
+        let (rootResult, rootError) = Enumerator.handlePagedReadResults(
+            files: [rootNKFile], pageIndex: 0, dbManager: dbManager
+        )
+
+        // 7. Assert
+        XCTAssertNil(rootError)
+        // The result should be empty as there are no children.
+        XCTAssertEqual(
+            rootResult?.count, 0, "Root folder enumeration should yield no children."
+        )
+        // No metadata should be saved for the root folder ID itself.
+        XCTAssertNil(
+            dbManager.itemMetadata(ocId: rootNKFile.ocId),
+            "Metadata for the root folder itself should not be saved."
+        )
+    }
+
     func testWorkingSetChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
