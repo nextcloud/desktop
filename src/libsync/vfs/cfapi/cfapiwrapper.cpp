@@ -51,7 +51,7 @@ QString createErrorMessageForPlaceholderUpdateAndCreate(const QString &path, con
     for (const auto &fileComponent : fileComponents) {
         if (fileComponent.startsWith(forbiddenLeadingCharacterInPath)) {
             qCInfo(lcCfApiWrapper) << "Failed to create/update a placeholder for path \"" << pathFromNativeSeparators << "\" that has a leading '#'.";
-            return {(originalErrorMessage + QStringLiteral(": ") + QObject::tr("Paths beginning with '#' character are not supported in VFS mode."))};
+            return QString{originalErrorMessage + QStringLiteral(": ") + QObject::tr("Paths beginning with '#' character are not supported in VFS mode.")};
         }
     }
     return originalErrorMessage;
