@@ -462,7 +462,9 @@ extension Enumerator {
         // That is NOT the case for paginated results with offsets
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
         if !isFollowUpPaginatedRequest {
-            guard receivedFile.directory else {
+            guard receivedFile.directory ||
+                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl)
+            else {
                 Self.logger.debug(
                     """
                     Read item is a file.
