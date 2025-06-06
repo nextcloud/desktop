@@ -272,10 +272,12 @@ extension Enumerator {
         // target item, hence why we always strip the target item out)
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
-            guard let firstFile = files.first else {
-                return (nil, .invalidResponseError)
+            guard let firstFile = files.first else { return (nil, .invalidResponseError) }
+            var directoryMetadata = firstFile.toItemMetadata()
+            if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
+                directoryMetadata.downloaded = existingMetadata.downloaded
             }
-            dbManager.addItemMetadata(firstFile.toItemMetadata())
+            dbManager.addItemMetadata(directoryMetadata)
         }
         let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
