@@ -415,6 +415,109 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
     }
 
+    func testReadServerUrlFollowUpPagination() async throws {
+        // 1. Arrange: Setup a folder with enough children to require multiple pages.
+        remoteFolder.children = []
+        for i in 0..<10 {
+            let childItem = MockRemoteItem(
+                identifier: "folderChild\(i)",
+                name: "folderChild\(i).txt",
+                remotePath: Self.account.davFilesUrl + "/folder/folderChild\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = remoteFolder
+            remoteFolder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
+
+        // Pre-populate the folder's metadata with an old etag to verify it gets updated
+        // on the initial call.
+        let oldEtag = "OLD_ETAG"
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.etag = oldEtag
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        // --- Scenario A: Initial Paginated Request (isFollowUpPaginatedRequest == false) ---
+
+        // 2. Act: Call readServerUrl for the first page.
+        let (
+            initialMetadatas, _, _, _, initialNextPage, initialError
+        ) = await Enumerator.readServerUrl(
+            remoteFolder.remotePath,
+            pageSettings: (page: nil, index: 0, size: 5), // index is 0
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // 3. Assert: Verify the initial request's behavior.
+        XCTAssertNil(initialError)
+        XCTAssertNotNil(initialNextPage, "Should receive a next page token for the initial request")
+        // The first request for a folder returns the folder itself plus the first page of children.
+        XCTAssertEqual(
+            initialMetadatas?.count,
+            4,
+            """
+            Should get target + first page of children,
+            but the target should not be included in the first page,
+            so count is (4).
+            """
+        )
+        XCTAssertFalse(
+            initialMetadatas?.contains(where: { $0.ocId == remoteFolder.identifier }) ?? false,
+            "The folder itself should not be in the initial results."
+        )
+
+        // The logic inside `if !isFollowUpPaginatedRequest` should have run,
+        // updating the folder's metadata.
+        let updatedFolderMetadata =
+            try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotEqual(
+            updatedFolderMetadata.etag, oldEtag, "The folder's etag should have been updated."
+        )
+        XCTAssertEqual(updatedFolderMetadata.etag, remoteFolder.versionIdentifier)
+
+        // --- Scenario B: Follow-up Paginated Request (isFollowUpPaginatedRequest == true) ---
+
+        // 4. Act: Call readServerUrl for the second page using the received page token.
+        let followUpPage = NSFileProviderPage(initialNextPage!.token.data(using: .utf8)!)
+        let (
+            followUpMetadatas, _, _, _, finalNextPage, followUpError
+        ) = await Enumerator.readServerUrl(
+            remoteFolder.remotePath,
+            pageSettings: (page: followUpPage, index: 1, size: 5), // index > 0 and page is non-nil
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        // 5. Assert: Verify the follow-up request's behavior.
+        XCTAssertNil(followUpError)
+        XCTAssertNotNil(finalNextPage, "Should receive a next page token for the second request.")
+        // A follow-up request should *only* contain the children for that page.
+        XCTAssertEqual(
+            followUpMetadatas?.count, 5, "Should get only the second page of children (5)."
+        )
+        XCTAssertFalse(
+            followUpMetadatas?.contains(where: { $0.ocId == remoteFolder.identifier }) ?? true,
+            "The folder itself should NOT be in the follow-up page results."
+        )
+
+        // This confirms the `if !isFollowUpPaginatedRequest` block was correctly skipped, as it'd
+        // have processed the first item of the result array (`folderChild5`) as the parent folder,
+        // which would lead to incorrect data or errors.
+        let child5Metadata = Self.dbManager.itemMetadata(ocId: "folderChild5")
+        XCTAssertNotNil(
+            child5Metadata, "Metadata for the items on the second page should be in the database."
+        )
+    }
+
     func testWorkingSetChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
