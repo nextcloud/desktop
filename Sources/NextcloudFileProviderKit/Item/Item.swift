@@ -36,49 +36,39 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var capabilities: NSFileProviderItemCapabilities {
-        guard !metadata.directory else {
-            var directoryCapabilities: NSFileProviderItemCapabilities = [
-                .allowsAddingSubItems,
-                .allowsContentEnumerating,
-                .allowsReading,
-                .allowsDeleting,
-                .allowsReparenting,
-                .allowsRenaming
-            ]
+        var capabilities: NSFileProviderItemCapabilities = []
+        let permissions = metadata.permissions.uppercased()
+        if permissions.contains("G"), metadata.directory { // Readable
+            capabilities.insert(.allowsContentEnumerating)
+        } else if permissions.contains("G") {
+            capabilities.insert(.allowsReading)
+        }
+        if permissions.contains("D"), !metadata.lock { // Deletable
+            capabilities.insert(.allowsDeleting)
+        }
+        if remoteSupportsTrash, !isLockFileName(filename), !metadata.lock {
+            capabilities.insert(.allowsTrashing)
+        }
+        if permissions.contains("W"), !metadata.directory, !metadata.lock { // Updateable (file)
+            capabilities.insert(.allowsWriting)
+        }
+        if permissions.contains("NV"), !metadata.lock { // Updateable, renameable, moveable
+            capabilities.insert([.allowsRenaming, .allowsReparenting])
 
+            if metadata.directory {
+                capabilities.insert(.allowsAddingSubItems)
+            }
+        }
+        // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
+        if #unavailable(macOS 13.0), !metadata.keepDownloaded {
+            capabilities.insert(.allowsEvicting)
+        }
 #if os(macOS)
-            if #available(macOS 11.3, *) {
-                directoryCapabilities.insert(.allowsExcludingFromSync)
-            }
+        if #available(macOS 11.3, *) {
+            capabilities.insert(.allowsExcludingFromSync)
+        }
 #endif
-
-            // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
-            if #unavailable(macOS 13.0) {
-                directoryCapabilities.insert(.allowsEvicting)
-            }
-
-            if remoteSupportsTrash {
-                directoryCapabilities.insert(.allowsTrashing)
-            }
-
-            return directoryCapabilities
-        }
-        guard !metadata.lock else {
-            return [.allowsReading]
-        }
-
-        var itemCapabilities: NSFileProviderItemCapabilities = [
-            .allowsWriting,
-            .allowsReading,
-            .allowsDeleting,
-            .allowsRenaming,
-            .allowsReparenting,
-            .allowsEvicting,
-        ]
-        if remoteSupportsTrash, !isLockFileName(filename) {
-            itemCapabilities.insert(.allowsTrashing)
-        }
-        return itemCapabilities
+        return capabilities
     }
 
     public var itemVersion: NSFileProviderItemVersion {
