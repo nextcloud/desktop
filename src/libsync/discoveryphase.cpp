@@ -275,6 +275,12 @@ void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
     _selectiveSyncWhiteList.sort();
 }
 
+bool DiscoveryPhase::shouldDiscoverChildFolder(const QString &path) const
+{
+    qCInfo(lcDiscovery()) << "do not discover" << path;
+    return false;
+}
+
 bool DiscoveryPhase::isRenamed(const QString &p) const
 {
     return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p);

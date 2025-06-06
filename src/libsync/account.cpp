@@ -429,17 +429,20 @@ void Account::resetNetworkAccessManager()
         this, &Account::proxyAuthenticationRequired);
 }
 
-QNetworkAccessManager *Account::networkAccessManager()
+QNetworkAccessManager *Account::networkAccessManager() const
 {
     return _networkAccessManager.data();
 }
 
-QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
+QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager() const
 {
     return _networkAccessManager;
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       QIODevice *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -457,7 +460,10 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _networkAccessManager->sendCustomRequest(req, verb, data);
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       const QByteArray &data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -475,7 +481,10 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _networkAccessManager->sendCustomRequest(req, verb, data);
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QHttpMultiPart *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       QHttpMultiPart *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -1142,6 +1151,83 @@ void Account::setAskUserForMnemonic(const bool ask)
 {
     _e2eAskUserForMnemonic = ask;
     emit askUserForMnemonicChanged();
+}
+
+void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &path)
+{
+    qCInfo(lcAccount()) << "ls col job requested for" << path;
+
+    if (!credentials()->ready()) {
+        qCWarning(lcAccount()) << "credentials are not ready" << path;
+        promise->finish();
+        return;
+    }
+
+    auto listFolderJob = new OCC::LsColJob{sharedFromThis(), path};
+
+    QList<QByteArray> props;
+    props << "resourcetype"
+          << "getlastmodified"
+          << "getcontentlength"
+          << "getetag"
+          << "quota-available-bytes"
+          << "quota-used-bytes"
+          << "http://owncloud.org/ns:size"
+          << "http://owncloud.org/ns:id"
+          << "http://owncloud.org/ns:fileid"
+          << "http://owncloud.org/ns:downloadURL"
+          << "http://owncloud.org/ns:dDC"
+          << "http://owncloud.org/ns:permissions"
+          << "http://owncloud.org/ns:checksums"
+          << "http://nextcloud.org/ns:is-encrypted"
+          << "http://nextcloud.org/ns:metadata-files-live-photo"
+          << "http://owncloud.org/ns:share-types";
+
+    if (capabilities().filesLockAvailable()) {
+        props << "http://nextcloud.org/ns:lock"
+              << "http://nextcloud.org/ns:lock-owner-displayname"
+              << "http://nextcloud.org/ns:lock-owner"
+              << "http://nextcloud.org/ns:lock-owner-type"
+              << "http://nextcloud.org/ns:lock-owner-editor"
+              << "http://nextcloud.org/ns:lock-time"
+              << "http://nextcloud.org/ns:lock-timeout"
+              << "http://nextcloud.org/ns:lock-token";
+    }
+    props << "http://nextcloud.org/ns:is-mount-root";
+
+    listFolderJob->setProperties(props);
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::networkError, this, [promise, path] (QNetworkReply *reply) {
+        if (reply) {
+            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+        }
+
+        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        promise->finish();
+    });
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithError, this, [promise, path] (QNetworkReply *reply) {
+        if (reply) {
+            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+        }
+
+        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        promise->finish();
+    });
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, path] () {
+        qCInfo(lcAccount()) << "ls col job" << path << "finished";
+        promise->finish();
+    });
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, path] (const QString &name, const QMap<QString, QString> &properties) {
+        qCInfo(lcAccount()) << "ls col job" << path << "new file" << name << properties.count();
+        promise->emplaceResult(name, name.toStdWString(), properties);
+    });
+
+    promise->start();
+    listFolderJob->start();
+    qCInfo(lcAccount()) << "ls col job started";
 }
 
 bool Account::serverHasValidSubscription() const

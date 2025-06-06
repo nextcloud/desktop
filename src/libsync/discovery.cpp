@@ -1875,7 +1875,7 @@ void ProcessDirectoryJob::processFileFinalize(
         Q_ASSERT(false);
     }
 
-    if (recurse) {
+    if (recurse && _discoveryData->shouldDiscoverChildFolder(path._server)) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());

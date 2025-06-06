@@ -34,7 +34,7 @@ public:
 
     OCC::Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile) override;
 
-    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override;
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) override;
 
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override;
 
