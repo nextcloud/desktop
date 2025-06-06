@@ -374,21 +374,16 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     }
 }
 
-enum class CfApiUpdateMetadataType {
-    OnlyBasicMetadata,
-    AllMetadata,
-};
-
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderState(const QString &path,
                                                                                   const OCC::SyncFileItem &item,
                                                                                   const QString &replacesPath,
-                                                                                  CfApiUpdateMetadataType updateType)
+                                                                                  OCC::CfApiWrapper::CfApiUpdateMetadataType updateType)
 {
     const time_t modtime = item._modtime;
     const qint64 size = item._size;
     const QByteArray &fileId = item._fileId;
 
-    if (updateType == CfApiUpdateMetadataType::AllMetadata && modtime <= 0) {
+    if (updateType == OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadata && modtime <= 0) {
             return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(path).arg(modtime)};
         }
 
@@ -413,8 +408,13 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
         OCC::CfApiWrapper::setPinState(path, OCC::PinState::Unspecified, OCC::CfApiWrapper::SetPinRecurseMode::NoRecurse);
 
         qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
-        const auto updateFlags = item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
-        const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
+        const auto updateFlags = item.isDirectory() ?
+            (updateType == OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation ?
+                                                           CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION :
+                                                           CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DISABLE_ON_DEMAND_POPULATION) :
+            CF_UPDATE_FLAG_MARK_IN_SYNC;
+
+        const auto result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                                   fileIdentity.data(), sizeToDWORD(fileIdentitySize),
                                                   nullptr, 0, updateFlags, nullptr, nullptr);
 
@@ -1057,9 +1057,9 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
     return {};
 }
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const QString &path, const SyncFileItem &item, const QString &replacesPath)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const QString &path, const SyncFileItem &item, const QString &replacesPath, OCC::CfApiWrapper::CfApiUpdateMetadataType updateType)
 {
-    return updatePlaceholderState(path, item, replacesPath, CfApiUpdateMetadataType::AllMetadata);
+    return updatePlaceholderState(path, item, replacesPath, updateType);
 }
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::dehydratePlaceholder(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId)
@@ -1111,7 +1111,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
     return OCC::Vfs::ConvertToPlaceholderResult::Ok;
 }
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::convertToPlaceholder(const QString &path, const SyncFileItem &item, const QString &replacesPath)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::convertToPlaceholder(const QString &path, const SyncFileItem &item, const QString &replacesPath, OCC::CfApiWrapper::CfApiUpdateMetadataType updateType)
 {
     time_t modtime = item._modtime;
     qint64 size = item._size;
@@ -1121,8 +1121,12 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
 
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
-    const auto createPlaceholderFlags = item.isDirectory() ? CF_CONVERT_FLAG_MARK_IN_SYNC | CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_CONVERT_FLAG_MARK_IN_SYNC;
-    const qint64 result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), createPlaceholderFlags, nullptr, nullptr);
+    const auto createPlaceholderFlags = item.isDirectory() ?
+        (updateType == OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation) ?
+            CF_CONVERT_FLAG_MARK_IN_SYNC | CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION :
+            CF_CONVERT_FLAG_MARK_IN_SYNC :
+        CF_CONVERT_FLAG_MARK_IN_SYNC;
+    const auto result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), createPlaceholderFlags, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
         const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't convert to placeholder");
