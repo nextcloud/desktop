@@ -10,6 +10,14 @@ import NextcloudKit
 import RealmSwift
 
 extension NKFile {
+    func fullUrlMatches(_ urlString: String) -> Bool {
+        var fileUrl = serverUrl + "/" + fileName
+        if fileUrl.last == "/" { // This is likely the root container, as it has no filename
+            fileUrl.removeLast()
+        }
+        return fileUrl == urlString
+    }
+
     func toItemMetadata(uploaded: Bool = true) -> SendableItemMetadata {
         let creationDate = creationDate ?? date
         let uploadDate = uploadDate ?? date

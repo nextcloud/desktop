@@ -60,7 +60,7 @@ public class MockRemoteItem: Equatable {
         MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
             versionIdentifier: "root",
-            name: "root",
+            name: "",
             remotePath: account.davFilesUrl,
             directory: true,
             account: account.ncKitAccount,
@@ -74,7 +74,7 @@ public class MockRemoteItem: Equatable {
         return MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
             versionIdentifier: "root",
-            name: "root",
+            name: "",
             remotePath: account.trashUrl,
             directory: true,
             account: account.ncKitAccount,

@@ -272,10 +272,17 @@ extension Enumerator {
         // target item, hence why we always strip the target item out)
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
-            guard let firstFile = files.first else {
-                return (nil, .invalidResponseError)
+            guard let firstFile = files.first else { return (nil, .invalidResponseError) }
+            // Do not ingest metadata for the root container
+            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl) {
+                var metadata = firstFile.toItemMetadata()
+                if metadata.directory,
+                   let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
+                {
+                    metadata.downloaded = existingMetadata.downloaded
+                }
+                dbManager.addItemMetadata(metadata)
             }
-            dbManager.addItemMetadata(firstFile.toItemMetadata())
         }
         let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
@@ -455,7 +462,9 @@ extension Enumerator {
         // That is NOT the case for paginated results with offsets
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
         if !isFollowUpPaginatedRequest {
-            guard receivedFile.directory else {
+            guard receivedFile.directory ||
+                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl)
+            else {
                 Self.logger.debug(
                     """
                     Read item is a file.
