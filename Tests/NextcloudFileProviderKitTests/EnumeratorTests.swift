@@ -398,7 +398,6 @@ final class EnumeratorTests: XCTestCase {
         // as pages. This process continues until all directories have been enumerated.
         // We can verify that all items are discovered and stored in the database.
         let allItemIds = [
-            rootItem.identifier,
             folder1.identifier,
             folder2.identifier,
             subfolder.identifier
@@ -407,8 +406,13 @@ final class EnumeratorTests: XCTestCase {
           + subfolder.children.map(\.identifier)
 
         for itemId in allItemIds {
-            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemId), "Item with id \(itemId) should be in the database")
+            XCTAssertNotNil(
+                Self.dbManager.itemMetadata(ocId: itemId),
+                "Item with id \(itemId) should be in the database"
+            )
         }
+        // Root should not be stored in database
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
     }
 
     func testWorkingSetChangeEnumeration() async throws {
