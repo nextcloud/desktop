@@ -175,11 +175,15 @@ bool VfsCfApi::isHydrating() const
     return !d->hydrationJobs.isEmpty();
 }
 
-Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
+Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, const SyncFileItem &item)
 {
+    time_t modtime = item._modtime;
+    qint64 size = item._size;
+    const QByteArray &fileId = item._fileId;
+
     const auto localPath = QDir::toNativeSeparators(filePath);
     if (cfapi::handleForPath(localPath)) {
-        auto result = cfapi::updatePlaceholderInfo(localPath, modtime, size, fileId);
+        auto result = cfapi::updatePlaceholderInfo(localPath, item);
         if (result) {
             return {};
         } else {
@@ -191,9 +195,9 @@ Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t m
     }
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item)
 {
-    return cfapi::updatePlaceholderMarkInSync(filePath, fileId, {});
+    return cfapi::updatePlaceholderMarkInSync(filePath, item, {});
 }
 
 bool VfsCfApi::isPlaceHolderInSync(const QString &filePath) const
@@ -211,7 +215,7 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
-    const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
+    const auto localPath = FileSystem::longWinPath(QDir::toNativeSeparators(_setupParams.filesystemPath + item._file));
     if (cfapi::handleForPath(localPath)) {
         auto result = cfapi::dehydratePlaceholder(localPath, item._modtime, item._size, item._fileId);
         if (result) {
@@ -227,17 +231,17 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile, UpdateMetadataTypes updateType)
 {
-    const auto localPath = QDir::toNativeSeparators(filename);
-    const auto replacesPath = QDir::toNativeSeparators(replacesFile);
+    const auto localPath = FileSystem::longWinPath(QDir::toNativeSeparators(filename));
+    const auto replacesPath = FileSystem::longWinPath(QDir::toNativeSeparators(replacesFile));
 
     if (cfapi::findPlaceholderInfo(localPath)) {
         if (updateType & Vfs::UpdateMetadataType::FileMetadata) {
-            return cfapi::updatePlaceholderInfo(localPath, item._modtime, item._size, item._fileId, replacesPath);
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath);
         } else {
-            return cfapi::updatePlaceholderMarkInSync(localPath, item._fileId, replacesPath);
+            return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
     } else {
-        return cfapi::convertToPlaceholder(localPath, item._modtime, item._size, item._fileId, replacesPath);
+        return cfapi::convertToPlaceholder(localPath, item, replacesPath);
     }
 }
 

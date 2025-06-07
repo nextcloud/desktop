@@ -32,9 +32,9 @@ public:
     bool socketApiPinStateActionsShown() const override;
     bool isHydrating() const override;
 
-    Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
+    Result<void, QString> updateMetadata(const QString &filePath, const SyncFileItem &item) override;
 
-    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override;
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) override;
 
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override;
 
