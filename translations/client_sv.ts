@@ -3112,7 +3112,7 @@ Det är inte möjligt att nedgradera versioner omedelbart: att byta från stabil
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Redigera information som anses känslig innan du delar! Felsökningsarkiv skapat på %1</translation>
     </message>
 </context>
 <context>
