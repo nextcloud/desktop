@@ -5051,12 +5051,12 @@ Server antwoordde met fout: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Verder delen van dit bestand is niet toegestaan</translation>
+        <translation>Opnieuw delen van dit bestand is niet toegestaan</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Verder delen van deze map is niet toegestaan</translation>
+        <translation>Opnieuw delen van deze map is niet toegestaan</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1226"/>
@@ -6363,7 +6363,7 @@ Server antwoordde met fout: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
-        <translation>Verder delen toestaan</translation>
+        <translation>Opnieuw delen toestaan</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="441"/>
