@@ -3112,7 +3112,7 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Cuir faisnéis íogair in eagar sula ndéantar í a roinnt! Cartlann dífhabhtaithe cruthaithe ag %1</translation>
     </message>
 </context>
 <context>
