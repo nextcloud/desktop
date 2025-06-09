@@ -296,7 +296,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     """
                     Current folders awaiting paged enumeration:
                         \(self.nextFoldersServerUrlsToEnumerateWorkingSet, privacy: .public)
-                        next page: \(nextPage?.token ?? "NIL", privacy: .public)
+                        next page is nil: \(nextPage == nil, privacy: .public)
+                        next page token: \(nextPage?.token ?? "NIL", privacy: .public)
                     """
                 )
 
