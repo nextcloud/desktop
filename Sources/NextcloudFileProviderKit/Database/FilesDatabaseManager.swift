@@ -452,6 +452,7 @@ public final class FilesDatabaseManager: Sendable {
                         parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
                         account: \(metadata.account, privacy: .public)
                         content type: \(metadata.contentType, privacy: .public)
+                        is directory: \(metadata.directory, privacy: .public)
                         creation date: \(metadata.creationDate, privacy: .public)
                         date: \(metadata.date, privacy: .public)
                         lock: \(metadata.lock, privacy: .public)
