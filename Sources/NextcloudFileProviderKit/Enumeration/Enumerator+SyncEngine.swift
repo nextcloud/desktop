@@ -275,7 +275,8 @@ extension Enumerator {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
             // Do not ingest metadata for the root container
             if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl),
-               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.")
+               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/."),
+               !(firstFile.fileName == "." && firstFile.serverUrl == "..")
             {
                 var metadata = firstFile.toItemMetadata()
                 if metadata.directory,
@@ -466,7 +467,8 @@ extension Enumerator {
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
                   serverUrl == dbManager.account.davFilesUrl ||
-                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.")
+                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
+                  (receivedFile.fileName == "." && receivedFile.serverUrl == "..")
             else {
                 Self.logger.debug(
                     """
