@@ -291,6 +291,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
                     nextFoldersServerUrlsToEnumerateWorkingSet.append(metadataRemoteUrl)
                 }
+                Self.logger.debug(
+                    """
+                    Current folders awaiting paged enumeration:
+                        \(self.nextFoldersServerUrlsToEnumerateWorkingSet, privacy: .public)
+                    """
+                )
 
                 // If we have finished paged enumeration of the current serverUrl, move to next
                 // child to scan
@@ -305,7 +311,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Finished reading page: \(self.pageNum, privacy: .public)
                     serverUrl: \(self.serverUrl, privacy: .public)
                     for user: \(self.account.ncKitAccount, privacy: .public).
-                    Next page token is: \(nextPage?.token ?? "", privacy: .public)
+                    Next page token is: \(nextPage?.token ?? "NIL", privacy: .public)
                     Processed \(metadatas.count) metadatas
                 """
             )
