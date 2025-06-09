@@ -39,6 +39,15 @@ struct EnumeratorPageResponse: Sendable {
         } else {
             total = nil
         }
+        let totalString = total != nil ? String(total ?? -1) : "nil"
+        logger.debug(
+            """
+            Created enumerator page response with data from PROPFIND reply.
+                token: \(responsePaginateToken, privacy: .public)
+                index: \(index, privacy: .public)
+                total: \(totalString, privacy: .public)
+            """
+        )
     }
 
     init(nextServerUrl: String) {
