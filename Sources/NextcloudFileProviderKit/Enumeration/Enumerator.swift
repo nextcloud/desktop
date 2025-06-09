@@ -214,6 +214,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.debug(
             """
             Enumerating page: \(self.pageNum, privacy: .public)
+                with data: \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
                 for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
             """
