@@ -274,7 +274,9 @@ extension Enumerator {
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
             // Do not ingest metadata for the root container
-            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl) {
+            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl),
+               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.")
+            {
                 var metadata = firstFile.toItemMetadata()
                 if metadata.directory,
                    let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
@@ -463,7 +465,8 @@ extension Enumerator {
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
-                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl)
+                  serverUrl == dbManager.account.davFilesUrl ||
+                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.")
             else {
                 Self.logger.debug(
                     """
