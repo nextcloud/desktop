@@ -60,7 +60,7 @@ public class MockRemoteItem: Equatable {
         MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
             versionIdentifier: "root",
-            name: "",
+            name: ".",
             remotePath: account.davFilesUrl,
             directory: true,
             account: account.ncKitAccount,
