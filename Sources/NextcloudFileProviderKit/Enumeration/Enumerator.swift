@@ -296,6 +296,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     """
                     Current folders awaiting paged enumeration:
                         \(self.nextFoldersServerUrlsToEnumerateWorkingSet, privacy: .public)
+                        next page: \(nextPage?.token ?? "NIL", privacy: .public)
                     """
                 )
 
@@ -304,6 +305,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 if nextPage == nil && !nextFoldersServerUrlsToEnumerateWorkingSet.isEmpty {
                     let nextServerUrl = nextFoldersServerUrlsToEnumerateWorkingSet.removeFirst()
                     nextPage = EnumeratorPageResponse(nextServerUrl: nextServerUrl)
+                    Self.logger.info("Next page token set to be \(nextServerUrl, privacy: .public)")
                 }
             }
 
