@@ -391,6 +391,9 @@ extension Enumerator {
                 at depth \(depth.rawValue, privacy: .public).
                 username: \(account.username, privacy: .public),
                 password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
+                pageToken: \(String(data: pageSettings?.page?.rawValue ?? Data(), encoding: .utf8) ?? "NIL", privacy: .public)
+                pageIndex: \(pageSettings?.index ?? -1, privacy: .public)
+                pageSize: \(pageSettings?.size ?? -1, privacy: .public)
                 serverUrl: \(account.serverUrl, privacy: .public)
             """
         )
@@ -455,7 +458,7 @@ extension Enumerator {
             Self.logger.error(
                 """
                 Received no items from readFileOrFolder of \(serverUrl, privacy: .public),
-                not much we can do...
+                    not much we can do...
                 """
             )
             return (nil, nil, nil, nil, nextPage, error)
