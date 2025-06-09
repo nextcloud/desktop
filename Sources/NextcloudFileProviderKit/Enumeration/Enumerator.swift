@@ -292,18 +292,20 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
                     nextFoldersServerUrlsToEnumerateWorkingSet.append(metadataRemoteUrl)
                 }
+                let nextPageValid = nextPage != nil
+                let nextPageToken = nextPage?.token ?? "" // For logging
                 Self.logger.debug(
                     """
                     Current folders awaiting paged enumeration:
                         \(self.nextFoldersServerUrlsToEnumerateWorkingSet, privacy: .public)
-                        next page is nil: \(nextPage == nil, privacy: .public)
-                        next page token: \(nextPage?.token ?? "NIL", privacy: .public)
+                        next page is valid: \(nextPageValid, privacy: .public)
+                        next page token: \(nextPageToken, privacy: .public)
                     """
                 )
 
                 // If we have finished paged enumeration of the current serverUrl, move to next
                 // child to scan
-                if nextPage == nil && !nextFoldersServerUrlsToEnumerateWorkingSet.isEmpty {
+                if !nextPageValid && !nextFoldersServerUrlsToEnumerateWorkingSet.isEmpty {
                     let nextServerUrl = nextFoldersServerUrlsToEnumerateWorkingSet.removeFirst()
                     nextPage = EnumeratorPageResponse(nextServerUrl: nextServerUrl)
                     Self.logger.info("Next page token set to be \(nextServerUrl, privacy: .public)")
@@ -619,6 +621,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Task { @MainActor in
                     observer.didEnumerate(items)
                     Self.logger.info("Did enumerate \(items.count) items")
+                    let nextPageNil = nextPage == nil // For logging
+                    let nextPageToken = nextPage?.token ?? "" // For logging
+                    Self.logger.info(
+                        """
+                        Next page is nil: \(nextPageNil, privacy: .public)
+                            next page token: \(nextPageToken, privacy: .public)
+                        """
+                    )
                     if let nextPage, let nextPageData = nextPage.token.data(using: .utf8) {
                         self.pageNum = nextPage.index
                         observer.finishEnumerating(upTo: NSFileProviderPage(nextPageData))
