@@ -12,6 +12,10 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
+fileprivate let logger = Logger(
+    subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface"
+)
+
 extension NextcloudKit: RemoteInterface {
 
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
@@ -426,6 +430,10 @@ extension NextcloudKit: RemoteInterface {
         // Test by trying to fetch user profile
         let (_, _, _, error) =
             await enumerate(remotePath: account.davFilesUrl + "/", depth: .target, account: account)
+
+        if error != .success {
+            logger.error("Error in auth check: \(error.errorDescription, privacy: .public)")
+        }
 
         if error == .success {
             return .success
