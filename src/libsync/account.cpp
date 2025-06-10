@@ -180,10 +180,7 @@ QString Account::shortcutName() const
         url_part.append(QString::number(port));
     }
 
-    auto shortcutName = QStringLiteral("%1 - %2").arg(url_part, prettyName());
-
-
-    return shortcutName;
+    return QStringLiteral("%1 - %2").arg(url_part, prettyName());
 }
 
 QString Account::userIdAtHostWithPort() const
