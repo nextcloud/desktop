@@ -274,7 +274,10 @@ extension Enumerator {
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
             // Do not ingest metadata for the root container
-            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl) {
+            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl),
+               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/."),
+               !(firstFile.fileName == "." && firstFile.serverUrl == "..")
+            {
                 var metadata = firstFile.toItemMetadata()
                 if metadata.directory,
                    let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
@@ -388,6 +391,9 @@ extension Enumerator {
                 at depth \(depth.rawValue, privacy: .public).
                 username: \(account.username, privacy: .public),
                 password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
+                pageToken: \(String(data: pageSettings?.page?.rawValue ?? Data(), encoding: .utf8) ?? "NIL", privacy: .public)
+                pageIndex: \(pageSettings?.index ?? -1, privacy: .public)
+                pageSize: \(pageSettings?.size ?? -1, privacy: .public)
                 serverUrl: \(account.serverUrl, privacy: .public)
             """
         )
@@ -452,7 +458,7 @@ extension Enumerator {
             Self.logger.error(
                 """
                 Received no items from readFileOrFolder of \(serverUrl, privacy: .public),
-                not much we can do...
+                    not much we can do...
                 """
             )
             return (nil, nil, nil, nil, nextPage, error)
@@ -463,7 +469,9 @@ extension Enumerator {
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
-                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl)
+                  serverUrl == dbManager.account.davFilesUrl ||
+                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
+                  (receivedFile.fileName == "." && receivedFile.serverUrl == "..")
             else {
                 Self.logger.debug(
                     """
