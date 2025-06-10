@@ -17,7 +17,7 @@ struct EnumeratorPageResponse: Sendable {
 
     init?(nkResponseData: AFDataResponse<Data>?, index: Int) {
         guard let headers = nkResponseData?.response?.allHeaderFields as? [String: String] else {
-            logger.debug("Page reponse nil as could not get header fields from Alamofire response")
+            logger.debug("Page response nil as could not get header fields from Alamofire response")
             return nil
         }
 
