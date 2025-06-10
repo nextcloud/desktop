@@ -1459,7 +1459,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Datni nevarēja sinhronizēt, jo tā rada konfliktu ar esošo datni šajā sistēmā.</translation>
+        <translation>Datni nevarēja sinhronizēt, jo tā rada nosaukuma lielo/mazo burtu nesaderību ar šajā sistēmā esošu datni.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1528,7 +1528,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Datni &quot;%1&quot; nevar sinhronizēt, jo tā rada konfliktu ar esošo datni sistēmā.</translation>
+        <translation>Datni &quot;%1&quot; nevarēja sinhronizēt, jo tā rada nosaukuma lielo/mazo burtu nesaderību ar šajā sistēmā esošu datni.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="104"/>
@@ -2246,14 +2246,14 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
         <location filename="../src/gui/folder.cpp" line="1408"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Jauna mape lielāka par %1 MB ir tikusi pievienota: %2.
+        <translation>Tika pievienota jauna mape, kas ir lielāka par %1 MB: %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Mape no ārējās krātuves ir tikusi pievienota.
+        <translation>Tika pievienota mape no ārējas krātuves.
 </translation>
     </message>
     <message>
@@ -2305,7 +2305,11 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja uzticami izsekot izmaiņām sinhronizētajās mapēs.
+
+Tas nozīmē, ka sinhronizēšanas klients varētu uzreiz neaugšupielādēt vietējas izmaiņas, bet tā vietā pārbaudīt vietējās izmaiņas un augšupielādēt tās tikai laiku pa laikam (pēc noklusējuma ik pēc divām stundām).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1627"/>
@@ -2395,7 +2399,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="428"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Tika atrasts vecs sinhronizēšanas žurnāls &quot;%1&quot;, bet to nevarēja noņemt. Lūgums pārliecināties, ka neviena lietotne to pašreiz neizmanto.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1783"/>
@@ -3240,7 +3244,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datni nevarēja sinhronizēt, jo tā satur rakstzīmes, kas šajā sistēmā nav atļautas.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -3265,7 +3269,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="101"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Datni &quot;%1&quot; nevarēja sinhronizēt, jo nosaukums satur rakstzīmes, kas šajā sistēmā nav atļautas.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="102"/>
@@ -3275,7 +3279,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="105"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Datni &quot;%1&quot; nevarēja sinhronizēt, jo nosaukums satur rakstzīmes, kuras serverī nav atļautas.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="116"/>

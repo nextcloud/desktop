@@ -2868,7 +2868,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation>Para Bandeja do Sistema</translation>
+        <translation>Para a Área de Notificação do Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
