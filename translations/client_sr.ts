@@ -3112,7 +3112,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Пре дељења редигуј информације које се сматрају за осетљиве! Дибаг архива је креирана на %1</translation>
     </message>
 </context>
 <context>
