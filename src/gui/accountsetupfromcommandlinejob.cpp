@@ -41,7 +41,8 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 
 void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+    const auto accountFromUserId = AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()));
+    if (accountFromUserId) {
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
         return;
     }
@@ -64,7 +65,7 @@ void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
         }
 
         FileSystem::setFolderMinimumPermissions(_localDirPath);
-        Utility::setupFavLink(_localDirPath);
+        Utility::setupFavLink(_localDirPath, accountFromUserId->account()->shortcutName());
     }
 
     const auto credentials = new WebFlowCredentials(_userId, _appPassword);

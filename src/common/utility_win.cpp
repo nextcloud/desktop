@@ -99,7 +99,7 @@ QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileO
     return results;
 }
 
-void Utility::setupFavLink(const QString &folder)
+void Utility::setupFavLink(const QString &folder, const QString &linkName)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
@@ -140,10 +140,10 @@ void Utility::setupFavLink(const QString &folder)
 
     const QDir folderDir(QDir::fromNativeSeparators(folder));
     const QString filePath = folderDir.dirName() + QLatin1String(".lnk");
-    const auto linkName = QDir(links).filePath(filePath);
+    auto dirLinkName = linkName.isEmpty() ? QDir(links).filePath(filePath) : linkName;
 
-    qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
-    if (!QFile::link(folder, linkName)) {
+    qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << dirLinkName;
+    if (!QFile::link(folder, dirLinkName)) {
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
     }
 }

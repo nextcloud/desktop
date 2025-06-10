@@ -58,7 +58,7 @@ namespace Utility {
      *
      * @param folder absolute file path to folder
      */
-    OCSYNC_EXPORT void setupFavLink(const QString &folder);
+    OCSYNC_EXPORT void setupFavLink(const QString &folder, const QString &linkName);
     /**
      * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
      *
