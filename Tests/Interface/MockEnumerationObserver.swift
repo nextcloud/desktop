@@ -11,11 +11,11 @@ import Foundation
 public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     public var items: [NSFileProviderItem] = []
     public var observedPages: [NSFileProviderPage] = []
-    private var error: Error?
+    public private(set) var error: Error?
+    public private(set) var page: NSFileProviderPage? = nil
     private var isComplete = false
     private var currentPageComplete = false
     private var enumerator: NSFileProviderEnumerator
-    private var page: NSFileProviderPage? = nil
 
     public init(enumerator: NSFileProviderEnumerator) {
         self.enumerator = enumerator
@@ -44,15 +44,19 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
         page = NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
 
         while let page, !isComplete {
+            try await enumerateItemsPage(page: page)
             observedPages.append(page)
-            enumerator.enumerateItems(for: self, startingAt: page)
-            while !currentPageComplete {
-                try await Task.sleep(nanoseconds: 1_000_000)
-            }
-            if let error {
-                throw error
-            }
-            currentPageComplete = false
         }
+    }
+
+    public func enumerateItemsPage(page: NSFileProviderPage) async throws {
+        enumerator.enumerateItems(for: self, startingAt: page)
+        while !currentPageComplete {
+            try await Task.sleep(nanoseconds: 1_000_000)
+        }
+        if let error {
+            throw error
+        }
+        currentPageComplete = false
     }
 }

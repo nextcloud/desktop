@@ -397,13 +397,10 @@ final class EnumeratorTests: XCTestCase {
         // in the root directory, then it will be called again with the URLs of the subdirectories
         // as pages. This process continues until all directories have been enumerated.
         // We can verify that all items are discovered and stored in the database.
-        let allItemIds = [
-            folder1.identifier,
-            folder2.identifier,
-            subfolder.identifier
-        ] + folder1.children.map(\.identifier)
-          + folder2.children.map(\.identifier)
-          + subfolder.children.map(\.identifier)
+        let allItemIds = rootItem.children.map(\.identifier)
+            + folder1.children.map(\.identifier)
+            + folder2.children.map(\.identifier)
+            + subfolder.children.map(\.identifier)
 
         for itemId in allItemIds {
             XCTAssertNotNil(
@@ -412,6 +409,141 @@ final class EnumeratorTests: XCTestCase {
             )
         }
         // Root should not be stored in database
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
+    }
+
+    func testWorkingSetPaginatedEnumerationWithEnumeratorRecreation() async throws {
+        // This test simulates the system creating a new enumerator for each subsequent page of a
+        // paginated request
+
+        // 1. Setup a more complex, nested directory structure.
+        rootItem.children = [] // Clear existing children
+
+        let folder1 = MockRemoteItem(
+            identifier: "folder1",
+            name: "folder1",
+            remotePath: Self.account.davFilesUrl + "/folder1",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        folder1.parent = rootItem
+        rootItem.children.append(folder1)
+        for i in 0..<7 {
+            let childItem = MockRemoteItem(
+                identifier: "folder1-item\(i)",
+                name: "item\(i).txt",
+                remotePath: folder1.remotePath + "/item\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = folder1
+            folder1.children.append(childItem)
+        }
+
+        let folder2 = MockRemoteItem(
+            identifier: "folder2",
+            name: "folder2",
+            remotePath: Self.account.davFilesUrl + "/folder2",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        folder2.parent = rootItem
+        rootItem.children.append(folder2)
+
+        let subfolder = MockRemoteItem(
+            identifier: "subfolder",
+            name: "subfolder",
+            remotePath: folder2.remotePath + "/subfolder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        subfolder.parent = folder2
+        folder2.children.append(subfolder)
+        for i in 0..<3 {
+            let childItem = MockRemoteItem(
+                identifier: "subfolder-item\(i)",
+                name: "item\(i).txt",
+                remotePath: subfolder.remotePath + "/item\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = subfolder
+            subfolder.children.append(childItem)
+        }
+        for i in 0..<8 { // Add loose items to folder2
+            let childItem = MockRemoteItem(
+                identifier: "folder2-item\(i)",
+                name: "item\(i).txt",
+                remotePath: folder2.remotePath + "/item\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = folder2
+            folder2.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
+        let pageSize = 5
+
+        // 2. Manually drive the pagination loop, creating a new enumerator each time.
+        var allEnumeratedItems: [NSFileProviderItem] = []
+        var currentPage: NSFileProviderPage? =
+            NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
+
+        while let pageToEnumerate = currentPage {
+            currentPage = nil // Reset for the next iteration
+
+            // Create a NEW enumerator and observer for this single page request
+            let enumerator = Enumerator(
+                enumeratedItemIdentifier: .workingSet,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                pageSize: pageSize
+            )
+            let observer = MockEnumerationObserver(enumerator: enumerator)
+            try await observer.enumerateItemsPage(page: pageToEnumerate)
+            XCTAssertNil(observer.error)
+            allEnumeratedItems += observer.items
+            currentPage = observer.page
+        }
+
+        let expectedTotalItems = 1 + 7 + 1 + 8 + 1 + 3 // 21 items total
+        XCTAssertEqual(
+            allEnumeratedItems.count,
+            expectedTotalItems,
+            "The test failed, likely because the enumerator's state was lost and it did not recursively scan subdirectories."
+        )
+
+        let allItemIds = rootItem.children.map(\.identifier)
+            + folder1.children.map(\.identifier)
+            + folder2.children.map(\.identifier)
+            + subfolder.children.map(\.identifier)
+
+        // Check if the database contains all items, which it likely won't if the test fails.
+        let itemsInDB = allItemIds.compactMap { Self.dbManager.itemMetadata(ocId: $0) }
+        XCTAssertEqual(
+            itemsInDB.count,
+            expectedTotalItems,
+            "The database should contain metadata for all discovered items."
+        )
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
     }
 
@@ -486,7 +618,7 @@ final class EnumeratorTests: XCTestCase {
         // --- Scenario B: Follow-up Paginated Request (isFollowUpPaginatedRequest == true) ---
 
         // 4. Act: Call readServerUrl for the second page using the received page token.
-        let followUpPage = NSFileProviderPage(initialNextPage!.token.data(using: .utf8)!)
+        let followUpPage = NSFileProviderPage(initialNextPage!.token!.data(using: .utf8)!)
         let (
             followUpMetadatas, _, _, _, finalNextPage, followUpError
         ) = await Enumerator.readServerUrl(

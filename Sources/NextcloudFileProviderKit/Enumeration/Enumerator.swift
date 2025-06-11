@@ -28,8 +28,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private let pageItemCount: Int
-    private var pageNum = 0
-    private var nextFoldersServerUrlsToEnumerateWorkingSet = [String]()
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
     let remoteInterface: RemoteInterface
@@ -213,8 +211,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         Self.logger.debug(
             """
-            Enumerating page: \(self.pageNum, privacy: .public)
-                with data: \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
+            Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
                 for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
             """
@@ -224,30 +221,35 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
+            var scanningChildFolder = false
+            var nextServerUrls: [String]? = nil
+            var pageIndex = 0
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
                page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
             {
-                if let pageString = String(data: page.rawValue, encoding: .utf8),
-                   let urlDetector = try? NSDataDetector(
-                    types: NSTextCheckingResult.CheckingType.link.rawValue
-                   ),
-                   !urlDetector.matches(
-                    in: pageString, options: [], range: .init(location: 0, length: pageString.count)
-                   ).isEmpty
+                if let enumPageResponse =
+                    try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue)
                 {
-                    Self.logger.info(
-                        "Setting enumerator server URL to \(self.serverUrl, privacy: .public)"
-                    )
-                    serverUrl = pageString
-                    pageNum = 0 // If paginating new target server URL reset to 0
+                    if let actualServerUrl = enumPageResponse.nextServerUrl {
+                        Self.logger.info(
+                            "Setting enumerator server URL to \(actualServerUrl, privacy: .public)"
+                        )
+                        serverUrl = actualServerUrl
+                        scanningChildFolder = true
+                    }
+                    if let token = enumPageResponse.token?.data(using: .utf8) {
+                        providedPage = NSFileProviderPage(token)
+                    }
+                    pageIndex = enumPageResponse.index
+                    nextServerUrls = enumPageResponse.serverUrlQueue
                 } else {
-                    providedPage = page
+                    Self.logger.error("Could not parse page")
                 }
             }
 
             let readResult = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: (page: providedPage, index: pageNum, size: pageItemCount),
+                pageSettings: (page: providedPage, index: pageIndex, size: pageItemCount),
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -260,7 +262,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             guard readError == nil else {
                 Self.logger.error(
                     """
-                    Finishing enumeration for page: \(self.pageNum, privacy: .public)
+                    Finishing enumeration for page:
+                        \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
                         for: \(self.account.ncKitAccount, privacy: .public)
                         with serverUrl: \(self.serverUrl, privacy: .public) 
                         with error \(readError!.errorDescription, privacy: .public)
@@ -288,36 +291,44 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             if enumeratedItemIdentifier == .workingSet {
+                var serverUrlQueue = nextServerUrls ?? []
                 for metadata in metadatas where metadata.directory {
                     let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
-                    nextFoldersServerUrlsToEnumerateWorkingSet.append(metadataRemoteUrl)
+                    serverUrlQueue.append(metadataRemoteUrl)
                 }
                 let nextPageValid = nextPage != nil
                 let nextPageToken = nextPage?.token ?? "" // For logging
                 Self.logger.debug(
                     """
                     Current folders awaiting paged enumeration:
-                        \(self.nextFoldersServerUrlsToEnumerateWorkingSet, privacy: .public)
+                        \(serverUrlQueue, privacy: .public)
                         next page is valid: \(nextPageValid, privacy: .public)
                         next page token: \(nextPageToken, privacy: .public)
                     """
                 )
 
-                // If we have finished paged enumeration of the current serverUrl, move to next
-                // child to scan
-                if !nextPageValid && !nextFoldersServerUrlsToEnumerateWorkingSet.isEmpty {
-                    let nextServerUrl = nextFoldersServerUrlsToEnumerateWorkingSet.removeFirst()
-                    nextPage = EnumeratorPageResponse(nextServerUrl: nextServerUrl)
-                    Self.logger.info("Next page token set to be \(nextServerUrl, privacy: .public)")
+                // If we are scanning a child folder now, add this information for the next call
+                // to an enumerator
+                if nextPage != nil, scanningChildFolder {
+                    Self.logger.debug("Applying actual server url onto server page response")
+                    nextPage?.nextServerUrl = serverUrl
+                    nextPage?.serverUrlQueue = serverUrlQueue
+                } else if nextPage == nil && !serverUrlQueue.isEmpty {
+                    // If we have finished paged enumeration of the current serverUrl, move to next
+                    // child to scan
+                    let nextServerUrl = serverUrlQueue.removeFirst()
+                    nextPage = EnumeratorPageResponse(
+                        nextServerUrl: nextServerUrl, serverUrlQueue: serverUrlQueue
+                    )
                 }
             }
 
             Self.logger.info(
                 """
-                Finished reading page: \(self.pageNum, privacy: .public)
+                Finished reading page:
+                    \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
                     serverUrl: \(self.serverUrl, privacy: .public)
                     for user: \(self.account.ncKitAccount, privacy: .public).
-                    Next page token is: \(nextPage?.token ?? "NIL", privacy: .public)
                     Processed \(metadatas.count) metadatas
                 """
             )
@@ -621,16 +632,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Task { @MainActor in
                     observer.didEnumerate(items)
                     Self.logger.info("Did enumerate \(items.count) items")
-                    let nextPageNil = nextPage == nil // For logging
-                    let nextPageToken = nextPage?.token ?? "" // For logging
-                    Self.logger.info(
-                        """
-                        Next page is nil: \(nextPageNil, privacy: .public)
-                            next page token: \(nextPageToken, privacy: .public)
-                        """
-                    )
-                    if let nextPage, let nextPageData = nextPage.token.data(using: .utf8) {
-                        self.pageNum = nextPage.index
+                    Self.logger.info("Next page is nil: \(nextPage == nil, privacy: .public)")
+
+                    if let nextPage, let nextPageData = try? JSONEncoder().encode(nextPage) {
+                        Self.logger.info(
+                            "Next page: \(String(data: nextPageData, encoding: .utf8) ?? "?")"
+                        )
                         observer.finishEnumerating(upTo: NSFileProviderPage(nextPageData))
                     } else {
                         observer.finishEnumerating(upTo: nil)
