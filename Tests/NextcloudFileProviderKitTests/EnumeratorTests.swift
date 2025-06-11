@@ -547,6 +547,92 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
     }
 
+    func testWorkingSetEnumerationStopsOnExhaustedTotal() async throws {
+        // This test verifies that enumeration correctly terminates when a faulty server
+        // provides a `nextPage` token but all items (according to `pageTotal`) have been received.
+
+        // 1. Setup: A folder with 9 items which, when including itself in the propfind, is an exact
+        // multiple of the page size.
+        rootItem.children = []
+        let folder = MockRemoteItem(
+            identifier: "folder10",
+            name: "folder10",
+            remotePath: Self.account.davFilesUrl + "/folder10",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        folder.parent = rootItem
+        rootItem.children.append(folder)
+
+        for i in 0..<9 {
+            let childItem = MockRemoteItem(
+                identifier: "item\(i)",
+                name: "item\(i).txt",
+                remotePath: folder.remotePath + "/item\(i).txt",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            childItem.parent = folder
+            folder.children.append(childItem)
+        }
+
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
+        let pageSize = 5
+
+        // This test requires a modification to `MockRemoteInterface` to simulate a faulty server
+        remoteInterface.forceNextPageOnLastContentPage = true
+
+        // 2. Manually drive the pagination loop.
+        var allEnumeratedItems: [NSFileProviderItem] = []
+        var currentPage: NSFileProviderPage? =
+            NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
+        var loopCount = 0
+
+        while let pageToEnumerate = currentPage {
+            loopCount += 1
+            currentPage = nil // Reset for the next iteration
+
+            // Create a NEW enumerator and observer for this single page request
+            let enumerator = Enumerator(
+                enumeratedItemIdentifier: .workingSet,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                pageSize: pageSize
+            )
+            let observer = MockEnumerationObserver(enumerator: enumerator)
+            try await observer.enumerateItemsPage(page: pageToEnumerate)
+            XCTAssertNil(observer.error)
+            allEnumeratedItems += observer.items
+            currentPage = observer.page
+        }
+
+        // 3. Assert the results.
+        // The loop should have run 3 times:
+        // 1. For root
+        // 2. For `folder10` page 1 (items 0-4).
+        // 3. For `folder10` page 2 (items 5-9). The enumerator logic should see that all items
+        //    have been delivered and should not return the phantom page token, terminating the loop.
+        XCTAssertNil(currentPage, "Loop should have terminated with a nil next page.")
+        XCTAssertEqual(loopCount, 3, "The enumeration loop should have terminated correctly.")
+
+        // Total items expected: 1 folder + 9 children = 10.
+        let expectedTotalItems = 1 + 9
+        XCTAssertEqual(
+            allEnumeratedItems.count,
+            expectedTotalItems,
+            "The correct number of total items should be enumerated."
+        )
+    }
+
     func testReadServerUrlFollowUpPagination() async throws {
         // 1. Arrange: Setup a folder with enough children to require multiple pages.
         remoteFolder.children = []
