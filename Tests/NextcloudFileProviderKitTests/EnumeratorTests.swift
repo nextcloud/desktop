@@ -486,7 +486,7 @@ final class EnumeratorTests: XCTestCase {
         // --- Scenario B: Follow-up Paginated Request (isFollowUpPaginatedRequest == true) ---
 
         // 4. Act: Call readServerUrl for the second page using the received page token.
-        let followUpPage = NSFileProviderPage(initialNextPage!.token.data(using: .utf8)!)
+        let followUpPage = NSFileProviderPage(initialNextPage!.token!.data(using: .utf8)!)
         let (
             followUpMetadatas, _, _, _, finalNextPage, followUpError
         ) = await Enumerator.readServerUrl(
