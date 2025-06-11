@@ -14,7 +14,7 @@ fileprivate let logger = Logger(subsystem: Logger.subsystem, category: "enumerat
 struct EnumeratorPageResponse: Sendable, Codable {
     let token: String?   // Required by server to serve the next page of items
     let index: Int      // Needed to calculate the offset for the next paginated request
-    let total: Int?     // Total item count, provided in the first non-offset paginated response
+    var total: Int?     // Total item count, provided in the first non-offset paginated response
     var serverUrlQueue: [String]?
     var nextServerUrl: String? = nil
 
