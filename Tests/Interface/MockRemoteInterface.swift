@@ -567,6 +567,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var completedChunkTransferSize: [String: Int64] = [:]
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
+    public var forceNextPageOnLastContentPage: Bool = false
 
     public init(
         rootItem: MockRemoteItem? = nil,
@@ -1080,6 +1081,10 @@ public class MockRemoteInterface: RemoteInterface {
                options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
             {
                 return (account.ncKitAccount, [], nil, .invalidData)
+            }
+            guard !forceNextPageOnLastContentPage || firstItem < files.count else {
+                let responseData = generateResponse(itemCount: files.count, finalPage: true)
+                return (account.ncKitAccount, [], responseData, .success)
             }
             let reachedEnd = firstItem + itemCount >= files.count
             let lastItem = min(firstItem + itemCount, files.count) - 1
