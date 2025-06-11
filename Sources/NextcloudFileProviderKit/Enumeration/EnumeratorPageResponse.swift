@@ -9,11 +9,12 @@ import Alamofire
 import Foundation
 import OSLog
 
-struct EnumeratorPageResponse: Sendable {
+fileprivate let logger = Logger(subsystem: Logger.subsystem, category: "enumeratorpageresponse")
+
+struct EnumeratorPageResponse: Sendable, Codable {
     let token: String   // Required by server to serve the next page of items
     let index: Int      // Needed to calculate the offset for the next paginated request
     let total: Int?     // Total item count, provided in the first non-offset paginated response
-    let logger = Logger(subsystem: Logger.subsystem, category: "enumeratorpageresponse")
 
     init?(nkResponseData: AFDataResponse<Data>?, index: Int) {
         guard let headers = nkResponseData?.response?.allHeaderFields as? [String: String] else {
