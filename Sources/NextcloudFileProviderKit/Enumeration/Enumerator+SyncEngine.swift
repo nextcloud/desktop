@@ -461,7 +461,9 @@ extension Enumerator {
                     not much we can do...
                 """
             )
-            return (nil, nil, nil, nil, nextPage, error)
+            // This is technically possible when doing a paginated request with the index too high.
+            // It's technically not an error reply.
+            return ([], nil, nil, nil, nextPage, nil)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
