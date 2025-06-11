@@ -221,9 +221,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
-            var scanningChildFolder = false
             var nextServerUrls: [String]? = nil
             var pageIndex = 0
+            var pageTotal: Int? = nil
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
                page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
             {
@@ -235,10 +235,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                             "Setting enumerator server URL to \(actualServerUrl, privacy: .public)"
                         )
                         serverUrl = actualServerUrl
-                        scanningChildFolder = true
                     }
                     if let token = enumPageResponse.token?.data(using: .utf8) {
                         providedPage = NSFileProviderPage(token)
+                    }
+                    if let total = enumPageResponse.total {
+                        pageTotal = total
                     }
                     pageIndex = enumPageResponse.index
                     nextServerUrls = enumPageResponse.serverUrlQueue
@@ -290,6 +292,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
+            pageTotal = nextPage?.total ?? pageTotal
+
             if enumeratedItemIdentifier == .workingSet {
                 var serverUrlQueue = nextServerUrls ?? []
                 for metadata in metadatas where metadata.directory {
@@ -304,16 +308,23 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         \(serverUrlQueue, privacy: .public)
                         next page is valid: \(nextPageValid, privacy: .public)
                         next page token: \(nextPageToken, privacy: .public)
+                        page total: \(pageTotal ?? -1, privacy: .public)
                     """
                 )
 
-                // If we are scanning a child folder now, add this information for the next call
-                // to an enumerator
-                if nextPage != nil, scanningChildFolder {
+                if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
+                    // Server will sometimes provide a valid next page data even though there are no
+                    // items to enumerate anymore
+                    Self.logger.debug("No more items to enumerate, stopping paged enumeration")
+                    nextPage = nil
+                }
+
+                if nextPage != nil {
                     Self.logger.debug("Applying actual server url onto server page response")
-                    nextPage?.nextServerUrl = serverUrl
-                    nextPage?.serverUrlQueue = serverUrlQueue
-                } else if nextPage == nil && !serverUrlQueue.isEmpty {
+                    nextPage!.total = pageTotal
+                    nextPage!.serverUrlQueue = serverUrlQueue
+                    nextPage!.nextServerUrl = serverUrl
+                } else if !serverUrlQueue.isEmpty {
                     // If we have finished paged enumeration of the current serverUrl, move to next
                     // child to scan
                     let nextServerUrl = serverUrlQueue.removeFirst()
