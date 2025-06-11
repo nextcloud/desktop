@@ -557,7 +557,7 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
-        <translation>Importer</translation>
+        <translation>Importér</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
