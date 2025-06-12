@@ -1534,7 +1534,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nextcloud/NextcloudFileProviderKit.git";
 			requirement = {
-				branch = "stable-3.0";
+				branch = "bugfix/test-polling-only";
 				kind = branch;
 			};
 		};
