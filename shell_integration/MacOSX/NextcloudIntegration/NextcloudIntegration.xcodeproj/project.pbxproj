@@ -1532,7 +1532,7 @@
 		};
 		53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/claucambra/NextcloudFileProviderKit.git";
+			repositoryURL = "https://github.com/nextcloud/NextcloudFileProviderKit.git";
 			requirement = {
 				branch = "stable-3.0";
 				kind = branch;
