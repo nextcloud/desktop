@@ -437,11 +437,7 @@ private slots:
             currentLocalState = fakeFolder.currentLocalState();
             count++;
         }
-#if defined Q_OS_WINDOWS
-        QCOMPARE(count, 0);
-#else
         QCOMPARE(count, 2);
-#endif
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
