@@ -408,7 +408,7 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
 }
 
 void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
-    qCInfo(lcWebFlowCredentials()) << "request finished";
+    qCInfo(lcWebFlowCredentials()) << "request finished" << reply->request().url() << "with request id" << reply->request().rawHeader("X-Request-ID");
 
     if (reply->error() == QNetworkReply::NoError) {
         _credentialsValid = true;
