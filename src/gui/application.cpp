@@ -293,7 +293,7 @@ Application::Application(int &argc, char **argv)
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
         for (const auto &accountState : AccountManager::instance()->accounts()) {
             if (accountState && accountState->account()) {
-                accountState->account()->setNetworkProxySetting(Account::AccountNetworkProxySetting::GlobalProxy);
+                accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }
         }
     }
@@ -396,6 +396,15 @@ Application::Application(int &argc, char **argv)
 #if WITH_LIBCLOUDPROVIDERS
     _gui->setupCloudProviders();
 #endif
+
+    if (_theme->doNotUseProxy()) {
+        ConfigFile().setProxyType(QNetworkProxy::NoProxy);
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            if (accountState && accountState->account()) {
+                accountState->account()->setProxyType(QNetworkProxy::NoProxy);
+            }
+        }
+    }
 
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
