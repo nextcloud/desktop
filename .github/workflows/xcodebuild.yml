@@ -31,10 +31,3 @@ jobs:
         pathCoverage=NKFPK/.derivedData/Build/ProfileData/${directory}/Coverage.profdata
         cd ../../../../../
         xcrun llvm-cov export -format="lcov" -instr-profile $pathCoverage NKFPK/.derivedData/Build/Products/Debug/NextcloudFileProviderKitTests.xctest/Contents/MacOS/NextcloudFileProviderKitTests > coverage_report.lcov
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: fail
-        files: ./coverage_report.lcov
-        verbose: true
