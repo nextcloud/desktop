@@ -279,10 +279,11 @@ extension Enumerator {
                !(firstFile.fileName == "." && firstFile.serverUrl == "..")
             {
                 var metadata = firstFile.toItemMetadata()
-                if metadata.directory,
-                   let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
-                {
-                    metadata.downloaded = existingMetadata.downloaded
+                if metadata.directory {
+                    metadata.visitedDirectory = true
+                    if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
+                        metadata.downloaded = existingMetadata.downloaded
+                    }
                 }
                 dbManager.addItemMetadata(metadata)
             }
@@ -333,8 +334,10 @@ extension Enumerator {
             if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
                 directoryMetadata.downloaded = existingMetadata.downloaded
             }
-            dbManager.addItemMetadata(directoryMetadata)
+            directoryMetadata.visitedDirectory = true
         }
+
+        metadatas.insert(directoryMetadata, at: 0)
 
         let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
@@ -358,7 +361,7 @@ extension Enumerator {
     // Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
     //
     // Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
-    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED LOCALLY.
+    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
     // This means that if you decide to use this method to implement change enumeration, you will
     // have to collect the full results of all the pages before proceeding with discovering what
     // has changed relative to the state of the local database -- manually!
