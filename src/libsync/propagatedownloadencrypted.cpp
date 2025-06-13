@@ -102,7 +102,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
 
     // we decripted the temporary into another temporary, so good bye old one
     if (!tmpFile.remove()) {
-        qCDebug(lcPropagateDownloadEncrypted) << "Failed to remove temporary file" << tmpFile.errorString();
+        qCWarning(lcPropagateDownloadEncrypted) << "Failed to remove temporary file" << tmpFile.errorString();
         _errorString = tmpFile.errorString();
         return false;
     }

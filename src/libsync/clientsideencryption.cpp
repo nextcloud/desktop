@@ -606,7 +606,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     }
 
     if (encryptedBase64Result->isEmpty()) {
-        qCDebug(lcCseEncryption()) << "ERROR. Could not encrypt data";
+        qCWarning(lcCseEncryption()) << "ERROR. Could not encrypt data";
         return {};
     }
 
@@ -641,7 +641,7 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     }
 
     if (decryptBase64Result->isEmpty()) {
-        qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
+        qCWarning(lcCseDecryption()) << "ERROR. Could not decrypt data";
         return {};
     }
     return decryptBase64Result;
@@ -2346,10 +2346,10 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
 {
     if (!input->open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
+        qCWarning(lcCse) << "Could not open input file for reading" << input->errorString();
     }
     if (!output->open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output file for writing" << output->errorString();
+        qCWarning(lcCse) << "Could not oppen output file for writing" << output->errorString();
     }
 
     // Init
@@ -2507,19 +2507,19 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output, QByteArray &returnTag)
 {
     if (input.isEmpty()) {
-        qCDebug(lcCse) << "Could not use empty input data";
+        qCWarning(lcCse) << "Could not use empty input data";
     }
 
     QByteArray inputCopy = input;
 
     QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+        qCWarning(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }
 
     QBuffer outputBuffer(&output);
     if (!outputBuffer.open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+        qCWarning(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
     }
 
     // Init
@@ -2597,19 +2597,19 @@ bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &i
 bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output)
 {
     if (input.isEmpty()) {
-        qCDebug(lcCse) << "Could not use empty input data";
+        qCWarning(lcCse) << "Could not use empty input data";
     }
 
     QByteArray inputCopy = input;
 
     QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+        qCWarning(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }
 
     QBuffer outputBuffer(&output);
     if (!outputBuffer.open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+        qCWarning(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
     }
 
     // Init
@@ -2715,7 +2715,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const 
 {
     QByteArray decryptedAndUnGzipped;
     if (!EncryptionHelper::dataDecryption(key, iv, inputData, decryptedAndUnGzipped)) {
-        qCDebug(lcCse()) << "Could not decrypt";
+        qCWarning(lcCse()) << "Could not decrypt";
         return {};
     }
 
@@ -3066,7 +3066,7 @@ PKey CertificateInformation::getEvpPublicKey() const
     const auto publicKey = _certificate.publicKey();
     Q_ASSERT(!publicKey.isNull());
     if (publicKey.isNull()) {
-        qCDebug(lcCse) << "Public key is null. Could not encrypt.";
+        qCWarning(lcCse) << "Public key is null. Could not encrypt.";
     }
     Bio publicKeyBio;
     const auto publicKeyPem = publicKey.toPem();
@@ -3087,7 +3087,7 @@ PKey CertificateInformation::getEvpPrivateKey() const
         const auto privateKeyPem = _privateKeyData;
         Q_ASSERT(!privateKeyPem.isEmpty());
         if (privateKeyPem.isEmpty()) {
-            qCDebug(lcCse) << "Private key is empty. Could not encrypt.";
+            qCWarning(lcCse) << "Private key is empty. Could not encrypt.";
         }
 
         Bio privateKeyBio;
@@ -3136,7 +3136,7 @@ void CertificateInformation::checkEncryptionCertificate()
 
     const auto sslErrors = QSslCertificate::verify({_certificate});
     for (const auto &sslError : sslErrors) {
-        qCDebug(lcCse()) << "certificate validation error" << sslError;
+        qCWarning(lcCse()) << "certificate validation error" << sslError;
         switch (sslError.error())
         {
         case QSslError::CertificateExpired:

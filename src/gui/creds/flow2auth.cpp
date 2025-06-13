@@ -259,7 +259,7 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
             .arg(jsonParseError.errorString());
         }
 
-        qCDebug(lcFlow2auth) << "Error when requesting:" << reply->url() << "- json returned:" << json << "- error:" << errorReason;
+        qCWarning(lcFlow2auth) << "Error when requesting:" << reply->url() << "- json returned:" << json << "- error:" << errorReason;
 
         // We get a 404 until authentication is done, so don't show this error in the GUI.
         if (reply->error() != QNetworkReply::ContentNotFoundError) {

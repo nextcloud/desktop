@@ -546,7 +546,7 @@ void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int s
 
 void AccountState::slotOcsError(int statusCode, const QString &message)
 {
-    qCDebug(lcAccountState) << "Error " << statusCode << " while fetching new navigation apps: " << message;
+    qCWarning(lcAccountState) << "Error " << statusCode << " while fetching new navigation apps: " << message;
 }
 
 void AccountState::slotCheckConnection()

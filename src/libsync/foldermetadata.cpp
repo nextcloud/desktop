@@ -114,7 +114,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     qCDebug(lcCseMetadata()) << "Got existing metadata:" << doc.toJson(QJsonDocument::Compact);
 
     if (_existingMetadataVersion < MetadataVersion::Version1) {
-        qCDebug(lcCseMetadata()) << "Could not setup metadata. Incorrect version" << _existingMetadataVersion;
+        qCWarning(lcCseMetadata()) << "Could not setup metadata. Incorrect version" << _existingMetadataVersion;
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -133,7 +133,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     Q_ASSERT(isUsersArrayValid);
 
     if (!isUsersArrayValid) {
-        qCDebug(lcCseMetadata()) << "Could not decrypt metadata key. Users array is invalid!";
+        qCWarning(lcCseMetadata()) << "Could not decrypt metadata key. Users array is invalid!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -166,7 +166,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         }
 
         if (!_account->e2e()->verifySignatureCryptographicMessageSyntax(QByteArray::fromBase64(_initialSignature), metadataForSignature.toBase64(), certificatePems)) {
-            qCDebug(lcCseMetadata()) << "Could not parse encrypred folder metadata. Failed to verify signature!";
+            qCWarning(lcCseMetadata()) << "Could not parse encrypred folder metadata. Failed to verify signature!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
@@ -185,12 +185,12 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
 
     if (!parseFileDropPart(metaDataDoc)) {
-        qCDebug(lcCseMetadata()) << "Could not parse filedrop part";
+        qCWarning(lcCseMetadata()) << "Could not parse filedrop part";
         return;
     }
 
     if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Could not setup metadata key!";
+        qCWarning(lcCseMetadata()) << "Could not setup metadata key!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -204,7 +204,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     const auto cipherTextDecrypted = EncryptionHelper::decryptThenUnGzipData(metadataKeyForDecryption(), QByteArray::fromBase64(cipherTextPartExtracted), _metadataNonce);
     if (cipherTextDecrypted.isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Could not decrypt cipher text!";
+        qCWarning(lcCseMetadata()) << "Could not decrypt cipher text!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -225,7 +225,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
 
     if (!verifyMetadataKey(metadataKeyForDecryption())) {
-        qCDebug(lcCseMetadata()) << "Could not verify metadataKey!";
+        qCWarning(lcCseMetadata()) << "Could not verify metadataKey!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -288,7 +288,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
                                  << latestSupportedMetadataVersion();
         const auto metadataKeys = metadataObj["metadataKeys"].toObject();
         if (metadataKeys.isEmpty()) {
-            qCDebug(lcCseMetadata()) << "Could not migrate. No metadata keys found!";
+            qCWarning(lcCseMetadata()) << "Could not migrate. No metadata keys found!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
@@ -306,7 +306,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     }
 
     if (metadataKeyForDecryption().isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Could not setup existing metadata with missing metadataKeys!";
+        qCWarning(lcCseMetadata()) << "Could not setup existing metadata with missing metadataKeys!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -363,11 +363,11 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         qCInfo(lcCseMetadata) << "checksum comparison failed"
                               << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
         if (!_account->shouldSkipE2eeMetadataChecksumValidation()) {
-            qCDebug(lcCseMetadata) << "Failed to validate checksum for legacy metadata!";
+            qCWarning(lcCseMetadata) << "Failed to validate checksum for legacy metadata!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
-        qCDebug(lcCseMetadata) << "shouldSkipE2eeMetadataChecksumValidation is set. Allowing invalid checksum until next sync.";
+        qCWarning(lcCseMetadata) << "shouldSkipE2eeMetadataChecksumValidation is set. Allowing invalid checksum until next sync.";
     }
     _isMetadataValid = true;
 }
@@ -439,7 +439,7 @@ QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Dat
 {
     const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
     if (!decryptBase64Result) {
-        qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
+        qCWarning(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return {};
     }
@@ -553,7 +553,7 @@ void FolderMetadata::initEmptyMetadata()
 
     if (_isRootEncryptedFolder) {
         if (!addUser(_account->davUser(), _account->e2e()->getCertificate(), certificateType)) {
-            qCDebug(lcCseMetadata) << "Empty metadata setup failed. Could not add first user.";
+            qCWarning(lcCseMetadata) << "Empty metadata setup failed. Could not add first user.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
@@ -597,7 +597,7 @@ QByteArray FolderMetadata::encryptedMetadata()
     }
 
     if (metadataKeyForEncryption().isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Encrypting metadata failed! Empty metadata key!";
+        qCWarning(lcCseMetadata()) << "Encrypting metadata failed! Empty metadata key!";
         return {};
     }
 
@@ -605,7 +605,7 @@ QByteArray FolderMetadata::encryptedMetadata()
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; ++it) {
         const auto file = convertFileToJsonObject(&(*it));
         if (file.isEmpty()) {
-            qCDebug(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
+            qCWarning(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};
         }
         const auto isDirectory =
@@ -695,7 +695,7 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
     qCDebug(lcCseMetadata) << "Generating metadata";
 
     if (_metadataKeyForEncryption.isEmpty()) {
-        qCDebug(lcCseMetadata) << "Metadata generation failed! Empty metadata key!";
+        qCWarning(lcCseMetadata) << "Metadata generation failed! Empty metadata key!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return {};
     }
@@ -719,7 +719,7 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
 
         QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), metadataKeyForEncryption());
         if (encryptedEncrypted.isEmpty()) {
-            qCDebug(lcCseMetadata) << "Metadata generation failed!";
+            qCWarning(lcCseMetadata) << "Metadata generation failed!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         }
         QJsonObject file;
@@ -796,7 +796,7 @@ bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
                     userParsedId,
                     decryptDataWithPrivateKey(QByteArray::fromBase64(userParsed.value(usersEncryptedFiledropKey).toByteArray()))};
                 if (!fileDropEntryUser.isValid()) {
-                    qCDebug(lcCseMetadata()) << "Could not parse filedrop data. encryptedFiledropKey decryption failed";
+                    qCWarning(lcCseMetadata()) << "Could not parse filedrop data. encryptedFiledropKey decryption failed";
                     _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
                     return false;
                 }
@@ -805,7 +805,7 @@ bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
             }
         }
         if (!fileDropEntry.isValid()) {
-            qCDebug(lcCseMetadata()) << "Could not parse filedrop data. fileDropEntry is invalid for userId" << fileDropEntry.currentUser.userId;
+            qCWarning(lcCseMetadata()) << "Could not parse filedrop data. fileDropEntry is invalid for userId" << fileDropEntry.currentUser.userId;
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
@@ -960,7 +960,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
             fileDropEntry.nonce);
 
         if (cipherTextDecrypted.isEmpty()) {
-            qCDebug(lcCseMetadata()) << "Could not decrypt filedrop metadata.";
+            qCWarning(lcCseMetadata()) << "Could not decrypt filedrop metadata.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
@@ -968,7 +968,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
         const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
         const auto parsedEncryptedFile = parseEncryptedFileFromJson(fileDropEntry.encryptedFilename, cipherTextDocument.object());
         if (parsedEncryptedFile.originalFilename.isEmpty()) {
-            qCDebug(lcCseMetadata()) << "Could parse filedrop metadata. Encrypted file" << parsedEncryptedFile.encryptedFilename << "metadata is invalid";
+            qCWarning(lcCseMetadata()) << "Could parse filedrop metadata. Encrypted file" << parsedEncryptedFile.encryptedFilename << "metadata is invalid";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
@@ -1002,7 +1002,7 @@ void FolderMetadata::slotRootE2eeFolderMetadataReceived(int statusCode, const QS
 {
     Q_UNUSED(message);
     if (statusCode != 200) {
-        qCDebug(lcCseMetadata()) << "Could not fetch root folder metadata" << statusCode << message;
+        qCWarning(lcCseMetadata()) << "Could not fetch root folder metadata" << statusCode << message;
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
     }
     const auto rootE2eeFolderMetadata = _encryptedFolderMetadataHandler->folderMetadata();
@@ -1075,7 +1075,7 @@ bool FolderMetadata::removeUser(const QString &userId)
     }
     Q_ASSERT(!userId.isEmpty());
     if (userId.isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Could not remove a folder user. Invalid userId.";
+        qCWarning(lcCseMetadata()) << "Could not remove a folder user. Invalid userId.";
         return false;
     }
 

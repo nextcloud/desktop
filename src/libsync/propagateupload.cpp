@@ -240,7 +240,7 @@ void PropagateUploadFileCommon::start()
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
-        qCDebug(lcPropagateUpload) << "Error setting up encryption.";
+        qCWarning(lcPropagateUpload) << "Error setting up encryption.";
         done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
     });
     _uploadEncryptedHelper->start();
@@ -685,7 +685,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 {
     QByteArray replyContent;
     QString errorString = job->errorStringParsingBody(&replyContent);
-    qCDebug(lcPropagateUpload) << replyContent; // display the XML error in the debug
+    qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
     if (_item->_httpErrorCode == 412) {
         // Precondition Failed: Either an etag or a checksum mismatch.
