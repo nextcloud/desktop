@@ -1089,4 +1089,64 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertNotNil(retrievedParentIdentifier)
         XCTAssertEqual(retrievedParentIdentifier?.rawValue, remoteFolder.identifier)
     }
+
+    func testMaterialisedFiles() async throws {
+        let itemA = RealmItemMetadata()
+        let itemB = RealmItemMetadata()
+        let itemC = RealmItemMetadata()
+        let folderA = RealmItemMetadata()
+        let folderB = RealmItemMetadata()
+        let folderC = RealmItemMetadata()
+        let notFolderA = RealmItemMetadata()
+        let notFolderB = RealmItemMetadata()
+
+        folderA.directory = true
+        folderB.directory = true
+        folderC.directory = true
+
+        itemA.ocId = "itemA"
+        itemB.ocId = "itemB"
+        itemC.ocId = "itemC"
+        folderA.ocId = "folderA"
+        folderB.ocId = "folderB"
+        folderC.ocId = "folderC"
+        notFolderA.ocId = "notFolderA"
+        notFolderB.ocId = "notFolderB"
+
+        itemA.account = Self.account.ncKitAccount
+        itemB.account = Self.account.ncKitAccount
+        itemC.account = "another account"
+        folderA.account = Self.account.ncKitAccount
+        folderB.account = Self.account.ncKitAccount
+        folderC.account = "another account"
+        notFolderA.account = Self.account.ncKitAccount
+        notFolderB.account = "another account"
+
+        itemA.downloaded = true
+        itemB.downloaded = false
+        itemC.downloaded = true
+        folderA.visitedDirectory = true
+        folderB.visitedDirectory = false
+        folderC.visitedDirectory = true
+        notFolderA.visitedDirectory = true
+        notFolderB.visitedDirectory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(itemA)
+            realm.add(itemB)
+            realm.add(itemC)
+            realm.add(folderA)
+            realm.add(folderB)
+            realm.add(folderC)
+        }
+
+        let materialised =
+            Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount)
+        XCTAssertEqual(materialised.count, 2)
+
+        let materialisedOcIds = materialised.map(\.ocId)
+        XCTAssertTrue(materialisedOcIds.contains(itemA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(folderA.ocId))
+    }
 }
