@@ -1,0 +1,92 @@
+diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
+index 3b06ff1d7..65566c4d2 100644
+--- a/src/libsync/filesystem.cpp
++++ b/src/libsync/filesystem.cpp
+@@ -307,7 +307,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
+         auto folderDeleteError = QString{};
+ 
+         try {
+-            if (!std::filesystem::remove(std::filesystem::path{fileInfo.filePath().toStdWString()})) {
++            if (!std::filesystem::remove(std::filesystem::path{fileInfo.filePath().toStdU16String()})) {
+                 qCWarning(lcFileSystem()) << "File is already deleted" << fileInfo.filePath();
+             }
+         }
+@@ -505,7 +505,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
+     permissionsDidChange = true;
+ #else
+     static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+-    const auto stdStrPath = path.toStdWString();
++    const auto stdStrPath = path.toStdU16String();
+ 
+     const auto currentPermissions = std::filesystem::status(stdStrPath).permissions();
+     qCDebug(lcFileSystem()).nospace() << "current permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(currentPermissions);
+@@ -666,7 +666,7 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path,
+ {
+     try
+     {
+-        const auto &stdStrPath = _path.toStdWString();
++        const auto &stdStrPath = _path.toStdU16String();
+         const auto fsPath = std::filesystem::path{stdStrPath};
+         if ((temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadOnly && !FileSystem::isFolderReadOnly(fsPath)) ||
+             (temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadWrite && FileSystem::isFolderReadOnly(fsPath))) {
+diff --git a/src/libsync/owncloudpropagator.cpp b/src/libsync/owncloudpropagator.cpp
+index bd597dee8..683ae1d33 100644
+--- a/src/libsync/owncloudpropagator.cpp
++++ b/src/libsync/owncloudpropagator.cpp
+@@ -1500,10 +1500,10 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
+                 try {
+                     const auto permissionsChangeHelper = [this] (const auto fileName)
+                     {
+-                        qCDebug(lcDirectory) << fileName << "permissions changed: old permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
++                        qCDebug(lcDirectory) << fileName << "permissions changed: old permissions" << static_cast<int>(std::filesystem::status(fileName.toStdU16String()).permissions());
+                         FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadWrite);
+                         Q_EMIT propagator()->touchedFile(fileName);
+-                        qCDebug(lcDirectory) << fileName << "applied new permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
++                        qCDebug(lcDirectory) << fileName << "applied new permissions" << static_cast<int>(std::filesystem::status(fileName.toStdU16String()).permissions());
+                     };
+ 
+                     if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
+diff --git a/src/libsync/propagatedownload.cpp b/src/libsync/propagatedownload.cpp
+index 2b05b51f9..793f7ac1d 100644
+--- a/src/libsync/propagatedownload.cpp
++++ b/src/libsync/propagatedownload.cpp
+@@ -780,7 +780,7 @@ void PropagateDownloadFile::done(const SyncFileItem::Status status, const QStrin
+ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
+ {
+     try {
+-        const auto newDirPath = std::filesystem::path{fileName.toStdWString()};
++        const auto newDirPath = std::filesystem::path{fileName.toStdU16String()};
+         Q_ASSERT(newDirPath.has_parent_path());
+         _parentPath = newDirPath.parent_path();
+     }
+diff --git a/src/libsync/propagatorjobs.cpp b/src/libsync/propagatorjobs.cpp
+index ca0919b5f..c71caa243 100644
+--- a/src/libsync/propagatorjobs.cpp
++++ b/src/libsync/propagatorjobs.cpp
+@@ -224,7 +224,7 @@ void PropagateLocalMkdir::startLocalMkdir()
+     auto parentFolderPath = std::filesystem::path{};
+     auto parentNeedRollbackPermissions = false;
+     try {
+-        const auto newDirPath = std::filesystem::path{newDirStr.toStdWString()};
++        const auto newDirPath = std::filesystem::path{newDirStr.toStdU16String()};
+         Q_ASSERT(newDirPath.has_parent_path());
+         parentFolderPath = newDirPath.parent_path();
+         if (FileSystem::isFolderReadOnly(parentFolderPath)) {
+@@ -383,7 +383,7 @@ void PropagateLocalRename::start()
+         auto targetParentFolderPath = std::filesystem::path{};
+         auto targetParentFolderWasReadOnly = false;
+         try {
+-            const auto newDirPath = std::filesystem::path{targetFile.toStdWString()};
++            const auto newDirPath = std::filesystem::path{targetFile.toStdU16String()};
+             Q_ASSERT(newDirPath.has_parent_path());
+             targetParentFolderPath = newDirPath.parent_path();
+             if (FileSystem::isFolderReadOnly(targetParentFolderPath)) {
+@@ -408,7 +408,7 @@ void PropagateLocalRename::start()
+         auto originParentFolderPath = std::filesystem::path{};
+         auto originParentFolderWasReadOnly = false;
+         try {
+-            const auto newDirPath = std::filesystem::path{existingFile.toStdWString()};
++            const auto newDirPath = std::filesystem::path{existingFile.toStdU16String()};
+             Q_ASSERT(newDirPath.has_parent_path());
+             originParentFolderPath = newDirPath.parent_path();
+             if (FileSystem::isFolderReadOnly(originParentFolderPath)) {
