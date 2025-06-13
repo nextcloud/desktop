@@ -336,24 +336,42 @@ public final class FilesDatabaseManager: Sendable {
             //
             // - the ones that do exist remotely still are either the same or have been updated
             // - the ones that don't have been deleted
+            var cleanServerUrl = serverUrl
+            if cleanServerUrl.last == "/" {
+                cleanServerUrl.removeLast()
+            }
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where { $0.account == account && $0.serverUrl == serverUrl && $0.uploaded }
+                .where { $0.account == account && $0.serverUrl == cleanServerUrl && $0.uploaded }
+
+            var updatedChildMetadatas = updatedMetadatas
+
+            let readTargetMetadata: SendableItemMetadata?
+            if let targetMetadata = updatedMetadatas.first {
+                if targetMetadata.directory {
+                    readTargetMetadata = updatedChildMetadatas.removeFirst()
+                } else {
+                    readTargetMetadata = targetMetadata
+                }
+            } else {
+                readTargetMetadata = nil
+            }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
-                updatedMetadatas: updatedMetadatas)
+                updatedMetadatas: updatedChildMetadatas
+            )
             let metadatasToDeleteCopy = metadatasToDelete.map { SendableItemMetadata(value: $0) }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
-                updatedMetadatas: updatedMetadatas,
+                updatedMetadatas: updatedChildMetadatas,
                 keepExistingDownloadState: keepExistingDownloadState
             )
 
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
-            let metadatasToCreate = metadatasToChange.newMetadatas
+            var metadatasToCreate = metadatasToChange.newMetadatas
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
             for metadata in directoriesNeedingRename {
@@ -363,6 +381,26 @@ public final class FilesDatabaseManager: Sendable {
                     newFileName: metadata.fileName)
                 {
                     metadatasToUpdate += updatedDirectoryChildren
+                }
+            }
+
+            if var readTargetMetadata {
+                if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
+                    if existing.status == Status.normal.rawValue,
+                       !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
+                    {
+                        Self.logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
+                        if keepExistingDownloadState {
+                            readTargetMetadata.downloaded = existing.downloaded
+                        }
+                        if readTargetMetadata.directory {
+                            readTargetMetadata.visitedDirectory = true
+                        }
+                        metadatasToUpdate.insert(readTargetMetadata, at: 0)
+                    }
+                } else {
+                    Self.logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
+                    metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
 
