@@ -601,4 +601,13 @@ public final class FilesDatabaseManager: Sendable {
         }
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
+
+    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
+        itemMetadatas
+            .where {
+                $0.account == account &&
+                (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
+            }
+            .toUnmanagedResults()
+    }
 }
