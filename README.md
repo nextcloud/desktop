@@ -16,7 +16,7 @@ To install NextcloudFileProviderKit, add the following to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/claucambra/NextcloudFileProviderKit.git", from: "1.0.0")
+    .package(url: "https://github.com/nextcloud/NextcloudFileProviderKit.git", from: "1.0.0")
 ]
 ```
 
