@@ -31,7 +31,7 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
         let expect = XCTestExpectation(description: "Enumerator")
         let observer = MaterialisedEnumerationObserver(
             ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager
-        ) { deletedOcIds in
+        ) { _, deletedOcIds in
             XCTAssertTrue(deletedOcIds.isEmpty)
             expect.fulfill()
         }
@@ -63,7 +63,7 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
         let expect = XCTestExpectation(description: "Enumerator")
         let observer = MaterialisedEnumerationObserver(
             ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager
-        ) { deletedOcIds in
+        ) { _, deletedOcIds in
             // itemA is downloaded, itemB is not, itemC is (and is new). Only the local copy of
             // itemA should come up as deleted
             XCTAssertEqual(deletedOcIds.count, 1) // Item B deleted
