@@ -85,6 +85,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var downloaded = false
     @Persisted public var uploaded = false
     @Persisted public var keepDownloaded = false
+    @Persisted public var visitedDirectory = false
     @Persisted public var trashbinFileName = ""
     @Persisted public var trashbinOriginalLocation = ""
     @Persisted public var trashbinDeletionTime = Date()
