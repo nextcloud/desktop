@@ -179,9 +179,9 @@ public:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    [[nodiscard]] virtual Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+    [[nodiscard]] virtual Result<void, QString> updateMetadata(const QString &filePath, const SyncFileItem &item) = 0;
 
-    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) = 0;
+    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) = 0;
 
     [[nodiscard]] virtual bool isPlaceHolderInSync(const QString &filePath) const = 0;
 
@@ -320,8 +320,8 @@ public:
     [[nodiscard]] bool socketApiPinStateActionsShown() const override { return false; }
     [[nodiscard]] bool isHydrating() const override { return false; }
 
-    Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
-    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
+    Result<void, QString> updateMetadata(const QString &, const SyncFileItem &) override { return {}; }
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) override {Q_UNUSED(filePath) Q_UNUSED(item) return {QString{}};}
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }

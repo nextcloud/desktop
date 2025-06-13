@@ -1138,6 +1138,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_folderQuota.bytesAvailable = -1;
     }
 
+    const auto folderHierarchyDepth = item->_file.split("/").length();
+
     // Decay server modifications to UPDATE_METADATA if the local virtual exists
     bool hasLocalVirtual = localEntry.isVirtualFile || (_queryLocal == ParentNotChanged && dbEntry.isVirtualFile());
     bool virtualFileDownload = item->_type == ItemTypeVirtualFileDownload;
@@ -1860,7 +1862,7 @@ void ProcessDirectoryJob::processFileFinalize(
         Q_ASSERT(false);
     }
 
-    if (recurse) {
+    if (recurse && _discoveryData->shouldDiscoverChildFolder(path._server)) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
