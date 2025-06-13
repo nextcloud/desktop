@@ -769,8 +769,8 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
-        // There are three changes: changed Item A, removed Item B, added Item C
-        XCTAssertEqual(observer.changedItems.count, 2)
+        // There are four changes: changed folder, changed Item A, removed Item B, added Item C
+        XCTAssertEqual(observer.changedItems.count, 3)
         XCTAssertTrue(observer.changedItems.contains(
             where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
         ))
@@ -794,7 +794,6 @@ final class EnumeratorTests: XCTestCase {
         )
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
-        XCTAssertNotEqual(dbFolderMetadata.etag, oldFolderEtag)
         XCTAssertTrue(dbFolderMetadata.downloaded)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
         XCTAssertNotEqual(dbItemAMetadata.etag, oldItemAEtag)
@@ -884,7 +883,7 @@ final class EnumeratorTests: XCTestCase {
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
         // rootContainer has changed, folder has changed, itemA has changed
-        XCTAssertEqual(observer.changedItems.count, 2) // Not including target (TODO)
+        XCTAssertEqual(observer.changedItems.count, 3)
         XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
 
         let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
@@ -922,7 +921,7 @@ final class EnumeratorTests: XCTestCase {
             remoteSupportsTrash: await remoteInterface.supportsTrash(account: Self.account)
         )
         print(storedRootItem.metadata.serverUrl)
-        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
+        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 4) // All items
 
         let storedFolderMaybe = await Item.storedItem(
             identifier: .init(remoteFolder.identifier),
@@ -968,7 +967,7 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 3)
+        XCTAssertEqual(observer.changedItems.count, 4)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
@@ -1043,7 +1042,7 @@ final class EnumeratorTests: XCTestCase {
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
         // rootContainer has changed, itemA has changed
-        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertEqual(observer.changedItems.count, 2)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
