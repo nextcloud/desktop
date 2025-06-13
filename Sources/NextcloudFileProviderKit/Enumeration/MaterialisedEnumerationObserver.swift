@@ -97,6 +97,13 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 } else {
                     metadata.downloaded = true
                 }
+                Self.logger.info(
+                    """
+                    Updating materialisation state for item to MATERIALISED
+                        with id \(enumeratedId, privacy: .public)
+                        with filename \(metadata.fileName, privacy: .public)
+                    """
+                )
                 dbManager.addItemMetadata(metadata)
             }
         }
@@ -106,6 +113,13 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 Self.logger.error("No materialised for \(unmaterialisedId, privacy: .public) found")
                 continue
             }
+            Self.logger.info(
+                """
+                Updating materialisation state for item to UNMATERIALISED
+                    with id \(unmaterialisedId, privacy: .public)
+                    with filename \(metadata.fileName, privacy: .public)
+                """
+            )
             metadata.downloaded = false
             metadata.visitedDirectory = false
             dbManager.addItemMetadata(metadata)
