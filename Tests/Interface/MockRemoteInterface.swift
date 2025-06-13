@@ -1036,7 +1036,12 @@ public class MockRemoteInterface: RemoteInterface {
         print("Enumerating \(remotePath)")
         guard let item = item(remotePath: remotePath, account: account) else {
             print("Item at \(remotePath) not found.")
-            return (account.ncKitAccount, [], nil, .urlError)
+            return (
+                account.ncKitAccount,
+                [],
+                nil,
+                NKError(statusCode: 404, fallbackDescription: "File not found")
+            )
         }
 
         func generateResponse(itemCount: Int, finalPage: Bool) -> AFDataResponse<Data>? {
