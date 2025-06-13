@@ -6233,7 +6233,7 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="455"/>
         <source>now</source>
-        <translation>kohe</translation>
+        <translation>äsja</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="464"/>
