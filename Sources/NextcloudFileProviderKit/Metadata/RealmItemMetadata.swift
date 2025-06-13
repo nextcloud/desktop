@@ -160,6 +160,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
         self.keepDownloaded = value.keepDownloaded
+        self.visitedDirectory = value.visitedDirectory
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation
         self.trashbinDeletionTime = value.trashbinDeletionTime
