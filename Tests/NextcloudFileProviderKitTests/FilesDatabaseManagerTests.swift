@@ -1141,12 +1141,34 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(folderC)
         }
 
+        // Test with addItemMetadata too
+        var sItemA = SendableItemMetadata(ocId: "sItemA", fileName: "sItemA", account: Self.account)
+        sItemA.downloaded = true
+
+        var sItemB = SendableItemMetadata(ocId: "sItemB", fileName: "sItemB", account: Self.account)
+        sItemB.downloaded = false
+
+        var sItemC = SendableItemMetadata(ocId: "sItemC", fileName: "sItemC", account: Self.account)
+        sItemC.downloaded = true
+
+        var sDirD = SendableItemMetadata(ocId: "sDirD", fileName: "sDirD", account: Self.account)
+        sDirD.directory = true
+        sDirD.visitedDirectory = true
+
+        Self.dbManager.addItemMetadata(sItemA)
+        Self.dbManager.addItemMetadata(sItemB)
+        Self.dbManager.addItemMetadata(sItemC)
+        Self.dbManager.addItemMetadata(sDirD)
+
         let materialised =
             Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount)
-        XCTAssertEqual(materialised.count, 2)
+        XCTAssertEqual(materialised.count, 5)
 
         let materialisedOcIds = materialised.map(\.ocId)
         XCTAssertTrue(materialisedOcIds.contains(itemA.ocId))
         XCTAssertTrue(materialisedOcIds.contains(folderA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sItemA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sItemC.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sDirD.ocId))
     }
 }
