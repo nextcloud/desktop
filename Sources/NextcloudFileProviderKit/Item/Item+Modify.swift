@@ -243,8 +243,8 @@ public extension Item {
             Self.logger.error(
                 """
                 Could not modify bundle or package contents as was provided nil contents url
-                for item with ocID \(self.itemIdentifier.rawValue, privacy: .public)
-                (\(self.filename, privacy: .public))
+                    for item with ocID \(self.itemIdentifier.rawValue, privacy: .public)
+                    (\(self.filename, privacy: .public))
                 """
             )
             throw NSFileProviderError(.cannotSynchronize)
@@ -253,7 +253,7 @@ public extension Item {
         Self.logger.debug(
             """
             Handling modified bundle/package/internal directory at:
-            \(contents.path, privacy: .public)
+                \(contents.path, privacy: .public)
             """
         )
 
@@ -291,7 +291,7 @@ public extension Item {
                 )
                 throw remoteErrorToThrow(readError)
             }
-            guard let metadatas else {
+            guard var metadatas else {
                 Self.logger.error(
                     """
                     Could not read server url for item with ocID
@@ -303,6 +303,9 @@ public extension Item {
                 throw NSFileProviderError(.serverUnreachable)
             }
 
+            if !metadatas.isEmpty {
+                metadatas.removeFirst() // Remove bundle itself
+            }
             allMetadatas.append(contentsOf: metadatas)
 
             var childDirPaths = [String]()
