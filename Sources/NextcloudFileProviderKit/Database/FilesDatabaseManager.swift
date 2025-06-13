@@ -463,6 +463,7 @@ public final class FilesDatabaseManager: Sendable {
                         trashbinFileName: \(metadata.trashbinFileName, privacy: .public)
                         downloaded: \(metadata.downloaded, privacy: .public)
                         uploaded: \(metadata.uploaded, privacy: .public)
+                        visitedDirectory: \(metadata.visitedDirectory, privacy: .public)
                     """
                 )
             }
