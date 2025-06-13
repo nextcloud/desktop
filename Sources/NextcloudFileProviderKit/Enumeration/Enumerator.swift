@@ -377,10 +377,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 var allDeletedMetadatas = [SendableItemMetadata]()
                 var examinedItemIds = Set<String>()
                 for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
+                    let itemRemoteUrl = item.serverUrl + "/" + item.fileName
                     let (
                         metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
                     ) = await Self.readServerUrl(
-                        item.serverUrl + "/" + item.fileName,
+                        itemRemoteUrl,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
@@ -405,18 +406,33 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         allDeletedMetadatas += deletedMetadatas ?? []
                         allUpdatedMetadatas += updatedMetadatas ?? []
                         allNewMetadatas += newMetadatas ?? []
-                        if let target = metadatas?.first {
-                            examinedItemIds.insert(target.ocId)
-                        }
+
                         // Just because we have read child directories metadata doesn't mean we need
                         // to in turn scan their children. This is not the case for files
-                        let examinedChildFilesAndDeletedItems =
-                            ((metadatas?.count ?? 0) > 1
-                                ? (metadatas?[1...].filter{ !$0.directory }.map(\.ocId) ?? [])
-                                : [])
-                            + (deletedMetadatas?.map(\.ocId) ?? [])
+                        var examinedChildFilesAndDeletedItems = Set<String>()
+                        if let metadatas, let target = metadatas.first {
+                            examinedItemIds.insert(target.ocId)
+
+                            if metadatas.count > 1 {
+                                examinedChildFilesAndDeletedItems.formUnion(
+                                    metadatas[1...].filter { !$0.directory }.map(\.ocId)
+                                )
+                            }
+
+                            if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
+                                let materialisedChildren = materialisedItems.filter {
+                                    $0.serverUrl.hasPrefix(itemRemoteUrl)
+                                }.map(\.ocId)
+                                examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
+                            }
+
+                            if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
+                                examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
+                            }
+                        }
 
                         examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
+                        // TODO: Observer changes here!!
                     }
                 }
 
