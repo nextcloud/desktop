@@ -475,10 +475,94 @@ final class EnumeratorTests: XCTestCase {
         )
     }
 
-    func testWorkingSetChangeEnumeration() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+    func testWorkingSetEnumerateChanges() async throws {
+        // This test verifies that `enumerateChanges` for the working set correctly identifies
+        // new, updated, and deleted items by iterating through materialised items and fetching
+        // their state.
+
+        // 1. Arrange
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
+
+        // --- Database State (The "local truth" before enumeration) ---
+        // A materialised folder that we will check for changes.
+        var materialisedFolder = remoteFolder.toItemMetadata(account: Self.account)
+        materialisedFolder.visitedDirectory = true
+        materialisedFolder.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(materialisedFolder)
+
+        let remoteUnmaterialisedFolder = MockRemoteItem(
+            identifier: "unmaterialised-folder",
+            versionIdentifier: "NEW",
+            name: "unmaterialised folder",
+            remotePath: Self.account.davFilesUrl + "/" + "unmaterialised folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteUnmaterialisedFolder.parent = rootItem
+        rootItem.children.append(remoteUnmaterialisedFolder)
+
+        var unmaterialisedFolder = remoteUnmaterialisedFolder.toItemMetadata(account: Self.account)
+        unmaterialisedFolder.visitedDirectory = false
+        unmaterialisedFolder.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(unmaterialisedFolder)
+
+        let remoteUnmaterialisedFolderChild = MockRemoteItem(
+            identifier: "unmaterialised-folder-child",
+            versionIdentifier: "NEW",
+            name: "unmaterialised folder child",
+            remotePath: remoteUnmaterialisedFolder.remotePath + "/" + "unmaterialised folder child",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteUnmaterialisedFolderChild.parent = remoteUnmaterialisedFolder
+        remoteUnmaterialisedFolder.children.append(remoteUnmaterialisedFolderChild)
+
+        // A materialised file inside the folder that will be updated on the server.
+        var fileToUpdate = remoteItemA.toItemMetadata(account: Self.account)
+        fileToUpdate.downloaded = true
+        fileToUpdate.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(fileToUpdate)
+
+        // A materialised file inside the folder that will be deleted from the server.
+        var fileToBeDeleted = remoteItemB.toItemMetadata(account: Self.account)
+        fileToBeDeleted.downloaded = true
+        Self.dbManager.addItemMetadata(fileToBeDeleted)
+
+        // A top-level materialised file that does not exist remotely (i.e. deleted), will cause 404
+        var topLevelFileToBeDeleted = SendableItemMetadata(
+            ocId: "toplevel-deleted", fileName: "toplevel-deleted.txt", account: Self.account
+        )
+        topLevelFileToBeDeleted.downloaded = true
+        topLevelFileToBeDeleted.uploaded = true
+        Self.dbManager.addItemMetadata(topLevelFileToBeDeleted)
+
+        // --- Server State (The "remote truth" for the test) ---
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Update server state to reflect the changes
+        remoteItemA.versionIdentifier = "ETAG_NEW"
+
+        // Add a new file on the server inside the materialised folder
+        let newChildFile = MockRemoteItem(
+            identifier: "new-child",
+            name: "new-child.txt",
+            remotePath: remoteFolder.remotePath + "/new-child.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        newChildFile.parent = remoteFolder
+        remoteFolder.children.append(newChildFile)
+
+        // Remove the "deleted" file from the server
+        remoteFolder.children.removeAll(where: { $0.identifier == fileToBeDeleted.ocId })
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
@@ -487,23 +571,49 @@ final class EnumeratorTests: XCTestCase {
             dbManager: Self.dbManager
         )
         let observer = MockChangeObserver(enumerator: enumerator)
+
+        // 2. Act
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 3) // Should get all items
 
-        let retrievedFolderItem = try XCTUnwrap(observer.changedItems.first)
-        XCTAssertEqual(retrievedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
-        XCTAssertEqual(retrievedFolderItem.filename, remoteFolder.name)
-        XCTAssertEqual(retrievedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
-        XCTAssertEqual(retrievedFolderItem.creationDate, remoteFolder.creationDate)
-        XCTAssertEqual(
-            Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
-            Int(remoteFolder.modificationDate.timeIntervalSince1970)
+        // 3. Assert
+        XCTAssertNil(observer.error, "Enumeration should complete without error.")
+
+        // Verify Deletions
+        let deletedIds = observer.deletedItemIdentifiers.map(\.rawValue)
+        XCTAssertEqual(deletedIds.count, 2, "There should be two deleted items.")
+        XCTAssertTrue(
+            deletedIds.contains(fileToBeDeleted.ocId),
+            "The file deleted from the server folder should be reported as deleted."
         )
-        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
+        XCTAssertTrue(
+            deletedIds.contains(topLevelFileToBeDeleted.ocId),
+            "The top-level file that resulted in a 404 should be reported as deleted."
+        )
 
-        // Ensure the newly discovered folder has an etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
+        // Verify Updates and Additions
+        let changedIds = observer.changedItems.map(\.itemIdentifier.rawValue)
+        print(changedIds)
+        XCTAssertEqual(
+            changedIds.count,
+            5,
+            "There should be one updated file, three updated folders, and one new file."
+        )
+        XCTAssertTrue(changedIds.contains(NSFileProviderItemIdentifier.rootContainer.rawValue))
+        XCTAssertTrue(changedIds.contains(materialisedFolder.ocId))
+        XCTAssertTrue(changedIds.contains(unmaterialisedFolder.ocId))
+        XCTAssertTrue(changedIds.contains(fileToUpdate.ocId))
+        XCTAssertTrue(changedIds.contains(newChildFile.identifier))
+
+        // Verify the database state was updated
+        let finalUpdatedFile = Self.dbManager.itemMetadata(ocId: fileToUpdate.ocId)
+        XCTAssertEqual(
+            finalUpdatedFile?.etag,
+            "ETAG_NEW",
+            "The ETag for the updated file should be changed in the database."
+        )
+
+        let finalNewFile = Self.dbManager.itemMetadata(ocId: newChildFile.identifier)
+        XCTAssertNotNil(finalNewFile, "The new file should now exist in the database.")
     }
 
     func testFolderEnumeration() async throws {

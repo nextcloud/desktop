@@ -336,49 +336,95 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating working set changes for \(self.account.ncKitAccount, privacy: .public)"
             )
 
+            let fakeRootMetadata = SendableItemMetadata(
+                ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+                account: account.ncKitAccount,
+                classFile: "",
+                contentType: "",
+                creationDate: .init(),
+                directory: true,
+                e2eEncrypted: false,
+                etag: "",
+                fileId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+                fileName: "",
+                fileNameView: "",
+                ownerId: account.id,
+                ownerDisplayName: "",
+                path: "/",
+                serverUrl: account.davFilesUrl,
+                size: 0,
+                urlBase: account.serverUrl,
+                user: account.username,
+                userId: account.id
+            )
+
             // Unlike when enumerating items we can't progressively enumerate items as we need to 
             // wait to see which items are truly deleted and which have just been moved elsewhere.
             Task {
-                let (
-                    _, newMetadatas, updatedMetadatas, deletedMetadatas, error
-                ) = await fullRecursiveScan(
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    scanChangesOnly: true
-                )
+                let ncKitAccount = account.ncKitAccount
+                // Visited folders and downloaded files. Sort in terms of their remote URLs.
+                // This way we ensure we visit parent folders before their children.
+                let materialisedItems = [fakeRootMetadata] + dbManager
+                    .materialisedItemMetadatas(account: ncKitAccount)
+                    .sorted {
+                        ($0.serverUrl + "/" + $0.fileName).count <
+                            ($1.serverUrl + "/" + $0.fileName).count
+                    }
 
-                if self.isInvalidated {
-                    Self.logger.info(
-                        """
-                        Enumerator invalidated during working set change scan.
-                        For user: \(self.account.ncKitAccount, privacy: .public)
-                        """
-                    )
-                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
-                    return
-                }
 
-                guard error == nil else {
-                    Self.logger.info(
-                        """
-                        Finished recursive change enumeration of working set for user:
-                        \(self.account.ncKitAccount, privacy: .public)
-                        with error: \(error!.errorDescription, privacy: .public)
-                        """
+                var allNewMetadatas = [SendableItemMetadata]()
+                var allUpdatedMetadatas = [SendableItemMetadata]()
+                var allDeletedMetadatas = [SendableItemMetadata]()
+                var examinedItemIds = Set<String>()
+                for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
+                    let (
+                        metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
+                    ) = await Self.readServerUrl(
+                        item.serverUrl + "/" + item.fileName,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        depth: item.directory ? .targetAndDirectChildren : .target
                     )
-                    // TODO: Refactor for conciseness
-                    let fpError = error?.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
-                    observer.finishEnumeratingWithError(fpError)
-                    return
+                    if readError?.errorCode == 404 {
+                        allDeletedMetadatas.append(item)
+                        examinedItemIds.insert(item.ocId)
+                    } else if let readError, readError != .success {
+                        Self.logger.info(
+                            """
+                            Finished change enumeration of working set for user:
+                                \(self.account.ncKitAccount, privacy: .public)
+                                with error: \(readError.errorDescription, privacy: .public)
+                            """
+                        )
+                        let fpError = readError.fileProviderError(
+                            handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                        ) ?? NSFileProviderError(.cannotSynchronize)
+                        observer.finishEnumeratingWithError(fpError)
+                    } else {
+                        allDeletedMetadatas += deletedMetadatas ?? []
+                        allUpdatedMetadatas += updatedMetadatas ?? []
+                        allNewMetadatas += newMetadatas ?? []
+                        if let target = metadatas?.first {
+                            examinedItemIds.insert(target.ocId)
+                        }
+                        // Just because we have read child directories metadata doesn't mean we need
+                        // to in turn scan their children. This is not the case for files
+                        let examinedChildFilesAndDeletedItems =
+                            ((metadatas?.count ?? 0) > 1
+                                ? (metadatas?[1...].filter{ !$0.directory }.map(\.ocId) ?? [])
+                                : [])
+                            + (deletedMetadatas?.map(\.ocId) ?? [])
+
+                        examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
+                    }
                 }
 
                 Self.logger.info(
                     """
-                    Finished recursive change enumeration of working set for user:
-                    \(self.account.ncKitAccount, privacy: .public). Enumerating items.
+                    Finished change enumeration of working set for user:
+                        \(self.account.ncKitAccount, privacy: .public).
+                        Enumerating items.
                     """
                 )
 
@@ -389,9 +435,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    newMetadatas: newMetadatas,
-                    updatedMetadatas: updatedMetadatas,
-                    deletedMetadatas: deletedMetadatas
+                    newMetadatas: allNewMetadatas,
+                    updatedMetadatas: allUpdatedMetadatas,
+                    deletedMetadatas: allDeletedMetadatas
                 )
             }
             return
