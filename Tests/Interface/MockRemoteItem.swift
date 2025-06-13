@@ -18,7 +18,7 @@ public class MockRemoteItem: Equatable {
     public var children: [MockRemoteItem] = []
 
     public var identifier: String
-    public let versionIdentifier: String
+    public var versionIdentifier: String
     public var name: String
     public var remotePath: String
     public let directory: Bool
