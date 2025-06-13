@@ -193,6 +193,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             Self.logger.info("Upcoming enumeration is of working set.")
+            let ncKitAccount = account.ncKitAccount
+            // Visited folders and downloaded files
+            let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
+            completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
+            return
         }
 
         guard serverUrl != "" else {
@@ -221,7 +226,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
-            var nextServerUrls: [String]? = nil
             var pageIndex = 0
             var pageTotal: Int? = nil
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
@@ -230,12 +234,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 if let enumPageResponse =
                     try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue)
                 {
-                    if let actualServerUrl = enumPageResponse.nextServerUrl {
-                        Self.logger.info(
-                            "Setting enumerator server URL to \(actualServerUrl, privacy: .public)"
-                        )
-                        serverUrl = actualServerUrl
-                    }
                     if let token = enumPageResponse.token?.data(using: .utf8) {
                         providedPage = NSFileProviderPage(token)
                     }
@@ -243,7 +241,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         pageTotal = total
                     }
                     pageIndex = enumPageResponse.index
-                    nextServerUrls = enumPageResponse.serverUrlQueue
                 } else {
                     Self.logger.error("Could not parse page")
                 }
@@ -293,45 +290,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             pageTotal = nextPage?.total ?? pageTotal
-
-            if enumeratedItemIdentifier == .workingSet {
-                var serverUrlQueue = nextServerUrls ?? []
-                for metadata in metadatas where metadata.directory {
-                    let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
-                    serverUrlQueue.append(metadataRemoteUrl)
-                }
-                let nextPageValid = nextPage != nil
-                let nextPageToken = nextPage?.token ?? "" // For logging
-                Self.logger.debug(
-                    """
-                    Current folders awaiting paged enumeration:
-                        \(serverUrlQueue, privacy: .public)
-                        next page is valid: \(nextPageValid, privacy: .public)
-                        next page token: \(nextPageToken, privacy: .public)
-                        page total: \(pageTotal ?? -1, privacy: .public)
-                    """
-                )
-
-                if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
-                    // Server will sometimes provide a valid next page data even though there are no
-                    // items to enumerate anymore
-                    Self.logger.debug("No more items to enumerate, stopping paged enumeration")
-                    nextPage = nil
-                }
-
-                if nextPage != nil {
-                    Self.logger.debug("Applying actual server url onto server page response")
-                    nextPage!.total = pageTotal
-                    nextPage!.serverUrlQueue = serverUrlQueue
-                    nextPage!.nextServerUrl = serverUrl
-                } else if !serverUrlQueue.isEmpty {
-                    // If we have finished paged enumeration of the current serverUrl, move to next
-                    // child to scan
-                    let nextServerUrl = serverUrlQueue.removeFirst()
-                    nextPage = EnumeratorPageResponse(
-                        nextServerUrl: nextServerUrl, serverUrlQueue: serverUrlQueue
-                    )
-                }
+            if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
+                // Server will sometimes provide a valid next page data even though there are no
+                // items to enumerate anymore
+                Self.logger.debug("No more items to enumerate, stopping paged enumeration")
+                nextPage = nil
             }
 
             Self.logger.info(
