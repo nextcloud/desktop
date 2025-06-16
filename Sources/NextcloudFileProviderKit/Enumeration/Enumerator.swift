@@ -410,9 +410,24 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         }
 
                         examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
-                        // TODO: Observer changes here!!
                     }
                 }
+
+                // Run a check to ensure files deleted in one location are not updated in another
+                // (e.g. when moved)
+                // The recursive scan provides us with updated/deleted metadatas only on a folder by
+                // folder basis; so we need to check we are not simultaneously marking a moved file as
+                // deleted and updated
+                var checkedDeletedMetadatas = allDeletedMetadatas
+
+                for updatedMetadata in allUpdatedMetadatas {
+                    guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(
+                        where: { $0.ocId == updatedMetadata.ocId }
+                    ) else { continue }
+                    checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
+                }
+
+                allDeletedMetadatas = checkedDeletedMetadatas
 
                 Self.logger.info(
                     """
