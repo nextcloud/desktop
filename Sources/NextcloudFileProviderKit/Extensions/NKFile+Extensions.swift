@@ -28,7 +28,13 @@ extension NKFile {
                 : classFile
         // Support for finding the correct filename for e2ee files should go here
 
+        // Don't ask me why, NextcloudKit renames and moves the root folder details
+        // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
         let rootRequiresFixup = serverUrl == ".." && fileName == "."
+        let ocId = rootRequiresFixup
+            ? NSFileProviderItemIdentifier.rootContainer.rawValue
+            : self.ocId
+        let directory = rootRequiresFixup ? true : self.directory
         let serverUrl = rootRequiresFixup
             ? urlBase + Account.webDavFilesUrlSuffix + userId
             : self.serverUrl
@@ -125,14 +131,6 @@ extension Array<NKFile> {
     )? {
         guard var targetDirectoryMetadata = first?.toItemMetadata() else {
             return nil
-        }
-        // Don't ask me why, NextcloudKit renames and moves the root folder details
-        // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
-        if (targetDirectoryMetadata.serverUrl == ".." && targetDirectoryMetadata.fileName == ".") ||
-            (targetDirectoryMetadata.serverUrl + "/" + targetDirectoryMetadata.fileName == account.davFilesUrl + "/")
-        {
-            targetDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-            targetDirectoryMetadata.directory = true
         }
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         if self.count > 1 {
