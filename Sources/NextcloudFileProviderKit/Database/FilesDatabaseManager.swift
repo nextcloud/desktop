@@ -342,7 +342,13 @@ public final class FilesDatabaseManager: Sendable {
             }
             let existingMetadatas = database
                 .objects(RealmItemMetadata.self)
-                .where { $0.account == account && $0.serverUrl == cleanServerUrl && $0.uploaded }
+                .where {
+                    // Don't worry — root will be updated at the end of this method if is the target
+                    $0.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
+                    $0.account == account &&
+                    $0.serverUrl == cleanServerUrl &&
+                    $0.uploaded
+                }
 
             var updatedChildMetadatas = updatedMetadatas
 
