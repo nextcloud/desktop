@@ -1510,8 +1510,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nextcloud/NextcloudKit.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.9;
+				kind = exactVersion;
+				version = 6.0.9;
 			};
 		};
 		5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */ = {
