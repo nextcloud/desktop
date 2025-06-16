@@ -397,6 +397,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                                 )
                             }
 
+                            // If the target is not in the updated metadatas then neither it, nor
+                            // any of its kids have changed. So skip examining all of them
                             if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
                                 let materialisedChildren = materialisedItems.filter {
                                     $0.serverUrl.hasPrefix(itemRemoteUrl)
