@@ -60,7 +60,7 @@ public class MockRemoteItem: Equatable {
         MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
             versionIdentifier: "root",
-            name: ".",
+            name: "",
             remotePath: account.davFilesUrl,
             directory: true,
             account: account.ncKitAccount,
@@ -121,15 +121,20 @@ public class MockRemoteItem: Equatable {
     }
 
     public func toNKFile() -> NKFile {
+        let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()
-        file.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+        file.fileName = isRoot
+            ? "."
+            : trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
         file.date = creationDate
-        file.directory = directory
+        file.directory = isRoot ? false : directory
         file.etag = versionIdentifier
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
-        file.serverUrl = parent?.remotePath ?? remotePath
+        file.serverUrl = isRoot
+            ? ".."
+            : parent?.remotePath ?? remotePath
         file.account = account
         file.user = username
         file.userId = userId
