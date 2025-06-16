@@ -17,6 +17,7 @@ class QAction;
 class QActionGroup;
 class QToolBar;
 class QStandardItemModel;
+class QVBoxLayout;
 
 namespace OCC {
 
@@ -83,6 +84,7 @@ private:
     QHash<Account *, QAction *> _actionForAccount;
 
     QToolBar *_toolBar;
+    QVBoxLayout *_vboxLayout;
 
     ownCloudGui *_gui;
 };

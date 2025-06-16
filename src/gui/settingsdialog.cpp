@@ -79,10 +79,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     ConfigFile cfg;
 
     _ui->setupUi(this);
+    _vboxLayout = new QVBoxLayout();
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    layout()->setMenuBar(_toolBar);
+    _toolBar->setLayout(_vboxLayout);
+    layout()->addWidget(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
     auto *closeWindowAction = new QAction(this);
@@ -100,7 +102,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &SettingsDialog::accountRemoved);
 
-
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
@@ -109,7 +110,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->addWidget(spacer);
+    _vboxLayout->addWidget(spacer);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
