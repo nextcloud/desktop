@@ -64,6 +64,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var downloaded: Bool
     public var uploaded: Bool
     public var keepDownloaded: Bool
+    public var visitedDirectory: Bool
     public var trashbinFileName: String
     public var trashbinOriginalLocation: String
     public var trashbinDeletionTime: Date
@@ -91,12 +92,12 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         fileId: String,
         fileName: String,
         fileNameView: String,
-        hasPreview: Bool,
+        hasPreview: Bool = false,
         hidden: Bool = false,
-        iconName: String,
+        iconName: String = "",
         iconUrl: String = "",
         livePhotoFile: String? = nil,
-        mountType: String,
+        mountType: String = "",
         name: String = "",
         note: String = "",
         ownerId: String,
@@ -127,6 +128,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         downloaded: Bool = false,
         uploaded: Bool = false,
         keepDownloaded: Bool = false,
+        visitedDirectory: Bool = false,
         trashbinFileName: String = "",
         trashbinOriginalLocation: String = "",
         trashbinDeletionTime: Date = Date(),
@@ -189,6 +191,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.downloaded = downloaded
         self.uploaded = uploaded
         self.keepDownloaded = keepDownloaded
+        self.visitedDirectory = visitedDirectory
         self.trashbinFileName = trashbinFileName
         self.trashbinOriginalLocation = trashbinOriginalLocation
         self.trashbinDeletionTime = trashbinDeletionTime
@@ -252,6 +255,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
         self.keepDownloaded = value.keepDownloaded
+        self.visitedDirectory = value.visitedDirectory
         self.tags = value.tags
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation

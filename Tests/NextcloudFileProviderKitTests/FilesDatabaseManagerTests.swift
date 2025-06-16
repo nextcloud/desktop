@@ -118,6 +118,10 @@ final class FilesDatabaseManagerTests: XCTestCase {
     func testUpdateRenamesDirectoryAndPropagatesToChildren() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
+        var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: Self.account)
+        rootMetadata.directory = true
+        Self.dbManager.addItemMetadata(rootMetadata)
+
         // Insert original parent directory
         var parent = SendableItemMetadata(ocId: "dir1", fileName: "oldDir", account: account)
         parent.directory = true
@@ -148,7 +152,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
-            updatedMetadatas: [renamedParent],
+            updatedMetadatas: [rootMetadata, renamedParent],
             keepExistingDownloadState: true
         )
 
@@ -353,50 +357,64 @@ final class FilesDatabaseManagerTests: XCTestCase {
             user: "TestAccount", id: "taid", serverUrl: "https://example.com", password: "pass"
         )
 
+        let parent = RealmItemMetadata()
+        parent.ocId = "parent"
+        parent.fileName = "Parent"
+        parent.account = "TestAccount"
+        parent.serverUrl = "https://example.com"
+        parent.directory = true
+        parent.downloaded = true
+        parent.uploaded = true
+
         // Simulate existing metadata in the database
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
-        existingMetadata.serverUrl = "https://example.com"
+        existingMetadata.serverUrl = "https://example.com/Parent"
         existingMetadata.downloaded = true
         existingMetadata.uploaded = true
 
         // Simulate updated metadata that includes changes and a new entry
-        let updatedMetadata =
-            SendableItemMetadata(ocId: "id-1", fileName: "UpdatedFile.pdf", account: account)
+        var updatedParent = SendableItemMetadata(ocId: "parent", fileName: "Parent", account: account)
+        updatedParent.directory = true
 
-        let newMetadata =
+        var updatedMetadata =
+            SendableItemMetadata(ocId: "id-1", fileName: "UpdatedFile.pdf", account: account)
+        updatedMetadata.serverUrl = "https://example.com/Parent"
+
+        var newMetadata =
             SendableItemMetadata(ocId: "id-2", fileName: "NewFile.pdf", account: account)
+        newMetadata.serverUrl = "https://example.com/Parent"
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
+            realm.add(parent)
             realm.add(existingMetadata)
         }
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: "TestAccount",
-            serverUrl: "https://example.com",
-            updatedMetadatas: [updatedMetadata, newMetadata],
+            serverUrl: "https://example.com/Parent",
+            updatedMetadatas: [updatedParent, updatedMetadata, newMetadata],
             keepExistingDownloadState: true
         )
 
         XCTAssertEqual(results.newMetadatas?.count, 1, "Should create one new metadata")
-        XCTAssertEqual(results.updatedMetadatas?.count, 1, "Should update one existing metadata")
+        XCTAssertEqual(results.updatedMetadatas?.count, 2, "Should update two existing metadata")
         XCTAssertEqual(
             results.newMetadatas?.first?.ocId, "id-2", "New metadata ocId should be 'id-2'"
         )
         XCTAssertEqual(
-            results.updatedMetadatas?.first?.fileName,
+            results.updatedMetadatas?.last?.fileName,
             "UpdatedFile.pdf",
             "Updated metadata should have the new file name"
         )
     }
 
     func testUnuploadedItemsAreNotDeletedDuringUpdate() throws {
-        let testAccount = "TestAccount"
-        let testServerUrl = "https://example.com/files/"
-
+        let testAccount = Self.account.ncKitAccount
+        let testServerUrl = Self.account.davFilesUrl
         // 1. Item that exists locally and is marked as uploaded
         let uploadedItem = RealmItemMetadata()
         uploadedItem.ocId = "ocid-uploaded-123"
@@ -416,19 +434,25 @@ final class FilesDatabaseManagerTests: XCTestCase {
         unuploadedItem.uploaded = false // IMPORTANT: Not marked as uploaded
         unuploadedItem.status = Status.normal.rawValue // Ensure it's not in a transient state if relevant
 
+        var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: Self.account)
+        rootMetadata.directory = true
+
+        Self.dbManager.addItemMetadata(rootMetadata)
+
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
             realm.add(uploadedItem)
             realm.add(unuploadedItem)
         }
 
-        // Verify initial state (optional but good practice)
-        XCTAssertEqual(realm.objects(RealmItemMetadata.self).where { $0.account == testAccount && $0.serverUrl == testServerUrl }.count, 2)
+        XCTAssertEqual(realm.objects(RealmItemMetadata.self).where {
+            $0.account == testAccount && $0.serverUrl == testServerUrl
+        }.count, 3)
 
         // Simulate an update from the server that contains NEITHER of these items.
         // This means the server thinks 'SyncedFile.txt' was deleted,
         // and it doesn't know about 'NewLocalFile.txt' yet.
-        let updatedMetadatasFromServer: [SendableItemMetadata] = []
+        let updatedMetadatasFromServer = [rootMetadata]
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
             account: testAccount,
@@ -448,9 +472,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
 
         // Check the actual database state after the write transaction
-        XCTAssertEqual(remainingMetadatas.count, 1, "Only one item should remain in the database.")
+        XCTAssertEqual( // The root item and the remaining item
+            remainingMetadatas.count, 2, "Only two items should remain in the database."
+        )
 
-        let survivingItem = remainingMetadatas.first
+        let survivingItem = remainingMetadatas.last
         XCTAssertNotNil(survivingItem, "An item should survive.")
         XCTAssertEqual(survivingItem?.ocId, "ocid-local-456", "The surviving item should be the unuploaded one.")
         XCTAssertEqual(survivingItem?.fileName, "NewLocalFile.txt", "Filename should match the unuploaded item.")
@@ -1088,5 +1114,87 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
         XCTAssertNotNil(retrievedParentIdentifier)
         XCTAssertEqual(retrievedParentIdentifier?.rawValue, remoteFolder.identifier)
+    }
+
+    func testMaterialisedFiles() async throws {
+        let itemA = RealmItemMetadata()
+        let itemB = RealmItemMetadata()
+        let itemC = RealmItemMetadata()
+        let folderA = RealmItemMetadata()
+        let folderB = RealmItemMetadata()
+        let folderC = RealmItemMetadata()
+        let notFolderA = RealmItemMetadata()
+        let notFolderB = RealmItemMetadata()
+
+        folderA.directory = true
+        folderB.directory = true
+        folderC.directory = true
+
+        itemA.ocId = "itemA"
+        itemB.ocId = "itemB"
+        itemC.ocId = "itemC"
+        folderA.ocId = "folderA"
+        folderB.ocId = "folderB"
+        folderC.ocId = "folderC"
+        notFolderA.ocId = "notFolderA"
+        notFolderB.ocId = "notFolderB"
+
+        itemA.account = Self.account.ncKitAccount
+        itemB.account = Self.account.ncKitAccount
+        itemC.account = "another account"
+        folderA.account = Self.account.ncKitAccount
+        folderB.account = Self.account.ncKitAccount
+        folderC.account = "another account"
+        notFolderA.account = Self.account.ncKitAccount
+        notFolderB.account = "another account"
+
+        itemA.downloaded = true
+        itemB.downloaded = false
+        itemC.downloaded = true
+        folderA.visitedDirectory = true
+        folderB.visitedDirectory = false
+        folderC.visitedDirectory = true
+        notFolderA.visitedDirectory = true
+        notFolderB.visitedDirectory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(itemA)
+            realm.add(itemB)
+            realm.add(itemC)
+            realm.add(folderA)
+            realm.add(folderB)
+            realm.add(folderC)
+        }
+
+        // Test with addItemMetadata too
+        var sItemA = SendableItemMetadata(ocId: "sItemA", fileName: "sItemA", account: Self.account)
+        sItemA.downloaded = true
+
+        var sItemB = SendableItemMetadata(ocId: "sItemB", fileName: "sItemB", account: Self.account)
+        sItemB.downloaded = false
+
+        var sItemC = SendableItemMetadata(ocId: "sItemC", fileName: "sItemC", account: Self.account)
+        sItemC.downloaded = true
+
+        var sDirD = SendableItemMetadata(ocId: "sDirD", fileName: "sDirD", account: Self.account)
+        sDirD.directory = true
+        sDirD.visitedDirectory = true
+
+        Self.dbManager.addItemMetadata(sItemA)
+        Self.dbManager.addItemMetadata(sItemB)
+        Self.dbManager.addItemMetadata(sItemC)
+        Self.dbManager.addItemMetadata(sDirD)
+
+        let materialised =
+            Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount)
+        XCTAssertEqual(materialised.count, 5)
+
+        let materialisedOcIds = materialised.map(\.ocId)
+        XCTAssertTrue(materialisedOcIds.contains(itemA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(folderA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sItemA.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sItemC.ocId))
+        XCTAssertTrue(materialisedOcIds.contains(sDirD.ocId))
     }
 }

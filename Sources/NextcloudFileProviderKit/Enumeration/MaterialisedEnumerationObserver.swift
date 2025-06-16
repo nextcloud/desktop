@@ -21,13 +21,17 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     static let logger = Logger(subsystem: Logger.subsystem, category: "materialisedobservation")
     public let ncKitAccount: String
     let dbManager: FilesDatabaseManager
-    private let completionHandler: (_ deletedOcIds: Set<String>) -> Void
-    private var allEnumeratedItemIds: Set<String> = .init()
+    private let completionHandler: (
+        _ materialisedIds: Set<String>, _ unmaterialisedIds: Set<String>
+    ) -> Void
+    private var allEnumeratedItemIds = Set<String>()
 
     public required init(
         ncKitAccount: String,
         dbManager: FilesDatabaseManager,
-        completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
+        completionHandler: @escaping (
+            _ materialisedIds: Set<String>, _ unmaterialisedIds: Set<String>
+        ) -> Void
     ) {
         self.ncKitAccount = ncKitAccount
         self.dbManager = dbManager
@@ -36,11 +40,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
-        let updatedItemsIds = Array(updatedItems.map(\.itemIdentifier.rawValue))
-
-        for updatedItemsId in updatedItemsIds {
-            allEnumeratedItemIds.insert(updatedItemsId)
-        }
+        updatedItems.map(\.itemIdentifier.rawValue).forEach { allEnumeratedItemIds.insert($0) }
     }
 
     public func finishEnumerating(upTo _: NSFileProviderPage?) {
@@ -69,34 +69,64 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         _ itemIds: Set<String>,
         account: String,
         dbManager: FilesDatabaseManager,
-        completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
+        completionHandler: @escaping (
+            _ materialisedIds: Set<String>, _ unmaterialisedIds: Set<String>
+        ) -> Void
     ) {
-        let databaseLocalFileMetadatas = dbManager
-            .itemMetadatas
-            .where({ $0.account == account && $0.downloaded })
-            .toUnmanagedResults()
-        var noLongerMaterialisedIds = Set<String>()
+        let materialisedMetadatas = dbManager.materialisedItemMetadatas(account: account)
+        var materialisedMetadatasMap = [String: SendableItemMetadata]()
+        var unmaterialisedIds = Set<String>()
+        var newMaterialisedIds = Set<String>()
 
-        DispatchQueue.global(qos: .background).async {
-            for localFile in databaseLocalFileMetadatas {
-                let localFileOcId = localFile.ocId
+        materialisedMetadatas.forEach {
+            materialisedMetadatasMap[$0.ocId] = $0
+            unmaterialisedIds.insert($0.ocId)
+        }
 
-                guard itemIds.contains(localFileOcId) else {
-                    noLongerMaterialisedIds.insert(localFileOcId)
+        for enumeratedId in itemIds {
+            if unmaterialisedIds.contains(enumeratedId) {
+                unmaterialisedIds.remove(enumeratedId)
+            } else {
+                newMaterialisedIds.insert(enumeratedId)
+                guard var metadata = dbManager.itemMetadata(ocId: enumeratedId) else {
+                    Self.logger.error("No metadata for \(enumeratedId, privacy: .public) found")
                     continue
                 }
-            }
-
-            DispatchQueue.main.async {
-                Self.logger.info("Cleaning up local file metadatas for unmaterialised items")
-                for itemId in noLongerMaterialisedIds {
-                    guard var itemMetadata = dbManager.itemMetadata(ocId: itemId) else { continue }
-                    itemMetadata.downloaded = false
-                    dbManager.addItemMetadata(itemMetadata)
+                if metadata.directory {
+                    metadata.visitedDirectory = true
+                } else {
+                    metadata.downloaded = true
                 }
-
-                completionHandler(noLongerMaterialisedIds)
+                Self.logger.info(
+                    """
+                    Updating materialisation state for item to MATERIALISED
+                        with id \(enumeratedId, privacy: .public)
+                        with filename \(metadata.fileName, privacy: .public)
+                    """
+                )
+                dbManager.addItemMetadata(metadata)
             }
         }
+
+        for unmaterialisedId in unmaterialisedIds {
+            guard var metadata = materialisedMetadatasMap[unmaterialisedId] else {
+                Self.logger.error("No materialised for \(unmaterialisedId, privacy: .public) found")
+                continue
+            }
+            Self.logger.info(
+                """
+                Updating materialisation state for item to UNMATERIALISED
+                    with id \(unmaterialisedId, privacy: .public)
+                    with filename \(metadata.fileName, privacy: .public)
+                """
+            )
+            metadata.downloaded = false
+            metadata.visitedDirectory = false
+            dbManager.addItemMetadata(metadata)
+        }
+
+        // TODO: Do we need to signal the working set now? Unclear
+
+        completionHandler(newMaterialisedIds, unmaterialisedIds)
     }
 }

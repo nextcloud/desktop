@@ -17,253 +17,6 @@ import NextcloudKit
 import OSLog
 
 extension Enumerator {
-    func fullRecursiveScan(
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        scanChangesOnly: Bool
-    ) async -> (
-        metadatas: [SendableItemMetadata],
-        newMetadatas: [SendableItemMetadata],
-        updatedMetadatas: [SendableItemMetadata],
-        deletedMetadatas: [SendableItemMetadata],
-        error: NKError?
-    ) {
-        let results = await self.scanRecursively(
-            Item.rootContainer(
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
-            ).metadata,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            scanChangesOnly: scanChangesOnly
-        )
-
-        // Run a check to ensure files deleted in one location are not updated in another
-        // (e.g. when moved)
-        // The recursive scan provides us with updated/deleted metadatas only on a folder by
-        // folder basis; so we need to check we are not simultaneously marking a moved file as
-        // deleted and updated
-        var checkedDeletedMetadatas = results.deletedMetadatas
-
-        for updatedMetadata in results.updatedMetadatas {
-            guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(
-                where: { $0.ocId == updatedMetadata.ocId }
-            ) else { continue }
-
-            checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
-        }
-
-        return (
-            results.metadatas,
-            results.newMetadatas,
-            results.updatedMetadatas,
-            checkedDeletedMetadatas, 
-            results.error
-        )
-    }
-
-    private func scanRecursively(
-        _ directoryMetadata: SendableItemMetadata,
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        scanChangesOnly: Bool
-    ) async -> (
-        metadatas: [SendableItemMetadata],
-        newMetadatas: [SendableItemMetadata],
-        updatedMetadatas: [SendableItemMetadata],
-        deletedMetadatas: [SendableItemMetadata],
-        error: NKError?
-    ) {
-        if isInvalidated {
-            return ([], [], [], [], nil)
-        }
-
-        assert(directoryMetadata.directory, "Can only recursively scan a directory.")
-
-        // Will include results of recursive calls
-        var allMetadatas: [SendableItemMetadata] = []
-        var allNewMetadatas: [SendableItemMetadata] = []
-        var allUpdatedMetadatas: [SendableItemMetadata] = []
-        var allDeletedMetadatas: [SendableItemMetadata] = []
-
-        let itemServerUrl =
-            directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
-                ? account.davFilesUrl
-                : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-
-        Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
-
-        let (
-            metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
-        ) = await Self.readServerUrl(
-            itemServerUrl,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            domain: domain,
-            enumeratedItemIdentifier: enumeratedItemIdentifier
-        )
-
-        if let readError, readError != .success {
-            // Is the error is that we have found matching etags on this item, then ignore it
-            // if we are doing a full rescan
-            if readError.isNoChangesError, scanChangesOnly {
-                Self.logger.info("No changes in \(self.serverUrl) and only scanning changes.")
-            } else {
-                Self.logger.error(
-                    """
-                    Finishing enumeration of changes at \(itemServerUrl, privacy: .public)
-                        with \(readError.errorDescription, privacy: .public)
-                    """
-                )
-
-                if readError.isNotFoundError {
-                    Self.logger.info(
-                        """
-                        404 error means item no longer exists.
-                            Deleting metadata and reporting as deletion without error.
-                        """
-                    )
-
-                    if let deletedMetadatas = dbManager.deleteDirectoryAndSubdirectoriesMetadata(
-                        ocId: directoryMetadata.ocId
-                    ) {
-                        allDeletedMetadatas += deletedMetadatas
-                    } else {
-                        Self.logger.error(
-                            """
-                            An error occurred while trying to delete directory in database,
-                            children not found in recursive scan
-                            """
-                        )
-                    }
-
-                } else if readError.isNoChangesError {  // All is well, just no changed etags
-                    Self.logger.info(
-                        "Error was to say no changed files, not bad error. Won't check children."
-                    )
-
-                } else if readError.isUnauthenticatedError || readError.isCouldntConnectError {
-                    Self.logger.error(
-                        "Error will affect next enumerated items, so stopping enumeration."
-                    )
-                    return ([], [] , [], [], readError)
-                }
-            }
-        }
-
-        Self.logger.info(
-            """
-            Finished reading serverUrl: \(itemServerUrl, privacy: .public)
-            for user: \(account.ncKitAccount, privacy: .public)
-            """
-        )
-
-        if let metadatas {
-            allMetadatas += metadatas
-        } else {
-            Self.logger.warning(
-                """
-                Nil metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-        }
-
-        if let newMetadatas {
-            allNewMetadatas += newMetadatas
-        } else {
-            Self.logger.warning(
-                """
-                Nil new metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-        }
-
-        if let updatedMetadatas {
-            allUpdatedMetadatas += updatedMetadatas
-        } else {
-            Self.logger.warning(
-                """
-                Nil updated metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-        }
-
-        if let deletedMetadatas {
-            allDeletedMetadatas += deletedMetadatas
-        } else {
-            Self.logger.warning(
-                """
-                Nil deleted metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-                """
-            )
-        }
-
-        var childDirectoriesToScan: [SendableItemMetadata] = []
-        var candidateMetadatas: [SendableItemMetadata]
-
-        if scanChangesOnly {
-            candidateMetadatas = allUpdatedMetadatas + allNewMetadatas
-        } else {
-            candidateMetadatas = allMetadatas
-        }
-
-        for candidateMetadata in candidateMetadatas where candidateMetadata.directory {
-            childDirectoriesToScan.append(candidateMetadata)
-        }
-
-        Self.logger.debug(
-            "Candidate metadatas for further scan: \(childDirectoriesToScan, privacy: .public)"
-        )
-
-        if childDirectoriesToScan.isEmpty {
-            return (
-                metadatas: allMetadatas, 
-                newMetadatas: allNewMetadatas,
-                updatedMetadatas: allUpdatedMetadatas, 
-                deletedMetadatas: allDeletedMetadatas,
-                nil
-            )
-        }
-
-        for childDirectory in childDirectoriesToScan {
-            let childDirectoryUrl = childDirectory.serverUrl + "/" + childDirectory.fileName
-            Self.logger.debug(
-                """
-                About to recursively scan: \(childDirectoryUrl, privacy: .public)
-                    with etag: \(childDirectory.etag, privacy: .public)
-                """
-            )
-            let childScanResult = await scanRecursively(
-                childDirectory,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                scanChangesOnly: scanChangesOnly
-            )
-
-            allMetadatas += childScanResult.metadatas
-            allNewMetadatas += childScanResult.newMetadatas
-            allUpdatedMetadatas += childScanResult.updatedMetadatas
-            allDeletedMetadatas += childScanResult.deletedMetadatas
-        }
-
-        return (
-            metadatas: allMetadatas, newMetadatas: allNewMetadatas,
-            updatedMetadatas: allUpdatedMetadatas,
-            deletedMetadatas: allDeletedMetadatas, nil
-        )
-    }
-
     static func handlePagedReadResults(
         files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
@@ -273,19 +26,14 @@ extension Enumerator {
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
-            // Do not ingest metadata for the root container
-            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl),
-               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/."),
-               !(firstFile.fileName == "." && firstFile.serverUrl == "..")
-            {
-                var metadata = firstFile.toItemMetadata()
-                if metadata.directory,
-                   let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId)
-                {
+            var metadata = firstFile.toItemMetadata()
+            if metadata.directory {
+                metadata.visitedDirectory = true
+                if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
                     metadata.downloaded = existingMetadata.downloaded
                 }
-                dbManager.addItemMetadata(metadata)
             }
+            dbManager.addItemMetadata(metadata)
         }
         let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
@@ -329,12 +77,13 @@ extension Enumerator {
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        if serverUrl != account.davFilesUrl {
-            if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
-                directoryMetadata.downloaded = existingMetadata.downloaded
-            }
-            dbManager.addItemMetadata(directoryMetadata)
+        assert(directoryMetadata.directory)
+        if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
+            directoryMetadata.downloaded = existingMetadata.downloaded
         }
+        directoryMetadata.visitedDirectory = true
+
+        metadatas.insert(directoryMetadata, at: 0)
 
         let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
@@ -358,7 +107,7 @@ extension Enumerator {
     // Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
     //
     // Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
-    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED LOCALLY.
+    // Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
     // This means that if you decide to use this method to implement change enumeration, you will
     // have to collect the full results of all the pages before proceeding with discovering what
     // has changed relative to the state of the local database -- manually!
@@ -494,20 +243,16 @@ extension Enumerator {
         }
 
         if depth == .target {
-            if serverUrl == account.davFilesUrl {
-                return (nil, nil, nil, nil, nextPage, nil)
-            } else {
-                var metadata = receivedFile.toItemMetadata()
-                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-                let isNew = existing == nil
-                let updatedMetadatas = isNew ? [] : [metadata]
-                let newMetadatas = isNew ? [metadata] : []
+            var metadata = receivedFile.toItemMetadata()
+            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+            let isNew = existing == nil
+            let updatedMetadatas = isNew ? [] : [metadata]
+            let newMetadatas = isNew ? [metadata] : []
 
-                metadata.downloaded = existing?.downloaded == true
-                dbManager.addItemMetadata(metadata)
+            metadata.downloaded = existing?.downloaded == true
+            dbManager.addItemMetadata(metadata)
 
-                return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
-            }
+            return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
         } else if depth == .targetAndDirectChildren {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError

@@ -50,17 +50,20 @@ public extension Item {
                 ) ??  NSFileProviderError(.cannotSynchronize)
             }
 
-            guard let metadatas else {
+            guard var metadatas else {
                 Self.logger.error(
                     """
                     Could not fetch directory contents for
-                    \(self.metadata.fileName, privacy: .public)
-                    at \(remoteDirectoryPath, privacy: .public), received nil metadatas
+                        \(self.metadata.fileName, privacy: .public)
+                        at \(remoteDirectoryPath, privacy: .public), received nil metadatas
                     """
                 )
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
+            if !metadatas.isEmpty {
+                metadatas.removeFirst() // Remove the dir itself
+            }
             progress.totalUnitCount += Int64(metadatas.count)
 
             for var metadata in metadatas {

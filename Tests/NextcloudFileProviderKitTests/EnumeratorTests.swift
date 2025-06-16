@@ -8,8 +8,8 @@
 import FileProvider
 import NextcloudKit
 import RealmSwift
-import TestInterface
 import XCTest
+@testable import TestInterface
 @testable import NextcloudFileProviderKit
 
 final class EnumeratorTests: XCTestCase {
@@ -183,454 +183,98 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testWorkingSetEnumeration() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        // This test verifies that the working set enumerator correctly returns ONLY the
+        // items that are "materialised" (downloaded files or visited directories) from the database
+        let db = Self.dbManager.ncDatabase() // Init DB
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Item 1: A downloaded file (should be in working set)
+        var downloadedFile = remoteItemA.toItemMetadata(account: Self.account)
+        downloadedFile.downloaded = true
+        Self.dbManager.addItemMetadata(downloadedFile)
+
+        // Item 2: A visited directory (should be in working set)
+        var visitedDir = remoteFolder.toItemMetadata(account: Self.account)
+        visitedDir.visitedDirectory = true
+        Self.dbManager.addItemMetadata(visitedDir)
+
+        // Item 3: A file that is in the DB but not downloaded (should NOT be in working set)
+        var notDownloadedFile = remoteItemB.toItemMetadata(account: Self.account)
+        notDownloadedFile.downloaded = false
+        Self.dbManager.addItemMetadata(notDownloadedFile)
+
+        // Item 4: A directory that is in the DB but not visited (should NOT be in working set)
+        var notVisitedDir = remoteItemC.toItemMetadata(account: Self.account)
+        notVisitedDir.directory = true
+        notVisitedDir.visitedDirectory = false
+        Self.dbManager.addItemMetadata(notVisitedDir)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
-            remoteInterface: remoteInterface,
+            remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
+
+        // 2. Act
         try await observer.enumerateItems()
-        XCTAssertEqual(observer.items.count, 3)
 
-        let retrievedFolderItem = try XCTUnwrap(observer.items.first)
-        XCTAssertEqual(retrievedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
-        XCTAssertEqual(retrievedFolderItem.filename, remoteFolder.name)
-        XCTAssertEqual(retrievedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
-        XCTAssertEqual(retrievedFolderItem.creationDate, remoteFolder.creationDate)
-        XCTAssertEqual(
-            Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
-            Int(remoteFolder.modificationDate.timeIntervalSince1970)
+        // 3. Assert
+        XCTAssertNil(observer.error, "Enumeration should complete without error.")
+        XCTAssertEqual(observer.items.count, 2, "Should only enumerate the 2 materialised items.")
+
+        let enumeratedIds = Set(observer.items.map(\.itemIdentifier.rawValue))
+        XCTAssertTrue(
+            enumeratedIds.contains(downloadedFile.ocId),
+            "The downloaded file should be in the working set."
         )
-        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
+        XCTAssertTrue(
+            enumeratedIds.contains(visitedDir.ocId),
+            "The visited directory should be in the working set."
+        )
 
-        // Ensure the newly discovered folder has no etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
+        XCTAssertFalse(
+            enumeratedIds.contains(notDownloadedFile.ocId),
+            "The non-downloaded file should NOT be in the working set."
+        )
+        XCTAssertFalse(
+            enumeratedIds.contains(notVisitedDir.ocId),
+            "The non-visited directory should NOT be in the working set."
+        )
     }
 
-    func testWorkingSetPaginatedEnumeration() async throws {
-        // 1. Setup a flat file structure with more items than the page size.
-        rootItem.children = [] // Clear existing children
-        for i in 0..<15 {
-            let childItem = MockRemoteItem(
-                identifier: "item\(i)",
-                name: "item\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = rootItem
-            rootItem.children.append(childItem)
-        }
+    func testWorkingSetEnumerationWhenNoMaterialisedItems() async throws {
+        // This test verifies that the enumerator behaves correctly when there are
+        // no materialised items in the database.
 
-        let db = Self.dbManager.ncDatabase() // Strong ref for in-memory test db
+        // 1. Arrange
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
 
-        // 2. Create the enumerator with a specific page size.
+        // Add items to the DB, but none are materialised.
+        var notDownloadedFile = remoteItemA.toItemMetadata(account: Self.account)
+        notDownloadedFile.downloaded = false
+        Self.dbManager.addItemMetadata(notDownloadedFile)
+
+        var notVisitedDir = remoteFolder.toItemMetadata(account: Self.account)
+        notVisitedDir.visitedDirectory = false
+        Self.dbManager.addItemMetadata(notVisitedDir)
+
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            pageSize: 5
+            remoteInterface: MockRemoteInterface(),
+            dbManager: Self.dbManager
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
 
-        // 3. Enumerate the items.
+        // 2. Act
         try await observer.enumerateItems()
 
-        // 4. Assert the results.
-        XCTAssertEqual(observer.items.count, 15)
-
-        for item in observer.items {
-            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
-        }
-
-        // The enumeration flow:
-        // - Initial call enumerates the root.
-        // - The enumerator then gets the first page of children.
-        // - The observer requests the next pages until all items are fetched.
-        // With 15 children and a page size of 5, we expect 3 pages of children.
-        // Total pages observed: 1 (initial) + 3 (for children) = 4
-        XCTAssertEqual(observer.observedPages.count, 4)
-        XCTAssertEqual(
-            observer.observedPages.first,
-            NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
-        )
-    }
-
-    func testWorkingSetPaginatedEnumerationWithMultipleDirectories() async throws {
-        // 1. Setup a more complex, nested directory structure.
-        // root
-        // |- folder1 (7 items)
-        // |- folder2
-        //    |- subfolder (3 items)
-        //    |- (8 items)
-
-        rootItem.children = [] // Clear existing children
-
-        let folder1 = MockRemoteItem(
-            identifier: "folder1",
-            name: "folder1",
-            remotePath: Self.account.davFilesUrl + "/folder1",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        folder1.parent = rootItem
-        rootItem.children.append(folder1)
-
-        for i in 0..<7 {
-            let childItem = MockRemoteItem(
-                identifier: "folder1-item\(i)",
-                name: "item\(i).txt",
-                remotePath: folder1.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = folder1
-            folder1.children.append(childItem)
-        }
-
-        let folder2 = MockRemoteItem(
-            identifier: "folder2",
-            name: "folder2",
-            remotePath: Self.account.davFilesUrl + "/folder2",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        folder2.parent = rootItem
-        rootItem.children.append(folder2)
-
-        for i in 0..<8 {
-            let childItem = MockRemoteItem(
-                identifier: "folder2-item\(i)",
-                name: "item\(i).txt",
-                remotePath: folder2.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = folder2
-            folder2.children.append(childItem)
-        }
-
-        let subfolder = MockRemoteItem(
-            identifier: "subfolder",
-            name: "subfolder",
-            remotePath: folder2.remotePath + "/subfolder",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        subfolder.parent = folder2
-        folder2.children.append(subfolder)
-
-        for i in 0..<3 {
-            let childItem = MockRemoteItem(
-                identifier: "subfolder-item\(i)",
-                name: "item\(i).txt",
-                remotePath: subfolder.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = subfolder
-            subfolder.children.append(childItem)
-        }
-
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
-
-        // 2. Create the enumerator.
-        let enumerator = Enumerator(
-            enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
-            remoteInterface: remoteInterface,
-            dbManager: Self.dbManager,
-            pageSize: 5
-        )
-        let observer = MockEnumerationObserver(enumerator: enumerator)
-
-        // 3. Enumerate the items.
-        try await observer.enumerateItems()
-
-        // 4. Assert the results.
-        // Total items =
-        //      0 (root) +
-        //      1 (folder1) +
-        //      7 (items in folder1) +
-        //      1 (folder2) +
-        //      8 (items in folder2) +
-        //      1 (subfolder) +
-        //      3 (items in subfolder)
-        // = 22
-        let expectedTotalItems = 0 + 1 + 7 + 1 + 8 + 1 + 3
-        print(observer.items.map(\.itemIdentifier.rawValue))
-        XCTAssertEqual(observer.items.count, expectedTotalItems)
-
-        for item in observer.items {
-            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
-        }
-
-        // The working set enumeration is recursive. The enumerator will first list the items
-        // in the root directory, then it will be called again with the URLs of the subdirectories
-        // as pages. This process continues until all directories have been enumerated.
-        // We can verify that all items are discovered and stored in the database.
-        let allItemIds = rootItem.children.map(\.identifier)
-            + folder1.children.map(\.identifier)
-            + folder2.children.map(\.identifier)
-            + subfolder.children.map(\.identifier)
-
-        for itemId in allItemIds {
-            XCTAssertNotNil(
-                Self.dbManager.itemMetadata(ocId: itemId),
-                "Item with id \(itemId) should be in the database"
-            )
-        }
-        // Root should not be stored in database
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
-    }
-
-    func testWorkingSetPaginatedEnumerationWithEnumeratorRecreation() async throws {
-        // This test simulates the system creating a new enumerator for each subsequent page of a
-        // paginated request
-
-        // 1. Setup a more complex, nested directory structure.
-        rootItem.children = [] // Clear existing children
-
-        let folder1 = MockRemoteItem(
-            identifier: "folder1",
-            name: "folder1",
-            remotePath: Self.account.davFilesUrl + "/folder1",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        folder1.parent = rootItem
-        rootItem.children.append(folder1)
-        for i in 0..<7 {
-            let childItem = MockRemoteItem(
-                identifier: "folder1-item\(i)",
-                name: "item\(i).txt",
-                remotePath: folder1.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = folder1
-            folder1.children.append(childItem)
-        }
-
-        let folder2 = MockRemoteItem(
-            identifier: "folder2",
-            name: "folder2",
-            remotePath: Self.account.davFilesUrl + "/folder2",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        folder2.parent = rootItem
-        rootItem.children.append(folder2)
-
-        let subfolder = MockRemoteItem(
-            identifier: "subfolder",
-            name: "subfolder",
-            remotePath: folder2.remotePath + "/subfolder",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        subfolder.parent = folder2
-        folder2.children.append(subfolder)
-        for i in 0..<3 {
-            let childItem = MockRemoteItem(
-                identifier: "subfolder-item\(i)",
-                name: "item\(i).txt",
-                remotePath: subfolder.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = subfolder
-            subfolder.children.append(childItem)
-        }
-        for i in 0..<8 { // Add loose items to folder2
-            let childItem = MockRemoteItem(
-                identifier: "folder2-item\(i)",
-                name: "item\(i).txt",
-                remotePath: folder2.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = folder2
-            folder2.children.append(childItem)
-        }
-
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
-        let pageSize = 5
-
-        // 2. Manually drive the pagination loop, creating a new enumerator each time.
-        var allEnumeratedItems: [NSFileProviderItem] = []
-        var currentPage: NSFileProviderPage? =
-            NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
-
-        while let pageToEnumerate = currentPage {
-            currentPage = nil // Reset for the next iteration
-
-            // Create a NEW enumerator and observer for this single page request
-            let enumerator = Enumerator(
-                enumeratedItemIdentifier: .workingSet,
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager,
-                pageSize: pageSize
-            )
-            let observer = MockEnumerationObserver(enumerator: enumerator)
-            try await observer.enumerateItemsPage(page: pageToEnumerate)
-            XCTAssertNil(observer.error)
-            allEnumeratedItems += observer.items
-            currentPage = observer.page
-        }
-
-        let expectedTotalItems = 1 + 7 + 1 + 8 + 1 + 3 // 21 items total
-        XCTAssertEqual(
-            allEnumeratedItems.count,
-            expectedTotalItems,
-            "The test failed, likely because the enumerator's state was lost and it did not recursively scan subdirectories."
-        )
-
-        let allItemIds = rootItem.children.map(\.identifier)
-            + folder1.children.map(\.identifier)
-            + folder2.children.map(\.identifier)
-            + subfolder.children.map(\.identifier)
-
-        // Check if the database contains all items, which it likely won't if the test fails.
-        let itemsInDB = allItemIds.compactMap { Self.dbManager.itemMetadata(ocId: $0) }
-        XCTAssertEqual(
-            itemsInDB.count,
-            expectedTotalItems,
-            "The database should contain metadata for all discovered items."
-        )
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: rootItem.identifier))
-    }
-
-    func testWorkingSetEnumerationStopsOnExhaustedTotal() async throws {
-        // This test verifies that enumeration correctly terminates when a faulty server
-        // provides a `nextPage` token but all items (according to `pageTotal`) have been received.
-
-        // 1. Setup: A folder with 9 items which, when including itself in the propfind, is an exact
-        // multiple of the page size.
-        rootItem.children = []
-        let folder = MockRemoteItem(
-            identifier: "folder10",
-            name: "folder10",
-            remotePath: Self.account.davFilesUrl + "/folder10",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        folder.parent = rootItem
-        rootItem.children.append(folder)
-
-        for i in 0..<9 {
-            let childItem = MockRemoteItem(
-                identifier: "item\(i)",
-                name: "item\(i).txt",
-                remotePath: folder.remotePath + "/item\(i).txt",
-                account: Self.account.ncKitAccount,
-                username: Self.account.username,
-                userId: Self.account.id,
-                serverUrl: Self.account.serverUrl
-            )
-            childItem.parent = folder
-            folder.children.append(childItem)
-        }
-
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, pagination: true)
-        let pageSize = 5
-
-        // This test requires a modification to `MockRemoteInterface` to simulate a faulty server
-        remoteInterface.forceNextPageOnLastContentPage = true
-
-        // 2. Manually drive the pagination loop.
-        var allEnumeratedItems: [NSFileProviderItem] = []
-        var currentPage: NSFileProviderPage? =
-            NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
-        var loopCount = 0
-
-        while let pageToEnumerate = currentPage {
-            loopCount += 1
-            currentPage = nil // Reset for the next iteration
-
-            // Create a NEW enumerator and observer for this single page request
-            let enumerator = Enumerator(
-                enumeratedItemIdentifier: .workingSet,
-                account: Self.account,
-                remoteInterface: remoteInterface,
-                dbManager: Self.dbManager,
-                pageSize: pageSize
-            )
-            let observer = MockEnumerationObserver(enumerator: enumerator)
-            try await observer.enumerateItemsPage(page: pageToEnumerate)
-            XCTAssertNil(observer.error)
-            allEnumeratedItems += observer.items
-            currentPage = observer.page
-        }
-
-        // 3. Assert the results.
-        // The loop should have run 3 times:
-        // 1. For root
-        // 2. For `folder10` page 1 (items 0-4).
-        // 3. For `folder10` page 2 (items 5-9). The enumerator logic should see that all items
-        //    have been delivered and should not return the phantom page token, terminating the loop.
-        XCTAssertNil(currentPage, "Loop should have terminated with a nil next page.")
-        XCTAssertEqual(loopCount, 3, "The enumeration loop should have terminated correctly.")
-
-        // Total items expected: 1 folder + 9 children = 10.
-        let expectedTotalItems = 1 + 9
-        XCTAssertEqual(
-            allEnumeratedItems.count,
-            expectedTotalItems,
-            "The correct number of total items should be enumerated."
-        )
+        // 3. Assert
+        XCTAssertNil(observer.error, "Enumeration should complete without error.")
+        XCTAssertTrue(observer.items.isEmpty, "Result should be empty when no items materialised.")
     }
 
     func testReadServerUrlFollowUpPagination() async throws {
@@ -824,17 +468,106 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(
             rootResult?.count, 0, "Root folder enumeration should yield no children."
         )
-        // No metadata should be saved for the root folder ID itself.
-        XCTAssertNil(
+        // Metadata should be saved for the root folder ID itself.
+        XCTAssertNotNil(
             dbManager.itemMetadata(ocId: rootNKFile.ocId),
-            "Metadata for the root folder itself should not be saved."
+            "Metadata for the root folder itself should be saved."
         )
     }
 
-    func testWorkingSetChangeEnumeration() async throws {
-        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+    func testWorkingSetEnumerateChanges() async throws {
+        // This test verifies that `enumerateChanges` for the working set correctly identifies
+        // new, updated, and deleted items by iterating through materialised items and fetching
+        // their state.
+
+        // 1. Arrange
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
+
+        // --- Database State (The "local truth" before enumeration) ---
+        var root = rootItem.toItemMetadata(account: Self.account)
+        root.visitedDirectory = true
+        root.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(root)
+
+        // A materialised folder that we will check for changes.
+        var materialisedFolder = remoteFolder.toItemMetadata(account: Self.account)
+        materialisedFolder.visitedDirectory = true
+        materialisedFolder.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(materialisedFolder)
+
+        let remoteUnmaterialisedFolder = MockRemoteItem(
+            identifier: "unmaterialised-folder",
+            versionIdentifier: "NEW",
+            name: "unmaterialised folder",
+            remotePath: Self.account.davFilesUrl + "/" + "unmaterialised folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteUnmaterialisedFolder.parent = rootItem
+        rootItem.children.append(remoteUnmaterialisedFolder)
+
+        var unmaterialisedFolder = remoteUnmaterialisedFolder.toItemMetadata(account: Self.account)
+        unmaterialisedFolder.visitedDirectory = false
+        unmaterialisedFolder.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(unmaterialisedFolder)
+
+        let remoteUnmaterialisedFolderChild = MockRemoteItem(
+            identifier: "unmaterialised-folder-child",
+            versionIdentifier: "NEW",
+            name: "unmaterialised folder child",
+            remotePath: remoteUnmaterialisedFolder.remotePath + "/" + "unmaterialised folder child",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteUnmaterialisedFolderChild.parent = remoteUnmaterialisedFolder
+        remoteUnmaterialisedFolder.children.append(remoteUnmaterialisedFolderChild)
+
+        // A materialised file inside the folder that will be updated on the server.
+        var fileToUpdate = remoteItemA.toItemMetadata(account: Self.account)
+        fileToUpdate.downloaded = true
+        fileToUpdate.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(fileToUpdate)
+
+        // A materialised file inside the folder that will be deleted from the server.
+        var fileToBeDeleted = remoteItemB.toItemMetadata(account: Self.account)
+        fileToBeDeleted.downloaded = true
+        Self.dbManager.addItemMetadata(fileToBeDeleted)
+
+        // A top-level materialised file that does not exist remotely (i.e. deleted), will cause 404
+        var topLevelFileToBeDeleted = SendableItemMetadata(
+            ocId: "toplevel-deleted", fileName: "toplevel-deleted.txt", account: Self.account
+        )
+        topLevelFileToBeDeleted.downloaded = true
+        topLevelFileToBeDeleted.uploaded = true
+        Self.dbManager.addItemMetadata(topLevelFileToBeDeleted)
+
+        // --- Server State (The "remote truth" for the test) ---
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Update server state to reflect the changes
+        remoteItemA.versionIdentifier = "ETAG_NEW"
+
+        // Add a new file on the server inside the materialised folder
+        let newChildFile = MockRemoteItem(
+            identifier: "new-child",
+            name: "new-child.txt",
+            remotePath: remoteFolder.remotePath + "/new-child.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        newChildFile.parent = remoteFolder
+        remoteFolder.children.append(newChildFile)
+
+        // Remove the "deleted" file from the server
+        remoteFolder.children.removeAll(where: { $0.identifier == fileToBeDeleted.ocId })
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
@@ -843,23 +576,49 @@ final class EnumeratorTests: XCTestCase {
             dbManager: Self.dbManager
         )
         let observer = MockChangeObserver(enumerator: enumerator)
+
+        // 2. Act
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 3) // Should get all items
 
-        let retrievedFolderItem = try XCTUnwrap(observer.changedItems.first)
-        XCTAssertEqual(retrievedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
-        XCTAssertEqual(retrievedFolderItem.filename, remoteFolder.name)
-        XCTAssertEqual(retrievedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
-        XCTAssertEqual(retrievedFolderItem.creationDate, remoteFolder.creationDate)
-        XCTAssertEqual(
-            Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
-            Int(remoteFolder.modificationDate.timeIntervalSince1970)
+        // 3. Assert
+        XCTAssertNil(observer.error, "Enumeration should complete without error.")
+
+        // Verify Deletions
+        let deletedIds = observer.deletedItemIdentifiers.map(\.rawValue)
+        XCTAssertEqual(deletedIds.count, 2, "There should be two deleted items.")
+        XCTAssertTrue(
+            deletedIds.contains(fileToBeDeleted.ocId),
+            "The file deleted from the server folder should be reported as deleted."
         )
-        XCTAssertEqual(retrievedFolderItem.isUploaded, true)
+        XCTAssertTrue(
+            deletedIds.contains(topLevelFileToBeDeleted.ocId),
+            "The top-level file that resulted in a 404 should be reported as deleted."
+        )
 
-        // Ensure the newly discovered folder has an etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
+        // Verify Updates and Additions
+        let changedIds = observer.changedItems.map(\.itemIdentifier.rawValue)
+        print(changedIds)
+        XCTAssertEqual(
+            changedIds.count,
+            5,
+            "There should be one updated file, three updated folders, and one new file."
+        )
+        XCTAssertTrue(changedIds.contains(NSFileProviderItemIdentifier.rootContainer.rawValue))
+        XCTAssertTrue(changedIds.contains(materialisedFolder.ocId))
+        XCTAssertTrue(changedIds.contains(unmaterialisedFolder.ocId))
+        XCTAssertTrue(changedIds.contains(fileToUpdate.ocId))
+        XCTAssertTrue(changedIds.contains(newChildFile.identifier))
+
+        // Verify the database state was updated
+        let finalUpdatedFile = Self.dbManager.itemMetadata(ocId: fileToUpdate.ocId)
+        XCTAssertEqual(
+            finalUpdatedFile?.etag,
+            "ETAG_NEW",
+            "The ETag for the updated file should be changed in the database."
+        )
+
+        let finalNewFile = Self.dbManager.itemMetadata(ocId: newChildFile.identifier)
+        XCTAssertNotNil(finalNewFile, "The new file should now exist in the database.")
     }
 
     func testFolderEnumeration() async throws {
@@ -1015,8 +774,8 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
-        // There are three changes: changed Item A, removed Item B, added Item C
-        XCTAssertEqual(observer.changedItems.count, 2)
+        // There are four changes: changed folder, changed Item A, removed Item B, added Item C
+        XCTAssertEqual(observer.changedItems.count, 3)
         XCTAssertTrue(observer.changedItems.contains(
             where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
         ))
@@ -1040,7 +799,6 @@ final class EnumeratorTests: XCTestCase {
         )
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
-        XCTAssertNotEqual(dbFolderMetadata.etag, oldFolderEtag)
         XCTAssertTrue(dbFolderMetadata.downloaded)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
         XCTAssertNotEqual(dbItemAMetadata.etag, oldItemAEtag)
@@ -1130,7 +888,7 @@ final class EnumeratorTests: XCTestCase {
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
         // rootContainer has changed, folder has changed, itemA has changed
-        XCTAssertEqual(observer.changedItems.count, 2) // Not including target (TODO)
+        XCTAssertEqual(observer.changedItems.count, 3)
         XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
 
         let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
@@ -1168,7 +926,7 @@ final class EnumeratorTests: XCTestCase {
             remoteSupportsTrash: await remoteInterface.supportsTrash(account: Self.account)
         )
         print(storedRootItem.metadata.serverUrl)
-        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
+        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 4) // All items
 
         let storedFolderMaybe = await Item.storedItem(
             identifier: .init(remoteFolder.identifier),
@@ -1214,7 +972,7 @@ final class EnumeratorTests: XCTestCase {
         )
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
-        XCTAssertEqual(observer.changedItems.count, 3)
+        XCTAssertEqual(observer.changedItems.count, 4)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
@@ -1289,7 +1047,7 @@ final class EnumeratorTests: XCTestCase {
         let observer = MockChangeObserver(enumerator: enumerator)
         try await observer.enumerateChanges()
         // rootContainer has changed, itemA has changed
-        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertEqual(observer.changedItems.count, 2)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)

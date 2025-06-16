@@ -193,6 +193,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             Self.logger.info("Upcoming enumeration is of working set.")
+            let ncKitAccount = account.ncKitAccount
+            // Visited folders and downloaded files
+            let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
+            completeEnumerationObserver(observer, nextPage: nil, itemMetadatas: materialisedItems)
+            return
         }
 
         guard serverUrl != "" else {
@@ -221,7 +226,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
-            var nextServerUrls: [String]? = nil
             var pageIndex = 0
             var pageTotal: Int? = nil
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage &&
@@ -230,12 +234,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 if let enumPageResponse =
                     try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue)
                 {
-                    if let actualServerUrl = enumPageResponse.nextServerUrl {
-                        Self.logger.info(
-                            "Setting enumerator server URL to \(actualServerUrl, privacy: .public)"
-                        )
-                        serverUrl = actualServerUrl
-                    }
                     if let token = enumPageResponse.token?.data(using: .utf8) {
                         providedPage = NSFileProviderPage(token)
                     }
@@ -243,7 +241,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         pageTotal = total
                     }
                     pageIndex = enumPageResponse.index
-                    nextServerUrls = enumPageResponse.serverUrlQueue
                 } else {
                     Self.logger.error("Could not parse page")
                 }
@@ -293,45 +290,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             pageTotal = nextPage?.total ?? pageTotal
-
-            if enumeratedItemIdentifier == .workingSet {
-                var serverUrlQueue = nextServerUrls ?? []
-                for metadata in metadatas where metadata.directory {
-                    let metadataRemoteUrl = metadata.serverUrl + "/" + metadata.fileName
-                    serverUrlQueue.append(metadataRemoteUrl)
-                }
-                let nextPageValid = nextPage != nil
-                let nextPageToken = nextPage?.token ?? "" // For logging
-                Self.logger.debug(
-                    """
-                    Current folders awaiting paged enumeration:
-                        \(serverUrlQueue, privacy: .public)
-                        next page is valid: \(nextPageValid, privacy: .public)
-                        next page token: \(nextPageToken, privacy: .public)
-                        page total: \(pageTotal ?? -1, privacy: .public)
-                    """
-                )
-
-                if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
-                    // Server will sometimes provide a valid next page data even though there are no
-                    // items to enumerate anymore
-                    Self.logger.debug("No more items to enumerate, stopping paged enumeration")
-                    nextPage = nil
-                }
-
-                if nextPage != nil {
-                    Self.logger.debug("Applying actual server url onto server page response")
-                    nextPage!.total = pageTotal
-                    nextPage!.serverUrlQueue = serverUrlQueue
-                    nextPage!.nextServerUrl = serverUrl
-                } else if !serverUrlQueue.isEmpty {
-                    // If we have finished paged enumeration of the current serverUrl, move to next
-                    // child to scan
-                    let nextServerUrl = serverUrlQueue.removeFirst()
-                    nextPage = EnumeratorPageResponse(
-                        nextServerUrl: nextServerUrl, serverUrlQueue: serverUrlQueue
-                    )
-                }
+            if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
+                // Server will sometimes provide a valid next page data even though there are no
+                // items to enumerate anymore
+                Self.logger.debug("No more items to enumerate, stopping paged enumeration")
+                nextPage = nil
             }
 
             Self.logger.info(
@@ -376,46 +339,103 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             // Unlike when enumerating items we can't progressively enumerate items as we need to 
             // wait to see which items are truly deleted and which have just been moved elsewhere.
             Task {
-                let (
-                    _, newMetadatas, updatedMetadatas, deletedMetadatas, error
-                ) = await fullRecursiveScan(
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    scanChangesOnly: true
-                )
+                let ncKitAccount = account.ncKitAccount
+                // Visited folders and downloaded files. Sort in terms of their remote URLs.
+                // This way we ensure we visit parent folders before their children.
+                let materialisedItems = dbManager
+                    .materialisedItemMetadatas(account: ncKitAccount)
+                    .sorted {
+                        ($0.serverUrl + "/" + $0.fileName).count <
+                            ($1.serverUrl + "/" + $1.fileName).count
+                    }
 
-                if self.isInvalidated {
-                    Self.logger.info(
-                        """
-                        Enumerator invalidated during working set change scan.
-                        For user: \(self.account.ncKitAccount, privacy: .public)
-                        """
+
+                var allNewMetadatas = [SendableItemMetadata]()
+                var allUpdatedMetadatas = [SendableItemMetadata]()
+                var allDeletedMetadatas = [SendableItemMetadata]()
+                var examinedItemIds = Set<String>()
+                for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
+                    let itemRemoteUrl = item.serverUrl + "/" + item.fileName
+                    let (
+                        metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
+                    ) = await Self.readServerUrl(
+                        itemRemoteUrl,
+                        account: account,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        depth: item.directory ? .targetAndDirectChildren : .target
                     )
-                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
-                    return
+                    if readError?.errorCode == 404 {
+                        allDeletedMetadatas.append(item)
+                        examinedItemIds.insert(item.ocId)
+                    } else if let readError, readError != .success {
+                        Self.logger.info(
+                            """
+                            Finished change enumeration of working set for user:
+                                \(self.account.ncKitAccount, privacy: .public)
+                                with error: \(readError.errorDescription, privacy: .public)
+                            """
+                        )
+                        let fpError = readError.fileProviderError(
+                            handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
+                        ) ?? NSFileProviderError(.cannotSynchronize)
+                        observer.finishEnumeratingWithError(fpError)
+                    } else {
+                        allDeletedMetadatas += deletedMetadatas ?? []
+                        allUpdatedMetadatas += updatedMetadatas ?? []
+                        allNewMetadatas += newMetadatas ?? []
+
+                        // Just because we have read child directories metadata doesn't mean we need
+                        // to in turn scan their children. This is not the case for files
+                        var examinedChildFilesAndDeletedItems = Set<String>()
+                        if let metadatas, let target = metadatas.first {
+                            examinedItemIds.insert(target.ocId)
+
+                            if metadatas.count > 1 {
+                                examinedChildFilesAndDeletedItems.formUnion(
+                                    metadatas[1...].filter { !$0.directory }.map(\.ocId)
+                                )
+                            }
+
+                            // If the target is not in the updated metadatas then neither it, nor
+                            // any of its kids have changed. So skip examining all of them
+                            if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
+                                let materialisedChildren = materialisedItems.filter {
+                                    $0.serverUrl.hasPrefix(itemRemoteUrl)
+                                }.map(\.ocId)
+                                examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
+                            }
+
+                            if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
+                                examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
+                            }
+                        }
+
+                        examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
+                    }
                 }
 
-                guard error == nil else {
-                    Self.logger.info(
-                        """
-                        Finished recursive change enumeration of working set for user:
-                        \(self.account.ncKitAccount, privacy: .public)
-                        with error: \(error!.errorDescription, privacy: .public)
-                        """
-                    )
-                    // TODO: Refactor for conciseness
-                    let fpError = error?.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
-                    observer.finishEnumeratingWithError(fpError)
-                    return
+                // Run a check to ensure files deleted in one location are not updated in another
+                // (e.g. when moved)
+                // The recursive scan provides us with updated/deleted metadatas only on a folder by
+                // folder basis; so we need to check we are not simultaneously marking a moved file as
+                // deleted and updated
+                var checkedDeletedMetadatas = allDeletedMetadatas
+
+                for updatedMetadata in allUpdatedMetadatas {
+                    guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(
+                        where: { $0.ocId == updatedMetadata.ocId }
+                    ) else { continue }
+                    checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
                 }
+
+                allDeletedMetadatas = checkedDeletedMetadatas
 
                 Self.logger.info(
                     """
-                    Finished recursive change enumeration of working set for user:
-                    \(self.account.ncKitAccount, privacy: .public). Enumerating items.
+                    Finished change enumeration of working set for user:
+                        \(self.account.ncKitAccount, privacy: .public).
+                        Enumerating items.
                     """
                 )
 
@@ -426,9 +446,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    newMetadatas: newMetadatas,
-                    updatedMetadatas: updatedMetadatas,
-                    deletedMetadatas: deletedMetadatas
+                    newMetadatas: allNewMetadatas,
+                    updatedMetadatas: allUpdatedMetadatas,
+                    deletedMetadatas: allDeletedMetadatas
                 )
             }
             return

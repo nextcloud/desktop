@@ -5,6 +5,7 @@
 //  Created by Claudio Cambra on 2024-12-02.
 //
 
+import FileProvider
 import Foundation
 import NextcloudKit
 import RealmSwift
@@ -26,6 +27,18 @@ extension NKFile {
                 ? NKCommon.TypeClassFile.document.rawValue
                 : classFile
         // Support for finding the correct filename for e2ee files should go here
+
+        // Don't ask me why, NextcloudKit renames and moves the root folder details
+        // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
+        let rootRequiresFixup = serverUrl == ".." && fileName == "."
+        let ocId = rootRequiresFixup
+            ? NSFileProviderItemIdentifier.rootContainer.rawValue
+            : self.ocId
+        let directory = rootRequiresFixup ? true : self.directory
+        let serverUrl = rootRequiresFixup
+            ? urlBase + Account.webDavFilesUrlSuffix + userId
+            : self.serverUrl
+        let fileName = rootRequiresFixup ? "" : self.fileName
 
         return SendableItemMetadata(
             ocId: ocId,
@@ -116,13 +129,14 @@ extension Array<NKFile> {
         childDirectoriesMetadatas: [SendableItemMetadata],
         metadatas: [SendableItemMetadata]
     )? {
-        guard let targetDirectoryMetadata = first?.toItemMetadata() else {
+        guard var targetDirectoryMetadata = first?.toItemMetadata() else {
             return nil
         }
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
-        await concurrentChunkedForEach { file in
-            guard file.ocId != targetDirectoryMetadata.ocId else { return }
-            await conversionActor.add(metadata: file.toItemMetadata())
+        if self.count > 1 {
+            await self[1...].concurrentChunkedForEach { file in
+                await conversionActor.add(metadata: file.toItemMetadata())
+            }
         }
         return await conversionActor.convertedMetadatas()
     }

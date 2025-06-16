@@ -504,7 +504,9 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let targetRootFile = result.files.first
         let expectedRoot = remoteInterface.rootItem
         XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
-        XCTAssertEqual(targetRootFile?.fileName, expectedRoot?.name)
+        XCTAssertEqual(targetRootFile?.fileName, ".") // NextcloudKit gives the root dir this name
+        XCTAssertNotEqual(targetRootFile?.fileName, expectedRoot?.name)
+        XCTAssertEqual(targetRootFile?.serverUrl, "..") // NextcloudKit gives the root dir this surl
         XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate)
         XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)
 

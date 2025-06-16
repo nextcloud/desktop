@@ -15,8 +15,6 @@ struct EnumeratorPageResponse: Sendable, Codable {
     let token: String?   // Required by server to serve the next page of items
     let index: Int      // Needed to calculate the offset for the next paginated request
     var total: Int?     // Total item count, provided in the first non-offset paginated response
-    var serverUrlQueue: [String]?
-    var nextServerUrl: String? = nil
 
     init?(nkResponseData: AFDataResponse<Data>?, index: Int) {
         guard let headers = nkResponseData?.response?.allHeaderFields as? [String: String] else {
@@ -42,8 +40,6 @@ struct EnumeratorPageResponse: Sendable, Codable {
         } else {
             total = nil
         }
-        nextServerUrl = nil
-        serverUrlQueue = nil
         
         let totalString = total != nil ? String(total ?? -1) : "nil"
         logger.debug(
@@ -54,14 +50,5 @@ struct EnumeratorPageResponse: Sendable, Codable {
                 total: \(totalString, privacy: .public)
             """
         )
-    }
-
-    init(nextServerUrl: String, serverUrlQueue: [String]? = nil) {
-        logger.debug("Creating artificial page response with \(nextServerUrl, privacy: .public)")
-        self.token = nil
-        self.index = 0
-        self.total = nil
-        self.nextServerUrl = nextServerUrl
-        self.serverUrlQueue = serverUrlQueue
     }
 }
