@@ -468,10 +468,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(
             rootResult?.count, 0, "Root folder enumeration should yield no children."
         )
-        // No metadata should be saved for the root folder ID itself.
-        XCTAssertNil(
+        // Metadata should be saved for the root folder ID itself.
+        XCTAssertNotNil(
             dbManager.itemMetadata(ocId: rootNKFile.ocId),
-            "Metadata for the root folder itself should not be saved."
+            "Metadata for the root folder itself should be saved."
         )
     }
 
@@ -485,6 +485,11 @@ final class EnumeratorTests: XCTestCase {
         debugPrint(db)
 
         // --- Database State (The "local truth" before enumeration) ---
+        var root = rootItem.toItemMetadata(account: Self.account)
+        root.visitedDirectory = true
+        root.etag = "ETAG_OLD"
+        Self.dbManager.addItemMetadata(root)
+
         // A materialised folder that we will check for changes.
         var materialisedFolder = remoteFolder.toItemMetadata(account: Self.account)
         materialisedFolder.visitedDirectory = true

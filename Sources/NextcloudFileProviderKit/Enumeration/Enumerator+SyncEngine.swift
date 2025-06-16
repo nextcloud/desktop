@@ -26,20 +26,14 @@ extension Enumerator {
         let startIndex = pageIndex > 0 ? 0 : 1
         if pageIndex == 0 {
             guard let firstFile = files.first else { return (nil, .invalidResponseError) }
-            // Do not ingest metadata for the root container
-            if !firstFile.fullUrlMatches(dbManager.account.davFilesUrl),
-               !firstFile.fullUrlMatches(dbManager.account.davFilesUrl + "/."),
-               !(firstFile.fileName == "." && firstFile.serverUrl == "..")
-            {
-                var metadata = firstFile.toItemMetadata()
-                if metadata.directory {
-                    metadata.visitedDirectory = true
-                    if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
-                        metadata.downloaded = existingMetadata.downloaded
-                    }
+            var metadata = firstFile.toItemMetadata()
+            if metadata.directory {
+                metadata.visitedDirectory = true
+                if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
+                    metadata.downloaded = existingMetadata.downloaded
                 }
-                dbManager.addItemMetadata(metadata)
             }
+            dbManager.addItemMetadata(metadata)
         }
         let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
@@ -83,12 +77,11 @@ extension Enumerator {
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        if serverUrl != account.davFilesUrl {
-            if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
-                directoryMetadata.downloaded = existingMetadata.downloaded
-            }
-            directoryMetadata.visitedDirectory = true
+        assert(directoryMetadata.directory)
+        if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
+            directoryMetadata.downloaded = existingMetadata.downloaded
         }
+        directoryMetadata.visitedDirectory = true
 
         metadatas.insert(directoryMetadata, at: 0)
 
@@ -250,20 +243,16 @@ extension Enumerator {
         }
 
         if depth == .target {
-            if serverUrl == account.davFilesUrl {
-                return (nil, nil, nil, nil, nextPage, nil)
-            } else {
-                var metadata = receivedFile.toItemMetadata()
-                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-                let isNew = existing == nil
-                let updatedMetadatas = isNew ? [] : [metadata]
-                let newMetadatas = isNew ? [metadata] : []
+            var metadata = receivedFile.toItemMetadata()
+            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+            let isNew = existing == nil
+            let updatedMetadatas = isNew ? [] : [metadata]
+            let newMetadatas = isNew ? [metadata] : []
 
-                metadata.downloaded = existing?.downloaded == true
-                dbManager.addItemMetadata(metadata)
+            metadata.downloaded = existing?.downloaded == true
+            dbManager.addItemMetadata(metadata)
 
-                return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
-            }
+            return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
         } else if depth == .targetAndDirectChildren {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
