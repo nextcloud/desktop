@@ -166,11 +166,13 @@ public class MockRemoteItem: Equatable {
         let serverUrlTrimCount = name.count
 
         var trimmedServerUrl = remotePath
-        trimmedServerUrl.removeSubrange(
-            remotePath.index(
-                remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
-            )..<remotePath.endIndex
-        )
+        if identifier != NSFileProviderItemIdentifier.rootContainer.rawValue {
+            trimmedServerUrl.removeSubrange(
+                remotePath.index(
+                    remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
+                )..<remotePath.endIndex
+            )
+        }
 
         return SendableItemMetadata(
             ocId: identifier,
