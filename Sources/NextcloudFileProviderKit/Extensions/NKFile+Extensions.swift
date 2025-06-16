@@ -5,6 +5,7 @@
 //  Created by Claudio Cambra on 2024-12-02.
 //
 
+import FileProvider
 import Foundation
 import NextcloudKit
 import RealmSwift
@@ -26,6 +27,12 @@ extension NKFile {
                 ? NKCommon.TypeClassFile.document.rawValue
                 : classFile
         // Support for finding the correct filename for e2ee files should go here
+
+        let rootRequiresFixup = serverUrl == ".." && fileName == "."
+        let serverUrl = rootRequiresFixup
+            ? urlBase + Account.webDavFilesUrlSuffix + userId
+            : self.serverUrl
+        let fileName = rootRequiresFixup ? "" : self.fileName
 
         return SendableItemMetadata(
             ocId: ocId,
@@ -116,8 +123,14 @@ extension Array<NKFile> {
         childDirectoriesMetadatas: [SendableItemMetadata],
         metadatas: [SendableItemMetadata]
     )? {
-        guard let targetDirectoryMetadata = first?.toItemMetadata() else {
+        guard var targetDirectoryMetadata = first?.toItemMetadata() else {
             return nil
+        }
+        // Don't ask me why, NextcloudKit renames and moves the root folder details
+        // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
+        if first?.serverUrl == ".." && first?.fileName == "." {
+            targetDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+            targetDirectoryMetadata.directory = true
         }
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         await concurrentChunkedForEach { file in
