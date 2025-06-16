@@ -1033,6 +1033,13 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
+        var remotePath = remotePath
+        if remotePath.last == "." {
+            remotePath.removeLast()
+        }
+        if remotePath.last == "/" {
+            remotePath.removeLast()
+        }
         print("Enumerating \(remotePath)")
         guard let item = item(remotePath: remotePath, account: account) else {
             print("Item at \(remotePath) not found.")
