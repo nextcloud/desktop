@@ -240,7 +240,12 @@ public final class FilesDatabaseManager: Sendable {
             deletedMetadatas.append(metadataToDelete)
 
             Self.logger.debug(
-                "Deleting item metadata during update. ocID: \(existingMetadata.ocId, privacy: .public), etag: \(existingMetadata.etag, privacy: .public), fileName: \(existingMetadata.fileName, privacy: .public)"
+                """
+                Deleting item metadata during update.
+                    ocID: \(existingMetadata.ocId, privacy: .public)
+                    etag: \(existingMetadata.etag, privacy: .public)
+                    fileName: \(existingMetadata.fileName, privacy: .public)"
+                """
             )
         }
 
