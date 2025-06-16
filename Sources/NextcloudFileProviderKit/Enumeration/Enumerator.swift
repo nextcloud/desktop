@@ -346,7 +346,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     .materialisedItemMetadatas(account: ncKitAccount)
                     .sorted {
                         ($0.serverUrl + "/" + $0.fileName).count <
-                            ($1.serverUrl + "/" + $0.fileName).count
+                            ($1.serverUrl + "/" + $1.fileName).count
                     }
 
 
