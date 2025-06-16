@@ -128,7 +128,9 @@ extension Array<NKFile> {
         }
         // Don't ask me why, NextcloudKit renames and moves the root folder details
         // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
-        if first?.serverUrl == ".." && first?.fileName == "." {
+        if (targetDirectoryMetadata.serverUrl == ".." && targetDirectoryMetadata.fileName == ".") ||
+            (targetDirectoryMetadata.serverUrl + "/" + targetDirectoryMetadata.fileName == account.davFilesUrl + "/")
+        {
             targetDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
             targetDirectoryMetadata.directory = true
         }
