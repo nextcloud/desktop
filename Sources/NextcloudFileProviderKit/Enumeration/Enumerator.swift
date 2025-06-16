@@ -336,35 +336,13 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating working set changes for \(self.account.ncKitAccount, privacy: .public)"
             )
 
-            let fakeRootMetadata = SendableItemMetadata(
-                ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
-                account: account.ncKitAccount,
-                classFile: "",
-                contentType: "",
-                creationDate: .init(),
-                directory: true,
-                e2eEncrypted: false,
-                etag: "",
-                fileId: NSFileProviderItemIdentifier.rootContainer.rawValue,
-                fileName: "",
-                fileNameView: "",
-                ownerId: account.id,
-                ownerDisplayName: "",
-                path: "/",
-                serverUrl: account.davFilesUrl,
-                size: 0,
-                urlBase: account.serverUrl,
-                user: account.username,
-                userId: account.id
-            )
-
             // Unlike when enumerating items we can't progressively enumerate items as we need to 
             // wait to see which items are truly deleted and which have just been moved elsewhere.
             Task {
                 let ncKitAccount = account.ncKitAccount
                 // Visited folders and downloaded files. Sort in terms of their remote URLs.
                 // This way we ensure we visit parent folders before their children.
-                let materialisedItems = [fakeRootMetadata] + dbManager
+                let materialisedItems = dbManager
                     .materialisedItemMetadatas(account: ncKitAccount)
                     .sorted {
                         ($0.serverUrl + "/" + $0.fileName).count <
