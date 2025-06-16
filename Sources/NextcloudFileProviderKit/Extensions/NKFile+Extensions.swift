@@ -135,11 +135,10 @@ extension Array<NKFile> {
             targetDirectoryMetadata.directory = true
         }
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
-        await concurrentChunkedForEach { file in
-            guard file.ocId != targetDirectoryMetadata.ocId ||
-                  file.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
-            else { return }
-            await conversionActor.add(metadata: file.toItemMetadata())
+        if self.count > 1 {
+            await self[1...].concurrentChunkedForEach { file in
+                await conversionActor.add(metadata: file.toItemMetadata())
+            }
         }
         return await conversionActor.convertedMetadatas()
     }
