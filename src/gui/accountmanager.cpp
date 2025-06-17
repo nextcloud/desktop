@@ -254,18 +254,18 @@ bool AccountManager::restoreFromLegacySettings()
     }
 
     ConfigFile configFile;
-    configFile.setVfsEnabled(settings->value(configFile.isVfsEnabledC).toBool());
-    configFile.setLaunchOnSystemStartup(settings->value(configFile.launchOnSystemStartupC).toBool());
-    configFile.setOptionalServerNotifications(settings->value(configFile.optionalServerNotificationsC).toBool());
-    configFile.setPromptDeleteFiles(settings->value(configFile.promptDeleteC).toBool());
-    configFile.setShowCallNotifications(settings->value(configFile.showCallNotificationsC).toBool());
-    configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC).toBool());
-    configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC).toBool());
+    configFile.setVfsEnabled(settings->value(configFile.isVfsEnabledC, configFile.isVfsEnabled()).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(configFile.launchOnSystemStartupC, configFile.launchOnSystemStartup()).toBool());
+    configFile.setOptionalServerNotifications(settings->value(configFile.optionalServerNotificationsC, configFile.optionalServerNotifications()).toBool());
+    configFile.setPromptDeleteFiles(settings->value(configFile.promptDeleteC, configFile.promptDeleteFiles()).toBool());
+    configFile.setShowCallNotifications(settings->value(configFile.showCallNotificationsC, configFile.showCallNotifications()).toBool());
+    configFile.setShowChatNotifications(settings->value(configFile.showChatNotificationsC, configFile.showChatNotifications()).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(configFile.showInExplorerNavigationPaneC, configFile.showInExplorerNavigationPane()).toBool());
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
-    configFile.setUseUploadLimit(settings->value(configFile.useUploadLimitC).toInt());
-    configFile.setUploadLimit(settings->value(configFile.uploadLimitC).toInt());
-    configFile.setUseDownloadLimit(settings->value(configFile.useDownloadLimitC).toInt());
-    configFile.setDownloadLimit(settings->value(configFile.downloadLimitC).toInt());
+    configFile.setUseUploadLimit(settings->value(configFile.useUploadLimitC, configFile.useUploadLimit()).toInt());
+    configFile.setUploadLimit(settings->value(configFile.uploadLimitC, configFile.uploadLimit()).toInt());
+    configFile.setUseDownloadLimit(settings->value(configFile.useDownloadLimitC, configFile.useDownloadLimit()).toInt());
+    configFile.setDownloadLimit(settings->value(configFile.downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
