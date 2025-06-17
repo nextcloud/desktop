@@ -821,7 +821,9 @@ void AccountSettings::slotFolderWizardAccepted()
             }
         }
         FileSystem::setFolderMinimumPermissions(definition.localPath);
-        Utility::setupFavLink(definition.localPath);
+        Utility::setupFavLink(definition.localPath,
+                              _accountState->account()->shortcutName(),
+                              definition.targetPath == QLatin1String("/"));
     }
 
     /* take the value from the definition of already existing folders. All folders have

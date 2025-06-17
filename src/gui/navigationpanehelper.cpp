@@ -96,6 +96,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 if (AccountManager::instance()->accounts().size() > 1) {
                     title = folder->accountState()->account()->shortcutName();
                 }
+                qCInfo(lcNavPane) << "Sidebar folder will have name" << title;
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
