@@ -5781,7 +5781,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation>4 часа</translation>
+        <translation>4 чàса</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
@@ -6683,7 +6683,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
         <source>Online status</source>
-        <translation>Състояние на линия</translation>
+        <translation>Състояние</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
@@ -6723,7 +6723,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
-        <translation>Какъв е вашият статус?</translation>
+        <translation>Какво е вашето състояние?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
