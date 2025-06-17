@@ -244,6 +244,8 @@ public:
     /// Set during first time migration of legacy accounts in AccountManager
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
+    [[nodiscard]] static QString discoveredLegacyConfigFile();
+    static void setDiscoveredLegacyConfigFile(const QString &discoveredLegacyConfigFile);
 
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
@@ -252,11 +254,28 @@ public:
     static constexpr char showCallNotificationsC[] = "showCallNotifications";
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
-
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
     static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
+
+    /**
+     * Looks for config files with different names from older client versions
+     * in different locations
+     *
+     * Returns the found config file path found.
+     */
+    void findLegacyClientConfigFile();
+
+    /**
+     * Maybe a newer version of the client was used with this config file: if so, backup.
+     * Return backup files list.
+     */
+    [[nodiscard]] QStringList backupConfigFiles();
+    [[nodiscard]] bool isUpgrade() const;
+    [[nodiscard]] bool isDowngrade() const;
+    [[nodiscard]] QString configFileToRestore() const;
+    [[nodiscard]] QString findLegacyConfigFile() const;
 
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
@@ -276,6 +295,7 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
+    static QString _discoveredLegacyConfigFile;
 };
 }
 #endif // CONFIGFILE_H
