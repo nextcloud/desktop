@@ -248,7 +248,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             let readResult = await Self.readServerUrl(
                 serverUrl,
-                pageSettings: (page: providedPage, index: pageIndex, size: pageItemCount),
+                pageSettings: nil,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -296,6 +296,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.logger.debug("No more items to enumerate, stopping paged enumeration")
                 nextPage = nil
             }
+
+            nextPage = nil
 
             Self.logger.info(
                 """
