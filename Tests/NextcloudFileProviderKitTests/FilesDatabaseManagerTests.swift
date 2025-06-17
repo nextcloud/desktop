@@ -1197,4 +1197,84 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertTrue(materialisedOcIds.contains(sItemC.ocId))
         XCTAssertTrue(materialisedOcIds.contains(sDirD.ocId))
     }
+
+    func testPendingWorkingSetChanges() {
+        // 1. Arrange
+        let fiveMinutesAgo = Date().addingTimeInterval(-300)
+        let tenMinutesAgo = Date().addingTimeInterval(-600)
+        let now = Date()
+
+        // --- Items to populate the database ---
+
+        // Item 1: A materialised item synced too long ago. Should NOT be returned.
+        var itemTooOld =
+            SendableItemMetadata(ocId: "tooOld", fileName: "old.txt", account: Self.account)
+        itemTooOld.downloaded = true
+        itemTooOld.syncTime = tenMinutesAgo
+        Self.dbManager.addItemMetadata(itemTooOld)
+
+        // Item 2: A materialised item synced recently. Should be returned in the 'updated' list.
+        var itemRecentlyUpdated =
+            SendableItemMetadata(ocId: "updated", fileName: "updated.txt", account: Self.account)
+        itemRecentlyUpdated.downloaded = true
+        itemRecentlyUpdated.deleted = false
+        itemRecentlyUpdated.syncTime = now
+        Self.dbManager.addItemMetadata(itemRecentlyUpdated)
+
+        // Item 3: A materialised item synced recently but marked as deleted.
+        // Should be returned in the 'deleted' list.
+        var itemRecentlyDeleted =
+            SendableItemMetadata(ocId: "deleted", fileName: "deleted.txt", account: Self.account)
+        itemRecentlyDeleted.downloaded = true
+        itemRecentlyDeleted.deleted = true
+        itemRecentlyDeleted.syncTime = now
+        Self.dbManager.addItemMetadata(itemRecentlyDeleted)
+
+        // Item 4: A non-materialised item synced recently. Should NOT be returned.
+        var itemNotMaterialised = SendableItemMetadata(
+            ocId: "notMaterialised", fileName: "notMaterialised.txt", account: Self.account
+        )
+        itemNotMaterialised.downloaded = false // Not part of the working set
+        itemNotMaterialised.syncTime = now
+        Self.dbManager.addItemMetadata(itemNotMaterialised)
+
+        // Item 5: A materialised directory synced recently. Should be returned in 'updated'.
+        var dirRecentlyUpdated =
+            SendableItemMetadata(ocId: "updatedDir", fileName: "updatedDir", account: Self.account)
+        dirRecentlyUpdated.directory = true
+        dirRecentlyUpdated.visitedDirectory = true // Materialised as a directory
+        dirRecentlyUpdated.deleted = false
+        dirRecentlyUpdated.syncTime = now
+        Self.dbManager.addItemMetadata(dirRecentlyUpdated)
+
+        // 2. Act
+        // Fetch changes that have occurred since five minutes ago.
+        let result = Self.dbManager.pendingWorkingSetChanges(
+            account: Self.account, since: fiveMinutesAgo
+        )
+
+        // 3. Assert
+        // Verify the 'updated' results
+        XCTAssertEqual(
+            result.updated.count, 2, "There should be two updated items (one file, one directory)."
+        )
+        let updatedIds = Set(result.updated.map { $0.ocId })
+        print(updatedIds)
+        XCTAssertTrue(
+            updatedIds.contains("updated"),
+            "The recently updated file should be in the updated list."
+        )
+        XCTAssertTrue(
+            updatedIds.contains("updatedDir"),
+            "The recently updated directory should be in the updated list."
+        )
+
+        // Verify the 'deleted' results
+        XCTAssertEqual(result.deleted.count, 1, "There should be one deleted item.")
+        XCTAssertEqual(
+            result.deleted.first?.ocId,
+            "deleted",
+            "The recently deleted file should be in the deleted list."
+        )
+    }
 }
