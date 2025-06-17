@@ -90,10 +90,11 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
                 const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
                 const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
+                const auto isRemoteRoot = folder->remotePath() == QStringLiteral("/");
 
-                auto title = folder->shortGuiRemotePathOrAppName();
+                auto title = isRemoteRoot ? folder->shortGuiRemotePathOrAppName() : folder->shortGuiLocalPath();
                 // Write the account name in the sidebar only when using more than one account.
-                if (AccountManager::instance()->accounts().size() > 1) {
+                if (AccountManager::instance()->accounts().size() > 1 && isRemoteRoot) {
                     title = folder->accountState()->account()->shortcutName();
                 }
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
