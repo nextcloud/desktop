@@ -1357,7 +1357,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>Datne sākumā vai beigās satur atstarpes, un to nevarēja pārdēvēt</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="209"/>
@@ -3264,7 +3264,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="94"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Pārdēvēt datni</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="101"/>
@@ -3304,7 +3304,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="136"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Pārbauda pārdēvēšanas atļaujas…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="170"/>
@@ -4005,7 +4005,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation type="unfinished"/>
+        <translation>Tavs konts tagad tiek sinhronizēts ar virtuālo datņu atbalstu. Tas nozīmē, ka visas Tavas datnes pēc noklusējuma ir tikai tiešsaistē, un tiks lejupielādētas pēc pieprasījuma, kad atvērsi tās. Savas datnes vari atrast sadaļā &lt;b&gt;Atrašanās vietas&lt;/b&gt; meklētāja sānjoslā.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="745"/>
@@ -5312,12 +5312,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Spēkā stāšanās datums: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Beigu datums: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="219"/>
