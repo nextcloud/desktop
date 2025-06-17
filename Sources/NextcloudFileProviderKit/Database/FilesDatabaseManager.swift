@@ -652,12 +652,25 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
-    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
+    private func managedMaterialisedItemMetadatas(account: String) -> Results<RealmItemMetadata> {
         itemMetadatas
             .where {
                 $0.account == account &&
                 (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
             }
-            .toUnmanagedResults()
+    }
+
+    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
+        managedMaterialisedItemMetadatas(account: account).toUnmanagedResults()
+    }
+
+    public func pendingWorkingSetChanges(
+        account: Account, since date: Date
+    ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+        let accId = account.ncKitAccount
+        let pending = managedMaterialisedItemMetadatas(account: accId).where { $0.syncTime > date }
+        let updated = pending.where { !$0.deleted }.toUnmanagedResults()
+        let deleted = pending.where { $0.deleted }.toUnmanagedResults()
+        return (updated, deleted)
     }
 }
