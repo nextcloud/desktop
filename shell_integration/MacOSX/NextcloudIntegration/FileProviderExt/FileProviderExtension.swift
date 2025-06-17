@@ -560,7 +560,7 @@ import OSLog
         let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
         let materialisedObserver = MaterialisedEnumerationObserver(
             ncKitAccount: ncAccount.ncKitAccount, dbManager: dbManager
-        ) { _ in
+        ) { _, _ in
             completionHandler()
         }
         let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
