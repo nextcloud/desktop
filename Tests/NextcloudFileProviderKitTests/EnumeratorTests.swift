@@ -1305,6 +1305,7 @@ final class EnumeratorTests: XCTestCase {
                 identifier: "folderChild\(i)",
                 name: "folderChild\(i).txt",
                 remotePath: Self.account.davFilesUrl + "folder/folderChild\(i).txt",
+                directory: i % 5 == 0,
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
@@ -1339,6 +1340,11 @@ final class EnumeratorTests: XCTestCase {
         for item in observer.items {
             XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
         }
+        XCTAssertEqual(
+            observer.items.filter { $0.contentType?.conforms(to: .folder) ?? false }.count,
+            5
+        )
+        XCTAssertTrue(observer.items.last?.contentType?.conforms(to: .folder) ?? false)
 
         XCTAssertEqual(observer.observedPages.first, NSFileProviderPage.initialPageSortedByName as NSFileProviderPage)
         XCTAssertEqual(observer.observedPages.count, 5)
