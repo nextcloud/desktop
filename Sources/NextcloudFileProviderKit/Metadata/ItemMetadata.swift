@@ -48,6 +48,8 @@ public protocol ItemMetadata: Equatable {
     var creationDate: Date { get set }
     var dataFingerprint: String { get set }
     var date: Date { get set }
+    var syncTime: Date { get set }
+    var deleted: Bool { get set }
     var directory: Bool { get set }
     var downloadURL: String { get set }
     var e2eEncrypted: Bool { get set }

@@ -20,6 +20,8 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var creationDate: Date
     public var dataFingerprint: String
     public var date: Date
+    public var syncTime: Date
+    public var deleted: Bool
     public var directory: Bool
     public var downloadURL: String
     public var e2eEncrypted: Bool
@@ -84,6 +86,8 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         creationDate: Date,
         dataFingerprint: String = "",
         date: Date = Date(),
+        syncTime: Date = Date(),
+        deleted: Bool = false,
         directory: Bool,
         downloadURL: String = "",
         e2eEncrypted: Bool,
@@ -147,6 +151,8 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.creationDate = creationDate
         self.dataFingerprint = dataFingerprint
         self.date = date
+        self.syncTime = syncTime
+        self.deleted = deleted
         self.directory = directory
         self.downloadURL = downloadURL
         self.e2eEncrypted = e2eEncrypted
@@ -212,6 +218,8 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.creationDate = value.creationDate
         self.dataFingerprint = value.dataFingerprint
         self.date = value.date
+        self.syncTime = value.syncTime
+        self.deleted = value.deleted
         self.directory = value.directory
         self.downloadURL = value.downloadURL
         self.e2eEncrypted = value.e2eEncrypted

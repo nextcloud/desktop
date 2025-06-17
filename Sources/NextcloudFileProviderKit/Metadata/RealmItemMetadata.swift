@@ -19,6 +19,8 @@ internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var creationDate = Date()
     @Persisted public var dataFingerprint = ""
     @Persisted public var date = Date()
+    @Persisted public var syncTime = Date()
+    @Persisted public var deleted = false
     @Persisted public var directory: Bool = false
     @Persisted public var downloadURL = ""
     @Persisted public var e2eEncrypted: Bool = false
@@ -116,6 +118,8 @@ internal class RealmItemMetadata: Object, ItemMetadata {
         self.creationDate = value.creationDate
         self.dataFingerprint = value.dataFingerprint
         self.date = value.date
+        self.syncTime = value.syncTime
+        self.deleted = value.deleted
         self.directory = value.directory
         self.downloadURL = value.downloadURL
         self.e2eEncrypted = value.e2eEncrypted
