@@ -763,17 +763,11 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     }
 
     if (permissions == FileSystem::FolderPermissions::ReadOnly) {
-        qCInfo(lcFileSystem) << path << "will be read only";
-
         if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE,
                                   FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA, sid)) {
             qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce << path" << GetLastError();
             return false;
         }
-    }
-
-    if (permissions == FileSystem::FolderPermissions::ReadWrite) {
-        qCInfo(lcFileSystem) << path << "will be read write";
     }
 
     for (int i = 0; i < aclSize.AceCount; ++i) {
