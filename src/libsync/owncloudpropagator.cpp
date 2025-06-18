@@ -1293,9 +1293,11 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
-    int i = _runningJobs.indexOf(subJob);
-    Q_ASSERT(i >= 0); // should only happen if this function is called more than once
-    _runningJobs.remove(i);
+    const auto i = _runningJobs.indexOf(subJob);
+    Q_ASSERT(i >= 0 && i < _runningJobs.size()); // should only happen if this function is called more than once
+    if (i >= 0 && i < _runningJobs.size()) {
+        _runningJobs.remove(i);
+    }
 
     // Any sub job error will cause the whole composite to fail. This is important
     // for knowing whether to update the etag in PropagateDirectory, for example.
