@@ -174,6 +174,7 @@ public:
     int operationStatus = 200;
     bool isDir = true;
     bool isShared = false;
+    bool downloadForbidden = false;
     OCC::RemotePermissions permissions; // When uset, defaults to everything
     QDateTime lastModified = QDateTime::currentDateTimeUtc().addDays(-7);
     QByteArray etag = generateEtag();
