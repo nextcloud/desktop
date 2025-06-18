@@ -418,7 +418,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums"
           << "http://nextcloud.org/ns:is-encrypted"
-          << "http://nextcloud.org/ns:metadata-files-live-photo";
+          << "http://nextcloud.org/ns:metadata-files-live-photo"
+          << "http://nextcloud.org/ns:share-attributes";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";

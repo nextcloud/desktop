@@ -8,8 +8,13 @@
 
 #include <QVariant>
 #include <QLoggingCategory>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonObject>
 
 #include <cstring>
+#include <type_traits>
 
 namespace OCC {
 
@@ -67,8 +72,44 @@ RemotePermissions RemotePermissions::internalFromServerString(const QString &val
                                                               const T&otherProperties,
                                                               MountedPermissionAlgorithm algorithm)
 {
+    constexpr auto shareAttributesDecoder = [] (const auto &shareAttributes, RemotePermissions &perm) -> void {
+        auto missingDownloadPermission = false;
+        const auto &jsonArray = shareAttributes.array();
+        for (const auto &oneEntry : jsonArray) {
+            const auto &jsonObject = oneEntry.toObject();
+
+            if (jsonObject.contains(u"scope") && jsonObject.value(u"scope").toString() == u"permissions") {
+                if (jsonObject.contains(u"key") && jsonObject.value(u"key").toString() == u"download") {
+                    if (jsonObject.contains(u"enabled") && !jsonObject.value(u"enabled").toBool()) {
+                        missingDownloadPermission = true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (!missingDownloadPermission) {
+            perm.setPermission(RemotePermissions::CanRead);
+        } else {
+            perm.unsetPermission(RemotePermissions::CanRead);
+        }
+    };
+
     RemotePermissions perm;
     perm.fromArray(value.utf16());
+    Q_ASSERT(perm.hasPermission(RemotePermissions::CanRead));
+
+    if (otherProperties.contains(QStringLiteral("share-attributes"))) {
+        const auto shareAttributesRawValue = otherProperties.value(QStringLiteral("share-attributes"));
+
+        if constexpr (std::is_same<T, QMap<QString, QString>>::value) {
+            const auto &shareAttributes = QJsonDocument::fromJson(otherProperties.value(QStringLiteral("share-attributes")).toUtf8());
+            shareAttributesDecoder(shareAttributes, perm);
+        } else if constexpr (std::is_same<T, QVariantMap>::value) {
+            const auto &shareAttributes = QJsonDocument::fromJson(otherProperties.value(QStringLiteral("share-attributes")).toString().toUtf8());
+            shareAttributesDecoder(shareAttributes, perm);
+        }
+    }
 
     if (algorithm == MountedPermissionAlgorithm::WildGuessMountedSubProperty) {
         return perm;
