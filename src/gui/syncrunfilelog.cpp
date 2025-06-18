@@ -7,7 +7,7 @@
 #include <QRegularExpression>
 
 #include "syncrunfilelog.h"
-#include "common/utility.h"
+#include "libsync/configfile.h"
 #include "filesystem.h"
 #include <qfileinfo.h>
 
@@ -24,7 +24,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
-    const QString logpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    const QString logpath = ConfigFile().logDir();
     if(!QDir(logpath).exists()) {
         QDir().mkdir(logpath);
     }
