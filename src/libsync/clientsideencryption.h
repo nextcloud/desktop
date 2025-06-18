@@ -238,7 +238,7 @@ class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_PROPERTY(bool canDecrypt READ canDecrypt NOTIFY canDecryptChanged FINAL)
     Q_PROPERTY(bool userCertificateNeedsMigration READ userCertificateNeedsMigration NOTIFY userCertificateNeedsMigrationChanged FINAL)
 public:
-    ClientSideEncryption();
+    explicit ClientSideEncryption(const OCC::AccountPtr &account, QObject *parent = nullptr);
 
     [[nodiscard]] bool isInitialized() const;
 
@@ -388,12 +388,14 @@ private:
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     [[nodiscard]] bool sensitiveDataRemaining() const;
 
-    [[nodiscard]] bool checkEncryptionIsWorking() const;
+    [[nodiscard]] bool checkEncryptionIsWorking();
 
     void failedToInitialize(const AccountPtr &account);
 
     void saveCertificateIdentification(const AccountPtr &account) const;
     void cacheTokenPin(const QString pin);
+
+    OCC::AccountPtr _account;
 
     QString _mnemonic;
     bool _newMnemonicGenerated = false;

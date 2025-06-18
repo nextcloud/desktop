@@ -768,7 +768,11 @@ std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
 
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)binaryData.constData(), binaryData.size()) <= 0) {
         const auto error = handleErrors();
-        qCCritical(lcCseDecryption()) << "Could not decrypt the data." << error;
+        if (error.contains("Device removed")) {
+            qCWarning(lcCseDecryption()) << "USB secure token needs reset" << error;
+        } else {
+            qCCritical(lcCseDecryption()) << "Could not decrypt the data." << error;
+        }
         return {};
     }
 
@@ -843,7 +847,9 @@ void debugOpenssl()
 }
 
 
-ClientSideEncryption::ClientSideEncryption()
+ClientSideEncryption::ClientSideEncryption(const OCC::AccountPtr &account, QObject *parent)
+    : QObject(parent)
+    , _account(account)
 {
 }
 
@@ -1306,7 +1312,7 @@ void ClientSideEncryption::fetchPublicKeyFromKeyChain(const AccountPtr &account)
     job->start();
 }
 
-bool ClientSideEncryption::checkEncryptionIsWorking() const
+bool ClientSideEncryption::checkEncryptionIsWorking()
 {
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
     QByteArray data = EncryptionHelper::generateRandom(64);
@@ -1321,6 +1327,10 @@ bool ClientSideEncryption::checkEncryptionIsWorking() const
 
     const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, *encryptedData);
     if (!decryptionResult) {
+        if (useTokenBasedEncryption()) {
+            initializeHardwareTokenEncryption(nullptr,
+                                              _account);
+        }
         qCWarning(lcCse()) << "encryption error";
         return false;
     }
