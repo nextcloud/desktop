@@ -1565,7 +1565,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1738"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1740"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -4138,7 +4138,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>File name contains at least one invalid character</source>
-        <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
+        <translation>O nome de ficheiro contén algún carácter non aceptado</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
@@ -4184,7 +4184,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation>O nome %1 contén algún carácter incorrecto</translation>
+        <translation>O nome %1 contén algún carácter non aceptado</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
@@ -4357,38 +4357,38 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1438"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1440"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Non foi posíbel eliminar o ficheiro %1 da BD local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1454"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1491"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1520"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1487"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1522"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1528"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Non é posíbel facer que o cartafol %1 sexa de só lectura: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>unknown exception</source>
         <translation>excepción descoñecida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1542"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1544"/>
         <source>Error updating metadata: %1</source>
         <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1546"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1548"/>
         <source>File is currently in use</source>
         <translation>O ficheiro está en uso</translation>
     </message>
@@ -4713,7 +4713,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="735"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation>Non é posíbel enviar un elemento con caracteres non válidos</translation>
+        <translation>Non é posíbel enviar un elemento con caracteres non aceptados</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="837"/>
@@ -6570,7 +6570,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="222"/>
         <source>Open %1 in file explorer</source>
-        <translation>Abrir % 1 no xestor de ficheiros</translation>
+        <translation>Abrir %1 no xestor de ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="227"/>
