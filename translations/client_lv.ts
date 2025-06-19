@@ -1564,7 +1564,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1738"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1740"/>
         <source>Error writing metadata to the database</source>
         <translation>Kļūda rakstot metadatus datubāzē</translation>
     </message>
@@ -3309,7 +3309,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="170"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Tev nav atļaujas, lai pārdēvētu šo datni. Lūgums vaicāt datnes izveidotājam pārdēvēt to.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="175"/>
@@ -3344,17 +3344,17 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja pārdēvēt datni. Lūgums pārliecināties, ka ir savienojums ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Nevar pārdēvēt datni, jo serverī jau pastāv datne ar tādu pašu nosaukumu. Lūgums izvēlēties citu nosaukumu.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Vietējo datni nevarēja pārdēvēt. %1</translation>
     </message>
 </context>
 <context>
@@ -3985,7 +3985,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>Mapes pārdēvēšana neizdevās</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="667"/>
@@ -4156,7 +4156,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <location filename="../src/libsync/discovery.cpp" line="492"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Nevar pārdēvēt vai augšupielādēt</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4334,38 +4334,38 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1438"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1440"/>
         <source>Could not delete file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1454"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Kļūda metadatu atjaunināšanā nederīga labošanas laika dēļ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1491"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1520"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1487"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1522"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1528"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>unknown exception</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1542"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1544"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1546"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1548"/>
         <source>File is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -4524,7 +4524,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="370"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Mapi %1 nevar pārdēvēt vietējas datnes vai mapes nosaukuma sadursmes dēļ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="378"/>
@@ -4556,12 +4556,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="542"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Neizdevās veikt mapes pārdēvēšanu hierarhijā</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="547"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Datni neizdevās pārdēvēt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="570"/>
@@ -4618,7 +4618,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="170"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Nevārēja pārdēvēt %1 par %2; kļūda: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="227"/>
@@ -5083,12 +5083,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1403"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Pārvietot un pārdēvēt…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1406"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Pārvietot, pārdēvēt un augšupielādēt…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
@@ -5685,7 +5685,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="876"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Pārdēvēt datni</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>

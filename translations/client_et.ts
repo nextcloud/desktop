@@ -1566,7 +1566,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1738"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1740"/>
         <source>Error writing metadata to the database</source>
         <translation>Viga metainfo salvestamisel andmebaasi</translation>
     </message>
@@ -4358,38 +4358,38 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1438"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1440"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Ei õnnestunud kustutada „%1“ faili kohalikust andmebaasist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1452"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1454"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Vigase muutmisaja tõttu ei õnnestunud metainfot muuta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1491"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1520"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1487"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1522"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1528"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>„%1“ kausta ei saa muuta ainult loetavaks: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1497"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1499"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1534"/>
         <source>unknown exception</source>
         <translation>tundmatu viga või erind</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1542"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1544"/>
         <source>Error updating metadata: %1</source>
         <translation>Viga metaandmete uuendamisel: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1546"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1548"/>
         <source>File is currently in use</source>
         <translation>Fail on juba kasutusel</translation>
     </message>
