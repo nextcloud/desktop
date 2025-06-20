@@ -347,6 +347,8 @@ public:
     void setSelectiveSyncBlackList(const QStringList &list);
     void setSelectiveSyncWhiteList(const QStringList &list);
 
+    bool shouldDiscoverChildFolder(const QString &path) const;
+
     // output
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
