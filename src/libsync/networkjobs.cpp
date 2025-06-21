@@ -1315,7 +1315,7 @@ void SimpleApiJob::start()
 bool SimpleApiJob::finished()
 {
     const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qCDebug(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
+    qCWarning(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
     emit resultReceived(httpStatusCode);
     return true;
 }

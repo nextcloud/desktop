@@ -68,7 +68,7 @@ PropagatorJob::JobParallelism UpdateE2eeFolderMetadataJob::parallelism() const
 void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCode, const QString &message)
 {
     if (httpReturnCode != 200) {
-        qCDebug(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata.";
+        qCWarning(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata.";
         _item->_status = SyncFileItem::FatalError;
         _item->_errorString = message;
         emit finished(SyncFileItem::FatalError);
@@ -99,7 +99,7 @@ void UpdateE2eeFolderMetadataJob::slotUpdateMetadataFinished(int httpReturnCode,
     const auto itemStatus = httpReturnCode != 200 ? SyncFileItem::FatalError : SyncFileItem::Success;
     if (httpReturnCode != 200) {
         _item->_errorString = message;
-        qCDebug(lcUpdateFileDropMetadataJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << httpReturnCode << message;
+        qCWarning(lcUpdateFileDropMetadataJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << httpReturnCode << message;
     } else {
         qCDebug(lcUpdateFileDropMetadataJob) << "Uploading of the metadata success, Encrypting the file";
     }

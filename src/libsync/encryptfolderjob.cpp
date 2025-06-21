@@ -132,7 +132,7 @@ void EncryptFolderJob::uploadMetadata()
 void EncryptFolderJob::slotUploadMetadataFinished(int statusCode, const QString &message)
 {
     if (statusCode != 200) {
-        qCDebug(lcEncryptFolderJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error"
+        qCWarning(lcEncryptFolderJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error"
                                             << message;
         qCDebug(lcEncryptFolderJob()) << "Unlocking the folder.";
         _errorString = message;

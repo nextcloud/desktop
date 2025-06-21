@@ -87,7 +87,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
                 reportToServerSentSuccessfully();
                 return;
             }
-            qCDebug(lcClientStatusReportingNetwork) << "Received error when sending client report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
+            qCWarning(lcClientStatusReportingNetwork) << "Received error when sending client report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
         }
     });
     clientStatusReportingJob->start();
@@ -97,7 +97,7 @@ void ClientStatusReportingNetwork::reportToServerSentSuccessfully()
 {
     qCInfo(lcClientStatusReportingNetwork) << "Report sent successfully";
     if (!_database->deleteClientStatusReportingRecords()) {
-        qCDebug(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
+        qCWarning(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
     }
     _database->setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
 }
@@ -124,7 +124,7 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
         const auto categoryKey = classifyStatus(static_cast<ClientStatusReportingStatus>(record._status));
 
         if (categoryKey.isEmpty()) {
-            qCDebug(lcClientStatusReportingNetwork) << "Could not classify status:";
+            qCWarning(lcClientStatusReportingNetwork) << "Could not classify status:";
             continue;
         }
 
@@ -155,7 +155,7 @@ QByteArray ClientStatusReportingNetwork::classifyStatus(const ClientStatusReport
 {
     Q_ASSERT(static_cast<int>(status) >= 0 && static_cast<int>(status) < static_cast<int>(ClientStatusReportingStatus::Count));
     if (static_cast<int>(status) < 0 || static_cast<int>(status) >= static_cast<int>(ClientStatusReportingStatus::Count)) {
-        qCDebug(lcClientStatusReportingNetwork) << "Invalid status:" << static_cast<int>(status);
+        qCWarning(lcClientStatusReportingNetwork) << "Invalid status:" << static_cast<int>(status);
         return {};
     }
 
