@@ -584,8 +584,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | live photo: " << dbEntry._isLivePhoto << "//" << serverEntry.isLivePhoto
                            << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
 
-    qCInfo(lcDisco).nospace() << processingLog;
-
     if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
         return; // Ignore this.
@@ -1827,11 +1825,12 @@ void ProcessDirectoryJob::processFileFinalize(
     }
 
     {
-        const auto isImportantInstruction = item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_IGNORE
-            && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
+        const auto isImportantInstruction = item->_instruction != CSYNC_INSTRUCTION_NONE;
         if (isImportantInstruction) {
+            qCInfo(lcDisco).noquote() << item->_discoveryResult;
             qCInfo(lcDisco) << "discovered" << item->_file << item->_instruction << item->_direction << item->_type;
         } else {
+            qCDebug(lcDisco).noquote() << item->_discoveryResult;
             qCDebug(lcDisco) << "discovered" << item->_file << item->_instruction << item->_direction << item->_type;
         }
     }

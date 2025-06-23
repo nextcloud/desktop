@@ -51,7 +51,7 @@ QString createErrorMessageForPlaceholderUpdateAndCreate(const QString &path, con
     for (const auto &fileComponent : fileComponents) {
         if (fileComponent.startsWith(forbiddenLeadingCharacterInPath)) {
             qCInfo(lcCfApiWrapper) << "Failed to create/update a placeholder for path \"" << pathFromNativeSeparators << "\" that has a leading '#'.";
-            return {(originalErrorMessage + QStringLiteral(": ") + QObject::tr("Paths beginning with '#' character are not supported in VFS mode."))};
+            return QString{originalErrorMessage + QStringLiteral(": ") + QObject::tr("Paths beginning with '#' character are not supported in VFS mode.")};
         }
     }
     return originalErrorMessage;
@@ -718,7 +718,7 @@ OCC::Result<OCC::CfApiWrapper::ConnectionKey, QString> OCC::CfApiWrapper::connec
     const qint64 result = CfConnectSyncRoot(p.data(),
                                             cfApiCallbacks,
                                             context,
-                                            CF_CONNECT_FLAG_REQUIRE_PROCESS_INFO | CF_CONNECT_FLAG_REQUIRE_FULL_FILE_PATH,
+                                            CF_CONNECT_FLAG_REQUIRE_PROCESS_INFO | CF_CONNECT_FLAG_REQUIRE_FULL_FILE_PATH | CF_CONNECT_FLAG_BLOCK_SELF_IMPLICIT_HYDRATION,
                                             static_cast<CF_CONNECTION_KEY *>(key.get()));
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
@@ -779,7 +779,8 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
     }
 
     if (!FileSystem::fileExists(path)) {
-        qCWarning(lcCfApiWrapper) << "file does not exist";
+        qCWarning(lcCfApiWrapper) << "does not exist" << path;
+        Q_ASSERT(false);
         return {};
     }
 
