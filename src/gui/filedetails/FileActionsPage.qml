@@ -39,11 +39,7 @@ Page {
     Connections {
         target: Systray
         function onShowFileDetailsPage(fileLocalPath, page) {
-            if (!root.fileDetails.sharingAvailable && page == Systray.FileDetailsPage.Sharing) {
-                return;
-            }
-
-            if (!root.fileDetails.fileActionsAvailable && page == Systray.FileDetailsPage.Actions) {
+            if (page == Systray.FileDetailsPage.Activity || page == Systray.FileDetailsPage.Sharing) {
                 return;
             }
 
@@ -235,16 +231,6 @@ Page {
                 onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
                 visible: root.fileDetails.sharingAvailable
             }
-
-            NCTabButton {
-                width: visible ? implicitWidth : 0
-                height: visible ? implicitHeight : 0
-                svgCustomColorSource: "image://svgimage-custom-color/settings.svg"
-                text: qsTr("File actions")
-                checked: swipeView.currentIndex === fileActivityView.swipeIndex
-                onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
-                visible: root.fileDetails.fileActionsAvailable
-            }
         }
     }
 
@@ -277,31 +263,6 @@ Page {
 
             sourceComponent: ShareView {
                 id: shareView
-
-                anchors.fill: parent
-
-                accountState: root.accountState
-                localPath: root.localPath
-                fileDetails: root.fileDetails
-                horizontalPadding: root.intendedPadding
-                iconSize: root.iconSize
-                rootStackView: root.rootStackView
-                backgroundsVisible: root.backgroundsVisible
-                accentColor: root.accentColor
-            }
-        }
-
-        Loader {
-            id: fileActionsViewLoader
-
-            readonly property int swipeIndex: SwipeView.index
-
-            width: swipeView.width
-            height: swipeView.height
-            active: root.fileDetails.fileActionsAvailable
-
-            sourceComponent: FileActionsView {
-                id: fileActionsView
 
                 anchors.fill: parent
 
