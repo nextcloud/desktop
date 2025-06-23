@@ -753,7 +753,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="615"/>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>Edit Ignored Files</source>
-        <translation>Editar arquivos a ignorar</translation>
+        <translation>Editar Arquivos a Ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
@@ -2543,7 +2543,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="55"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Adicionar conexão de sincronização de pasta</translation>
+        <translation>Adicionar Conexão de Sincronização de Pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="297"/>
@@ -2729,7 +2729,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="693"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Adicionar conexão de sincronização de pasta</translation>
+        <translation>Adicionar Conexão de Sincronização de Pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="695"/>
@@ -2949,7 +2949,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="288"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Editar arquivos a &amp;ignorar</translation>
+        <translation>Editar Arquivos a &amp;Ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="295"/>
@@ -3170,7 +3170,7 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Editor de arquivos a ignorar</translation>
+        <translation>Editor de Arquivos a Ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
