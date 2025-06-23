@@ -95,6 +95,8 @@ public slots:
      */
     void slotShowShareDialog(const QString &localPath) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
+    void slotShowDeclarativeUiDialog(const QString &localPath) const;
+    void slotShowFileActionsDialog(const QString &localPath) const;
     void slotNewAccountWizard();
 
 private slots:
