@@ -615,6 +615,18 @@ void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListene
     FolderMan::instance()->leaveShare(QDir::fromNativeSeparators(localFile));
 }
 
+void SocketApi::processFileActionsRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit fileActionsCommandReceived(fileData.localPath);
+}
+
+void SocketApi::processDeclarativeUiRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit declarativeUiCommandReceived(fileData.localPath);
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
@@ -721,6 +733,13 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
             Utility::openBrowser(url);
     });
     job->start();
+}
+
+void SocketApi::command_FILE_ACTIONS(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    processFileActionsRequest(localFile);
 }
 
 // don't pull the share manager into socketapi unittests
@@ -1114,10 +1133,11 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 6> strings { {
+    static std::array<std::pair<const char *, QString>, 7> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
         { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
+        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
         { "CONTEXT_MENU_ICON", APPLICATION_ICON_NAME },
