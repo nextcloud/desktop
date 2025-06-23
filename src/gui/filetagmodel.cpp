@@ -49,7 +49,7 @@ QVariant FileTagModel::data(const QModelIndex &index, int role) const
 void FileTagModel::fetchFileTags()
 {
     if (!_account || _serverRelativePath.isEmpty()) {
-        qCDebug(lcFileTagModel) << "Cannot fetch filetags as account is null, or server relative path is empty";
+        qCWarning(lcFileTagModel) << "Cannot fetch filetags as account is null, or server relative path is empty";
         return;
     }
 

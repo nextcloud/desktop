@@ -183,7 +183,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFailed, &loop, [&](const QString &id) {
         if (requestId == id) {
             hydrationRequestResult = false;
-            qCDebug(lcCfApiWrapper) << "Hydration request failed for" << path << requestId;
+            qCWarning(lcCfApiWrapper) << "Hydration request failed for" << path << requestId;
             loop.quit();
         }
     });

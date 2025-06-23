@@ -1051,19 +1051,19 @@ bool Account::fileCanBeUnlocked(SyncJournalDb * const journal,
     SyncJournalFileRecord record;
     if (journal->getFileRecord(folderRelativePath, &record)) {
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::AppLock)) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: app lock";
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: app lock";
             return false;
         }
 
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::UserLock) &&
             record._lockstate._lockOwnerId != sharedFromThis()->davUser()) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: user lock from" << record._lockstate._lockOwnerId;
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: user lock from" << record._lockstate._lockOwnerId;
             return false;
         }
 
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::TokenLock) &&
             record._lockstate._lockToken.isEmpty()) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: token lock without known token";
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: token lock without known token";
             return false;
         }
 

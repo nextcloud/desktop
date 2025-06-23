@@ -67,7 +67,7 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_renameTarget;
     } else {
         _localDiscoveryPaths.insert(item->_file.toUtf8());
-        qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
+        qCWarning(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
     }
 }
 
@@ -81,7 +81,7 @@ void LocalDiscoveryTracker::slotSyncFinished(bool success)
         // C++17: Could use std::set::merge().
         _localDiscoveryPaths.insert(
             _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
-        qCDebug(lcLocalDiscoveryTracker) << "sync failed, keeping last sync's local discovery path list";
+        qCWarning(lcLocalDiscoveryTracker) << "sync failed, keeping last sync's local discovery path list";
     }
     _previousLocalDiscoveryPaths.clear();
 }

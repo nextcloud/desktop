@@ -94,7 +94,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload. Invalid metadata.";
+        qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload. Invalid metadata.";
         emit error();
         return;
     }
@@ -152,7 +152,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
         bool encryptionResult = EncryptionHelper::fileEncryption(encryptedFile.encryptionKey, encryptedFile.initializationVector, &input, &output, tag);
 
         if (!encryptionResult) {
-            qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
+            qCWarning(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
             emit error();
             return;
         }
@@ -174,7 +174,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const QString &message)
 {
     if (statusCode != 200) {
-        qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << message;
+        qCWarning(lcPropagateUploadEncrypted) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << message;
         qCDebug(lcPropagateUploadEncrypted()) << "Unlocking the folder.";
         emit error();
         return;

@@ -173,7 +173,7 @@ void BasePropagateRemoteDeleteEncrypted::unlockFolder(const EncryptedFolderMetad
 
 void BasePropagateRemoteDeleteEncrypted::taskFailed()
 {
-    qCDebug(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Task failed for job" << sender();
+    qCWarning(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Task failed for job" << sender();
     _isTaskFailed = true;
     if (_encryptedFolderMetadataHandler && _encryptedFolderMetadataHandler->isFolderLocked()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
