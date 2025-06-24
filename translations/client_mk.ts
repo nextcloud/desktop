@@ -1221,7 +1221,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="514"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 сметки</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="515"/>
