@@ -315,8 +315,8 @@ QString AbstractNetworkJob::errorString() const
 
 QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 {
-    const auto base = errorString();
-    if (base.isEmpty() || !reply()) {
+    const auto errorMessage = errorString();
+    if (errorMessage.isEmpty() || !reply()) {
         return QString();
     }
 
@@ -331,7 +331,7 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
         return extra;
     }
 
-    return base;
+    return errorMessage;
 }
 
 QString AbstractNetworkJob::errorStringParsingBodyException(const QByteArray &body) const
