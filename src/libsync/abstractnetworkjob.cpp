@@ -463,13 +463,23 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    const auto displayString = reply.request().url().toDisplayString();
-    const auto requestVerb = HttpLogger::requestVerb(reply);
+    QString userFriendlyMessage;
+    switch (httpStatus) {
+    case 412:
+        userFriendlyMessage = AbstractNetworkJob::tr("Your files couldn’t be synced because another user might have updated them first.");
+        break;
+    case 403:
+        userFriendlyMessage = AbstractNetworkJob::tr("You don’t have permission to sync these files.");
+        break;
+    case 502:
+        userFriendlyMessage = AbstractNetworkJob::tr("The server is temporarily unavailable.");
+        break;
+    default:
+        userFriendlyMessage = AbstractNetworkJob::tr("Your files couldn’t be synced: %1 %2").arg(QString::number(httpStatus), httpReason);
+        break;
+    }
 
-    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus),
-                                                                                httpReason,
-                                                                                requestVerb,
-                                                                                displayString);
+    return userFriendlyMessage;
 }
 
 void AbstractNetworkJob::retry()
