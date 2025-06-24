@@ -153,6 +153,8 @@ set(client_SRCS
     userinfo.cpp
     vfsdownloaderrordialog.h
     vfsdownloaderrordialog.cpp
+    legacyaccountselectiondialog.h
+    legacyaccountselectiondialog.cpp
     accountstate.h
     accountstate.cpp
     addcertificatedialog.h
