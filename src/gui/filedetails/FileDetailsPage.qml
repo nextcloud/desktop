@@ -56,7 +56,7 @@ Page {
                     swipeView.currentIndex = shareViewLoader.swipeIndex;
                     break;
                 case Systray.FileDetailsPage.Actions:
-                    swipeView.currentIndex = shareViewLoader.swipeIndex;
+                    swipeView.currentIndex = fileActionsViewLoader.swipeIndex;
                     break;
                 }
             }

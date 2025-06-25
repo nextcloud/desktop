@@ -12,31 +12,29 @@ import Style
 import "../tray"
 import "../"
 
-ColumnLayout {
+StackView {
     id: root
+
+    signal closeButtonClicked
 
     property string localPath: ""
     property var accountState: ({})
     property FileDetails fileDetails: FileDetails {}
-    property int horizontalPadding: 0
     property int iconSize: 32
     property bool backgroundsVisible: true
     property color accentColor: Style.ncBlue
     property StackView rootStackView: StackView {}
 
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.leftMargin: root.horizontalPadding
-        Layout.rightMargin: root.horizontalPadding
+    background: Rectangle {
+        color: palette.base
+        visible: root.backgroundsVisible
+    }
 
-        ColumnLayout {
-            EnforcedPlainTextLabel {
-                text: root.localPath;
-            }
-
-            EnforcedPlainTextLabel {
-                text: qsTr("TBD");
-            }
-        }
+    initialItem: FileActionsPage {
+        id: fileDetailsPage
+        width: root.width
+        height: root.height
+        backgroundsVisible: root.backgroundsVisible
+        rootStackView: root
     }
 }
