@@ -60,7 +60,7 @@ SPDX-FileCopyrightText = "2016 ownCloud GmbH"
 SPDX-License-Identifier = "LGPL-2.1-or-later"
 
 [[annotations]]
-path = ["doc/images/main_dialog.png"]
+path = ["doc/images/main_dialog_christine.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2016 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "CC-BY-3.0"
