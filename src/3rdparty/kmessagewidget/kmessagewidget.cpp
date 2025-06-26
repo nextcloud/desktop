@@ -17,6 +17,7 @@
 #include <QShowEvent>
 #include <QTimeLine>
 #include <QToolButton>
+#include <QPushButton>
 #include <QStyle>
 
 //---------------------------------------------------------------------
@@ -38,7 +39,7 @@ public:
 
     KMessageWidget::MessageType messageType = KMessageWidget::Positive;
     bool wordWrap = false;
-    QList<QToolButton *> buttons;
+    QList<QPushButton *> buttons;
     QPixmap contentSnapShot;
 
     void createLayout();
@@ -102,9 +103,8 @@ void KMessageWidgetPrivate::createLayout()
     buttons.clear();
 
     Q_FOREACH (QAction *action, q->actions()) {
-        auto *button = new QToolButton(content);
+        auto *button = new QPushButton(content);
         button->setDefaultAction(action);
-        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         buttons.append(button);
     }
 
@@ -126,7 +126,7 @@ void KMessageWidgetPrivate::createLayout()
             // Use an additional layout in row 1 for the buttons.
             auto *buttonLayout = new QHBoxLayout;
             buttonLayout->addStretch();
-            Q_FOREACH (QToolButton *button, buttons) {
+            Q_FOREACH (QPushButton *button, buttons) {
                 // For some reason, calling show() is necessary if wordwrap is true,
                 // otherwise the buttons do not show up. It is not needed if
                 // wordwrap is false.
@@ -141,7 +141,7 @@ void KMessageWidgetPrivate::createLayout()
         layout->addWidget(iconLabel);
         layout->addWidget(textLabel);
 
-        for (QToolButton *button : std::as_const(buttons)) {
+        for (QPushButton *button : std::as_const(buttons)) {
             layout->addWidget(button);
         }
 

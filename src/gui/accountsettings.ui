@@ -262,6 +262,9 @@
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QTabWidget::pane { border: 0; background: transparent; }</string>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>

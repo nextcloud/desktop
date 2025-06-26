@@ -14,7 +14,7 @@
    <string notr="true">Form</string>
   </property>
   <property name="autoFillBackground">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="2" column="0">
