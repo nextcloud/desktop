@@ -31,6 +31,7 @@ private:
     FolderMan *_folderMan;
     bool _showInExplorerNavigationPane;
     QTimer _updateCloudStorageRegistryTimer;
+    static constexpr char unbrandedApplicatioName[] = "Nextcloud";
 };
 
 } // namespace OCC
