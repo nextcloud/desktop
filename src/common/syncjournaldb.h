@@ -395,6 +395,7 @@ public slots:
 
 private:
     int getFileRecordCount();
+    [[nodiscard]] bool ensureCorrectEncryptionStatus();
     [[nodiscard]] bool updateDatabaseStructure();
     [[nodiscard]] bool updateMetadataTableStructure();
     [[nodiscard]] bool updateErrorBlacklistTableStructure();
