@@ -10,6 +10,8 @@ This `AGENTS.md` file provides guidelines for OpenAI Codex and other AI agents i
 
 ## General Guidance
 
+All commits and PRs need to follow the Conventional Commits specification.
+
 Every new file needs to get a SPDX header according to this template. 
 The year needs to be adjusted accordingly. The commenting signs need to be ajusted depending on the file type
 ```
