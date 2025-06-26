@@ -49,15 +49,15 @@ jobs:
         run: |
           choco install opencppcoverage
 
-      - name: Cache Install inkscape
-        id: cache-install-inkscape
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: C:\Program Files\inkscape
-          key: ${{ runner.os }}-cache-install-inkscape
+      #- name: Cache Install inkscape
+      #  id: cache-install-inkscape
+      #  uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+      #  with:
+      #    path: C:\Program Files\inkscape
+      #    key: ${{ runner.os }}-cache-install-inkscape
 
       - name: Install inkscape
-        if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
+      #  if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           choco install inkscape
