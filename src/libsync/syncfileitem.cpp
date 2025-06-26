@@ -149,8 +149,6 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = rec.e2eMangledName();
     item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);
-    Q_ASSERT(item->_e2eEncryptionStatus != EncryptionStatus::Encrypted);
-
     item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
     item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
