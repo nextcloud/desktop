@@ -263,13 +263,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     if (excluded == CSYNC_NOT_EXCLUDED) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
-        const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
-        if (startsWithSpace && endsWithSpace) {
-            excluded = CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
-        } else if (endsWithSpace) {
+        if (endsWithSpace) {
             excluded = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
-        } else if (startsWithSpace) {
-            excluded = CSYNC_FILE_EXCLUDE_LEADING_SPACE;
         }
     }
 
@@ -2403,7 +2398,20 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
     case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
     {
-        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.fileName().trimmed()};
+        const auto removeTrailingSpaces = [] (QString string) -> QString {
+            for (int n = string.size() - 1; n >= 0; -- n) {
+                if (!string.at(n).isSpace()) {
+                    string.truncate(n + 1);
+                    break;
+                }
+            }
+
+            return string;
+        };
+
+        auto fileNameWithoutTrailingSpace = removeTrailingSpaces(fileInfo.fileName());
+        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileNameWithoutTrailingSpace};
+        qDebug() << fileInfo.fileName() << fileNameWithoutTrailingSpace << renameTarget;
         result = FileSystem::rename(absoluteFileName, renameTarget);
         break;
     }
