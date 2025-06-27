@@ -102,9 +102,19 @@ void KMessageWidgetPrivate::createLayout()
     qDeleteAll(buttons);
     buttons.clear();
 
-    Q_FOREACH (QAction *action, q->actions()) {
+    for (QAction *action : q->actions()) {
         auto *button = new QPushButton(content);
-        button->setDefaultAction(action);
+        button->setText(action->text());
+        button->setIcon(action->icon());
+        button->setToolTip(action->toolTip());
+        button->setEnabled(action->isEnabled());
+        QObject::connect(button, &QPushButton::clicked, action, &QAction::triggered);
+        QObject::connect(action, &QAction::changed, button, [button, action]() {
+            button->setText(action->text());
+            button->setIcon(action->icon());
+            button->setToolTip(action->toolTip());
+            button->setEnabled(action->isEnabled());
+        });
         buttons.append(button);
     }
 
