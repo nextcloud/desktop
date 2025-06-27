@@ -199,6 +199,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setPalette(listPalette);
     _ui->_folderList->setAutoFillBackground(true);
 
+    // Match the big folder UI background with the window palette
+    QPalette bigFolderPalette = _ui->bigFolderUi->palette();
+    bigFolderPalette.setColor(QPalette::Window, palette().window().color());
+    _ui->bigFolderUi->setPalette(bigFolderPalette);
+    _ui->bigFolderUi->setAutoFillBackground(true);
+
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     if (Mac::FileProvider::fileProviderAvailable()) {
         const auto fileProviderTab = _ui->fileProviderTab;
