@@ -43,6 +43,14 @@ Page {
         GroupBox {
             Layout.fillWidth: true
             title: qsTr("General settings")
+            font.bold: true
+            font.pointSize: Style.subheaderFontPtSize
+            padding: Style.standardSpacing
+            background: Rectangle {
+                color: palette.window
+                border.color: palette.dark
+                border.width: Style.normalBorderWidth
+            }
 
             ColumnLayout {
                 CheckBox {
@@ -63,6 +71,14 @@ Page {
         GroupBox {
             Layout.fillWidth: true
             title: qsTr("Synchronization")
+            font.bold: true
+            font.pointSize: Style.subheaderFontPtSize
+            padding: Style.standardSpacing
+            background: Rectangle {
+                color: palette.window
+                border.color: palette.dark
+                border.width: Style.normalBorderWidth
+            }
 
             ColumnLayout {
                 Loader {
@@ -77,6 +93,8 @@ Page {
                             syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
                             onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                         }
+
+                        Item { height: Style.standardSpacing }
 
                         FileProviderStorageInfo {
                             id: storageInfo
