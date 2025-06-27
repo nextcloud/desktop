@@ -13,26 +13,20 @@ import "../../tray"
 
 import com.nextcloud.desktopclient 1.0
 
-GridLayout {
+ColumnLayout {
     id: root
 
     signal domainSignalRequested
     required property var syncStatus
 
-    rows: syncStatus.syncing ? 2 : 1
-
     NCBusyIndicator {
         id: syncIcon
 
-        property int size: Style.trayListItemIconSize * 0.8
+        // reduce the icon size so the status row looks lighter
+        property int size: Style.trayListItemIconSize * 0.56
 
-        Layout.row: 0
-        Layout.rowSpan: root.syncStatus.syncing ? 2 : 1
-        Layout.column: 0
-        Layout.preferredWidth: size
-        Layout.preferredHeight: size
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
+        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        
         padding: 0
         spacing: 0
         imageSource: root.syncStatus.icon
@@ -40,18 +34,11 @@ GridLayout {
     }
 
     EnforcedPlainTextLabel {
-        Layout.row: 0
-        Layout.column: 1
-        Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
         Layout.fillWidth: true
-        font.bold: true
-        font.pointSize: Style.headerFontPtSize
-        text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
+        text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced")
     }
 
     NCProgressBar {
-        Layout.row: 1
-        Layout.column: 1
         Layout.fillWidth: true
         value: root.syncStatus.fractionCompleted
         visible: root.syncStatus.syncing

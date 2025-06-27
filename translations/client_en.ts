@@ -340,17 +340,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="50"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="58"/>
         <source>Enable virtual files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="56"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="64"/>
         <source>Allow deletion of items in Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="65"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>Synchronization</source>
         <translation type="unfinished"></translation>
     </message>
@@ -358,40 +358,40 @@
 <context>
     <name>FileProviderStorageInfo</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="27"/>
         <source>Local storage use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="32"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="42"/>
+        <source>Free up space</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FileProviderSyncStatus</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="38"/>
         <source>Syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="38"/>
         <source>All synced!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
         <source>Request sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="56"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
         <translation type="unfinished"></translation>
