@@ -13,6 +13,7 @@
 #include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "syncfileitem.h"
+#include "common/vfs.h"
 
 #include <QByteArray>
 #include <QUrl>
@@ -201,15 +202,19 @@ public:
      * sendRequest().
      */
     QNetworkReply *sendRawRequest(const QByteArray &verb,
-        const QUrl &url,
-        QNetworkRequest req = QNetworkRequest(),
-        QIODevice *data = nullptr);
+                                  const QUrl &url,
+                                  QNetworkRequest req = QNetworkRequest(),
+                                  QIODevice *data = nullptr);
 
     QNetworkReply *sendRawRequest(const QByteArray &verb,
-        const QUrl &url, QNetworkRequest req, const QByteArray &data);
+                                  const QUrl &url,
+                                  QNetworkRequest req,
+                                  const QByteArray &data);
 
     QNetworkReply *sendRawRequest(const QByteArray &verb,
-        const QUrl &url, QNetworkRequest req, QHttpMultiPart *data);
+                                  const QUrl &url,
+                                  QNetworkRequest req,
+                                  QHttpMultiPart *data);
 
     /** Create and start network job for a simple one-off request.
      *
@@ -312,8 +317,8 @@ public:
     QString cookieJarPath();
 
     void resetNetworkAccessManager();
-    QNetworkAccessManager *networkAccessManager();
-    QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager();
+    [[nodiscard]] QNetworkAccessManager *networkAccessManager() const;
+    [[nodiscard]] QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager() const;
 
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
@@ -423,6 +428,9 @@ public slots:
     void clearQNAMCache();
     void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
     void setAskUserForMnemonic(const bool ask);
+
+    void listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
+                          const QString &path);
 
 signals:
     /// Emitted whenever there's network activity

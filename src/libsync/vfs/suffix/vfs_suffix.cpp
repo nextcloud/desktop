@@ -66,14 +66,14 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
+Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, const SyncFileItem &item)
 {
-    if (modtime <= 0) {
+    if (item._modtime <= 0) {
         return {tr("Error updating metadata due to invalid modification time")};
     }
 
-    qCDebug(lcVfsSuffix()) << "setModTime" << filePath << modtime;
-    FileSystem::setModTime(filePath, modtime);
+    qCDebug(lcVfsSuffix()) << "setModTime" << filePath << item._modtime;
+    FileSystem::setModTime(filePath, item._modtime);
     return {};
 }
 
