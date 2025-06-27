@@ -43,16 +43,10 @@ Page {
         GroupBox {
             Layout.fillWidth: true
             title: qsTr("General settings")
-            font.bold: true
             font.pointSize: Style.subheaderFontPtSize
-            padding: Style.standardSpacing
-            background: Rectangle {
-                color: palette.window
-                border.color: palette.dark
-                border.width: Style.normalBorderWidth
-            }
 
             ColumnLayout {
+                Layout.margins: Style.standardSpacing
                 CheckBox {
                     id: vfsEnabledCheckBox
                     text: qsTr("Enable virtual files")
@@ -71,16 +65,17 @@ Page {
         GroupBox {
             Layout.fillWidth: true
             title: qsTr("Synchronization")
-            font.bold: true
             font.pointSize: Style.subheaderFontPtSize
             padding: Style.standardSpacing
             background: Rectangle {
                 color: palette.window
                 border.color: palette.dark
                 border.width: Style.normalBorderWidth
+                radius: 5
             }
 
             ColumnLayout {
+                Layout.margins: Style.standardSpacing
                 Loader {
                     id: vfsSettingsLoader
 
