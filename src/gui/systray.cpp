@@ -436,6 +436,12 @@ void Systray::createFileActivityDialog(const QString &localPath)
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
 }
 
+void Systray::createFileActionsDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Actions);
+}
+
 void Systray::presentShareViewInTray(const QString &localPath)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
