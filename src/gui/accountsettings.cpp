@@ -198,6 +198,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     listPalette.setColor(QPalette::Base, palette().window().color());
     _ui->_folderList->setPalette(listPalette);
     _ui->_folderList->setAutoFillBackground(true);
+    // Apply the same palette to the viewport in case the view doesn't inherit it
+    _ui->_folderList->viewport()->setPalette(listPalette);
+    _ui->_folderList->viewport()->setAutoFillBackground(true);
 
     // Match the big folder UI background with the window palette
     QPalette bigFolderPalette = _ui->bigFolderUi->palette();

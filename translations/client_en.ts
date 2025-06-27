@@ -335,18 +335,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="44"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="45"/>
         <source>General settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="50"/>
         <source>Enable virtual files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="56"/>
         <source>Allow deletion of items in Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="65"/>
+        <source>Synchronization</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
