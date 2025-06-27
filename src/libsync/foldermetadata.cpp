@@ -42,7 +42,10 @@ const auto metadataKeySize = 16;
 
 QString metadataStringFromOCsDocument(const QJsonDocument &ocsDoc)
 {
-    return ocsDoc.object()["ocs"].toObject()["data"].toObject()["meta-data"].toString();
+    const auto &ocsDocObj = ocsDoc.object();
+    const auto &ocsObj = ocsDocObj["ocs"].toObject();
+    const auto &dataObj = ocsObj["data"].toObject();
+    return dataObj["meta-data"].toString();
 }
 }
 
@@ -57,7 +60,6 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QString &remoteFolderRo
     _isRootEncryptedFolder(folderType == FolderType::Root)
 {
     Q_ASSERT(!_remoteFolderRoot.isEmpty());
-    qCInfo(lcCseMetadata()) << "Setting up an Empty Metadata";
     initEmptyMetadata();
 }
 
@@ -81,7 +83,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     setupVersionFromExistingMetadata(metadata);
 
     const auto doc = QJsonDocument::fromJson(metadata);
-    qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
+    qCDebug(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
     if (!_isRootEncryptedFolder
         && !rootEncryptedFolderInfo.keysSet()
         && !rootEncryptedFolderInfo.path.isEmpty()) {
@@ -94,12 +96,11 @@ FolderMetadata::FolderMetadata(AccountPtr account,
 void FolderMetadata::initMetadata()
 {
     if (_initialMetadata.isEmpty()) {
-        qCInfo(lcCseMetadata()) << "Setting up empty metadata";
         initEmptyMetadata();
         return;
     }
 
-    qCInfo(lcCseMetadata()) << "Setting up existing metadata";
+    qCDebug(lcCseMetadata()) << "Setting up existing metadata";
     setupExistingMetadata(_initialMetadata);
 
     if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
@@ -173,7 +174,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
 
     if (_initialSignature.isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Signature is empty";
+        qCWarning(lcCseMetadata()) << "Signature is empty";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
@@ -195,9 +196,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &metaDataObj = metaDataDoc.object();
+    const auto &metadataObj = metaDataObj[metadataJsonKey].toObject();
     _metadataNonce = QByteArray::fromBase64(metadataObj[nonceKey].toString().toLocal8Bit());
-    const auto cipherTextEncrypted = metadataObj[cipherTextKey].toString().toLocal8Bit();
+    const auto &cipherTextEncrypted = metadataObj[cipherTextKey].toString().toLocal8Bit();
 
     // for compatibility, the format is "cipheredpart|initializationVector", so we need to extract the "cipheredpart"
     const auto cipherTextPartExtracted = cipherTextEncrypted.split('|').at(0);
@@ -230,10 +232,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
-    const auto files = cipherTextDocument.object()[filesKey].toObject();
-    const auto folders = cipherTextDocument.object()[foldersKey].toObject();
+    const auto &cipherTextObj = cipherTextDocument.object();
+    const auto &files = cipherTextObj[filesKey].toObject();
+    const auto &folders = cipherTextObj[foldersKey].toObject();
 
-    const auto counterVariantFromJson = cipherTextDocument.object().value(counterKey).toVariant();
+    const auto counterVariantFromJson = cipherTextObj.value(counterKey).toVariant();
     if (counterVariantFromJson.isValid() && counterVariantFromJson.canConvert<quint64>()) {
         // TODO: We need to check counter: new counter must be greater than locally stored counter
         // What does that mean? We store the counter in metadata, should we now store it in local database as we do for all file records in SyncJournal?
@@ -265,14 +268,15 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     const auto doc = QJsonDocument::fromJson(metadata);
     qCDebug(lcCseMetadata()) << "Setting up legacy existing metadata version" << _existingMetadataVersion << doc.toJson(QJsonDocument::Compact);
 
-    const auto metaDataStr = metadataStringFromOCsDocument(doc);
-    const auto metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &metaDataStr = metadataStringFromOCsDocument(doc);
+    const auto &metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
+    const auto &metaDataObj = metaDataDoc.object();
+    const auto &fullMetaDataObj = metaDataObj[metadataJsonKey].toObject();
 
     // we will use metadata key from metadata to decrypt legacy metadata, so let's clear the decryption key if any provided by top-level folder
     _metadataKeyForDecryption.clear();
 
-    const auto metadataKeyFromJson = metadataObj[metadataKeyKey].toString().toLocal8Bit();
+    const auto metadataKeyFromJson = fullMetaDataObj[metadataKeyKey].toString().toLocal8Bit();
     if (!metadataKeyFromJson.isEmpty()) {
         // parse version 1.1 and 1.2 (both must have a single "metadataKey"), not "metadataKeys" as 1.0
         const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(metadataKeyFromJson);
@@ -286,14 +290,15 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         // parse version 1.0 (before security-vulnerability fix for metadata keys was released
         qCDebug(lcCseMetadata()) << "Migrating from" << _existingMetadataVersion << "to"
                                  << latestSupportedMetadataVersion();
-        const auto metadataKeys = metadataObj["metadataKeys"].toObject();
+        const auto metadataKeys = fullMetaDataObj["metadataKeys"].toObject();
         if (metadataKeys.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not migrate. No metadata keys found!";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
         }
 
-        const auto lastMetadataKeyFromJson = metadataKeys.keys().last().toLocal8Bit();
+        const auto &allKeys = metadataKeys.keys();
+        const auto &lastMetadataKeyFromJson = allKeys.last().toLocal8Bit();
         if (!lastMetadataKeyFromJson.isEmpty()) {
             const auto lastMetadataKeyValueFromJson = metadataKeys.value(lastMetadataKeyFromJson).toString().toLocal8Bit();
             if (!lastMetadataKeyValueFromJson.isEmpty()) {
@@ -315,12 +320,11 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         _metadataKeyForEncryption = metadataKeyForDecryption();
     }
 
-    const auto sharing = metadataObj["sharing"].toString().toLocal8Bit();
-    const auto files = metaDataDoc.object()[filesKey].toObject();
-    const auto metadataKey = metaDataDoc.object()[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
-    const auto metadataKeyChecksum = metaDataDoc.object()[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
+    const auto &files = metaDataObj[filesKey].toObject();
+    const auto &metadataKey = metaDataObj[metadataJsonKey].toObject()[metadataKeyKey].toString().toUtf8();
+    const auto &metadataKeyChecksum = metaDataObj[metadataJsonKey].toObject()["checksum"].toString().toUtf8();
 
-    setFileDrop(metaDataDoc.object().value("filedrop").toObject());
+    setFileDrop(metaDataObj.value("filedrop").toObject());
     // for unit tests
     _fileDropFromServer = _fileDrop;
 
@@ -340,8 +344,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         const auto decryptedFileObj = decryptedFileDoc.object();
 
         if (decryptedFileObj["filename"].toString().isEmpty()) {
-            qCDebug(lcCseMetadata) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Indented);
-            qCWarning(lcCseMetadata) << "skipping encrypted file" << file.encryptedFilename << "metadata has an empty file name";
+            qCWarning(lcCseMetadata) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Compact) << "skipping encrypted file" << file.encryptedFilename << "metadata has an empty file name";
             continue;
         }
 
@@ -360,24 +363,26 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
     }
 
     if (!checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum) && _existingMetadataVersion >= MetadataVersion::Version1_2) {
-        qCInfo(lcCseMetadata) << "checksum comparison failed"
-                              << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
         if (!_account->shouldSkipE2eeMetadataChecksumValidation()) {
-            qCWarning(lcCseMetadata) << "Failed to validate checksum for legacy metadata!";
+            qCWarning(lcCseMetadata) << "Failed to validate checksum for legacy metadata!"
+                                     << "checksum comparison failed"
+                                     << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
+        } else {
+            qCWarning(lcCseMetadata) << "Failed to validate checksum for legacy metadata!"
+                                     << "shouldSkipE2eeMetadataChecksumValidation is set. Allowing invalid checksum until next sync.";
         }
-        qCWarning(lcCseMetadata) << "shouldSkipE2eeMetadataChecksumValidation is set. Allowing invalid checksum until next sync.";
     }
     _isMetadataValid = true;
 }
 
 void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata)
 {
-    const auto doc = QJsonDocument::fromJson(metadata);
-    const auto metaDataStr = metadataStringFromOCsDocument(doc);
-    const auto metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto &doc = QJsonDocument::fromJson(metadata);
+    const auto &metaDataStr = metadataStringFromOCsDocument(doc);
+    const auto &metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit()).object();
+    const auto &metadataObj = metaDataDoc[metadataJsonKey].toObject();
 
     QString versionStringFromMetadata;
 
@@ -389,8 +394,8 @@ void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata
             versionStringFromMetadata = QString::number(metadataVersionValue.toDouble(), 'f', 1);
         }
     }
-    else if (metaDataDoc.object().contains(versionKey)) {
-        const auto metadataVersionValue = metaDataDoc.object()[versionKey].toVariant();
+    else if (metaDataDoc.contains(versionKey)) {
+        const auto metadataVersionValue = metaDataDoc[versionKey].toVariant();
         if (metadataVersionValue.metaType() == QMetaType(QMetaType::QString)) {
             versionStringFromMetadata = metadataVersionValue.toString();
         } else if (metadataVersionValue.metaType() == QMetaType(QMetaType::Double)) {
@@ -546,7 +551,6 @@ void FolderMetadata::initEmptyMetadata()
     if (_account->capabilities().clientSideEncryptionVersion() < 2.0) {
         return initEmptyMetadataLegacy();
     }
-    qCDebug(lcCseMetadata()) << "Setting up empty metadata v2";
 
     const auto certificateType = _account->e2e()->useTokenBasedEncryption() ?
         FolderMetadata::CertificateType::HardwareCertificate : FolderMetadata::CertificateType::SoftwareNextcloudCertificate;
@@ -566,11 +570,8 @@ void FolderMetadata::initEmptyMetadata()
 
 void FolderMetadata::initEmptyMetadataLegacy()
 {
-    qCDebug(lcCseMetadata) << "Settint up legacy empty metadata";
     _metadataKeyForEncryption = EncryptionHelper::generateRandom(metadataKeySize);
     _metadataKeyForDecryption = _metadataKeyForEncryption;
-    QString publicKey = _account->e2e()->getPublicKey().toPem().toBase64();
-    QString displayName = _account->displayName();
 
     _isMetadataValid = true;
 
@@ -581,7 +582,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 {
     Q_ASSERT(_isMetadataValid);
     if (!_isMetadataValid) {
-        qCCritical(lcCseMetadata()) << "Could not encrypt non-initialized metadata!";
+        qCWarning(lcCseMetadata()) << "Could not encrypt non-initialized metadata!";
         return {};
     }
 
@@ -589,8 +590,6 @@ QByteArray FolderMetadata::encryptedMetadata()
         return encryptedMetadataLegacy();
     }
 
-    qCDebug(lcCseMetadata()) << "Encrypting metadata for latest version"
-                             << latestSupportedMetadataVersion();
     if (_isRootEncryptedFolder && _folderUsers.isEmpty() && _existingMetadataVersion < MetadataVersion::Version2_0) {
         // migrated from legacy version, create metadata key and setup folderUsrs array
         createNewMetadataKeyForEncryption();
@@ -629,7 +628,7 @@ QByteArray FolderMetadata::encryptedMetadata()
     const auto isChecksumsArrayValid = (!_isRootEncryptedFolder && keyChecksums.isEmpty()) || (_isRootEncryptedFolder && !keyChecksums.isEmpty());
     Q_ASSERT(isChecksumsArrayValid);
     if (!isChecksumsArrayValid) {
-        qCDebug(lcCseMetadata) << "Empty keyChecksums while shouldn't be empty!";
+        qCWarning(lcCseMetadata) << "Empty keyChecksums while shouldn't be empty!";
         return {};
     }
     if (!keyChecksums.isEmpty()) {
@@ -664,13 +663,14 @@ QByteArray FolderMetadata::encryptedMetadata()
     const auto isFolderUsersArrayValid = (!_isRootEncryptedFolder && folderUsers.isEmpty()) || (_isRootEncryptedFolder && !folderUsers.isEmpty());
     Q_ASSERT(isFolderUsersArrayValid);
     if (!isFolderUsersArrayValid) {
-        qCCritical(lcCseMetadata) << "Empty folderUsers while shouldn't be empty!";
+        qCWarning(lcCseMetadata) << "Empty folderUsers while shouldn't be empty!";
         return {};
     }
 
     if (!folderUsers.isEmpty()) {
         metaObject.insert(usersKey, folderUsers);
     }
+    Q_ASSERT(!_isRootEncryptedFolder || !folderUsers.isEmpty());
 
     if (!_fileDrop.isEmpty()) {
         // if we did not consume _fileDrop, we must keep it where it was, on the server
@@ -692,8 +692,6 @@ QByteArray FolderMetadata::encryptedMetadata()
 
 QByteArray FolderMetadata::encryptedMetadataLegacy()
 {
-    qCDebug(lcCseMetadata) << "Generating metadata";
-
     if (_metadataKeyForEncryption.isEmpty()) {
         qCWarning(lcCseMetadata) << "Metadata generation failed! Empty metadata key!";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
@@ -777,8 +775,8 @@ FolderMetadata::MetadataVersion FolderMetadata::latestSupportedMetadataVersion()
 
 bool FolderMetadata::parseFileDropPart(const QJsonDocument &doc)
 {
-    const auto fileDropObject = doc.object().value(filedropKey).toObject();
-    const auto fileDropMap = fileDropObject.toVariantMap();
+    const auto &fileDropObject = doc.object().value(filedropKey).toObject();
+    const auto &fileDropMap = fileDropObject.toVariantMap();
 
     for (auto it = std::cbegin(fileDropMap); it != std::cend(fileDropMap); ++it) {
         const auto fileDropEntryParsed = it.value().toMap();
@@ -893,7 +891,7 @@ QByteArray FolderMetadata::prepareMetadataForSignature(const QJsonDocument &full
 void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
     Q_ASSERT(_isMetadataValid);
     if (!_isMetadataValid) {
-        qCCritical(lcCseMetadata()) << "Could not add encrypted file to non-initialized metadata!";
+        qCWarning(lcCseMetadata()) << "Could not add encrypted file to non-initialized metadata!";
         return;
     }
 
@@ -973,7 +971,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
             return false;
         }
         if (parsedEncryptedFile.mimetype.isEmpty()) {
-            qCDebug(lcCseMetadata()) << "Could parse filedrop metadata. mimetype is empty for file" << parsedEncryptedFile.originalFilename;
+            qCWarning(lcCseMetadata()) << "Could parse filedrop metadata. mimetype is empty for file" << parsedEncryptedFile.originalFilename;
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return false;
         }
