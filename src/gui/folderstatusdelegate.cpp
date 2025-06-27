@@ -42,7 +42,7 @@ FolderStatusDelegate::FolderStatusDelegate()
 
 QString FolderStatusDelegate::addFolderText()
 {
-    return tr("Add Folder Sync Connection");
+    return tr("Add folder sync connection");
 }
 
 // allocate each item size in listview.

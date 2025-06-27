@@ -2485,7 +2485,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <name>OCC::FolderStatusDelegate</name>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
-        <source>Add Folder Sync Connection</source>
+        <source>Add folder sync connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2674,7 +2674,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <name>OCC::FolderWizard</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="686"/>
-        <source>Add Folder Sync Connection</source>
+        <source>Add folder sync connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
