@@ -1964,12 +1964,12 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(const AccountPtr &
         X509_REQ_free(x509_req);
     });
 
-    ret = X509_REQ_set_version(x509_req, nVersion);
-    if (ret != 1) {
-        const auto errorCode = ERR_get_error();
-        qCWarning(lcCse()) << "Error setting the version on the certificate signing request" << nVersion << ret << ERR_lib_error_string(errorCode) << ERR_reason_error_string(errorCode);
-        return {result, std::move(keyPair)};
-    }
+    // ret = X509_REQ_set_version(x509_req, nVersion);
+    // if (ret != 1) {
+    //     const auto errorCode = ERR_get_error();
+    //     qCWarning(lcCse()) << "Error setting the version on the certificate signing request" << nVersion << ret << ERR_lib_error_string(errorCode) << ERR_reason_error_string(errorCode);
+    //     return {result, std::move(keyPair)};
+    // }
 
     // 3. set subject of x509 req
     auto x509_name = X509_REQ_get_subject_name(x509_req);
