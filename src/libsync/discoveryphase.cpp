@@ -597,7 +597,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            auto perm = RemotePermissions::fromServerString(map.value("permissions"),
+            const auto perm = RemotePermissions::fromServerString(map.value("permissions"),
                                                             _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                                             map);
             emit firstDirectoryPermissions(perm);
