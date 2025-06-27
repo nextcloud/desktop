@@ -8,15 +8,17 @@ This `AGENTS.md` file provides guidelines for OpenAI Codex and other AI agents i
 
 ## Project Structure: AI Agent Handling Guidelines
 
+| Directory       | Description                                         | Agent Action         |
+|-----------------|-----------------------------------------------------|----------------------|
+| `/translations` | Translation files from Transifex.                   | Do not modify        |
+
 ## General Guidance
 
 All commits and PRs need to follow the Conventional Commits specification.
 
-Every new file needs to get a SPDX header according to this template. 
-The year needs to be adjusted accordingly. The commenting signs need to be ajusted depending on the file type
+Every new file needs to get a SPDX header in the first rows according to this template. 
+The year needs to be adjusted accordingly. The commenting signs need to be used depending on the file type.
 ```
-/*
- * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+SPDX-License-Identifier: GPL-2.0-or-later
 ```
