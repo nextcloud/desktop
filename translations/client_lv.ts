@@ -433,7 +433,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Pārslēdzieties uz savu pārlūkprogrammu, lai savienotu savu kontu.</translation>
+        <translation>Jāpārslēdzas uz pārlūku, lai savienotu savu kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
@@ -2103,7 +2103,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="161"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Gaida pilnvarošanu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="166"/>
@@ -2123,7 +2123,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -4989,7 +4989,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1150"/>
         <source>Copy private link to clipboard</source>
-        <translation>Kopēt privāto saiti starpliktuvē</translation>
+        <translation>Ievietot privāto saiti starpliktuvē</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="551"/>
@@ -5550,7 +5550,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
@@ -5925,7 +5925,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Tika veikta atteikšanās no Tava konta %1 %2. Lūgums pieteikties vēlreiz.</translation>
     </message>
 </context>
 <context>
@@ -6397,7 +6397,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
         <source>Copy share link</source>
-        <translation>Kopēt koplietošanas saiti</translation>
+        <translation>Ievietot koplietošanas saiti starpliktuvē</translation>
     </message>
 </context>
 <context>
@@ -6474,7 +6474,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
 </context>
 <context>
@@ -6566,7 +6566,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt %1 pārlūkā</translation>
     </message>
 </context>
 <context>
