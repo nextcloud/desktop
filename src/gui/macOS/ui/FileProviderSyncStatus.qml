@@ -23,7 +23,7 @@ ColumnLayout {
         id: syncIcon
 
         // reduce the icon size so the status row looks lighter
-        property int size: Style.trayListItemIconSize * 0.56
+        property int size: Style.trayListItemIconSize * 0.4
 
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         
