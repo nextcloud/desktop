@@ -124,9 +124,9 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
     qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
-    qDebug(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
-    qDebug(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
-    qDebug(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
@@ -352,6 +352,9 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
 
     qInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
@@ -373,6 +376,9 @@ void CALLBACK cfApiNotifyFileOpenCompletion(const CF_CALLBACK_INFO *callbackInfo
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     qCDebug(lcCfApiWrapper) << "Open file completion:" << path << requestId;
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 }
 
 void CALLBACK cfApiValidateData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -384,6 +390,9 @@ void CALLBACK cfApiValidateData(const CF_CALLBACK_INFO *callbackInfo, const CF_C
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     qCDebug(lcCfApiWrapper) << "Validate data:" << path << requestId;
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 }
 
 void CALLBACK cfApiCancelFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -395,6 +404,9 @@ void CALLBACK cfApiCancelFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo,
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     qCDebug(lcCfApiWrapper) << "Cancel fetch placeholder:" << path << requestId;
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 }
 
 void CALLBACK cfApiNotifyFileCloseCompletion(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -406,6 +418,9 @@ void CALLBACK cfApiNotifyFileCloseCompletion(const CF_CALLBACK_INFO *callbackInf
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     qCDebug(lcCfApiWrapper) << "Close file completion:" << path << requestId;
+    qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 }
 
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {
