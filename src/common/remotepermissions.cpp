@@ -92,7 +92,7 @@ RemotePermissions RemotePermissions::internalFromServerString(const QString &val
 
             if (jsonObject.contains(u"scope") && jsonObject.value(u"scope").toString() == u"permissions") {
                 if (jsonObject.contains(u"key") && jsonObject.value(u"key").toString() == u"download") {
-                    if (jsonObject.contains(u"enabled") && !jsonObject.value(u"enabled").toBool()) {
+                    if (jsonObject.contains(u"value") && !jsonObject.value(u"value").toBool()) {
                         missingDownloadPermission = true;
                     }
                     break;
@@ -100,9 +100,7 @@ RemotePermissions RemotePermissions::internalFromServerString(const QString &val
             }
         }
 
-        if (!missingDownloadPermission) {
-            perm.setPermission(RemotePermissions::CanRead);
-        } else {
+        if (missingDownloadPermission) {
             perm.unsetPermission(RemotePermissions::CanRead);
         }
     };

@@ -409,9 +409,9 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
         if (fileInfo.isShared) {
             if (fileInfo.downloadForbidden) {
-                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"enabled\":false}]"));
+                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"value\":false}]"));
             } else {
-                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"enabled\":true}]"));
+                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"value\":true}]"));
             }
         }
         xml.writeTextElement(ocUri, QStringLiteral("share-permissions"), QString::number(static_cast<int>(OCC::SharePermissions(OCC::SharePermissionRead |
