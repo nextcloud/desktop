@@ -5690,12 +5690,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt Nextcloud palīgu pārlūkā</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt Nextcloud Talk pārlūkā</translation>
     </message>
 </context>
 <context>
