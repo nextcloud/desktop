@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QObject>
+#include <cstdint>
 #include "csync_exclude.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
@@ -298,7 +299,7 @@ private:
 
     FolderQuota _folderQuota;
 
-    int64_t folderQuotaAvailable(const SyncFileItemPtr &item);
+    int64_t folderBytesAvailable(const SyncFileItemPtr &item, const bool isServerEntryValid);
 
 signals:
     void finished();
