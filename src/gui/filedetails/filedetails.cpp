@@ -195,4 +195,9 @@ bool FileDetails::sharingAvailable() const
     return _sharingAvailable;
 }
 
+bool FileDetails::fileActionsAvailable() const
+{
+    return _fileActionsAvailable;
+}
+
 } // namespace OCC
