@@ -2858,7 +2858,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>Configuração Geral</translation>
+        <translation>Configurações Gerais</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
