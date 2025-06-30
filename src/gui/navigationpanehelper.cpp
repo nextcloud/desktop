@@ -66,11 +66,12 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
             [&entriesToRemove](HKEY key, const QString &subKey) {
                 const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey;
+                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey << "for appName:" << appName.toString();
                 if (appName.toString() == QLatin1String(APPLICATION_NAME) || appName.toString() == unbrandedApplicationName) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
                     entriesToRemove.append(clsid);
+                    qCDebug(lcNavPane) << "Going to remove:" << subKey;
                 }
             });
     }
