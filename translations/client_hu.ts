@@ -5068,7 +5068,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Ezt a fájlt nem lehet újra megosztani</translation>
+        <translation>Ezt a fájlt nem lehet továbbosztani</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1182"/>
@@ -6375,12 +6375,12 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="382"/>
         <source>File drop (upload only)</source>
-        <translation>Fájlelhelyezés (csak feltöltés)</translation>
+        <translation>Fájllerakat (csak feltöltés)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="402"/>
         <source>Allow resharing</source>
-        <translation>Újra-megosztás engedélyezése</translation>
+        <translation>Továbbosztás engedélyezése</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="441"/>
