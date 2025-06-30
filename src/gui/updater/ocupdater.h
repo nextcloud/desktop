@@ -73,6 +73,8 @@ private:
     QTimer _updateCheckTimer; /** Timer for the regular update check. */
 };
 
+class AccessManager;
+
 /**
  * @brief Class that uses an ownCloud proprietary XML format to fetch update information
  * @ingroup gui
@@ -126,13 +128,13 @@ private slots:
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
     [[nodiscard]] bool updateSucceeded() const;
-    [[nodiscard]] QNetworkAccessManager *qnam() const { return _accessManager; }
+    [[nodiscard]] QNetworkAccessManager *qnam() const;
     [[nodiscard]] UpdateInfo updateInfo() const { return _updateInfo; }
 
 private:
     QUrl _updateUrl;
     int _state = Unknown;
-    QNetworkAccessManager *_accessManager;
+    AccessManager *_accessManager;
     QTimer *_timeoutWatchdog; /** Timer to guard the timeout of an individual network request */
     UpdateInfo _updateInfo;
 };

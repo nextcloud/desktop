@@ -43,6 +43,16 @@ AccessManager::AccessManager(QObject *parent)
     });
 }
 
+const QString &AccessManager::synchronizationType() const
+{
+    return _synchronizationType;
+}
+
+void AccessManager::setSynchronizationType(const QString &type)
+{
+    _synchronizationType = type;
+}
+
 QByteArray AccessManager::generateRequestId()
 {
     return QUuid::createUuid().toByteArray(QUuid::WithoutBraces);
@@ -54,7 +64,8 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     // Respect request specific user agent if any
     if (!newRequest.header(QNetworkRequest::UserAgentHeader).isValid()) {
-        newRequest.setHeader(QNetworkRequest::UserAgentHeader, Utility::userAgentString());
+        Q_ASSERT(!_synchronizationType.isEmpty());
+        newRequest.setHeader(QNetworkRequest::UserAgentHeader, Utility::userAgentString(_synchronizationType));
     }
 
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
