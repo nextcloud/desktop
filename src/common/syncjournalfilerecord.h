@@ -78,6 +78,11 @@ public:
     bool _sharedByMe = false;
     bool _isLivePhoto = false;
     QString _livePhotoFile;
+    struct FolderQuota {
+        qint64 bytesUsed = 0;
+        qint64 bytesAvailable = 0;
+    };
+    FolderQuota _folderQuota;
 };
 
 QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);
