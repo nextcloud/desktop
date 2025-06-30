@@ -48,12 +48,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="176"/>
         <source>Talk notification caller avatar</source>
-        <translation>Talk bildirimi çağrı yapan avatarı</translation>
+        <translation>Konuş bildirimi çağrı yapan görseli</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="235"/>
         <source>Answer Talk call notification</source>
-        <translation>Talk çağrı bildirimini yanıtla</translation>
+        <translation>Konuş çağrı bildirimini yanıtla</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="242"/>
@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="252"/>
         <source>Decline Talk call notification</source>
-        <translation>Talk çağrı bildirimini reddet</translation>
+        <translation>Konuş çağrı bildirimini reddet</translation>
     </message>
 </context>
 <context>
@@ -424,7 +424,7 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Tarayıcı Kimlik Doğrulaması</translation>
+        <translation>Tarayıcı kimlik doğrulaması</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
@@ -483,7 +483,7 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation>Nextcloud masaüstü ana penceresi</translation>
+        <translation>Nextcloud bilgisayar uygulaması ana penceresi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -538,14 +538,14 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>%1 hesap eski masaüstü istemcisini kullanıyor.
+        <translation>%1 hesap eski bilgisayar istemcisini kullanıyor.
 Bu hesaplar içe aktarılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="234"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>1 hesap eski masaüstü istemcisini kullanıyor.
+        <translation>1 hesap eski bilgisayar istemcisini kullanıyor.
 Bu hesap içe aktarılsın mı?</translation>
     </message>
     <message>
@@ -642,7 +642,7 @@ Bu hesap içe aktarılsın mı?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Görünüşe göre bu klasör için sanal dosyalar özelliğini etkinleştirmişsiniz. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
+        <translation>Bu klasör için sanal dosyalar özelliğini açmışsınız gibi görünüyor. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="109"/>
@@ -819,7 +819,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1005"/>
         <source>Disable virtual file support?</source>
-        <translation>Sanal dosya desteği devre dışı bırakılsın mı?</translation>
+        <translation>Sanal dosya desteği kapatılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1006"/>
@@ -828,7 +828,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Bu işlem sanal dosya desteğini devre dışı bırakır. Bunun sonucunda şu anda &quot;yalnızca çevrim içi kullanılabilir&quot; olarak işaretlenmiş klasörlerin içeriği indirilir.
+        <translation>Bu işlem sanal dosya desteğini kapatır. Bunun sonucunda şu anda &quot;yalnızca çevrim içi kullanılabilir&quot; olarak işaretlenmiş klasörlerin içeriği indirilir.
 
 Sanal dosya desteğini kullanımdan kaldırmanın tek faydası isteğe bağlı eşitleme özelliğinin yeniden kullanılabilmesidir.
 
@@ -897,7 +897,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1699"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Bu hesapta uçtan uca şifreleme başka bir aygıt ile etkinleştirilmiş.&lt;br&gt;Anımsatıcınızı yazarak bu aygıt için etkinleştirebilirsiniz.&lt;br&gt;Böylece var olan şifrelenmiş klasörler eşitlenmeye başlanır.</translation>
+        <translation>Bu hesapta uçtan uca şifreleme başka bir aygıt ile açılmış.&lt;br&gt;Anımsatıcınızı yazarak bu aygıt için de açabilirsiniz.&lt;br&gt;Böylece var olan şifrelenmiş klasörler eşitlenmeye başlanır.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
@@ -1259,7 +1259,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>%1 içe aktarıldı %2 eski masaüstü istemcisi.
+        <translation>%1 içe aktarıldı %2 eski bilgisayar istemcisi.
 %3</translation>
     </message>
     <message>
@@ -1278,7 +1278,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>Kimlik Doğrulaması Gerekli</translation>
+        <translation>Kimlik doğrulaması gerekli</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -2522,7 +2522,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>%1 klasörü birden fazla hesaba bağlı.
 Bu kurulum veri kaybına neden olabilir ve artık desteklenmiyor.
 Bu sorunu çözmek için: lütfen %1 klasörünü hesapların birinden kaldırın ve yeni bir eşitleme klasörü oluşturun.
-Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitleme veritabanı dosyasıyla ilgili olabilir. Lütfen %1 klasöründeki güncel olmayan ve kullanılmayan .sync_*.db dosyalarını denetleyip kaldırın.</translation>
+Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitleme veri tabanı dosyasıyla ilgili olabilir. Lütfen %1 klasöründeki güncel olmayan ve kullanılmayan .sync_*.db dosyalarını denetleyip kaldırın.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1840"/>
@@ -2579,7 +2579,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Sanal dosya desteği etkinleştirildi.</translation>
+        <translation>Sanal dosya desteği açıldı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="284"/>
@@ -2962,7 +2962,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.ui" line="335"/>
         <source>Desktop client x.x.x</source>
-        <translation>Masaüstü istemcisi x.x.x</translation>
+        <translation>Bilgisayar istemcisi x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="359"/>
@@ -3017,7 +3017,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Otomatik başlatma sistem genelinde etkinleştirilmiş olduğundan, otomatik başlatma devre dışı bırakılamaz.</translation>
+        <translation>Otomatik başlatma sistem genelinde açık olduğundan kapatılamaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
@@ -3407,8 +3407,8 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
         <translation>İstemci uygulaması hata ayıklama günlüklerini bir geçici klasöre yazabilir. Bu günlükler sorunları çözmek için çok yararlıdır.
-Günlük dosyalarının boyutu büyük olabildiğinden, istemci uygulaması her eşitleme işleminde eski günlükleri sıkıştırarak yeni günlükle oluşturur. Ayrıca çok fazla disk alanının kullanılmaması için günlük dosyaları bir kaç saat sonra silinir.
-Bu seçenek etkinse günlükler %1 klasörüne yazılır</translation>
+Günlük dosyalarının boyutu büyük olabildiğinden, istemci uygulaması her eşitleme işleminde eski günlükleri sıkıştırarak yeni günlükler oluşturur. Ayrıca çok fazla disk alanının kullanılmaması için günlük dosyaları bir kaç saat sonra silinir.
+Bu seçenek açıksa günlükler %1 klasörüne yazılır</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -4016,12 +4016,12 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation>Sanal dosyalar etkinleştirildi</translation>
+        <translation>Sanal dosyalar açıldı</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>
         <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation>Hesabınız artık sanal dosya desteğiyle eşitleniyor. Bu seçenek etkinse, tüm dosyalarınız varsayılan olarak yalnızca çevrim içi kullanılır ve istek üzerine indirilir. Dosyalarınızı Finder kenar çubuğunun &lt;b&gt;Konumlar&lt;/b&gt; bölümünde bulabilirsiniz.</translation>
+        <translation>Hesabınız artık sanal dosya desteğiyle eşitleniyor. Bu seçenek açıksa, tüm dosyalarınız varsayılan olarak yalnızca çevrim içi kullanılır ve istek üzerine indirilir. Dosyalarınızı Finder kenar çubuğunun &lt;b&gt;Konumlar&lt;/b&gt; bölümünde bulabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="745"/>
@@ -4049,7 +4049,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="491"/>
         <source>Enable experimental feature?</source>
-        <translation>Deneysel özellikler etkinleştirilsin mi?</translation>
+        <translation>Deneysel özellikler açılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="492"/>
@@ -4060,9 +4060,9 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>&quot;Sanal dosyalar&quot; kipi etkinleştirildiğinde, başlangıçta hiçbir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
+        <translation>&quot;Sanal dosyalar&quot; kipi açıldığında, başlangıçta hiçbir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
 
-Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapırlır. Şu anda seçilmemiş klasörler yalnızca çevrim içi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
+Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapılır. Şu anda seçilmemiş klasörler yalnızca çevrim içi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
 
 Bu kipe geçildiğinde yürütülmekte olan eşitleme işlemleri iptal edilir.
 
@@ -4071,7 +4071,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="506"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Deneysel yer belirteci kipi etkinleştir</translation>
+        <translation>Deneysel yer belirtici kipi kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="507"/>
@@ -4233,7 +4233,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>Dosya adı sunucu üzerinde kara listeye alınmış.</translation>
+        <translation>Dosya adı sunucu üzerinde izin verilmeyenler listesine alınmış.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="478"/>
@@ -4319,7 +4319,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1849"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>&quot;Eşitlenecek ögeleri seçin&quot; kara listesinde olduğundan yok sayıldı</translation>
+        <translation>&quot;Eşitlenecek ögeleri seçin&quot; izin verilmeyenler listesinde olduğundan yok sayıldı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1883"/>
@@ -4345,7 +4345,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2129"/>
         <source>Error while reading the database</source>
-        <translation>Veritabanı okunurken sorun çıktı</translation>
+        <translation>Veri tabanı okunurken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2214"/>
@@ -5021,7 +5021,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="552"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>%1 hesabında uçtan uca şifreleme yapılandırılmamış. Klasör eşitlemesini kullanabilmek için lütfen hesap ayarlarınızdan etkinleştirin.</translation>
+        <translation>%1 hesabında uçtan uca şifreleme yapılandırılmamış. Klasör eşitlemesini kullanabilmek için lütfen hesap ayarlarınızdan açın.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="571"/>
@@ -5412,7 +5412,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="628"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Yerel veri tabanından kara liste okunamadı</translation>
+        <translation>İzin verilmeyenler listesi yerel veri tabanından okunamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="668"/>
@@ -5590,7 +5590,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="419"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation>%1 Masaüstü istemcisi sürümü %2 (%3)</translation>
+        <translation>%1 Bilgisayar istemcisi sürümü %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="611"/>
@@ -5721,7 +5721,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Tarayıcıda Nextcloud Talk uygulamasını aç</translation>
+        <translation>Tarayıcıda Nextcloud Konuş uygulamasını aç</translation>
     </message>
 </context>
 <context>
@@ -6078,7 +6078,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="387"/>
         <source>Account synchronization is disabled</source>
-        <translation>Hesap eşitlemesi devre dışı bırakıldı</translation>
+        <translation>Hesap eşitlemesi kapatıldı</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="548"/>
@@ -6451,7 +6451,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="313"/>
         <source>Sharing is disabled</source>
-        <translation>Paylaşım devre dışı bırakılmış</translation>
+        <translation>Paylaşım kapatılmış</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="320"/>
@@ -6461,7 +6461,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="328"/>
         <source>Sharing is disabled.</source>
-        <translation>Paylaşım devre dışı bırakılmış.</translation>
+        <translation>Paylaşım kapatılmış.</translation>
     </message>
 </context>
 <context>
@@ -6482,7 +6482,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="981"/>
         <source>Failed to connect database.</source>
-        <translation>Veritabanı bağlantısı kurulamadı.</translation>
+        <translation>Veri tabanı bağlantısı kurulamadı.</translation>
     </message>
 </context>
 <context>
