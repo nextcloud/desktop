@@ -44,6 +44,11 @@ Page {
             Layout.fillWidth: true
             title: qsTr("General settings")
             font.pointSize: Style.subheaderFontPtSize
+            style: GroupBoxStyle {
+                padding.left: 12
+                padding.top: 12
+                padding.bottom: 12
+            }
 
             ColumnLayout {
                 Layout.margins: Style.standardSpacing
@@ -66,12 +71,10 @@ Page {
             Layout.fillWidth: true
             title: qsTr("Synchronization")
             font.pointSize: Style.subheaderFontPtSize
-            padding: Style.standardSpacing
-            background: Rectangle {
-                color: palette.window
-                border.color: palette.dark
-                border.width: Style.normalBorderWidth
-                radius: 5
+            style: GroupBoxStyle {
+                padding.left: 12
+                padding.top: 12
+                padding.bottom: 12
             }
 
             ColumnLayout {
