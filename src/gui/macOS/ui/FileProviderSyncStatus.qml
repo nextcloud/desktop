@@ -22,8 +22,8 @@ ColumnLayout {
     NCBusyIndicator {
         id: syncIcon
 
-        // reduce the icon size so the status row looks lighter
-        property int size: Style.trayListItemIconSize * 0.56
+        // shrink the icon so it does not dominate the status row
+        property int size: Style.trayListItemIconSize * 0.37
 
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
         

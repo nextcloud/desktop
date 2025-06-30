@@ -52,15 +52,19 @@ Page {
                 border.width: Style.normalBorderWidth
             }
 
-            ColumnLayout {
+            RowLayout {
+                spacing: Style.smallSpacing
+
                 CheckBox {
                     id: vfsEnabledCheckBox
+                    Layout.fillWidth: true
                     text: qsTr("Enable virtual files")
                     checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
                     onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
                 }
 
                 CheckBox {
+                    Layout.fillWidth: true
                     text: qsTr("Allow deletion of items in Trash")
                     checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
                     onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
