@@ -471,11 +471,11 @@ Application::~Application()
 void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
-    FolderMan::instance()->setSyncEnabled(true);
 
     const auto accountsRestoreResult = restoreLegacyAccount();
 
     const auto foldersListSize = FolderMan::instance()->setupFolders();
+    FolderMan::instance()->setSyncEnabled(true);
 
     const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
         QStringList list;
