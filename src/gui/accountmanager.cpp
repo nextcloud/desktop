@@ -6,27 +6,29 @@
 
 #include "accountmanager.h"
 
-#include "sslerrordialog.h"
-#include "proxyauthhandler.h"
-#include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
+#include "creds/credentialsfactory.h"
 #include "creds/keychainchunk.h"
+#include "legacyaccountselectiondialog.h"
+#include "libsync/clientproxy.h"
 #include "libsync/clientsideencryption.h"
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
-#include "libsync/clientproxy.h"
+#include "proxyauthhandler.h"
+#include "sslerrordialog.h"
 
-#include <QSettings>
 #include <QDir>
-#include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QNetworkAccessManager>
 #include <QPushButton>
+#include <QSettings>
 #include <type_traits>
 
 #include <qt6keychain/keychain.h>
 
-namespace {
+namespace
+{
 constexpr auto urlC = "url";
 constexpr auto authTypeC = "authType";
 constexpr auto userC = "user";
@@ -79,7 +81,8 @@ constexpr auto generalC = "General";
 }
 
 
-namespace OCC {
+namespace OCC
+{
 
 Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
 
@@ -174,6 +177,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     auto wasLegacyImportDialogDisplayed = false;
     const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
+    QStringList selectedAccountIds;
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -213,25 +217,55 @@ bool AccountManager::restoreFromLegacySettings()
             }
 
             oCSettings->beginGroup(QLatin1String(accountsC));
-            const auto accountsListSize = oCSettings->childGroups().size();
-            oCSettings->endGroup();
+            const auto childGroups = oCSettings->childGroups();
+            const auto accountsListSize = childGroups.size();
             if (const QFileInfo configFileInfo(configFile);
                 configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
                 if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
                     wasLegacyImportDialogDisplayed = true;
-                    const auto importQuestion = accountsListSize > 1
-                        ? tr("%1 accounts were detected from a legacy desktop client.\n"
-                             "Should the accounts be imported?").arg(QString::number(accountsListSize))
-                        : tr("1 account was detected from a legacy desktop client.\n"
-                             "Should the account be imported?");
-                    const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
-                    importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
-                    const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
-                    importMessageBox->exec();
-                    if (importMessageBox->clickedButton() == skipButton) {
-                        return false;
+                    if (accountsListSize == 1) {
+                        const auto importQuestion =
+                            tr("1 account was detected from a legacy desktop client.\n"
+                               "Should the account be imported?");
+                        QMessageBox importMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
+                        importMessageBox.addButton(tr("Import"), QMessageBox::AcceptRole);
+                        const auto skipButton = importMessageBox.addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                        importMessageBox.exec();
+                        if (importMessageBox.clickedButton() == skipButton) {
+                            oCSettings->endGroup();
+                            return false;
+                        }
+                        selectedAccountIds = childGroups;
+                    } else {
+                        QVector<LegacyAccountSelectionDialog::AccountItem> items;
+                        for (const auto &accId : childGroups) {
+                            oCSettings->beginGroup(accId);
+                            const auto displayName = oCSettings->value(QLatin1String(displayNameC)).toString();
+                            const auto user = oCSettings->value(QLatin1String(davUserC)).toString();
+                            const auto urlStr = oCSettings->value(QLatin1String(urlC)).toString();
+                            oCSettings->endGroup();
+                            QString label = displayName;
+                            if (label.isEmpty()) {
+                                const QUrl url(urlStr);
+                                label = QStringLiteral("%1@%2").arg(user, url.host());
+                            }
+                            items.push_back({accId, label});
+                        }
+
+                        LegacyAccountSelectionDialog dlg(items);
+                        if (dlg.exec() != QDialog::Accepted) {
+                            oCSettings->endGroup();
+                            return false;
+                        }
+                        selectedAccountIds = dlg.selectedAccountIds();
+                        if (selectedAccountIds.isEmpty()) {
+                            oCSettings->endGroup();
+                            return false;
+                        }
                     }
+                } else {
+                    selectedAccountIds = childGroups;
                 }
 
                 qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
@@ -262,8 +296,8 @@ bool AccountManager::restoreFromLegacySettings()
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
-        const auto childGroups = settings->childGroups();
-        for (const auto &accountId : childGroups) {
+        const auto groups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
+        for (const auto &accountId : groups) {
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
                 addAccount(acc);
@@ -342,8 +376,10 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(networkProxyPortC, account->proxyPort());
     settings.setValue(networkProxyNeedsAuthC, account->proxyNeedsAuth());
     settings.setValue(networkProxyUserC, account->proxyUser());
-    settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting()));
-    settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting()));
+    settings.setValue(networkUploadLimitSettingC,
+                      static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting()));
+    settings.setValue(networkDownloadLimitSettingC,
+                      static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting()));
     settings.setValue(networkUploadLimitC, account->uploadLimit());
     settings.setValue(networkDownloadLimitC, account->downloadLimit());
 
@@ -507,16 +543,10 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setProxyPort(settings.value(networkProxyPortC).toInt());
     acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
     acc->setProxyUser(settings.value(networkProxyUserC).toString());
-    acc->setUploadLimitSetting(
-        settings.value(
-            networkUploadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
-    acc->setDownloadLimitSetting(
-        settings.value(
-            networkDownloadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
-        ).value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setUploadLimitSetting(settings.value(networkUploadLimitSettingC, QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit))
+                                   .value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setDownloadLimitSetting(settings.value(networkDownloadLimitSettingC, QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit))
+                                     .value<Account::AccountNetworkTransferLimitSetting>());
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
@@ -636,8 +666,7 @@ AccountPtr AccountManager::createAccount()
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
-    connect(acc.data(), &Account::lockFileError,
-        Systray::instance(), &Systray::showErrorMessageDialog);
+    connect(acc.data(), &Account::lockFileError, Systray::instance(), &Systray::showErrorMessageDialog);
 
     return acc;
 }
