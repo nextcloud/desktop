@@ -417,6 +417,7 @@ public final class FilesDatabaseManager: Sendable {
 
             try database.write {
                 // Do not delete the metadatas that have been deleted
+                metadatasToDelete.forEach { $0.deleted = true }
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
