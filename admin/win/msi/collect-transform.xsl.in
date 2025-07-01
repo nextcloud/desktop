@@ -42,4 +42,8 @@
   <xsl:key name="vc-redist-64-search" match="wix:Component[contains(wix:File/@Source, 'vc_redist.x64.exe')]" use="@Id" />
   <xsl:template match="wix:Component[key('vc-redist-64-search', @Id)]" />
   <xsl:template match="wix:ComponentRef[key('vc-redist-64-search', @Id)]" />
+
+  <xsl:key name="qt6-webengine-core-pdb" match="wix:Component[contains(wix:File/@Source, 'Qt6WebEngineCore.pdb')]" use="@Id" />
+  <xsl:template match="wix:Component[key('qt6-webengine-core-pdb', @Id)]" />
+  <xsl:template match="wix:ComponentRef[key('qt6-webengine-core-pdb', @Id)]" />
 </xsl:stylesheet>
