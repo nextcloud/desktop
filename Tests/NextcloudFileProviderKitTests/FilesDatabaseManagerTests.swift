@@ -344,9 +344,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let remainingMetadatas = Self.dbManager.itemMetadatas(
             account: "TestAccount", underServerUrl: "https://example.com"
         )
-        XCTAssertEqual(
-            remainingMetadatas.count, 2, "Should have two remaining metadata after update"
-        )
+        XCTAssertEqual(remainingMetadatas.filter { $0.deleted }.count, 1)
+        XCTAssertEqual(remainingMetadatas.filter { !$0.deleted }.count, 2)
 
         XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-1" })
         XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-3" })
@@ -472,9 +471,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
 
         // Check the actual database state after the write transaction
-        XCTAssertEqual( // The root item and the remaining item
-            remainingMetadatas.count, 2, "Only two items should remain in the database."
-        )
+        XCTAssertEqual(remainingMetadatas.filter { $0.deleted }.count, 1)
+        XCTAssertEqual(remainingMetadatas.filter { !$0.deleted }.count, 2)
 
         let survivingItem = remainingMetadatas.last
         XCTAssertNotNil(survivingItem, "An item should survive.")
