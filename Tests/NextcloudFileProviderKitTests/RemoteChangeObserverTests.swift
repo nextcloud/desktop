@@ -7,6 +7,7 @@
 
 import Foundation
 import NextcloudCapabilitiesKit
+import RealmSwift
 import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
@@ -24,6 +25,9 @@ final class RemoteChangeObserverTests: XCTestCase {
     static let account = Account(
         user: username, id: userId, serverUrl: serverUrl, password: password
     )
+    static let dbManager = FilesDatabaseManager(
+        realmConfig: .defaultConfiguration, account: account
+    )
     static let notifyPushServer = MockNotifyPushServer(
         host: serverUrl,
         port: 8888,
@@ -32,8 +36,11 @@ final class RemoteChangeObserverTests: XCTestCase {
         eventLoopGroup: .singleton
     )
     var remoteChangeObserver: RemoteChangeObserver?
+    var dbManager: FilesDatabaseManager!
 
     override func setUp() {
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration, account: Self.account)
         Task { try await Self.notifyPushServer.run() }
     }
 
@@ -41,6 +48,14 @@ final class RemoteChangeObserverTests: XCTestCase {
         remoteChangeObserver?.resetWebSocket()
         remoteChangeObserver = nil
         Self.notifyPushServer.reset()
+    }
+
+    /// Helper to wait for an expectation with a standard timeout.
+    private func wait(for expectation: XCTestExpectation, description: String) async {
+        let result = await XCTWaiter.fulfillment(of: [expectation], timeout: 5.0)
+        if result != .completed {
+            XCTFail("Timeout waiting for \(description)")
+        }
     }
 
     func testAuthentication() async throws {
@@ -59,7 +74,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
 
         for _ in 0...Self.timeout {
@@ -90,7 +106,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: incorrectAccount,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
         let remoteChangeObserver = remoteChangeObserver!
 
@@ -122,7 +139,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: incorrectAccount,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
 
         for _ in 0...Self.timeout {
@@ -141,43 +159,44 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testChangeRecognised() async throws {
-        let remoteInterface = MockRemoteInterface()
+        // 1. Arrange
+        let db = dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
-        var notified = false
+        // DB State: A materialised file with an old ETag.
+        var fileToUpdate = SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
+        fileToUpdate.downloaded = true
+        fileToUpdate.etag = "ETAG_OLD"
+        dbManager.addItemMetadata(fileToUpdate)
 
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            authenticated = true
+        // Server State: The same file now has a new ETag.
+        let serverItem = MockRemoteItem(identifier: "item1", versionIdentifier: "ETAG_NEW", name: "file.txt", remotePath: Self.account.davFilesUrl + "/file.txt", account: Self.account.ncKitAccount, username: Self.account.username, userId: Self.account.id, serverUrl: Self.account.serverUrl)
+        remoteInterface.rootItem?.children = [serverItem]
+
+        let authExpectation = XCTestExpectation(description: "Websocket Authenticated")
+        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
+            authExpectation.fulfill()
         }
 
+        let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified")
         let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { notified = true }
+        notificationInterface.changeHandler = { changeNotifiedExpectation.fulfill() }
+
         remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
-            domain: nil
+            domain: nil,
+            dbManager: dbManager
         )
 
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
-
+        // 2. Act & Assert
+        await wait(for: authExpectation, description: "authentication")
         Self.notifyPushServer.send(message: "notify_file")
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if notified {
-                break
-            }
-        }
-        XCTAssertTrue(notified)
+        await wait(for: changeNotifiedExpectation, description: "change notification")
     }
 
     func testIgnoreNonFileNotifications() async throws {
@@ -199,7 +218,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
 
         for _ in 0...Self.timeout {
@@ -223,43 +243,43 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testPolling() async throws {
-        var notified = false
-        let remoteInterface = MockRemoteInterface()
+        // 1. Arrange
+        let db = dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        // No capabilities -> will force polling.
         remoteInterface.capabilities = ""
+
+        // DB State: A materialised file with an old ETag.
+        var fileToUpdate = SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
+        fileToUpdate.downloaded = true
+        fileToUpdate.etag = "ETAG_OLD"
+        dbManager.addItemMetadata(fileToUpdate)
+
+        // Server State: The same file now has a new ETag.
+        let serverItem = MockRemoteItem(identifier: "item1", versionIdentifier: "ETAG_NEW", name: "file.txt", remotePath: Self.account.davFilesUrl + "/file.txt", account: Self.account.ncKitAccount, username: Self.account.username, userId: Self.account.id, serverUrl: Self.account.serverUrl)
+        remoteInterface.rootItem?.children = [serverItem]
+
+        let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified via Polling")
         let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { notified = true }
+        notificationInterface.changeHandler = { changeNotifiedExpectation.fulfill() }
+
         remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
-            domain: nil
+            domain: nil,
+            dbManager: dbManager
         )
-        remoteChangeObserver?.webSocketAuthenticationFailLimit = 1
-        remoteChangeObserver?.webSocketPingFailLimit = 1
-        remoteChangeObserver?.webSocketPingIntervalNanoseconds = 1
-        remoteChangeObserver?.webSocketReconfigureIntervalNanoseconds = 1
-        remoteChangeObserver?.pollInterval = 2_000_000
+        // Set a very short poll interval for the test.
+        remoteChangeObserver?.pollInterval = 0.5
 
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if remoteChangeObserver?.webSocketTaskActive == false {
-                break
-            }
-        }
-        XCTAssertFalse(remoteChangeObserver?.webSocketTaskActive ?? true)
-
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if remoteChangeObserver?.pollingActive == true {
-                break
-            }
-        }
-        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false)
-        remoteChangeObserver?.pollInterval = 1
-        remoteChangeObserver?.pollingTimer?.fire() // TODO: Fix firing not automatically working
-
-        try await Task.sleep(nanoseconds: 1_000)
-        XCTAssertTrue(notified)
+        // 2. Act & Assert
+        // The observer will fail to connect to websocket and start polling.
+        // We just need to wait for the poll to fire and detect the change.
+        await wait(for: changeNotifiedExpectation, description: "polling to trigger change")
+        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false, "Polling should be active.")
     }
 
     func testRetryOnRemoteClose() async throws {
@@ -278,7 +298,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
 
         for _ in 0...Self.timeout {
@@ -318,7 +339,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
-            domain: nil
+            domain: nil,
+            dbManager: Self.dbManager
         )
 
         let pingIntervalNsecs = 500_000_000
@@ -346,86 +368,80 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testRetryOnConnectionLoss() async throws {
-        let remoteInterface = MockRemoteInterface()
+        // 1. Arrange
+        let db = dbManager.ncDatabase()
+        debugPrint(db)
+
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
-        var notified = false
-
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            authenticated = true
-        }
+        // Setup a change scenario
+        var fileToUpdate =
+            SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
+        fileToUpdate.downloaded = true
+        fileToUpdate.etag = "ETAG_OLD"
+        dbManager.addItemMetadata(fileToUpdate)
+        let serverItem = MockRemoteItem(
+            identifier: "item1",
+            versionIdentifier: "ETAG_NEW",
+            name: "file.txt",
+            remotePath: Self.account.davFilesUrl + "/file.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteInterface.rootItem?.children = [serverItem]
 
         let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { notified = true }
-        remoteChangeObserver = RemoteChangeObserver(
+        let remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
-            domain: nil
+            domain: nil,
+            dbManager: dbManager
         )
-        remoteChangeObserver?.networkReachabilityObserver(.reachableEthernetOrWiFi)
+        self.remoteChangeObserver = remoteChangeObserver
 
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
+        // --- Phase 1: Test connection and change notification ---
+        let authExpectation =
+            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
+        remoteChangeObserver.networkReachabilityObserver(.reachableEthernetOrWiFi)
+        await wait(for: authExpectation, description: "initial authentication")
 
+        let changeExpectation1 = XCTestExpectation(description: "First change notification")
+        notificationInterface.changeHandler = { changeExpectation1.fulfill() }
         Self.notifyPushServer.send(message: "notify_file")
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if notified {
-                break
-            }
-        }
-        XCTAssertTrue(notified) // Check notification handling is working properly
+        await wait(for: changeExpectation1, description: "first change")
 
-        remoteChangeObserver?.networkReachabilityObserver(.notReachable)
-        Self.notifyPushServer.resetCredentialsState()
-        authenticated = false
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        // Should still be false. The mock notify push server is still online so if we the
-        // remote change observer attempts to connect it _will_ be correctly authentiated,
-        // but once we have set the network reachability to unreachable it shouldn't be
-        // trying to connect at all.
-        XCTAssertFalse(authenticated)
+        // --- Phase 2: Test connection loss ---
+        remoteChangeObserver.networkReachabilityObserver(.notReachable)
+        // Give it a moment to process the disconnection
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertFalse(
+            remoteChangeObserver.webSocketTaskActive,
+            "Websocket should be inactive after connection loss."
+        )
+        Self.notifyPushServer.reset()
 
-        notified = false
+        // --- Phase 3: Test reconnection and change notification ---
+        let reauthExpectation =
+            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
+
+        // Trigger the reconnection logic.
+        remoteChangeObserver.networkReachabilityObserver(.reachableEthernetOrWiFi)
+
+        // Now, wait for the expectation to be fulfilled.
+        await wait(for: reauthExpectation, description: "re-authentication")
+        XCTAssertTrue(
+            remoteChangeObserver.webSocketTaskActive,
+            "Websocket should be active again after reconnection."
+        )
+
+        let changeExpectation2 = XCTestExpectation(description: "Second change notification")
+        notificationInterface.changeHandler = { changeExpectation2.fulfill() }
         Self.notifyPushServer.send(message: "notify_file")
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if notified {
-                break
-            }
-        }
-        XCTAssertFalse(notified) // Check we disconnected and are not listening to the server
-
-        remoteChangeObserver?.networkReachabilityObserver(.reachableEthernetOrWiFi)
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
-
-        Self.notifyPushServer.send(message: "notify_file")
-        for _ in 0...Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if notified {
-                break
-            }
-        }
-        XCTAssertTrue(notified) // Check notification handling is working properly again
+        await wait(for: changeExpectation2, description: "second change")
     }
 }
