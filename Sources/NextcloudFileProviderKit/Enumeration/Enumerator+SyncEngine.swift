@@ -35,7 +35,7 @@ extension Enumerator {
             }
             dbManager.addItemMetadata(metadata)
         }
-        let metadatas = files[startIndex..<files.count].map { $0.toItemMetadata() }
+        let metadatas = files[startIndex...].map { $0.toItemMetadata() }
         metadatas.forEach { dbManager.addItemMetadata($0) }
         return (metadatas, nil)
     }
