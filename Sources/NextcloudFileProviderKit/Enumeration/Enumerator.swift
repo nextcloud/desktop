@@ -25,8 +25,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
 
-    // TODO: actually use this in NCKit and server requests
-    private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
+    private let anchor =
+        NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
     private let pageItemCount: Int
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let account: Account
@@ -336,121 +336,26 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating working set changes for \(self.account.ncKitAccount, privacy: .public)"
             )
 
-            // Unlike when enumerating items we can't progressively enumerate items as we need to 
-            // wait to see which items are truly deleted and which have just been moved elsewhere.
-            Task {
-                let ncKitAccount = account.ncKitAccount
-                // Visited folders and downloaded files. Sort in terms of their remote URLs.
-                // This way we ensure we visit parent folders before their children.
-                let materialisedItems = dbManager
-                    .materialisedItemMetadatas(account: ncKitAccount)
-                    .sorted {
-                        ($0.serverUrl + "/" + $0.fileName).count <
-                            ($1.serverUrl + "/" + $1.fileName).count
-                    }
-
-
-                var allNewMetadatas = [SendableItemMetadata]()
-                var allUpdatedMetadatas = [SendableItemMetadata]()
-                var allDeletedMetadatas = [SendableItemMetadata]()
-                var examinedItemIds = Set<String>()
-                for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
-                    let itemRemoteUrl = item.serverUrl + "/" + item.fileName
-                    let (
-                        metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
-                    ) = await Self.readServerUrl(
-                        itemRemoteUrl,
-                        account: account,
-                        remoteInterface: remoteInterface,
-                        dbManager: dbManager,
-                        depth: item.directory ? .targetAndDirectChildren : .target
-                    )
-                    if readError?.errorCode == 404 {
-                        allDeletedMetadatas.append(item)
-                        examinedItemIds.insert(item.ocId)
-                    } else if let readError, readError != .success {
-                        Self.logger.info(
-                            """
-                            Finished change enumeration of working set for user:
-                                \(self.account.ncKitAccount, privacy: .public)
-                                with error: \(readError.errorDescription, privacy: .public)
-                            """
-                        )
-                        let fpError = readError.fileProviderError(
-                            handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                        ) ?? NSFileProviderError(.cannotSynchronize)
-                        observer.finishEnumeratingWithError(fpError)
-                    } else {
-                        allDeletedMetadatas += deletedMetadatas ?? []
-                        allUpdatedMetadatas += updatedMetadatas ?? []
-                        allNewMetadatas += newMetadatas ?? []
-
-                        // Just because we have read child directories metadata doesn't mean we need
-                        // to in turn scan their children. This is not the case for files
-                        var examinedChildFilesAndDeletedItems = Set<String>()
-                        if let metadatas, let target = metadatas.first {
-                            examinedItemIds.insert(target.ocId)
-
-                            if metadatas.count > 1 {
-                                examinedChildFilesAndDeletedItems.formUnion(
-                                    metadatas[1...].filter { !$0.directory }.map(\.ocId)
-                                )
-                            }
-
-                            // If the target is not in the updated metadatas then neither it, nor
-                            // any of its kids have changed. So skip examining all of them
-                            if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
-                                let materialisedChildren = materialisedItems.filter {
-                                    $0.serverUrl.hasPrefix(itemRemoteUrl)
-                                }.map(\.ocId)
-                                examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
-                            }
-
-                            if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
-                                examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
-                            }
-                        }
-
-                        examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
-                    }
-                }
-
-                // Run a check to ensure files deleted in one location are not updated in another
-                // (e.g. when moved)
-                // The recursive scan provides us with updated/deleted metadatas only on a folder by
-                // folder basis; so we need to check we are not simultaneously marking a moved file as
-                // deleted and updated
-                var checkedDeletedMetadatas = allDeletedMetadatas
-
-                for updatedMetadata in allUpdatedMetadatas {
-                    guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(
-                        where: { $0.ocId == updatedMetadata.ocId }
-                    ) else { continue }
-                    checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
-                }
-
-                allDeletedMetadatas = checkedDeletedMetadatas
-
-                Self.logger.info(
-                    """
-                    Finished change enumeration of working set for user:
-                        \(self.account.ncKitAccount, privacy: .public).
-                        Enumerating items.
-                    """
-                )
-
-                Self.completeChangesObserver(
-                    observer,
-                    anchor: anchor,
-                    enumeratedItemIdentifier: self.enumeratedItemIdentifier,
-                    account: account,
-                    remoteInterface: remoteInterface,
-                    dbManager: dbManager,
-                    newMetadatas: allNewMetadatas,
-                    updatedMetadatas: allUpdatedMetadatas,
-                    deletedMetadatas: allDeletedMetadatas
-                )
+            let formatter = ISO8601DateFormatter()
+            guard let anchorDateString = String(data: anchor.rawValue, encoding: .utf8),
+                  let date = formatter.date(from: anchorDateString)
+            else {
+                Self.logger.error("Couldn't parse sync anchor \(anchor.rawValue, privacy: .public)")
+                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                return
             }
+            let pendingChanges = dbManager.pendingWorkingSetChanges(account: account, since: date)
+            Self.completeChangesObserver(
+                observer,
+                anchor: anchor,
+                enumeratedItemIdentifier: enumeratedItemIdentifier,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                newMetadatas: [],
+                updatedMetadatas: pendingChanges.updated,
+                deletedMetadatas: pendingChanges.deleted
+            )
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             Self.logger.debug(
