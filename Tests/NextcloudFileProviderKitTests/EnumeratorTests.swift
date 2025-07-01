@@ -476,149 +476,84 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testWorkingSetEnumerateChanges() async throws {
-        // This test verifies that `enumerateChanges` for the working set correctly identifies
-        // new, updated, and deleted items by iterating through materialised items and fetching
-        // their state.
+        // This test verifies that `enumerateChanges` for the working set correctly
+        // queries the local database for changes since the provided sync anchor date.
 
-        // 1. Arrange
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
-        // --- Database State (The "local truth" before enumeration) ---
-        var root = rootItem.toItemMetadata(account: Self.account)
-        root.visitedDirectory = true
-        root.etag = "ETAG_OLD"
-        Self.dbManager.addItemMetadata(root)
+        let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
+        let tenMinutesAgo = Date().addingTimeInterval(-600)
+        let now = Date()
 
-        // A materialised folder that we will check for changes.
-        var materialisedFolder = remoteFolder.toItemMetadata(account: Self.account)
-        materialisedFolder.visitedDirectory = true
-        materialisedFolder.etag = "ETAG_OLD"
-        Self.dbManager.addItemMetadata(materialisedFolder)
+        // Create a sync anchor from our date.
+        let formatter = ISO8601DateFormatter()
+        let anchor = NSFileProviderSyncAnchor(formatter.string(from: anchorDate).data(using: .utf8)!)
 
-        let remoteUnmaterialisedFolder = MockRemoteItem(
-            identifier: "unmaterialised-folder",
-            versionIdentifier: "NEW",
-            name: "unmaterialised folder",
-            remotePath: Self.account.davFilesUrl + "/" + "unmaterialised folder",
-            directory: true,
+        // --- Database State ---
+        var rootMetadata = rootItem.toItemMetadata(account: Self.account)
+        rootMetadata.syncTime = now
+        Self.dbManager.addItemMetadata(rootMetadata)
+
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.syncTime = now
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        // Item synced BEFORE the anchor date (should not be reported).
+        var oldItem = remoteItemA.toItemMetadata(account: Self.account)
+        oldItem.downloaded = true // Materialised
+        oldItem.syncTime = tenMinutesAgo
+        Self.dbManager.addItemMetadata(oldItem)
+
+        // Item synced AFTER the anchor date (should be reported as updated).
+        var updatedItem = remoteItemB.toItemMetadata(account: Self.account)
+        updatedItem.downloaded = true // Materialised
+        updatedItem.deleted = false
+        updatedItem.syncTime = now
+        Self.dbManager.addItemMetadata(updatedItem)
+
+        // Item marked as deleted AFTER the anchor date (should be reported as deleted).
+        var deletedItem = remoteItemC.toItemMetadata(account: Self.account)
+        deletedItem.downloaded = true // Materialised
+        deletedItem.deleted = true
+        deletedItem.syncTime = now
+        Self.dbManager.addItemMetadata(deletedItem)
+
+        // Non-materialised item synced after anchor date (should be ignored).
+        var nonMaterialisedItem = MockRemoteItem(
+            identifier: "non-mat",
+            name: "non-mat.txt",
+            remotePath: Self.account.davFilesUrl + "/non-mat.txt",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
-        )
-        remoteUnmaterialisedFolder.parent = rootItem
-        rootItem.children.append(remoteUnmaterialisedFolder)
-
-        var unmaterialisedFolder = remoteUnmaterialisedFolder.toItemMetadata(account: Self.account)
-        unmaterialisedFolder.visitedDirectory = false
-        unmaterialisedFolder.etag = "ETAG_OLD"
-        Self.dbManager.addItemMetadata(unmaterialisedFolder)
-
-        let remoteUnmaterialisedFolderChild = MockRemoteItem(
-            identifier: "unmaterialised-folder-child",
-            versionIdentifier: "NEW",
-            name: "unmaterialised folder child",
-            remotePath: remoteUnmaterialisedFolder.remotePath + "/" + "unmaterialised folder child",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        remoteUnmaterialisedFolderChild.parent = remoteUnmaterialisedFolder
-        remoteUnmaterialisedFolder.children.append(remoteUnmaterialisedFolderChild)
-
-        // A materialised file inside the folder that will be updated on the server.
-        var fileToUpdate = remoteItemA.toItemMetadata(account: Self.account)
-        fileToUpdate.downloaded = true
-        fileToUpdate.etag = "ETAG_OLD"
-        Self.dbManager.addItemMetadata(fileToUpdate)
-
-        // A materialised file inside the folder that will be deleted from the server.
-        var fileToBeDeleted = remoteItemB.toItemMetadata(account: Self.account)
-        fileToBeDeleted.downloaded = true
-        Self.dbManager.addItemMetadata(fileToBeDeleted)
-
-        // A top-level materialised file that does not exist remotely (i.e. deleted), will cause 404
-        var topLevelFileToBeDeleted = SendableItemMetadata(
-            ocId: "toplevel-deleted", fileName: "toplevel-deleted.txt", account: Self.account
-        )
-        topLevelFileToBeDeleted.downloaded = true
-        topLevelFileToBeDeleted.uploaded = true
-        Self.dbManager.addItemMetadata(topLevelFileToBeDeleted)
-
-        // --- Server State (The "remote truth" for the test) ---
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-
-        // Update server state to reflect the changes
-        remoteItemA.versionIdentifier = "ETAG_NEW"
-
-        // Add a new file on the server inside the materialised folder
-        let newChildFile = MockRemoteItem(
-            identifier: "new-child",
-            name: "new-child.txt",
-            remotePath: remoteFolder.remotePath + "/new-child.txt",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
-        newChildFile.parent = remoteFolder
-        remoteFolder.children.append(newChildFile)
-
-        // Remove the "deleted" file from the server
-        remoteFolder.children.removeAll(where: { $0.identifier == fileToBeDeleted.ocId })
+        ).toItemMetadata(account: Self.account)
+        nonMaterialisedItem.downloaded = false
+        nonMaterialisedItem.syncTime = now
+        Self.dbManager.addItemMetadata(nonMaterialisedItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
-            remoteInterface: remoteInterface,
+            remoteInterface: MockRemoteInterface(), // Not needed and no remote calls should be made
             dbManager: Self.dbManager
         )
         let observer = MockChangeObserver(enumerator: enumerator)
 
         // 2. Act
-        try await observer.enumerateChanges()
+        try await observer.enumerateChanges(from: anchor)
 
         // 3. Assert
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
 
-        // Verify Deletions
-        let deletedIds = observer.deletedItemIdentifiers.map(\.rawValue)
-        XCTAssertEqual(deletedIds.count, 2, "There should be two deleted items.")
-        XCTAssertTrue(
-            deletedIds.contains(fileToBeDeleted.ocId),
-            "The file deleted from the server folder should be reported as deleted."
-        )
-        XCTAssertTrue(
-            deletedIds.contains(topLevelFileToBeDeleted.ocId),
-            "The top-level file that resulted in a 404 should be reported as deleted."
-        )
+        // Check for updated items
+        XCTAssertEqual(observer.changedItems.count, 1, "There should be one updated item.")
+        XCTAssertEqual(observer.changedItems.first?.itemIdentifier.rawValue, updatedItem.ocId, "The correct item should be reported as updated.")
 
-        // Verify Updates and Additions
-        let changedIds = observer.changedItems.map(\.itemIdentifier.rawValue)
-        print(changedIds)
-        XCTAssertEqual(
-            changedIds.count,
-            5,
-            "There should be one updated file, three updated folders, and one new file."
-        )
-        XCTAssertTrue(changedIds.contains(NSFileProviderItemIdentifier.rootContainer.rawValue))
-        XCTAssertTrue(changedIds.contains(materialisedFolder.ocId))
-        XCTAssertTrue(changedIds.contains(unmaterialisedFolder.ocId))
-        XCTAssertTrue(changedIds.contains(fileToUpdate.ocId))
-        XCTAssertTrue(changedIds.contains(newChildFile.identifier))
-
-        // Verify the database state was updated
-        let finalUpdatedFile = Self.dbManager.itemMetadata(ocId: fileToUpdate.ocId)
-        XCTAssertEqual(
-            finalUpdatedFile?.etag,
-            "ETAG_NEW",
-            "The ETag for the updated file should be changed in the database."
-        )
-
-        let finalNewFile = Self.dbManager.itemMetadata(ocId: newChildFile.identifier)
-        XCTAssertNotNil(finalNewFile, "The new file should now exist in the database.")
+        // Check for deleted items
+        XCTAssertEqual(observer.deletedItemIdentifiers.count, 1, "There should be one deleted item.")
+        XCTAssertEqual(observer.deletedItemIdentifiers.first?.rawValue, deletedItem.ocId, "The correct item should be reported as deleted.")
     }
 
     func testFolderEnumeration() async throws {
