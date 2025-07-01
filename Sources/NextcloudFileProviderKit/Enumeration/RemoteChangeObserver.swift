@@ -556,9 +556,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         }
 
         allDeletedMetadatas = checkedDeletedMetadatas
-        for var metadata in allDeletedMetadatas {
-            metadata.deleted = true
+        let task = Task { @MainActor in
+            allDeletedMetadatas.forEach {
+                var deleteMarked = $0
+                deleteMarked.deleted = true
+                dbManager.addItemMetadata(deleteMarked)
+            }
         }
+        _ = await task.result
 
         logger.info(
             "Finished change checking of working set for user: \(self.accountId, privacy: .public)"
