@@ -416,7 +416,7 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             try database.write {
-                database.delete(metadatasToDelete)
+                // Do not delete the metadatas that have been deleted
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
@@ -513,6 +513,7 @@ public final class FilesDatabaseManager: Sendable {
                         downloaded: \(metadata.downloaded, privacy: .public)
                         uploaded: \(metadata.uploaded, privacy: .public)
                         visitedDirectory: \(metadata.visitedDirectory, privacy: .public)
+                        deleted: \(metadata.deleted, privacy: .public)
                     """
                 )
             }
