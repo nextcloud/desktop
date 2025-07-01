@@ -794,10 +794,13 @@ final class EnumeratorTests: XCTestCase {
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
         )
+        let dbItemBMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)
+        )
         let dbItemCMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemC.identifier)
         )
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
+        XCTAssertTrue(dbItemBMetadata.deleted)
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertTrue(dbFolderMetadata.downloaded)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
