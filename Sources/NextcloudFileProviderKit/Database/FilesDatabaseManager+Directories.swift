@@ -90,7 +90,7 @@ extension FilesDatabaseManager {
 
         let database = ncDatabase()
         do {
-            try database.write { database.delete(directoryMetadata) }
+            try database.write { directoryMetadata.deleted = true }
         } catch let error {
             Self.logger.error(
                 """
@@ -113,7 +113,7 @@ extension FilesDatabaseManager {
         for result in results {
             let inactiveItemMetadata = SendableItemMetadata(value: result)
             do {
-                try database.write { database.delete(result) }
+                try database.write { result.deleted = true }
                 deletedMetadatas.append(inactiveItemMetadata)
             } catch let error {
                 Self.logger.error(

@@ -544,7 +544,7 @@ public final class FilesDatabaseManager: Sendable {
             let database = ncDatabase()
             try database.write {
                 Self.logger.debug("Deleting item metadata. \(ocId, privacy: .public)")
-                database.delete(results)
+                results.forEach { $0.deleted = true }
             }
             return true
         } catch {
