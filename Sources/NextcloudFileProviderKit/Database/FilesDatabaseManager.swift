@@ -677,10 +677,30 @@ public final class FilesDatabaseManager: Sendable {
     public func pendingWorkingSetChanges(
         account: Account, since date: Date
     ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+        func handleMaterialisedFolderChildren(items: inout [SendableItemMetadata]) {
+            var handledOcIds = Set(items.map(\.ocId))
+
+            items
+                .map { $0.serverUrl + "/" + $0.fileName }
+                .forEach { serverUrl in
+                    itemMetadatas
+                        .where { $0.serverUrl == serverUrl }
+                        .forEach { metadata in
+                            guard !handledOcIds.contains(metadata.ocId) else { return }
+                            handledOcIds.insert(metadata.ocId)
+                            items.append(SendableItemMetadata(value: metadata))
+                        }
+                }
+        }
+
         let accId = account.ncKitAccount
         let pending = managedMaterialisedItemMetadatas(account: accId).where { $0.syncTime > date }
-        let updated = pending.where { !$0.deleted }.toUnmanagedResults()
-        let deleted = pending.where { $0.deleted }.toUnmanagedResults()
+        var updated = pending.where { !$0.deleted }.toUnmanagedResults()
+        var deleted = pending.where { $0.deleted }.toUnmanagedResults()
+
+        handleMaterialisedFolderChildren(items: &updated)
+        handleMaterialisedFolderChildren(items: &deleted)
+
         return (updated, deleted)
     }
 }
