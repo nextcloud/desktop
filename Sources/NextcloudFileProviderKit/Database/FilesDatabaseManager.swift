@@ -283,6 +283,7 @@ public final class FilesDatabaseManager: Sendable {
                     if keepExistingDownloadState {
                         updatedMetadata.downloaded = existingMetadata.downloaded
                     }
+                    updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -416,21 +417,22 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             if var readTargetMetadata {
+                if readTargetMetadata.directory {
+                    readTargetMetadata.visitedDirectory = true
+                }
+                
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
-                        Self.logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
+                        Self.logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId, privacy: .public)")
                         if keepExistingDownloadState {
                             readTargetMetadata.downloaded = existing.downloaded
-                        }
-                        if readTargetMetadata.directory {
-                            readTargetMetadata.visitedDirectory = true
                         }
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
-                    Self.logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
+                    Self.logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId, privacy: .public)")
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
