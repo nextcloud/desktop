@@ -25,7 +25,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
 
-    private let anchor =
+    private let currentAnchor =
         NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
     private let pageItemCount: Int
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
@@ -348,7 +348,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             let pendingChanges = dbManager.pendingWorkingSetChanges(account: account, since: date)
             Self.completeChangesObserver(
                 observer,
-                anchor: anchor,
+                anchor: currentAnchor,
                 enumeratedItemIdentifier: enumeratedItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -544,7 +544,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     public func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
-        completionHandler(anchor)
+        completionHandler(currentAnchor)
     }
 
     // MARK: - Helper methods
