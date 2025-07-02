@@ -699,12 +699,15 @@ public final class FilesDatabaseManager: Sendable {
             items
                 .map { $0.serverUrl + "/" + $0.fileName }
                 .forEach { serverUrl in
+                    Self.logger.debug("Checking \(serverUrl, privacy: .public)")
                     itemMetadatas
-                        .where { $0.serverUrl == serverUrl }
+                        .where { $0.serverUrl == serverUrl && $0.syncTime > date }
                         .forEach { metadata in
+                            Self.logger.debug("Checking item: \(metadata.fileName, privacy: .public)")
                             guard !handledOcIds.contains(metadata.ocId) else { return }
                             handledOcIds.insert(metadata.ocId)
                             items.append(SendableItemMetadata(value: metadata))
+                            Self.logger.debug("Appended item: \(metadata.fileName, privacy: .public)")
                         }
                 }
         }
