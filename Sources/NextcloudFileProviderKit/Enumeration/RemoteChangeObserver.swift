@@ -561,6 +561,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             allDeletedMetadatas.forEach {
                 var deleteMarked = $0
                 deleteMarked.deleted = true
+                deleteMarked.syncTime = Date()
                 dbManager.addItemMetadata(deleteMarked)
             }
         }
