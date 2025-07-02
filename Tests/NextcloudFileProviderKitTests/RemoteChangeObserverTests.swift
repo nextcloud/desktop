@@ -163,6 +163,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let db = dbManager.ncDatabase()
         debugPrint(db)
 
+        let testStartDate = Date()
         let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
@@ -197,6 +198,13 @@ final class RemoteChangeObserverTests: XCTestCase {
         await wait(for: authExpectation, description: "authentication")
         Self.notifyPushServer.send(message: "notify_file")
         await wait(for: changeNotifiedExpectation, description: "change notification")
+
+        // 3. Assert Database State
+        let finalItemState = try XCTUnwrap(dbManager.itemMetadata(ocId: "item1"), "The item should still exist in the database.")
+
+        XCTAssertEqual(finalItemState.etag, "ETAG_NEW", "The ETag of the item should be updated to the new value from the server.")
+        XCTAssertNotNil(finalItemState.syncTime, "The syncTime should be set.")
+        XCTAssertTrue(finalItemState.syncTime >= testStartDate, "The syncTime should be updated to a recent date.")
     }
 
     func testIgnoreNonFileNotifications() async throws {
