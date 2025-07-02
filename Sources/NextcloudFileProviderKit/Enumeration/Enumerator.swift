@@ -679,6 +679,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     observer.finishEnumeratingWithError(error)
                     return
                 }
+                Self.logger.info("Attempting handling invalid parent in change enumeration")
                 do {
                     let metadata = try await Self.attemptInvalidParentRecovery(
                         error: error,
