@@ -1703,19 +1703,19 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="660"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="693"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="661"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="694"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="723"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="760"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="761"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="747"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="748"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"></translation>
     </message>
