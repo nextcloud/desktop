@@ -237,7 +237,6 @@ public final class FilesDatabaseManager: Sendable {
                   var metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
             else { continue }
 
-            metadataToDelete.deleted = true
             deletedMetadatas.append(metadataToDelete)
 
             Self.logger.debug(
@@ -390,12 +389,14 @@ public final class FilesDatabaseManager: Sendable {
                 readTargetMetadata = nil
             }
 
-            // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas
-            )
-            let metadatasToDeleteCopy = metadatasToDelete.map { SendableItemMetadata(value: $0) }
+            ).map {
+                var metadata = SendableItemMetadata(value: $0)
+                metadata.deleted = true
+                return metadata
+            }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
@@ -440,12 +441,12 @@ public final class FilesDatabaseManager: Sendable {
 
             try database.write {
                 // Do not delete the metadatas that have been deleted
-                database.add(metadatasToDelete)
+                database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
 
-            return (metadatasToCreate, metadatasToUpdate, metadatasToDeleteCopy)
+            return (metadatasToCreate, metadatasToUpdate, metadatasToDelete)
         } catch {
             Self.logger.error(
                 """
