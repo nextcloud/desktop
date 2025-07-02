@@ -695,36 +695,52 @@ public final class FilesDatabaseManager: Sendable {
     public func pendingWorkingSetChanges(
         account: Account, since date: Date
     ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
-        func handleMaterialisedFolderChildren(items: inout [SendableItemMetadata]) {
-            var handledOcIds = Set(items.map(\.ocId))
-
-            items
-                .map {
-                    var serverUrl = $0.serverUrl + "/" + $0.fileName
-                    if serverUrl.last == "/" { serverUrl.removeLast() }
-                    return serverUrl
-                }
-                .forEach { serverUrl in
-                    Self.logger.debug("Checking \(serverUrl, privacy: .public)")
-                    itemMetadatas
-                        .where { $0.serverUrl == serverUrl && $0.syncTime > date }
-                        .forEach { metadata in
-                            Self.logger.debug("Checking item: \(metadata.fileName, privacy: .public)")
-                            guard !handledOcIds.contains(metadata.ocId) else { return }
-                            handledOcIds.insert(metadata.ocId)
-                            items.append(SendableItemMetadata(value: metadata))
-                            Self.logger.debug("Appended item: \(metadata.fileName, privacy: .public)")
-                        }
-                }
-        }
-
         let accId = account.ncKitAccount
         let pending = managedMaterialisedItemMetadatas(account: accId).where { $0.syncTime > date }
         var updated = pending.where { !$0.deleted }.toUnmanagedResults()
         var deleted = pending.where { $0.deleted }.toUnmanagedResults()
 
-        handleMaterialisedFolderChildren(items: &updated)
-        handleMaterialisedFolderChildren(items: &deleted)
+        var handledUpdateOcIds = Set(updated.map(\.ocId))
+        updated
+            .map {
+                var serverUrl = $0.serverUrl + "/" + $0.fileName
+                if serverUrl.last == "/" { serverUrl.removeLast() }
+                return serverUrl
+            }
+            .forEach { serverUrl in
+                Self.logger.debug("Checking (updated) \(serverUrl, privacy: .public)")
+                itemMetadatas
+                    .where { $0.serverUrl == serverUrl && $0.syncTime > date }
+                    .forEach { metadata in
+                        Self.logger.debug("Checking item: \(metadata.fileName, privacy: .public)")
+                        guard !handledUpdateOcIds.contains(metadata.ocId) else { return }
+                        handledUpdateOcIds.insert(metadata.ocId)
+                        let sendableMetadata = SendableItemMetadata(value: metadata)
+                        if metadata.deleted {
+                            deleted.append(sendableMetadata)
+                        } else {
+                            updated.append(sendableMetadata)
+                        }
+                        Self.logger.debug("Appended item: \(metadata.fileName, privacy: .public)")
+                    }
+            }
+
+        var handledDeleteOcIds = Set(deleted.map(\.ocId))
+        deleted
+            .map {
+                var serverUrl = $0.serverUrl + "/" + $0.fileName
+                if serverUrl.last == "/" { serverUrl.removeLast() }
+                return serverUrl
+            }
+            .forEach { serverUrl in
+                Self.logger.debug("Checking (deletion) \(serverUrl, privacy: .public)")
+                itemMetadatas
+                    .where { $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date }
+                    .forEach { metadata in
+                        guard !handledDeleteOcIds.contains(metadata.ocId) else { return }
+                        deleted.append(SendableItemMetadata(value: metadata))
+                    }
+            }
 
         return (updated, deleted)
     }
