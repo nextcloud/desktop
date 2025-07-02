@@ -697,7 +697,11 @@ public final class FilesDatabaseManager: Sendable {
             var handledOcIds = Set(items.map(\.ocId))
 
             items
-                .map { $0.serverUrl + "/" + $0.fileName }
+                .map {
+                    var serverUrl = $0.serverUrl + "/" + $0.fileName
+                    if serverUrl.last == "/" { serverUrl.removeLast() }
+                    return serverUrl
+                }
                 .forEach { serverUrl in
                     Self.logger.debug("Checking \(serverUrl, privacy: .public)")
                     itemMetadatas
