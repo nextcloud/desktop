@@ -319,6 +319,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Received enumerate changes request for enumerator
                 for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
+                with sync anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "", privacy: .public)
             """
         )
         /*
