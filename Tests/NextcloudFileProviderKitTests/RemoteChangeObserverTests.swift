@@ -164,24 +164,84 @@ final class RemoteChangeObserverTests: XCTestCase {
         debugPrint(db)
 
         let testStartDate = Date()
-        let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
-        // DB State: A materialised file with an old ETag.
-        var fileToUpdate = SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
-        fileToUpdate.downloaded = true
-        fileToUpdate.etag = "ETAG_OLD"
-        dbManager.addItemMetadata(fileToUpdate)
+        // --- DB State (What the app thinks is true) ---
+        // A materialised file in the root that will be updated.
+        var rootFileToUpdate =
+            SendableItemMetadata(ocId: "rootFile", fileName: "root-file.txt", account: Self.account)
+        rootFileToUpdate.downloaded = true
+        rootFileToUpdate.etag = "ETAG_OLD_ROOTFILE"
+        dbManager.addItemMetadata(rootFileToUpdate)
 
-        // Server State: The same file now has a new ETag.
-        let serverItem = MockRemoteItem(identifier: "item1", versionIdentifier: "ETAG_NEW", name: "file.txt", remotePath: Self.account.davFilesUrl + "/file.txt", account: Self.account.ncKitAccount, username: Self.account.username, userId: Self.account.id, serverUrl: Self.account.serverUrl)
-        remoteInterface.rootItem?.children = [serverItem]
+        // A materialised folder that will have its contents changed.
+        var folderA =
+            SendableItemMetadata(ocId: "folderA", fileName: "FolderA", account: Self.account)
+        folderA.directory = true
+        folderA.visitedDirectory = true
+        folderA.etag = "ETAG_OLD_FOLDERA"
+        dbManager.addItemMetadata(folderA)
 
-        let authExpectation = XCTestExpectation(description: "Websocket Authenticated")
-        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
-            authExpectation.fulfill()
-        }
+        // A materialised file inside FolderA that will be deleted.
+        var fileInAToDelete =
+            SendableItemMetadata(ocId: "fileInA", fileName: "file-in-a.txt", account: Self.account)
+        fileInAToDelete.downloaded = true
+        fileInAToDelete.serverUrl = Self.account.davFilesUrl + "/FolderA"
+        dbManager.addItemMetadata(fileInAToDelete)
 
+        // A materialised folder that will be deleted entirely.
+        var folderBToDelete =
+            SendableItemMetadata(ocId: "folderB", fileName: "FolderB", account: Self.account)
+        folderBToDelete.directory = true
+        folderBToDelete.visitedDirectory = true
+        dbManager.addItemMetadata(folderBToDelete)
+
+        // --- Server State (The new "remote truth") ---
+        let rootItem = remoteInterface.rootItem!
+
+        // Update the root file on the server.
+        let serverRootFile = MockRemoteItem(
+            identifier: "rootFile",
+            versionIdentifier: "ETAG_NEW_ROOTFILE",
+            name: "root-file.txt",
+            remotePath: Self.account.davFilesUrl + "/root-file.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children.append(serverRootFile)
+
+        // Update FolderA on the server and modify its contents.
+        let serverFolderA = MockRemoteItem(
+            identifier: "folderA",
+            versionIdentifier: "ETAG_NEW_FOLDERA",
+            name: "FolderA",
+            remotePath: Self.account.davFilesUrl + "/FolderA",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children.append(serverFolderA)
+
+        // Add a new file inside FolderA on the server.
+        let newFileInA = MockRemoteItem(
+            identifier: "newFileInA",
+            name: "new-file.txt",
+            remotePath: serverFolderA.remotePath + "/new-file.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        serverFolderA.children.append(newFileInA)
+
+        let authExpectation =
+            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
         let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified")
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { changeNotifiedExpectation.fulfill() }
@@ -196,15 +256,36 @@ final class RemoteChangeObserverTests: XCTestCase {
 
         // 2. Act & Assert
         await wait(for: authExpectation, description: "authentication")
+
         Self.notifyPushServer.send(message: "notify_file")
+
         await wait(for: changeNotifiedExpectation, description: "change notification")
 
         // 3. Assert Database State
-        let finalItemState = try XCTUnwrap(dbManager.itemMetadata(ocId: "item1"), "The item should still exist in the database.")
+        // Check updated items
+        let finalRootFile = try XCTUnwrap(dbManager.itemMetadata(ocId: "rootFile"))
+        XCTAssertEqual(finalRootFile.etag, "ETAG_NEW_ROOTFILE")
+        XCTAssertTrue(finalRootFile.syncTime >= testStartDate)
 
-        XCTAssertEqual(finalItemState.etag, "ETAG_NEW", "The ETag of the item should be updated to the new value from the server.")
-        XCTAssertNotNil(finalItemState.syncTime, "The syncTime should be set.")
-        XCTAssertTrue(finalItemState.syncTime >= testStartDate, "The syncTime should be updated to a recent date.")
+        let finalFolderA = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderA"))
+        XCTAssertEqual(finalFolderA.etag, "ETAG_NEW_FOLDERA")
+        XCTAssertTrue(finalFolderA.syncTime >= testStartDate)
+
+        // Check new item
+        let finalNewFile = try XCTUnwrap(dbManager.itemMetadata(ocId: "newFileInA"))
+        XCTAssertEqual(finalNewFile.fileName, "new-file.txt")
+        XCTAssertNotNil(finalNewFile.syncTime)
+
+        // Check deleted items
+        let deletedFileInA = try XCTUnwrap(dbManager.itemMetadata(ocId: "fileInA"))
+        XCTAssertTrue(
+            deletedFileInA.deleted, "File inside updated folder should be marked as deleted."
+        )
+        XCTAssertTrue(deletedFileInA.syncTime >= testStartDate)
+
+        let deletedFolderB = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderB"))
+        XCTAssertTrue(deletedFolderB.deleted, "The entire folder should be marked as deleted.")
+        XCTAssertTrue(deletedFolderB.syncTime >= testStartDate)
     }
 
     func testIgnoreNonFileNotifications() async throws {
