@@ -43,8 +43,6 @@ void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
     for (const auto &folder : std::as_const(_folderMan->map())) {
         folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
     }
-
-    scheduleUpdateCloudStorageRegistry();
 }
 
 void NavigationPaneHelper::scheduleUpdateCloudStorageRegistry()
@@ -66,11 +64,14 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
             [&entriesToRemove](HKEY key, const QString &subKey) {
                 const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey;
-                if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
+                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey
+                                   << "for appName:" << appName.toString()
+                                   << "unbrandedApplicatioName:" << unbrandedApplicatioName;
+                if (appName.toString() == QLatin1String(APPLICATION_NAME) || appName.toString() == unbrandedApplicatioName) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
                     entriesToRemove.append(clsid);
+                    qCDebug(lcNavPane) << "Going to remove:" << subKey;
                 }
             });
     }
@@ -90,12 +91,14 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
                 const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
                 const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
+                const auto isRemoteRoot = folder->remotePath() == QStringLiteral("/");
 
-                auto title = folder->shortGuiRemotePathOrAppName();
+                auto title = isRemoteRoot ? folder->shortGuiRemotePathOrAppName() : folder->shortGuiLocalPath();
                 // Write the account name in the sidebar only when using more than one account.
-                if (AccountManager::instance()->accounts().size() > 1) {
+                if (AccountManager::instance()->accounts().size() > 1 && isRemoteRoot) {
                     title = folder->accountState()->account()->shortcutName();
                 }
+                qCInfo(lcNavPane) << "Sidebar folder will have name" << title;
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 

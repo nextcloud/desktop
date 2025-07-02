@@ -604,6 +604,9 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
     settings.beginGroup(settingsFoldersWithPlaceholdersC);
     migrateFoldersGroup(settingsFoldersWithPlaceholdersC);
+#ifdef Q_OS_WIN
+    _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     settings.endGroup();
 
     settings.beginGroup(settingsFoldersC);
