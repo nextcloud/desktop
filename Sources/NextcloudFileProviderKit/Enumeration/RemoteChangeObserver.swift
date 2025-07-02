@@ -526,6 +526,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                     // If the target is not in the updated metadatas then neither it, nor
                     // any of its kids have changed. So skip examining all of them
                     if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
+                        logger.debug("Target \(itemRemoteUrl, privacy: .public) has not changed. Skipping children")
                         let materialisedChildren = materialisedItems.filter {
                             $0.serverUrl.hasPrefix(itemRemoteUrl)
                         }.map(\.ocId)
@@ -568,6 +569,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         logger.info(
             "Finished change checking of working set for user: \(self.accountId, privacy: .public)"
         )
+        logger.debug("Examined item ids: \(examinedItemIds, privacy: .public)")
+        logger.debug("Materialised item ids: \(materialisedItems.map(\.ocId), privacy: .public)")
 
         if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
             logger.info("No changes found.")
