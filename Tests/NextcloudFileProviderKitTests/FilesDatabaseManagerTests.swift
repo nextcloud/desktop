@@ -1198,81 +1198,76 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testPendingWorkingSetChanges() {
         // 1. Arrange
-        let fiveMinutesAgo = Date().addingTimeInterval(-300)
-        let tenMinutesAgo = Date().addingTimeInterval(-600)
-        let now = Date()
+        let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
+        let oldSyncDate = Date().addingTimeInterval(-600)
+        let recentSyncDate = Date()
 
         // --- Items to populate the database ---
 
-        // Item 1: A materialised item synced too long ago. Should NOT be returned.
-        var itemTooOld =
-            SendableItemMetadata(ocId: "tooOld", fileName: "old.txt", account: Self.account)
-        itemTooOld.downloaded = true
-        itemTooOld.syncTime = tenMinutesAgo
-        Self.dbManager.addItemMetadata(itemTooOld)
+        // A materialised folder updated recently. It should be returned, along with its child.
+        var updatedDir = SendableItemMetadata(ocId: "updatedDir", fileName: "UpdatedDir", account: Self.account)
+        updatedDir.directory = true
+        updatedDir.visitedDirectory = true // Materialised
+        updatedDir.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(updatedDir)
 
-        // Item 2: A materialised item synced recently. Should be returned in the 'updated' list.
-        var itemRecentlyUpdated =
-            SendableItemMetadata(ocId: "updated", fileName: "updated.txt", account: Self.account)
-        itemRecentlyUpdated.downloaded = true
-        itemRecentlyUpdated.deleted = false
-        itemRecentlyUpdated.syncTime = now
-        Self.dbManager.addItemMetadata(itemRecentlyUpdated)
+        // A child of the updated folder. Its syncTime is OLD, but it should be included
+        // because its parent was updated.
+        var childOfUpdatedDir = SendableItemMetadata(ocId: "childOfUpdated", fileName: "child.txt", account: Self.account)
+        childOfUpdatedDir.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
+        childOfUpdatedDir.syncTime = oldSyncDate // Old sync time
+        Self.dbManager.addItemMetadata(childOfUpdatedDir)
 
-        // Item 3: A materialised item synced recently but marked as deleted.
-        // Should be returned in the 'deleted' list.
-        var itemRecentlyDeleted =
-            SendableItemMetadata(ocId: "deleted", fileName: "deleted.txt", account: Self.account)
-        itemRecentlyDeleted.downloaded = true
-        itemRecentlyDeleted.deleted = true
-        itemRecentlyDeleted.syncTime = now
-        Self.dbManager.addItemMetadata(itemRecentlyDeleted)
+        // A materialised folder deleted recently. It should be returned, along with its child.
+        var deletedDir = SendableItemMetadata(ocId: "deletedDir", fileName: "DeletedDir", account: Self.account)
+        deletedDir.directory = true
+        deletedDir.visitedDirectory = true // Materialised
+        deletedDir.deleted = true
+        deletedDir.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(deletedDir)
 
-        // Item 4: A non-materialised item synced recently. Should NOT be returned.
-        var itemNotMaterialised = SendableItemMetadata(
-            ocId: "notMaterialised", fileName: "notMaterialised.txt", account: Self.account
-        )
-        itemNotMaterialised.downloaded = false // Not part of the working set
-        itemNotMaterialised.syncTime = now
-        Self.dbManager.addItemMetadata(itemNotMaterialised)
+        // A child of the deleted folder. Its syncTime is OLD, but it should be included.
+        var childOfDeletedDir = SendableItemMetadata(ocId: "childOfDeleted", fileName: "child2.txt", account: Self.account)
+        childOfDeletedDir.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+        childOfDeletedDir.syncTime = oldSyncDate // Old sync time
+        Self.dbManager.addItemMetadata(childOfDeletedDir)
 
-        // Item 5: A materialised directory synced recently. Should be returned in 'updated'.
-        var dirRecentlyUpdated =
-            SendableItemMetadata(ocId: "updatedDir", fileName: "updatedDir", account: Self.account)
-        dirRecentlyUpdated.directory = true
-        dirRecentlyUpdated.visitedDirectory = true // Materialised as a directory
-        dirRecentlyUpdated.deleted = false
-        dirRecentlyUpdated.syncTime = now
-        Self.dbManager.addItemMetadata(dirRecentlyUpdated)
+        // A standalone materialised file synced recently. Should be returned.
+        var standaloneUpdatedFile = SendableItemMetadata(ocId: "standaloneUpdated", fileName: "standalone.txt", account: Self.account)
+        standaloneUpdatedFile.downloaded = true // Materialised
+        standaloneUpdatedFile.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(standaloneUpdatedFile)
+
+        // A materialised file synced too long ago. Should NOT be returned.
+        var standaloneOldFile = SendableItemMetadata(ocId: "standaloneOld", fileName: "old.txt", account: Self.account)
+        standaloneOldFile.downloaded = true // Materialised
+        standaloneOldFile.syncTime = oldSyncDate
+        Self.dbManager.addItemMetadata(standaloneOldFile)
+
+        // A non-materialised item synced recently. Should NOT be returned.
+        var nonMaterialisedFile = SendableItemMetadata(ocId: "nonMaterialised", fileName: "non-mat.txt", account: Self.account)
+        nonMaterialisedFile.downloaded = false
+        nonMaterialisedFile.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(nonMaterialisedFile)
 
         // 2. Act
-        // Fetch changes that have occurred since five minutes ago.
+        // Fetch changes that have occurred since the anchor date.
         let result = Self.dbManager.pendingWorkingSetChanges(
-            account: Self.account, since: fiveMinutesAgo
+            account: Self.account, since: anchorDate
         )
 
         // 3. Assert
         // Verify the 'updated' results
-        XCTAssertEqual(
-            result.updated.count, 2, "There should be two updated items (one file, one directory)."
-        )
         let updatedIds = Set(result.updated.map { $0.ocId })
-        print(updatedIds)
-        XCTAssertTrue(
-            updatedIds.contains("updated"),
-            "The recently updated file should be in the updated list."
-        )
-        XCTAssertTrue(
-            updatedIds.contains("updatedDir"),
-            "The recently updated directory should be in the updated list."
-        )
+        XCTAssertEqual(updatedIds.count, 3, "There should be three updated items: the folder, its child, and the standalone file.")
+        XCTAssertTrue(updatedIds.contains("updatedDir"))
+        XCTAssertTrue(updatedIds.contains("childOfUpdated"), "The child of the updated directory should be included.")
+        XCTAssertTrue(updatedIds.contains("standaloneUpdated"))
 
         // Verify the 'deleted' results
-        XCTAssertEqual(result.deleted.count, 1, "There should be one deleted item.")
-        XCTAssertEqual(
-            result.deleted.first?.ocId,
-            "deleted",
-            "The recently deleted file should be in the deleted list."
-        )
+        let deletedIds = Set(result.deleted.map { $0.ocId })
+        XCTAssertEqual(deletedIds.count, 2, "There should be two deleted items: the folder and its child.")
+        XCTAssertTrue(deletedIds.contains("deletedDir"))
+        XCTAssertTrue(deletedIds.contains("childOfDeleted"), "The child of the deleted directory should be included.")
     }
 }
