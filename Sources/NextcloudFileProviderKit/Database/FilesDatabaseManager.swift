@@ -245,6 +245,7 @@ public final class FilesDatabaseManager: Sendable {
                     ocID: \(existingMetadata.ocId, privacy: .public)
                     etag: \(existingMetadata.etag, privacy: .public)
                     fileName: \(existingMetadata.fileName, privacy: .public)"
+                    syncTime: \(existingMetadata.syncTime, privacy: .public)
                 """
             )
         }
@@ -291,6 +292,7 @@ public final class FilesDatabaseManager: Sendable {
                             ocID: \(updatedMetadata.ocId, privacy: .public)
                             etag: \(updatedMetadata.etag, privacy: .public)
                             fileName: \(updatedMetadata.fileName, privacy: .public)
+                            syncTime: \(updatedMetadata.syncTime, privacy: .public)
                         """
                     )
                 } else {
@@ -300,6 +302,7 @@ public final class FilesDatabaseManager: Sendable {
                             ocID: \(updatedMetadata.ocId, privacy: .public)
                             etag: \(updatedMetadata.etag, privacy: .public)
                             fileName: \(updatedMetadata.fileName, privacy: .public)
+                            syncTime: \(updatedMetadata.syncTime, privacy: .public)
                         """
                     )
                 }
@@ -313,6 +316,7 @@ public final class FilesDatabaseManager: Sendable {
                         ocID: \(updatedMetadata.ocId, privacy: .public)
                         etag: \(updatedMetadata.etag, privacy: .public)
                         fileName: \(updatedMetadata.fileName, privacy: .public)
+                        syncTime: \(updatedMetadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -468,6 +472,7 @@ public final class FilesDatabaseManager: Sendable {
                         ocID: \(metadata.ocId, privacy: .public)
                         etag: \(metadata.etag, privacy: .public)
                         fileName: \(metadata.fileName, privacy: .public)
+                        syncTime: \(metadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -515,6 +520,7 @@ public final class FilesDatabaseManager: Sendable {
                         uploaded: \(metadata.uploaded, privacy: .public)
                         visitedDirectory: \(metadata.visitedDirectory, privacy: .public)
                         deleted: \(metadata.deleted, privacy: .public)
+                        syncTime: \(metadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -525,6 +531,7 @@ public final class FilesDatabaseManager: Sendable {
                     ocID: \(metadata.ocId, privacy: .public)
                     etag: \(metadata.etag, privacy: .public)
                     fileName: \(metadata.fileName, privacy: .public)
+                    syncTime: \(metadata.syncTime, privacy: .public)
                     received error: \(error.localizedDescription, privacy: .public)
                 """
             )
@@ -616,6 +623,7 @@ public final class FilesDatabaseManager: Sendable {
                     fileName: \(metadata.fileName, privacy: .public),
                     serverUrl: \(metadata.serverUrl, privacy: .public),
                     account: \(metadata.account, privacy: .public),
+                    syncTime: \(metadata.syncTime, privacy: .public)
                 """
             )
             return nil
