@@ -74,7 +74,7 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
     }
 
     if (rec.isValid() && !rec.isE2eEncrypted()) {
-        rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::Encrypted;
+        rec._e2eEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion()));
         const auto result = _journal->setFileRecord(rec);
         if (!result) {
             qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
