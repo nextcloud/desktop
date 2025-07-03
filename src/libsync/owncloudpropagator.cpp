@@ -1706,6 +1706,9 @@ void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status st
         status = _errorStatus;
     }
 
+    _item->_type = CSyncEnums::ItemTypeDirectory;
+    propagator()->updateMetadata(*_item, Vfs::UpdateMetadataType::FileMetadata);
+
     _state = Finished;
     emit finished(status);
 }

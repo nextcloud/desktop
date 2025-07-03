@@ -177,8 +177,6 @@ bool VfsCfApi::isHydrating() const
 
 Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, const SyncFileItem &item)
 {
-    time_t modtime = item._modtime;
-    qint64 size = item._size;
     const QByteArray &fileId = item._fileId;
 
     const auto localPath = QDir::toNativeSeparators(filePath);
@@ -236,7 +234,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 
     if (cfapi::findPlaceholderInfo(localPath)) {
         if (updateType.testFlag(Vfs::UpdateMetadataType::FileMetadata)) {
-            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::OnlyBasicMetadata);
         } else {
             return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
