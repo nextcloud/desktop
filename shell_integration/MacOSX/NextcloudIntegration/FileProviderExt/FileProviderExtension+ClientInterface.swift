@@ -166,12 +166,17 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             Task { @MainActor in
                 ncAccount = account
                 dbManager = FilesDatabaseManager(account: account)
-                changeObserver = RemoteChangeObserver(
-                    account: account,
-                    remoteInterface: ncKit,
-                    changeNotificationInterface: self,
-                    domain: domain
-                )
+                if let dbManager {
+                    changeObserver = RemoteChangeObserver(
+                        account: account,
+                        remoteInterface: ncKit,
+                        changeNotificationInterface: self,
+                        domain: domain,
+                        dbManager: dbManager
+                    )
+                } else {
+                    Logger.fileProviderExtension.error("Invalid db manager, cannot start RCO")
+                }
                 ncKit.setup(delegate: changeObserver)
                 signalEnumeratorAfterAccountSetup()
             }
