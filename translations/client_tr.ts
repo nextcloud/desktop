@@ -3783,7 +3783,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="656"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>Finder &quot;Konumlar&quot; yan çubuğu bölümünde</translation>
+        <translation>Finder &quot;Konumlar&quot; kenar çubuğu bölümünde</translation>
     </message>
 </context>
 <context>
