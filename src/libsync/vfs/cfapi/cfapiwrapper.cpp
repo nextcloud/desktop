@@ -188,7 +188,7 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
     opInfo.TransferKey = transferKey;
 
     opParams.ParamSize = CF_SIZE_OF_OP_PARAM(TransferPlaceholders);
-    opParams.TransferPlaceholders.Flags = CF_OPERATION_TRANSFER_PLACEHOLDERS_FLAG_NONE;
+    opParams.TransferPlaceholders.Flags = CF_OPERATION_TRANSFER_PLACEHOLDERS_FLAG_DISABLE_ON_DEMAND_POPULATION;
     opParams.TransferPlaceholders.CompletionStatus = status;
 
     if (!newEntries.isEmpty()) {
