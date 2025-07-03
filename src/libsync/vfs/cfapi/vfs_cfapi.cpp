@@ -250,7 +250,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 
     if (cfapi::findPlaceholderInfo(localPath)) {
         if (updateType.testFlag(Vfs::UpdateMetadataType::FileMetadata)) {
-            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::OnlyBasicMetadata);
         } else {
             return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
