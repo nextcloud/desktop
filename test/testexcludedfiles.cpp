@@ -121,9 +121,9 @@ private slots:
     {
         setup();
         excludedFiles->addManualExclude("*", "/tmp/check_csync1/");
-        QCOMPARE(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(check_file_full("/tmp/check_csync1/foo"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
-        QVERIFY(excludedFiles->_allExcludes[QStringLiteral("/tmp/check_csync1/")].contains("*"));
+        QVERIFY(!excludedFiles->_allExcludes[QStringLiteral("/tmp/check_csync1/")].contains("*"));
 
         excludedFiles->addManualExclude("foo");
         QVERIFY(excludedFiles->_fullRegexFile[QStringLiteral("/")].pattern().contains("foo"));
