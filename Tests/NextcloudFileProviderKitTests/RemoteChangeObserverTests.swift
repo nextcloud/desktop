@@ -189,6 +189,8 @@ final class RemoteChangeObserverTests: XCTestCase {
             SendableItemMetadata(ocId: "fileInA", fileName: "file-in-a.txt", account: Self.account)
         fileInAToDelete.downloaded = true
         fileInAToDelete.serverUrl = Self.account.davFilesUrl + "/FolderA"
+        // Set an explicit old sync time to verify it gets updated during deletion
+        fileInAToDelete.syncTime = Date(timeIntervalSince1970: 1000)
         dbManager.addItemMetadata(fileInAToDelete)
 
         // A materialised folder that will be deleted entirely.
@@ -196,7 +198,13 @@ final class RemoteChangeObserverTests: XCTestCase {
             SendableItemMetadata(ocId: "folderB", fileName: "FolderB", account: Self.account)
         folderBToDelete.directory = true
         folderBToDelete.visitedDirectory = true
+        // Set an explicit old sync time to verify it gets updated during deletion
+        folderBToDelete.syncTime = Date(timeIntervalSince1970: 2000)
         dbManager.addItemMetadata(folderBToDelete)
+
+        // Record original sync times to verify they are updated during deletion
+        let originalFileInASyncTime = try XCTUnwrap(dbManager.itemMetadata(ocId: "fileInA")).syncTime
+        let originalFolderBSyncTime = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderB")).syncTime
 
         // --- Server State (The new "remote truth") ---
         let rootItem = remoteInterface.rootItem!
@@ -281,11 +289,17 @@ final class RemoteChangeObserverTests: XCTestCase {
         XCTAssertTrue(
             deletedFileInA.deleted, "File inside updated folder should be marked as deleted."
         )
-        XCTAssertTrue(deletedFileInA.syncTime >= testStartDate)
+        XCTAssertTrue(deletedFileInA.syncTime >= testStartDate, 
+                     "Deleted file's sync time should be updated to current time")
+        XCTAssertGreaterThan(deletedFileInA.syncTime, originalFileInASyncTime,
+                            "Deleted file's sync time should be newer than original sync time")
 
         let deletedFolderB = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderB"))
         XCTAssertTrue(deletedFolderB.deleted, "The entire folder should be marked as deleted.")
-        XCTAssertTrue(deletedFolderB.syncTime >= testStartDate)
+        XCTAssertTrue(deletedFolderB.syncTime >= testStartDate,
+                     "Deleted folder's sync time should be updated to current time")
+        XCTAssertGreaterThan(deletedFolderB.syncTime, originalFolderBSyncTime,
+                            "Deleted folder's sync time should be newer than original sync time")
     }
 
     func testIgnoreNonFileNotifications() async throws {
