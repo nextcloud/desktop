@@ -1413,4 +1413,179 @@ final class EnumeratorTests: XCTestCase {
              )
         }
     }
+
+    func testVisitedDirectoryStatePreservedDuringUpdate() async throws {
+        // This test verifies that visitedDirectory state is preserved when updating
+        // existing folder metadata during enumeration, addressing the fix in FilesDatabaseManager
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Setup root container metadata in database (required for enumeration)
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+
+        // 1. Setup: Create a folder that has already been visited (visitedDirectory = true)
+        var existingFolderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        existingFolderMetadata.visitedDirectory = true
+        existingFolderMetadata.etag = "OLD_ETAG"
+        Self.dbManager.addItemMetadata(existingFolderMetadata)
+
+        // Verify initial state
+        let initialMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertTrue(initialMetadata.visitedDirectory, "Folder should initially be marked as visited")
+        XCTAssertEqual(initialMetadata.etag, "OLD_ETAG")
+
+        // 2. Act: Enumerate the folder, which will trigger an update
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // 3. Assert: Verify that visitedDirectory state is preserved after update
+        let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertTrue(updatedMetadata.visitedDirectory, 
+                     "visitedDirectory state should be preserved during update")
+        XCTAssertEqual(updatedMetadata.etag, remoteFolder.versionIdentifier,
+                      "ETag should be updated to new value")
+        XCTAssertNotEqual(updatedMetadata.etag, "OLD_ETAG",
+                         "ETag should have changed from old value")
+    }
+
+    func testVisitedDirectorySetDuringDirectoryRead() async throws {
+        // This test verifies that visitedDirectory is correctly set to true
+        // when a directory is the target of a depth-1 read operation
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Setup root container metadata in database (required for enumeration)
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+
+        // 1. Setup: Create a new folder that hasn't been visited yet
+        var newFolderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        newFolderMetadata.visitedDirectory = false
+        newFolderMetadata.etag = "INITIAL_ETAG"
+        Self.dbManager.addItemMetadata(newFolderMetadata)
+
+        // Verify initial state
+        let initialMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertFalse(initialMetadata.visitedDirectory, "Folder should initially not be marked as visited")
+
+        // 2. Act: Enumerate the folder (depth-1 read)
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        // 3. Assert: Verify that visitedDirectory is now set to true
+        let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertTrue(updatedMetadata.visitedDirectory, 
+                     "visitedDirectory should be set to true after directory enumeration")
+        XCTAssertEqual(updatedMetadata.etag, remoteFolder.versionIdentifier,
+                      "ETag should be updated")
+    }
+
+    func testVisitedDirectoryStateInWorkingSet() async throws {
+        // This test verifies that folders marked as visitedDirectory appear in working set
+        // and that the state is preserved correctly across operations
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        // Setup root container metadata in database (required for enumeration)
+        Self.dbManager.addItemMetadata(rootItem.toItemMetadata(account: Self.account))
+
+        // 1. Setup: Create folders with different visited states
+        var visitedFolder = remoteFolder.toItemMetadata(account: Self.account)
+        visitedFolder.visitedDirectory = true
+        visitedFolder.downloaded = false // Not downloaded, but visited
+        Self.dbManager.addItemMetadata(visitedFolder)
+
+        var notVisitedFolder = MockRemoteItem(
+            identifier: "notVisitedFolder",
+            versionIdentifier: "V1",
+            name: "NotVisitedFolder", 
+            remotePath: Self.account.davFilesUrl + "/NotVisitedFolder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        ).toItemMetadata(account: Self.account)
+        notVisitedFolder.visitedDirectory = false
+        notVisitedFolder.downloaded = false
+        Self.dbManager.addItemMetadata(notVisitedFolder)
+
+        // 2. Act: Enumerate working set
+        let workingSetEnumerator = Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let workingSetObserver = MockEnumerationObserver(enumerator: workingSetEnumerator)
+        try await workingSetObserver.enumerateItems()
+
+        // 3. Assert: Only visited folder should be in working set
+        let workingSetIds = Set(workingSetObserver.items.map(\.itemIdentifier.rawValue))
+        XCTAssertTrue(workingSetIds.contains(visitedFolder.ocId),
+                     "Visited folder should be in working set")
+        XCTAssertFalse(workingSetIds.contains(notVisitedFolder.ocId),
+                      "Non-visited folder should not be in working set")
+
+        // 4. Act: Now enumerate the not-visited folder to make it visited
+        // Add the not-visited folder to the remote structure for enumeration
+        let notVisitedRemoteFolder = MockRemoteItem(
+            identifier: notVisitedFolder.ocId,
+            versionIdentifier: "V2",
+            name: notVisitedFolder.fileName,
+            remotePath: notVisitedFolder.serverUrl + "/" + notVisitedFolder.fileName,
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children.append(notVisitedRemoteFolder)
+        notVisitedRemoteFolder.parent = rootItem
+
+        let folderEnumerator = Enumerator(
+            enumeratedItemIdentifier: .init(notVisitedFolder.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let folderObserver = MockEnumerationObserver(enumerator: folderEnumerator)
+        try await folderObserver.enumerateItems()
+
+        // 5. Assert: Verify the folder is now marked as visited
+        let updatedNotVisitedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: notVisitedFolder.ocId))
+        XCTAssertTrue(updatedNotVisitedMetadata.visitedDirectory,
+                     "Folder should now be marked as visited after enumeration")
+
+        // 6. Act: Enumerate working set again
+        let workingSetEnumerator2 = Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let workingSetObserver2 = MockEnumerationObserver(enumerator: workingSetEnumerator2)
+        try await workingSetObserver2.enumerateItems()
+
+        // 7. Assert: Both folders should now be in working set
+        let workingSetIds2 = Set(workingSetObserver2.items.map(\.itemIdentifier.rawValue))
+        XCTAssertTrue(workingSetIds2.contains(visitedFolder.ocId),
+                     "Original visited folder should still be in working set")
+        XCTAssertTrue(workingSetIds2.contains(notVisitedFolder.ocId),
+                     "Newly visited folder should now be in working set")
+    }
 }
