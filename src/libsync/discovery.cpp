@@ -1860,7 +1860,7 @@ void ProcessDirectoryJob::processFileFinalize(
         Q_ASSERT(false);
     }
 
-    if (recurse) {
+    if (recurse && _discoveryData->shouldDiscoverChildFolder(path._server)) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
@@ -1873,6 +1873,16 @@ void ProcessDirectoryJob::processFileFinalize(
             _queuedJobs.push_back(job);
         }
     } else {
+        const auto &newFolder = path._local;
+        auto ok1 = false;
+        auto ok2 = false;
+        auto blacklist = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
+        auto whitelist = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
+        if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
+            blacklist.append(newFolder);
+            _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+        }
+
         if (removed
             // For the purpose of rename deletion, restored deleted placeholder is as if it was deleted
             || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
