@@ -1200,26 +1200,48 @@ final class FilesDatabaseManagerTests: XCTestCase {
     func testPendingWorkingSetChanges() {
         // 1. Arrange
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
-        let oldSyncDate = Date().addingTimeInterval(-600)
-        let recentSyncDate = Date()
+        let oldSyncDate = Date().addingTimeInterval(-600) // 10 minutes ago (before anchor)
+        let recentSyncDate = Date() // Now (after anchor)
 
-        // --- Items to populate the database ---
+        // --- Multi-level file structure to test the full scope ---
 
-        // A materialised folder updated recently. It should be returned, along with its child.
+        // LEVEL 1: Root level materialised folder updated recently
         var updatedDir = SendableItemMetadata(ocId: "updatedDir", fileName: "UpdatedDir", account: Self.account)
         updatedDir.directory = true
         updatedDir.visitedDirectory = true // Materialised
         updatedDir.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(updatedDir)
 
-        // A child of the updated folder. Its syncTime is OLD, but it should be included
-        // because its parent was updated.
-        var childOfUpdatedDir = SendableItemMetadata(ocId: "childOfUpdated", fileName: "child.txt", account: Self.account)
-        childOfUpdatedDir.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
-        childOfUpdatedDir.syncTime = oldSyncDate // Old sync time
-        Self.dbManager.addItemMetadata(childOfUpdatedDir)
+        // LEVEL 2: Child of updated folder with OLD sync time - should NOT be included
+        var childOfUpdatedDirOld = SendableItemMetadata(ocId: "childOfUpdatedOld", fileName: "childOld.txt", account: Self.account)
+        childOfUpdatedDirOld.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
+        childOfUpdatedDirOld.syncTime = oldSyncDate // Old sync time
+        childOfUpdatedDirOld.downloaded = true // Materialised
+        Self.dbManager.addItemMetadata(childOfUpdatedDirOld)
 
-        // A materialised folder deleted recently. It should be returned, along with its child.
+        // LEVEL 2: Child of updated folder with RECENT sync time - should be included (regardless of materialisation)
+        var childOfUpdatedDirRecent = SendableItemMetadata(ocId: "childOfUpdatedRecent", fileName: "childRecent.txt", account: Self.account)
+        childOfUpdatedDirRecent.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
+        childOfUpdatedDirRecent.syncTime = recentSyncDate // Recent sync time
+        childOfUpdatedDirRecent.downloaded = false // NOT materialised - but should still be included
+        Self.dbManager.addItemMetadata(childOfUpdatedDirRecent)
+
+        // LEVEL 2: Child folder of updated folder with recent sync time
+        var childFolderOfUpdated = SendableItemMetadata(ocId: "childFolderOfUpdated", fileName: "ChildFolder", account: Self.account)
+        childFolderOfUpdated.directory = true
+        childFolderOfUpdated.visitedDirectory = false // Not materialised
+        childFolderOfUpdated.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
+        childFolderOfUpdated.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(childFolderOfUpdated)
+
+        // LEVEL 3: Grandchild with recent sync time - should not be included
+        var grandchildOfUpdated = SendableItemMetadata(ocId: "grandchildOfUpdated", fileName: "grandchild.txt", account: Self.account)
+        grandchildOfUpdated.serverUrl = Self.account.davFilesUrl + "/UpdatedDir/ChildFolder"
+        grandchildOfUpdated.syncTime = recentSyncDate
+        grandchildOfUpdated.downloaded = false // Not materialised
+        Self.dbManager.addItemMetadata(grandchildOfUpdated)
+
+        // DELETED STRUCTURE: Root level materialised folder deleted recently
         var deletedDir = SendableItemMetadata(ocId: "deletedDir", fileName: "DeletedDir", account: Self.account)
         deletedDir.directory = true
         deletedDir.visitedDirectory = true // Materialised
@@ -1227,48 +1249,111 @@ final class FilesDatabaseManagerTests: XCTestCase {
         deletedDir.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(deletedDir)
 
-        // A child of the deleted folder. Its syncTime is OLD, but it should be included.
-        var childOfDeletedDir = SendableItemMetadata(ocId: "childOfDeleted", fileName: "child2.txt", account: Self.account)
-        childOfDeletedDir.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
-        childOfDeletedDir.syncTime = oldSyncDate // Old sync time
-        Self.dbManager.addItemMetadata(childOfDeletedDir)
+        // Child of deleted folder with OLD sync time - should NOT be included
+        var childOfDeletedDirOld = SendableItemMetadata(ocId: "childOfDeletedOld", fileName: "childDelOld.txt", account: Self.account)
+        childOfDeletedDirOld.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+        childOfDeletedDirOld.syncTime = oldSyncDate // Old sync time
+        childOfDeletedDirOld.downloaded = true
+        Self.dbManager.addItemMetadata(childOfDeletedDirOld)
 
-        // A standalone materialised file synced recently. Should be returned.
+        // Child of deleted folder with RECENT sync time - should be included in deleted
+        var childOfDeletedDirRecent = SendableItemMetadata(ocId: "childOfDeletedRecent", fileName: "childDelRecent.txt", account: Self.account)
+        childOfDeletedDirRecent.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+        childOfDeletedDirRecent.syncTime = recentSyncDate
+        childOfDeletedDirRecent.downloaded = false // Not materialised
+        Self.dbManager.addItemMetadata(childOfDeletedDirRecent)
+
+        // Nested structure under deleted folder
+        var nestedFolderInDeleted = SendableItemMetadata(ocId: "nestedFolderInDeleted", fileName: "NestedFolder", account: Self.account)
+        nestedFolderInDeleted.directory = true
+        nestedFolderInDeleted.visitedDirectory = false
+        nestedFolderInDeleted.serverUrl = Self.account.davFilesUrl + "/DeletedDir"
+        nestedFolderInDeleted.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(nestedFolderInDeleted)
+
+        // Deep nested item under deleted structure
+        var deepNestedInDeleted = SendableItemMetadata(ocId: "deepNestedInDeleted", fileName: "deepNested.txt", account: Self.account)
+        deepNestedInDeleted.serverUrl = Self.account.davFilesUrl + "/DeletedDir/NestedFolder"
+        deepNestedInDeleted.syncTime = recentSyncDate
+        deepNestedInDeleted.downloaded = false
+        Self.dbManager.addItemMetadata(deepNestedInDeleted)
+
+        // STANDALONE ITEMS: Materialised file synced recently - should be returned
         var standaloneUpdatedFile = SendableItemMetadata(ocId: "standaloneUpdated", fileName: "standalone.txt", account: Self.account)
         standaloneUpdatedFile.downloaded = true // Materialised
         standaloneUpdatedFile.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(standaloneUpdatedFile)
 
-        // A materialised file synced too long ago. Should NOT be returned.
+        // Materialised file synced too long ago - should NOT be returned
         var standaloneOldFile = SendableItemMetadata(ocId: "standaloneOld", fileName: "old.txt", account: Self.account)
         standaloneOldFile.downloaded = true // Materialised
         standaloneOldFile.syncTime = oldSyncDate
         Self.dbManager.addItemMetadata(standaloneOldFile)
 
-        // A non-materialised item synced recently. Should NOT be returned.
+        // Non-materialised item synced recently - should NOT be returned (not in initial materialised set)
         var nonMaterialisedFile = SendableItemMetadata(ocId: "nonMaterialised", fileName: "non-mat.txt", account: Self.account)
         nonMaterialisedFile.downloaded = false
         nonMaterialisedFile.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(nonMaterialisedFile)
 
+        // MIXED MATERIALISATION: Another materialised folder to test child inclusion
+        var anotherMaterialisedDir = SendableItemMetadata(ocId: "anotherMatDir", fileName: "AnotherMatDir", account: Self.account)
+        anotherMaterialisedDir.directory = true
+        anotherMaterialisedDir.visitedDirectory = true
+        anotherMaterialisedDir.syncTime = recentSyncDate
+        Self.dbManager.addItemMetadata(anotherMaterialisedDir)
+
+        // Child with recent sync but NOT materialised - should still be included due to recent sync
+        var nonMatChildRecent = SendableItemMetadata(ocId: "nonMatChildRecent", fileName: "nonMatChild.txt", account: Self.account)
+        nonMatChildRecent.serverUrl = Self.account.davFilesUrl + "/AnotherMatDir"
+        nonMatChildRecent.syncTime = recentSyncDate
+        nonMatChildRecent.downloaded = false // Not materialised
+        Self.dbManager.addItemMetadata(nonMatChildRecent)
+
         // 2. Act
-        // Fetch changes that have occurred since the anchor date.
         let result = Self.dbManager.pendingWorkingSetChanges(
             account: Self.account, since: anchorDate
         )
 
-        // 3. Assert
-        // Verify the 'updated' results
+        // 3. Assert - Updated items
         let updatedIds = Set(result.updated.map { $0.ocId })
-        XCTAssertEqual(updatedIds.count, 3, "There should be three updated items: the folder, its child, and the standalone file.")
-        XCTAssertTrue(updatedIds.contains("updatedDir"))
-        XCTAssertTrue(updatedIds.contains("childOfUpdated"), "The child of the updated directory should be included.")
-        XCTAssertTrue(updatedIds.contains("standaloneUpdated"))
+        
+        // Should include materialised items with recent sync
+        XCTAssertTrue(updatedIds.contains("updatedDir"), "Updated materialised directory should be included")
+        XCTAssertTrue(updatedIds.contains("standaloneUpdated"), "Updated materialised file should be included")
+        XCTAssertTrue(updatedIds.contains("anotherMatDir"), "Another materialised directory should be included")
+        
+        // Should include children with recent sync regardless of materialisation
+        XCTAssertTrue(updatedIds.contains("childOfUpdatedRecent"), "Child with recent sync should be included regardless of materialisation")
+        XCTAssertTrue(updatedIds.contains("childFolderOfUpdated"), "Child folder with recent sync should be included")
+        XCTAssertTrue(updatedIds.contains("nonMatChildRecent"), "Non-materialised child with recent sync should be included")
+        
+        // Should NOT include items with old sync times
+        XCTAssertFalse(updatedIds.contains("childOfUpdatedOld"), "Child with old sync time should NOT be included")
+        XCTAssertFalse(updatedIds.contains("standaloneOld"), "Materialised file with old sync should NOT be included")
+        
+        // Should NOT include non-materialised items not under a recently updated path
+        XCTAssertFalse(updatedIds.contains("nonMaterialised"), "Standalone non-materialised item should NOT be included")
 
-        // Verify the 'deleted' results
+        // 4. Assert - Deleted items
         let deletedIds = Set(result.deleted.map { $0.ocId })
-        XCTAssertEqual(deletedIds.count, 2, "There should be two deleted items: the folder and its child.")
-        XCTAssertTrue(deletedIds.contains("deletedDir"))
-        XCTAssertTrue(deletedIds.contains("childOfDeleted"), "The child of the deleted directory should be included.")
+        
+        // Should include the deleted materialised directory
+        XCTAssertTrue(deletedIds.contains("deletedDir"), "Deleted materialised directory should be included")
+        
+        // Should include children/descendants with recent sync under deleted paths
+        XCTAssertTrue(deletedIds.contains("childOfDeletedRecent"), "Child of deleted dir with recent sync should be included")
+        XCTAssertTrue(deletedIds.contains("nestedFolderInDeleted"), "Nested folder under deleted dir should be included")
+        XCTAssertTrue(deletedIds.contains("deepNestedInDeleted"), "Deep nested item under deleted structure should be included")
+        
+        // Should NOT include children with old sync times
+        XCTAssertFalse(deletedIds.contains("childOfDeletedOld"), "Child of deleted dir with old sync should NOT be included")
+
+        // 5. Verify expected counts
+        let expectedUpdatedCount = 6 // updatedDir, standaloneUpdated, anotherMatDir, childOfUpdatedRecent, childFolderOfUpdated, nonMatChildRecent
+        let expectedDeletedCount = 4 // deletedDir, childOfDeletedRecent, nestedFolderInDeleted, deepNestedInDeleted
+        
+        XCTAssertEqual(updatedIds.count, expectedUpdatedCount, "Should have \(expectedUpdatedCount) updated items, got \(updatedIds.count): \(updatedIds)")
+        XCTAssertEqual(deletedIds.count, expectedDeletedCount, "Should have \(expectedDeletedCount) deleted items, got \(deletedIds.count): \(deletedIds)")
     }
 }
