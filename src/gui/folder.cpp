@@ -753,10 +753,12 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
         qCDebug(lcFolder) << "Automatically locking file on server" << remoteFilePath;
         _fileLockSuccess = connect(_accountState->account().data(), &Account::lockFileSuccess, this, [this, remoteFilePath] {
             disconnect(_fileLockSuccess);
+            disconnect(_fileLockFailure);
             qCDebug(lcFolder) << "Locking file succeeded" << remoteFilePath;
             startSync();
         });
         _fileLockFailure = connect(_accountState->account().data(), &Account::lockFileError, this, [this, remoteFilePath](const QString &message) {
+            disconnect(_fileLockSuccess);
             disconnect(_fileLockFailure);
             qCWarning(lcFolder) << "Failed to lock a file:" << remoteFilePath << message;
         });
