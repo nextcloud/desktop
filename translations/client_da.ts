@@ -2623,7 +2623,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Download %1/s</translation>
+        <translation>Hent %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
@@ -2839,7 +2839,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="210"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Vi modtog en uventet download Content- Længde.</translation>
+        <translation>Vi modtog en uventet download Content-Length.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="238"/>
@@ -5506,7 +5506,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Download</source>
-        <translation>Download</translation>
+        <translation>Hent</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
@@ -6881,7 +6881,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>Downloadet</translation>
+        <translation>Hentet</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
