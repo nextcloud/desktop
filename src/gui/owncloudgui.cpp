@@ -708,4 +708,9 @@ void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
     _tray->createFileActivityDialog(localPath);
 }
 
+void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
+{
+    _tray->createFileActionsDialog(localPath);
+}
+
 } // end namespace
