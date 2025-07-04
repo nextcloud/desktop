@@ -1097,7 +1097,7 @@ final class EnumeratorTests: XCTestCase {
         try await observer.enumerateChanges()
         XCTAssertEqual(observer.changedItems.count, 1)
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier)?.deleted, true)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemC.identifier))
     }

@@ -269,8 +269,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         let result = Self.dbManager.deleteItemMetadata(ocId: ocId)
         XCTAssertTrue(result, "deleteItemMetadata should return true on successful deletion")
-        XCTAssertNil(
-            Self.dbManager.itemMetadata(ocId: ocId),
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.deleted,
+            true,
             "Metadata should be deleted from the database"
         )
     }
