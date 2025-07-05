@@ -162,7 +162,6 @@ private slots:
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
     void showDesktopNotification(const OCC::ActivityList &activityList);
-    void showDesktopNotification(OCC::Activity &activity, const bool showAcitivityOnlyOnce);
     void showDesktopTalkNotification(const OCC::Activity &activity);
 
 private:
