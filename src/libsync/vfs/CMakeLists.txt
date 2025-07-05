@@ -5,7 +5,7 @@
 # that create directories for the build.
 #file(GLOB VIRTUAL_FILE_SYSTEM_PLUGINS RELATIVE ${CMAKE_CURRENT_LIST_DIR} "*")
 
-list(APPEND VIRTUAL_FILE_SYSTEM_PLUGINS "suffix" "cfapi" "xattr")
+list(APPEND VIRTUAL_FILE_SYSTEM_PLUGINS "suffix" "cfapi" "xattr" "dbusapi")
 
 message("list of plugins ${VIRTUAL_FILE_SYSTEM_PLUGINS}")
 
