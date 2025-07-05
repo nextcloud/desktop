@@ -395,7 +395,7 @@ index 38dac2153..f15754fc8 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index c11c4f1f1..b0ead3b04 100644
+index cbfba8591..696143402 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -566,7 +566,7 @@ index 5820fc0c8..a70abc9c8 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index be9688306..2e7d6492b 100644
+index e91a1510e..147f9d9f3 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -634,7 +634,7 @@ index be9688306..2e7d6492b 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index d3fe74268..5fc4953d5 100644
+index d2c007ca9..89093021e 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -841,7 +841,7 @@ index 000000000..ba7eb4406
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index ce3e5d271..532147e53 100644
+index e7a1dc4de..b6a663ab5 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
 @@ -33,6 +33,7 @@
@@ -969,7 +969,7 @@ index cf7271963..56d3d8bdd 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index 67cb8c86e..755ca9865 100644
+index 43c1e7207..2f3bfdec6 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
 @@ -409,8 +409,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
@@ -981,8 +981,8 @@ index 67cb8c86e..755ca9865 100644
 +        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), QString::number(fileInfo.quota.bytesAvailable));
 +        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), QString::number(fileInfo.quota.bytesUsed));
          xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
-         xml.writeTextElement(ocUri, QStringLiteral("share-permissions"), QString::number(static_cast<int>(OCC::SharePermissions(OCC::SharePermissionRead |
-                                                                                                                                 OCC::SharePermissionUpdate |
+         if (fileInfo.isShared) {
+             if (fileInfo.downloadForbidden) {
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
 index 850e9c919..fc0371170 100644
 --- a/test/testdatefieldbackend.cpp
@@ -996,7 +996,7 @@ index 850e9c919..fc0371170 100644
  using namespace OCC;
  
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index f5d0983ab..a4aaa8f70 100644
+index 97cfbbb84..a70e7a197 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
