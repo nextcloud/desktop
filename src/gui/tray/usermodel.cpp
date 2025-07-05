@@ -24,6 +24,7 @@
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 
+#include <QtCore>
 #include <QDesktopServices>
 #include <QIcon>
 #include <QMessageBox>
@@ -166,14 +167,6 @@ void User::showDesktopNotification(const QString &title, const QString &message,
     Logger::instance()->postGuiLog(title, message);
     // restart the gui log timer now that we show a new notification
     _guiLogTimer.start();
-}
-
-void User::showDesktopNotification(Activity &activity, const bool showAcitivityOnlyOnce)
-{
-    if (showAcitivityOnlyOnce) {
-        activity._id = qHash(QDateTime::currentMSecsSinceEpoch());
-    }
-    showDesktopNotification(activity);
 }
 
 void User::showDesktopNotification(const Activity &activity)
@@ -1213,36 +1206,25 @@ void User::slotUpdateQuota(qint64 total, qint64 used)
     const auto percentInt = qMin(qRound(percent), 100);
     qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
 
-    int threshold_passed = 0;  
-    bool percentIncreased = true;
-    if (_lastQuotaPercent < percentInt) { 
-        if (_lastQuotaPercent < 20 && percentInt >= 20) threshold_passed = 20;
-        if (_lastQuotaPercent < 30 && percentInt >= 30) threshold_passed = 30;
-        if (_lastQuotaPercent < 35 && percentInt >= 35) threshold_passed = 35;
-    }
-    else if (_lastQuotaPercent > percentInt) {
-        percentIncreased = false;
-        if (_lastQuotaPercent >= 35 && percentInt < 35) threshold_passed = 35; 
-        if (_lastQuotaPercent >= 30 && percentInt < 30) threshold_passed = 30; 
-        if (_lastQuotaPercent >= 20 && percentInt < 20) threshold_passed = 20; 
-    }
+    int threshold_passed = 0;
+    if (_lastQuotaPercent < 80 && percentInt >= 80) threshold_passed = 80;
+    if (_lastQuotaPercent < 90 && percentInt >= 90) threshold_passed = 90;
+    if (_lastQuotaPercent < 95 && percentInt >= 95) threshold_passed = 95;
 
-    if (threshold_passed > 0 && percentIncreased) {
+    if (threshold_passed > 0) {
+        _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
+
         const auto localFolderName = getFolder();
-
         _lastQuotaActivity._type = Activity::OpenSettingsNotificationType;
-        _lastQuotaActivity._syncResultStatus = SyncResult::Success;
         _lastQuotaActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(threshold_passed));
-        _lastQuotaActivity._message = _lastQuotaActivity._subject;
+        _lastQuotaActivity._message = "";
         _lastQuotaActivity._link = QUrl::fromLocalFile(localFolderName->path());
         _lastQuotaActivity._accName = account()->displayName();
         _lastQuotaActivity._folder = localFolderName->path();
+        _lastQuotaActivity._id = qHash(QDateTime::currentMSecsSinceEpoch());
+        showDesktopNotification(_lastQuotaActivity);
         _activityModel->addNotificationToActivityList(_lastQuotaActivity);
-        showDesktopNotification(_lastQuotaActivity, true);
-    }
-    else if (!percentIncreased && threshold_passed > 0) {
-        _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
     }
     _lastQuotaPercent = percentInt;
 }
