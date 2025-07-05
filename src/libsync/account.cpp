@@ -1169,38 +1169,6 @@ void Account::updateDesktopEnterpriseChannel()
     }
 }
 
-Account::AccountNetworkProxySetting Account::networkProxySetting() const
-{
-    return _networkProxySetting;
-}
-
-void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
-{
-    if (setting == _networkProxySetting) {
-        return;
-    }
-
-    _networkProxySetting = setting;
-    if (setting == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setType(proxyType());
-        proxy.setHostName(proxyHostName());
-        proxy.setPort(proxyPort());
-        proxy.setUser(proxyUser());
-        proxy.setPassword(proxyPassword());
-        _networkAccessManager->setProxy(proxy);
-    } else {
-        const auto proxy = QNetworkProxy::applicationProxy();
-        _networkAccessManager->setProxy(proxy);
-        setProxyType(proxy.type());
-        setProxyHostName(proxy.hostName());
-        setProxyPort(proxy.port());
-        setProxyUser(proxy.user());
-        setProxyPassword(proxy.password());
-    }
-    emit networkProxySettingChanged();
-}
-
 QNetworkProxy::ProxyType Account::proxyType() const
 {
     return _proxyType;
@@ -1214,11 +1182,13 @@ void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
 
     _proxyType = proxyType;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setType(proxyType);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setType(proxyType);
+    proxy.setHostName(proxyHostName());
+    proxy.setPort(proxyPort());
+    proxy.setUser(proxyUser());
+    proxy.setPassword(proxyPassword());
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyTypeChanged();
 }
@@ -1236,11 +1206,9 @@ void Account::setProxyHostName(const QString &hostName)
 
     _proxyHostName = hostName;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setHostName(hostName);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setHostName(hostName);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyHostNameChanged();
 }
@@ -1258,11 +1226,9 @@ void Account::setProxyPort(const int port)
 
     _proxyPort = port;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setPort(port);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setPort(port);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyPortChanged();
 }
@@ -1295,11 +1261,9 @@ void Account::setProxyUser(const QString &user)
 
     _proxyUser = user;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setUser(user);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setUser(user);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyUserChanged();
 }
@@ -1317,35 +1281,26 @@ void Account::setProxyPassword(const QString &password)
 
     _proxyPassword = password;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setPassword(password);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setPassword(password);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyPasswordChanged();
 }
 
-void Account::setProxySettings(const AccountNetworkProxySetting networkProxySetting,
-                               const QNetworkProxy::ProxyType proxyType,
+void Account::setProxySettings(const QNetworkProxy::ProxyType proxyType,
                                const QString &hostName,
                                const int port,
                                const bool needsAuth,
                                const QString &user,
                                const QString &password)
 {
-    if (networkProxySetting == AccountNetworkProxySetting::GlobalProxy) {
-        setNetworkProxySetting(networkProxySetting);
-        return;
-    }
-
     setProxyType(proxyType);
     setProxyHostName(hostName);
     setProxyPort(port);
     setProxyNeedsAuth(needsAuth);
     setProxyUser(user);
     setProxyPassword(password);
-    setNetworkProxySetting(networkProxySetting);
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const
