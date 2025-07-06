@@ -1213,10 +1213,7 @@ void User::slotUpdateQuota(qint64 total, qint64 used)
         _lastQuotaActivity._type = Activity::OpenSettingsNotificationType;
         _lastQuotaActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(threshold_passed));
-        _lastQuotaActivity._message = "";
-        _lastQuotaActivity._link = QUrl::fromLocalFile(localFolderName->path());
         _lastQuotaActivity._accName = account()->displayName();
-        _lastQuotaActivity._folder = localFolderName->path();
         _lastQuotaActivity._id = qHash(QDateTime::currentMSecsSinceEpoch());
         showDesktopNotification(_lastQuotaActivity);
         _activityModel->addNotificationToActivityList(_lastQuotaActivity);
