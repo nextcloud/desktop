@@ -43,6 +43,8 @@ void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
     for (const auto &folder : std::as_const(_folderMan->map())) {
         folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
     }
+
+    scheduleUpdateCloudStorageRegistry();
 }
 
 void NavigationPaneHelper::scheduleUpdateCloudStorageRegistry()
@@ -102,12 +104,19 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
+                // Utility::setupFavLink(targetFolderPath,
+                //                       title,
+                //                       isRemoteRoot);
+
                 qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
 #ifdef Q_OS_WIN
                 // Steps taken from: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934%28v=vs.85%29.aspx
                 // Step 1: Add your CLSID and name your extension
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QString(), REG_SZ, title);
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64, QString(), REG_SZ, title);
+                // Add LocalizedString
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QStringLiteral("LocalizedString"), REG_SZ, title);
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64, QStringLiteral("LocalizedString"), REG_SZ, title);
                 // Step 2: Set the image for your icon
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\DefaultIcon"), QString(), REG_SZ, iconPath);
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\DefaultIcon"), QString(), REG_SZ, iconPath);
@@ -124,12 +133,18 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 // Indicate that your namespace extension should function like other file folder structures in File Explorer.
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\Instance"), QStringLiteral("CLSID"), REG_SZ, QStringLiteral("{0E5AAE11-A475-4c5b-AB00-C66DE400274E}"));
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\Instance"), QStringLiteral("CLSID"), REG_SZ, QStringLiteral("{0E5AAE11-A475-4c5b-AB00-C66DE400274E}"));
+                // Add default value to Instance key
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\Instance"), QString(), REG_SZ, title);
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\Instance"), QString(), REG_SZ, title);
                 // Step 7: Provide the file system attributes of the target folder
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\Instance\\InitPropertyBag"), QStringLiteral("Attributes"), REG_DWORD, 0x11);
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\Instance\\InitPropertyBag"), QStringLiteral("Attributes"), REG_DWORD, 0x11);
                 // Step 8: Set the path for the sync root
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\Instance\\InitPropertyBag"), QStringLiteral("TargetFolderPath"), REG_SZ, targetFolderPath);
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\Instance\\InitPropertyBag"), QStringLiteral("TargetFolderPath"), REG_SZ, targetFolderPath);
+                // Add default value to InitPropertyBag
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\Instance\\InitPropertyBag"), QString(), REG_SZ, title);
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\Instance\\InitPropertyBag"), QString(), REG_SZ, title);
                 // Step 9: Set appropriate shell flags
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\ShellFolder"), QStringLiteral("FolderValueFlags"), REG_DWORD, 0x28);
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\ShellFolder"), QStringLiteral("FolderValueFlags"), REG_DWORD, 0x28);
