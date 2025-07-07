@@ -31,6 +31,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
 
     private var workingSetCheckOngoing = false
+    private var invalidated = false
 
     private var webSocketUrlSession: URLSession?
     private var webSocketTask: URLSessionWebSocketTask?
@@ -81,6 +82,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func startPollingTimer() {
+        guard !invalidated else { return }
         Task { @MainActor in
             pollingTimer = Timer.scheduledTimer(
                 withTimeInterval: pollInterval, repeats: true
@@ -98,6 +100,11 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             pollingTimer?.invalidate()
             pollingTimer = nil
         }
+    }
+
+    public func invalidate() {
+        invalidated = true
+        resetWebSocket()
     }
 
     public func connect() {
@@ -144,6 +151,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func configureNotifyPush() async {
+        guard !invalidated else { return }
         let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
@@ -210,6 +218,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
+        guard !invalidated else { return }
         let authMethod = challenge.protectionSpace.authenticationMethod
         logger.debug("Received auth challenge with method: \(authMethod, privacy: .public)")
         if authMethod == NSURLAuthenticationMethodHTTPBasic {
@@ -240,6 +249,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         webSocketTask: URLSessionWebSocketTask,
         didOpenWithProtocol protocol: String?
     ) {
+        guard !invalidated else { return }
         logger.debug("Websocket connected \(self.accountId, privacy: .public) sending auth details")
         Task { await authenticateWebSocket() }
     }
@@ -250,6 +260,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
+        guard !invalidated else { return }
         // If the task that closed is not the current active task, it means we have
         // already initiated a reset and this is a stale callback. Ignore it.
         guard webSocketTask === self.webSocketTask else {
@@ -266,6 +277,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func authenticateWebSocket() async {
+        guard !invalidated else { return }
         do {
             try await webSocketTask?.send(.string(account.username))
             try await webSocketTask?.send(.string(account.password))
@@ -281,7 +293,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func startNewWebSocketPingTask() {
-        guard !Task.isCancelled else { return }
+        guard !Task.isCancelled, !invalidated else { return }
 
         if let webSocketPingTask, !webSocketPingTask.isCancelled {
             webSocketPingTask.cancel()
@@ -304,13 +316,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func pingWebSocket() {  // Keep the socket connection alive
+        guard !invalidated else { return }
         guard networkReachability != .notReachable else {
             logger.error("Not pinging \(self.accountId, privacy: .public), network is unreachable")
             return
         }
 
         webSocketTask?.sendPing { [weak self] error in
-            guard let self else { return }
+            guard let self, !self.invalidated else { return }
             guard error == nil else {
                 self.logger.warning(
                     """
@@ -331,6 +344,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func readWebSocket() {
+        guard !invalidated else { return }
         webSocketTask?.receive { result in
             switch result {
             case .failure:
@@ -351,6 +365,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func processWebsocket(data: Data) {
+        guard !invalidated else { return }
         guard let string = String(data: data, encoding: .utf8) else {
             logger.error("Could parse websocket data for id: \(self.accountId, privacy: .public)")
             return
@@ -453,7 +468,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     ) { }
 
     private func startWorkingSetCheck() {
-        guard !workingSetCheckOngoing else { return }
+        guard !workingSetCheckOngoing, !invalidated else { return }
         Task { await checkWorkingSet() }
     }
 
@@ -478,6 +493,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         var allDeletedMetadatas = [SendableItemMetadata]()
         var examinedItemIds = Set<String>()
         for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
+            guard !invalidated else { return }
             let itemRemoteUrl = item.serverUrl + "/" + item.fileName
             let (
                 metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
@@ -541,6 +557,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                 examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
             }
         }
+        guard !invalidated else { return }
 
         // Run a check to ensure files deleted in one location are not updated in another
         // (e.g. when moved)
