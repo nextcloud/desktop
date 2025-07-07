@@ -2418,7 +2418,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1802"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>مزامنة %1 من %2 (مازال %3)</translation>
+        <translation>مزامنة %1 من %2 (متبقي %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1805"/>
@@ -2433,7 +2433,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>مزامنة %1 (مازال %2)</translation>
+        <translation>مزامنة %1 (متبقي %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1816"/>
@@ -2667,12 +2667,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>ثوان معدودة مازالت؛ %1 من %2, ملف %3 من %4</translation>
+        <translation>ثوان معدودة متبقية؛ %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>%5 مازالت؛  %1 من %2, ملف %3 من %4</translation>
+        <translation>%5 متبقية؛  %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
@@ -5469,7 +5469,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 من %2 · %3 مازال</translation>
+        <translation>%1 من %2 · %3 متبقي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>
