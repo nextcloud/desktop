@@ -128,6 +128,7 @@ struct Build: ParsableCommand {
             "curl -fsSL \(brewInstallShUrl) | /bin/bash",
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
+        try installIfMissing("wget", "brew install wget")
         try installIfMissing("inkscape", "brew install inkscape")
         try installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 
