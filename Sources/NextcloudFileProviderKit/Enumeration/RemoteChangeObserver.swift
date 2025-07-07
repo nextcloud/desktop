@@ -133,9 +133,9 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             startPollingTimer()
             return
         }
-        Task {
-            try await Task.sleep(nanoseconds: webSocketReconfigureIntervalNanoseconds)
-            await self.configureNotifyPush()
+        Task { [weak self] in
+            try await Task.sleep(nanoseconds: self?.webSocketReconfigureIntervalNanoseconds ?? 0)
+            await self?.configureNotifyPush()
         }
     }
 
