@@ -166,6 +166,9 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             Task { @MainActor in
                 ncAccount = account
                 dbManager = FilesDatabaseManager(account: account)
+                if let changeObserver {
+                    changeObserver.invalidate()
+                }
                 if let dbManager {
                     changeObserver = RemoteChangeObserver(
                         account: account,
