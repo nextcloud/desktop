@@ -5,10 +5,24 @@
 
 import Foundation
 
+///
+/// Errors which can occur during installation of a command-line program.
+///
 enum InstallError: Error {
+    ///
+    /// The installation failed in general with the given output provided by the installation command.
+    ///
     case failedToInstall(String)
 }
 
+///
+/// Install a command-line program if not available already.
+///
+/// - Parameters:
+///     - command: The command name which is required.
+///     - installCommand: The installation command to install the command, if it is not yet installed.
+///     - installCommandEnv: Optional environment variables for the installation command.
+///
 func installIfMissing(
     _ command: String,
     _ installCommand: String,
