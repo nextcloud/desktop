@@ -467,7 +467,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         _ request: Alamofire.DataRequest, didParseResponse response: Alamofire.AFDataResponse<Value>
     ) { }
 
-    private func startWorkingSetCheck() {
+    func startWorkingSetCheck() {
         guard !workingSetCheckOngoing, !invalidated else { return }
         Task { await checkWorkingSet() }
     }
