@@ -109,6 +109,10 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         return callback(false);
     }
 
+    if (_syncOptions._vfs->mode() == Vfs::WindowsCfApi) {
+        return callback(true);
+    }
+
     checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
         if (bigFolder) {
             // we tell the UI there is a new folder
@@ -277,8 +281,12 @@ void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
 
 bool DiscoveryPhase::shouldDiscoverChildFolder(const QString &path) const
 {
-    qCInfo(lcDiscovery()) << "do not discover" << path;
-    return false;
+    if (SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncVfsFoldersList, path)) {
+        qCInfo(lcDiscovery()) << "do not discover" << path;
+        return false;
+    }
+
+    return true;
 }
 
 bool DiscoveryPhase::isRenamed(const QString &p) const
