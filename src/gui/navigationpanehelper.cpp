@@ -44,7 +44,7 @@ void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
         folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
     }
 
-    scheduleUpdateCloudStorageRegistry();
+    //scheduleUpdateCloudStorageRegistry();
 }
 
 void NavigationPaneHelper::scheduleUpdateCloudStorageRegistry()
