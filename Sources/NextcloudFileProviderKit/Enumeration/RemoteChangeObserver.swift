@@ -18,6 +18,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
+    public let dbManager: FilesDatabaseManager
     public var account: Account
     public var accountId: String { account.ncKitAccount }
 
@@ -28,6 +29,9 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     public var webSocketTaskActive: Bool { webSocketTask != nil }
 
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
+
+    private var workingSetCheckOngoing = false
+    private var invalidated = false
 
     private var webSocketUrlSession: URLSession?
     private var webSocketTask: URLSessionWebSocketTask?
@@ -56,7 +60,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             } else if oldValue == .notReachable {
                 logger.info("Network reachable, trying to reconnect to websocket")
                 reconnectWebSocket()
-                changeNotificationInterface.notifyChange()
+                startWorkingSetCheck()
             }
         }
     }
@@ -65,23 +69,26 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         account: Account,
         remoteInterface: RemoteInterface,
         changeNotificationInterface: ChangeNotificationInterface,
-        domain: NSFileProviderDomain?
+        domain: NSFileProviderDomain?,
+        dbManager: FilesDatabaseManager
     ) {
         self.account = account
         self.remoteInterface = remoteInterface
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
+        self.dbManager = dbManager
         super.init()
         connect()
     }
 
     private func startPollingTimer() {
+        guard !invalidated else { return }
         Task { @MainActor in
             pollingTimer = Timer.scheduledTimer(
                 withTimeInterval: pollInterval, repeats: true
             ) { [weak self] timer in
                 self?.logger.info("Polling timer timeout, notifying change")
-                self?.changeNotificationInterface.notifyChange()
+                self?.startWorkingSetCheck()
             }
             logger.info("Starting polling timer")
         }
@@ -93,6 +100,11 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             pollingTimer?.invalidate()
             pollingTimer = nil
         }
+    }
+
+    public func invalidate() {
+        invalidated = true
+        resetWebSocket()
     }
 
     public func connect() {
@@ -121,9 +133,9 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             startPollingTimer()
             return
         }
-        Task {
-            try await Task.sleep(nanoseconds: webSocketReconfigureIntervalNanoseconds)
-            await self.configureNotifyPush()
+        Task { [weak self] in
+            try await Task.sleep(nanoseconds: self?.webSocketReconfigureIntervalNanoseconds ?? 0)
+            await self?.configureNotifyPush()
         }
     }
 
@@ -139,6 +151,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func configureNotifyPush() async {
+        guard !invalidated else { return }
         let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
             account: account,
             options: .init(),
@@ -205,6 +218,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
+        guard !invalidated else { return }
         let authMethod = challenge.protectionSpace.authenticationMethod
         logger.debug("Received auth challenge with method: \(authMethod, privacy: .public)")
         if authMethod == NSURLAuthenticationMethodHTTPBasic {
@@ -235,6 +249,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         webSocketTask: URLSessionWebSocketTask,
         didOpenWithProtocol protocol: String?
     ) {
+        guard !invalidated else { return }
         logger.debug("Websocket connected \(self.accountId, privacy: .public) sending auth details")
         Task { await authenticateWebSocket() }
     }
@@ -245,6 +260,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
+        guard !invalidated else { return }
+        // If the task that closed is not the current active task, it means we have
+        // already initiated a reset and this is a stale callback. Ignore it.
+        guard webSocketTask === self.webSocketTask else {
+            logger.debug("An old websocket task closed, ignoring.")
+            return
+        }
+
         logger.debug("Socket connection closed for \(self.accountId, privacy: .public).")
         if let reason = reason {
             logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "", privacy: .public)")
@@ -254,6 +277,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func authenticateWebSocket() async {
+        guard !invalidated else { return }
         do {
             try await webSocketTask?.send(.string(account.username))
             try await webSocketTask?.send(.string(account.password))
@@ -269,7 +293,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func startNewWebSocketPingTask() {
-        guard !Task.isCancelled else { return }
+        guard !Task.isCancelled, !invalidated else { return }
 
         if let webSocketPingTask, !webSocketPingTask.isCancelled {
             webSocketPingTask.cancel()
@@ -292,13 +316,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func pingWebSocket() {  // Keep the socket connection alive
+        guard !invalidated else { return }
         guard networkReachability != .notReachable else {
             logger.error("Not pinging \(self.accountId, privacy: .public), network is unreachable")
             return
         }
 
         webSocketTask?.sendPing { [weak self] error in
-            guard let self else { return }
+            guard let self, !self.invalidated else { return }
             guard error == nil else {
                 self.logger.warning(
                     """
@@ -319,6 +344,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func readWebSocket() {
+        guard !invalidated else { return }
         webSocketTask?.receive { result in
             switch result {
             case .failure:
@@ -339,6 +365,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     private func processWebsocket(data: Data) {
+        guard !invalidated else { return }
         guard let string = String(data: data, encoding: .utf8) else {
             logger.error("Could parse websocket data for id: \(self.accountId, privacy: .public)")
             return
@@ -350,7 +377,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         logger.debug("Received websocket string: \(string, privacy: .public)")
         if string == "notify_file" {
             logger.debug("Received file notification for \(self.accountId, privacy: .public)")
-            changeNotificationInterface.notifyChange()
+            startWorkingSetCheck()
         } else if string == "notify_activity" {
             logger.debug("Ignoring activity notification: \(self.accountId, privacy: .public)")
         } else if string == "notify_notification" {
@@ -439,4 +466,157 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     public func request<Value>(
         _ request: Alamofire.DataRequest, didParseResponse response: Alamofire.AFDataResponse<Value>
     ) { }
+
+    func startWorkingSetCheck() {
+        guard !workingSetCheckOngoing, !invalidated else { return }
+        Task { await checkWorkingSet() }
+    }
+
+    private func checkWorkingSet() async {
+        workingSetCheckOngoing = true
+        defer { workingSetCheckOngoing = false }
+
+        // Unlike when enumerating items we can't progressively enumerate items as we need to
+        // wait to see which items are truly deleted and which have just been moved elsewhere.
+        // Visited folders and downloaded files. Sort in terms of their remote URLs.
+        // This way we ensure we visit parent folders before their children.
+        let materialisedItems = dbManager
+            .materialisedItemMetadatas(account: accountId)
+            .sorted {
+                ($0.serverUrl + "/" + $0.fileName).count <
+                    ($1.serverUrl + "/" + $1.fileName).count
+            }
+
+
+        var allNewMetadatas = [SendableItemMetadata]()
+        var allUpdatedMetadatas = [SendableItemMetadata]()
+        var allDeletedMetadatas = [SendableItemMetadata]()
+        var examinedItemIds = Set<String>()
+        for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
+            guard !invalidated else { return }
+            let itemRemoteUrl = item.serverUrl + "/" + item.fileName
+            let (
+                metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
+            ) = await Enumerator.readServerUrl(
+                itemRemoteUrl,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                depth: item.directory ? .targetAndDirectChildren : .target
+            )
+            guard !invalidated else { return }
+            if readError?.errorCode == 404 {
+                allDeletedMetadatas.append(item)
+                examinedItemIds.insert(item.ocId)
+                materialisedItems
+                    .filter { $0.serverUrl == itemRemoteUrl }
+                    .forEach {
+                        allDeletedMetadatas.append($0)
+                        examinedItemIds.insert(item.ocId)
+                    }
+            } else if let readError, readError != .success {
+                logger.info(
+                    """
+                    Finished change enumeration of working set for user:
+                        \(self.accountId, privacy: .public)
+                        with error: \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                return
+            } else {
+                allDeletedMetadatas += deletedMetadatas ?? []
+                allUpdatedMetadatas += updatedMetadatas ?? []
+                allNewMetadatas += newMetadatas ?? []
+
+                // Just because we have read child directories metadata doesn't mean we need
+                // to in turn scan their children. This is not the case for files
+                var examinedChildFilesAndDeletedItems = Set<String>()
+                if let metadatas, let target = metadatas.first {
+                    examinedItemIds.insert(target.ocId)
+
+                    if metadatas.count > 1 {
+                        examinedChildFilesAndDeletedItems.formUnion(
+                            metadatas[1...].filter { !$0.directory }.map(\.ocId)
+                        )
+                    }
+
+                    // If the target is not in the updated metadatas then neither it, nor
+                    // any of its kids have changed. So skip examining all of them
+                    if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
+                        logger.debug("Target \(itemRemoteUrl, privacy: .public) has not changed. Skipping children")
+                        let materialisedChildren = materialisedItems.filter {
+                            $0.serverUrl.hasPrefix(itemRemoteUrl)
+                        }.map(\.ocId)
+                        examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
+                    }
+
+                    // OPTIMIZATION: For any child directories returned in this enumeration,
+                    // if they haven't changed (etag matches database), mark them as examined
+                    // so we don't enumerate them separately later
+                    if metadatas.count > 1 {
+                        let childDirectories = metadatas[1...].filter { $0.directory }
+                        for childDir in childDirectories {
+                            // Check if this directory is in our materialized items list
+                            if let localItem = materialisedItems.first(where: { $0.ocId == childDir.ocId }),
+                               localItem.etag == childDir.etag {
+                                // Directory hasn't changed, mark as examined to skip separate enumeration
+                                logger.debug("Child directory \(childDir.fileName, privacy: .public) etag unchanged (\(childDir.etag, privacy: .public)), marking as examined")
+                                examinedChildFilesAndDeletedItems.insert(childDir.ocId)
+                                
+                                // Also mark any materialized children of this directory as examined
+                                let grandChildren = materialisedItems.filter {
+                                    $0.serverUrl.hasPrefix(localItem.serverUrl + "/" + localItem.fileName)
+                                }
+                                examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
+                            }
+                        }
+                    }
+
+                    if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
+                        examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
+                    }
+                }
+
+                examinedItemIds.formUnion(examinedChildFilesAndDeletedItems)
+            }
+        }
+        guard !invalidated else { return }
+
+        // Run a check to ensure files deleted in one location are not updated in another
+        // (e.g. when moved)
+        // The recursive scan provides us with updated/deleted metadatas only on a folder by
+        // folder basis; so we need to check we are not simultaneously marking a moved file as
+        // deleted and updated
+        var checkedDeletedMetadatas = allDeletedMetadatas
+
+        for updatedMetadata in allUpdatedMetadatas {
+            guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(
+                where: { $0.ocId == updatedMetadata.ocId }
+            ) else { continue }
+            checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
+        }
+
+        allDeletedMetadatas = checkedDeletedMetadatas
+        let task = Task { @MainActor in
+            allDeletedMetadatas.forEach {
+                var deleteMarked = $0
+                deleteMarked.deleted = true
+                deleteMarked.syncTime = Date()
+                dbManager.addItemMetadata(deleteMarked)
+            }
+        }
+        _ = await task.result
+
+        logger.info(
+            "Finished change checking of working set for user: \(self.accountId, privacy: .public)"
+        )
+        logger.debug("Examined item ids: \(examinedItemIds, privacy: .public)")
+        logger.debug("Materialised item ids: \(materialisedItems.map(\.ocId), privacy: .public)")
+
+        if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
+            logger.info("No changes found.")
+        } else {
+            changeNotificationInterface.notifyChange()
+        }
+    }
 }

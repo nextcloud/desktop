@@ -36,8 +36,13 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
         isComplete = true
     }
 
-    public func enumerateChanges() async throws {
-        let anchor = NSFileProviderSyncAnchor(.init())
+    public func enumerateChanges(from anchor: NSFileProviderSyncAnchor =
+        .init(
+            ISO8601DateFormatter()
+                .string(from: Date(timeIntervalSince1970: 1))
+                .data(using: .utf8)!
+        )
+    ) async throws {
         enumerator.enumerateChanges?(for: self, from: anchor)
         while !isComplete {
             try await Task.sleep(nanoseconds: 1_000_000)

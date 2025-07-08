@@ -234,7 +234,7 @@ public final class FilesDatabaseManager: Sendable {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
+                  var metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -245,6 +245,7 @@ public final class FilesDatabaseManager: Sendable {
                     ocID: \(existingMetadata.ocId, privacy: .public)
                     etag: \(existingMetadata.etag, privacy: .public)
                     fileName: \(existingMetadata.fileName, privacy: .public)"
+                    syncTime: \(existingMetadata.syncTime, privacy: .public)
                 """
             )
         }
@@ -282,6 +283,7 @@ public final class FilesDatabaseManager: Sendable {
                     if keepExistingDownloadState {
                         updatedMetadata.downloaded = existingMetadata.downloaded
                     }
+                    updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -291,6 +293,7 @@ public final class FilesDatabaseManager: Sendable {
                             ocID: \(updatedMetadata.ocId, privacy: .public)
                             etag: \(updatedMetadata.etag, privacy: .public)
                             fileName: \(updatedMetadata.fileName, privacy: .public)
+                            syncTime: \(updatedMetadata.syncTime, privacy: .public)
                         """
                     )
                 } else {
@@ -300,6 +303,7 @@ public final class FilesDatabaseManager: Sendable {
                             ocID: \(updatedMetadata.ocId, privacy: .public)
                             etag: \(updatedMetadata.etag, privacy: .public)
                             fileName: \(updatedMetadata.fileName, privacy: .public)
+                            syncTime: \(updatedMetadata.syncTime, privacy: .public)
                         """
                     )
                 }
@@ -313,6 +317,23 @@ public final class FilesDatabaseManager: Sendable {
                         ocID: \(updatedMetadata.ocId, privacy: .public)
                         etag: \(updatedMetadata.etag, privacy: .public)
                         fileName: \(updatedMetadata.fileName, privacy: .public)
+                        parentDirectoryUrl: \(updatedMetadata.serverUrl, privacy: .public)
+                        account: \(updatedMetadata.account, privacy: .public)
+                        content type: \(updatedMetadata.contentType, privacy: .public)
+                        is directory: \(updatedMetadata.directory, privacy: .public)
+                        creation date: \(updatedMetadata.creationDate, privacy: .public)
+                        date: \(updatedMetadata.date, privacy: .public)
+                        lock: \(updatedMetadata.lock, privacy: .public)
+                        lockTimeOut: \(updatedMetadata.lockTimeOut?.description ?? "", privacy: .public)
+                        lockOwner: \(updatedMetadata.lockOwner ?? "", privacy: .public)
+                        permissions: \(updatedMetadata.permissions, privacy: .public)
+                        size: \(updatedMetadata.size, privacy: .public)
+                        trashbinFileName: \(updatedMetadata.trashbinFileName, privacy: .public)
+                        downloaded: \(updatedMetadata.downloaded, privacy: .public)
+                        uploaded: \(updatedMetadata.uploaded, privacy: .public)
+                        visitedDirectory: \(updatedMetadata.visitedDirectory, privacy: .public)
+                        deleted: \(updatedMetadata.deleted, privacy: .public)
+                        syncTime: \(updatedMetadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -368,12 +389,14 @@ public final class FilesDatabaseManager: Sendable {
                 readTargetMetadata = nil
             }
 
-            // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas
-            )
-            let metadatasToDeleteCopy = metadatasToDelete.map { SendableItemMetadata(value: $0) }
+            ).map {
+                var metadata = SendableItemMetadata(value: $0)
+                metadata.deleted = true
+                return metadata
+            }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
@@ -396,32 +419,34 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             if var readTargetMetadata {
+                if readTargetMetadata.directory {
+                    readTargetMetadata.visitedDirectory = true
+                }
+                
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
-                        Self.logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
+                        Self.logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId, privacy: .public)")
                         if keepExistingDownloadState {
                             readTargetMetadata.downloaded = existing.downloaded
-                        }
-                        if readTargetMetadata.directory {
-                            readTargetMetadata.visitedDirectory = true
                         }
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
-                    Self.logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId)")
+                    Self.logger.info("Depth 1 read target is new: \(readTargetMetadata.ocId, privacy: .public)")
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
             }
 
             try database.write {
-                database.delete(metadatasToDelete)
+                // Do not delete the metadatas that have been deleted
+                database.add(metadatasToDelete.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
 
-            return (metadatasToCreate, metadatasToUpdate, metadatasToDeleteCopy)
+            return (metadatasToCreate, metadatasToUpdate, metadatasToDelete)
         } catch {
             Self.logger.error(
                 """
@@ -467,6 +492,7 @@ public final class FilesDatabaseManager: Sendable {
                         ocID: \(metadata.ocId, privacy: .public)
                         etag: \(metadata.etag, privacy: .public)
                         fileName: \(metadata.fileName, privacy: .public)
+                        syncTime: \(metadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -513,6 +539,8 @@ public final class FilesDatabaseManager: Sendable {
                         downloaded: \(metadata.downloaded, privacy: .public)
                         uploaded: \(metadata.uploaded, privacy: .public)
                         visitedDirectory: \(metadata.visitedDirectory, privacy: .public)
+                        deleted: \(metadata.deleted, privacy: .public)
+                        syncTime: \(metadata.syncTime, privacy: .public)
                     """
                 )
             }
@@ -523,6 +551,7 @@ public final class FilesDatabaseManager: Sendable {
                     ocID: \(metadata.ocId, privacy: .public)
                     etag: \(metadata.etag, privacy: .public)
                     fileName: \(metadata.fileName, privacy: .public)
+                    syncTime: \(metadata.syncTime, privacy: .public)
                     received error: \(error.localizedDescription, privacy: .public)
                 """
             )
@@ -535,7 +564,7 @@ public final class FilesDatabaseManager: Sendable {
             let database = ncDatabase()
             try database.write {
                 Self.logger.debug("Deleting item metadata. \(ocId, privacy: .public)")
-                database.delete(results)
+                results.forEach { $0.deleted = true }
             }
             return true
         } catch {
@@ -614,6 +643,7 @@ public final class FilesDatabaseManager: Sendable {
                     fileName: \(metadata.fileName, privacy: .public),
                     serverUrl: \(metadata.serverUrl, privacy: .public),
                     account: \(metadata.account, privacy: .public),
+                    syncTime: \(metadata.syncTime, privacy: .public)
                 """
             )
             return nil
@@ -652,12 +682,68 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
-    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
+    private func managedMaterialisedItemMetadatas(account: String) -> Results<RealmItemMetadata> {
         itemMetadatas
             .where {
                 $0.account == account &&
                 (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
             }
-            .toUnmanagedResults()
+    }
+
+    public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
+        managedMaterialisedItemMetadatas(account: account).toUnmanagedResults()
+    }
+
+    public func pendingWorkingSetChanges(
+        account: Account, since date: Date
+    ) -> (updated: [SendableItemMetadata], deleted: [SendableItemMetadata]) {
+        let accId = account.ncKitAccount
+        let pending = managedMaterialisedItemMetadatas(account: accId).where { $0.syncTime > date }
+        var updated = pending.where { !$0.deleted }.toUnmanagedResults()
+        var deleted = pending.where { $0.deleted }.toUnmanagedResults()
+
+        var handledUpdateOcIds = Set(updated.map(\.ocId))
+        updated
+            .map {
+                var serverUrl = $0.serverUrl + "/" + $0.fileName
+                if serverUrl.last == "/" { serverUrl.removeLast() }
+                return serverUrl
+            }
+            .forEach { serverUrl in
+                Self.logger.debug("Checking (updated) \(serverUrl, privacy: .public)")
+                itemMetadatas
+                    .where { $0.serverUrl == serverUrl && $0.syncTime > date }
+                    .forEach { metadata in
+                        Self.logger.debug("Checking item: \(metadata.fileName, privacy: .public)")
+                        guard !handledUpdateOcIds.contains(metadata.ocId) else { return }
+                        handledUpdateOcIds.insert(metadata.ocId)
+                        let sendableMetadata = SendableItemMetadata(value: metadata)
+                        if metadata.deleted {
+                            deleted.append(sendableMetadata)
+                        } else {
+                            updated.append(sendableMetadata)
+                        }
+                        Self.logger.debug("Appended item: \(metadata.fileName, privacy: .public)")
+                    }
+            }
+
+        var handledDeleteOcIds = Set(deleted.map(\.ocId))
+        deleted
+            .map {
+                var serverUrl = $0.serverUrl + "/" + $0.fileName
+                if serverUrl.last == "/" { serverUrl.removeLast() }
+                return serverUrl
+            }
+            .forEach { serverUrl in
+                Self.logger.debug("Checking (deletion) \(serverUrl, privacy: .public)")
+                itemMetadatas
+                    .where { $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date }
+                    .forEach { metadata in
+                        guard !handledDeleteOcIds.contains(metadata.ocId) else { return }
+                        deleted.append(SendableItemMetadata(value: metadata))
+                    }
+            }
+
+        return (updated, deleted)
     }
 }

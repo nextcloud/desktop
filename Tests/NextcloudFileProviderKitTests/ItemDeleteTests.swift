@@ -65,7 +65,7 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
     }
 
     func testDeleteFolderAndContents() async {
@@ -189,7 +189,7 @@ final class ItemDeleteTests: XCTestCase {
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
     }
 
     func testDeleteLockFileUnlocksTargetFile() async throws {
@@ -257,7 +257,7 @@ final class ItemDeleteTests: XCTestCase {
 
         // Delete the lock file
         let error = await lockItem.delete(dbManager: Self.dbManager)
-        XCTAssertNil(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: lockFileMetadata.ocId)?.deleted, true)
 
         // Assert: no error returned
         XCTAssertNil(error)

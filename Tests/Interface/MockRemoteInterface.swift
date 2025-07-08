@@ -568,6 +568,9 @@ public class MockRemoteInterface: RemoteInterface {
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
+    
+    // Handler to track enumerate calls
+    public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
     public init(
         rootItem: MockRemoteItem? = nil,
@@ -1041,6 +1044,10 @@ public class MockRemoteInterface: RemoteInterface {
             remotePath.removeLast()
         }
         print("Enumerating \(remotePath)")
+        
+        // Call the enumerate call handler if it exists
+        enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
+        
         guard let item = item(remotePath: remotePath, account: account) else {
             print("Item at \(remotePath) not found.")
             return (
