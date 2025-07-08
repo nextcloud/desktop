@@ -1153,7 +1153,7 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
-void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &path)
+void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &path, SyncJournalDb *journalForFolder)
 {
     qCInfo(lcAccount()) << "ls col job requested for" << path;
 
@@ -1217,6 +1217,7 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
     QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, path] () {
         qCInfo(lcAccount()) << "ls col job" << path << "finished";
+        journalForFolder->removeSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
         promise->finish();
     });
 

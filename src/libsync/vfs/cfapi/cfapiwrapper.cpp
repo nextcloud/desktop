@@ -582,7 +582,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
                          qCInfo(lcCfApiWrapper()) << "ls prop started";
                      });
 
-    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, serverPath);
+    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, serverPath, vfs->params().journal);
 
     qCInfo(lcCfApiWrapper()) << "ls prop requested" << path << serverPath;
 
