@@ -550,6 +550,28 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                         examinedChildFilesAndDeletedItems.formUnion(materialisedChildren)
                     }
 
+                    // OPTIMIZATION: For any child directories returned in this enumeration,
+                    // if they haven't changed (etag matches database), mark them as examined
+                    // so we don't enumerate them separately later
+                    if metadatas.count > 1 {
+                        let childDirectories = metadatas[1...].filter { $0.directory }
+                        for childDir in childDirectories {
+                            // Check if this directory is in our materialized items list
+                            if let localItem = materialisedItems.first(where: { $0.ocId == childDir.ocId }),
+                               localItem.etag == childDir.etag {
+                                // Directory hasn't changed, mark as examined to skip separate enumeration
+                                logger.debug("Child directory \(childDir.fileName, privacy: .public) etag unchanged (\(childDir.etag, privacy: .public)), marking as examined")
+                                examinedChildFilesAndDeletedItems.insert(childDir.ocId)
+                                
+                                // Also mark any materialized children of this directory as examined
+                                let grandChildren = materialisedItems.filter {
+                                    $0.serverUrl.hasPrefix(localItem.serverUrl + "/" + localItem.fileName)
+                                }
+                                examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
+                            }
+                        }
+                    }
+
                     if let deletedMetadataOcIds = deletedMetadatas?.map(\.ocId) {
                         examinedChildFilesAndDeletedItems.formUnion(deletedMetadataOcIds)
                     }
