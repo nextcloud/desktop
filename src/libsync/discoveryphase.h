@@ -288,6 +288,7 @@ class DiscoveryPhase : public QObject
     // both must contain a sorted list
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
+    QStringList _selectiveSyncVfsFoldersList;
 
     void scheduleMoreJobs();
 

@@ -228,6 +228,9 @@ void ProcessDirectoryJob::process()
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
         }
 
+        if (_discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && e.serverEntry.isDirectory && !e.localEntry.isValid() && !e.dbEntry.isValid()) {
+            checkAndAddSelectiveSyncListsForVfsOnDemandFolders(path._server + "/");
+        }
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
         const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
@@ -549,6 +552,16 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
     auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.values();
     toRemoveFromBlacklist.sort();
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
+}
+
+void ProcessDirectoryJob::checkAndAddSelectiveSyncListsForVfsOnDemandFolders(const QString &path)
+{
+    _discoveryData->_selectiveSyncVfsFoldersList = _discoveryData->_statedb->addSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
+}
+
+void ProcessDirectoryJob::removeSelectiveSyncListsForVfsOnDemandFolders(const QString &path)
+{
+    _discoveryData->_selectiveSyncVfsFoldersList = _discoveryData->_statedb->removeSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
 }
 
 void ProcessDirectoryJob::processFile(PathTuple path,

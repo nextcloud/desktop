@@ -167,11 +167,18 @@ public:
         SelectiveSyncUndecidedList = 3,
         /** List of encrypted folders that will need to be removed from the blacklist when E2EE gets set up*/
         SelectiveSyncE2eFoldersToRemoveFromBlacklist = 4,
+        /** The black list is the list of folders that are unselected in the on-demand VFS feature.
+         * For the sync engine, those folders are skipped until teh user tries to access them */
+        SelectiveSyncVfsFoldersOnDemandList = 5,
     };
     /* return the specified list from the database */
     QStringList getSelectiveSyncList(SelectiveSyncListType type, bool *ok);
     /* Write the selective sync list (remove all other entries of that list */
     void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
+
+    QStringList addSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
+
+    QStringList removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
 
     /**
      * Make sure that on the next sync fileName and its parents are discovered from the server.
