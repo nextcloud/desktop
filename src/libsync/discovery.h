@@ -148,6 +148,10 @@ private:
     // check if the path is an e2e encrypted and the e2ee is not set up, and insert it into a corresponding list in the sync journal
     void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path);
 
+    void checkAndAddSelectiveSyncListsForVfsOnDemandFolders(const QString &path);
+
+    void removeSelectiveSyncListsForVfsOnDemandFolders(const QString &path);
+
     /** Reconcile local/remote/db information for a single item.
      *
      * Can be a file or a directory.

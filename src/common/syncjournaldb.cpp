@@ -2377,6 +2377,42 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     commitInternal(QStringLiteral("setSelectiveSyncList"));
 }
 
+QStringList SyncJournalDb::addSelectiveSyncLists(SelectiveSyncListType type, const QString &path)
+{
+    bool ok = false;
+
+    const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
+
+    const auto blackListList = getSelectiveSyncList(type, &ok);
+    auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
+    blackListSet.insert(pathWithTrailingSpace);
+    auto blackList = blackListSet.values();
+    blackList.sort();
+    setSelectiveSyncList(type, blackList);
+
+    qCInfo(lcSql()) << "add" << path << "into" << type << blackList;
+
+    return blackList;
+}
+
+QStringList SyncJournalDb::removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path)
+{
+    bool ok = false;
+
+    const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
+
+    const auto blackListList = getSelectiveSyncList(type, &ok);
+    auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
+    blackListSet.remove(pathWithTrailingSpace);
+    auto blackList = blackListSet.values();
+    blackList.sort();
+    setSelectiveSyncList(type, blackList);
+
+    qCInfo(lcSql()) << "remove" << path << "into" << type << blackList;
+
+    return blackList;
+}
+
 void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 {
     QMutexLocker locker(&_mutex);
