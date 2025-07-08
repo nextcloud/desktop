@@ -36,11 +36,9 @@ final class RemoteChangeObserverTests: XCTestCase {
         eventLoopGroup: .singleton
     )
     var remoteChangeObserver: RemoteChangeObserver?
-    var dbManager: FilesDatabaseManager!
 
     override func setUp() {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration, account: Self.account)
         Task { try await Self.notifyPushServer.run() }
     }
 
@@ -160,7 +158,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testChangeRecognised() async throws {
         // 1. Arrange
-        let db = dbManager.ncDatabase()
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
         let testStartDate = Date()
@@ -174,7 +172,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             SendableItemMetadata(ocId: "rootFile", fileName: "root-file.txt", account: Self.account)
         rootFileToUpdate.downloaded = true
         rootFileToUpdate.etag = "ETAG_OLD_ROOTFILE"
-        dbManager.addItemMetadata(rootFileToUpdate)
+        Self.dbManager.addItemMetadata(rootFileToUpdate)
 
         // A materialised folder that will have its contents changed.
         var folderA =
@@ -182,7 +180,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         folderA.directory = true
         folderA.visitedDirectory = true
         folderA.etag = "ETAG_OLD_FOLDERA"
-        dbManager.addItemMetadata(folderA)
+        Self.dbManager.addItemMetadata(folderA)
 
         // A materialised file inside FolderA that will be deleted.
         var fileInAToDelete =
@@ -191,7 +189,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         fileInAToDelete.serverUrl = Self.account.davFilesUrl + "/FolderA"
         // Set an explicit old sync time to verify it gets updated during deletion
         fileInAToDelete.syncTime = Date(timeIntervalSince1970: 1000)
-        dbManager.addItemMetadata(fileInAToDelete)
+        Self.dbManager.addItemMetadata(fileInAToDelete)
 
         // A materialised folder that will be deleted entirely.
         var folderBToDelete =
@@ -200,11 +198,11 @@ final class RemoteChangeObserverTests: XCTestCase {
         folderBToDelete.visitedDirectory = true
         // Set an explicit old sync time to verify it gets updated during deletion
         folderBToDelete.syncTime = Date(timeIntervalSince1970: 2000)
-        dbManager.addItemMetadata(folderBToDelete)
+        Self.dbManager.addItemMetadata(folderBToDelete)
 
         // Record original sync times to verify they are updated during deletion
-        let originalFileInASyncTime = try XCTUnwrap(dbManager.itemMetadata(ocId: "fileInA")).syncTime
-        let originalFolderBSyncTime = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderB")).syncTime
+        let originalFileInASyncTime = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fileInA")).syncTime
+        let originalFolderBSyncTime = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folderB")).syncTime
 
         // --- Server State (The new "remote truth") ---
         let rootItem = remoteInterface.rootItem!
@@ -259,7 +257,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil,
-            dbManager: dbManager
+            dbManager: Self.dbManager
         )
 
         // 2. Act & Assert
@@ -271,21 +269,21 @@ final class RemoteChangeObserverTests: XCTestCase {
 
         // 3. Assert Database State
         // Check updated items
-        let finalRootFile = try XCTUnwrap(dbManager.itemMetadata(ocId: "rootFile"))
+        let finalRootFile = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "rootFile"))
         XCTAssertEqual(finalRootFile.etag, "ETAG_NEW_ROOTFILE")
         XCTAssertTrue(finalRootFile.syncTime >= testStartDate)
 
-        let finalFolderA = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderA"))
+        let finalFolderA = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folderA"))
         XCTAssertEqual(finalFolderA.etag, "ETAG_NEW_FOLDERA")
         XCTAssertTrue(finalFolderA.syncTime >= testStartDate)
 
         // Check new item
-        let finalNewFile = try XCTUnwrap(dbManager.itemMetadata(ocId: "newFileInA"))
+        let finalNewFile = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "newFileInA"))
         XCTAssertEqual(finalNewFile.fileName, "new-file.txt")
         XCTAssertNotNil(finalNewFile.syncTime)
 
         // Check deleted items
-        let deletedFileInA = try XCTUnwrap(dbManager.itemMetadata(ocId: "fileInA"))
+        let deletedFileInA = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "fileInA"))
         XCTAssertTrue(
             deletedFileInA.deleted, "File inside updated folder should be marked as deleted."
         )
@@ -294,7 +292,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         XCTAssertGreaterThan(deletedFileInA.syncTime, originalFileInASyncTime,
                             "Deleted file's sync time should be newer than original sync time")
 
-        let deletedFolderB = try XCTUnwrap(dbManager.itemMetadata(ocId: "folderB"))
+        let deletedFolderB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "folderB"))
         XCTAssertTrue(deletedFolderB.deleted, "The entire folder should be marked as deleted.")
         XCTAssertTrue(deletedFolderB.syncTime >= testStartDate,
                      "Deleted folder's sync time should be updated to current time")
@@ -347,7 +345,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testPolling() async throws {
         // 1. Arrange
-        let db = dbManager.ncDatabase()
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
         let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
@@ -358,7 +356,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         var fileToUpdate = SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
         fileToUpdate.downloaded = true
         fileToUpdate.etag = "ETAG_OLD"
-        dbManager.addItemMetadata(fileToUpdate)
+        Self.dbManager.addItemMetadata(fileToUpdate)
 
         // Server State: The same file now has a new ETag.
         let serverItem = MockRemoteItem(identifier: "item1", versionIdentifier: "ETAG_NEW", name: "file.txt", remotePath: Self.account.davFilesUrl + "/file.txt", account: Self.account.ncKitAccount, username: Self.account.username, userId: Self.account.id, serverUrl: Self.account.serverUrl)
@@ -373,7 +371,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil,
-            dbManager: dbManager
+            dbManager: Self.dbManager
         )
         // Set a very short poll interval for the test.
         remoteChangeObserver?.pollInterval = 0.5
@@ -472,7 +470,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testRetryOnConnectionLoss() async throws {
         // 1. Arrange
-        let db = dbManager.ncDatabase()
+        let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
         let remoteInterface =
@@ -484,7 +482,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
         fileToUpdate.downloaded = true
         fileToUpdate.etag = "ETAG_OLD"
-        dbManager.addItemMetadata(fileToUpdate)
+        Self.dbManager.addItemMetadata(fileToUpdate)
         let serverItem = MockRemoteItem(
             identifier: "item1",
             versionIdentifier: "ETAG_NEW",
@@ -503,7 +501,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil,
-            dbManager: dbManager
+            dbManager: Self.dbManager
         )
         self.remoteChangeObserver = remoteChangeObserver
 
