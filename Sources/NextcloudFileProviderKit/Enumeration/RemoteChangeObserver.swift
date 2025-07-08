@@ -504,6 +504,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                 dbManager: dbManager,
                 depth: item.directory ? .targetAndDirectChildren : .target
             )
+            guard !invalidated else { return }
             if readError?.errorCode == 404 {
                 allDeletedMetadatas.append(item)
                 examinedItemIds.insert(item.ocId)
