@@ -418,7 +418,8 @@ public slots:
     void setAskUserForMnemonic(const bool ask);
 
     void listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
-                          const QString &path);
+                          const QString &path,
+                          SyncJournalDb *journalForFolder);
 
 signals:
     /// Emitted whenever there's network activity
