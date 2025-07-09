@@ -1073,6 +1073,211 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertFalse(finalMetadata.keepDownloaded)
     }
 
+    func testKeepDownloadedRetainedDuringDepth1ReadUpdate() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        
+        // Create initial metadata with keepDownloaded = true
+        var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded", fileName: "test.txt", account: account)
+        initialMetadata.downloaded = true
+        initialMetadata.uploaded = true
+        initialMetadata.keepDownloaded = true
+        initialMetadata.etag = "old-etag"
+
+        Self.dbManager.addItemMetadata(initialMetadata)
+        
+        // Verify initial state
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "test-keep-downloaded"))
+        XCTAssertTrue(storedMetadata.keepDownloaded, "Initial keepDownloaded should be true")
+        XCTAssertTrue(storedMetadata.downloaded, "Initial downloaded should be true")
+
+        // Update metadata with new etag (simulating server update)
+        var updatedMetadata = initialMetadata
+        updatedMetadata.etag = "new-etag"
+        updatedMetadata.keepDownloaded = false // This would be the case when converting from NKFile
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [updatedMetadata],
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        
+        // Verify keepDownloaded is retained
+        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained during update")
+        XCTAssertTrue(finalMetadata.downloaded, "downloaded should be retained during update")
+        XCTAssertEqual(finalMetadata.etag, "new-etag", "etag should be updated")
+        
+        // Verify in database
+        let dbMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "test-keep-downloaded"))
+        XCTAssertTrue(dbMetadata.keepDownloaded, "keepDownloaded should be retained in database")
+    }
+
+    func testKeepDownloadedRetainedWithKeepExistingDownloadStateFalse() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        
+        // Create initial metadata with keepDownloaded = true
+        var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded-false", fileName: "test.txt", account: account)
+        initialMetadata.downloaded = true
+        initialMetadata.uploaded = true
+        initialMetadata.keepDownloaded = true
+        initialMetadata.etag = "old-etag"
+
+        Self.dbManager.addItemMetadata(initialMetadata)
+
+        // Update metadata with new etag
+        var updatedMetadata = initialMetadata
+        updatedMetadata.etag = "new-etag"
+        updatedMetadata.keepDownloaded = false // This would be the case when converting from NKFile
+        updatedMetadata.downloaded = false // Set to false to test keepDownloaded retention
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [updatedMetadata],
+            keepExistingDownloadState: false // Even when not keeping download state
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        
+        // Verify keepDownloaded is still retained even when keepExistingDownloadState is false
+        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained regardless of keepExistingDownloadState")
+        XCTAssertEqual(finalMetadata.downloaded, false, "downloaded should not be retained when keepExistingDownloadState is false")
+    }
+
+    func testKeepDownloadedRetainedInReadTargetMetadata() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        
+        // Create existing metadata with keepDownloaded = true
+        var existingMetadata = SendableItemMetadata(ocId: "read-target-test", fileName: "target.txt", account: account)
+        existingMetadata.keepDownloaded = true
+        existingMetadata.downloaded = true
+        existingMetadata.status = Status.normal.rawValue
+        
+        Self.dbManager.addItemMetadata(existingMetadata)
+
+        // Create new read target metadata (simulating reading from server)
+        var readTargetMetadata = SendableItemMetadata(ocId: "read-target-test", fileName: "target.txt", account: account)
+        readTargetMetadata.etag = "new-etag"
+        readTargetMetadata.keepDownloaded = false // Would be false when created from NKFile
+        readTargetMetadata.downloaded = false
+        
+        // This simulates the path in depth1ReadUpdateItemMetadatas where readTargetMetadata
+        // is processed and existing properties should be retained
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [readTargetMetadata],
+            keepExistingDownloadState: true
+        )
+
+        let updatedMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        XCTAssertTrue(updatedMetadata.keepDownloaded, "keepDownloaded should be retained in read target metadata")
+        XCTAssertTrue(updatedMetadata.downloaded, "downloaded should be retained when keepExistingDownloadState is true")
+    }
+
+    func testKeepDownloadedNotSetForNewMetadata() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        
+        // Create completely new metadata (not existing in database)
+        var newMetadata = SendableItemMetadata(ocId: "new-item", fileName: "new.txt", account: account)
+        newMetadata.etag = "initial-etag"
+        newMetadata.keepDownloaded = false // Should remain false for new items
+        
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [newMetadata],
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.newMetadatas?.isEmpty, false, "Should create new metadata")
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, true, "Should not update any metadata")
+        
+        let createdMetadata = try XCTUnwrap(result.newMetadatas?.first)
+        XCTAssertFalse(createdMetadata.keepDownloaded, "keepDownloaded should remain false for new items")
+        
+        // Verify in database
+        let dbMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "new-item"))
+        XCTAssertFalse(dbMetadata.keepDownloaded, "keepDownloaded should be false in database for new items")
+    }
+
+    func testKeepDownloadedRetainedWithMultipleItems() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+
+        var parentFolder = SendableItemMetadata(ocId: "pf", fileName: "pf", account: account)
+        parentFolder.uploaded = true
+        parentFolder.etag = "old-pf"
+
+        // Create multiple items with different keepDownloaded states
+        var item1 = SendableItemMetadata(ocId: "multi-1", fileName: "file1.txt", account: account)
+        item1.keepDownloaded = true
+        item1.downloaded = true
+        item1.uploaded = true
+        item1.etag = "old-1"
+        item1.serverUrl = account.davFilesUrl.appending("/pf")
+
+        var item2 = SendableItemMetadata(ocId: "multi-2", fileName: "file2.txt", account: account)
+        item2.keepDownloaded = false
+        item2.downloaded = false
+        item2.uploaded = true
+        item2.etag = "old-2"
+        item2.serverUrl = account.davFilesUrl.appending("/pf")
+
+        var item3 = SendableItemMetadata(ocId: "multi-3", fileName: "file3.txt", account: account)
+        item3.keepDownloaded = true
+        item3.downloaded = false
+        item3.uploaded = true
+        item3.etag = "old-3"
+        item3.serverUrl = account.davFilesUrl.appending("/pf")
+
+        Self.dbManager.addItemMetadata(parentFolder)
+        Self.dbManager.addItemMetadata(item1)
+        Self.dbManager.addItemMetadata(item2)
+        Self.dbManager.addItemMetadata(item3)
+
+        // Update all items with new etags
+        var updatedParentFolder = parentFolder
+        updatedParentFolder.etag = "new-pf"
+
+        var updatedItem1 = item1
+        updatedItem1.etag = "new-1"
+        updatedItem1.keepDownloaded = false // Would be reset when converting from NKFile
+        
+        var updatedItem2 = item2
+        updatedItem2.etag = "new-2"
+        updatedItem2.keepDownloaded = false
+        
+        var updatedItem3 = item3
+        updatedItem3.etag = "new-3"
+        updatedItem3.keepDownloaded = false
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl.appending("/pf"),
+            updatedMetadatas: [updatedParentFolder, updatedItem1, updatedItem2, updatedItem3],
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.updatedMetadatas?.count, 4, "Should update all four items")
+
+        // Verify each item's keepDownloaded state is correctly retained
+        let updatedMetadatas = try XCTUnwrap(result.updatedMetadatas)
+        
+        let finalItem1 = try XCTUnwrap(updatedMetadatas.first { $0.ocId == "multi-1" })
+        XCTAssertTrue(finalItem1.keepDownloaded, "Item 1 should retain keepDownloaded = true")
+        
+        let finalItem2 = try XCTUnwrap(updatedMetadatas.first { $0.ocId == "multi-2" })
+        XCTAssertFalse(finalItem2.keepDownloaded, "Item 2 should retain keepDownloaded = false")
+        
+        let finalItem3 = try XCTUnwrap(updatedMetadatas.first { $0.ocId == "multi-3" })
+        XCTAssertTrue(finalItem3.keepDownloaded, "Item 3 should retain keepDownloaded = true")
+    }
+
     func testParentItemIdentifierWithRemoteFallback() async throws {
         let rootItem = MockRemoteItem.rootItem(account: Self.account)
         let remoteFolder = MockRemoteItem(
