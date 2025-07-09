@@ -1128,6 +1128,42 @@ final class EnumeratorTests: XCTestCase {
         }
     }
 
+    func testKeepDownloadedRetainedDuringEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase()
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        let existingFolder = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(existingFolder)
+
+        // Setup existing item with keepDownloaded = true
+        var existingItem = remoteItemA.toItemMetadata(account: Self.account)
+        existingItem.keepDownloaded = true
+        existingItem.downloaded = true
+        Self.dbManager.addItemMetadata(existingItem)
+
+        // Simulate server response with updated etag but no keepDownloaded
+        remoteFolder.versionIdentifier = "NEW"
+        remoteItemA.versionIdentifier = "NEW_ETAG"
+        
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+
+        // Verify the updated metadata
+        let updatedMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
+        )
+        XCTAssertTrue(updatedMetadata.keepDownloaded, "keepDownloaded should remain true after enumeration")
+        XCTAssertEqual(updatedMetadata.etag, "NEW_ETAG", "Etag should be updated")
+        XCTAssertTrue(updatedMetadata.downloaded, "Downloaded state should be preserved")
+    }
+
     func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
