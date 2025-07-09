@@ -1402,6 +1402,49 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertTrue(materialisedOcIds.contains(sDirD.ocId))
     }
 
+    func testKeepDownloadedRetainedDuringUpdate() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        
+        // Create initial metadata with keepDownloaded = true
+        var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded", fileName: "test.txt", account: account)
+        initialMetadata.downloaded = true
+        initialMetadata.uploaded = true
+        initialMetadata.keepDownloaded = true
+        initialMetadata.etag = "old-etag"
+
+        Self.dbManager.addItemMetadata(initialMetadata)
+        
+        // Verify initial state
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "test-keep-downloaded"))
+        XCTAssertTrue(storedMetadata.keepDownloaded, "Initial keepDownloaded should be true")
+        XCTAssertTrue(storedMetadata.downloaded, "Initial downloaded should be true")
+
+        // Update metadata with new etag (simulating server update)
+        var updatedMetadata = initialMetadata
+        updatedMetadata.etag = "new-etag"
+        updatedMetadata.keepDownloaded = false // This would be the case when converting from NKFile
+
+        let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
+            updatedMetadatas: [updatedMetadata],
+            keepExistingDownloadState: true
+        )
+
+        XCTAssertEqual(result.newMetadatas?.isEmpty, true, "Should create no new metadatas")
+        XCTAssertEqual(result.updatedMetadatas?.isEmpty, false, "Should update existing metadata")
+        
+        // Verify keepDownloaded is retained
+        let finalMetadata = try XCTUnwrap(result.updatedMetadatas?.first)
+        XCTAssertTrue(finalMetadata.keepDownloaded, "keepDownloaded should be retained during update")
+        XCTAssertTrue(finalMetadata.downloaded, "downloaded should be retained during update")
+        XCTAssertEqual(finalMetadata.etag, "new-etag", "etag should be updated")
+        
+        // Verify in database
+        let dbMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "test-keep-downloaded"))
+        XCTAssertTrue(dbMetadata.keepDownloaded, "keepDownloaded should be retained in database")
+    }
+    
     func testPendingWorkingSetChanges() {
         // 1. Arrange
         let anchorDate = Date().addingTimeInterval(-300) // 5 minutes ago
