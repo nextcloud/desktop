@@ -31,6 +31,7 @@ extension Enumerator {
                 metadata.visitedDirectory = true
                 if let existingMetadata = dbManager.itemMetadata(ocId: metadata.ocId) {
                     metadata.downloaded = existingMetadata.downloaded
+                    metadata.keepDownloaded = existingMetadata.keepDownloaded
                 }
             }
             dbManager.addItemMetadata(metadata)
@@ -80,6 +81,7 @@ extension Enumerator {
         assert(directoryMetadata.directory)
         if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
             directoryMetadata.downloaded = existingMetadata.downloaded
+            directoryMetadata.keepDownloaded = existingMetadata.keepDownloaded
         }
         directoryMetadata.visitedDirectory = true
 
@@ -237,6 +239,7 @@ extension Enumerator {
                 let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
+                metadata.keepDownloaded = existing?.keepDownloaded == true
                 dbManager.addItemMetadata(metadata)
                 return ([metadata], newItems, updatedItems, nil, nextPage, nil)
             }
@@ -250,6 +253,7 @@ extension Enumerator {
             let newMetadatas = isNew ? [metadata] : []
 
             metadata.downloaded = existing?.downloaded == true
+            metadata.keepDownloaded = existing?.keepDownloaded == true
             dbManager.addItemMetadata(metadata)
 
             return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)

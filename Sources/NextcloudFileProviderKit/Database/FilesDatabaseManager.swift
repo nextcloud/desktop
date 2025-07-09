@@ -284,6 +284,7 @@ public final class FilesDatabaseManager: Sendable {
                         updatedMetadata.downloaded = existingMetadata.downloaded
                     }
                     updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
+                    updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -332,6 +333,7 @@ public final class FilesDatabaseManager: Sendable {
                         downloaded: \(updatedMetadata.downloaded, privacy: .public)
                         uploaded: \(updatedMetadata.uploaded, privacy: .public)
                         visitedDirectory: \(updatedMetadata.visitedDirectory, privacy: .public)
+                        keepDownloaded: \(updatedMetadata.keepDownloaded, privacy: .public)
                         deleted: \(updatedMetadata.deleted, privacy: .public)
                         syncTime: \(updatedMetadata.syncTime, privacy: .public)
                     """
@@ -422,7 +424,7 @@ public final class FilesDatabaseManager: Sendable {
                 if readTargetMetadata.directory {
                     readTargetMetadata.visitedDirectory = true
                 }
-                
+
                 if let existing = itemMetadata(ocId: readTargetMetadata.ocId) {
                     if existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
@@ -431,6 +433,7 @@ public final class FilesDatabaseManager: Sendable {
                         if keepExistingDownloadState {
                             readTargetMetadata.downloaded = existing.downloaded
                         }
+                        readTargetMetadata.keepDownloaded = existing.keepDownloaded
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
@@ -539,6 +542,7 @@ public final class FilesDatabaseManager: Sendable {
                         downloaded: \(metadata.downloaded, privacy: .public)
                         uploaded: \(metadata.uploaded, privacy: .public)
                         visitedDirectory: \(metadata.visitedDirectory, privacy: .public)
+                        keepDownloaded: \(metadata.keepDownloaded, privacy: .public)
                         deleted: \(metadata.deleted, privacy: .public)
                         syncTime: \(metadata.syncTime, privacy: .public)
                     """
