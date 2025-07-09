@@ -165,13 +165,20 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
 
             Task { @MainActor in
                 ncAccount = account
-                dbManager = FilesDatabaseManager(account: account)
+
+                guard let dbManager = FilesDatabaseManager(account: account) else {
+                    Logger.fileProviderExtension.error("Failed to create database manager for account!")
+                    return
+                }
+
                 changeObserver = RemoteChangeObserver(
                     account: account,
                     remoteInterface: ncKit,
                     changeNotificationInterface: self,
-                    domain: domain
+                    domain: domain,
+                    dbManager: dbManager
                 )
+
                 ncKit.setup(delegate: changeObserver)
                 signalEnumeratorAfterAccountSetup()
             }
