@@ -1179,11 +1179,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const QByteArray &fileId = item._fileId;
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
-    const auto createPlaceholderFlags = item.isDirectory() ?
-        (updateType == OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation) ?
-            CF_CONVERT_FLAG_MARK_IN_SYNC | CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION :
-            CF_CONVERT_FLAG_MARK_IN_SYNC :
-        CF_CONVERT_FLAG_MARK_IN_SYNC;
+    const auto createPlaceholderFlags = item.isDirectory() ? CF_CONVERT_FLAG_MARK_IN_SYNC | CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_CONVERT_FLAG_MARK_IN_SYNC;
     const auto result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), createPlaceholderFlags, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
