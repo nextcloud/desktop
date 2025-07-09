@@ -28,7 +28,7 @@ struct Build: ParsableCommand {
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
     @Option(name: [.long], help: "CraftMaster Git URL.")
-    var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
+    var craftMasterGitUrl = "https://invent.kde.org/ggadinger/craftmaster.git"
 
     @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
@@ -143,7 +143,7 @@ struct Build: ParsableCommand {
             } else {
                 print("Cloning KDE Craft...")
                 guard shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)") == 0 else {
-                    throw MacCrafterError.gitError("Error cloning craftmaster.")
+                    throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned.")
                 }
             }
 
@@ -235,6 +235,7 @@ struct Build: ParsableCommand {
         guard shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
+            // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
