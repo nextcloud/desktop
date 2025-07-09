@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="172"/>
         <source>Open file details</source>
-        <translation>Atvērt datnes detaļas</translation>
+        <translation>Atvērt informāciju par datni</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
@@ -296,7 +296,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="37"/>
         <source>File details of %1 · %2</source>
-        <translation>Datnes detaļas par %1 · %2</translation>
+        <translation>Datnes informācija par %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -1314,7 +1314,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datne ir mainījusies kopš atklāšanas</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
@@ -4443,7 +4443,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datne ir mainījusies kopš atklāšanas</translation>
     </message>
 </context>
 <context>
@@ -6574,7 +6574,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="40"/>
         <source>Search files, messages, events …</source>
-        <translation>Meklēt datnes, ziņojumus, notikumus ...</translation>
+        <translation>Meklēt datnes, ziņojumus, notikumus...</translation>
     </message>
 </context>
 <context>
