@@ -104,10 +104,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
-                // Utility::setupFavLink(targetFolderPath,
-                //                       title,
-                //                       isRemoteRoot);
-
                 qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
 #ifdef Q_OS_WIN
                 // Steps taken from: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934%28v=vs.85%29.aspx

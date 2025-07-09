@@ -61,6 +61,8 @@ namespace Utility {
      * @param isRemoteRoot boolean for remote target path being root
      */
     OCSYNC_EXPORT void setupFavLink(const QString &folder, const QString &linkName = QString(), bool isRemoteRoot = true);
+
+    OCSYNC_EXPORT void migrateFavLink(const QString &folder, const QString &newLinkName = QString(), bool isRemoteRoot = true);
     /**
      * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
      *

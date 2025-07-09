@@ -148,6 +148,55 @@ void Utility::setupFavLink(const QString &folder, const QString &linkName, bool 
     }
 }
 
+void Utility::migrateFavLink(const QString &folder, const QString &newLinkName, bool isRemoteRoot) {
+
+    QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
+    qCInfo(lcUtility) << "Overwriting" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+    desktopIni.open(QFile::WriteOnly);
+    desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
+    desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
+#ifdef APPLICATION_FOLDER_ICON_INDEX
+    const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
+#else
+    const auto iconIndex = "0";
+#endif
+    desktopIni.write(",");
+    desktopIni.write(iconIndex);
+    desktopIni.write("\r\n");
+    desktopIni.close();
+
+    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
+    DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+    SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+
+    /* Use new WINAPI functions */
+    PWSTR path;
+    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
+        return;
+    }
+
+    // Windows Explorer: Place under "Favorites" (Links)
+    const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
+    CoTaskMemFree(path);
+
+    const QDir folderDir(QDir::fromNativeSeparators(folder));
+    const auto oldDirLinkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
+    const auto newDirLinkName = QDir(links).filePath(newLinkName + QLatin1String(".lnk"));
+
+    if (oldDirLinkName == newDirLinkName) {
+        qCWarning(lcUtility) << "Link name does not change!";
+        return;
+    }
+
+    qCInfo(lcUtility) << "Renaming favorite link from" << oldDirLinkName << "to" << newDirLinkName;
+    if (!QFile::rename(oldDirLinkName, newDirLinkName)) {
+        qCWarning(lcUtility) << "renaming" << oldDirLinkName << "to" << newDirLinkName << "failed!";
+    }
+}
+
 void Utility::removeFavLink(const QString &folder)
 {
     const QDir folderDir(folder);
