@@ -536,6 +536,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             const auto journalPath = settings.value(QLatin1String("journalPath")).toString();
             const auto paused = settings.value(QLatin1String("paused"), false).toBool();
             const auto ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), false).toBool();
+            const auto virtualFilesMode = settings.value(QLatin1String("virtualFilesMode"), false).toString();
 
             if (path.isEmpty()) {
                 qCDebug(lcFolderMan) << "localPath is empty";
@@ -565,7 +566,21 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
-            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
+            if (const auto vfsMode = Vfs::modeFromString(virtualFilesMode)) {
+                folderDefinition.virtualFilesMode = *vfsMode;
+            } else {
+                qCWarning(lcFolderMan) << "Unknown virtualFilesMode:" << virtualFilesMode << "assuming 'off'";
+            }
+
+            qCDebug(lcFolderMan) << "folderDefinition.alias" << folderDefinition.alias;
+            qCDebug(lcFolderMan) << "folderDefinition.virtualFilesMode" << folderDefinition.virtualFilesMode;
+
+            auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
+            if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+                qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
+            }
+
+            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::move(vfs))) {
                 auto ok = true;
                 auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                                  &ok);
@@ -593,6 +608,10 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
+
+#ifdef Q_OS_WIN
+                Utility::migrateFavLink(folder->cleanPath());
+#endif
             }
             settings.endGroup(); // folder alias
         }
