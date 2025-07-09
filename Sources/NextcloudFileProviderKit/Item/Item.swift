@@ -207,9 +207,12 @@ public class Item: NSObject, NSFileProviderItem {
 
     @available(macOS 13.0, iOS 16.0, visionOS 1.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
+        #if os(macOS)
         if metadata.keepDownloaded {
-            return .downloadEagerlyAndKeepDownloaded
+            return .downloadEagerlyAndKeepDownloaded // Unavailable in iOS.
         }
+        #endif
+
         return .inherited
     }
 

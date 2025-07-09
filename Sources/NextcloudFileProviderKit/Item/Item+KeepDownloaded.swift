@@ -16,7 +16,7 @@ public extension Item {
         try dbManager.set(keepDownloaded: keepDownloaded, for: metadata)
 
         guard let manager = NSFileProviderManager(for: domain) else {
-            if #available(macOS 14.1, *) {
+            if #available(iOS 17.1, macOS 14.1, *) {
                 throw NSFileProviderError(.providerDomainNotFound)
             } else {
                 let providerDomainNotFoundErrorCode = -2013
