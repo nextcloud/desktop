@@ -9,13 +9,6 @@ import Foundation
 struct Build: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Client building script")
 
-    enum MacCrafterError: Error {
-        case failedEnumeration(String)
-        case environmentError(String)
-        case gitError(String)
-        case craftError(String)
-    }
-
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
     var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
 
