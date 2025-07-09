@@ -20,12 +20,6 @@ class VfsCfApi;
 namespace CfApiWrapper
 {
 
-enum class CfApiUpdateMetadataType {
-    OnlyBasicMetadata,
-    AllMetadata,
-    AllMetadataOnDemandFolderPopulation,
-};
-
 class NEXTCLOUD_CFAPI_EXPORT ConnectionKey
 {
 public:
@@ -91,8 +85,8 @@ enum SetPinRecurseMode {
 
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> setPinState(const QString &path, PinState state, SetPinRecurseMode mode);
 NEXTCLOUD_CFAPI_EXPORT Result<void, QString> createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
-NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderInfo(const QString &path, const SyncFileItem &item, const QString &replacesPath = QString(), OCC::CfApiWrapper::CfApiUpdateMetadataType updateType = OCC::CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
-NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &path, const SyncFileItem &item, const QString &replacesPath, OCC::CfApiWrapper::CfApiUpdateMetadataType updateType);
+NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderInfo(const QString &path, const SyncFileItem &item, const QString &replacesPath = QString());
+NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &path, const SyncFileItem &item, const QString &replacesPath);
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> dehydratePlaceholder(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &path, const SyncFileItem &item, const QString &replacesPath = QString());
 NEXTCLOUD_CFAPI_EXPORT bool isPlaceHolderInSync(const QString &filePath);

@@ -234,12 +234,12 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 
     if (cfapi::findPlaceholderInfo(localPath)) {
         if (updateType.testFlag(Vfs::UpdateMetadataType::FileMetadata)) {
-            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::OnlyBasicMetadata);
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath);
         } else {
             return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
     } else {
-        return cfapi::convertToPlaceholder(localPath, item, replacesPath, updateType.testFlag(UpdateMetadataType::OnDemandFolderPopulation) ? CfApiWrapper::CfApiUpdateMetadataType::AllMetadataOnDemandFolderPopulation : CfApiWrapper::CfApiUpdateMetadataType::AllMetadata);
+        return cfapi::convertToPlaceholder(localPath, item, replacesPath);
     }
 }
 
@@ -534,7 +534,7 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
         const auto dir = QDir(info.absoluteFilePath());
         Q_ASSERT(dir.exists());
         const auto children = dir.entryList();
-        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=](const HydratationAndPinStates &currentState, const QString &name) {
+        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=, this](const HydratationAndPinStates &currentState, const QString &name) {
             if (name == QStringLiteral("..") || name == QStringLiteral(".")) {
                 return currentState;
             }

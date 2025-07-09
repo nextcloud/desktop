@@ -116,7 +116,6 @@ public:
     enum UpdateMetadataType {
         DatabaseMetadata = 1 << 0,
         FileMetadata = 1 << 1,
-        OnDemandFolderPopulation = 1 << 2,
         AllMetadata = DatabaseMetadata | FileMetadata,
     };
 
