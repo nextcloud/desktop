@@ -34,19 +34,19 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Brew installation script URL.")
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
-    @Option(name: [.long], help: "CraftMaster git url.")
+    @Option(name: [.long], help: "CraftMaster Git URL.")
     var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
 
-    @Option(name: [.long], help: "KDE Craft blueprints git url.")
+    @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
 
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
     var kdeBlueprintsGitRef = "stable-3.17"
 
-    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints git url.")
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
 
-    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints git ref/branch.")
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
     var clientBlueprintsGitRef = "stable-3.17"
 
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
@@ -80,7 +80,7 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Sparkle package signing key.")
     var sparklePackageSignKey: String?
 
-    @Option(name: [.long], help: "Override server url.")
+    @Option(name: [.long], help: "Override server URL.")
     var overrideServerUrl: String?
 
     @Flag(help: "Reconfigure KDE Craft.")
