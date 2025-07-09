@@ -565,6 +565,8 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
+            qCDebug(lcFolderMan) << "folderDefinition.alias" << folderDefinition.alias;
+
             if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
                 auto ok = true;
                 auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
@@ -593,6 +595,12 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
+
+                const auto isRemoteRoot = folder->remotePath() == QStringLiteral("/");
+
+                Utility::migrateFavLink(folder->cleanPath(),
+                                      isRemoteRoot ? folder->shortGuiRemotePathOrAppName() : folder->shortGuiLocalPath(),
+                                      isRemoteRoot);
             }
             settings.endGroup(); // folder alias
         }

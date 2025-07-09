@@ -65,8 +65,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
             [&entriesToRemove](HKEY key, const QString &subKey) {
                 const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
                 qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey
-                                   << "for appName:" << appName.toString()
-                                   << "unbrandedApplicatioName:" << unbrandedApplicatioName;
+                                   << "for appName:" << appName.toString();
                 if (appName.toString() == QLatin1String(APPLICATION_NAME) || appName.toString() == unbrandedApplicatioName) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
