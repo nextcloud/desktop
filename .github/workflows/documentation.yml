@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: Nextcloud GmbH
+# SPDX-FileCopyrightText: 2025 Iva Horn
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-docs:
+    runs-on: macos-latest
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: actions/checkout@v4
+      - name: Build documentation
+        run: |
+          xcodebuild docbuild \
+            -scheme SwiftNextcloudUI \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+            -derivedDataPath ./DerivedData
+          $(xcrun --find docc) process-archive \
+            transform-for-static-hosting ./DerivedData/Build/Products/Debug/NextcloudFileProviderKit.doccarchive \
+            --output-path ./docs \
+            --hosting-base-path /nextcloudfileproviderkit
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
+        with:
+          path: ./docs
+  deploy-docs: # See: https://github.com/actions/deploy-pages
+    needs: build-docs
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
