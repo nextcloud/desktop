@@ -44,6 +44,7 @@ public:
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
     void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void resetVfsForAccount(const QString &userIdAtHost);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
     void refreshMaterialisedItemsForAccount(const QString &userIdAtHost);
