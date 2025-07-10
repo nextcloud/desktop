@@ -78,6 +78,16 @@ NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifie
     return manager;
 }
 
+QString groupContainerPath()
+{
+    NSString *const groupId = (NSString *)[NSBundle.mainBundle objectForInfoDictionaryKey:@"NCFPKAppGroupIdentifier"];
+    if (groupId == nil) {
+        qCWarning(lcMacFileProviderUtils) << "No app group identifier found in Info.plist, cannot determine group container path.";
+        return QString();
+    }
+    return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
+}
+
 } // namespace FileProviderUtils
 
 } // namespace Mac
