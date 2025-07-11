@@ -28,7 +28,7 @@ struct Build: ParsableCommand {
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
     @Option(name: [.long], help: "CraftMaster Git URL.")
-    var craftMasterGitUrl = "https://invent.kde.org/ggadinger/craftmaster.git"
+    var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
 
     @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
