@@ -4115,34 +4115,34 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>I nomi del file che terminano con un punto non sono supportati su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Nomi delle cartelle contenenti il ​​carattere &quot;%1&quot; non sono supportati su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Nomi dei file contenenti il ​​carattere &quot;%1&quot; non sono supportati su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Il nome della cartella contiene almeno un carattere non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>Il nome del file contiene almeno un carattere non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Il nome della cartella è un nome riservato su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Il nome del file è un nome riservato su questo file system.</translation>
     </message>
@@ -4150,6 +4150,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Il nome del file contiene spazi alla fine.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Non può essere rinominato o caricato.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4170,12 +4178,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il nome %1  che contiene il carattere &quot;%2&quot; non è supportato su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Non può essere rinominato o caricato.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>Il nome del file contiene spazi all&apos;inizio.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4186,11 +4191,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Il nome %1 è un nome riservato su questo file system.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>Il nome del file contiene spazi all&apos;inizio.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4283,12 +4283,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nei file personali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nella cartella %3.</translation>
     </message>

@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="172"/>
         <source>Open file details</source>
-        <translation>Atvērt datnes detaļas</translation>
+        <translation>Atvērt informāciju par datni</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
@@ -296,7 +296,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="37"/>
         <source>File details of %1 · %2</source>
-        <translation>Datnes detaļas par %1 · %2</translation>
+        <translation>Datnes informācija par %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -433,7 +433,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Pārslēdzieties uz savu pārlūkprogrammu, lai savienotu savu kontu.</translation>
+        <translation>Jāpārslēdzas uz pārlūku, lai savienotu savu kontu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
@@ -1314,7 +1314,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datne ir mainījusies kopš atklāšanas</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
@@ -2103,7 +2103,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="161"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Gaida pilnvarošanu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="166"/>
@@ -2123,7 +2123,7 @@ Varētu būt sarežģījums ar OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -4096,34 +4096,34 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
@@ -4131,6 +4131,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Nevar pārdēvēt vai augšupielādēt</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4151,12 +4159,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Nevar pārdēvēt vai augšupielādēt</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4166,11 +4171,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4264,12 +4264,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nevar sinhronizēt nederīga labošanas laika dēļ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
@@ -4443,7 +4443,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datne ir mainījusies kopš atklāšanas</translation>
     </message>
 </context>
 <context>
@@ -4989,7 +4989,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1150"/>
         <source>Copy private link to clipboard</source>
-        <translation>Kopēt privāto saiti starpliktuvē</translation>
+        <translation>Ievietot privāto saiti starpliktuvē</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="551"/>
@@ -5550,7 +5550,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="187"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="189"/>
@@ -5690,12 +5690,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt Nextcloud palīgu pārlūkā</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1082"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt Nextcloud Talk pārlūkā</translation>
     </message>
 </context>
 <context>
@@ -5925,7 +5925,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Tika veikta atteikšanās no Tava konta %1 %2. Lūgums pieteikties vēlreiz.</translation>
     </message>
 </context>
 <context>
@@ -6397,7 +6397,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="781"/>
         <source>Copy share link</source>
-        <translation>Kopēt koplietošanas saiti</translation>
+        <translation>Ievietot koplietošanas saiti starpliktuvē</translation>
     </message>
 </context>
 <context>
@@ -6474,7 +6474,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="126"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūku</translation>
     </message>
 </context>
 <context>
@@ -6566,7 +6566,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt %1 pārlūkā</translation>
     </message>
 </context>
 <context>
@@ -6574,7 +6574,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="40"/>
         <source>Search files, messages, events …</source>
-        <translation>Meklēt datnes, ziņojumus, notikumus ...</translation>
+        <translation>Meklēt datnes, ziņojumus, notikumus...</translation>
     </message>
 </context>
 <context>

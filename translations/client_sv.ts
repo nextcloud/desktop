@@ -4121,34 +4121,34 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Filnamn som slutar med en punkt stöds inte på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Mappnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Filnamn som innehåller tecknet &quot;%1&quot; stöds inte i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Mappnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Mappnamnet är ett reserverat namn i detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Filnamnet är ett reserverat namn i detta filsystem.</translation>
     </message>
@@ -4156,6 +4156,14 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Filnamnet innehåller inledande blanksteg.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kan inte bytas namn på eller laddas upp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4176,12 +4184,9 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>%1 namn som innehåller tecknet &quot;%2&quot; stöds inte i det här filsystemet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kan inte bytas namn på eller laddas upp.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>Filnamnet innehåller inledande blanksteg.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4192,11 +4197,6 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 namnet är ett reserverat namn på det här filsystemet.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>Filnamnet innehåller inledande blanksteg.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4289,12 +4289,12 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
     </message>

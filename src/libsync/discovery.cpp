@@ -261,15 +261,12 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
+    const auto isLocal = entries.localEntry.isValid();
+
     if (excluded == CSYNC_NOT_EXCLUDED) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
-        const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
-        if (startsWithSpace && endsWithSpace) {
-            excluded = CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
-        } else if (endsWithSpace) {
+        if (endsWithSpace) {
             excluded = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
-        } else if (startsWithSpace) {
-            excluded = CSYNC_FILE_EXCLUDE_LEADING_SPACE;
         }
     }
 
@@ -420,21 +417,21 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
             item->_errorString = tr("Filename contains leading spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
             item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
@@ -476,7 +473,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             }
             item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
-            if (!maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
+            if (isLocal && !maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded)) {
                 item->_errorString += QStringLiteral(" %1").arg(tr("Cannot be renamed or uploaded."));
             }
             break;
@@ -826,6 +823,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
+        } else if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -851,9 +851,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_modtime = serverEntry.modtime;
             item->_size = sizeOnServer;
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-        } else if (serverEntry.isValid() && !serverEntry.isDirectory && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
-            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-            item->_direction = SyncFileItem::Down;
         } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId || metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
             if (metaDataSizeNeedsUpdateForE2EeFilePlaceholder) {
                 // we are updating placeholder sizes after migrating from older versions with VFS + E2EE implicit hydration not supported
@@ -2403,7 +2400,20 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
     case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
     {
-        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.fileName().trimmed()};
+        const auto removeTrailingSpaces = [] (QString string) -> QString {
+            for (int n = string.size() - 1; n >= 0; -- n) {
+                if (!string.at(n).isSpace()) {
+                    string.truncate(n + 1);
+                    break;
+                }
+            }
+
+            return string;
+        };
+
+        auto fileNameWithoutTrailingSpace = removeTrailingSpaces(fileInfo.fileName());
+        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileNameWithoutTrailingSpace};
+        qDebug() << fileInfo.fileName() << fileNameWithoutTrailingSpace << renameTarget;
         result = FileSystem::rename(absoluteFileName, renameTarget);
         break;
     }

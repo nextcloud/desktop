@@ -4119,34 +4119,34 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Dateinamen, die mit einem Punkt enden, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ordnernamen, die das Zeichen &quot;%1&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Dateinamen, die das Zeichen &quot;%1&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Ordnername enthält mindestens ein ungültiges Zeichen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>Der Dateiname enthält mindestens ein ungültiges Zeichen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Der Ordnername ist ein reservierter Name in diesem Dateisystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Der Dateiname ist ein reservierter Name auf diesem Dateisystem.</translation>
     </message>
@@ -4154,6 +4154,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Dateiname enthält Leerzeichen am Ende.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kann nicht umbenannt oder hochgeladen werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4174,12 +4182,9 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>%1 Namen, die das Zeichen &quot;%2&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kann nicht umbenannt oder hochgeladen werden.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>Dateiname enthält Leerzeichen am Anfang.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4190,11 +4195,6 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 Der Name ist in diesem Dateisystem ein reservierter Name.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>Dateiname enthält Leerzeichen am Anfang.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4287,12 +4287,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Synchronisierung wegen ungültiger Änderungszeit nicht möglich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Hochladen von %1 übersteigt %2 des in den persönlichen Dateien verfügbaren Speicherplatzes.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Hochladen von %1 übersteigt %2 des in dem Ordner %3 verfügbaren Speicherplatzes.</translation>
     </message>

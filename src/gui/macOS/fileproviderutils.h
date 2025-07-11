@@ -38,6 +38,8 @@ NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier);
 // Synchronous function to get manager for a domain identifier
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier);
 
+QString groupContainerPath();
+
 } // namespace FileProviderUtils
 
 } // namespace Mac

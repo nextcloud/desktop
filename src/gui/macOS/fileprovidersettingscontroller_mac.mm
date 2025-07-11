@@ -510,6 +510,60 @@ FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusFo
     return d->domainSyncStatusForAccount(userIdAtHost);
 }
 
+void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtHost)
+{
+    qCInfo(lcFileProviderSettingsController) << "Resetting virtual files environment for account" << userIdAtHost;
+    setVfsEnabledForAccount(userIdAtHost, false);
+
+    const auto accountState = AccountManager::instance()->accountFromUserId(userIdAtHost);
+    if (!accountState) {
+        qCWarning(lcFileProviderSettingsController) << "Could not find account for userIdAtHost" << userIdAtHost
+                                                    << "to reset VFS environment.";
+        return;
+    }
+    const auto splitUserId = userIdAtHost.split('@');
+    if (splitUserId.size() != 2) {
+        qCWarning(lcFileProviderSettingsController) << "Invalid userIdAtHost format" << userIdAtHost
+                                                    << "Expected format: userId@host";
+        return;
+    }
+    const auto accUserId = splitUserId.at(0);
+    const auto accHost = splitUserId.at(1);
+
+    // Delete the database in the group container
+    const auto groupContainerPath = FileProviderUtils::groupContainerPath();
+    if (groupContainerPath.isEmpty()) {
+        qCWarning(lcFileProviderSettingsController) << "Could not determine group container path, cannot reset VFS.";
+        return;
+    }
+    const auto dbsPath = QDir::cleanPath(groupContainerPath + "/FileProviderExt/Database");
+    qCInfo(lcFileProviderSettingsController) << "Resetting VFS for account" << userIdAtHost
+                                             << "by deleting database files in" << dbsPath;
+    const auto databases = QDir(dbsPath).entryList(QDir::Files);
+    for (const auto &dbFile : databases) {
+        // Format of db file names is "userId_cloud_nc_com-fileproviderextdatabase.realm"
+        const auto splitDbName = dbFile.split('-');
+        const auto address = splitDbName.at(0).split('_').mid(1).join('.');
+        const auto userId = splitDbName.at(0).split('_').first();
+
+        if (userId != accUserId || address != accHost) {
+            qCInfo(lcFileProviderSettingsController) << "Skipping database file" << dbFile
+                                                     << "for userId" << userId
+                                                     << "and host" << address
+                                                     << "as it does not match the account we are resetting.";
+            continue; // Not the database we are looking for
+        }
+        
+        const auto dbPath = QDir(dbsPath).filePath(dbFile);
+        qCInfo(lcFileProviderSettingsController) << "Deleting database file" << dbPath;
+        if (QFile::exists(dbPath)) {
+            QFile::remove(dbPath);
+        }
+    }
+
+    setVfsEnabledForAccount(userIdAtHost, true);
+}
+
 } // namespace Mac
 
 } // namespace OCC

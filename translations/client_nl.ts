@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
         <source>Scroll to top</source>
-        <translation type="unfinished"/>
+        <translation>Naar boven schuiven</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="156"/>
@@ -168,59 +168,59 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruiker</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie hervatten voor alles</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="49"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="121"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie pauzeren voor alles</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="102"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Gebruiker toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="106"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe gebruiker toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="127"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="138"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Verlaat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="166"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruiker avatar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is Online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="196"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Huidige gebruikersstatus is Niet Storen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="271"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Wisselen van gebruiker en instellingsmenu</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>De certificaten ontdekken die op je USB-token zijn opgeslagen</translation>
     </message>
 </context>
 <context>
@@ -252,22 +252,22 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>Token-versleutelingssleutelkiezer</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>Beschikbare sleutels voor end-to-end-versleuteling</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Kies</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Afbreken</translation>
     </message>
 </context>
 <context>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Verwijder lokale kopieën</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="36"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Lokale kopieën</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="60"/>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Sta verwijdering van items in de prullenbak toe</translation>
     </message>
 </context>
 <context>
@@ -373,12 +373,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Maak ruimte ...</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies …</source>
-        <translation type="unfinished"/>
+        <translation>Lokale kopieën verwijderen …</translation>
     </message>
 </context>
 <context>
@@ -396,13 +396,14 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="71"/>
         <source>Request sync</source>
-        <translation type="unfinished"/>
+        <translation>Vraag synchronisatie aan</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="78"/>
         <source>Request a sync of changes for the VFS environment.
 macOS may ignore or delay this request.</source>
-        <translation type="unfinished"/>
+        <translation>Vraag een synchronisatie van wijzigingen voor de VFS-omgeving aan.
+macOS kan dit verzoek negeren of uitstellen.</translation>
     </message>
 </context>
 <context>
@@ -482,7 +483,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud desktop basisdialoog</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -4103,34 +4104,34 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Bestandsnamen die eindigen met een punt worden niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
@@ -4138,6 +4139,14 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>De bestandsnaam bevat spaties achteraan.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4158,12 +4167,9 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>%1 naam met teken &quot;%2&quot; wordt niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>De bestandsnaam bevat spaties vooraan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4174,11 +4180,6 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 naam is een gereserveerde naam op dit bestandssysteem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>De bestandsnaam bevat spaties vooraan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4271,12 +4272,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>

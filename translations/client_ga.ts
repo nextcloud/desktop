@@ -4121,34 +4121,34 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le hainmneacha comhaid a chríochnaíonn le tréimhse ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad san ainm comhaid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
@@ -4156,6 +4156,14 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Tá spásanna leanúnacha san ainm comhaid.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Ní féidir é a athainmniú ná a uaslódáil.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4176,12 +4184,9 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní thacaítear le % 1 ainm ina bhfuil an carachtar &quot;% 2&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Ní féidir é a athainmniú ná a uaslódáil.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>Tá spásanna tosaigh san ainm comhaid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4192,11 +4197,6 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Is ainm forchoimeádta é % 1 ar an gcóras comhad seo.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>Tá spásanna tosaigh san ainm comhaid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4289,12 +4289,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i gcomhaid phearsanta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i bhfillteán %3.</translation>
     </message>

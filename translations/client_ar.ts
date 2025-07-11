@@ -2418,7 +2418,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1802"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>مزامنة %1 من %2 (مازال %3)</translation>
+        <translation>مزامنة %1 من %2 (متبقي %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1805"/>
@@ -2433,7 +2433,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>مزامنة %1 (مازال %2)</translation>
+        <translation>مزامنة %1 (متبقي %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1816"/>
@@ -2667,12 +2667,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>ثوان معدودة مازالت؛ %1 من %2, ملف %3 من %4</translation>
+        <translation>ثوان معدودة متبقية؛ %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>%5 مازالت؛  %1 من %2, ملف %3 من %4</translation>
+        <translation>%5 متبقية؛  %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
@@ -4101,34 +4101,34 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>أسماء الملفات المنتهية بنُقطةٍ dot غير مدعومة في نظام التشغيل هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="407"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="411"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
         <translation>اسم الملف يحوي حرفاً أو أكثر من الحروف غير المقبولة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="414"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="415"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
@@ -4136,6 +4136,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="433"/>
         <source>Filename contains trailing spaces.</source>
         <translation>اسم ملف يحوي فراغات في نهايته</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="492"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>لايمكن تغيير تسميتها أو رفعها.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4156,12 +4164,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>الاسم %1 الذي يحتوي على الحرف &quot;%2&quot; غير مدعوم في نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>لايمكن تغيير تسميتها أو رفعها.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>Filename contains leading spaces.</source>
+        <translation>اسم الملف يحوي فراغات في بدايته</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
@@ -4172,11 +4177,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="427"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>الاسم %1 هو اسم محجوز في نظام الملفات هذا.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
-        <source>Filename contains leading spaces.</source>
-        <translation>اسم الملف يحوي فراغات في بدايته</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
@@ -4269,12 +4269,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
@@ -5469,7 +5469,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="234"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 من %2 · %3 مازال</translation>
+        <translation>%1 من %2 · %3 متبقي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="238"/>

@@ -500,7 +500,9 @@ bool FolderWizardRemotePath::isComplete() const
         }
 
         if (targetPath.startsWith(remoteDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
+            _ui.warnFrame->show();
+            _ui.warnLabel->hide();
+            _ui.infoLabel->setText(tr("You are already syncing the subfolder %1 at %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
             break;
         }
 
@@ -531,6 +533,7 @@ void FolderWizardRemotePath::showWarn(const QString &msg) const
 
     } else {
         _ui.warnFrame->show();
+        _ui.infoLabel->hide();
         _ui.warnLabel->setText(msg);
     }
 }

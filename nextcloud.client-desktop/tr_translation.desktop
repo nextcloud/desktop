@@ -22,7 +22,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Name[tr]=@APPLICATION_NAME@ Masaüstü
-Comment[tr]=@APPLICATION_NAME@ masaüstü eşitleme istemcisi
+Name[tr]=@APPLICATION_NAME@ bilgisayar
+Comment[tr]=@APPLICATION_NAME@ bilgisayar eşitleme istemcisi
 GenericName[tr]=Klasör eşitleme
 Icon[tr]=@APPLICATION_ICON_NAME@

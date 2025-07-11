@@ -21,7 +21,7 @@ if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
     UBUNTU_DISTRIBUTIONS="bionic focal jammy kinetic"
     DEBIAN_DISTRIBUTIONS="buster stretch testing"
 else
-    UBUNTU_DISTRIBUTIONS="jammy noble oracular plucky"
+    UBUNTU_DISTRIBUTIONS="jammy noble plucky questing"
     DEBIAN_DISTRIBUTIONS="bullseye bookworm testing"
 fi
 
