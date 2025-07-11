@@ -123,7 +123,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
-    qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
+    qCDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
     qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
     qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
     qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
