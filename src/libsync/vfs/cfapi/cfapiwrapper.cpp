@@ -351,7 +351,7 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
 {
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
 
-    qInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
+    qCInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
     qCInfo(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
     qCInfo(lcCfApiWrapper) << "Fetch data requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
     qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
