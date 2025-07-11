@@ -4,16 +4,18 @@
 -->
 # mac-crafter
 
-mac-crafter is a tool to easily build a fully functional Nextcloud Desktop Client for macOS. It automates cloning, configuring, crafting, codesigning, packaging, and even DMG creation of the client. The tool is built with Swift’s ArgumentParser, and it drives the KDE Craft build system, along with some Python scripts and shell commands.
+mac-crafter is a tool to easily build a fully functional Nextcloud Desktop Client for macOS.
+It automates cloning, configuring, crafting, codesigning, packaging, and even DMG creation of the client.
+The tool is built with Swift’s ArgumentParser and it drives the KDE Craft build system along with some Python scripts and shell commands.
 
 ## System Requirements
 
-- macOS > 11
+- macOS 11 Big Sur or newer
 - Xcode
 - Python3
 - Homebrew (for installing additional tools like `inkscape`, `pyenv`, and `create-dmg`)
 
-## Installation & Setup
+## Installation
 
 After cloning the Nextcloud Desktop Client repository, navigate to the `admin/osx/mac-crafter` directory and run:
 
@@ -21,9 +23,10 @@ After cloning the Nextcloud Desktop Client repository, navigate to the `admin/os
 swift run mac-crafter
 ```
 
-This will automatically check for the required tools and install them if they are missing. The script will also clone the KDE Craft repository if it is not already present.
+This will automatically check for the required tools and install them if they are missing.
+The script will also clone the KDE Craft repository if it is not already present.
 
-## Commands & Options
+## Usage
 
 mac-crafter comes with several subcommands:
 

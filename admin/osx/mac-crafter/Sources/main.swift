@@ -1,7 +1,7 @@
-/*
- * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+// SPDX-FileCopyrightText: Nextcloud GmbH
+// SPDX-FileCopyrightText: 2024 Claudio Cambra
+// SPDX-FileCopyrightText: 2025 Iva Horn
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 import ArgumentParser
 import Foundation
@@ -106,24 +106,24 @@ struct Build: ParsableCommand {
     @Flag(help: "Build in developer mode.")
     var dev = false
 
-    mutating func run() throws {
+    mutating func run() async throws {
         print("Configuring build tooling.")
 
         if codeSignIdentity != nil {
-            guard commandExists("codesign") else {
+            guard await commandExists("codesign") else {
                 throw MacCrafterError.environmentError("codesign not found, cannot proceed.")
             }
         }
 
-        try installIfMissing("git", "xcode-select --install")
-        try installIfMissing(
+        try await installIfMissing("git", "xcode-select --install")
+        try await installIfMissing(
             "brew",
             "curl -fsSL \(brewInstallShUrl) | /bin/bash",
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
-        try installIfMissing("wget", "brew install wget")
-        try installIfMissing("inkscape", "brew install inkscape")
-        try installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
+        try await installIfMissing("wget", "brew install wget")
+        try await installIfMissing("inkscape", "brew install inkscape")
+        try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 
         print("Build tooling configured.")
 
@@ -142,26 +142,26 @@ struct Build: ParsableCommand {
                 print("KDE Craft is already cloned.")
             } else {
                 print("Cloning KDE Craft...")
-                guard shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)") == 0 else {
+                guard await shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)") == 0 else {
                     throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned.")
                 }
             }
 
             print("Configuring required KDE Craft blueprint repositories...")
-            guard shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
+            guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
             }
-            guard shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
+            guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
 
             print("Crafting KDE Craft...")
-            guard shell("\(craftCommand) craft") == 0 else {
+            guard await shell("\(craftCommand) craft") == 0 else {
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
 
             print("Crafting Nextcloud Desktop Client dependencies...")
-            guard shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
+            guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         }
@@ -187,15 +187,19 @@ struct Build: ParsableCommand {
         if !disableAutoUpdater {
             print("Configuring Sparkle auto-updater.")
 
+            let sparkleDownloadResult = await shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz")
+
             let fm = FileManager.default
             guard fm.fileExists(atPath: "\(buildPath)/Sparkle.tar.xz") ||
-                  shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz") == 0
+                  sparkleDownloadResult == 0
             else {
                 throw MacCrafterError.environmentError("Error downloading sparkle.")
             }
 
+            let sparkleUnarchiveResult = await shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)")
+
             guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") ||
-                  shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)") == 0
+                  sparkleUnarchiveResult == 0
             else {
                 throw MacCrafterError.environmentError("Error unpacking sparkle.")
             }
@@ -232,7 +236,7 @@ struct Build: ParsableCommand {
         let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
-        guard shell(
+        guard await shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
@@ -243,7 +247,7 @@ struct Build: ParsableCommand {
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
             let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
-            try codesignClientAppBundle(
+            try await codesignClientAppBundle(
                 at: clientAppDir,
                 withCodeSignIdentity: codeSignIdentity,
                 usingEntitlements: entitlementsPath
@@ -262,7 +266,7 @@ struct Build: ParsableCommand {
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         if package {
-            try packageAppBundle(
+            try await packageAppBundle(
                 productPath: productPath,
                 buildPath: buildPath,
                 craftTarget: craftTarget,
@@ -292,12 +296,12 @@ struct Codesign: ParsableCommand {
     @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
     var entitlementsPath: String?
 
-    mutating func run() throws {
+    mutating func run() async throws {
         let absolutePath = appBundlePath.hasPrefix("/")
             ? appBundlePath
             : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
 
-        try codesignClientAppBundle(
+        try await codesignClientAppBundle(
             at: absolutePath,
             withCodeSignIdentity: codeSignIdentity,
             usingEntitlements: entitlementsPath
@@ -335,9 +339,9 @@ struct CreateDMG: ParsableCommand {
     @Option(name: [.long], help: "Sparkle package signing key.")
     var sparklePackageSignKey: String?
 
-    mutating func run() throws {
-        try installIfMissing("create-dmg", "brew install create-dmg")
-        try createDmgForAppBundle(
+    mutating func run() async throws {
+        try await installIfMissing("create-dmg", "brew install create-dmg")
+        try await createDmgForAppBundle(
             appBundlePath: appBundlePath,
             productPath: productPath,
             buildPath: buildPath,
@@ -384,8 +388,8 @@ struct Package: ParsableCommand {
     @Option(name: [.long], help: "Sparkle package signing key.")
     var sparklePackageSignKey: String?
 
-    mutating func run() throws {
-        try packageAppBundle(
+    mutating func run() async throws {
+        try await packageAppBundle(
             productPath: productPath,
             buildPath: buildPath,
             craftTarget: archToCraftTarget(arch),

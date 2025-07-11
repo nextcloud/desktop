@@ -1,7 +1,7 @@
-/*
- * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+// SPDX-FileCopyrightText: Nextcloud GmbH
+// SPDX-FileCopyrightText: 2024 Claudio Cambra
+// SPDX-FileCopyrightText: 2025 Iva Horn
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
 
@@ -27,12 +27,12 @@ func installIfMissing(
     _ command: String,
     _ installCommand: String,
     installCommandEnv: [String: String]? = nil
-) throws {
-    if commandExists(command) {
+) async throws {
+    if await commandExists(command) {
         print("\(command) is installed.")
     } else {
         print("\(command) is missing. Installing...")
-        guard shell(installCommand, env: installCommandEnv) == 0 else {
+        guard await shell(installCommand, env: installCommandEnv) == 0 else {
             throw InstallError.failedToInstall("Failed to install \(command).")
         }
         print("\(command) installed.")
