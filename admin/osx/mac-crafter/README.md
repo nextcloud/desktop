@@ -176,6 +176,19 @@ swift run mac-crafter --help
 - **Notarisation:**
   For signing and notarisation on macOS, appropriate options for Apple ID and password can be provided.
 
+## Development
+
+`mac-crafter` can also be run and debugged with Xcode.
+Additional preparation is necessary, though.
+
+1. Edit the automatically generated "mac-crafter" scheme in Xcode.
+2. Navigate to the "Run" action.
+3. Navigate to the "Arguments" tab. 
+4. Define the arguments you want to pass to the program as you would do in a terminal.
+5. Define the "PATH" environment variable. You can copy and paste the output of `echo "$PATH"` from a terminal. Otherwise the executable will not inherit your shell environment paths as necessary for Homebrew to work.
+6. Navigate to the "Options" tab.
+7. Enable and define a custom working directory. The root of this Swift package, to be specific. 
+
 ## License
 
 Distributed under the terms of the GPL-2.0-or-later license.
