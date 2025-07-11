@@ -32,14 +32,18 @@ If you find any bugs or have any suggestion for improvement, please
 [open an issue in this repository](https://github.com/nextcloud/desktop/issues).
 
 ### Bug fixing and development
-#### 1. 🚀 Set up your local development environment
 
-1.1 System requirements
-- [Windows 10, Windows 11]((https://github.com/nextcloud/desktop-client-blueprints/)), Mac OS > 10.14 or Linux
+> [!TIP]
+> For building the client on macOS we have a tool called `mac-crafter`.
+> You will find more information about it in [its dedicated README](admin/osx/mac-crafter/README.md).
+
+#### 1. 🚀 Set up your local development environment
 
 > [!NOTE]  
 > Find the system requirements and instructions on [how to work on Windows with KDE Craft](https://github.com/nextcloud/desktop-client-blueprints/) on our [desktop client blueprints repository](https://github.com/nextcloud/desktop-client-blueprints/).
 
+1.1 System requirements
+- [Windows 10, Windows 11](https://github.com/nextcloud/desktop-client-blueprints/), macOS 10.14 Mojave (or newer) or Linux
 - [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
 - Developer tools: cmake, clang/gcc/g++:
 - Qt6 since 3.14, Qt5 for earlier versions
@@ -82,10 +86,6 @@ cmake --build .
 ```
 make
 ```
-
-> [!TIP]
-> For building the client for mac OS we have a tool called mac-crafter.
-> You will find instructions on how to use it at [admin/osx/mac-crafter](https://github.com/nextcloud/desktop/tree/32305e4c15ff95d00fae07e82e750fe9051b2250/admin/osx/mac-crafter).
 
 5. 🐛 [Pick a good first issue](https://github.com/nextcloud/desktop/labels/good%20first%20issue)
 6. 👩‍🔧 Create a branch and make your changes. Remember to sign off your commits using `git commit -sm "Your commit message"`
