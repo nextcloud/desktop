@@ -6,115 +6,115 @@
 import ArgumentParser
 import Foundation
 
-struct Build: ParsableCommand {
+struct Build: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Client building script")
-
+    
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
     var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
-
+    
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String?
-
+    
     @Option(name: [.short, .long], help: "Path for build files to be written.")
     var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
-
+    
     @Option(name: [.short, .long], help: "Path for the final product to be put.")
     var productPath = "\(FileManager.default.currentDirectoryPath)/product"
-
+    
     @Option(name: [.short, .long], help: "Architecture.")
     var arch = "arm64"
-
+    
     @Option(name: [.long], help: "Brew installation script URL.")
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-
+    
     @Option(name: [.long], help: "CraftMaster Git URL.")
     var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
-
+    
     @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
-
+    
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
     var kdeBlueprintsGitRef = "stable-3.17"
-
+    
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
-
+    
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
     var clientBlueprintsGitRef = "stable-3.17"
-
+    
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
-
+    
     @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
     var buildType = "RelWithDebInfo"
-
+    
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
-
+    
     @Option(name: [.long], help: "Sparkle download URL.")
     var sparkleDownloadUrl =
-        "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
-
+    "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+    
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
-
+    
     @Option(name: [.long], help: "Apple ID, used for notarisation.")
     var appleId: String?
-
+    
     @Option(name: [.long], help: "Apple ID password, used for notarisation.")
     var applePassword: String?
-
+    
     @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
     var appleTeamId: String?
-
+    
     @Option(name: [.long], help: "Apple package signing ID.")
     var packageSigningId: String?
-
+    
     @Option(name: [.long], help: "Sparkle package signing key.")
     var sparklePackageSignKey: String?
-
+    
     @Option(name: [.long], help: "Override server URL.")
     var overrideServerUrl: String?
-
+    
     @Flag(help: "Reconfigure KDE Craft.")
     var reconfigureCraft = false
-
+    
     @Flag(help: "Run build offline (i.e. do not update craft)")
     var offline = false
-
+    
     @Flag(help: "Build test suite.")
     var buildTests = false
-
+    
     @Flag(name: [.long], help: "Do not build App Bundle.")
     var disableAppBundle = false
-
+    
     @Flag(help: "Build File Provider Module.")
     var buildFileProviderModule = false
-
+    
     @Flag(help: "Build without Sparkle auto-updater.")
     var disableAutoUpdater = false
-
+    
     @Flag(help: "Run a full rebuild.")
     var fullRebuild = false
-
+    
     @Flag(help: "Force override server URL.")
     var forceOverrideServerUrl = false
-
+    
     @Flag(help: "Create an installer package.")
     var package = false
-
+    
     @Flag(help: "Build in developer mode.")
     var dev = false
-
+    
     mutating func run() async throws {
         print("Configuring build tooling.")
-
+        
         if codeSignIdentity != nil {
             guard await commandExists("codesign") else {
-                throw MacCrafterError.environmentError("codesign not found, cannot proceed.")
+                throw MacCrafterError.environmentError("codesign command not found, cannot proceed!")
             }
         }
-
+        
         try await installIfMissing("git", "xcode-select --install")
         try await installIfMissing(
             "brew",
@@ -124,20 +124,20 @@ struct Build: ParsableCommand {
         try await installIfMissing("wget", "brew install wget")
         try await installIfMissing("inkscape", "brew install inkscape")
         try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
-
+        
         print("Build tooling configured.")
-
+        
         let fm = FileManager.default
         let craftMasterDir = "\(buildPath)/craftmaster"
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
         let craftTarget = archToCraftTarget(arch)
         let craftCommand =
-            "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
-
+        "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
+        
         if !fm.fileExists(atPath: craftMasterDir) || reconfigureCraft {
             print("Configuring KDE Craft.")
-
+            
             if fm.fileExists(atPath: craftMasterDir) {
                 print("KDE Craft is already cloned.")
             } else {
@@ -146,7 +146,7 @@ struct Build: ParsableCommand {
                     throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned.")
                 }
             }
-
+            
             print("Configuring required KDE Craft blueprint repositories...")
             guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
@@ -154,18 +154,18 @@ struct Build: ParsableCommand {
             guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
-
+            
             print("Crafting KDE Craft...")
             guard await shell("\(craftCommand) craft") == 0 else {
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
-
+            
             print("Crafting Nextcloud Desktop Client dependencies...")
             guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         }
-
+        
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootDir)",
             "\(craftBlueprintName).osxArchs=\(arch)",
@@ -173,42 +173,42 @@ struct Build: ParsableCommand {
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
         ]
-
+        
         if let overrideServerUrl {
             craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
             craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
         }
-
+        
         if dev {
             appName += "Dev"
             craftOptions.append("\(craftBlueprintName).devMode=True")
         }
-
+        
         if !disableAutoUpdater {
             print("Configuring Sparkle auto-updater.")
-
+            
             let sparkleDownloadResult = await shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz")
-
+            
             let fm = FileManager.default
             guard fm.fileExists(atPath: "\(buildPath)/Sparkle.tar.xz") ||
-                  sparkleDownloadResult == 0
+                    sparkleDownloadResult == 0
             else {
                 throw MacCrafterError.environmentError("Error downloading sparkle.")
             }
-
+            
             let sparkleUnarchiveResult = await shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)")
-
+            
             guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") ||
-                  sparkleUnarchiveResult == 0
+                    sparkleUnarchiveResult == 0
             else {
                 throw MacCrafterError.environmentError("Error unpacking sparkle.")
             }
-
+            
             craftOptions.append(
                 "\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework"
             )
         }
-
+        
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
         print("Crafting \(appName) Desktop Client...")
         if fullRebuild {
@@ -232,7 +232,7 @@ struct Build: ParsableCommand {
                 }
             }
         }
-
+        
         let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
@@ -242,7 +242,7 @@ struct Build: ParsableCommand {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
-
+        
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
@@ -253,7 +253,7 @@ struct Build: ParsableCommand {
                 usingEntitlements: entitlementsPath
             )
         }
-
+        
         print("Placing Nextcloud Desktop Client in \(productPath)...")
         if !fm.fileExists(atPath: productPath) {
             try fm.createDirectory(
@@ -264,7 +264,7 @@ struct Build: ParsableCommand {
             try fm.removeItem(atPath: "\(productPath)/\(appName).app")
         }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
-
+        
         if package {
             try await packageAppBundle(
                 productPath: productPath,
@@ -279,137 +279,7 @@ struct Build: ParsableCommand {
                 sparklePackageSignKey: sparklePackageSignKey
             )
         }
-
+        
         print("Done!")
     }
 }
-
-struct Codesign: ParsableCommand {
-    static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
-
-    @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
-    var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/Nextcloud.app"
-
-    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
-    var codeSignIdentity: String
-
-    @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
-    var entitlementsPath: String?
-
-    mutating func run() async throws {
-        let absolutePath = appBundlePath.hasPrefix("/")
-            ? appBundlePath
-            : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
-
-        try await codesignClientAppBundle(
-            at: absolutePath,
-            withCodeSignIdentity: codeSignIdentity,
-            usingEntitlements: entitlementsPath
-        )
-    }
-}
-
-struct CreateDMG: ParsableCommand {
-    static let configuration = CommandConfiguration(abstract: "Creae a DMG for the client.")
-
-    @Argument(help: "Path to the desktop client app bundle.")
-    var appBundlePath: String
-
-    @Option(name: [.short, .long], help: "Path for the final product to be put.")
-    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
-
-    @Option(name: [.short, .long], help: "Path for build files to be written.")
-    var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
-
-    @Option(name: [.long], help: "The application's branded name.")
-    var appName = "Nextcloud"
-
-    @Option(name: [.long], help: "Apple ID, used for notarisation.")
-    var appleId: String?
-
-    @Option(name: [.long], help: "Apple ID password, used for notarisation.")
-    var applePassword: String?
-
-    @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
-    var appleTeamId: String?
-
-    @Option(name: [.long], help: "Apple package signing ID.")
-    var packageSigningId: String?
-
-    @Option(name: [.long], help: "Sparkle package signing key.")
-    var sparklePackageSignKey: String?
-
-    mutating func run() async throws {
-        try await installIfMissing("create-dmg", "brew install create-dmg")
-        try await createDmgForAppBundle(
-            appBundlePath: appBundlePath,
-            productPath: productPath,
-            buildPath: buildPath,
-            appName: appName,
-            packageSigningId: packageSigningId,
-            appleId: appleId,
-            applePassword: applePassword,
-            appleTeamId: appleTeamId,
-            sparklePackageSignKey: sparklePackageSignKey
-        )
-    }
-}
-
-struct Package: ParsableCommand {
-    static let configuration = CommandConfiguration(abstract: "Packaging script for the client.")
-
-    @Option(name: [.short, .long], help: "Architecture.")
-    var arch = "arm64"
-
-    @Option(name: [.short, .long], help: "Path for build files to be written.")
-    var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
-
-    @Option(name: [.short, .long], help: "Path for the final product to be put.")
-    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
-
-    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
-    var craftBlueprintName = "nextcloud-client"
-
-    @Option(name: [.long], help: "The application's branded name.")
-    var appName = "Nextcloud"
-
-    @Option(name: [.long], help: "Apple ID, used for notarisation.")
-    var appleId: String?
-
-    @Option(name: [.long], help: "Apple ID password, used for notarisation.")
-    var applePassword: String?
-
-    @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
-    var appleTeamId: String?
-
-    @Option(name: [.long], help: "Apple package signing ID.")
-    var packageSigningId: String?
-
-    @Option(name: [.long], help: "Sparkle package signing key.")
-    var sparklePackageSignKey: String?
-
-    mutating func run() async throws {
-        try await packageAppBundle(
-            productPath: productPath,
-            buildPath: buildPath,
-            craftTarget: archToCraftTarget(arch),
-            craftBlueprintName: craftBlueprintName,
-            appName: appName,
-            packageSigningId: packageSigningId,
-            appleId: appleId,
-            applePassword: applePassword,
-            appleTeamId: appleTeamId,
-            sparklePackageSignKey: sparklePackageSignKey
-        )
-    }
-}
-
-struct MacCrafter: ParsableCommand {
-    static let configuration = CommandConfiguration(
-        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.",
-        subcommands: [Build.self, Codesign.self, Package.self, CreateDMG.self],
-        defaultSubcommand: Build.self
-    )
-}
-
-MacCrafter.main()
