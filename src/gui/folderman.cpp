@@ -596,11 +596,9 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
 
-                const auto isRemoteRoot = folder->remotePath() == QStringLiteral("/");
-
                 Utility::migrateFavLink(folder->cleanPath(),
-                                      isRemoteRoot ? folder->shortGuiRemotePathOrAppName() : folder->shortGuiLocalPath(),
-                                      isRemoteRoot);
+                                        folder->remotePath() == QStringLiteral("/") ? APPLICATION_NAME
+                                                                                    : folder->shortGuiLocalPath());
             }
             settings.endGroup(); // folder alias
         }
