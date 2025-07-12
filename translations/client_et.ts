@@ -357,6 +357,11 @@
         <source>Allow deletion of items in Trash</source>
         <translation>Luba prügikasti sisu kustutamist</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <source>Reset virtual files environment</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -457,6 +462,11 @@ macOS võib seda eirata või alustamisega viivitada.</translation>
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
+    <message>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
+        <source>TextLabel</source>
+        <translation>TekstiSilt</translation>
+    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
@@ -2798,6 +2808,11 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Palun vali muu asukoht. „%1“ jaoks juba on %2 sünkroniseerimine kasutusel.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <source>You are already syncing the subfolder %1 at %2.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

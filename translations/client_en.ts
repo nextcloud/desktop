@@ -349,6 +349,11 @@
         <source>Allow deletion of items in Trash</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <source>Reset virtual files environment</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -444,22 +449,27 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="77"/>
         <source>Select a remote destination folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="79"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="89"/>
         <source>Create folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="99"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="109"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="113"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="123"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2673,12 +2683,12 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="686"/>
+        <location filename="../src/gui/folderwizard.cpp" line="689"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="688"/>
+        <location filename="../src/gui/folderwizard.cpp" line="691"/>
         <source>Add Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2740,33 +2750,37 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="498"/>
-        <location filename="../src/gui/folderwizard.cpp" line="503"/>
-        <location filename="../src/gui/folderwizard.cpp" line="508"/>
+        <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <source>You are already syncing the subfolder %1 at %2.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="569"/>
-        <location filename="../src/gui/folderwizard.cpp" line="606"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="569"/>
-        <location filename="../src/gui/folderwizard.cpp" line="606"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="602"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="627"/>
+        <location filename="../src/gui/folderwizard.cpp" line="630"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation type="unfinished"></translation>
     </message>
