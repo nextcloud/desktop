@@ -357,6 +357,11 @@
         <source>Allow deletion of items in Trash</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <source>Reset virtual files environment</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -457,6 +462,11 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
+    <message>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
+        <source>TextLabel</source>
+        <translation>Etiqueta de texto</translation>
+    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
@@ -2797,6 +2807,11 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Escolla unha localización diferente. %1 xa está a se sincronizar con %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <source>You are already syncing the subfolder %1 at %2.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

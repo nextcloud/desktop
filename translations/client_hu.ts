@@ -357,6 +357,11 @@
         <source>Allow deletion of items in Trash</source>
         <translation>Elemek törlésének engedélyezése a Kukában</translation>
     </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
+        <source>Reset virtual files environment</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -457,6 +462,11 @@ A macOS figyelmen kívül hagyhatja vagy késleltetheti ezt a kérést.</transla
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
+    <message>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
+        <source>TextLabel</source>
+        <translation>Címke</translation>
+    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
@@ -2798,6 +2808,11 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <location filename="../src/gui/folderwizard.cpp" line="515"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
         <translation>Válasszon egy másik helyet. A(z) %1 már ide szinkronizál: %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="505"/>
+        <source>You are already syncing the subfolder %1 at %2.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
