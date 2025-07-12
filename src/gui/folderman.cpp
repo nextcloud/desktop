@@ -565,6 +565,8 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
+            qCDebug(lcFolderMan) << "folderDefinition.alias" << folderDefinition.alias;
+
             if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
                 auto ok = true;
                 auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
@@ -593,6 +595,10 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
+
+                Utility::migrateFavLink(folder->cleanPath(),
+                                        folder->remotePath() == QStringLiteral("/") ? APPLICATION_NAME
+                                                                                    : folder->shortGuiLocalPath());
             }
             settings.endGroup(); // folder alias
         }
@@ -604,6 +610,9 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
     settings.beginGroup(settingsFoldersWithPlaceholdersC);
     migrateFoldersGroup(settingsFoldersWithPlaceholdersC);
+#ifdef Q_OS_WIN
+    _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     settings.endGroup();
 
     settings.beginGroup(settingsFoldersC);

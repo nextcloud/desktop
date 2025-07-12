@@ -99,52 +99,109 @@ QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileO
     return results;
 }
 
-void Utility::setupFavLink(const QString &folder)
+QString Utility::systemPathToLinks()
+{
+    static const QString pathToLinks = [] {
+        PWSTR path = nullptr;
+        if (SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) != S_OK) {
+            qCWarning(lcUtility) << "SHGetKnownFolderPath failed.";
+            return QString();
+        }
+
+        const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
+        CoTaskMemFree(path);
+        return links;
+    }();
+
+    return pathToLinks;
+}
+
+void Utility::setupDesktopIni(const QString &folder, bool overwrite)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
-    if (desktopIni.exists()) {
+    if (!overwrite && desktopIni.exists()) {
         qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
-    } else {
-        qCInfo(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
-        desktopIni.open(QFile::WriteOnly);
-        desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
-        desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
-#ifdef APPLICATION_FOLDER_ICON_INDEX
-        const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
-#else
-        const auto iconIndex = "0";
-#endif
-        desktopIni.write(",");
-        desktopIni.write(iconIndex);
-        desktopIni.write("\r\n");
-        desktopIni.close();
-
-        // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
-        // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
-        DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
-        SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
-        SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+        return;
     }
 
-    /* Use new WINAPI functions */
-    PWSTR path;
-    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+    qCInfo(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+    desktopIni.open(QFile::WriteOnly);
+    desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
+    desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
+#ifdef APPLICATION_FOLDER_ICON_INDEX
+    const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
+#else
+    const auto iconIndex = "0";
+#endif
+    desktopIni.write(",");
+    desktopIni.write(iconIndex);
+    desktopIni.write("\r\n");
+    desktopIni.close();
+
+    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
+    DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+    SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+}
+
+void Utility::setupFavLink(const QString &folder)
+{
+    // create Desktop.ini
+    setupDesktopIni(folder);
+
+    const auto pathToLinks = systemPathToLinks();
+    if (pathToLinks.isEmpty()) {
         qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
         return;
     }
 
-    // Windows Explorer: Place under "Favorites" (Links)
-    const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
-    CoTaskMemFree(path);
-
     const QDir folderDir(QDir::fromNativeSeparators(folder));
     const QString filePath = folderDir.dirName() + QLatin1String(".lnk");
-    const auto linkName = QDir(links).filePath(filePath);
-
+    const auto linkName = QDir().filePath(filePath);
     qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
     if (!QFile::link(folder, linkName)) {
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
+    }
+}
+
+void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
+{
+    //overwrite Desktop.ini, update icon
+    setupDesktopIni(folder, true);
+
+    const auto pathToLinks = systemPathToLinks();
+    if (pathToLinks.isEmpty()) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for links has failed.";
+        return;
+    }
+
+    const QDir folderDir(QDir::fromNativeSeparators(folder));
+    const auto oldDirName = folderDir.dirName();
+    if (oldDirName == newLinkName) {
+        qCWarning(lcUtility) << "Link name does not change!";
+        return;
+    }
+
+    const auto lastDigits = [](const QString &dirName) -> QString {
+        QString digits;
+        for (auto letter = std::crbegin(dirName); letter != std::crend(dirName); ++letter) {
+            if (!letter->isDigit()) {
+                break;
+            }
+            digits.prepend(*letter);
+        }
+        return digits;
+    };
+
+    const QDir dirPathToLinks(pathToLinks);
+    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(newLinkName + lastDigits(oldDirName) + QLatin1String(".lnk"));
+
+    qCInfo(lcUtility) << "Renaming favorite link from" << oldLnkFilename << "to" << newLnkFilename;
+    if (!QFile::rename(oldLnkFilename, newLnkFilename)) {
+        qCWarning(lcUtility) << "renaming" << oldLnkFilename << "to" << newLnkFilename << "failed!";
     }
 }
 
