@@ -463,11 +463,6 @@ A macOS figyelmen kívül hagyhatja vagy késleltetheti ezt a kérést.</transla
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>Címke</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>Távoli célkönyvtár kiválasztása</translation>

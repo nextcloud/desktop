@@ -463,11 +463,6 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>Roghnaigh fillteán scríbe iargúlta</translation>
