@@ -18,6 +18,7 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 #include "folderman.h"
+#include "userinfo.h"
 #include "userstatusconnector.h"
 #include "userstatusselectormodel.h"
 #include <chrono>
@@ -153,6 +154,7 @@ public slots:
     void forceSyncNow() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
     void slotFetchGroupFolders();
+    void slotUpdateQuota(qint64 total, qint64 used);
 
 private slots:
     void slotPushNotificationsReady();
@@ -188,6 +190,7 @@ private:
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
+    UserInfo _userInfo;
     
     QVariantList _trayFolderInfos;
 
@@ -206,6 +209,10 @@ private:
     int _lastTalkNotificationsReceivedCount = 0;
 
     bool _isNotificationFetchRunning = false;
+
+    // used for quota warnings
+    int _lastQuotaPercent = 0;
+    Activity _lastQuotaActivity;
 };
 
 class UserModel : public QAbstractListModel

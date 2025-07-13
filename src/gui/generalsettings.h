@@ -49,6 +49,7 @@ private slots:
     void slotToggleOptionalServerNotifications(bool);
     void slotToggleChatNotifications(bool);
     void slotToggleCallNotifications(bool);
+    void slotToggleQuotaWarningNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotIgnoreFilesEditor();
     void slotCreateDebugArchive();
