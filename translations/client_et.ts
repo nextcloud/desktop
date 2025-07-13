@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Lähtesta virtuaalsete failide keskkond</translation>
     </message>
 </context>
 <context>
@@ -462,11 +462,6 @@ macOS võib seda eirata või alustamisega viivitada.</translation>
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>TekstiSilt</translation>
-    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
@@ -2812,7 +2807,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sa juba sünkroonid „%2“ alamkasuta „%1“.</translation>
     </message>
 </context>
 <context>
@@ -4033,7 +4028,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>Virtual files enabled</source>
-        <translation>Virtuaalsed faiid on kasutusel</translation>
+        <translation>Virtuaalsed failid on kasutusel</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="702"/>

@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle Dateienumgebung zurücksetzen</translation>
     </message>
 </context>
 <context>
@@ -462,11 +462,6 @@ macOS kann diese Anforderung ignorieren oder verzögern.</translation>
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>TextLabel</translation>
-    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
@@ -2811,7 +2806,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sie synchronisieren bereits den Unterordner %1 bei %2.</translation>
     </message>
 </context>
 <context>

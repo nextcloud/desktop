@@ -462,11 +462,6 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>ป้ายข้อความ</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>เลือกโฟลเดอร์ปลายทางระยะไกล</translation>

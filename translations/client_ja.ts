@@ -463,11 +463,6 @@ macOSはこの要求を無視したり、遅らせたりすることがありま
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>テキストラベル</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>リモートの同期先フォルダーを選択</translation>

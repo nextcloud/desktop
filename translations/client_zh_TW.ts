@@ -463,11 +463,6 @@ macOS 可能會忽略或延遲此請求。</translation>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>文字標籤</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>選取遠端目標資料夾</translation>

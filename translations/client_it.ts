@@ -463,11 +463,6 @@ macOS potrebbe ignorare o ritardare questa richiesta.</translation>
 <context>
     <name>FolderWizardTargetPage</name>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="37"/>
-        <source>TextLabel</source>
-        <translation>EtichettaTesto</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="67"/>
         <source>Select a remote destination folder</source>
         <translation>Seleziona una cartella remota di destinazione </translation>
