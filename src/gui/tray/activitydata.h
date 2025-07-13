@@ -142,7 +142,6 @@ public:
     enum Type {
         DummyFetchingActivityType,
         OpenSettingsNotificationType,
-        OpenFolderNotificationType,
         NotificationType,
         SyncResultType,
         SyncFileItemType,

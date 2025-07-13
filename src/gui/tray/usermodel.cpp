@@ -121,7 +121,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
-    
+
     _userInfo.setActive(true);
     connect(&_userInfo, &UserInfo::quotaUpdated, this, &User::slotUpdateQuota);
 }
