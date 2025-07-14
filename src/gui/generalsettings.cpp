@@ -196,7 +196,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->callNotificationsCheckBox->setToolTip(tr("Show call notification dialogs."));
 
     connect(_ui->quotaWarningNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleQuotaWarningNotifications);
-    _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Receive notification when storage usage exceeds 80/90/95 percent"));
+    _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Show notification when quota usage exceeds 80%"));
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
