@@ -123,8 +123,32 @@ Rectangle {
                         Accessible.role: Accessible.MenuItem
                         Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                         Accessible.onPressAction: appEntry.triggered()
+                        MouseArea {
+                            id: deckMoreMouseArea
+                            enabled: model.appName == "Deck"
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: deckMoreButtonMenu.visible ? deckMoreButtonMenu.close()
+                                                                  : deckMoreButtonMenu.popup()
+                        }
                     }
                 }
+            }
+
+            Menu {
+                id: deckMoreButtonMenu
+                closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                width: appsMenu.width
+
+                MenuItem {
+                    text: qsTr("Add board")
+                    hoverEnabled: true
+                    height: deckMoreButtonMenu.visible ? Style.smallIconSize : 0
+                    icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                    icon.height: Style.smallIconSize
+                    font.pixelSize: Style.topLinePixelSize
+                    onClicked: UserAppsModel.openAppUrl("")
+               }
             }
         }
     }
