@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Resetovat prostředí virtuálních souborů</translation>
     </message>
 </context>
 <context>
@@ -2805,7 +2805,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Už synchronizujete podsložku %1 v %2.</translation>
     </message>
 </context>
 <context>
