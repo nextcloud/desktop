@@ -1207,9 +1207,17 @@ void User::slotUpdateQuota(qint64 total, qint64 used)
     qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
 
     int threshold_passed = 0;
-    if (_lastQuotaPercent < 80 && percentInt >= 80) threshold_passed = 80;
-    if (_lastQuotaPercent < 90 && percentInt >= 90) threshold_passed = 90;
-    if (_lastQuotaPercent < 95 && percentInt >= 95) threshold_passed = 95;
+    if (_lastQuotaPercent < 80 && percentInt >= 80) {
+        threshold_passed = 80;
+    }
+
+    if (_lastQuotaPercent < 90 && percentInt >= 90) {
+        threshold_passed = 90;
+    }
+
+    if (_lastQuotaPercent < 95 && percentInt >= 95) {
+        threshold_passed = 95;
+    }
 
     if (threshold_passed > 0) {
         _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
