@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Ресетуј окружење виртуелних фајлова</translation>
     </message>
 </context>
 <context>
@@ -2807,7 +2807,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Већ синхронизујете подфолдер фолдера %1 у %2.</translation>
     </message>
 </context>
 <context>
