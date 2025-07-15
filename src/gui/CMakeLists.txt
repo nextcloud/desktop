@@ -244,6 +244,8 @@ set(client_SRCS
     wizard/termsofservicecheckwidget.cpp
     wizard/termsofservicewizardpage.h
     wizard/termsofservicewizardpage.cpp
+    wizard/clientmodewizardpage.h
+    wizard/clientmodewizardpage.cpp
     wizard/owncloudwizardcommon.h
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.h

@@ -65,5 +65,6 @@
         <file>src/gui/macOS/ui/FileProviderEvictionDialog.qml</file>
         <file>src/gui/macOS/ui/FileProviderSyncStatus.qml</file>
         <file>src/gui/macOS/ui/FileProviderStorageInfo.qml</file>
+        <file>src/gui/wizard/ClientModeWizardPage.qml</file>
     </qresource>
 </RCC>
