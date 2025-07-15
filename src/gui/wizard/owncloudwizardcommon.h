@@ -42,6 +42,7 @@ namespace WizardCommon {
         Page_WebView,
 #endif // WITH_WEBENGINE
         Page_TermsOfService,
+        Page_ClientMode,
         Page_AdvancedSetup,
     };
 

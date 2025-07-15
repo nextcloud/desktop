@@ -19,6 +19,7 @@
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/termsofservicewizardpage.h"
+#include "wizard/clientmodewizardpage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
@@ -46,6 +47,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _flow2CredsPage(new Flow2AuthCredsPage)
     , _termsOfServicePage(new TermsOfServiceWizardPage)
+    , _clientModePage(new ClientModeWizardPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
 #ifdef WITH_WEBENGINE
     , _webViewPage(new WebViewPage(this))
@@ -65,6 +67,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
     setPage(WizardCommon::Page_TermsOfService, _termsOfServicePage);
+    setPage(WizardCommon::Page_ClientMode, _clientModePage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
     if (!useFlow2()) {
@@ -98,6 +101,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::NoCancelButton);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
     setButtonText(QWizard::CustomButton2, tr("Cancel"));
+    setButtonText(QWizard::CustomButton3, tr("Connect"));
 
     // Change the next buttons size policy since we hide it on the
     // welcome page but want it to fill it's space that we don't get
@@ -265,6 +269,10 @@ void OwncloudWizard::successfulStep()
         // nothing to do here
         break;
 
+    case WizardCommon::Page_ClientMode:
+        qCInfo(lcWizard) << "Client mode page finished, going to advanced setup.";
+        break;
+
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
         break;
@@ -294,6 +302,8 @@ void OwncloudWizard::slotCustomButtonClicked(const int which)
 
         // in case the wizard had been cancelled at a page where the need for signing the TOS got checked:
         _needsToAcceptTermsOfService = false;
+    } else if (which == WizardButton::CustomButton3) {
+        next();
     }
 }
 
@@ -343,6 +353,9 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         setButtonLayout({ QWizard::BackButton, QWizard::Stretch });
     } else if (id == WizardCommon::Page_AdvancedSetup) {
         setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton });
+        setNextButtonAsDefault();
+    } else if (id == WizardCommon::Page_ClientMode) {
+        setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton3, QWizard::FinishButton });
         setNextButtonAsDefault();
     } else {
         setButtonLayout({ QWizard::BackButton, QWizard::Stretch, QWizard::NextButton });

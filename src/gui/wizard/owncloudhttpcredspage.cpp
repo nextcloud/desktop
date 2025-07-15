@@ -150,7 +150,7 @@ int OwncloudHttpCredsPage::nextId() const
         return WizardCommon::Page_TermsOfService;
     }
 
-    return WizardCommon::Page_AdvancedSetup;
+    return WizardCommon::Page_ClientMode;
 }
 
 void OwncloudHttpCredsPage::setConnected()

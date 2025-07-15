@@ -54,7 +54,7 @@ void OCC::TermsOfServiceWizardPage::cleanupPage()
 
 int OCC::TermsOfServiceWizardPage::nextId() const
 {
-    return WizardCommon::Page_AdvancedSetup;
+    return WizardCommon::Page_ClientMode;
 }
 
 bool OCC::TermsOfServiceWizardPage::isComplete() const
