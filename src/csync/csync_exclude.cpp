@@ -301,8 +301,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
             continue;
         }
         csync_exclude_expand_escapes(line);
-        patternStr = QString::fromUtf8(line);
-        patterns.append(patternStr);
+        patterns.append(QString::fromUtf8(line));
     }
     _allExcludes[basePath].append(patterns);
 
