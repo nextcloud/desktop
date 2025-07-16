@@ -935,6 +935,50 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "file", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "file", CSYNC_INSTRUCTION_REMOVE));
     }
+
+    void testChangingPermissionsWithoutEtagChange()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QObject parent;
+
+        fakeFolder.setServerVersion(QStringLiteral("27.0.0"));
+
+        fakeFolder.remoteModifier().mkdir("groupFolder");
+        fakeFolder.remoteModifier().mkdir("groupFolder/simpleChildFolder");
+        fakeFolder.remoteModifier().insert("groupFolder/simpleChildFolder/otherFile");
+        fakeFolder.remoteModifier().mkdir("groupFolder/folderParent");
+        fakeFolder.remoteModifier().mkdir("groupFolder/folderParent/childFolder");
+        fakeFolder.remoteModifier().insert("groupFolder/folderParent/childFolder/file");
+
+        auto groupFolderRoot = fakeFolder.remoteModifier().find("groupFolder");
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
+
+        auto propfindCounter = 0;
+
+        fakeFolder.setServerOverride([&propfindCounter](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+
+            if (op == QNetworkAccessManager::CustomOperation &&
+                request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("PROPFIND")) {
+                ++propfindCounter;
+            }
+
+            return nullptr;
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(propfindCounter, 5);
+
+        fakeFolder.setServerVersion(QStringLiteral("31.0.0"));
+
+        auto groupFolderRoot2 = fakeFolder.remoteModifier().find("groupFolder");
+        groupFolderRoot2->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+
+        fakeFolder.remoteModifier().insert("groupFolder/simpleChildFolder/otherFile", 12);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(propfindCounter, 8);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestPermissions)
