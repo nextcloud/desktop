@@ -41,6 +41,7 @@ public:
     static QString excludeFileFromSystem(); // doesn't access config dir
 
     void cleanUpdaterConfiguration();
+    void cleanupGlobalNetworkConfiguration();
 
     /**
      * Creates a backup of any given fileName in the config folder
