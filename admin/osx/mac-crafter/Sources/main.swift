@@ -43,7 +43,7 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Brew installation script URL.")
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
-    @Option(name: [.long], help: "CraftMaster git url.")
+    @Option(name: [.long], help: "CraftMaster Git URL.")
     var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
 
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint git url.")
