@@ -1945,63 +1945,63 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="116"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 second ago</numerusform>
+            <numerusform>%1 seconds ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="119"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 minute ago</numerusform>
+            <numerusform>%1 minutes ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="122"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 hour ago</numerusform>
+            <numerusform>%1 hours ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 day ago</numerusform>
+            <numerusform>%1 days ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 month ago</numerusform>
+            <numerusform>%1 months ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 year ago</numerusform>
+            <numerusform>%1 years ago</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Locked by %1 - Expires in %2 minute</numerusform>
+            <numerusform>Locked by %1 - Expires in %2 minutes</numerusform>
         </translation>
     </message>
 </context>
@@ -2099,9 +2099,9 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been removed.</numerusform>
+            <numerusform>%1 and %n other files have been removed.</numerusform>
         </translation>
     </message>
     <message>
@@ -2122,9 +2122,9 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been added.</numerusform>
+            <numerusform>%1 and %n other files have been added.</numerusform>
         </translation>
     </message>
     <message>
@@ -2136,33 +2136,33 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been updated.</numerusform>
+            <numerusform>%1 and %n other files have been updated.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 has been renamed to %2 and %n other file has been renamed.</numerusform>
+            <numerusform>%1 has been renamed to %2 and %n other files have been renamed.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 has been moved to %2 and %n other file has been moved.</numerusform>
+            <numerusform>%1 has been moved to %2 and %n other files have been moved.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have sync conflicts.</numerusform>
+            <numerusform>%1 and %n other files have sync conflicts.</numerusform>
         </translation>
     </message>
     <message>
@@ -2173,9 +2173,9 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file could not be synced due to errors. See the log for details.</numerusform>
+            <numerusform>%1 and %n other files could not be synced due to errors. See the log for details.</numerusform>
         </translation>
     </message>
     <message>
@@ -2186,9 +2186,9 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="490"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file are currently locked.</numerusform>
+            <numerusform>%1 and %n other files are currently locked.</numerusform>
         </translation>
     </message>
     <message>
@@ -2643,9 +2643,9 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Waiting for %n other folder …</numerusform>
+            <numerusform>Waiting for %n other folders …</numerusform>
         </translation>
     </message>
     <message>
@@ -4990,9 +4990,9 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Expires in %1 minute</numerusform>
+            <numerusform>Expires in %1 minutes</numerusform>
         </translation>
     </message>
     <message>
@@ -5590,9 +5590,9 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n notification</numerusform>
+            <numerusform>%n notifications</numerusform>
         </translation>
     </message>
     <message>
@@ -5718,25 +5718,25 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minutes</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n hour</numerusform>
+            <numerusform>%n hours</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n day</numerusform>
+            <numerusform>%n days</numerusform>
         </translation>
     </message>
 </context>
@@ -6084,9 +6084,9 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="427"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nd</numerusform>
+            <numerusform>%nd</numerusform>
         </translation>
     </message>
     <message>
@@ -6098,9 +6098,9 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="436"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nh</numerusform>
+            <numerusform>%nh</numerusform>
         </translation>
     </message>
     <message>
@@ -6113,9 +6113,9 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%nm</numerusform>
+            <numerusform>%nm</numerusform>
         </translation>
     </message>
     <message>
@@ -6196,9 +6196,9 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 file in conflict</numerusform>
+            <numerusform>%1 files in conflict</numerusform>
         </translation>
     </message>
     <message>
@@ -6687,49 +6687,49 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n year</numerusform>
+            <numerusform>%n years</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n month</numerusform>
+            <numerusform>%n months</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n day</numerusform>
+            <numerusform>%n days</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n hour</numerusform>
+            <numerusform>%n hours</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minutes</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n second</numerusform>
+            <numerusform>%n seconds</numerusform>
         </translation>
     </message>
     <message>
