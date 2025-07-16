@@ -1,15 +1,16 @@
 # SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 # SPDX-License-Identifier: GPL-2.0-or-later
+
+# macOS system files
 .DS_Store
+
+# SwiftPM and Xcode working directories
 /.build
-/Packages
-Package.resolved
-xcuserdata/
-DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-.netrc
-build/
-build\downloads
-product/
-wget-log*
+/.swiftpm
+
+# mac-crafter default working directories
+/build
+/product
+
+# Created during mac-crafter execution
+/wget-log*
