@@ -6,12 +6,11 @@
  */
 
 #include <qglobal.h>
-#include <QTemporaryDir>
 #include <QtTest>
 
 #include "remotewipe.h"
+#include "accountmanager.h"
 
-#include "common/utility.h"
 #include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
@@ -19,6 +18,8 @@
 #include "logger.h"
 
 #include "testhelper.h"
+
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 
@@ -35,58 +36,110 @@ private slots:
         QStandardPaths::setTestModeEnabled(true);
     }
 
-    // TODO
-    void testWipe(){
-//        QTemporaryDir dir;
-//        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
-//        QVERIFY(dir.isValid());
+    void testRemoteWipe()
+    {
+        auto dir = QTemporaryDir {};
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 
-//        QDir dirToRemove(dir.path());
-//        QVERIFY(dirToRemove.mkpath("nextcloud"));
+        // RemoteWipe needs FolderMan for actually wiping local data
+        FolderMan fm;
+        auto folderMan = FolderMan::instance();
+        QVERIFY(folderMan);
 
-//        QString dirPath = dirToRemove.canonicalPath();
+        // RemoteWipe also needs an account present in the AccountManager
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        auto account = fakeFolder.account();
+        auto accountState = AccountManager::instance()->addAccount(account);
 
-//        AccountPtr account = Account::create();
-//        QVERIFY(account);
+        // retrieve the RemoteWipe instance created from the real AccountState,
+        // and replace its QNetworkAccessManager with our own one for testing
+        auto remoteWipe = FakeAccountState::remoteWipe(accountState);
+        auto fakeQnam = new FakeQNAM({});
+        remoteWipe->_networkManager->deleteLater();
+        remoteWipe->_networkManager = fakeQnam;
 
-//        auto manager = AccountManager::instance();
-//        QVERIFY(manager);
+        // let FolderMan know about our sync folder
+        FolderMan::instance()->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
 
-//        AccountState *newAccountState = manager->addAccount(account);
-//        manager->save();
-//        QVERIFY(newAccountState);
+        bool revokeAppPassword = false; // whether respond with 401 to requests
+        bool doWipe = false;            // whether a remote wipe should be done
 
-//        QUrl url("http://example.de");
-//        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
-//        account->setCredentials(cred);
-//        account->setUrl( url );
+        const auto fakeQnamOverride = [&](const QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
+            Q_UNUSED(device)
+            if (!revokeAppPassword) {
+                qDebug() << "App password not revoked";
+                return nullptr;
+            }
 
-//        FolderMan *folderman = FolderMan::instance();
-//        folderman->addFolder(newAccountState, folderDefinition(dirPath + "/sub/nextcloud/"));
+            const auto requestUrl = request.url();
+            const auto requestPath = requestUrl.path();
 
-//        // check if account exists
-//        qDebug() << "Does account exists?!";
-//        QVERIFY(!account->id().isEmpty());
+            if (op == QNetworkAccessManager::Operation::DeleteOperation && requestPath.endsWith("/ocs/v2.php/core/apppassword")) {
+                qDebug() << "Responding success for app password deletion";
+                // allow deletion of appPassword to succeed
+                return new FakeJsonReply(op, request, this, 200);
+            }
 
-//        manager->deleteAccount(newAccountState);
-//        manager->save();
+            if (doWipe) {
+                qDebug() << "Wipe enabled";
+                if (requestPath.endsWith("/index.php/core/wipe/check")) {
+                    qDebug() << "Responding with wipe=true";
+                    return new FakeJsonReply(op, request, this, 200, QJsonDocument::fromJson(R"({"wipe": true})"));
+                } else if (requestPath.endsWith("/index.php/core/wipe/success")) {
+                    qDebug() << "Responding with successful wipe";
+                    return new FakeJsonReply(op, request, this, 200, QJsonDocument::fromJson(R"({})"));
+                }
+            }
 
-//        // check if account exists
-//        qDebug() << "Does account exists yet?!";
-//        QVERIFY(account);
+            qDebug() << "Responding with unauthorised";
+            auto errorReply = new FakeErrorReply(op, request, this, 401);
+            errorReply->setError(QNetworkReply::AuthenticationRequiredError, QLatin1String("Unauthorised"));
 
-//        // check if folder exists
-//        QVERIFY(dirToRemove.exists());
+            return errorReply;
+        };
+        fakeFolder.setServerOverride(fakeQnamOverride);
+        fakeQnam->setOverride(fakeQnamOverride);
 
-//        // remote folders
-//        qDebug() <<  "Removing folder for account " << newAccountState->account()->url();
+        const auto localFolderExists = [&fakeFolder]() -> bool {
+            return QDir(fakeFolder.localPath()).exists();
+        };
 
-//        folderman->slotWipeFolderForAccount(newAccountState);
+        // initial sync to ensure we've had a working connection
+        qDebug() << "Test: Initial sync works";
+        QVERIFY(fakeFolder.syncOnce());
 
-//        // check if folders dont exist anymore
-//        QCOMPARE(dirToRemove.exists(), false);
+        // just revoking the app password -> no remote wipe should be done
+        qDebug() << "Test: App password revoked, no remote wipe triggered";
+        revokeAppPassword = true;
+        QVERIFY(!fakeFolder.syncOnce());
+        // `Account` will try to retrieve the password from the keychain,
+        // however during testing the password received from it will be empty.
+        // An empty password will not perform the wipe check at all.
+        // Therefore: call the slot which `Account` connects its
+        // `appPasswordRetrieved` signal directly on the remoteWipe instance
+        remoteWipe->startCheckJobWithAppPassword("password");
+        QTest::qWait(500); // wait a bit to process events
+        // ensure the account was not removed and the sync folder is still present
+        QCOMPARE(AccountManager::instance()->accounts().size(), 1);
+        QVERIFY2(localFolderExists(), "Local sync folder should exist as no wipe was requested");
+
+        // hack for test: close the journal db of FakeFolder, as FolderMan::addFolder creates its own
+        // as long as the test DB is open, removing files will break on e.g. Windows
+        fakeFolder.syncJournal().close();
+
+        // server tells us to wipe the local data
+        qDebug() << "Test: Server tells us to remote wipe";
+        doWipe = true;
+        // ensure folder exists before performing the wipe
+        QVERIFY2(localFolderExists(), "Local sync folder should exist before wiping");
+        remoteWipe->startCheckJobWithAppPassword("password");
+        QTest::qWait(500); // wait a bit to process events
+        // account should now be gone
+        QCOMPARE(AccountManager::instance()->accounts().size(), 0);
+        // local folder should now be gone
+        QVERIFY2(!localFolderExists(), "Local sync folder should be removed after wiping");
     }
 };
 
-QTEST_APPLESS_MAIN(TestRemoteWipe)
+QTEST_GUILESS_MAIN(TestRemoteWipe)
 #include "testremotewipe.moc"
