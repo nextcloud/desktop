@@ -36,6 +36,11 @@ public:
         _state = Connected;
     }
 
+    static OCC::RemoteWipe *remoteWipe(OCC::AccountState *accountState)
+    {
+        return accountState->_remoteWipe;
+    }
+
 public slots:
     void checkConnectivity() override {};
 
