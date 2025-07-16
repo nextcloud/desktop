@@ -239,8 +239,9 @@ SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     , _interface(std::make_unique<SparkleInterface>(this))
 {
     _interface->delegate = [[NCSparkleUpdaterDelegate alloc] initWithOwner:_interface.get()];
+    const BOOL startUpdater = autoUpdaterAllowed() ? YES : NO;
     _interface->updaterController =
-        [[SPUStandardUpdaterController alloc] initWithStartingUpdater:YES 
+        [[SPUStandardUpdaterController alloc] initWithStartingUpdater:startUpdater 
                                                       updaterDelegate:_interface->delegate
                                                    userDriverDelegate:nil];
 
