@@ -24,7 +24,7 @@ jobs:
       - name: Build documentation
         run: |
           xcodebuild docbuild \
-            -scheme SwiftNextcloudUI \
+            -scheme NextcloudFileProviderKit \
             -destination 'platform=macOS' \
             -skipPackagePluginValidation \
             -derivedDataPath ./DerivedData
