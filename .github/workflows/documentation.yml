@@ -31,7 +31,7 @@ jobs:
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting ./DerivedData/Build/Products/Debug/NextcloudFileProviderKit.doccarchive \
             --output-path ./docs \
-            --hosting-base-path /nextcloudfileproviderkit
+            --hosting-base-path /NextcloudFileProviderKit
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
