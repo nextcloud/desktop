@@ -33,8 +33,7 @@ jobs:
             --output-path ./docs \
             --hosting-base-path /NextcloudFileProviderKit
       - name: Upload static files as artifact
-        id: deployment
-        uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
   deploy-docs: # See: https://github.com/actions/deploy-pages
