@@ -126,19 +126,33 @@ final class RemoteChangeObserverEtagOptimizationTests: XCTestCase {
         print("\n=== Running multiple working set checks ===")
         
         // First working set check
-        remoteChangeObserver.startWorkingSetCheck()
-        try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        var workingSetCheckCompleted = expectation(description: "First working set check completed.")
+
+        remoteChangeObserver.startWorkingSetCheck {
+            workingSetCheckCompleted.fulfill()
+        }
+
+        await fulfillment(of: [workingSetCheckCompleted])
         
         // Second working set check (simulating rapid notify_file messages)
-        remoteChangeObserver.startWorkingSetCheck()
-        try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        workingSetCheckCompleted = expectation(description: "Second working set check completed.")
+
+        remoteChangeObserver.startWorkingSetCheck {
+            workingSetCheckCompleted.fulfill()
+        }
+
+        await fulfillment(of: [workingSetCheckCompleted])
         
         // Third working set check
-        remoteChangeObserver.startWorkingSetCheck()
-        try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        workingSetCheckCompleted = expectation(description: "Third working set check completed.")
+
+        remoteChangeObserver.startWorkingSetCheck {
+            workingSetCheckCompleted.fulfill()
+        }
+
+        await fulfillment(of: [workingSetCheckCompleted])
         
         // Wait for all operations to complete
-        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
         
         print("\n=== Results ===")
         print("Total enumerate calls: \(enumerateCallCount)")

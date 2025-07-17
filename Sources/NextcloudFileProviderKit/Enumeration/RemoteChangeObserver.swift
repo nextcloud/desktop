@@ -467,9 +467,18 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         _ request: Alamofire.DataRequest, didParseResponse response: Alamofire.AFDataResponse<Value>
     ) { }
 
-    func startWorkingSetCheck() {
+    ///
+    /// Dispatches the asynchronous working set check.
+    ///
+    /// - Parameters:
+    ///     - completionHandler: An optional closure to call after the working set check completed.
+    ///
+    func startWorkingSetCheck(completionHandler: (() -> Void)? = nil) {
         guard !workingSetCheckOngoing, !invalidated else { return }
-        Task { await checkWorkingSet() }
+        Task {
+            await checkWorkingSet()
+            completionHandler?()
+        }
     }
 
     private func checkWorkingSet() async {
