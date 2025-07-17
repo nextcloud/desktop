@@ -18,6 +18,11 @@ import OSLog
 
 fileprivate let lfuLogger = Logger(subsystem: Logger.subsystem, category: "localfileutils")
 
+///
+/// Resolve the path of the shared container for the app group of the file provider extension.
+///
+/// - Returns: Container URL for the extension's app group.
+///
 public func pathForAppGroupContainer() -> URL? {
     guard let appGroupIdentifier = Bundle.main.object(
         forInfoDictionaryKey: "NCFPKAppGroupIdentifier"
@@ -32,6 +37,11 @@ public func pathForAppGroupContainer() -> URL? {
         forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
+///
+/// Resolve the path where the file provider extension store its data.
+///
+/// - Returns: The root location in which the extension can store its specific data.
+///
 public func pathForFileProviderExtData() -> URL? {
     let containerUrl = pathForAppGroupContainer()
     return containerUrl?.appendingPathComponent("FileProviderExt/")
@@ -49,6 +59,14 @@ public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain
     return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
 }
 
+/// 
+/// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office or LibreOffice.
+/// 
+/// - Parameters:
+///     - filename: The filename to check.
+/// 
+/// - Returns: `true` if the filename is a lock file, `false`` otherwise.
+/// 
 public func isLockFileName(_ filename: String) -> Bool {
     // Microsoft Office lock files
     return filename.hasPrefix("~$") ||
@@ -56,15 +74,19 @@ public func isLockFileName(_ filename: String) -> Bool {
         (filename.hasPrefix(".~lock.") && filename.hasSuffix("#"))
 }
 
+///
+/// Parse the original file name contained in a lock filename.
+///
+/// Example for Microsoft Office: `MyDoc.docx` is extracted from `~$MyDoc.docx`.
+/// Example for LibreOffice: `MyDoc.odt` is extracted from `.~lock.MyDoc.odt#`.
+///
 public func originalFileName(fromLockFileName lockFilename: String) -> String? {
-    // Microsoft Office: "~$MyDoc.docx" -> "MyDoc.docx"
     if lockFilename.hasPrefix("~$") {
         // Remove the "~$" prefix
         let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
         return String(lockFilename[index...])
     }
 
-    // LibreOffice: ".~lock.MyDoc.odt#" -> "MyDoc.odt"
     if lockFilename.hasPrefix(".~lock.") && lockFilename.hasSuffix("#") {
         // Strip the prefix and suffix
         let start = lockFilename.index(lockFilename.startIndex, offsetBy: 7)

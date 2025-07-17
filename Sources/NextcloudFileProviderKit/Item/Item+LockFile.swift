@@ -9,6 +9,21 @@ import FileProvider
 import NextcloudCapabilitiesKit
 
 extension Item {
+    ///
+    /// Create a lock file in the local file provider extension database which is not synchronized to the server, if the server supports file locking.
+    ///
+    /// - Parameters:
+    ///     - basedOn: Passed through as received from the file provider framework.
+    ///     - parentItemIdentifier: Passed through as received from the file provider framework.
+    ///     - parentItemRemotePath: Passed through as received from the file provider framework.
+    ///     - progress: Passed through as received from the file provider framework.
+    ///     - domain: File provider domain with which the background network task should be associated with.
+    ///     - account: The Nextcloud account to use for interaction with the server.
+    ///     - remoteInterface: The server API abstraction to use for calls.
+    ///     - dbManager: The database manager to use for managing metadata.
+    ///
+    /// - Returns: Either the created `item` or an `error` but not both. In either case the other value is `nil`. To be passed to the completion handler provided by the file provider framework.
+    ///
     static func createLockFile(
         basedOn itemTemplate: NSFileProviderItem,
         parentItemIdentifier: NSFileProviderItemIdentifier,
