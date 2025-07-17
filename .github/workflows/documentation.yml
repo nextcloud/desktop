@@ -32,6 +32,25 @@ jobs:
             transform-for-static-hosting ./DerivedData/Build/Products/Debug/NextcloudFileProviderKit.doccarchive \
             --output-path ./docs \
             --hosting-base-path /nextcloudfileproviderkit
+      - name: Create root redirect
+        run: |
+          cat > ./docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>NextcloudFileProviderKit Documentation</title>
+            <meta http-equiv="refresh" content="0; url=./documentation/nextcloudfileproviderkit/">
+            <link rel="canonical" href="./documentation/nextcloudfileproviderkit/">
+          </head>
+          <body>
+            <p>Redirecting to <a href="./documentation/nextcloudfileproviderkit/">NextcloudFileProviderKit Documentation</a>...</p>
+            <script>
+              window.location.href = "./documentation/nextcloudfileproviderkit/";
+            </script>
+          </body>
+          </html>
+          EOF
       - name: Upload static files as artifact
         uses: actions/upload-pages-artifact@v3
         with:
