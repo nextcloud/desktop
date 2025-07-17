@@ -96,6 +96,8 @@ public:
         GetE2EeLockedFoldersQuery,
         DeleteE2EeLockedFolderQuery,
         ListAllTopLevelE2eeFoldersStatusLessThanQuery,
+        FolderUpdateInvalidEncryptionStatus,
+        FileUpdateInvalidEncryptionStatus,
 
         PreparedQueryCount
     };
