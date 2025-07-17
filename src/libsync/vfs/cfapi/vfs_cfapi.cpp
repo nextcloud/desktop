@@ -531,14 +531,12 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
         };
         const auto dir = QDir(info.absoluteFilePath());
         Q_ASSERT(dir.exists());
-        const auto children = dir.entryList();
-        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=](const HydratationAndPinStates &currentState, const QString &name) {
-            if (name == QStringLiteral("..") || name == QStringLiteral(".")) {
-                return currentState;
-            }
+        
+        // if the folderPath.isEmpty() we don't want to end up having path "/example.file" because this will lead to double slash later, when appending to "SyncFolder/"
+        const auto pathPrefix = folderPath.isEmpty() ? QString() : folderPath + QDir::separator();
 
-            // if the folderPath.isEmpty() we don't want to end up having path "/example.file" because this will lead to double slash later, when appending to "SyncFolder/"
-            const auto path = folderPath.isEmpty() ? name : folderPath + '/' + name;
+        auto accumulatorOperation = [=](const HydratationAndPinStates &currentState, const QString &name) {
+            const auto path = pathPrefix + name;
             const auto states = computeRecursiveHydrationAndPinStates(path, currentState.pinState);
             return HydratationAndPinStates {
                 states.pinState,
@@ -547,7 +545,17 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
                     states.hydrationStatus.hasDehydrated || currentState.hydrationStatus.hasDehydrated,
                 }
             };
-        });
+        };
+
+        auto currentState = dirState;
+        for( const auto& child : dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot) ) {
+            if (currentState.hydrationStatus.hasHydrated && currentState.hydrationStatus.hasDehydrated) {
+                // Already found hydrated and dehydrated entries. All subsequent checks will yield the same result.
+                break;
+            }
+            currentState = accumulatorOperation( currentState, child );
+        }
+        return currentState;
     } else { // file case
         const auto isDehydrated = isDehydratedPlaceholder(info.absoluteFilePath());
         return {
