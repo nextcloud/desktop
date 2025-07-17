@@ -44,7 +44,7 @@ public func pathForAppGroupContainer() -> URL? {
 ///
 public func pathForFileProviderExtData() -> URL? {
     let containerUrl = pathForAppGroupContainer()
-    return containerUrl?.appendingPathComponent("FileProviderExt/")
+    return containerUrl?.appendingPathComponent("FileProviderExt")
 }
 
 public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
@@ -56,7 +56,7 @@ public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain
     }
 
     let fileProviderDataUrl = try fpManager.temporaryDirectoryURL()
-    return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
+    return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles")
 }
 
 /// 
@@ -65,7 +65,7 @@ public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain
 /// - Parameters:
 ///     - filename: The filename to check.
 /// 
-/// - Returns: `true` if the filename is a lock file, `false`` otherwise.
+/// - Returns: `true` if the filename is a lock file, `false` otherwise.
 /// 
 public func isLockFileName(_ filename: String) -> Bool {
     // Microsoft Office lock files
@@ -79,6 +79,8 @@ public func isLockFileName(_ filename: String) -> Bool {
 ///
 /// Example for Microsoft Office: `MyDoc.docx` is extracted from `~$MyDoc.docx`.
 /// Example for LibreOffice: `MyDoc.odt` is extracted from `.~lock.MyDoc.odt#`.
+/// 
+/// - Returns: Either the original file name parsed from the given lock file name or `nil`, if it is not a recognized lock file format.
 ///
 public func originalFileName(fromLockFileName lockFilename: String) -> String? {
     if lockFilename.hasPrefix("~$") {
