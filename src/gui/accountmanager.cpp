@@ -16,6 +16,7 @@
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
 #include "libsync/clientproxy.h"
+#include "legacyaccountselectiondialog.h"
 
 #include <QSettings>
 #include <QDir>
@@ -176,6 +177,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     auto wasLegacyImportDialogDisplayed = false;
     const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
+    QStringList selectedAccountIds;
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -215,25 +217,51 @@ bool AccountManager::restoreFromLegacySettings()
             }
 
             oCSettings->beginGroup(QLatin1String(accountsC));
-            const auto accountsListSize = oCSettings->childGroups().size();
-            oCSettings->endGroup();
+            const auto childGroups = oCSettings->childGroups();
+            const auto accountsListSize = childGroups.size();
+            oCSettings->endGroup(); //accountsC
             if (const QFileInfo configFileInfo(configFile);
                 configFileInfo.exists() && configFileInfo.isReadable()) {
+
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
                 if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
                     wasLegacyImportDialogDisplayed = true;
-                    const auto importQuestion = accountsListSize > 1
-                        ? tr("%1 accounts were detected from a legacy desktop client.\n"
-                             "Should the accounts be imported?").arg(QString::number(accountsListSize))
-                        : tr("1 account was detected from a legacy desktop client.\n"
-                             "Should the account be imported?");
-                    const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
-                    importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
-                    const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
-                    importMessageBox->exec();
-                    if (importMessageBox->clickedButton() == skipButton) {
-                        return false;
+                    if (accountsListSize == 1) {
+                        const auto importQuestion =
+                            tr("An account was detected from a legacy desktop client.\n"
+                               "Should the account be imported?");
+                        QMessageBox importMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
+                        importMessageBox.addButton(tr("Import"), QMessageBox::AcceptRole);
+                        const auto skipButton = importMessageBox.addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                        importMessageBox.exec();
+                        if (importMessageBox.clickedButton() == skipButton) {
+                            return false;
+                        }
+                        selectedAccountIds = childGroups;
+                    } else {
+                        QVector<LegacyAccountSelectionDialog::AccountItem> accountsToDisplay;
+                        oCSettings->beginGroup(QLatin1String(accountsC));
+                        for (const auto &accId : childGroups) {
+                            oCSettings->beginGroup(accId);
+                            const auto displayName = oCSettings->value(QLatin1String(displayNameC)).toString();
+                            const auto urlStr = oCSettings->value(QLatin1String(urlC)).toString();
+                            oCSettings->endGroup(); //accId
+                            const auto label = QString("%1 - %2").arg(displayName, urlStr);
+                            accountsToDisplay.push_back({accId, label});
+                        }
+                        oCSettings->endGroup(); //accountsC
+
+                        LegacyAccountSelectionDialog accountSelectionDialog(accountsToDisplay);
+                        if (accountSelectionDialog.exec() != QDialog::Accepted) {
+                            return false;
+                        }
+                        selectedAccountIds = accountSelectionDialog.selectedAccountIds();
+                        if (selectedAccountIds.isEmpty()) {
+                            return false;
+                        }
                     }
+                } else {
+                    selectedAccountIds = childGroups;
                 }
 
                 qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
@@ -264,7 +292,7 @@ bool AccountManager::restoreFromLegacySettings()
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
-        const auto childGroups = settings->childGroups();
+        const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             const auto acc = loadAccountHelper(*settings);
