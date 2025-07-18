@@ -257,6 +257,11 @@ void ExcludedFiles::addManualExclude(const QString &expr, const QString &basePat
 {
     Q_ASSERT(basePath.endsWith(QLatin1Char('/')));
 
+    const auto trimmedExpr = QStringView{expr}.trimmed();
+    if (trimmedExpr == QLatin1String("*")) {
+        return;
+    }
+
     auto key = basePath;
     _manualExcludes[key].append(expr);
     _allExcludes[key].append(expr);
@@ -291,6 +296,10 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
         }
         if (line.isEmpty() || line.startsWith('#'))
             continue;
+        const auto patternStr = QString::fromUtf8(line);
+        if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
+            continue;
+        }
         csync_exclude_expand_escapes(line);
         patterns.append(QString::fromUtf8(line));
     }
