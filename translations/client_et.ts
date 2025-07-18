@@ -4298,12 +4298,12 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <translation>Vigase muutmisaja tõttu ei õnnestunud sünkroniseerida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1182"/>
+        <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>„%1“ üleslaadimine on suurem, kui isiklike failide „%2“ vaba ruum.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1188"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>„%1“ üleslaadimine on suurem, kui „%3“ kausta „%2“ vaba ruum.</translation>
     </message>
@@ -5858,17 +5858,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut</numerusform><numerusform>%n minutit</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tund</numerusform><numerusform>%n tundi</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n päev</numerusform><numerusform>%n päeva</numerusform></translation>
     </message>
 </context>
 <context>
