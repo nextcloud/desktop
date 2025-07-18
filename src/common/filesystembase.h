@@ -142,6 +142,13 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile *file, QString *error, qint64 seek);
 
+    /**
+     * Returns `path + "/" + file` with native directory separators.
+     * 
+     * If `path` ends in a directory separator this method will not insert another one in-between.
+     */
+    QString OCSYNC_EXPORT joinPath(const QString &path, const QString &file);
+
 #ifdef Q_OS_WIN
     /**
      * Returns the file system used at the given path.

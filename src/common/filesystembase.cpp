@@ -323,6 +323,15 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 #endif
 }
 
+QString FileSystem::joinPath(const QString& path, const QString& file)
+{
+    if (const auto lastChar = path[path.size() - 1]; lastChar == QLatin1Char{'/'} || lastChar == QLatin1Char{'\\'}) {
+        return QDir::toNativeSeparators(path + file);
+    }
+
+    return QDir::toNativeSeparators(path + QDir::separator() + file);
+}
+
 #ifdef Q_OS_WIN
 std::filesystem::perms FileSystem::filePermissionsWinSymlinkSafe(const QString &filename)
 {
@@ -804,7 +813,7 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
         const auto currentFolder = safePathFileInfo.dir();
         const auto childFiles = currentFolder.entryList(QDir::Filter::Files);
         for (const auto &oneEntry : childFiles) {
-            const auto childFile = QDir::toNativeSeparators(path + QDir::separator() + oneEntry);
+            const auto childFile = joinPath(path, oneEntry);
 
             const auto &childFileStdWString = childFile.toStdWString();
             const auto attributes = GetFileAttributes(childFileStdWString.c_str());
