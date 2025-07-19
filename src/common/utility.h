@@ -63,9 +63,8 @@ namespace Utility {
      * @brief Migrate favorite link for sync folder with new application name and icon
      *
      * @param folder absolute file path to folder
-     * @param lnkName the new name of the lnk file
      */
-    OCSYNC_EXPORT void migrateFavLink(const QString &folder, const QString &lnkName = QString());
+    OCSYNC_EXPORT void migrateFavLink(const QString &folder);
     /**
      * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
      *
@@ -79,6 +78,14 @@ namespace Utility {
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
+    /**
+     * @brief Return the display name of a folder - to be used in fav links and sync root name (VFS).x
+     * e.g. Nextcloud1 will become NewAppName1, NewAppName2 or FolderName will be kept as is.
+     *
+     * @param currentDisplayName current folder display name string
+     * @param newName new name to be used for the folder
+     */
+    OCSYNC_EXPORT QString syncFolderDisplayName(const QString &currentDisplayName, const QString &newName);
 
     // convenience system path to links folder
     OCSYNC_EXPORT QString systemPathToLinks();
