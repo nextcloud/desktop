@@ -52,10 +52,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..2303ce952
+index 000000000..f40c5a62a
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,250 @@
+@@ -0,0 +1,259 @@
 +
 +#pragma once
 +
@@ -139,6 +139,15 @@ index 000000000..2303ce952
 +#if QT_VERSION<QT_VERSION_CHECK(6, 4, 0)
 +#define QCOMPARE_GT(computed, baseline) QCOMPARE(computed>baseline, true)
 +#endif
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 3, 0)
++#define QLatin1StringOrView QLatin1String
++#else
++#define QLatin1StringOrView QLatin1StringView
++#endif
++
 +
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
@@ -307,7 +316,7 @@ index 000000000..2303ce952
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index 37ec12007..8089df0ec 100644
+index 0855b028d..5c5ec1f6a 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
 @@ -21,6 +21,7 @@
@@ -318,7 +327,16 @@ index 37ec12007..8089df0ec 100644
  #include "../version.h"
  
  #include <QString>
-@@ -450,10 +451,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+@@ -297,7 +298,7 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
+         if (line.isEmpty() || line.startsWith('#'))
+             continue;
+         const auto patternStr = QString::fromUtf8(line);
+-        if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
++        if (QStringView{patternStr}.trimmed() == QLatin1StringOrView("*")) {
+             continue;
+         }
+         csync_exclude_expand_escapes(line);
+@@ -459,10 +460,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
          QRegularExpressionMatch m;
          if (filetype == ItemTypeDirectory
              && _bnameTraversalRegexDir.contains(basePath)) {
@@ -374,7 +392,7 @@ index a92ee0424..fac362137 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 38dac2153..f15754fc8 100644
+index 995def590..a40df34d9 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -385,7 +403,7 @@ index 38dac2153..f15754fc8 100644
  
  #include "config.h"
  
-@@ -1002,7 +1003,7 @@ void Application::setupTranslations()
+@@ -1011,7 +1012,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -395,7 +413,7 @@ index 38dac2153..f15754fc8 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index cbfba8591..696143402 100644
+index ce4c25e7b..42b2d6a43 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -407,7 +425,7 @@ index cbfba8591..696143402 100644
  #include <pushnotifications.h>
  #include <syncengine.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 6f45b736a..611f7bfdc 100644
+index 29301107a..442a52a84 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -418,7 +436,7 @@ index 6f45b736a..611f7bfdc 100644
  
  #include <QDesktopServices>
  #include <QDir>
-@@ -568,7 +569,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+@@ -571,7 +572,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
      if (!Theme::instance()->disableVirtualFilesSyncFolder() && Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
          _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
          connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
@@ -996,7 +1014,7 @@ index 850e9c919..fc0371170 100644
  using namespace OCC;
  
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index 97cfbbb84..a70e7a197 100644
+index c585ac618..cb0a4f741 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
@@ -1008,7 +1026,7 @@ index 97cfbbb84..a70e7a197 100644
  #include <QFile>
  #include <QtTest>
 diff --git a/test/testsyncvirtualfiles.cpp b/test/testsyncvirtualfiles.cpp
-index b1e9bc3e8..9fcab6e1a 100644
+index e7eb0b196..7a4d22838 100644
 --- a/test/testsyncvirtualfiles.cpp
 +++ b/test/testsyncvirtualfiles.cpp
 @@ -11,6 +11,7 @@
