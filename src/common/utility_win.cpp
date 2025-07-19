@@ -166,6 +166,18 @@ void Utility::setupFavLink(const QString &folder)
     }
 }
 
+QString Utility::syncFolderLastDigits(const QString &folderName)
+{
+    QString digits;
+    for (auto letter = std::crbegin(folderName); letter != std::crend(folderName); ++letter) {
+        if (!letter->isDigit()) {
+            break;
+        }
+        digits.prepend(*letter);
+    }
+    return digits;
+}
+
 void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
 {
     //overwrite Desktop.ini, update icon
@@ -184,20 +196,11 @@ void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
         return;
     }
 
-    const auto lastDigits = [](const QString &dirName) -> QString {
-        QString digits;
-        for (auto letter = std::crbegin(dirName); letter != std::crend(dirName); ++letter) {
-            if (!letter->isDigit()) {
-                break;
-            }
-            digits.prepend(*letter);
-        }
-        return digits;
-    };
-
     const QDir dirPathToLinks(pathToLinks);
-    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
-    const auto newLnkFilename = dirPathToLinks.filePath(newLinkName + lastDigits(oldDirName) + QLatin1String(".lnk"));
+    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName
+                                                        + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(newLinkName
+                                                        + syncFolderLastDigits(oldDirName) + QLatin1String(".lnk"));
 
     qCInfo(lcUtility) << "Renaming favorite link from" << oldLnkFilename << "to" << newLnkFilename;
     if (!QFile::rename(oldLnkFilename, newLnkFilename)) {

@@ -514,9 +514,31 @@ void Folder::startVfs()
         return;
     }
 
+    const auto displayName = [&]() -> QString {
+        //const auto isRemoteRoot = remotePath() == QStringLiteral("/");
+        const auto nextcloud = QStringLiteral("Nextcloud");
+        auto folderName = QDir(QDir::fromNativeSeparators(cleanPath())).dirName();
+
+        qCDebug(lcFolder) << "VFS Folder display name:" << folderName;
+        // processing migration?
+        if (APPLICATION_NAME != nextcloud && folderName.startsWith(nextcloud)) {
+            folderName = shortGuiRemotePathOrAppName() + Utility::syncFolderLastDigits(folderName);
+            qCDebug(lcFolder) << "VFS Folder is migrating:" << folderName;
+        }
+
+        // multiple accounts?
+        if (AccountManager::instance()->accounts().size() > 1) {
+            folderName += " - " +  accountState()->account()->prettyName();
+            qCDebug(lcFolder) << "This client has multiple accounts:" << folderName;
+        }
+
+        qCDebug(lcFolder) << "New VFS display name is:" << folderName;
+        return folderName;
+    };
+
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
-    vfsParams.displayName = shortGuiRemotePathOrAppName();
+    vfsParams.displayName = displayName();
     vfsParams.alias = alias();
     vfsParams.navigationPaneClsid = navigationPaneClsid().toString();
     vfsParams.remotePath = remotePathTrailingSlash();

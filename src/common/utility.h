@@ -79,6 +79,13 @@ namespace Utility {
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
+    /**
+     * @brief Returns the last digits in a sync folder if there is any,
+     * e.g. Nextcloud1, Nextcloud2 - usually when user has multiple accounts
+     *
+     * @param folderName folder name string
+     */
+    OCSYNC_EXPORT QString syncFolderLastDigits(const QString &folderName);
 
     // convenience system path to links folder
     OCSYNC_EXPORT QString systemPathToLinks();
