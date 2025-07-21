@@ -6,5 +6,6 @@
 	<array>
 		<string>@SOCKETAPI_TEAM_IDENTIFIER_PREFIX@@APPLICATION_REV_DOMAIN@</string>
 	</array>
+@DEBUG_ENTITLEMENTS@
 </dict>
 </plist>
