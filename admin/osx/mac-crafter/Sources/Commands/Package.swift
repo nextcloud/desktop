@@ -6,7 +6,7 @@
 import ArgumentParser
 import Foundation
 
-struct Package: ParsableCommand {
+struct Package: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Packaging script for the client.")
     
     @Option(name: [.short, .long], help: "Architecture.")

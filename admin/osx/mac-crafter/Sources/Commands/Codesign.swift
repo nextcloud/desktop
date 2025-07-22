@@ -6,7 +6,7 @@
 import ArgumentParser
 import Foundation
 
-struct Codesign: ParsableCommand {
+struct Codesign: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
     
     @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
