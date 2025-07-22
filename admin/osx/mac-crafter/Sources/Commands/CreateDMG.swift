@@ -6,7 +6,7 @@
 import ArgumentParser
 import Foundation
 
-struct CreateDMG: ParsableCommand {
+struct CreateDMG: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Create a DMG for the client.")
     
     @Argument(help: "Path to the desktop client app bundle.")
