@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Athshocraigh timpeallacht comhad fíorúil</translation>
     </message>
 </context>
 <context>
@@ -2807,7 +2807,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Tá tú ag sioncrónú an fho-fhillteáin %1 ag %2 cheana féin.</translation>
     </message>
 </context>
 <context>
@@ -5859,17 +5859,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n lá</numerusform><numerusform>%n laethanta</numerusform><numerusform>%n laethanta</numerusform><numerusform>%n laethanta</numerusform><numerusform>%n laethanta</numerusform></translation>
     </message>
 </context>
 <context>
