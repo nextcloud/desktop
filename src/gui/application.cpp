@@ -552,6 +552,15 @@ void Application::setupConfigFile()
         return;
     }
 
+    const QStringList filesList =
+        !Utility::isWindows()
+        ? QDir(oldDir).entryList(QDir::Files).filter(QRegularExpression("^(?!.*\\.log).*$"))
+        : QDir(oldDir).entryList(QDir::Files);
+
+    if (filesList.isEmpty()) {
+        return;
+    }
+
     auto confDir = ConfigFile().configPath();
 
     // macOS 10.11.x does not like trailing slash for rename/move.
@@ -565,7 +574,6 @@ void Application::setupConfigFile()
 
         // Try to move the files one by one
         if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
             qCInfo(lcApplication) << "Will move the individual files" << filesList;
             for (const auto &name : filesList) {
                 if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
