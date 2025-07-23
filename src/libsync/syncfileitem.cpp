@@ -189,7 +189,7 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_isShared = item->_remotePerm.hasPermission(RemotePermissions::IsShared);
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
-    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::Encrypted : SyncFileItem::EncryptionStatus::NotEncrypted);
+    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
     if (item->isEncrypted()) {
         item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
     }
