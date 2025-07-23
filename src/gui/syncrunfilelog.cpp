@@ -24,7 +24,10 @@ void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
-    const QString logpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    const QString logpath =
+        !Utility::isWindows()
+        ? QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)
+        : QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     if(!QDir(logpath).exists()) {
         QDir().mkdir(logpath);
     }
