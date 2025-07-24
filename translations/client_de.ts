@@ -3004,7 +3004,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation>Wiederherstellen auf &amp;Standard</translation>
+        <translation>&amp;Standard wiederherstellen </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>

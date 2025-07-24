@@ -3005,7 +3005,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation>Restaurar &amp;Default</translation>
+        <translation>Restaurar &amp;Predeterminados</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="395"/>
