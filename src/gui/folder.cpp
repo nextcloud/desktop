@@ -1585,19 +1585,19 @@ void Folder::slotWatcherUnreliable(const QString &message)
 
 void Folder::slotHydrationStarts()
 {
-    // Abort any running full sync run and reschedule
-    if (_engine->isSyncRunning()) {
-        setSilenceErrorsUntilNextSync(true);
-        slotTerminateSync();
-        scheduleThisFolderSoon();
-        // TODO: This sets the sync state to AbortRequested on done, we don't want that
-    }
+    // // Abort any running full sync run and reschedule
+    // if (_engine->isSyncRunning()) {
+    //     setSilenceErrorsUntilNextSync(true);
+    //     slotTerminateSync();
+    //     scheduleThisFolderSoon();
+    //     // TODO: This sets the sync state to AbortRequested on done, we don't want that
+    // }
 
-    // Let everyone know we're syncing
-    _syncResult.reset();
-    _syncResult.setStatus(SyncResult::SyncRunning);
-    emit syncStarted();
-    emit syncStateChange();
+    // // Let everyone know we're syncing
+    // _syncResult.reset();
+    // _syncResult.setStatus(SyncResult::SyncRunning);
+    // emit syncStarted();
+    // emit syncStateChange();
 }
 
 void Folder::slotHydrationDone()
