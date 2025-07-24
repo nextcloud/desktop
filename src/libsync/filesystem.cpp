@@ -265,7 +265,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         // we never want to go into this branch for .lnk files
         bool isDir = FileSystem::isDir(fi.absoluteFilePath()) && !FileSystem::isSymLink(fi.absoluteFilePath()) && !FileSystem::isJunction(fi.absoluteFilePath());
         if (isDir) {
-            removeOk = removeRecursively(path + QLatin1Char('/') + di.fileName(), onDeleted, errors, onError); // recursive
+            removeOk = removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError); // recursive
         } else {
             QString removeError;
 
