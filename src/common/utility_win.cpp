@@ -7,6 +7,7 @@
 #include "asserts.h"
 #include "utility.h"
 #include "gui/configgui.h"
+#include "config.h"
 
 #include <comdef.h>
 #include <Lmcons.h>
@@ -169,7 +170,7 @@ void Utility::setupFavLink(const QString &folder)
 QString Utility::syncFolderDisplayName(const QString &currentDisplayName, const QString &newName)
 {
     const auto nextcloud = QStringLiteral("Nextcloud");
-    if (currentDisplayName == nextcloud || !currentDisplayName.startsWith(nextcloud)) {
+    if (!currentDisplayName.startsWith(nextcloud)) {
         qCDebug(lcUtility) << "Nothings needs to be rename for" << currentDisplayName;
         return currentDisplayName;
     }
@@ -185,10 +186,18 @@ QString Utility::syncFolderDisplayName(const QString &currentDisplayName, const 
     return newName + digits;
 }
 
-void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
+void Utility::migrateFavLink(const QString &folder)
 {
     //overwrite Desktop.ini, update icon
     setupDesktopIni(folder, true);
+
+    const QDir folderDir(QDir::fromNativeSeparators(folder));
+    const auto oldDirName = folderDir.dirName();
+    const auto nextcloud = QStringLiteral("Nextcloud");
+    if (!oldDirName.startsWith(nextcloud)) {
+        qCWarning(lcUtility) << "Link name does not need to change for" << folder;
+        return;
+    }
 
     const auto pathToLinks = systemPathToLinks();
     if (pathToLinks.isEmpty()) {
@@ -196,19 +205,17 @@ void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
         return;
     }
 
-    const QDir folderDir(QDir::fromNativeSeparators(folder));
-    const auto oldDirName = folderDir.dirName();
-    if (oldDirName == newLinkName) {
-        qCWarning(lcUtility) << "Link name does not change!";
+    const QDir dirPathToLinks(pathToLinks);
+    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(syncFolderDisplayName(oldDirName, QStringLiteral(APPLICATION_NAME)) + QLatin1String(".lnk"));
+
+    if (QFile::exists(newLnkFilename)) {
+        qCWarning(lcUtility) << "New lnk file already exists" << newLnkFilename;
         return;
     }
 
-    const QDir dirPathToLinks(pathToLinks);
-    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
-    const auto newLnkFilename = dirPathToLinks.filePath(syncFolderDisplayName(oldDirName, newLinkName) + QLatin1String(".lnk"));
-
     qCInfo(lcUtility) << "Renaming favorite link from" << oldLnkFilename << "to" << newLnkFilename;
-    if (!QFile::rename(oldLnkFilename, newLnkFilename)) {
+    if (QFile::rename(oldLnkFilename, newLnkFilename)  && !QFile::rename(oldLnkFilename, newLnkFilename)) {
         qCWarning(lcUtility) << "renaming" << oldLnkFilename << "to" << newLnkFilename << "failed!";
     }
 }

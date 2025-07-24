@@ -63,9 +63,8 @@ namespace Utility {
      * @brief Migrate favorite link for sync folder with new application name and icon
      *
      * @param folder absolute file path to folder
-     * @param lnkName the new name of the lnk file
      */
-    OCSYNC_EXPORT void migrateFavLink(const QString &folder, const QString &lnkName = QString());
+    OCSYNC_EXPORT void migrateFavLink(const QString &folder);
     /**
      * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
      *

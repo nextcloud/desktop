@@ -609,9 +609,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
 
-                Utility::migrateFavLink(folder->cleanPath(),
-                                        folder->remotePath() == QStringLiteral("/") ? APPLICATION_NAME
-                                                                                    : folder->shortGuiLocalPath());
+                Utility::migrateFavLink(folder->cleanPath());
             }
             settings.endGroup(); // folder alias
         }
