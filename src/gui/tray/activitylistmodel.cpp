@@ -543,7 +543,7 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     }
     endInsertRows();
 
-    const auto deselectedConflictIt = std::find_if(_finalList.constBegin(), _finalList.constEnd(), [] (const auto activity) {
+    const auto deselectedConflictIt = std::find_if(_finalList.constBegin(), _finalList.constEnd(), [] (const auto &activity) {
         return activity._syncFileItemStatus == SyncFileItem::Conflict;
     });
     const auto conflictsFound = (deselectedConflictIt != _finalList.constEnd());
