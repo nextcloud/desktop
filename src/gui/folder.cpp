@@ -517,20 +517,19 @@ void Folder::startVfs()
     const auto displayName = [&]() -> QString {
         //const auto isRemoteRoot = remotePath() == QStringLiteral("/");
         const auto nextcloud = QStringLiteral("Nextcloud");
+        const auto currentAppName = Theme::instance()->appNameGUI();
         auto folderName = QDir(QDir::fromNativeSeparators(cleanPath())).dirName();
 
-        qCDebug(lcFolder) << "VFS Folder display name:" << folderName;
+        qCDebug(lcFolder) << "Current VFS Folder display name:" << folderName;
+
         // processing migration?
-        if (APPLICATION_NAME != nextcloud && folderName.startsWith(nextcloud)) {
-            folderName = shortGuiRemotePathOrAppName() + Utility::syncFolderLastDigits(folderName);
-            qCDebug(lcFolder) << "VFS Folder is migrating:" << folderName;
+        if (currentAppName != nextcloud && folderName.startsWith(nextcloud)) {
+            folderName = currentAppName + Utility::syncFolderLastDigits(folderName);
+            qCDebug(lcFolder) << "VFS Folder might be migrating, new folder name:" << folderName;
         }
 
-        // multiple accounts?
-        if (AccountManager::instance()->accounts().size() > 1) {
-            folderName += " - " +  accountState()->account()->prettyName();
-            qCDebug(lcFolder) << "This client has multiple accounts:" << folderName;
-        }
+        // add account to the end
+        folderName += " - " +  accountState()->account()->prettyName();
 
         qCDebug(lcFolder) << "New VFS display name is:" << folderName;
         return folderName;
