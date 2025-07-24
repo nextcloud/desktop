@@ -80,12 +80,13 @@ namespace Utility {
      */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
     /**
-     * @brief Returns the last digits in a sync folder if there is any,
-     * e.g. Nextcloud1, Nextcloud2 - usually when user has multiple accounts
+     * @brief Return the display name of a folder - to be used in fav links and sync root name (VFS).x
+     * e.g. Nextcloud1 will become NewAppName1, NewAppName2 or FolderName will be kept as is.
      *
-     * @param folderName folder name string
+     * @param currentDisplayName current folder display name string
+     * @param newName new name to be used for the folder
      */
-    OCSYNC_EXPORT QString syncFolderLastDigits(const QString &folderName);
+    OCSYNC_EXPORT QString syncFolderDisplayName(const QString &currentDisplayName, const QString &newName);
 
     // convenience system path to links folder
     OCSYNC_EXPORT QString systemPathToLinks();

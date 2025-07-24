@@ -166,16 +166,23 @@ void Utility::setupFavLink(const QString &folder)
     }
 }
 
-QString Utility::syncFolderLastDigits(const QString &folderName)
+QString Utility::syncFolderDisplayName(const QString &currentDisplayName, const QString &newName)
 {
+    const auto nextcloud = QStringLiteral("Nextcloud");
+    if (currentDisplayName == nextcloud || !currentDisplayName.startsWith(nextcloud)) {
+        qCDebug(lcUtility) << "Nothings needs to be rename for" << currentDisplayName;
+        return currentDisplayName;
+    }
+
     QString digits;
-    for (auto letter = std::crbegin(folderName); letter != std::crend(folderName); ++letter) {
+    for (auto letter = std::crbegin(currentDisplayName); letter != std::crend(currentDisplayName); ++letter) {
         if (!letter->isDigit()) {
             break;
         }
         digits.prepend(*letter);
     }
-    return digits;
+
+    return newName + digits;
 }
 
 void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
@@ -197,10 +204,8 @@ void Utility::migrateFavLink(const QString &folder, const QString &newLinkName)
     }
 
     const QDir dirPathToLinks(pathToLinks);
-    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName
-                                                        + QLatin1String(".lnk"));
-    const auto newLnkFilename = dirPathToLinks.filePath(newLinkName
-                                                        + syncFolderLastDigits(oldDirName) + QLatin1String(".lnk"));
+    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(syncFolderDisplayName(oldDirName, newLinkName) + QLatin1String(".lnk"));
 
     qCInfo(lcUtility) << "Renaming favorite link from" << oldLnkFilename << "to" << newLnkFilename;
     if (!QFile::rename(oldLnkFilename, newLnkFilename)) {
