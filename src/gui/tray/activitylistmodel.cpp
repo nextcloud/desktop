@@ -540,15 +540,13 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     beginInsertRows({}, startRow, startRow + activityList.count() - 1);
     for(const auto &activity : activityList) {
         _finalList.append(activity);
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            _conflictsList.push_back(activity);
+        }
     }
     endInsertRows();
 
-    const auto deselectedConflictIt = std::find_if(_finalList.constBegin(), _finalList.constEnd(), [] (const auto activity) {
-        return activity._syncFileItemStatus == SyncFileItem::Conflict;
-    });
-    const auto conflictsFound = (deselectedConflictIt != _finalList.constEnd());
-
-    setHasSyncConflicts(conflictsFound);
+    setHasSyncConflicts(!_conflictsList.isEmpty());
 }
 
 void ActivityListModel::accountStateHasChanged()
@@ -631,6 +629,10 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         beginRemoveRows({}, index, index);
         _finalList.removeAt(index);
         endRemoveRows();
+    }
+
+    if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+        _conflictsList.removeOne(activity);
     }
 
     if (activity._type != Activity::ActivityType &&
@@ -933,6 +935,7 @@ void ActivityListModel::slotRefreshActivityInitial()
 void ActivityListModel::slotRemoveAccount()
 {
     _finalList.clear();
+    _conflictsList.clear();
     _activityLists.clear();
     _presentedActivities.clear();
     setAndRefreshCurrentlyFetching(false);
@@ -965,15 +968,7 @@ bool ActivityListModel::hasSyncConflicts() const
 
 ActivityList ActivityListModel::allConflicts() const
 {
-    auto result = ActivityList{};
-
-    for(const auto &activity : _finalList) {
-        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-            result.push_back(activity);
-        }
-    }
-
-    return result;
+    return _conflictsList;
 }
 
 }
