@@ -183,6 +183,7 @@ private:
     ActivityList _notificationLists;
     ActivityList _listOfIgnoredFiles;
     ActivityList _notificationErrorsLists;
+    ActivityList _conflictsList;
     ActivityList _finalList;
 
     QSet<qint64> _presentedActivities;
