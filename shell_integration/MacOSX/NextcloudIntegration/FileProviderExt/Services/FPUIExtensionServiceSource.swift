@@ -40,6 +40,14 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - FPUIExtensionService protocol methods
 
+    func userAgent() async -> NSString? {
+        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+            return nil
+        }
+        let nkSession = fpExtension.ncKit.getSession(account: account)
+        return nkSession?.userAgent as NSString?
+    }
+
     func credentials() async -> NSDictionary {
         return (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
     }

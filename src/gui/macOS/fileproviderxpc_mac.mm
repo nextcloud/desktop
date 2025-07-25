@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "common/utility.h"
 #include "fileproviderxpc.h"
 
 #include <QLoggingCategory>
@@ -69,12 +70,14 @@ void FileProviderXPC::authenticateExtension(const QString &extensionAccountId) c
     NSString *const userId = account->davUser().toNSString();
     NSString *const serverUrl = account->url().toString().toNSString();
     NSString *const password = credentials->password().toNSString();
+    NSString *const userAgent = QString::fromUtf8(Utility::userAgentString()).toNSString();
 
     const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
     [clientCommService configureAccountWithUser:user
                                          userId:userId
                                       serverUrl:serverUrl
-                                       password:password];
+                                       password:password
+                                      userAgent:userAgent];
 }
 
 void FileProviderXPC::unauthenticateExtension(const QString &extensionAccountId) const

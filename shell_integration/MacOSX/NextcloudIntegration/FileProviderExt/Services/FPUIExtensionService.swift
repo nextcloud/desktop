@@ -13,6 +13,7 @@ let fpUiExtensionServiceName = NSFileProviderServiceName(
 )
 
 @objc protocol FPUIExtensionService {
+    func userAgent() async -> NSString?
     func credentials() async -> NSDictionary
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString?
 }
