@@ -1143,7 +1143,7 @@ This action will abort any currently running synchronization.</source>
         <translation>正在拉取动态...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="591"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>遇到网络错误：客户端将重试同步。</translation>
     </message>
@@ -4283,7 +4283,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>服务器报告无 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1138"/>
+        <location filename="../src/libsync/discovery.cpp" line="1141"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>由于修改时间无效，因此无法同步</translation>
     </message>
@@ -4298,59 +4298,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 的上传超过了文件夹 %3 中剩余空间的 %2。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1148"/>
+        <location filename="../src/libsync/discovery.cpp" line="1151"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>无法上传文件，因为此文件已在 “%1” 中被打开。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>从数据库删除文件记录 %1 时发生错误</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1469"/>
-        <location filename="../src/libsync/discovery.cpp" line="1925"/>
+        <location filename="../src/libsync/discovery.cpp" line="1475"/>
+        <location filename="../src/libsync/discovery.cpp" line="1934"/>
         <source>Moved to invalid target, restoring</source>
         <translation>移动到无效目标，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1787"/>
+        <location filename="../src/libsync/discovery.cpp" line="1796"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>无法修改已加密的项目，因为所选证书无效。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1849"/>
+        <location filename="../src/libsync/discovery.cpp" line="1858"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>因“选择要同步的内容”黑名单而被忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1883"/>
-        <location filename="../src/libsync/discovery.cpp" line="2086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="2095"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>不被允许，因为您没有向该文件夹添加子文件夹的权限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1889"/>
+        <location filename="../src/libsync/discovery.cpp" line="1898"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>不被允许，因为您没有在该文件夹中添加文件的权限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1903"/>
+        <location filename="../src/libsync/discovery.cpp" line="1912"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允许上传这个文件，因为它在这台服务器上是只读的，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1939"/>
+        <location filename="../src/libsync/discovery.cpp" line="1948"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允许移除，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2129"/>
+        <location filename="../src/libsync/discovery.cpp" line="2138"/>
         <source>Error while reading the database</source>
         <translation>读取数据库时出错</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2214"/>
+        <location filename="../src/libsync/discovery.cpp" line="2223"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>服务器在读取目录 &quot;%1&quot; 时返回了一个错误: %2 </translation>
     </message>

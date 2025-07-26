@@ -1141,7 +1141,7 @@ This action will abort any currently running synchronization.</source>
         <translation>جلب الأنشطة...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="591"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>حدث خطأ في الشبكة: سوف يحاول العميل إعادة المزامنة.</translation>
     </message>
@@ -4274,7 +4274,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>أبلغ الخادم عن عدم وجود %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1138"/>
+        <location filename="../src/libsync/discovery.cpp" line="1141"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
@@ -4289,59 +4289,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1148"/>
+        <location filename="../src/libsync/discovery.cpp" line="1151"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>حدث خطأ أثناء حذف file record سجل الملفات %1 من قاعدة البيانات</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1469"/>
-        <location filename="../src/libsync/discovery.cpp" line="1925"/>
+        <location filename="../src/libsync/discovery.cpp" line="1475"/>
+        <location filename="../src/libsync/discovery.cpp" line="1934"/>
         <source>Moved to invalid target, restoring</source>
         <translation>نُقِلَ إلى مَقْصِد taget غير صالحٍ. إستعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1787"/>
+        <location filename="../src/libsync/discovery.cpp" line="1796"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>تعذّر تعديل العنصر المُشفّر لأن الشهادة المحددة غير صحيحة.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1849"/>
+        <location filename="../src/libsync/discovery.cpp" line="1858"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>تم التّجاهل بسبب القائمة السوداء &quot;اختيار ما تريد مزامنته&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1883"/>
-        <location filename="../src/libsync/discovery.cpp" line="2086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="2095"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>غير مسموح به؛ لأنه ليس لديك صلاحية إضافة مجلدات فرعية إلى هذا المجلد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1889"/>
+        <location filename="../src/libsync/discovery.cpp" line="1898"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>غير مسموح به؛ لأنه ليس لديك صلاحية إضافة ملفات في هذا المجلد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1903"/>
+        <location filename="../src/libsync/discovery.cpp" line="1912"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>غير مسموح برفع هذا الملف لأنه للقراءة فقط على الخادوم. إستعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1939"/>
+        <location filename="../src/libsync/discovery.cpp" line="1948"/>
         <source>Not allowed to remove, restoring</source>
         <translation>غير مسموح بالحذف. إستعادة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2129"/>
+        <location filename="../src/libsync/discovery.cpp" line="2138"/>
         <source>Error while reading the database</source>
         <translation>خطأ أثناء القراءة من قاعدة البيانات</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2214"/>
+        <location filename="../src/libsync/discovery.cpp" line="2223"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>ردّ الخادوم بخطأ عند القراءة من الدليل &quot;%1&quot; : %2</translation>
     </message>

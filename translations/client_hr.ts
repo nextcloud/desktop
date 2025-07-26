@@ -1140,7 +1140,7 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="591"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"/>
     </message>
@@ -4272,7 +4272,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Poslužitelj javlja da nema %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1138"/>
+        <location filename="../src/libsync/discovery.cpp" line="1141"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
@@ -4287,59 +4287,59 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1148"/>
+        <location filename="../src/libsync/discovery.cpp" line="1151"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1469"/>
-        <location filename="../src/libsync/discovery.cpp" line="1925"/>
+        <location filename="../src/libsync/discovery.cpp" line="1475"/>
+        <location filename="../src/libsync/discovery.cpp" line="1934"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Premješteno na nevažeće odredište, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1787"/>
+        <location filename="../src/libsync/discovery.cpp" line="1796"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1849"/>
+        <location filename="../src/libsync/discovery.cpp" line="1858"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Zanemareno zbog crne liste „odaberi što će se sinkronizirati”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1883"/>
-        <location filename="../src/libsync/discovery.cpp" line="2086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="2095"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje podmapa u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1889"/>
+        <location filename="../src/libsync/discovery.cpp" line="1898"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Nije dopušteno jer nemate dopuštenje za dodavanje datoteka u tu mapu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1903"/>
+        <location filename="../src/libsync/discovery.cpp" line="1912"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nije dopušteno otpremiti ovu datoteku jer je dostupna samo za čitanje na poslužitelju, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1939"/>
+        <location filename="../src/libsync/discovery.cpp" line="1948"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nije dopušteno uklanjanje, vraćanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2129"/>
+        <location filename="../src/libsync/discovery.cpp" line="2138"/>
         <source>Error while reading the database</source>
         <translation>Pogreška pri čitanju baze podataka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2214"/>
+        <location filename="../src/libsync/discovery.cpp" line="2223"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Poslužitelj je javio pogrešku pri čitanju direktorija „%1” : %2</translation>
     </message>

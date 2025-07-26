@@ -1146,7 +1146,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Recupero attività …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="593"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="591"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Errore di rete: il client ritenterà la sincronizzazione.</translation>
     </message>
@@ -4288,7 +4288,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il server non ha restituito alcun %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1138"/>
+        <location filename="../src/libsync/discovery.cpp" line="1141"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
@@ -4303,59 +4303,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nella cartella %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1148"/>
+        <location filename="../src/libsync/discovery.cpp" line="1151"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossibile caricare il file, perché è aperto in &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1191"/>
+        <location filename="../src/libsync/discovery.cpp" line="1197"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errore nella rilevazione del record del file %1 dal database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1469"/>
-        <location filename="../src/libsync/discovery.cpp" line="1925"/>
+        <location filename="../src/libsync/discovery.cpp" line="1475"/>
+        <location filename="../src/libsync/discovery.cpp" line="1934"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Spostato su una destinazione non valida, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1787"/>
+        <location filename="../src/libsync/discovery.cpp" line="1796"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Impossibile modificare l&apos;elemento crittografato perché il certificato selezionato non è valido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1849"/>
+        <location filename="../src/libsync/discovery.cpp" line="1858"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorato in base alla lista nera per la scelta di cosa sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1883"/>
-        <location filename="../src/libsync/discovery.cpp" line="2086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1892"/>
+        <location filename="../src/libsync/discovery.cpp" line="2095"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non consentito perché non sei autorizzato ad aggiungere sottocartelle a quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1889"/>
+        <location filename="../src/libsync/discovery.cpp" line="1898"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non ti è consentito perché non hai i permessi per aggiungere file in quella cartella </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1903"/>
+        <location filename="../src/libsync/discovery.cpp" line="1912"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non ti è permesso caricare questo file perché hai l&apos;accesso in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1939"/>
+        <location filename="../src/libsync/discovery.cpp" line="1948"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2129"/>
+        <location filename="../src/libsync/discovery.cpp" line="2138"/>
         <source>Error while reading the database</source>
         <translation>Errore durante la lettura del database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2214"/>
+        <location filename="../src/libsync/discovery.cpp" line="2223"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Il server ha risposto con un errore durante la lettura della cartella &quot;%1&quot; : %2</translation>
     </message>
