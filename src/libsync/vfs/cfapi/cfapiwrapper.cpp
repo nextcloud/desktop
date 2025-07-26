@@ -576,7 +576,6 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
     // syncRootId should be: [storage provider ID]![Windows SID]![Account ID]![FolderAlias] (FolderAlias is a custom part added here to be able to register multiple sync folders for the same account)
     // folder registry keys go like: Nextcloud!S-1-5-21-2096452760-2617351404-2281157308-1001!user@nextcloud.lan:8080!0, Nextcloud!S-1-5-21-2096452760-2617351404-2281157308-1001!user@nextcloud.lan:8080!1, etc. for each sync folder
     const auto syncRootId = QStringLiteral("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(folderAlias);
-
     const QString providerSyncRootIdRegistryKey = syncRootManagerRegKey + QStringLiteral("\\") + syncRootId;
     const QString providerSyncRootIdUserSyncRootsRegistryKey = providerSyncRootIdRegistryKey + QStringLiteral(R"(\UserSyncRoots\)");
 
@@ -588,6 +587,8 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
     };
 
     const auto flags = OCC::Theme::instance()->enforceVirtualFilesSyncFolder() ? syncRootFlagsNoCfApiContextMenu : syncRootFlagsFull;
+
+    qCDebug(lcCfApiWrapper) << "syncRootPath" << syncRootPath << " will use DisplayNameResource" << displayName;
 
     const QVector<RegistryKeyInfo> registryKeysToSet = {
         { providerSyncRootIdRegistryKey, QStringLiteral("Flags"), REG_DWORD, flags },
@@ -606,6 +607,10 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
             Q_ASSERT(!deleteKeyResult);
             return false;
         }
+        qCDebug(lcCfApiWrapper) << "Registering keys - subKey:" << registryKeyToSet.subKey 
+                                                << " - valueName:" << registryKeyToSet.valueName
+                                                << " - type:" << registryKeyToSet.type
+                                                << " - value:" << registryKeyToSet.value.toString();
     }
 
     qCInfo(lcCfApiWrapper) << "Successfully set Registry keys for shell integration at:" << providerSyncRootIdRegistryKey << ". Progress bar will work.";
