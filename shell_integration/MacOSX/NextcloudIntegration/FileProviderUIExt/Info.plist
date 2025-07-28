@@ -16,7 +16,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Unlock file</string>
+				<string>UNLOCK_ACTION</string>
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.locked != nil &amp;&amp; !($fileproviderItem.contentType.identifier UTI-CONFORMS-TO &quot;public.folder&quot;) ).@count &gt; 0</string>
 			</dict>
@@ -24,7 +24,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.locked == nil &amp;&amp; !($fileproviderItem.contentType.identifier UTI-CONFORMS-TO &quot;public.folder&quot;) ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Lock file</string>
+				<string>LOCK_ACTION</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction</string>
 			</dict>
@@ -34,7 +34,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.ShareAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Share options</string>
+				<string>SHARE_OPTIONS_ACTION</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -42,7 +42,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Free up space</string>
+				<string>EVICT_ACTION</string>
 			</dict>
 		</array>
 		<key>NSExtensionPointIdentifier</key>

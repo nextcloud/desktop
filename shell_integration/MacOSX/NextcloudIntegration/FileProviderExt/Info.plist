@@ -18,7 +18,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Always keep downloaded</string>
+				<string>AUTO_EVICT_ACTION</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -26,7 +26,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Allow automatic freeing up space</string>
+				<string>KEEP_DOWNLOADED_ACTION</string>
 			</dict>
 		</array>
 		<key>NSExtensionFileProviderDocumentGroup</key>

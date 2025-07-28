@@ -14,3 +14,20 @@ source_file = mirall.desktop.in
 source_lang = en
 type        = DESKTOP
 
+[o:nextcloud:p:nextcloud:r:client-fileprovider-info]
+file_filter            = shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Info.xcstrings
+source_file            = shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Info.xcstrings
+source_lang            = en
+type                   = XCSTRINGS
+
+[o:nextcloud:p:nextcloud:r:client-fileproviderui-info]
+file_filter            = shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Info.xcstrings
+source_file            = shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Info.xcstrings
+source_lang            = en
+type                   = XCSTRINGS
+
+[o:nextcloud:p:nextcloud:r:client-fileproviderui-localizable]
+file_filter            = shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Localizable.xcstrings
+source_file            = shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Localizable.xcstrings
+source_lang            = en
+type                   = XCSTRINGS

@@ -28,6 +28,8 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var saveButton: NSButton!
     @IBOutlet private weak var deleteButton: NSButton!
     @IBOutlet private weak var shareTypePicker: NSPopUpButton!
+
+    // Share type picker options
     @IBOutlet private weak var publicLinkShareMenuItem: NSMenuItem!
     @IBOutlet private weak var userShareMenuItem: NSMenuItem!
     @IBOutlet private weak var groupShareMenuItem: NSMenuItem!
@@ -60,11 +62,9 @@ class ShareOptionsView: NSView {
     var controller: ShareController? {
         didSet {
             guard controller != nil else { return }
-            optionsTitleTextField.stringValue = "Share options"
+            optionsTitleTextField.stringValue = String(localized: "Share options")
             deleteButton.title = "Delete"
-            deleteButton.image = NSImage(
-                systemSymbolName: "trash", accessibilityDescription: "Delete trash icon"
-            )
+            deleteButton.image = NSImage(systemSymbolName: "trash", accessibilityDescription: "Delete trash icon")
             deleteButton.bezelColor = NSColor.systemRed
             cancellable?.cancel()
             createMode = false
@@ -79,8 +79,8 @@ class ShareOptionsView: NSView {
             shareRecipientTextField.isHidden = !createMode
             labelTextField.isHidden = createMode  // Cannot set label on create API call
             guard createMode else { return }
-            optionsTitleTextField.stringValue = "Create new share"
-            deleteButton.title = "Cancel"
+            optionsTitleTextField.stringValue = String(localized: "Create new share")
+            deleteButton.title = String(localized: "Cancel")
             deleteButton.image = NSImage(
                 systemSymbolName: "xmark.bin", accessibilityDescription: "Cancel create icon"
             )
@@ -104,6 +104,28 @@ class ShareOptionsView: NSView {
             deleteButton.isEnabled = false
             return
         }
+
+        // Programmatically update localizable texts.
+        publicLinkShareMenuItem.title = String(localized: "Public link share")
+        userShareMenuItem.title = String(localized: "User share")
+        groupShareMenuItem.title = String(localized: "Group share")
+        emailShareMenuItem.title = String(localized: "Email share")
+        federatedCloudShareMenuItem.title = String(localized: "Federated cloud share")
+        circleShare.title = String(localized: "Team share")
+        talkConversationShare.title = String(localized: "Talk conversation share")
+
+        shareRecipientTextField.placeholderString = String(localized: "Share recipient")
+        labelTextField.placeholderString = String(localized: "Share label")
+        uploadEditPermissionCheckbox.title = String(localized: "Allow upload and editing")
+        hideDownloadCheckbox.title = String(localized: "Hide download")
+        passwordProtectCheckbox.title = String(localized: "Password protect")
+        passwordSecureField.placeholderString = String(localized: "Enter a new password")
+        expirationDateCheckbox.title = String(localized: "Expiration date")
+        noteForRecipientCheckbox.title = String(localized: "Note for the recipient")
+        noteTextField.placeholderString = String(localized: "Note for the recipient")
+
+        deleteButton.title = String(localized: "Delete")
+        saveButton.title = String(localized: "Save")
 
         deleteButton.isEnabled = share.canDelete
         saveButton.isEnabled = share.canEdit

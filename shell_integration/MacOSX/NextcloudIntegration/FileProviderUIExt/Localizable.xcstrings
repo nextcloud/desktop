@@ -1,0 +1,412 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Allow upload and editing" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hochladen und bearbeiten erlauben"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "comment" : "Button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "comment" : "Button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        }
+      }
+    },
+    "Communicating with server, locking file..." : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, sperre Datei…"
+          }
+        }
+      }
+    },
+    "Communicating with server, unlocking file..." : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, entsperre Datei…"
+          }
+        }
+      }
+    },
+    "Could not lock unknown item..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte unbekannte Datei nicht sperren…"
+          }
+        }
+      }
+    },
+    "Could not lock unknown item…" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte unbekannte Datei nicht entsperren…"
+          }
+        }
+      }
+    },
+    "Create new share" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Freigabe erstellen"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "comment" : "Button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        }
+      }
+    },
+    "Dismiss" : {
+      "comment" : "Button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        }
+      }
+    },
+    "Email share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail Freigabe"
+          }
+        }
+      }
+    },
+    "Enter a new password" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein neues Passwort eigeben"
+          }
+        }
+      }
+    },
+    "Expiration date" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ablaufdatum"
+          }
+        }
+      }
+    },
+    "Federated cloud share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Föderierte Cloudfreigabe"
+          }
+        }
+      }
+    },
+    "File \"%@\" locked!" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei „%@“ wurde gesperrt!"
+          }
+        }
+      }
+    },
+    "File \"%@\" unlocked!" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei „%@“ wurde entsperrt!"
+          }
+        }
+      }
+    },
+    "Group share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenfreigabe"
+          }
+        }
+      }
+    },
+    "Hide download" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloadoption verstecken"
+          }
+        }
+      }
+    },
+    "Last modified: %@" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt geändert: %@"
+          }
+        }
+      }
+    },
+    "Locking file \"%@\"..." : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperre Datei „%@“…"
+          }
+        }
+      }
+    },
+    "Note for the recipient" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz für Empfänger"
+          }
+        }
+      }
+    },
+    "Password protect" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwortschutz"
+          }
+        }
+      }
+    },
+    "Public link share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffentliche Linkfreigabe"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "comment" : "Button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        }
+      }
+    },
+    "Share label" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabename"
+          }
+        }
+      }
+    },
+    "Share options" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeoptionen"
+          }
+        }
+      }
+    },
+    "Share recipient" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeempfänger"
+          }
+        }
+      }
+    },
+    "Talk conversation share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk Konversationsfreigabe"
+          }
+        }
+      }
+    },
+    "Team share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teamfreigabe"
+          }
+        }
+      }
+    },
+    "Unknown item" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Datei"
+          }
+        }
+      }
+    },
+    "Unknown modification date" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Änderungsdatum"
+          }
+        }
+      }
+    },
+    "Unknown size" : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Größe"
+          }
+        }
+      }
+    },
+    "Unlocking file \"%@\"..." : {
+      "comment" : "Text label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entsperre Datei „%@“…"
+          }
+        }
+      }
+    },
+    "User share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzerfreigabe"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

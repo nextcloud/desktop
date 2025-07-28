@@ -1,0 +1,42 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "AUTO_EVICT_ACTION" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Freigabe von Speicherplatz erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow automatic freeing up space"
+          }
+        }
+      }
+    },
+    "KEEP_DOWNLOADED_ACTION" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer heruntergeladen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always keep downloaded"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
