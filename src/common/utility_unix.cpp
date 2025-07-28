@@ -65,6 +65,18 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
     return QFile::exists(desktopFileLocation);
 }
 
+void Utility::migrateFavLink(const QString &folder)
+{
+    Q_UNUSED(folder)
+}
+
+QString Utility::syncFolderDisplayName(const QString &folder, const QString &displayName)
+{
+    Q_UNUSED(folder)
+    Q_UNUSED(displayName)
+    return {};
+}
+
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     const auto userAutoStartPath = getUserAutostartDir();

@@ -60,17 +60,19 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Start by looking at every registered namespace extension for the sidebar, and look for an "ApplicationName" value
     // that matches ours when we saved.
     QVector<QUuid> entriesToRemove;
+    const auto currentAppName = QLatin1String(APPLICATION_NAME);
 #ifdef Q_OS_WIN
     const auto nameSpaceKey = QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)");
     if (Utility::registryKeyExists(HKEY_CURRENT_USER, nameSpaceKey)) {
         Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
-            [&entriesToRemove](HKEY key, const QString &subKey) {
+            [&entriesToRemove, &currentAppName](HKEY key, const QString &subKey) {
                 const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey;
-                if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
+                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey << "for appName:" << appName.toString();
+                if (appName.toString() == currentAppName || appName.toString() == unbrandedApplicationName) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
                     entriesToRemove.append(clsid);
+                    qCDebug(lcNavPane) << "Going to remove:" << subKey;
                 }
             });
     }
@@ -90,16 +92,16 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
                 const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
                 const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
-
-                auto title = folder->shortGuiRemotePathOrAppName();
-                // Write the account name in the sidebar only when using more than one account.
+                auto title = Utility::syncFolderDisplayName(folder->shortGuiLocalPath(), currentAppName);
                 if (AccountManager::instance()->accounts().size() > 1) {
-                    title = folder->accountState()->account()->shortcutName();
-                }
+                    title = QStringLiteral("%1 - %2").arg(title, folder->accountState()->account()->shortcutName());
+                } 
+                qCDebug(lcNavPane) << "Folder" << folder->cleanPath() << "will use shortcutname" << title;
+
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
                 const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
-                qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
+                qCDebug(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
 #ifdef Q_OS_WIN
                 // Steps taken from: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934%28v=vs.85%29.aspx
                 // Step 1: Add your CLSID and name your extension

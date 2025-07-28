@@ -56,6 +56,18 @@ void Utility::removeFavLink(const QString &folder)
     Q_UNUSED(folder)
 }
 
+void Utility::migrateFavLink(const QString &folder)
+{
+    Q_UNUSED(folder)
+}
+
+QString Utility::syncFolderDisplayName(const QString &folder, const QString &displayName)
+{
+    Q_UNUSED(folder)
+    Q_UNUSED(displayName)
+    return {};
+}
+
 static Result<void, QString> writePlistToFile(NSString *plistFile, NSDictionary *plist)
 {
     NSError *error = nil;

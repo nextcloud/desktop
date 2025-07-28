@@ -54,17 +54,41 @@ namespace Utility {
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
     /**
-     * @brief Creates the Desktop.ini file which contains the folder IconResource shown as a favorite link
+     * @brief Create favorite link for sync folder with application name and icon
      *
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
+    /**
+     * @brief Migrate favorite link for sync folder with new application name and icon
+     *
+     * @param folder absolute file path to folder
+     */
+    OCSYNC_EXPORT void migrateFavLink(const QString &folder);
+    /**
+     * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
+     *
+     * @param folder absolute file path to folder
+     * @param overwrite boolean to create or overwrite ini file
+     */
+    OCSYNC_EXPORT void setupDesktopIni(const QString &folder, bool overwrite = false);
     /**
      * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
      *
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
+    /**
+     * @brief Return the display name of a folder - to be used in fav links and sync root name (VFS).x
+     * e.g. Nextcloud1 will become NewAppName1, NewAppName2 or FolderName will be kept as is.
+     *
+     * @param currentDisplayName current folder display name string
+     * @param newName new name to be used for the folder
+     */
+    OCSYNC_EXPORT QString syncFolderDisplayName(const QString &currentDisplayName, const QString &newName);
+
+    // convenience system path to links folder
+    OCSYNC_EXPORT QString systemPathToLinks();
 
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(const qint64 octets);
@@ -350,6 +374,5 @@ inline constexpr bool Utility::isBSD()
     return false;
 #endif
 }
-
 }
 #endif // UTILITY_H
