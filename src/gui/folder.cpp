@@ -514,9 +514,10 @@ void Folder::startVfs()
         return;
     }
 
-    const auto displayName = QStringLiteral("%1 - %2").arg(Utility::syncFolderDisplayName(shortGuiLocalPath(), 
-                                                           Theme::instance()->appNameGUI()), 
-                                                           accountState()->account()->shortcutName());
+    auto displayName = Utility::syncFolderDisplayName(shortGuiLocalPath(), Theme::instance()->appNameGUI());
+    if (AccountManager::instance()->accounts().size() > 1) {
+        displayName = QStringLiteral("%1 - %2").arg(displayName, accountState()->account()->shortcutName());
+    }
     qCDebug(lcFolder) << "Display name for VFS folder will be:" << displayName;
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
