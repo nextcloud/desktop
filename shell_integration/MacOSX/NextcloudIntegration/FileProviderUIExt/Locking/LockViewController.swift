@@ -60,6 +60,8 @@ class LockViewController: NSViewController {
         Task {
             await processItemIdentifier(firstItem)
         }
+
+        closeButton.title = String(localized: "Close")
     }
 
     @IBAction func closeAction(_ sender: Any) {
@@ -109,14 +111,13 @@ class LockViewController: NSViewController {
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.lockViewController.error("\(errorString, privacy: .public)")
-            fileNameLabel.stringValue = "Could not lock unknown item…"
-            descriptionLabel.stringValue = errorString
+            fileNameLabel.stringValue = String(localized: "Could not lock unknown item…")
+            descriptionLabel.stringValue = error.localizedDescription
         }
     }
 
     private func updateFileDetailsDisplay(itemUrl: URL) async {
-        let lockAction = locking ? "Locking" : "Unlocking"
-        fileNameLabel.stringValue = "\(lockAction) file \(itemUrl.lastPathComponent)…"
+        fileNameLabel.stringValue = locking ? String(format: String(localized: "Locking file \"%@\"…"), itemUrl.lastPathComponent) : String(format: String(localized: "Unlocking file \"%@\"…"), itemUrl.lastPathComponent)
 
         let request = QLThumbnailGenerator.Request(
             fileAt: itemUrl,
@@ -210,10 +211,10 @@ class LockViewController: NSViewController {
                 }
             }
 
-            descriptionLabel.stringValue =
-                "Communicating with server, \(locking ? "locking" : "unlocking") file…"
+            descriptionLabel.stringValue = locking ? String(localized: "Communicating with server, locking file…") : String(localized: "Communicating with server, unlocking file…")
 
             let serverUrlFileName = itemMetadata.serverUrl + "/" + itemMetadata.fileName
+            
             Logger.lockViewController.info(
                 """
                 Locking file: \(serverUrlFileName, privacy: .public)
@@ -231,13 +232,12 @@ class LockViewController: NSViewController {
                     }
                 )
             }
+
             if error == .success {
-                descriptionLabel.stringValue = "File \(self.locking ? "locked" : "unlocked")!"
-                warnImage.image = NSImage(
-                    systemSymbolName: "checkmark.circle.fill",
-                    accessibilityDescription: "checkmark.circle.fill"
-                )
+                descriptionLabel.stringValue = String(format: self.locking ? String(localized: "File \"%@\" locked!") : String(localized: "File \"%@\" unlocked!"), itemMetadata.fileName)
+                warnImage.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: "checkmark.circle.fill")
                 stopIndicatingLoading()
+
                 if let manager = NSFileProviderManager(for: actionViewController.domain) {
                     do {
                         try await manager.signalEnumerator(for: itemIdentifier)
