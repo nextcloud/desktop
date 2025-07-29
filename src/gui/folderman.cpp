@@ -1536,7 +1536,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
         // wipe data
         QDir userFolder(f->path());
         if (userFolder.exists()) {
-            success = userFolder.removeRecursively();
+            success = FileSystem::removeRecursively(f->path());
             if (!success) {
                 qCWarning(lcFolderMan) << "Failed to remove existing folder " << f->path();
             } else {
