@@ -1304,4 +1304,29 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
+QString ConfigFile::fileProviderDomainUuidFromAccountId(const QString &accountId) const
+{
+    return retrieveData(QStringLiteral("FileProviderDomainUuids"), accountId).toString();
+}
+
+void ConfigFile::setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid)
+{
+    storeData(QStringLiteral("FileProviderDomainUuids"), accountId, domainUuid);
+    storeData(QStringLiteral("FileProviderAccountIds"), domainUuid, accountId);
+}
+
+QString ConfigFile::accountIdFromFileProviderDomainUuid(const QString &domainUuid) const
+{
+    return retrieveData(QStringLiteral("FileProviderAccountIds"), domainUuid).toString();
+}
+
+void ConfigFile::removeFileProviderDomainUuidMapping(const QString &accountId)
+{
+    const QString domainUuid = fileProviderDomainUuidFromAccountId(accountId);
+    if (!domainUuid.isEmpty()) {
+        removeData(QStringLiteral("FileProviderAccountIds"), domainUuid);
+    }
+    removeData(QStringLiteral("FileProviderDomainUuids"), accountId);
+}
+
 }

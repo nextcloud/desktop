@@ -246,6 +246,12 @@ public:
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
 
+    /// File Provider Domain UUID to Account ID mapping
+    [[nodiscard]] QString fileProviderDomainUuidFromAccountId(const QString &accountId) const;
+    void setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid);
+    [[nodiscard]] QString accountIdFromFileProviderDomainUuid(const QString &domainUuid) const;
+    void removeFileProviderDomainUuidMapping(const QString &accountId);
+
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
     static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
