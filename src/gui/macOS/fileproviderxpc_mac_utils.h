@@ -19,7 +19,12 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices);
 void configureFileProviderConnection(NSXPCConnection *connection);
 NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol);
-NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *clientCommService);
+
+/**
+ * @brief Get the domain identifier for and from a given client communication service.
+ */
+NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *clientCommService);
+
 QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections);
 
 }
