@@ -630,6 +630,7 @@ AccountStatePtr AccountManager::account(const QString &name)
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
     const auto accountsList = accounts();
+
     for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
         const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
@@ -640,6 +641,7 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
             return account;
         }
     }
+
     return {};
 }
 

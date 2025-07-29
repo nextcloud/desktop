@@ -153,7 +153,7 @@ bool createDebugArchive(const QString &filename)
             const auto account = accountState->account();
             const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
             const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
-            xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
+            xpc->createDebugArchiveForFileProviderDomain(accountUserIdAtHost, vfsLogPath);
             zip.addLocalFile(vfsLogPath, vfsLogFilename);
         }
     }

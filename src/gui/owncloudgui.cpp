@@ -316,7 +316,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
 
-            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
+            if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
             } else {
                 switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
