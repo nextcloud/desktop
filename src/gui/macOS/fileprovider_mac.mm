@@ -80,8 +80,8 @@ void FileProvider::configureXPC()
     _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
     if (_xpc) {
         qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
-        _xpc->connectToExtensions();
-        _xpc->configureExtensions();
+        _xpc->connectToFileProviderDomains();
+        _xpc->authenticateFileProviderDomains();
     } else {
         qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
     }
