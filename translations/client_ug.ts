@@ -539,18 +539,17 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>% 1 ھېسابات مىراس ئۈستەل يۈزى خېرىدارىدىن بايقالدى.
 ھېساباتلارنى ئىمپورت قىلىش كېرەكمۇ؟</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>مىراس ئۈستەل يۈزى خېرىدارىدىن 1 ھېسابات بايقالدى.
-ھېساباتنى ئىمپورت قىلىش كېرەكمۇ؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -562,6 +561,13 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>ئەكىرىش</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>مىراس ئۈستەل يۈزى خېرىدارىدىن 1 ھېسابات بايقالدى.
+ھېساباتنى ئىمپورت قىلىش كېرەكمۇ؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3376,6 +3382,19 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>يەرلىك ھۆججەتنىڭ نامىنى ئۆزگەرتەلمىدى. % 1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
