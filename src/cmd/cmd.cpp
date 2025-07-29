@@ -386,10 +386,10 @@ int main(int argc, char **argv)
         }
     } else {
         if (user.isEmpty()) {
-            user = std::getenv("NC_USER");
+            user = QString::fromUtf8(qgetenv("NC_USER"));
         }
         if (password.isEmpty()) {
-            password = std::getenv("NC_PASSWORD");
+            password = QString::fromUtf8(qgetenv("NC_PASSWORD"));
         }
     }
    
