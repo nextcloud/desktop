@@ -186,6 +186,8 @@ enum ItemType {
      * file dehydration without changing the pin state.
      */
     ItemTypeVirtualFileDehydration = 6,
+
+    ItemTypeVirtualDirectory = 7,
 };
 Q_ENUM_NS(ItemType)
 }
