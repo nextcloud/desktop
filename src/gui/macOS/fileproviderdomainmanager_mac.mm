@@ -84,15 +84,24 @@ QString uuidDomainIdentifierForAccount(const OCC::Account * const account)
     Q_ASSERT(account);
     const auto accountId = account->userIdAtHostWithPort();
     
+    if (accountId.isEmpty()) {
+        qCWarning(OCC::lcMacFileProviderDomainManager) << "Cannot generate UUID for account with empty userIdAtHostWithPort";
+        return {};
+    }
+    
     // Try to get existing UUID mapping first
     OCC::ConfigFile cfg;
     const QString existingUuid = cfg.fileProviderDomainUuidFromAccountId(accountId);
     if (!existingUuid.isEmpty()) {
+        qCDebug(OCC::lcMacFileProviderDomainManager) << "Using existing UUID for account:" 
+                                                     << accountId << "UUID:" << existingUuid;
         return existingUuid;
     }
     
     // Generate new UUID for this account
     const QString newUuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    qCInfo(OCC::lcMacFileProviderDomainManager) << "Generated new UUID for account:" 
+                                                << accountId << "UUID:" << newUuid;
     cfg.setFileProviderDomainUuidForAccountId(accountId, newUuid);
     return newUuid;
 }
@@ -120,12 +129,18 @@ inline QString domainDisplayNameForAccount(const OCC::AccountPtr account)
 
 inline QString accountIdFromDomainId(const QString &domainId)
 {
+    if (domainId.isEmpty()) {
+        return {};
+    }
+    
     // Check if this is a UUID-based domain identifier
     if (QUuid::fromString(domainId).isNull() == false) {
         // This is a UUID, look up the account ID from the mapping
+        qCDebug(OCC::lcMacFileProviderDomainManager) << "Resolving UUID-based domain ID:" << domainId;
         OCC::ConfigFile cfg;
         const QString accountId = cfg.accountIdFromFileProviderDomainUuid(domainId);
         if (!accountId.isEmpty()) {
+            qCDebug(OCC::lcMacFileProviderDomainManager) << "UUID maps to account:" << accountId;
             return accountId;
         }
         qCWarning(OCC::lcMacFileProviderDomainManager) << "Could not find account id for UUID-based domain id:" << domainId;
@@ -133,19 +148,29 @@ inline QString accountIdFromDomainId(const QString &domainId)
     }
     
     // This is a legacy account-based domain identifier
+    qCDebug(OCC::lcMacFileProviderDomainManager) << "Using legacy account-based domain ID:" << domainId;
     return domainId;
 }
 
 QString accountIdFromDomainId(NSString * const domainId)
 {
+    if (!domainId) {
+        return {};
+    }
+    
     auto qDomainId = QString::fromNSString(domainId);
+    if (qDomainId.isEmpty()) {
+        return {};
+    }
     
     // Check if this is a UUID-based domain identifier
     if (QUuid::fromString(qDomainId).isNull() == false) {
         // This is a UUID, look up the account ID from the mapping
+        qCDebug(OCC::lcMacFileProviderDomainManager) << "Resolving UUID-based domain ID from NSString:" << qDomainId;
         OCC::ConfigFile cfg;
         const QString accountId = cfg.accountIdFromFileProviderDomainUuid(qDomainId);
         if (!accountId.isEmpty()) {
+            qCDebug(OCC::lcMacFileProviderDomainManager) << "UUID maps to account:" << accountId;
             return accountId;
         }
         qCWarning(OCC::lcMacFileProviderDomainManager) << "Could not find account id for UUID-based domain id:" << qDomainId;
@@ -153,6 +178,7 @@ QString accountIdFromDomainId(NSString * const domainId)
     }
     
     // This is a legacy account-based domain identifier - handle the old logic
+    qCDebug(OCC::lcMacFileProviderDomainManager) << "Processing legacy account-based domain ID from NSString:" << qDomainId;
     if (!qDomainId.contains('-')) {
         return qDomainId.replace("(.)", ".");
     }
