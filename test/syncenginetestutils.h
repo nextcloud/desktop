@@ -550,7 +550,9 @@ public:
     [[nodiscard]] bool ready() const override { return true; }
     void fetchFromKeychain() override { }
     void askFromUser() override { }
-    bool stillValid(QNetworkReply *) override { return true; }
+    bool stillValid(QNetworkReply *reply) override {
+        return reply->error() != QNetworkReply::AuthenticationRequiredError;
+    }
     void persist() override { }
     void invalidateToken() override { }
     void forgetSensitiveData() override { }

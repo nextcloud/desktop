@@ -1041,17 +1041,20 @@ void Folder::wipeForRemoval()
 {
     disconnectFolderWatcher();
 
+    // Delete files that have been partially downloaded.
+    slotDiscardDownloadProgress();
+
     // Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
-    _journal.close(); // close the sync journal
+    // Close the sync journal.  Do NOT call any methods that fetch data from it
+    // after this point, otherwise the journal is re-opened.  On some systems
+    // (Windows) this prevents the removal of the db file as it's open again...
+    _journal.close();
 
     if (!QDir(path()).exists()) {
         qCCritical(lcFolder) << "db files are not going to be deleted, sync folder could not be found at" << path();
         return;
     }
-
-    // Delete files that have been partially downloaded.
-    slotDiscardDownloadProgress();
 
     // Remove db and temporaries
     QString stateDbFile = _engine->journal()->databaseFilePath();
@@ -1704,7 +1707,7 @@ void Folder::disconnectFolderWatcher()
 
 bool Folder::virtualFilesEnabled() const
 {
-    return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
+    return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending() && !_vfs.isNull();
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
