@@ -678,26 +678,6 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         // on whether a new account is activated or the existing one
         // is changed.
         auto account = applyAccountChanges();
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-        if (Mac::FileProvider::fileProviderAvailable()) {
-            Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
-            _ocWizard->appendToConfigurationLog(
-                tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(account->account()->userIdAtHostWithPort()));
-            _ocWizard->done(result);
-            emit ownCloudWizardDone(result);
-
-            QMessageBox::information(nullptr,
-                                     tr("Virtual files enabled"),
-                                     tr("Your account is now syncing with virtual files support. "
-                                        "This means that all your files are online-only by default, "
-                                        "and will be downloaded on-demand when you open them. "
-                                        "You may find your files under the <b>Locations</b> section of the Finder sidebar."));
-
-            return;
-        }
-#endif
-
         QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
