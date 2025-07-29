@@ -540,17 +540,16 @@ macOS může tento požadavek ignorovat nebo zareagovat s prodlevou.</translatio
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Zjištěno %1 účtů ze starého klienta pro počítač. Chcete je naimportovat?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>Zjištěn jeden účet ze starého klienta pro počítač.
-Chcete ho naimportovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -562,6 +561,13 @@ Chcete ho naimportovat?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>Naimportovat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>Zjištěn jeden účet ze starého klienta pro počítač.
+Chcete ho naimportovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3379,6 +3385,19 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>Nedaří se přejmenovat místní soubor. %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

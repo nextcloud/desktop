@@ -540,18 +540,17 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Braitheadh ​​% 1 cuntas ó chliant deisce oidhreachta.
 Ar cheart na cuntais a iompórtáil?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>Braitheadh ​​1 chuntas ó chliant deisce oidhreachta.
-Ar cheart an cuntas a iompórtáil?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -563,6 +562,13 @@ Ar cheart an cuntas a iompórtáil?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>Iompórtáil</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>Braitheadh ​​1 chuntas ó chliant deisce oidhreachta.
+Ar cheart an cuntas a iompórtáil?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3381,6 +3387,19 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>Níorbh fhéidir an comhad áitiúil a athainmniú. % 1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

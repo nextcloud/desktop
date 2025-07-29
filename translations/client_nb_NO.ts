@@ -539,18 +539,17 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 kontoer ble oppdaget fra en eldre skrivebordsklient.
 Skal kontoene importeres?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>1 konto ble oppdaget fra en eldre skrivebordsklient.
-Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -562,6 +561,13 @@ Skal kontoen importeres?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>Importer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>1 konto ble oppdaget fra en eldre skrivebordsklient.
+Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3364,6 +3370,19 @@ Elementer der sletting er tillatt vil bli slettet hvis de hindrer en katalog i Ã
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>Kunne ikke gi nytt navn til lokal fil. %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

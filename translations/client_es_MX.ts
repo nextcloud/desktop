@@ -539,18 +539,17 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 cuentas se detectaron desde un cliente de escritorio antiguo.
 ¿Se deberían importar estas cuentas?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>1 cuenta se detectó desde un cliente de escritorio antiguo.
-¿Se debería importar esta cuenta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -562,6 +561,13 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>Importar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>1 cuenta se detectó desde un cliente de escritorio antiguo.
+¿Se debería importar esta cuenta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3365,6 +3371,19 @@ Los elementos en los que se permite el borrado se eliminarán si impiden que un 
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>No se pudo renombrar el archivo local. %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

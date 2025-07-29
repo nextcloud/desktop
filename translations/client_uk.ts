@@ -540,18 +540,17 @@ macOS може ігнорувати запит або він виконуват�
 <context>
     <name>OCC::AccountManager</name>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
+        <source>An account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 облікових записів знайдено із застарілого настільного клієнта.
 Чи імпортувати ці облікові записи?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="234"/>
-        <source>1 account was detected from a legacy desktop client.
-Should the account be imported?</source>
-        <translation>1 обліковий запис знайдено із застарілого настільного клієнта.
-Чи імпортувати цей обліковий запис?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
@@ -563,6 +562,13 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountmanager.cpp" line="237"/>
         <source>Import</source>
         <translation>Імпорт</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="234"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation>1 обліковий запис знайдено із застарілого настільного клієнта.
+Чи імпортувати цей обліковий запис?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -3378,6 +3384,19 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="318"/>
         <source>Could not rename local file. %1</source>
         <translation>Неможливо перейменувати файл на пристрої. %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::LegacyAccountSelectionDialog</name>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
+        <source>Select the accounts to import from the legacy configuration:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
