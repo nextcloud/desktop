@@ -625,6 +625,11 @@ bool SyncJournalDb::checkConnect()
         qCWarning(lcDb) << "Failed to update the database structure!";
     }
 
+    const auto fixEncryptionResult = ensureCorrectEncryptionStatus();
+    if (!fixEncryptionResult) {
+        qCWarning(lcDb) << "Failed to update the encryption status";
+    }
+
     /*
      * If we are upgrading from a client version older than 1.5,
      * we cannot read from the database because we need to fetch the files id and etags.
@@ -1565,6 +1570,36 @@ int SyncJournalDb::getFileRecordCount()
     }
 
     return -1;
+}
+
+bool SyncJournalDb::ensureCorrectEncryptionStatus()
+{
+    const auto folderQuery = _queryManager.get(PreparedSqlQueryManager::FolderUpdateInvalidEncryptionStatus, QByteArrayLiteral("UPDATE "
+                                                                                                                         "metadata AS invalidItem "
+                                                                                                                         "SET "
+                                                                                                                         "isE2eEncrypted = 4 "
+                                                                                                                         "WHERE "
+                                                                                                                         "invalidItem.isE2eEncrypted = 0 AND "
+                                                                                                                         "(invalidItem.type = 0 OR invalidItem.type = 2) AND "
+                                                                                                                         "EXISTS ( "
+                                                                                                                         "SELECT * "
+                                                                                                                         "FROM "
+                                                                                                                         "metadata parentFolder "
+                                                                                                                         "WHERE "
+                                                                                                                         "substr(invalidItem.path, 0, parentFolder.pathlen + 1) = parentFolder.path AND "
+                                                                                                                         "parentFolder.isE2eEncrypted <> 0)"),
+                                         _db);
+    if (!folderQuery) {
+        qCWarning(lcDb) << "database error:" << folderQuery->error();
+        return false;
+    }
+
+    if (!folderQuery->exec()) {
+        qCWarning(lcDb) << "database error:" << folderQuery->error();
+        return false;
+    }
+
+    return true;
 }
 
 bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
