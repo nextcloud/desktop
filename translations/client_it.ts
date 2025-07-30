@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Reimposta l&apos;ambiente dei file virtuali</translation>
     </message>
 </context>
 <context>
@@ -543,7 +543,8 @@ macOS potrebbe ignorare o ritardare questa richiesta.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>È stato rilevato un account da un client desktop legacy.
+L&apos;account deve essere importato?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="232"/>
@@ -2251,19 +2252,19 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1115"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una nuova cartella più grande di %1 MB è stata aggiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una nuova cartella da un&apos;archiviazione esterna è stata aggiunta.
@@ -2271,49 +2272,49 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vai nelle impostazioni e selezionala se vuoi scaricarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1469"/>
+        <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Una cartella ha superato il limite di dimensione impostato per la cartella di %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1480"/>
+        <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
         <translation>Continua a sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1488"/>
+        <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
         <translation>Ferma la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1499"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>La cartella %1 ha superato il limite di dimensione impostato di %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Vuoi interrompere la sincronizzazione di questa cartella?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1575"/>
+        <location filename="../src/gui/folder.cpp" line="1578"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La cartella %1 è stata creata, ma è stata esclusa dalla sincronizzazione in precedenza. I dati al suo interno non saranno sincronizzati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1578"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Il file %1 è stato creato, ma è stato escluso dalla sincronizzazione in precedenza. Non sarà sincronizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1589"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2326,12 +2327,12 @@ Questo significa che il client di sincronizzazione potrebbe non caricare le modi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1627"/>
+        <location filename="../src/gui/folder.cpp" line="1630"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Download del file virtuale fallito con codice &quot;%1&quot;, stato &quot;%2&quot; e messaggio di errore &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1721"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2340,7 +2341,7 @@ Conferma se vuoi procedere con queste eliminazioni.
 In alternativa, puoi ripristinare tutti i file eliminati caricandoli dalla cartella &apos;%1&apos; sul server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2349,22 +2350,22 @@ Si prega di confermare se si desidera procedere con queste eliminazioni.
 In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli dal server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>Rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1727"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>Procedi con la cancellazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>Ripristina i file sul server</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>Ripristina i file dal server</translation>
     </message>
@@ -2815,7 +2816,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Stai già sincronizzando la sottocartella %1 in %2.</translation>
     </message>
 </context>
 <context>
@@ -3396,12 +3397,12 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importazione legacy</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Selezionare gli account da importare dalla configurazione legacy:</translation>
     </message>
 </context>
 <context>
@@ -4312,12 +4313,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1189"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nei file personali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nella cartella %3.</translation>
     </message>
@@ -5872,17 +5873,17 @@ Il server ha risposto con errore: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minuti</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ora</numerusform><numerusform>%n ore</numerusform><numerusform>%n ore</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n giorno</numerusform><numerusform>%n giorni</numerusform><numerusform>%n giorni</numerusform></translation>
     </message>
 </context>
 <context>

@@ -2251,68 +2251,68 @@ Może to być problem z bibliotekami OpenSSL.</translation>
         <translation>Synchronizuj aktywność</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1115"/>
         <source>Could not read system exclude file</source>
         <translation>Nie można odczytać systemowego pliku wykluczeń</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Dodano nowy katalog większy niż %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dodano katalog z magazynu zewnętrznego.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Przejdź do ustawień, aby go wybrać do pobrania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1469"/>
+        <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Katalog przekroczył ustawiony limit rozmiaru katalogu wynoszący %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1480"/>
+        <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
         <translation>Kontynuuj synchronizację</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1488"/>
+        <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
         <translation>Zatrzymaj synchronizację</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1499"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Katalog %1 przekroczył ustawiony limit rozmiaru katalogu wynoszący %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Czy chcesz zatrzymać synchronizację tego katalogu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1575"/>
+        <location filename="../src/gui/folder.cpp" line="1578"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Katalog %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Dane w nim zawarte nie zostaną zsynchronizowane.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1578"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Plik %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Nie zostanie on zsynchronizowany.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1589"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2325,12 +2325,12 @@ Oznacza to, że klient synchronizacji może nie przesyłać natychmiast zmian lo
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1627"/>
+        <location filename="../src/gui/folder.cpp" line="1630"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Pobieranie pliku wirtualnego nie powiodło się z powodu kodu &quot;%1&quot;, status &quot;%2&quot; i komunikatu o błędzie &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1721"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2339,7 +2339,7 @@ Potwierdź, czy chcesz kontynuować usuwanie.
 Alternatywnie możesz przywrócić wszystkie usunięte pliki, przesyłając je z katalogu &apos;%1&apos; na serwer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2348,22 +2348,22 @@ Potwierdź, czy chcesz kontynuować usuwanie.
 Alternatywnie możesz przywrócić wszystkie usunięte pliki, pobierając je z serwera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>Usunąć wszystkie pliki?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1727"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>Kontynuuj usuwanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>Przywróć pliki na serwer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>Przywróć pliki z serwera</translation>
     </message>
@@ -4318,12 +4318,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zsynchronizować z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1189"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Wysłanie %1 przekracza %2 miejsca dostępnego w plikach osobistych.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Wysłanie pliku %1 przekracza %2 miejsca dostępnego w katalogu %3.</translation>
     </message>

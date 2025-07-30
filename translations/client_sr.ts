@@ -2251,68 +2251,68 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Активност синхронизације</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1115"/>
         <source>Could not read system exclude file</source>
         <translation>Не могу да прочитам системски списак за игнорисање</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Додата је нова фасцикла већа од %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Додата је фасцикла са спољног складишта.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Идите у поставке и означите ако желите да ја преузмете.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1469"/>
+        <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Фолдер је прешао постављено ограничење величине од %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1480"/>
+        <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
         <translation>Настави синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1488"/>
+        <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
         <translation>Заустави синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1499"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Фолдер %1 је прешао постављено ограничење величине од %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Желите ли да зауставите синхронизацију овог фолдера?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1575"/>
+        <location filename="../src/gui/folder.cpp" line="1578"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Фасцикла %1 је креирана, али је још раније искључена из синхронизације. Подаци унутар ње неће бити синхронизовани.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1578"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Фајл %1 је креиран, али је још раније искључен из синхронизације. Неће бити синхронизован.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1589"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2325,12 +2325,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1627"/>
+        <location filename="../src/gui/folder.cpp" line="1630"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Није успело виртуелно преузимање фајла, кôд „%1”, статус „%2” и порука о грешки „%3~</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1721"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2339,7 +2339,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 У супротном, све обрисане фајлове можете да обновите тако што их отпремите из фолдера ’%1’ на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2348,22 +2348,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 У супротном, све обрисане фајлове можете да обновите тако што их поново преузмете са сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>Желите ли да уклоните све фајлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1727"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>Настави са брисањем</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>Врати фајлове на сервер</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>Врати фајлове са сервера</translation>
     </message>
@@ -4318,12 +4318,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1189"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Отпремање %1 премашује %2 простора преосталог у личним фајловима.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Отпремање %1 премашује %2 простора преосталог у фолдеру %3.</translation>
     </message>

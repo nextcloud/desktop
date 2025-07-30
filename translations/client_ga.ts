@@ -2251,68 +2251,68 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <translation>Gníomhaíocht Sioncronaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1115"/>
         <source>Could not read system exclude file</source>
         <translation>Níorbh fhéidir an córas a léamh agus an comhad a eisiamh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Cuireadh fillteán nua níos mó ná % 1 MB leis: % 2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Tá fillteán ó stóras seachtrach curtha leis.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Téigh isteach sna socruithe chun é a roghnú más mian leat é a íoslódáil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1469"/>
+        <location filename="../src/gui/folder.cpp" line="1472"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1480"/>
+        <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Keep syncing</source>
         <translation>Coinnigh sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1488"/>
+        <location filename="../src/gui/folder.cpp" line="1491"/>
         <source>Stop syncing</source>
         <translation>Stop sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1499"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1500"/>
+        <location filename="../src/gui/folder.cpp" line="1503"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar mhaith leat stop a chur le sioncronú an fhillteáin seo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1575"/>
+        <location filename="../src/gui/folder.cpp" line="1578"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Cruthaíodh fillteán % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar sonraí taobh istigh de a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1578"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Cruthaíodh comhad % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar é a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1589"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2325,12 +2325,12 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1627"/>
+        <location filename="../src/gui/folder.cpp" line="1630"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1721"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2339,7 +2339,7 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 Nó, is féidir leat gach comhad scriosta a chur ar ais trí uaslódáil ó fhillteán &apos;%1&apos; go dtí an freastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2348,22 +2348,22 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n-íoslódáil ón bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1726"/>
         <source>Remove all files?</source>
         <translation>Bain gach comhad?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1727"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Proceed with Deletion</source>
         <translation>Lean ar aghaidh leis an Scriosadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files to Server</source>
         <translation>Athchóirigh Comhaid go Freastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1728"/>
+        <location filename="../src/gui/folder.cpp" line="1731"/>
         <source>Restore Files from Server</source>
         <translation>Athchóirigh Comhaid ón bhfreastalaí</translation>
     </message>
@@ -4318,12 +4318,12 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1189"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i gcomhaid phearsanta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i bhfillteán %3.</translation>
     </message>
