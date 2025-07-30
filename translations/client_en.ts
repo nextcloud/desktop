@@ -1502,33 +1502,33 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1137"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1142"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1138"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1143"/>
         <source>Enter Certificate USB Token PIN:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1160"/>
         <source>Invalid PIN. Login failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1156"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1161"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2213"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2227"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="2221"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="2235"/>
         <source>Enter E2E passphrase</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1702,19 +1702,19 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="661"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="694"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="761"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="748"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2196,65 +2196,65 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1113"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1403"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1406"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1407"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1461"/>
+        <location filename="../src/gui/folder.cpp" line="1464"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1472"/>
+        <location filename="../src/gui/folder.cpp" line="1475"/>
         <source>Keep syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1480"/>
+        <location filename="../src/gui/folder.cpp" line="1483"/>
         <source>Stop syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1491"/>
+        <location filename="../src/gui/folder.cpp" line="1494"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1492"/>
+        <location filename="../src/gui/folder.cpp" line="1495"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1567"/>
+        <location filename="../src/gui/folder.cpp" line="1570"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1581"/>
+        <location filename="../src/gui/folder.cpp" line="1584"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2263,41 +2263,41 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1619"/>
+        <location filename="../src/gui/folder.cpp" line="1622"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1713"/>
+        <location filename="../src/gui/folder.cpp" line="1716"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1714"/>
+        <location filename="../src/gui/folder.cpp" line="1717"/>
         <source>A large number of files in your local &apos;%1&apos; folder have been deleted.
 Please confirm if you&apos;d like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1718"/>
         <source>Remove all files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1719"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1720"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1720"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4156,94 +4156,94 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="766"/>
+        <location filename="../src/libsync/discovery.cpp" line="770"/>
         <source>size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="768"/>
+        <location filename="../src/libsync/discovery.cpp" line="772"/>
         <source>permission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="772"/>
+        <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>file id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="776"/>
+        <location filename="../src/libsync/discovery.cpp" line="780"/>
         <source>Server reported no %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1177"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1185"/>
+        <location filename="../src/libsync/discovery.cpp" line="1189"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1188"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1204"/>
+        <location filename="../src/libsync/discovery.cpp" line="1208"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1250"/>
+        <location filename="../src/libsync/discovery.cpp" line="1258"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1525"/>
-        <location filename="../src/libsync/discovery.cpp" line="1984"/>
+        <location filename="../src/libsync/discovery.cpp" line="1533"/>
+        <location filename="../src/libsync/discovery.cpp" line="1999"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1846"/>
+        <location filename="../src/libsync/discovery.cpp" line="1861"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1908"/>
+        <location filename="../src/libsync/discovery.cpp" line="1923"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1942"/>
-        <location filename="../src/libsync/discovery.cpp" line="2145"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
+        <location filename="../src/libsync/discovery.cpp" line="2160"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1948"/>
+        <location filename="../src/libsync/discovery.cpp" line="1963"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1962"/>
+        <location filename="../src/libsync/discovery.cpp" line="1977"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1998"/>
+        <location filename="../src/libsync/discovery.cpp" line="2013"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2188"/>
+        <location filename="../src/libsync/discovery.cpp" line="2203"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2274"/>
+        <location filename="../src/libsync/discovery.cpp" line="2293"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5794,8 +5794,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="83"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="74"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5803,8 +5803,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsXAttr</name>
     <message>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="66"/>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="77"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6175,7 +6175,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="54"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="59"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6368,7 +6368,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="968"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="973"/>
         <source>Failed to connect database.</source>
         <translation type="unfinished"></translation>
     </message>
