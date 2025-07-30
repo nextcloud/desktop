@@ -30,7 +30,7 @@ SPDX-FileCopyrightText = "2014 ownCloud GmbH"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["admin/osx/mac-crafter/Package.resolved"]
+path = ["admin/osx/mac-crafter/Package.resolved", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2024 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
