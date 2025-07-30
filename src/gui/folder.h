@@ -309,6 +309,9 @@ public:
     void blacklistPath(const QString &path);
     void migrateBlackListPath(const QString &legacyPath);
 
+    /// whether the current folder contains any of the passed fileIds
+    [[nodiscard]] bool hasFileIds(const QList<qint64>& fileIds) const;
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -421,6 +424,8 @@ private slots:
     void slotRunEtagJob();
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
     void etagRetrievedFromSyncEngine(const QByteArray &, const QDateTime &time);
+
+    void rootFileIdReceivedFromSyncEngine(const qint64 fileId);
 
     void slotEmitFinishedDelayed();
 
@@ -578,6 +583,9 @@ private:
     QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
     QMetaObject::Connection _fileLockSuccess;
     QMetaObject::Connection _fileLockFailure;
+
+    /// The remote file ID of the current folder.
+    qint64 _rootFileId = 0;
 };
 }
 
