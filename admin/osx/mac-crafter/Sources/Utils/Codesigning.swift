@@ -95,16 +95,16 @@ func recursivelyCodesign(
 
 func saveCodesignEntitlements(target: String, path: String) async throws {
     let command = "codesign -d --entitlements \"\(path)\" --xml \"\(target)\""
+
     guard await shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to save entitlements for \(target).")
     }
 }
 
-func codesignClientAppBundle(
-    at clientAppDir: String,
-    withCodeSignIdentity codeSignIdentity: String,
-    usingEntitlements entitlementsPath: String? = nil
-) async throws {
+///
+/// Sign an app bundle and all necessary content within it.
+///
+func codesignClientAppBundle(at clientAppDir: String, withCodeSignIdentity codeSignIdentity: String, usingEntitlements entitlementsPath: String? = nil, dev: Bool) async throws {
     print("Code-signing Nextcloud Desktop Client libraries, frameworks and plugins...")
 
     let clientContentsDir = "\(clientAppDir)/Contents"
@@ -159,26 +159,25 @@ func codesignClientAppBundle(
         print("Build does not have Sparkle, skipping.")
     }
 
-    print("Code-signing app extensions (removing get-task-allow entitlements)...")
+    print("Code-signing app extensions...")
+
     let fm = FileManager.default
-    let appExtensionPaths =
-        try fm.contentsOfDirectory(atPath: pluginsPath).filter(isAppExtension)
+    let appExtensionPaths = try fm.contentsOfDirectory(atPath: pluginsPath).filter(isAppExtension)
+
     for appExtension in appExtensionPaths {
         let appExtensionPath = "\(pluginsPath)/\(appExtension)"
-        let tmpEntitlementXmlPath =
-            fm.temporaryDirectory.appendingPathComponent(UUID().uuidString).path.appending(".xml")
+        let tmpEntitlementXmlPath = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString).path.appending(".xml")
         try await saveCodesignEntitlements(target: appExtensionPath, path: tmpEntitlementXmlPath)
-        // Strip the get-task-allow entitlement from the XML entitlements file
-        let xmlEntitlements = try String(contentsOfFile: tmpEntitlementXmlPath)
-        let entitlementKeyValuePair = "<key>com.apple.security.get-task-allow</key><true/>"
-        let strippedEntitlements =
-            xmlEntitlements.replacingOccurrences(of: entitlementKeyValuePair, with: "")
-        try strippedEntitlements.write(toFile: tmpEntitlementXmlPath,
-                                       atomically: true,
-                                       encoding: .utf8)
-        try await codesign(identity: codeSignIdentity,
-                     path: appExtensionPath,
-                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(tmpEntitlementXmlPath)\"")
+
+        if dev == false {
+            print("Stripping get-task-allow entitlement from \(appExtensionPath)")
+            let xmlEntitlements = try String(contentsOfFile: tmpEntitlementXmlPath)
+            let entitlementKeyValuePair = "<key>com.apple.security.get-task-allow</key><true/>"
+            let strippedEntitlements = xmlEntitlements.replacingOccurrences(of: entitlementKeyValuePair, with: "")
+            try strippedEntitlements.write(toFile: tmpEntitlementXmlPath, atomically: true, encoding: .utf8)
+        }
+
+        try await codesign(identity: codeSignIdentity, path: appExtensionPath, options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(tmpEntitlementXmlPath)\"")
     }
 
     // Now we do the final codesign bit

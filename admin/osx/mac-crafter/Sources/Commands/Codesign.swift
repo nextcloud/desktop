@@ -26,7 +26,8 @@ struct Codesign: AsyncParsableCommand {
         try await codesignClientAppBundle(
             at: absolutePath,
             withCodeSignIdentity: codeSignIdentity,
-            usingEntitlements: entitlementsPath
+            usingEntitlements: entitlementsPath,
+            dev: false
         )
     }
 }
