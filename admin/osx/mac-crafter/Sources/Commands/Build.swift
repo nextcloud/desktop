@@ -8,7 +8,7 @@ import Foundation
 
 struct Build: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Client building script")
-    
+
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
     var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
     
@@ -107,14 +107,17 @@ struct Build: AsyncParsableCommand {
     var dev = false
     
     mutating func run() async throws {
-        print("Configuring build tooling.")
-        
+        let stopwatch = Stopwatch()
+
+        print("Ensuring build dependencies are met...")
+        stopwatch.record("Build Dependencies")
+
         if codeSignIdentity != nil {
             guard await commandExists("codesign") else {
                 throw MacCrafterError.environmentError("codesign command not found, cannot proceed!")
             }
         }
-        
+
         try await installIfMissing("git", "xcode-select --install")
         try await installIfMissing(
             "brew",
@@ -125,8 +128,8 @@ struct Build: AsyncParsableCommand {
         try await installIfMissing("inkscape", "brew install inkscape")
         try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
         
-        print("Build tooling configured.")
-        
+        print("Build dependencies are installed.")
+
         let fm = FileManager.default
         let craftMasterDir = "\(buildPath)/craftmaster"
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
@@ -138,6 +141,9 @@ struct Build: AsyncParsableCommand {
         if !fm.fileExists(atPath: craftMasterDir) || reconfigureCraft {
             print("Configuring KDE Craft.")
             
+            print("Configuring KDE Craft...")
+            stopwatch.record("KDE Craft Setup")
+
             if fm.fileExists(atPath: craftMasterDir) {
                 print("KDE Craft is already cloned.")
             } else {
@@ -149,23 +155,33 @@ struct Build: AsyncParsableCommand {
             
             print("Configuring required KDE Craft blueprint repositories...")
             guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
+            stopwatch.record("Craft Blueprints Configuration")
+
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
             }
             guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
+
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
             
             print("Crafting KDE Craft...")
             guard await shell("\(craftCommand) craft") == 0 else {
+            stopwatch.record("Craft Crafting")
+
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
             
             print("Crafting Nextcloud Desktop Client dependencies...")
             guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
+            stopwatch.record("Nextcloud Client Dependencies Crafting")
+
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
+        } else {
+            print("Skipping KDE Craft configuration because it is already and no reconfiguration was requested.")
         }
         
+
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootDir)",
             "\(craftBlueprintName).osxArchs=\(arch)",
@@ -187,6 +203,8 @@ struct Build: AsyncParsableCommand {
         if !disableAutoUpdater {
             print("Configuring Sparkle auto-updater.")
             
+            stopwatch.record("Sparke Configuration")
+
             let sparkleDownloadResult = await shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz")
             
             let fm = FileManager.default
@@ -211,6 +229,8 @@ struct Build: AsyncParsableCommand {
         
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
         print("Crafting \(appName) Desktop Client...")
+        stopwatch.record("Desktop Client Crafting")
+
         if fullRebuild {
             do {
                 try fm.removeItem(atPath: clientBuildDir)
@@ -236,6 +256,7 @@ struct Build: AsyncParsableCommand {
         let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
+
         guard await shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
@@ -244,8 +265,11 @@ struct Build: AsyncParsableCommand {
         }
         
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
+
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+            stopwatch.record("Code Signing")
+
             let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
             try await codesignClientAppBundle(
                 at: clientAppDir,
@@ -255,6 +279,7 @@ struct Build: AsyncParsableCommand {
         }
         
         print("Placing Nextcloud Desktop Client in \(productPath)...")
+
         if !fm.fileExists(atPath: productPath) {
             try fm.createDirectory(
                 atPath: productPath, withIntermediateDirectories: true, attributes: nil
@@ -263,9 +288,12 @@ struct Build: AsyncParsableCommand {
         if fm.fileExists(atPath: "\(productPath)/\(appName).app") {
             try fm.removeItem(atPath: "\(productPath)/\(appName).app")
         }
+
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
         
         if package {
+            stopwatch.record("Packaging App Bundle")
+
             try await packageAppBundle(
                 productPath: productPath,
                 buildPath: buildPath,
@@ -281,5 +309,6 @@ struct Build: AsyncParsableCommand {
         }
         
         print("Done!")
+        print(stopwatch.report())
     }
 }
