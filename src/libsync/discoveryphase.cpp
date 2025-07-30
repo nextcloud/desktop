@@ -503,9 +503,19 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             }
         }
         if (map.contains("fileid"_L1)) {
+            // this is from the "oc:fileid" property, this is the plain ID without any special format (e.g. "2")
             _localFileId = map.value("fileid"_L1).toUtf8();
+
+            bool ok = false;
+            if (qint64 numericFileId = _localFileId.toLongLong(&ok, 10); ok) {
+                qCDebug(lcDiscovery).nospace() << "received numericFileId=" << numericFileId;
+                emit firstDirectoryFileId(numericFileId);
+            } else {
+                qCWarning(lcDiscovery).nospace() << "conversion to qint64 failed _localFileId=" << _localFileId;
+            }
         }
         if (map.contains("id"_L1)) {
+            // this is from the "oc:id" property, the format is e.g. "00000002oc123xyz987e"
             _fileId = map.value("id"_L1).toUtf8();
         }
         if (map.contains("is-encrypted"_L1) && map.value("is-encrypted"_L1) == "1"_L1) {
