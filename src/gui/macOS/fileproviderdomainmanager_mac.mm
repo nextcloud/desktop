@@ -167,13 +167,19 @@ public:
                             accountState->account() &&
                             domainDisplayNameForAccount(accountState->account()) == QString::fromNSString(domain.displayName)) {
 
-                        qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
+                        qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain with identifier:"
+                                                               << domain.identifier
+                                                               << "and display name:"
+                                                               << domain.displayName
+                                                               << "for account:"
                                                                << accountState->account()->displayName();
                         [domain retain];
 
                         if (illegalDomainIdentifier(QString::fromNSString(domain.identifier))) {
                             qCWarning(lcMacFileProviderDomainManager) << "Found existing file provider domain with illegal domain identifier:"
                                                                       << domain.identifier
+                                                                      << "and display name:"
+                                                                      << domain.displayName
                                                                       << "removing and recreating";
                             [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                                 if (error) {
@@ -203,7 +209,9 @@ public:
                             }
 
                             qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
-                                                                    << domain.displayName;
+                                                                   << domain.identifier
+                                                                   << "and display name:"
+                                                                   << domain.displayName;
                         }];
 
                     } else {
@@ -255,8 +263,10 @@ public:
             const auto domainDisplayName = domainDisplayNameForAccount(account);
             const auto domainId = domainIdentifierForAccount(account);
 
-            qCInfo(lcMacFileProviderDomainManager) << "Adding new file provider domain with id: "
-                                                   << domainId;
+            qCInfo(lcMacFileProviderDomainManager) << "Adding new file provider domain with id:"
+                                                   << domainId
+                                                   << "and display name:"
+                                                   << domainDisplayName;
 
             if (_registeredDomains.contains(domainId) && _registeredDomains.value(domainId) != nil) {
                 qCDebug(lcMacFileProviderDomainManager) << "File provider domain with id already exists: "
