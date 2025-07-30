@@ -259,6 +259,13 @@ void FileInfo::setE2EE(const QString &relativePath, const bool enable)
     file->isEncrypted = enable;
 }
 
+void FileInfo::setQuota(const QString &relativePath, const Quota newQuota)
+{
+    const auto file = find(relativePath);
+    Q_ASSERT(file);
+    file->quota = newQuota;
+}
+
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
 {
     if (pathComponents.isEmpty()) {
