@@ -330,6 +330,7 @@ private slots:
 
     void slotSetupPushNotifications(const OCC::Folder::Map &);
     void slotProcessFilesPushNotification(OCC::Account *account);
+    void slotProcessFileIdsPushNotification(OCC::Account *account, const QList<qint64> &fileIds);
     void slotConnectToPushNotifications(const OCC::AccountPtr &account);
 
     void slotLeaveShare(const QString &localFile, const QByteArray &folderToken = {});

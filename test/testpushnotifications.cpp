@@ -121,6 +121,23 @@ private slots:
         QVERIFY(verifyCalledOnceWithAccount(filesChangedSpy, account));
     }
 
+    void testOnWebSocketTextMessageReceived_notifyFileIdMessage_emitFilesChanged()
+    {
+        FakeWebSocketServer fakeServer;
+        auto account = FakeWebSocketServer::createAccount();
+        const auto socket = fakeServer.authenticateAccount(account);
+        QVERIFY(socket);
+        QSignalSpy filesChangedSpy(account->pushNotifications(), &OCC::PushNotifications::fileIdsChanged);
+
+        socket->sendTextMessage("notify_file_id [1,2,3,5,8,13,21,34,55,89,144]");
+
+        // filesChanged signal should be emitted
+        QVERIFY(filesChangedSpy.wait());
+        QVERIFY(verifyCalledOnceWithAccount(filesChangedSpy, account));
+        const QList<QVariant> expected = {1,2,3,5,8,13,21,34,55,89,144};
+        QCOMPARE(filesChangedSpy.at(0).at(1).toList(), expected);
+    }
+
     void testOnWebSocketTextMessageReceived_notifyActivityMessage_emitNotification()
     {
         FakeWebSocketServer fakeServer;
