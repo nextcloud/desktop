@@ -4,6 +4,7 @@
  */
 
 #include "fileprovidersettingscontroller.h"
+#include "fileproviderutils.h"
 
 #include <QFileDialog>
 #include <QQmlApplicationEngine>
@@ -234,8 +235,10 @@ private slots:
         qCInfo(lcFileProviderSettingsController) << "Updating domain sync statuses";
         _fileProviderDomainSyncStatuses.clear();
         const auto enabledAccounts = nsEnabledAccounts();
-        for (NSString *const domainIdentifier in enabledAccounts) {
-            const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+
+        for (NSString *const enabledAccount in enabledAccounts) {
+            const auto qEnabledAccount = QString::fromNSString(enabledAccount);
+            const auto qDomainIdentifier = FileProviderUtils::domainIdentifierForUserIdAtHostWithPort(qEnabledAccount);
             const auto syncStatus = new FileProviderDomainSyncStatus(qDomainIdentifier, q);
             _fileProviderDomainSyncStatuses.insert(qDomainIdentifier, syncStatus);
         }

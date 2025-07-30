@@ -32,6 +32,10 @@ namespace Mac {
 
 namespace FileProviderUtils {
 
+bool illegalDomainIdentifier(const QString &domainId);
+
+QString domainIdentifierForUserIdAtHostWithPort(const QString userIdAtHostWithPort);
+
 // Synchronous function to get the domain for a domain identifier
 NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier);
 
