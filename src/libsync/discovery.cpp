@@ -1172,7 +1172,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size > folderQuota
             && folderQuota > -1) {
 
-            qCDebug(lcDisco) << "Quota exceeded for item:" << item->_file
+            qCInfo(lcDisco) << "Quota exceeded for item:" << item->_file
                              << "- item bytes used:" << item->_size
                              << "- folder bytes available: " << folderQuota;
 

@@ -949,7 +949,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(syncSpy.findItem(fileNameC)->_status, SyncFileItem::Status::Success);
 
-        // check db quota for folderA - bytesAvailable have changed to 0 due to new PROPFIND
+        // check db quota for folderA - bytesAvailable have changed to 600 due to new PROPFIND
         QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
         QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 600);
 
