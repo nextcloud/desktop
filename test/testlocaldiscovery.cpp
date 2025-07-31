@@ -867,8 +867,6 @@ private slots:
         QVERIFY(!fileRecordAfter._lockstate._locked);
     }
 
-
-
     void testDiscoveryUsesCorrectQuotaSource()
     {
         //setup sync folder
