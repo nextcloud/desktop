@@ -79,8 +79,8 @@ public:
     bool _isLivePhoto = false;
     QString _livePhotoFile;
     struct FolderQuota {
-        qint64 bytesUsed = 0;
-        qint64 bytesAvailable = 0;
+        qint64 bytesUsed = -1;
+        qint64 bytesAvailable = -1;
     };
     FolderQuota _folderQuota;
 };
