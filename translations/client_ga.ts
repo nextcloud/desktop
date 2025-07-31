@@ -528,7 +528,8 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Braitheadh cuntas ó chliant deisce oidhreachta.
+Ar cheart an cuntas a allmhairiú?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
@@ -1973,19 +1974,19 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 mí ó shin</numerusform><numerusform>%1 mí ó shin</numerusform><numerusform>%1 mí ó shin%1 mí ó shin</numerusform><numerusform>%1 mí ó shin</numerusform><numerusform>%1 mí ó shin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 bliain ó shin</numerusform><numerusform>%1 bliain ó shin%1 bliain ó shin</numerusform><numerusform>%1 bliain ó shin</numerusform><numerusform>%1 bliain ó shin</numerusform><numerusform>%1 bliain ó shin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Glasáilte ag %1 - Rachaidh in éag i %2 nóiméad</numerusform><numerusform>Glasáilte ag %1 - Rachaidh in éag i %2 nóiméad</numerusform><numerusform>Glasáilte ag %1 - Rachaidh in éag i %2 nóiméad</numerusform><numerusform>Glasáilte ag %1 - Rachaidh in éag i %2 nóiméad</numerusform><numerusform>Glasáilte ag %1 - Rachaidh in éag i %2 nóiméad</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2617,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ag fanacht le %n fillteán eile …</numerusform><numerusform>Ag fanacht le %n fillteán eile…</numerusform><numerusform>Ag fanacht le %n fillteán eile…</numerusform><numerusform>Ag fanacht le %n fillteán eile…</numerusform><numerusform>Ag fanacht le %n fillteán eile…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3293,12 +3294,12 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Iompórtáil oidhreachta</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh na cuntais le hallmhairiú ón seanchumraíocht:</translation>
     </message>
 </context>
 <context>
@@ -4983,7 +4984,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform><numerusform>Éagaíonn i %1 nóiméad</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5582,7 +5583,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n fógra</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform><numerusform>%n fógraí</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -6167,7 +6168,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform><numerusform>%1 comhad i gcoimhlint</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6655,32 +6656,32 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bliain</numerusform><numerusform>%n bliain</numerusform><numerusform>%n bliain</numerusform><numerusform>%n bliain</numerusform><numerusform>%n bliain</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mí</numerusform><numerusform>%n mí</numerusform><numerusform>%n mí</numerusform><numerusform>%n mí</numerusform><numerusform>%n mí</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n lá</numerusform><numerusform>%n lá</numerusform><numerusform>%n lá</numerusform><numerusform>%n lá</numerusform><numerusform>%n lá</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform><numerusform>%n uair an chloig</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform><numerusform>%n nóiméad</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n soicind</numerusform><numerusform>%n soicind</numerusform><numerusform>%n soicind</numerusform><numerusform>%n soicind</numerusform><numerusform>%n soicind</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>

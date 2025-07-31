@@ -1973,19 +1973,19 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 місяць тому</numerusform><numerusform>%1 місяця тому</numerusform><numerusform>%1 місяців тому</numerusform><numerusform>%1 місяців тому</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 рік тому</numerusform><numerusform>%1 роки тому</numerusform><numerusform>%1 років тому</numerusform><numerusform>%1 років тому</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Заблоковано %1 - Термін дії закінчується через %2 хвилину</numerusform><numerusform>Заблоковано %1 - Термін дії закінчується через %2 хвилини</numerusform><numerusform>Заблоковано %1 - Термін дії закінчується через %2 хвилин</numerusform><numerusform>Заблоковано %1 - Термін дії закінчується через %2 хвилин</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2616,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Очікування %n інших папок …</numerusform><numerusform>Очікування %n інших папок …</numerusform><numerusform>Очікування %n інших папок …</numerusform><numerusform>Очікування %n інших папок …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -4981,7 +4981,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Закінчується через %1 хвилину</numerusform><numerusform>Закінчується через %1 хвилини</numerusform><numerusform>Закінчується через %1 хвилин</numerusform><numerusform>Закінчується через %1 хвилин</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5580,7 +5580,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n повідомлення</numerusform><numerusform>%n повідомлення</numerusform><numerusform>%n повідомлень</numerusform><numerusform>%n повідомлень</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -6165,7 +6165,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 файл у конфлікті</numerusform><numerusform>%1 файли у конфлікті</numerusform><numerusform>%1 файлів у конфлікті</numerusform><numerusform>%1 файлів у конфлікті</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6653,32 +6653,32 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n рік</numerusform><numerusform>%n роки</numerusform><numerusform>%n років</numerusform><numerusform>%n років</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n місяць</numerusform><numerusform>%n місяця</numerusform><numerusform>%n місяців </numerusform><numerusform>%n місяців</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n день</numerusform><numerusform>%n дні</numerusform><numerusform>%n днів</numerusform><numerusform>%n днів</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n година</numerusform><numerusform>%n години</numerusform><numerusform>%n годин</numerusform><numerusform>%n годин</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n хвилина</numerusform><numerusform>%n хвилини</numerusform><numerusform>%n хвилин</numerusform><numerusform>%n хвилин</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n секунда</numerusform><numerusform>%n секунди</numerusform><numerusform>%n секунд</numerusform><numerusform>%n секунд</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>

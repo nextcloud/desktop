@@ -528,7 +528,8 @@ macOS může tento požadavek ignorovat nebo zareagovat s prodlevou.</translatio
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Zjištěn účet ze starého klienta pro počítač.
+Chcete ho naimportovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
@@ -1973,19 +1974,19 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>před %1 měsícem</numerusform><numerusform>před %1 měsíci</numerusform><numerusform>před %1 měsíci</numerusform><numerusform>před %1 měsíci</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 rokem</numerusform><numerusform>%1 před roky</numerusform><numerusform>%1 před lety</numerusform><numerusform>%1 před roky</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uzamčeno uživatelem %1 – opět přístupné bude za %2 minutu</numerusform><numerusform>Uzamčeno uživatelem %1 – opět přístupné bude za %2 minuty</numerusform><numerusform>Uzamčeno uživatelem %1 – opět přístupné bude za %2 minut</numerusform><numerusform>Uzamčeno uživatelem %1 – opět přístupné bude za %2 minuty</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2615,7 +2616,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Čeká se na %n další složku…</numerusform><numerusform>Čeká se na %n další složky…</numerusform><numerusform>Čeká se na %n dalších složek…</numerusform><numerusform>Čeká se na %n další složky…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3292,12 +3293,12 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Import ze starého</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Vyberte účty které naimportovat ze zastaralého nastavení:</translation>
     </message>
 </context>
 <context>
@@ -4982,7 +4983,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Platnost skončí za %1 minutu</numerusform><numerusform>Platnost skončí za %1 minuty</numerusform><numerusform>Platnost skončí za %1 minut</numerusform><numerusform>Platnost skončí za %1 minuty</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5581,7 +5582,7 @@ Server odpověděl chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notifikace</numerusform><numerusform>%n notifikace</numerusform><numerusform>%n notifikací</numerusform><numerusform>%n notifikace</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -6166,7 +6167,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 kolize souboru</numerusform><numerusform>%1 kolize souborů</numerusform><numerusform>%1 kolizí souborů</numerusform><numerusform>%1 kolize souborů</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6654,32 +6655,32 @@ Server odpověděl chybou: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n let</numerusform><numerusform>%n roky</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n měsíc</numerusform><numerusform>%n měsíce</numerusform><numerusform>%n měsíců</numerusform><numerusform>%n měsíce</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n den</numerusform><numerusform>%n dny</numerusform><numerusform>%n dnů</numerusform><numerusform>%n dny</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodin</numerusform><numerusform>%n hodiny</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform><numerusform>%n minuty</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%s sekunda</numerusform><numerusform>%s sekundy</numerusform><numerusform>%s sekund</numerusform><numerusform>%s sekundy</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>
