@@ -30,6 +30,9 @@
 #define IS_PREFIX_PATH_OR_EQUAL(prefix, path) \
     "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
 
+static constexpr auto MAJOR_VERSION_3 = 3;
+static constexpr auto MINOR_VERSION_16 = 16;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
@@ -615,6 +618,13 @@ bool SyncJournalDb::checkConnect()
             if (!createQuery.exec()) {
                 return sqlFail(QStringLiteral("Update version"), createQuery);
             }
+
+            if (major < MAJOR_VERSION_3 || (major == MAJOR_VERSION_3 && minor <= MINOR_VERSION_16)) {
+                const auto fixEncryptionResult = ensureCorrectEncryptionStatus();
+                if (!fixEncryptionResult) {
+                    qCWarning(lcDb) << "Failed to update the encryption status";
+                }
+            }
         }
     }
 
@@ -623,11 +633,6 @@ bool SyncJournalDb::checkConnect()
     bool rc = updateDatabaseStructure();
     if (!rc) {
         qCWarning(lcDb) << "Failed to update the database structure!";
-    }
-
-    const auto fixEncryptionResult = ensureCorrectEncryptionStatus();
-    if (!fixEncryptionResult) {
-        qCWarning(lcDb) << "Failed to update the encryption status";
     }
 
     /*
@@ -809,11 +814,19 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if (true) {
         SqlQuery query(_db);
+
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_e2e_id ON metadata(e2eMangledName);");
         if (!query.exec()) {
             sqlFail(QStringLiteral("updateMetadataTableStructure: create index e2eMangledName"), query);
             re = false;
         }
+
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_e2e_status ON metadata (path, phash, type, isE2eEncrypted)");
+        if (!query.exec()) {
+            sqlFail(QStringLiteral("updateMetadataTableStructure: create index metadata_e2e_status"), query);
+            re = false;
+        }
+
         commitInternal(QStringLiteral("update database structure: add e2eMangledName index"));
     }
 
@@ -1574,6 +1587,8 @@ int SyncJournalDb::getFileRecordCount()
 
 bool SyncJournalDb::ensureCorrectEncryptionStatus()
 {
+    qCInfo(lcDb) << "migration: ensure proper encryption status in database";
+
     const auto folderQuery = _queryManager.get(PreparedSqlQueryManager::FolderUpdateInvalidEncryptionStatus, QByteArrayLiteral("UPDATE "
                                                                                                                          "metadata AS invalidItem "
                                                                                                                          "SET "
@@ -1586,7 +1601,7 @@ bool SyncJournalDb::ensureCorrectEncryptionStatus()
                                                                                                                          "FROM "
                                                                                                                          "metadata parentFolder "
                                                                                                                          "WHERE "
-                                                                                                                         "substr(invalidItem.path, 0, parentFolder.pathlen + 1) = parentFolder.path AND "
+                                                                                                                         "parent_hash(invalidItem.path) = parentFolder.phash AND "
                                                                                                                          "parentFolder.isE2eEncrypted <> 0)"),
                                          _db);
     if (!folderQuery) {
