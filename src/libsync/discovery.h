@@ -299,7 +299,7 @@ private:
 
     FolderQuota _folderQuota;
 
-    int64_t folderBytesAvailable(const SyncFileItemPtr &item, const bool isServerEntryValid);
+    int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
 
 signals:
     void finished();

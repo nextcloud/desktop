@@ -242,9 +242,9 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
         item->_livePhotoFile = properties.value(QStringLiteral("metadata-files-live-photo"));
     }
 
-    if (isDirectory && properties.contains(QStringLiteral("quota-used-bytes")) && properties.contains(QStringLiteral("quota-available-bytes"))) {
-        item->_folderQuota.bytesUsed = properties.value(QStringLiteral("quota-used-bytes")).toLongLong();
-        item->_folderQuota.bytesAvailable = properties.value(QStringLiteral("quota-available-bytes")).toLongLong();
+    if (isDirectory && properties.contains(FolderQuota::usedBytesC) && properties.contains(FolderQuota::availableBytesC)) {
+        item->_folderQuota.bytesUsed = properties.value(FolderQuota::usedBytesC).toLongLong();
+        item->_folderQuota.bytesAvailable = properties.value(FolderQuota::availableBytesC).toLongLong();
     }
 
     // direction and instruction are decided later

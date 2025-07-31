@@ -1082,7 +1082,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
 }
 
-int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, const bool isServerEntryValid)
+int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const
 {
     const auto unlimitedFreeSpace = -3;
     if (item->_size == 0 || item->_direction != SyncFileItem::Up || item->isDirectory()) {
@@ -1093,7 +1093,8 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
         return unlimitedFreeSpace;
     }
 
-    if (item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE && (isServerEntryValid || !_dirItem)) {
+    if (item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
+        && (serverEntry == FolderQuota::ServerEntry::Valid || !_dirItem)) {
         return _folderQuota.bytesAvailable;
     }
 
@@ -1167,8 +1168,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        const auto isServerEntryValid = serverEntry.isValid();
-        if (const auto folderQuota = folderBytesAvailable(item, isServerEntryValid);
+        if (const auto folderQuota = folderBytesAvailable(item,
+                                                          serverEntry.isValid() ? FolderQuota::ServerEntry::Valid
+                                                                                : FolderQuota::ServerEntry::Invalid);
             item->_size > folderQuota
             && folderQuota > -1) {
 
