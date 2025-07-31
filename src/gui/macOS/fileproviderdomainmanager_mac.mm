@@ -54,29 +54,34 @@ inline QString domainDisplayNameForAccount(const OCC::AccountPtr account)
     return domainDisplayNameForAccount(account.get());
 }
 
-inline QString accountIdFromDomainId(const QString &domainId)
+QString accountIdFromDomainId(const QString domainId)
 {
-    return domainId;
+    if (!domainId.contains('-')) {
+        auto accountId = domainId;
+        return accountId.replace("(.)", ".");
+    }
+
+    // Using slashes as the replacement for illegal chars was unwise and we now have to pay the
+    // price of doing so...
+    const auto accounts = OCC::AccountManager::instance()->accounts();
+
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        const auto convertedDomainId = domainIdentifierForAccount(account);
+
+        if (convertedDomainId == domainId) {
+            return account->userIdAtHostWithPort();
+        }
+    }
+
+    qCWarning(OCC::lcMacFileProviderDomainManager) << "Could not find account id for domain id:" << domainId;
+    return {};
 }
 
 QString accountIdFromDomainId(NSString * const domainId)
 {
     auto qDomainId = QString::fromNSString(domainId);
-    if (!qDomainId.contains('-')) {
-        return qDomainId.replace("(.)", ".");
-    }
-    // Using slashes as the replacement for illegal chars was unwise and we now have to pay the
-    // price of doing so...
-    const auto accounts = OCC::AccountManager::instance()->accounts();
-    for (const auto &accountState : accounts) {
-        const auto account = accountState->account();
-        const auto convertedDomainId = domainIdentifierForAccount(account);
-        if (convertedDomainId == qDomainId) {
-            return account->userIdAtHostWithPort();
-        }
-    }
-    qCWarning(OCC::lcMacFileProviderDomainManager) << "Could not find account id for domain id:" << qDomainId;
-    return {};
+    return accountIdFromDomainId(qDomainId);
 }
 
 API_AVAILABLE(macos(11.0))
@@ -637,6 +642,7 @@ AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIde
 
     const auto accountUserId = accountIdFromDomainId(domainIdentifier);
     const auto accountForReceivedDomainIdentifier = AccountManager::instance()->accountFromUserId(accountUserId);
+
     if (!accountForReceivedDomainIdentifier) {
         qCWarning(lcMacFileProviderDomainManager) << "Could not find account matching user id matching file provider domain identifier:"
                                                   << domainIdentifier;
