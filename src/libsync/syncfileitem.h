@@ -344,8 +344,8 @@ public:
     bool _wantsPermanentDeletion = false;
 
     struct FolderQuota {
-        int64_t bytesUsed = 0;
-        int64_t bytesAvailable = 0;
+        int64_t bytesUsed = -1;
+        int64_t bytesAvailable = -1;
     };
 
     FolderQuota _folderQuota;
