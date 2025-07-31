@@ -259,11 +259,11 @@ void FileInfo::setE2EE(const QString &relativePath, const bool enable)
     file->isEncrypted = enable;
 }
 
-void FileInfo::setQuota(const QString &relativePath, const Quota newQuota)
+void FileInfo::setFolderQuota(const QString &relativePath, const FolderQuota newQuota)
 {
     const auto file = find(relativePath);
     Q_ASSERT(file);
-    file->quota = newQuota;
+    file->folderQuota = newQuota;
 }
 
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
@@ -416,8 +416,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
-        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.quota.bytesAvailable));
-        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.quota.bytesUsed));
+        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.folderQuota.bytesAvailable));
+        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.folderQuota.bytesUsed));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
         if (fileInfo.isShared) {
             if (fileInfo.downloadForbidden) {

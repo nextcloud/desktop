@@ -878,7 +878,7 @@ private slots:
         const QString folderA("A");
         fakeFolder.localModifier().mkdir(folderA);
         fakeFolder.remoteModifier().mkdir(folderA);
-        fakeFolder.remoteModifier().setQuota(folderA, {0, 500});
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 500});
 
         // sync folderA
         ItemCompletedSpy syncSpy(fakeFolder);
@@ -895,7 +895,7 @@ private slots:
         fakeFolder.localModifier().insert(fileNameA, 200);
 
         // set different quota for folderA - remote change does not change etag yet
-        fakeFolder.remoteModifier().setQuota(folderA, {0, 0});
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 0});
 
         // sync filenameA - size == quota => success
         syncSpy.clear();
@@ -929,7 +929,7 @@ private slots:
         fakeFolder.localModifier().insert(fileNameB, 0);
 
         // set different quota for folderA - remote change does not change etag yet
-        fakeFolder.remoteModifier().setQuota(folderA, {500, 600});
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {500, 600});
 
         // sync fileNameB - size < quota in db => success
         syncSpy.clear();
