@@ -243,7 +243,7 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     }
 
     if (isDirectory && properties.contains(QStringLiteral("quota-used-bytes")) && properties.contains(QStringLiteral("quota-available-bytes"))) {
-        item->_folderQuota.bytesUsed = properties.value(QStringLiteral("quota-used-byte")).toLongLong();
+        item->_folderQuota.bytesUsed = properties.value(QStringLiteral("quota-used-bytes")).toLongLong();
         item->_folderQuota.bytesAvailable = properties.value(QStringLiteral("quota-available-bytes")).toLongLong();
     }
 

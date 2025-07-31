@@ -634,10 +634,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         result.name = file.mid(slash + 1);
         result.size = -1;
         if (map.contains("quota-used-bytes")) {
-            result.folderQuota.bytesUsed = map.value("quota-used-bytes").toInt();
+            result.folderQuota.bytesUsed = map.value("quota-used-bytes").toLongLong();
         }
         if (map.contains("quota-available-bytes")) {
-            result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toInt();
+            result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toLongLong();
         }
         propertyMapToRemoteInfo(map,
                                 _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
