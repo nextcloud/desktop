@@ -6320,7 +6320,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="973"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
         <source>Failed to connect database.</source>
         <translation>تعذّر توصيل قاعدة البيانات</translation>
     </message>

@@ -6335,7 +6335,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="973"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
         <source>Failed to connect database.</source>
         <translation>Datu-basera konektatzeak huts egin du</translation>
     </message>
