@@ -28,6 +28,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
     @IBOutlet weak var errorMessageStackView: NSStackView!
     @IBOutlet weak var errorTextLabel: NSTextField!
+    @IBOutlet weak var errorDismissButton: NSButton!
     @IBOutlet weak var noSharesLabel: NSTextField!
 
     public override var nibName: NSNib.Name? {
@@ -65,6 +66,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     override func viewDidLoad() {
+        errorDismissButton.title = String(localized: "Dismiss")
         dismissError(self)
         hideOptions(self)
     }
@@ -93,7 +95,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString, privacy: .public)")
-            fileNameLabel.stringValue = "Unknown item"
+            fileNameLabel.stringValue = String(localized: "Unknown item")
             descriptionLabel.stringValue = errorString
         }
     }
@@ -126,17 +128,19 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         let resourceValues = try? itemUrl.resourceValues(
             forKeys: [.fileSizeKey, .contentModificationDateKey]
         )
-        var sizeDesc = "Unknown size"
-        var modDesc = "Unknown modification date"
+
+        var sizeDesc = String(localized: "Unknown size")
+        var modDesc = String(localized: "Unknown modification date")
+
         if let fileSize = resourceValues?.fileSize {
             sizeDesc = ByteCountFormatter().string(fromByteCount: Int64(fileSize))
         }
+
         if let modificationDate = resourceValues?.contentModificationDate {
-            let modDateString = DateFormatter.localizedString(
-                from: modificationDate, dateStyle: .short, timeStyle: .short
-            )
-            modDesc = "Last modified: \(modDateString)"
+            let modDateString = DateFormatter.localizedString(from: modificationDate, dateStyle: .short, timeStyle: .short)
+            modDesc = String(format: String(localized: "Last modified: %@"), modDateString)
         }
+        
         descriptionLabel.stringValue = "\(sizeDesc) · \(modDesc)"
     }
 
