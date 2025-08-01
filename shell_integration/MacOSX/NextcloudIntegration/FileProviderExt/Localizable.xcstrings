@@ -1,28 +1,1312 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "Allow automatic freeing up space" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatische Freigabe von Speicherplatz erlauben"
+  "sourceLanguage": "en",
+  "strings": {
+    "Allow automatic freeing up space": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "af": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "an": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ast": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "az": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "be": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "bg_BG": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "bn_BD": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "br": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "bs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "cs_CZ": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "cy_GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Freigabe von Speicherplatz erlauben"
+          }
+        },
+        "de_DE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Freigabe von Speicherplatz erlauben"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "en_GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "eo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_AR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_CL": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_CO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_CR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_DO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_EC": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_GT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_HN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_MX": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_NI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_PA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_PE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_PR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_PY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_SV": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "es_UY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "et_EE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luba andmeruumi automaatselt vabastada"
+          }
+        },
+        "eu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baimendu automatikoki tokia libratzea"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "fi_FI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "fo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "gd": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "gl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "hi_IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "hsb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "hu_HU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "hy": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ia": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ig": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "is": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ja_JP": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ka": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ka_GE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "kab": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "km": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "kn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "la": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "lb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "lo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "lt_LT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "mk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "mn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "mr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ms_MY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "my": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "nb_NO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ne": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch ruimte vrijmaken toestaan"
+          }
+        },
+        "nn_NO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "oc": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ps": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "pt_BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir liberação automática de espaço"
+          }
+        },
+        "pt_PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разрешить автоматическое освобождение пространства"
+          }
+        },
+        "sc": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "si": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sk_SK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sq": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sr@latin": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tillåt automatisk frigöring av utrymme"
+          }
+        },
+        "sw": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruhusu kuachilia nafasi kiotomatiki"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "th_TH": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "tk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "ug": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дозволити автоматичне звільнення місця"
+          }
+        },
+        "ur_PK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "zh_CN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "zh_HK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "zh_TW": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
+          }
+        },
+        "zu_ZA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow automatic freeing up space"
           }
         }
       }
     },
-    "Always keep downloaded" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Immer heruntergeladen"
+    "Always keep downloaded": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "af": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "an": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ast": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "az": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "be": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "bg_BG": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "bn_BD": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "br": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "bs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "cs_CZ": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "cy_GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immer heruntergeladen"
+          }
+        },
+        "de_DE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heruntergeladene immer behalten"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "en_GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "eo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_419": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_AR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_CL": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_CO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_CR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_DO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_EC": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_GT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_HN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_MX": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_NI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_PA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_PE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_PR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_PY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_SV": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "es_UY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "et_EE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jäta allalaaditu alati alles"
+          }
+        },
+        "eu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantendu beti deskargatuta"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "fi_FI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "fo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "gd": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "gl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "hi_IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "hsb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "hu_HU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "hy": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ia": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ig": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "is": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ja_JP": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ka": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ka_GE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "kab": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "km": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "kn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "la": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "lb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "lo": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "lt_LT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "lv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "mk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "mn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "mr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ms_MY": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "my": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "nb_NO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ne": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altijd gedownload houden"
+          }
+        },
+        "nn_NO": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "oc": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ps": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "pt_BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantenha sempre baixado"
+          }
+        },
+        "pt_PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Всегда держать сохранённым"
+          }
+        },
+        "sc": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "si": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sk_SK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sq": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sr@latin": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behåll alltid nedladdningar"
+          }
+        },
+        "sw": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daima weka iliyopakuliwa"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "th_TH": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "tk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "ug": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завжди зберігайте завантажені файли"
+          }
+        },
+        "ur_PK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "zh_CN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "zh_HK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "zh_TW": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
+          }
+        },
+        "zu_ZA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always keep downloaded"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }
