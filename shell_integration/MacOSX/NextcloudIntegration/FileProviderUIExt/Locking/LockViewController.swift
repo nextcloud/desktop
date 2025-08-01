@@ -137,9 +137,7 @@ class LockViewController: NSViewController {
             }
         }
 
-        fileNameIcon.image =
-            fileThumbnail?.nsImage ?? 
-            NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")
+        fileNameIcon.image = fileThumbnail?.nsImage ?? NSImage(systemSymbolName: "doc", accessibilityDescription: String(localized: "Document symbol"))
     }
 
     private func lockOrUnlockFile(localItemUrl: URL) async {
@@ -235,7 +233,7 @@ class LockViewController: NSViewController {
 
             if error == .success {
                 descriptionLabel.stringValue = String(format: self.locking ? String(localized: "File \"%@\" locked!") : String(localized: "File \"%@\" unlocked!"), itemMetadata.fileName)
-                warnImage.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: "checkmark.circle.fill")
+                warnImage.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: String(localized: "Checkmark in a circle"))
                 stopIndicatingLoading()
 
                 if let manager = NSFileProviderManager(for: actionViewController.domain) {
