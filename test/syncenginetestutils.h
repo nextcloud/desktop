@@ -128,7 +128,7 @@ public:
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
     enum Etags {
-        Validate = 0,
+        Keep = 0,
         Invalidate,
     };
     struct FolderQuota {
@@ -159,10 +159,10 @@ public:
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     void setE2EE(const QString &relativepath, const bool enabled) override;
-    void setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const Etags invalidateEtags = Etags::Validate);
+    void setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const Etags invalidateEtags = Etags::Keep);
 
-    FileInfo *find(PathComponents pathComponents, const Etags invalidateEtags = Etags::Validate);
-    FileInfo findRecursive(PathComponents pathComponents, const Etags invalidateEtags = Etags::Validate);
+    FileInfo *find(PathComponents pathComponents, const Etags invalidateEtags = Etags::Keep);
+    FileInfo findRecursive(PathComponents pathComponents, const Etags invalidateEtags = Etags::Keep);
 
     FileInfo *createDir(const QString &relativePath);
 
