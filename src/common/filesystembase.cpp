@@ -345,12 +345,44 @@ QString FileSystem::joinPath(const QString& path, const QString& file)
 #ifdef Q_OS_WIN
 std::filesystem::perms FileSystem::filePermissionsWinSymlinkSafe(const QString &filename)
 {
-    return std::filesystem::symlink_status(filename.toStdWString()).permissions();
+    try {
+        return std::filesystem::symlink_status(filename.toStdWString()).permissions();
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path:" << filename;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink -  path:" << filename;
+    }
+
+    return {};
 }
 
 std::filesystem::perms FileSystem::filePermissionsWin(const QString &filename)
 {
-    return std::filesystem::status(filename.toStdWString()).permissions();
+    try {
+        return std::filesystem::status(filename.toStdWString()).permissions();
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path:" << filename;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink -  path:" << filename;
+    }
+
+    return {};
 }
 
 void FileSystem::setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms)
@@ -358,7 +390,22 @@ void FileSystem::setFilePermissionsWin(const QString &filename, const std::files
     if (!fileExists(filename)) {
         return;
     }
-    std::filesystem::permissions(filename.toStdWString(), perms);
+
+    try {
+        std::filesystem::permissions(filename.toStdWString(), perms);
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink" << e.what() << "- path:" << filename;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking permissions of symlink -  path:" << filename;
+    }
 }
 
 static bool fileExistsWin(const QString &filename)
@@ -581,27 +628,41 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
         qCWarning(lcFileSystem()) << f.errorString() << windowsSafeFileName;
 
 #if defined Q_OS_WIN
-        const auto permissionsDisplayHelper = [] (std::filesystem::perms currentPermissions) {
-            const auto unitaryHelper = [currentPermissions] (std::filesystem::perms testedPermission, char permissionChar) {
-                return (static_cast<bool>(currentPermissions & testedPermission) ? permissionChar : '-');
+        try {
+            const auto permissionsDisplayHelper = [] (std::filesystem::perms currentPermissions) {
+                const auto unitaryHelper = [currentPermissions] (std::filesystem::perms testedPermission, char permissionChar) {
+                    return (static_cast<bool>(currentPermissions & testedPermission) ? permissionChar : '-');
+                };
+
+                qCInfo(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r')
+                                       << unitaryHelper(std::filesystem::perms::owner_write, 'w')
+                                       << unitaryHelper(std::filesystem::perms::owner_exec, 'x')
+                                       << unitaryHelper(std::filesystem::perms::group_read, 'r')
+                                       << unitaryHelper(std::filesystem::perms::group_write, 'w')
+                                       << unitaryHelper(std::filesystem::perms::group_exec, 'x')
+                                       << unitaryHelper(std::filesystem::perms::others_read, 'r')
+                                       << unitaryHelper(std::filesystem::perms::others_write, 'w')
+                                       << unitaryHelper(std::filesystem::perms::others_exec, 'x');
             };
 
-            qCInfo(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r')
-                                   << unitaryHelper(std::filesystem::perms::owner_write, 'w')
-                                   << unitaryHelper(std::filesystem::perms::owner_exec, 'x')
-                                   << unitaryHelper(std::filesystem::perms::group_read, 'r')
-                                   << unitaryHelper(std::filesystem::perms::group_write, 'w')
-                                   << unitaryHelper(std::filesystem::perms::group_exec, 'x')
-                                   << unitaryHelper(std::filesystem::perms::others_read, 'r')
-                                   << unitaryHelper(std::filesystem::perms::others_write, 'w')
-                                   << unitaryHelper(std::filesystem::perms::others_exec, 'x');
-        };
+            const auto unsafeFilePermissions = filePermissionsWin(windowsSafeFileName);
+            permissionsDisplayHelper(unsafeFilePermissions);
 
-        const auto unsafeFilePermissions = filePermissionsWin(windowsSafeFileName);
-        permissionsDisplayHelper(unsafeFilePermissions);
-
-        const auto safeFilePermissions = filePermissionsWinSymlinkSafe(windowsSafeFileName);
-        permissionsDisplayHelper(safeFilePermissions);
+            const auto safeFilePermissions = filePermissionsWinSymlinkSafe(windowsSafeFileName);
+            permissionsDisplayHelper(safeFilePermissions);
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when modifying permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+        }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when modifying permissions" << e.what() << "- path:" << windowsSafeFileName;
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << "exception when modifying permissions -  path:" << windowsSafeFileName;
+        }
 #endif
 
         return false;
