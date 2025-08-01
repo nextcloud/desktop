@@ -2,7 +2,15 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Account data is unavailable, cannot reload data!" : {
-
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontodaten sind nicht verfügbar, kann Daten nicht neu laden!"
+          }
+        }
+      }
     },
     "Allow upload and editing" : {
       "comment" : "Checkbox title",
@@ -24,6 +32,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Cancel create icon" : {
+      "comment" : "Accessibility description for delete button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Abbruch"
+          }
+        }
+      }
+    },
+    "Checkmark in a circle" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haken in einem Kreis"
+          }
+        }
+      }
+    },
+    "Circle share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teamfreigabe (%@)"
+          }
+        }
+      }
+    },
+    "Circle share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Teamfreigabe"
           }
         }
       }
@@ -65,16 +117,48 @@
       }
     },
     "Could not fetch capabilities as account is invalid." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte Fähigkeiten nicht laden, weil das Konto ungültig ist!"
+          }
+        }
+      }
     },
     "Could not get identifier for item, no shares can be acquired." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte Kennung des Elements nicht finden, Freigaben können nicht geladen werden."
+          }
+        }
+      }
     },
     "Could not lock unknown item…" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte Datei nicht sperren…"
+          }
+        }
+      }
     },
     "Could not reload data: %@, will try again." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnte Daten nicht neu laden: %@, erneuter Versuch."
+          }
+        }
+      }
     },
     "Create new share" : {
       "comment" : "Text label",
@@ -100,6 +184,17 @@
         }
       }
     },
+    "Delete trash icon" : {
+      "comment" : "Accessibility description for image on delete button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Entleeren des Papierkorbs"
+          }
+        }
+      }
+    },
     "Dismiss" : {
       "comment" : "Button title",
       "extractionState" : "manual",
@@ -112,6 +207,17 @@
         }
       }
     },
+    "Document symbol" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Dokument"
+          }
+        }
+      }
+    },
     "Email share" : {
       "comment" : "Menu item label",
       "extractionState" : "manual",
@@ -120,6 +226,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-Mail Freigabe"
+          }
+        }
+      }
+    },
+    "Email share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail Freigabe (%@)"
+          }
+        }
+      }
+    },
+    "Email share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für E-Mail Freigabe"
           }
         }
       }
@@ -137,13 +265,37 @@
       }
     },
     "Error creating: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Erstellen: %@"
+          }
+        }
+      }
     },
     "Error fetching shares: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Laden der Freigaben: %@"
+          }
+        }
+      }
     },
     "Error getting server caps: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Laden der Serverfähigkeiten: %@"
+          }
+        }
+      }
     },
     "Expiration date" : {
       "comment" : "Checkbox title",
@@ -158,7 +310,15 @@
       }
     },
     "Failed to get details from File Provider Extension. Retrying." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Laden der Details von der Finder Erweiterung. Erneuter Versuch."
+          }
+        }
+      }
     },
     "Federated cloud share" : {
       "comment" : "Menu item label",
@@ -168,6 +328,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Föderierte Cloudfreigabe"
+          }
+        }
+      }
+    },
+    "Federated cloud share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Föderierte Freigabe (%@)"
+          }
+        }
+      }
+    },
+    "Federated cloud share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Föderierte Freigabe"
           }
         }
       }
@@ -220,6 +402,28 @@
         }
       }
     },
+    "Group share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenfreigabe (%@)"
+          }
+        }
+      }
+    },
+    "Group share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Gruppenfreigabe"
+          }
+        }
+      }
+    },
     "Hide download" : {
       "comment" : "Checkbox title",
       "extractionState" : "manual",
@@ -228,6 +432,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Downloadoption verstecken"
+          }
+        }
+      }
+    },
+    "Internal link share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für interne Freigabe"
+          }
+        }
+      }
+    },
+    "Internal share (requires access to file)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interne Freigabe (erfordert Dateizugriff)"
           }
         }
       }
@@ -257,13 +483,37 @@
       }
     },
     "Locking file \"%@\"…" : {
-
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperre Datei „%@“…"
+          }
+        }
+      }
     },
     "NextcloudKit instance or account is unavailable, cannot fetch shares!" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit Instanz oder Konto nicht verfügbar, Freigaben können nicht geladen werden!"
+          }
+        }
+      }
     },
     "No item URL, cannot reload data!" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Datei-URL, kann Daten nicht neu laden!"
+          }
+        }
+      }
     },
     "Note for the recipient" : {
       "comment" : "Checkbox title",
@@ -290,7 +540,15 @@
       }
     },
     "Public link has been copied icon" : {
-      "comment" : "Accessibility description for button"
+      "comment" : "Accessibility description for button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für erfolgtes Kopieren des öffentlichen Links"
+          }
+        }
+      }
     },
     "Public link share" : {
       "comment" : "Menu item label",
@@ -300,6 +558,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öffentliche Linkfreigabe"
+          }
+        }
+      }
+    },
+    "Public link share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für öffentliche Linkfreigabe"
           }
         }
       }
@@ -317,7 +586,15 @@
       }
     },
     "Server does not support shares." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Server unterstützt keine Freigaben."
+          }
+        }
+      }
     },
     "Share label" : {
       "comment" : "Text field placeholder",
@@ -367,6 +644,28 @@
         }
       }
     },
+    "Talk conversation share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk Konversationsfreigabe (%@)"
+          }
+        }
+      }
+    },
+    "Talk conversation share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Talk Konversationsfreigabe"
+          }
+        }
+      }
+    },
     "Team share" : {
       "comment" : "Menu item label",
       "extractionState" : "manual",
@@ -380,10 +679,26 @@
       }
     },
     "This file cannot be shared." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datei kann nicht freigegeben werden."
+          }
+        }
+      }
     },
     "Unable to retrieve file metadata…" : {
-
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Laden der Metadaten…"
+          }
+        }
+      }
     },
     "Unknown item" : {
       "comment" : "Text label",
@@ -405,6 +720,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unbekanntes Änderungsdatum"
+          }
+        }
+      }
+    },
+    "Unknown share" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Freigabe"
           }
         }
       }
@@ -453,6 +779,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Benutzerfreigabe"
+          }
+        }
+      }
+    },
+    "User share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzerfreigabe (%@)"
+          }
+        }
+      }
+    },
+    "User share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Benutzerfreigabe"
           }
         }
       }

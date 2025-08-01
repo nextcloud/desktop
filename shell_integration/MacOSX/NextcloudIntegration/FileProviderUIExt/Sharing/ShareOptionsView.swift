@@ -64,7 +64,7 @@ class ShareOptionsView: NSView {
             guard controller != nil else { return }
             optionsTitleTextField.stringValue = String(localized: "Share options")
             deleteButton.title = String(localized: "Delete")
-            deleteButton.image = NSImage(systemSymbolName: "trash", accessibilityDescription: "Delete trash icon")
+            deleteButton.image = NSImage(systemSymbolName: "trash", accessibilityDescription: String(localized: "Delete trash icon"))
             deleteButton.bezelColor = NSColor.systemRed
             cancellable?.cancel()
             createMode = false
@@ -82,7 +82,7 @@ class ShareOptionsView: NSView {
             optionsTitleTextField.stringValue = String(localized: "Create new share")
             deleteButton.title = String(localized: "Cancel")
             deleteButton.image = NSImage(
-                systemSymbolName: "xmark.bin", accessibilityDescription: "Cancel create icon"
+                systemSymbolName: "xmark.bin", accessibilityDescription: String(localized: "Cancel create icon")
             )
             deleteButton.bezelColor = NSColor.controlColor
             cancellable?.cancel()
