@@ -55,8 +55,14 @@ enum class ErrorCategory;
  */
 struct FolderQuota
 {
-    int64_t bytesUsed = 0;
-    int64_t bytesAvailable = 0;
+    int64_t bytesUsed = -1;
+    int64_t bytesAvailable = -1;
+    enum ServerEntry {
+        Invalid = 0,
+        Valid
+    };
+    static constexpr char availableBytesC[] = "quota-available-bytes";
+    static constexpr char usedBytesC[] = "quota-used-bytes";
 };
 
 /**

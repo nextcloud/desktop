@@ -921,7 +921,7 @@ private slots:
             return nullptr;
         });
 
-        auto fileItem = fakeFolder.remoteModifier().find("file", true);
+        auto fileItem = fakeFolder.remoteModifier().find("file", FileInfo::Invalidate);
         Q_ASSERT(fileItem);
         fileItem->isShared = true;
         fileItem->downloadForbidden = true;
