@@ -581,12 +581,12 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
         result.sizeOfFolder = map.value("size").toInt();
     }
 
-    if (result.isDirectory && map.contains("quota-used-bytes")) {
-        result.folderQuota.bytesUsed = map.value("quota-used-bytes").toLongLong();
+    if (result.isDirectory && map.contains(FolderQuota::usedBytesC)) {
+        result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
     }
 
-    if (result.isDirectory && map.contains("quota-available-bytes")) {
-        result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toLongLong();
+    if (result.isDirectory && map.contains(FolderQuota::availableBytesC)) {
+        result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
     }
 }
 
@@ -624,19 +624,21 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
 
         // all folders will contain both
-        if (map.contains("quota-used-bytes") && map.contains("quota-available-bytes")) {
-            emit setfolderQuota(FolderQuota{map.value("quota-used-bytes").toLongLong(), map.value("quota-available-bytes").toLongLong()});
+        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
+            _folderQuota = {map.value(FolderQuota::usedBytesC).toLongLong(),
+                            map.value(FolderQuota::availableBytesC).toLongLong()};
+            emit setfolderQuota(_folderQuota);
         }
     } else {
         RemoteInfo result;
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        if (map.contains("quota-used-bytes")) {
-            result.folderQuota.bytesUsed = map.value("quota-used-bytes").toInt();
+        if (map.contains(FolderQuota::usedBytesC)) {
+            result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
         }
-        if (map.contains("quota-available-bytes")) {
-            result.folderQuota.bytesAvailable = map.value("quota-available-bytes").toInt();
+        if (map.contains(FolderQuota::availableBytesC))     {
+            result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
         }
         propertyMapToRemoteInfo(map,
                                 _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,

@@ -1082,38 +1082,28 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
 }
 
-int64_t ProcessDirectoryJob::folderQuotaAvailable(const SyncFileItemPtr &item)
+int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const
 {
     const auto unlimitedFreeSpace = -3;
-    if (const auto isNewItem = item->_instruction == CSYNC_INSTRUCTION_NEW;
-        _queryServer != QueryMode::InBlackList && _queryServer != QueryMode::ParentDontExist
-        && !item->isDirectory()
-        && item->_direction == SyncFileItem::Up
-        && item->_size > 0
-        && (item->_instruction == CSYNC_INSTRUCTION_SYNC || isNewItem)) {
-
-        const auto unknownFreeSpace = -2;
-        const auto bytesAvailable = _folderQuota.bytesAvailable;
-
-        if (!_dirItem) {
-            return bytesAvailable;
-        }
-
-        const auto isDirItemRenamed = _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME;
-
-        // quota is unknown at this point
-        if (isDirItemRenamed && isNewItem) {
-            return unknownFreeSpace;
-        }
-
-        if (isDirItemRenamed) {
-            return bytesAvailable;
-        }
-
-        return _dirItem->_folderQuota.bytesAvailable;
+    if (item->_size == 0 || item->_direction != SyncFileItem::Up || item->isDirectory()) {
+        return unlimitedFreeSpace;
     }
 
-    return unlimitedFreeSpace;
+    if (item->_instruction != CSYNC_INSTRUCTION_SYNC && item->_instruction != CSYNC_INSTRUCTION_NEW) {
+        return unlimitedFreeSpace;
+    }
+
+    if (item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
+        && (serverEntry == FolderQuota::ServerEntry::Valid || !_dirItem)) {
+        return _folderQuota.bytesAvailable;
+    }
+
+    SyncJournalFileRecord dirItemDbRecord;
+    if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
+        return dirItemDbRecord._folderQuota.bytesAvailable;
+    }
+
+    return _dirItem->_folderQuota.bytesAvailable;
 }
 
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
@@ -1178,16 +1168,20 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        if (const auto folderQuota = folderQuotaAvailable(item);item->_size > folderQuota && folderQuota > -1) {
-            qCDebug(lcDisco) << "Folder" << item->_file
-                             << "item used:" << item->_folderQuota.bytesUsed
-                             << "item available:" << item->_folderQuota.bytesAvailable
-                             << "- quota used: " << serverEntry.folderQuota.bytesUsed
-                             << "- quota available: " << serverEntry.folderQuota.bytesAvailable;
+        if (const auto folderQuota = folderBytesAvailable(item,
+                                                          serverEntry.isValid() ? FolderQuota::ServerEntry::Valid
+                                                                                : FolderQuota::ServerEntry::Invalid);
+            item->_size > folderQuota
+            && folderQuota > -1) {
+
+            qCInfo(lcDisco) << "Quota exceeded for item:" << item->_file
+                             << "- item bytes used:" << item->_size
+                             << "- folder bytes available: " << folderQuota;
+
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             if (_currentFolder._server.isEmpty()) {
                 item->_errorString = tr("Upload of %1 exceeds %2 of space left in personal files.").arg(Utility::octetsToString(item->_size),
-                                                                                                         Utility::octetsToString(folderQuota));
+                                                                                                        Utility::octetsToString(folderQuota));
             } else {
                 item->_errorString = tr("Upload of %1 exceeds %2 of space left in folder %3.").arg(Utility::octetsToString(item->_size),
                                                                                                    Utility::octetsToString(folderQuota),

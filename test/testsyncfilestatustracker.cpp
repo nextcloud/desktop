@@ -450,7 +450,7 @@ private slots:
         fakeFolder.remoteModifier().insert("B/b3");
         fakeFolder.remoteModifier().find("B/b3")->extraDavProperties = "<oc:share-types><oc:share-type>0</oc:share-type></oc:share-types>";
         fakeFolder.remoteModifier().find("A/a1")->isShared = true; // becomes shared
-        fakeFolder.remoteModifier().find("A", true); // change the etags of the parent
+        fakeFolder.remoteModifier().find("A", FileInfo::Invalidate); // change the etags of the parent
 
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 

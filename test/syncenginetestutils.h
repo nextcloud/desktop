@@ -127,6 +127,15 @@ public:
     FileInfo(const QString &name, qint64 size, char contentChar, QDateTime mtime) : name{name}, isDir{false}, lastModified(mtime), size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
+    enum EtagsAction {
+        Keep = 0,
+        Invalidate,
+    };
+    struct FolderQuota {
+        int64_t bytesUsed = 0;
+        int64_t bytesAvailable = 5000000000;
+    };
+
     void addChild(const FileInfo &info);
 
     void remove(const QString &relativePath) override;
@@ -150,9 +159,10 @@ public:
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     void setE2EE(const QString &relativepath, const bool enabled) override;
+    void setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const EtagsAction invalidateEtags = EtagsAction::Keep);
 
-    FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
-    FileInfo findRecursive(PathComponents pathComponents, const bool invalidateEtags = false);
+    FileInfo *find(PathComponents pathComponents, const EtagsAction invalidateEtags = EtagsAction::Keep);
+    FileInfo findRecursive(PathComponents pathComponents, const EtagsAction invalidateEtags = EtagsAction::Keep);
 
     FileInfo *createDir(const QString &relativePath);
 
@@ -195,12 +205,7 @@ public:
     quint64 lockTimeout = 0;
     bool isEncrypted = false;
     bool isLivePhoto = false;
-
-    struct FileInfoQuota {
-        int64_t bytesUsed = 0;
-        int64_t bytesAvailable = 5000000000;
-    };
-    FileInfoQuota quota;
+    FolderQuota folderQuota;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;

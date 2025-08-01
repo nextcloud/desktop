@@ -866,6 +866,111 @@ private slots:
         QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("bar"), &fileRecordAfter));
         QVERIFY(!fileRecordAfter._lockstate._locked);
     }
+
+    void testDiscoveryUsesCorrectQuotaSource()
+    {
+        //setup sync folder
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // create folder
+        const QString folderA("A");
+        fakeFolder.localModifier().mkdir(folderA);
+        fakeFolder.remoteModifier().mkdir(folderA);
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 500});
+
+        // sync folderA
+        ItemCompletedSpy syncSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(folderA)->_status, SyncFileItem::Status::NoStatus);
+
+        // check db quota for folderA - bytesAvailable is 500
+        SyncJournalFileRecord recordFolderA;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
+        QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 500);
+
+        // add fileNameA to folderA - size < quota in db
+        const QString fileNameA("A/A.data");
+        fakeFolder.localModifier().insert(fileNameA, 200);
+
+        // set different quota for folderA - remote change does not change etag yet
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {0, 0});
+
+        // sync filenameA - size == quota => success
+        syncSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileNameA)->_status, SyncFileItem::Status::Success);
+
+        // add smallFile to folderA - size < quota in db
+        const QString smallFile("A/smallFile.data");
+        fakeFolder.localModifier().insert(smallFile, 100);
+
+        // sync smallFile - size < quota in db => success => update quota in db
+        syncSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(smallFile)->_status, SyncFileItem::Status::Success);
+
+        // create remoteFileA - size > bytes available
+        const QString remoteFileA("A/remoteA.data");
+        fakeFolder.remoteModifier().insert(remoteFileA, 200);
+
+        // sync remoteFile - it is a download
+        syncSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(remoteFileA)->_status, SyncFileItem::Status::Success);
+
+        // check db quota for folderA - bytesAvailable have changed to 0 due to new PROPFIND
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
+        QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 0);
+
+        // create local fileNameB - size < quota in db
+        const QString fileNameB("A/B.data");
+        fakeFolder.localModifier().insert(fileNameB, 0);
+
+        // set different quota for folderA - remote change does not change etag yet
+        fakeFolder.remoteModifier().setFolderQuota(folderA, {500, 600});
+
+        // sync fileNameB - size < quota in db => success
+        syncSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileNameB)->_status, SyncFileItem::Status::Success);
+
+        // create remoteFileB - it is a download
+        const QString remoteFileB("A/remoteB.data");
+        fakeFolder.remoteModifier().insert(remoteFileA, 100);
+
+        // create local fileNameC - size < quota in db
+        const QString fileNameC("A/C.data");
+        fakeFolder.localModifier().insert(fileNameC, 0);
+
+        // sync filenameC - size < quota in db => success
+        syncSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileNameC)->_status, SyncFileItem::Status::Success);
+
+        // check db quota for folderA - bytesAvailable have changed to 600 due to new PROPFIND
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(folderA, &recordFolderA));
+        QCOMPARE(recordFolderA._folderQuota.bytesAvailable, 600);
+
+        QCOMPARE(syncSpy.findItem(remoteFileB)->_status, SyncFileItem::Status::NoStatus);
+
+        // create local fileNameD - size > quota in db
+        const QString fileNameD("A/D.data");
+        fakeFolder.localModifier().insert(fileNameD, 700);
+
+        // sync fileNameD - size > quota in db => error
+        syncSpy.clear();
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileNameD)->_status, SyncFileItem::Status::NormalError);
+
+        // create local fileNameE - size < quota in db
+        const QString fileNameE("A/E.data");
+        fakeFolder.localModifier().insert(fileNameE, 400);
+
+        // sync fileNameE - size < quota in db => success
+        syncSpy.clear();
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(syncSpy.findItem(fileNameE)->_status, SyncFileItem::Status::Success);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)

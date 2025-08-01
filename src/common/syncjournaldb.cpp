@@ -41,7 +41,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, " \
         "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, " \
-        "  sharedByMe, isLivePhoto, livePhotoFile" \
+        "  sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -72,6 +72,8 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._sharedByMe = query.intValue(23) > 0;
     rec._isLivePhoto = query.intValue(24) > 0;
     rec._livePhotoFile = query.stringValue(25);
+    rec._folderQuota.bytesUsed = query.int64Value(26);
+    rec._folderQuota.bytesAvailable = query.int64Value(27);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -849,6 +851,8 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("quotaBytesUsed"), QStringLiteral("BIGINT"));
+    addColumn(QStringLiteral("quotaBytesAvailable"), QStringLiteral("BIGINT"));
 
     return re;
 }
@@ -978,7 +982,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "isShared:" << record._isShared
                  << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp
                  << "isLivePhoto" << record._isLivePhoto
-                 << "livePhotoFile" << record._livePhotoFile;
+                 << "livePhotoFile" << record._livePhotoFile
+                 << "folderQuota - bytesUsed:" << record._folderQuota.bytesUsed << "bytesAvailable:" << record._folderQuota.bytesAvailable;
 
     const qint64 phash = getPHash(record._path);
     if (!checkConnect()) {
@@ -1004,8 +1009,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
-                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32);"),
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile, quotaBytesUsed, quotaBytesAvailable) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34);"),
         _db);
     if (!query) {
         qCWarning(lcDb) << "database error:" << query->error();
@@ -1044,6 +1049,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(30, record._sharedByMe);
     query->bindValue(31, record._isLivePhoto);
     query->bindValue(32, record._livePhotoFile);
+    query->bindValue(33, record._folderQuota.bytesUsed);
+    query->bindValue(34, record._folderQuota.bytesAvailable);
 
     if (!query->exec()) {
         qCWarning(lcDb) << "database error:" << query->error();

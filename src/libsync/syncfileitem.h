@@ -344,10 +344,11 @@ public:
     bool _wantsPermanentDeletion = false;
 
     struct FolderQuota {
-        int64_t bytesUsed = 0;
-        int64_t bytesAvailable = 0;
+        int64_t bytesUsed = -1;
+        int64_t bytesAvailable = -1;
+        static constexpr char availableBytesC[] = "quota-available-bytes";
+        static constexpr char usedBytesC[] = "quota-used-bytes";
     };
-
     FolderQuota _folderQuota;
 };
 
