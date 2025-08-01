@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Allow automatic freeing up space" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Freigabe von Speicherplatz erlauben"
+          }
+        }
+      }
+    },
+    "Always keep downloaded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer heruntergeladen"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
