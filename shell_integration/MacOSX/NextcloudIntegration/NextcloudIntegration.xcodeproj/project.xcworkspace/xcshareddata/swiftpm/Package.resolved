@@ -1,0 +1,87 @@
+{
+  "originHash" : "b1fcfe4980e7dccc02e64ff6b1167e865e1b0fd2839c1f05e315987946e210b5",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "nextcloudcapabilitieskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
+      "state" : {
+        "revision" : "a680e947d6cc2a1c101335797213e4b7d3b22102",
+        "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "nextcloudfileproviderkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
+      "state" : {
+        "branch" : "stable-3.0",
+        "revision" : "4cd885de71516baa6bfb637a5a99fc2b0490e4e4"
+      }
+    },
+    {
+      "identity" : "nextcloudkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nextcloud/NextcloudKit.git",
+      "state" : {
+        "revision" : "8ac6704234f529d09b0651e4d94fdc14f8820333",
+        "version" : "6.0.9"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "15493076ad9fef22c16cc64cbfbf9e5b65c385f9",
+        "version" : "20.1.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift.git",
+      "state" : {
+        "revision" : "bae6c4be7df169fdb047d0ad63f902c1e2665e83",
+        "version" : "20.0.1"
+      }
+    },
+    {
+      "identity" : "suggestionstextfieldkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/claucambra/SuggestionsTextFieldKit.git",
+      "state" : {
+        "revision" : "b8e267d98a2a6e0c915d6284fddb3f265dc33c25",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
+      "state" : {
+        "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "swiftyxmlparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yahoojapan/SwiftyXMLParser",
+      "state" : {
+        "revision" : "d7a1d23f04c86c1cd2e8f19247dd15d74e0ea8be",
+        "version" : "5.6.0"
+      }
+    }
+  ],
+  "version" : 3
+}
