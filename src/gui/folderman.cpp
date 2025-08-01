@@ -2079,7 +2079,7 @@ void FolderMan::slotSetupPushNotifications(const Folder::Map &folderMap)
 
 void FolderMan::slotProcessFilesPushNotification(Account *account)
 {
-    qCInfo(lcFolderMan) << "Got files push notification for account" << account;
+    qCInfo(lcFolderMan) << "Got files push notification for account" << account->displayName();
 
     for (auto folder : std::as_const(_folderMap)) {
         // Just run on the folders that belong to this account
@@ -2092,6 +2092,26 @@ void FolderMan::slotProcessFilesPushNotification(Account *account)
     }
 }
 
+void FolderMan::slotProcessFileIdsPushNotification(Account *account, const QList<qint64> &fileIds)
+{
+    qCInfo(lcFolderMan) << "Got file id push notification for account" << account->displayName() << "and fileIds" << fileIds;
+
+    for (auto folder : std::as_const(_folderMap)) {
+        // Just run on the folders that belong to this account
+        if (folder->accountState()->account() != account) {
+            continue;
+        }
+
+        if (!folder->journalDb()->hasFileIds(fileIds)) {
+            qCDebug(lcFolderMan) << "Folder" << folder->path() << "does not contain any of these file ids, ignoring";
+            continue;
+        }
+
+        qCInfo(lcFolderMan) << "Schedule folder" << folder->path() << "for sync";
+        scheduleFolder(folder);
+    }
+}
+
 void FolderMan::slotConnectToPushNotifications(const AccountPtr &account)
 {
     const auto pushNotifications = account->pushNotifications();
@@ -2099,6 +2119,7 @@ void FolderMan::slotConnectToPushNotifications(const AccountPtr &account)
     if (pushNotificationsFilesReady(account)) {
         qCInfo(lcFolderMan) << "Push notifications ready";
         connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
+        connect(pushNotifications, &PushNotifications::fileIdsChanged, this, &FolderMan::slotProcessFileIdsPushNotification, Qt::UniqueConnection);
     }
 }
 
