@@ -6342,7 +6342,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="973"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
         <source>Failed to connect database.</source>
         <translation>Kunde inte koppla mot databasen.</translation>
     </message>
