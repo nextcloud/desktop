@@ -259,17 +259,17 @@ void FileInfo::setE2EE(const QString &relativePath, const bool enable)
     file->isEncrypted = enable;
 }
 
-void FileInfo::setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const Etags invalidateEtags)
+void FileInfo::setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const EtagsAction invalidateEtags)
 {
     const auto file = find(relativePath, invalidateEtags);
     Q_ASSERT(file);
     file->folderQuota = newQuota;
 }
 
-FileInfo *FileInfo::find(PathComponents pathComponents, const Etags invalidateEtags)
+FileInfo *FileInfo::find(PathComponents pathComponents, const EtagsAction invalidateEtags)
 {
     if (pathComponents.isEmpty()) {
-        if (invalidateEtags == Etags::Invalidate) {
+        if (invalidateEtags == EtagsAction::Invalidate) {
             etag = generateEtag();
         }
         return this;
@@ -287,7 +287,7 @@ FileInfo *FileInfo::find(PathComponents pathComponents, const Etags invalidateEt
     return nullptr;
 }
 
-FileInfo FileInfo::findRecursive(PathComponents pathComponents, const Etags invalidateEtags)
+FileInfo FileInfo::findRecursive(PathComponents pathComponents, const EtagsAction invalidateEtags)
 {
     auto result = find({pathComponents.takeFirst()}, invalidateEtags);
     if (!result) {
@@ -357,7 +357,7 @@ void FileInfo::fixupParentPathRecursively()
 
 FileInfo *FileInfo::findInvalidatingEtags(PathComponents pathComponents)
 {
-    return find(std::move(pathComponents), Etags::Invalidate);
+    return find(std::move(pathComponents), EtagsAction::Invalidate);
 }
 
 FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -529,7 +529,7 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.isEmpty() ? ' ' : putPayload.at(0));
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::Etags::Invalidate);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
     return fileInfo;
 }
 
@@ -643,7 +643,7 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
             fileInfo = remoteRootFileInfo.create(fileName, onePartBody.size(), onePartBody.at(0).toLatin1());
         }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(modtime);
-        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::Etags::Invalidate);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
         result.push_back(fileInfo);
     }
     return result;
@@ -970,7 +970,7 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         fileInfo = remoteRootFileInfo.create(fileName, size, payload);
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::Etags::Invalidate);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
 
     return fileInfo;
 }
