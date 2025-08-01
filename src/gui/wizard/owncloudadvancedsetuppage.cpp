@@ -149,11 +149,14 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (Theme::instance()->disableVirtualFilesSyncFolder() || !Theme::instance()->showVirtualFilesOption()
-#ifndef BUILD_FILE_PROVIDER_MODULE
-        || bestAvailableVfsMode() == Vfs::Off
+    if (Theme::instance()->disableVirtualFilesSyncFolder()
+            || !(Theme::instance()->showVirtualFilesOption()
+#ifdef BUILD_FILE_PROVIDER_MODULE
+                 || Mac::FileProvider::fileProviderAvailable()
+#else
+                 && bestAvailableVfsMode() != Vfs::Off
 #endif
-    ) {
+    )) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
