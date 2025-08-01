@@ -362,14 +362,15 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
     permissionsDidChange = true;
 #else
-    static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
     const auto stdStrPath = path.toStdWString();
-
-    const auto currentPermissions = std::filesystem::status(stdStrPath).permissions();
-    qCDebug(lcFileSystem()).nospace() << "current permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(currentPermissions);
 
     try
     {
+        static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+
+        const auto currentPermissions = std::filesystem::status(stdStrPath).permissions();
+        qCDebug(lcFileSystem()).nospace() << "current permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(currentPermissions);
+
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly: {
             qCDebug(lcFileSystem()).nospace() << "ensuring folder is read only path=" << path;
@@ -418,8 +419,25 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 
     if (permissionsDidChange) {
-        const auto newPermissions = std::filesystem::status(stdStrPath).permissions();
-        qCDebug(lcFileSystem()).nospace() << "updated permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(newPermissions);
+        try {
+            const auto newPermissions = std::filesystem::status(stdStrPath).permissions();
+            qCDebug(lcFileSystem()).nospace() << "updated permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(newPermissions);
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+            return false;
+        }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions" << e.what() << "- path:" << stdStrPath;
+            return false;
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions -  path:" << stdStrPath;
+            return false;
+        }
     }
 #endif
 
