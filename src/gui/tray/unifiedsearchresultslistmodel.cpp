@@ -324,48 +324,49 @@ bool UnifiedSearchResultsListModel::isSearchInProgress() const
     return !_searchJobConnections.isEmpty();
 }
 
+
 void UnifiedSearchResultsListModel::resultClicked(
     const QString &providerId, const QUrl &resourceUrl, const QString &subline, const QString &title
 ) const
 {
-    if (_accountState == nullptr || _accountState->account() == nullptr || !providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)) {
-        qCInfo(lcUnifiedSearch) << "immediately returning from resultClicked"; 
-        return; 
-    }
+    const QUrlQuery urlQuery{resourceUrl};
+    QString dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded);
+    QString fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded);
 
-    const QUrlQuery urlQuery{resourceUrl}; 
-    QString dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded); 
-    QString fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded); 
-
-    QString relativePath; 
-    // server version above 20
-    if (dir.isEmpty() && fileName.isEmpty() && !title.isEmpty()) { 
-        if (!subline.isEmpty()) {
-            dir = subline; 
-            dir.remove(0,3); 
-            fileName = QLatin1Char('/') + title; 
+    if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)){
+        if (_accountState == nullptr || _accountState->account() == nullptr) {
+            return;
         }
-        else {
-            dir = title; 
+
+        QString relativePath;
+        // server version above 20
+        if (dir.isEmpty() && fileName.isEmpty()) {
+            // file is direct child of syncfolder
+            if (subline.isEmpty()) {
+                dir = title;
+            }
+            else {
+                dir = subline.split(' ', Qt::SkipEmptyParts).last();
+                fileName = QLatin1Char('/') + title;
+            }
         }
-        relativePath = dir + fileName; 
-    }
-    // server version 20
-    else { 
-        relativePath = dir + QLatin1Char('/') + fileName; 
-    }
+        // server version 20
+        else if (dir.length() > 1) {
+            fileName.prepend(QLatin1Char('/'));
+        }
+        relativePath = dir + fileName;
 
-    qCInfo(lcUnifiedSearch) << "relativePath: " << relativePath; 
-    const QStringList localFiles = FolderMan::instance()->findFileInLocalFolders(relativePath, _accountState->account());
-
-    if (!localFiles.isEmpty()) {
-        qCInfo(lcUnifiedSearch) << "Opening requested file or folder locally:" << localFiles.constFirst();
-        QDesktopServices::openUrl(QUrl::fromLocalFile(localFiles.constFirst()));
+        const QStringList localFiles = FolderMan::instance()->findFileInLocalFolders(relativePath, _accountState->account());
+        if (!localFiles.isEmpty()) {
+            qCInfo(lcUnifiedSearch) << "Opening file: " << localFiles.constFirst();
+            const bool fileOpenedLocally = QDesktopServices::openUrl(QUrl::fromLocalFile(localFiles.constFirst()));
+            if (fileOpenedLocally) {
+                return;
+            }
+            qCWarning(lcUnifiedSearch) << "Warning: QDesktopServices::openUrl unexpectedly failed to open the file. Opening resourceUrl in web browser is attempted next.";
+        }
     }
-    else {
-        qCInfo(lcUnifiedSearch) << "Opening requested file or folder in webbrowser: " << localFiles.constFirst();
-        Utility::openBrowser(resourceUrl);
-    }
+    Utility::openBrowser(resourceUrl);
 }
 
 void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &providerId)
