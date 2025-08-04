@@ -68,7 +68,7 @@ MouseArea {
         if (isFetchMoreTrigger) {
             unifiedSearchResultMouseArea.fetchMoreTriggerClicked(model.providerId)
         } else {
-            unifiedSearchResultMouseArea.resultClicked(model.providerId, model.resourceUrlRole)
+            unifiedSearchResultMouseArea.resultClicked(model.providerId, model.resourceUrlRole, model.subline, model.resultTitle)
         }
     }
 }
