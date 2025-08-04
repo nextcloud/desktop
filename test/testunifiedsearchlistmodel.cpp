@@ -581,7 +581,7 @@ private slots:
                 urlForClickedResult = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole).toString();
 
                 if (!providerId.isEmpty() && !urlForClickedResult.isEmpty()) {
-                    model->resultClicked(providerId, QUrl(urlForClickedResult));
+                    model->resultClicked(providerId, QUrl(urlForClickedResult), "dummyStringNeedToFix", "dummyStringNeedToFix");
                     break;
                 }
             }
