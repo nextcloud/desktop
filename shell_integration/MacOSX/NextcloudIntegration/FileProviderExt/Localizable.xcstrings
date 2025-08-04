@@ -25,7 +25,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "السماح بتحرير المساحة تلقائيًا"
           }
         },
         "ast": {
@@ -79,7 +79,7 @@
         "cs_CZ": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Povolit automatické uvolňování místa"
           }
         },
         "cy_GB": {
@@ -91,7 +91,7 @@
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Tillad automatisk frigivelse af plads"
           }
         },
         "de": {
@@ -127,7 +127,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Permitir liberación automática de espacio"
           }
         },
         "es_419": {
@@ -265,7 +265,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Autoriser la libération automatique d'espace"
           }
         },
         "ga": {
@@ -289,7 +289,7 @@
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "אפשר שחרור מקום אוטומטי"
           }
         },
         "hi_IN": {
@@ -313,7 +313,7 @@
         "hu_HU": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Automatikus helyfoglalás engedélyezése"
           }
         },
         "hy": {
@@ -349,13 +349,13 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Consenti liberazione automatica spazio"
           }
         },
         "ja_JP": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "自動容量解放を許可"
           }
         },
         "ka": {
@@ -391,7 +391,7 @@
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "자동 공간 확보 허용"
           }
         },
         "la": {
@@ -487,7 +487,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Zezwól na automatyczne zwalnianie miejsca"
           }
         },
         "ps": {
@@ -595,7 +595,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "Otomatik alan boşaltmaya izin ver"
           }
         },
         "ug": {
@@ -631,7 +631,7 @@
         "zh_CN": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "允许自动释放空间"
           }
         },
         "zh_HK": {
@@ -643,7 +643,7 @@
         "zh_TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow automatic freeing up space"
+            "value": "允許自動釋放空間"
           }
         },
         "zu_ZA": {
@@ -678,7 +678,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "احتفظ بالتنزيل دائماً"
           }
         },
         "ast": {
@@ -732,7 +732,7 @@
         "cs_CZ": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Vždy ponechat stažené"
           }
         },
         "cy_GB": {
@@ -744,7 +744,7 @@
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Behold altid downloadet"
           }
         },
         "de": {
@@ -780,7 +780,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Mantener siempre descargado"
           }
         },
         "es_419": {
@@ -918,7 +918,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Toujours garder téléchargé"
           }
         },
         "ga": {
@@ -942,7 +942,7 @@
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "שמור תמיד הורדות"
           }
         },
         "hi_IN": {
@@ -966,7 +966,7 @@
         "hu_HU": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Mindig tartsd letöltve"
           }
         },
         "hy": {
@@ -1002,13 +1002,13 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Mantieni sempre scaricato"
           }
         },
         "ja_JP": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "常にダウンロード済みを保持"
           }
         },
         "ka": {
@@ -1044,7 +1044,7 @@
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "항상 다운로드 상태 유지"
           }
         },
         "la": {
@@ -1140,7 +1140,7 @@
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Zawsze zachowaj pobrane"
           }
         },
         "ps": {
@@ -1248,7 +1248,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "Her zaman indirilmiş tut"
           }
         },
         "ug": {
@@ -1284,7 +1284,7 @@
         "zh_CN": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "始终保持下载"
           }
         },
         "zh_HK": {
@@ -1296,7 +1296,7 @@
         "zh_TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "Always keep downloaded"
+            "value": "永遠保持下載"
           }
         },
         "zu_ZA": {
