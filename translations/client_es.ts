@@ -528,7 +528,8 @@ macOS podría ignorar o demorar esta solicitud.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Se detectó una cuenta desde un cliente de escritorio legado.
+¿Debería la cuenta ser importada?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
@@ -1711,19 +1712,19 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Error del servidor: ¡la respuesta de PROPFIND no tiene formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
         <source>Encrypted metadata setup error!</source>
         <translation>¡Hubo un error al configurar los metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Error de configuración de los metadatos cifrados: la firma inicial del servidor está vacía.</translation>
     </message>
@@ -1973,19 +1974,19 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Hace %1 mes</numerusform><numerusform>Hace %1 meses</numerusform><numerusform>Hace %1 meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Hace %1 año</numerusform><numerusform>Hace %1 años</numerusform><numerusform>Hace %1 años</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 - Caduca en %2 minuto</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minutos</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minutos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2617,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Esperando a %n carpeta …</numerusform><numerusform>Esperando a %n carpetas …</numerusform><numerusform>Esperando a %n carpetas …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3293,12 +3294,12 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importación legada</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione las carpetas a importar desde la configuración legada:</translation>
     </message>
 </context>
 <context>
@@ -3362,14 +3363,14 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="362"/>
-        <location filename="../src/libsync/logger.cpp" line="392"/>
+        <location filename="../src/libsync/logger.cpp" line="370"/>
+        <location filename="../src/libsync/logger.cpp" line="400"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="363"/>
-        <location filename="../src/libsync/logger.cpp" line="393"/>
+        <location filename="../src/libsync/logger.cpp" line="371"/>
+        <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;El archivo &quot;%1&quot;&lt;br/&gt;no se puede abrir para escritura.&lt;br/&gt;&lt;br/&gt;¡El archivo de registro &lt;b&gt;no se puede&lt;/b&gt; guardar!&lt;/nobr&gt;</translation>
     </message>
@@ -3640,66 +3641,66 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Usa &amp;archivos virtuales en vez de descargar el contenido inmediatamente %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Los archivos virtuales no son compatibles con la carpeta raíz de la partición de Windows como carpeta local. Por favor, elija una subcarpeta válida bajo la letra de la unidad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="310"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 carpeta &quot;%2&quot; está sincronizada con la carpeta local &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="316"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sincronizar la carpeta &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Advertencia: La carpeta local no está vacía. ¡Elija una solución!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="649"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="334"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="652"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 espacio libre</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="422"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Los archivos virtuales no están soportados en la ubicación seleccionada</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="485"/>
         <source>Local Sync Folder</source>
         <translation>Carpeta local de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="525"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="566"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="528"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="569"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="592"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="595"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>¡No hay suficiente espacio libre en la carpeta local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="647"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation>En la sección &quot;Ubicaciones&quot; de la barra lateral del Finder</translation>
     </message>
@@ -4172,74 +4173,74 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El servidor informó de no %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1177"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>No se puede sincronizar debido a una hora de modificación no válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1189"/>
+        <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>La carga de %1 excede %2 del espacio disponible en los archivos personales.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>La carga de %1 excede %2 del espacio disponible en la carpeta %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1208"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>No es posible subir el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Error mientras se borraba el registro de archivo %1 de la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1533"/>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1527"/>
+        <location filename="../src/libsync/discovery.cpp" line="1993"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido a un lugar no válido, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1861"/>
+        <location filename="../src/libsync/discovery.cpp" line="1855"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>No se puede modificar el item cifrado ya que el certificado seleccionado no es válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1923"/>
+        <location filename="../src/libsync/discovery.cpp" line="1917"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado porque se encuentra en la lista negra de «elija qué va a sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1957"/>
-        <location filename="../src/libsync/discovery.cpp" line="2160"/>
+        <location filename="../src/libsync/discovery.cpp" line="1951"/>
+        <location filename="../src/libsync/discovery.cpp" line="2154"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No permitido porque no tienes permiso para añadir subcarpetas a esa carpeta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1963"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No permitido porque no tienes permiso para añadir archivos a esa carpeta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1977"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2007"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No está permitido borrar, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2197"/>
         <source>Error while reading the database</source>
         <translation>Error mientras se leía la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2293"/>
+        <location filename="../src/libsync/discovery.cpp" line="2287"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>El servidor contestó con un error al leer el directorio &quot;%1&quot; : %2</translation>
     </message>
@@ -4983,7 +4984,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Caduca en %1 minuto</numerusform><numerusform>Caduca en %1 minutos</numerusform><numerusform>Caduca en %1 minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5582,7 +5583,7 @@ El servidor respondió con el error: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notificación</numerusform><numerusform>%n notificaciones</numerusform><numerusform>%n notificaciones</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -6167,7 +6168,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 archivo en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6341,7 +6342,7 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="991"/>
         <source>Failed to connect database.</source>
         <translation>Fallo en la conexión a la base de datos.</translation>
     </message>
@@ -6655,32 +6656,32 @@ El servidor respondió con el error: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n año</numerusform><numerusform>%n años</numerusform><numerusform>%n años</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mes</numerusform><numerusform>%n meses</numerusform><numerusform>%n meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n día</numerusform><numerusform>%n días</numerusform><numerusform>%n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform><numerusform>%n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform><numerusform>%n segundos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>

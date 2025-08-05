@@ -1712,19 +1712,19 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfel: PROPFIND-svar är inte XML-formaterat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Inställningsfel för krypterad metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Inställningsfel för krypterad metadata: initial signatur från servern är tom.</translation>
     </message>
@@ -3363,14 +3363,14 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="362"/>
-        <location filename="../src/libsync/logger.cpp" line="392"/>
+        <location filename="../src/libsync/logger.cpp" line="370"/>
+        <location filename="../src/libsync/logger.cpp" line="400"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="363"/>
-        <location filename="../src/libsync/logger.cpp" line="393"/>
+        <location filename="../src/libsync/logger.cpp" line="371"/>
+        <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan inte öppnas för skrivning.&lt;br/&gt;&lt;br/&gt;Loggtexten &lt;b&gt;kan inte&lt;/b&gt; sparas!&lt;/nobr&gt;</translation>
     </message>
@@ -3641,66 +3641,66 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Använd &amp;virtuella filer istället för att ladda ner innehåll direkt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows stödjer inte virtuella filer direkt i rotkataloger. Välj en underkatalog.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="310"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 mappen &quot;%2&quot; är synkroniserad mot den lokala mappen &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="316"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Synkronisera mappen &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Varning: Den lokala mappen är inte tom. Välj en lösning!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="649"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="334"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="652"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 ledigt utrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="422"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuella filer stöds inte på den valda platsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="485"/>
         <source>Local Sync Folder</source>
         <translation>Lokal mapp för synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="525"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="566"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="528"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="569"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="592"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="595"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="647"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation>I sidopanelens avsnitt “Platser” i Finder</translation>
     </message>
@@ -4173,74 +4173,74 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Servern svarade inte %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1177"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1189"/>
+        <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1208"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1533"/>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1527"/>
+        <location filename="../src/libsync/discovery.cpp" line="1993"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttade till ogiltigt mål, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1861"/>
+        <location filename="../src/libsync/discovery.cpp" line="1855"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Det går inte att ändra det krypterade objektet eftersom det valda certifikatet är ogiltigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1923"/>
+        <location filename="../src/libsync/discovery.cpp" line="1917"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1957"/>
-        <location filename="../src/libsync/discovery.cpp" line="2160"/>
+        <location filename="../src/libsync/discovery.cpp" line="1951"/>
+        <location filename="../src/libsync/discovery.cpp" line="2154"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1963"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1977"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2007"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Borttagning tillåts ej, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2197"/>
         <source>Error while reading the database</source>
         <translation>Fel uppstod när databasen skulle läsas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2293"/>
+        <location filename="../src/libsync/discovery.cpp" line="2287"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Servern svarade med ett fel när mappen lästes &quot;%1&quot; : %2</translation>
     </message>
@@ -6342,7 +6342,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="991"/>
         <source>Failed to connect database.</source>
         <translation>Kunde inte koppla mot databasen.</translation>
     </message>

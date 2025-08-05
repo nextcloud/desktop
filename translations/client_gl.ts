@@ -1710,19 +1710,19 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Produciuse un erro de configuración dos metadatos cifrados: a sinatura inicial do servidor está baleira.</translation>
     </message>
@@ -3360,14 +3360,14 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="362"/>
-        <location filename="../src/libsync/logger.cpp" line="392"/>
+        <location filename="../src/libsync/logger.cpp" line="370"/>
+        <location filename="../src/libsync/logger.cpp" line="400"/>
         <source>Error</source>
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="363"/>
-        <location filename="../src/libsync/logger.cpp" line="393"/>
+        <location filename="../src/libsync/logger.cpp" line="371"/>
+        <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;O ficheiro «%1»&lt;br/&gt; non se pode abrir para escritura.&lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/n&gt; gardar!&lt;/nobr&gt;</translation>
     </message>
@@ -3638,66 +3638,66 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Use ficheiros &amp;virtuais en troques de descargar contido inmediatamente %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Os ficheiros virtuais non son compatíbeis coas particións raíz de Windows como cartafol local. Escolla un subcartafol válido baixo a letra de unidade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="310"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>O cartafol %1 «%2» está sincronizado co cartafol local «%3»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="316"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sincronizar o cartafol «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Advertencia: O cartafol local non está baleiro. Escolla unha resolución.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="649"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="334"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="652"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 de espazo libre</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="422"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Os ficheiros virtuais non son compatíbeis coa localización seleccionada</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="485"/>
         <source>Local Sync Folder</source>
         <translation>Sincronización do cartafol local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="525"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="566"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="528"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="569"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="592"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="595"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Non hai espazo libre abondo no cartafol local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="647"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation>Na sección «Localizacións» da barra lateral do Finder</translation>
     </message>
@@ -4170,74 +4170,74 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O servidor non informou de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1177"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1189"/>
+        <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1208"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1533"/>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1527"/>
+        <location filename="../src/libsync/discovery.cpp" line="1993"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1861"/>
+        <location filename="../src/libsync/discovery.cpp" line="1855"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Non é posíbel modificar o elemento cifrado porque o certificado seleccionado non é válido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1923"/>
+        <location filename="../src/libsync/discovery.cpp" line="1917"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1957"/>
-        <location filename="../src/libsync/discovery.cpp" line="2160"/>
+        <location filename="../src/libsync/discovery.cpp" line="1951"/>
+        <location filename="../src/libsync/discovery.cpp" line="2154"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1963"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1977"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2007"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2197"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2293"/>
+        <location filename="../src/libsync/discovery.cpp" line="2287"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2</translation>
     </message>
@@ -6339,7 +6339,7 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="991"/>
         <source>Failed to connect database.</source>
         <translation>Produciuse un fallo ao conectar a base de datos.</translation>
     </message>

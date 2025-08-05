@@ -1709,19 +1709,19 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Zerbitzariko errorea: PROPFINDaren erantzunak ez du XML formaturik!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Zifratutako metadatuen konfigurazio errorea!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Enkriptatutako metadatuen konfigurazio-errorea: zerbitzariaren hasierako sinadura hutsik dago.</translation>
     </message>
@@ -3356,14 +3356,14 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="362"/>
-        <location filename="../src/libsync/logger.cpp" line="392"/>
+        <location filename="../src/libsync/logger.cpp" line="370"/>
+        <location filename="../src/libsync/logger.cpp" line="400"/>
         <source>Error</source>
         <translation>Errorea</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="363"/>
-        <location filename="../src/libsync/logger.cpp" line="393"/>
+        <location filename="../src/libsync/logger.cpp" line="371"/>
+        <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&quot;%1&quot; fitxategia&lt;br/&gt;  ezin da ireki idazteko.&lt;br/&gt;&lt;br/&gt; Erregistroaren irteera &lt;b&gt;ezin da &lt;/b&gt; gorde!&lt;/nobr&gt;</translation>
     </message>
@@ -3634,66 +3634,66 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>(experimental)</source>
         <translation>(esperimentala)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Erabili &amp; fitxategi birtualak edukia berehala deskargatu beharrean % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Fitxategi birtualak ez dira bateragarriak Windows partizio sustraiekin karpeta lokal bezala. Mesedez aukeratu baliozko azpikarpeta bat diskoaren letra azpian.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="310"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 karpeta &quot;%2&quot; lokaleko &quot;%3&quot; karpetan dago sinkronizatuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="316"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sinkronizatu &quot;%1&quot; karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Abisua: karpeta lokala ez dago hutsik. Aukeratu nola konpondu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="649"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="334"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="652"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 egin leku librea</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="422"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="485"/>
         <source>Local Sync Folder</source>
         <translation>Sinkronizazio karpeta lokala</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="525"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="566"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="528"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="569"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="592"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="595"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Ez dago nahikoa toki librerik karpeta lokalean!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="647"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation type="unfinished"/>
     </message>
@@ -4166,74 +4166,74 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1177"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1189"/>
+        <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1208"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Ezin izan da fitxategia kargatu, &quot;%1&quot;(e)n irekita dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errorea %1 fitxategi erregistroa datu-basetik ezabatzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1533"/>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1527"/>
+        <location filename="../src/libsync/discovery.cpp" line="1993"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Baliogabeko helburura mugitu da, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1861"/>
+        <location filename="../src/libsync/discovery.cpp" line="1855"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1923"/>
+        <location filename="../src/libsync/discovery.cpp" line="1917"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ez ikusi egin zaio, &quot;aukeratu zer sinkronizatu&quot; zerrenda beltzagatik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1957"/>
-        <location filename="../src/libsync/discovery.cpp" line="2160"/>
+        <location filename="../src/libsync/discovery.cpp" line="1951"/>
+        <location filename="../src/libsync/discovery.cpp" line="2154"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan azpikarpetak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1963"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan fitxategiak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1977"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ez dago baimenik fitxategi hau igotzeko zerbitzarian irakurtzeko soilik delako, leheneratzen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2007"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2197"/>
         <source>Error while reading the database</source>
         <translation>Errorea datu-basea irakurtzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2293"/>
+        <location filename="../src/libsync/discovery.cpp" line="2287"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Zerbitzariak errore batekin erantzun du &quot;%1&quot; direktorioa irakurtzean: % 2</translation>
     </message>
@@ -6335,7 +6335,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="991"/>
         <source>Failed to connect database.</source>
         <translation>Datu-basera konektatzeak huts egin du</translation>
     </message>

@@ -174,7 +174,7 @@
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="112"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Atsākt sinhronizēšanu visiem</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
@@ -533,12 +533,12 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
         <location filename="../src/gui/accountmanager.cpp" line="311"/>
         <source>Legacy import</source>
-        <translation>Mantojuma imports</translation>
+        <translation>Novecojusī ievietošana</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="234"/>
         <source>Import</source>
-        <translation>Importēt</translation>
+        <translation>Ievietot</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="235"/>
@@ -548,7 +548,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="312"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation>Nevarēja importēt kontus no vecākā klienta konfigurācijas.</translation>
+        <translation>Nevarēja ievietot kontus no vecāka klienta konfigurācijas.</translation>
     </message>
 </context>
 <context>
@@ -738,7 +738,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="690"/>
         <source>Force sync now</source>
-        <translation>Veikt piespiedu sinhronizāciju</translation>
+        <translation>Veikt piespiedu sinhronizēšanu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="692"/>
@@ -1144,7 +1144,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/application.cpp" line="179"/>
         <source>ignoring</source>
-        <translation>ignorēšana</translation>
+        <translation>Neņem vērā</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="179"/>
@@ -1186,14 +1186,14 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/application.cpp" line="510"/>
         <source>Legacy import</source>
-        <translation>Mantojuma imports</translation>
+        <translation>Novecojusī ievietošana</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="511"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>Importēti %1 un %2 no vecāka tipa darbvirsmas klienta.
+        <translation>Ievietoti %1 un %2 no vecāka darbvirsmas klienta.
 %3</translation>
     </message>
     <message>
@@ -1204,7 +1204,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation>Notika kļūda, piekļūstot konfigurācijas datnei %1. Lūdzu, pārliecinieties, vai datne ir pieejama jūsu sistēmas kontam.</translation>
+        <translation>Bija kļūda piekļūšanas kunfigurācijas datne %1 laikā. Lūdgums nodrošināt, ka Tavs sistēmas konts var piekļūt datnei.</translation>
     </message>
 </context>
 <context>
@@ -1297,7 +1297,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>Datnei %1 ir nederīgs modificēšanas laiks. Neaugšupielādēt uz serveri.</translation>
+        <translation>Datnei %1 ir nederīgs izmaiņu laiks. Neaugšupielādēt serverī.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
@@ -1565,7 +1565,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation>Noklikšķiniet, lai atvērtu datni</translation>
+        <translation>Klikšķināt, lai atvērtu datni</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1709,19 +1709,19 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="663"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Servera kļūda: PROPFIND atbilde nav XML formātā!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="763"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="750"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -1824,7 +1824,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="436"/>
         <source>Please try again.</source>
-        <translation>Lūdzu mēģiniet vēlreiz.</translation>
+        <translation>Lūgums mēģināt vēlreiz.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
@@ -2360,7 +2360,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1826"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sinhronizē %1 (%2 atlikušas)</translation>
+        <translation>Sinhronizē %1 (vēl %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1829"/>
@@ -2591,7 +2591,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Atlikušas dažas sekundes, %1 no %2, %3. datne no %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1112"/>
@@ -3069,12 +3069,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Ignorēto datņu redaktors</translation>
+        <translation>Vērā neņemto datņu redaktors</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Globālie ignorēšanas iestatījumi</translation>
+        <translation>Vispārējie vērā neņemšanas iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -3084,12 +3084,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Datnes, kas ignorētas pēc šabloniem</translation>
+        <translation>Datnes, kas netiek ņemtas vērā pēc paraugiem</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="32"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation>Šis ieraksts tiek nodrošināts sistēmas ietvaros pie &quot;%1&quot; un to nevar modificēt šajā skatā.</translation>
+        <translation>Šo ierakstu nodrošina sistēma pie &quot;%1&quot;, un to šajā skatā nevar izmainīt.</translation>
     </message>
 </context>
 <context>
@@ -3343,14 +3343,14 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="362"/>
-        <location filename="../src/libsync/logger.cpp" line="392"/>
+        <location filename="../src/libsync/logger.cpp" line="370"/>
+        <location filename="../src/libsync/logger.cpp" line="400"/>
         <source>Error</source>
         <translation>Kļūda</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="363"/>
-        <location filename="../src/libsync/logger.cpp" line="393"/>
+        <location filename="../src/libsync/logger.cpp" line="371"/>
+        <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3621,66 +3621,66 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="103"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="275"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
         <source>(experimental)</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="310"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="316"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sinhronizēt mapi &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="649"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="334"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="652"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="419"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="422"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="485"/>
         <source>Local Sync Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="525"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="566"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="528"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="569"/>
         <source>(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="592"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="595"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="647"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
         <translation type="unfinished"/>
     </message>
@@ -4147,74 +4147,74 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1177"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Nevar sinhronizēt nederīga labošanas laika dēļ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1189"/>
+        <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1208"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1258"/>
+        <location filename="../src/libsync/discovery.cpp" line="1252"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1533"/>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1527"/>
+        <location filename="../src/libsync/discovery.cpp" line="1993"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1861"/>
+        <location filename="../src/libsync/discovery.cpp" line="1855"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1923"/>
+        <location filename="../src/libsync/discovery.cpp" line="1917"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1957"/>
-        <location filename="../src/libsync/discovery.cpp" line="2160"/>
+        <location filename="../src/libsync/discovery.cpp" line="1951"/>
+        <location filename="../src/libsync/discovery.cpp" line="2154"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1963"/>
+        <location filename="../src/libsync/discovery.cpp" line="1957"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1977"/>
+        <location filename="../src/libsync/discovery.cpp" line="1971"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2013"/>
+        <location filename="../src/libsync/discovery.cpp" line="2007"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2203"/>
+        <location filename="../src/libsync/discovery.cpp" line="2197"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2293"/>
+        <location filename="../src/libsync/discovery.cpp" line="2287"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -5346,7 +5346,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="297"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 no %2 · vēl %3 </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="301"/>
@@ -5411,7 +5411,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="198"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Atsākt sinhronizēšanu visiem</translation>
     </message>
 </context>
 <context>
@@ -6312,7 +6312,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="986"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="991"/>
         <source>Failed to connect database.</source>
         <translation>Neizdevās savienoties ar datu bāzi.</translation>
     </message>
