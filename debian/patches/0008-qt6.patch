@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fec87849f..216ce91a4 100644
+index 52a310dec..2baef40cb 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -27,7 +27,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+@@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
  include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
  
  set(QT_VERSION_MAJOR "6")
@@ -11,7 +11,7 @@ index fec87849f..216ce91a4 100644
  
  # CfAPI Shell Extensions
  set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
-@@ -134,7 +134,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+@@ -138,7 +138,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
      add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
  endif()
  
@@ -350,7 +350,7 @@ index 0855b028d..5c5ec1f6a 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index a92ee0424..fac362137 100644
+index 9c16fa412..02e58f89c 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -362,7 +362,7 @@ index a92ee0424..fac362137 100644
  find_package(KF6GuiAddons)
  
  if (NOT TARGET Qt::GuiPrivate)
-@@ -571,9 +571,16 @@ target_link_libraries(nextcloudCore
+@@ -573,9 +573,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -380,7 +380,7 @@ index a92ee0424..fac362137 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -782,3 +789,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -784,3 +791,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -392,7 +392,7 @@ index a92ee0424..fac362137 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 995def590..a40df34d9 100644
+index cebf1c832..458338bff 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -413,7 +413,7 @@ index 995def590..a40df34d9 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index ce4c25e7b..42b2d6a43 100644
+index 8c1f1122a..3c025af55 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -584,7 +584,7 @@ index 5820fc0c8..a70abc9c8 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index e91a1510e..147f9d9f3 100644
+index 370a1a30a..4ba1db6ee 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -596,7 +596,7 @@ index e91a1510e..147f9d9f3 100644
  
  #include <QDebug>
  #include <QLoggingCategory>
-@@ -2688,26 +2688,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
+@@ -2702,26 +2702,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
  
  QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
  {
@@ -626,7 +626,7 @@ index e91a1510e..147f9d9f3 100644
      return outputData;
  }
  
-@@ -2719,23 +2705,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
+@@ -2733,23 +2719,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
          return {};
      }
  
@@ -652,7 +652,7 @@ index e91a1510e..147f9d9f3 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index d2c007ca9..89093021e 100644
+index 32f8db83b..5f773c409 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -987,17 +987,17 @@ index cf7271963..56d3d8bdd 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index 43c1e7207..2f3bfdec6 100644
+index dc558288d..34f1e25dd 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
-@@ -409,8 +409,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
+@@ -416,8 +416,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
          xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
          xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
          xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
--        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.quota.bytesAvailable));
--        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.quota.bytesUsed));
-+        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), QString::number(fileInfo.quota.bytesAvailable));
-+        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), QString::number(fileInfo.quota.bytesUsed));
+-        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.folderQuota.bytesAvailable));
+-        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.folderQuota.bytesUsed));
++        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), QString::number(fileInfo.folderQuota.bytesAvailable));
++        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), QString::number(fileInfo.folderQuota.bytesUsed));
          xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
          if (fileInfo.isShared) {
              if (fileInfo.downloadForbidden) {
