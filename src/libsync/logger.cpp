@@ -117,7 +117,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     // write logs to Output window of Visual Studio
     {
         const auto msgW = QStringLiteral("%1\n").arg(msg).toStdWString();
-        OutputDebugString(msgW.c());
+        OutputDebugString(msgW.c_str());
     }
 #elif defined Q_OS_MAC && defined QT_DEBUG
     // write logs to Xcode console (stderr)
