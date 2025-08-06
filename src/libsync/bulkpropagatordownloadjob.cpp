@@ -5,7 +5,6 @@
 
 #include "bulkpropagatordownloadjob.h"
 
-#include "owncloudpropagator_p.h"
 #include "syncfileitem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
@@ -13,7 +12,6 @@
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "account.h"
-#include "networkjobs.h"
 #include "propagatedownloadencrypted.h"
 
 #include <QDir>
@@ -23,11 +21,10 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcBulkPropagatorDownloadJob, "nextcloud.sync.propagator.bulkdownload", QtInfoMsg)
 
 BulkPropagatorDownloadJob::BulkPropagatorDownloadJob(OwncloudPropagator *propagator,
-                                                     PropagateDirectory *parentDirJob,
-                                                     const std::vector<SyncFileItemPtr> &items)
-    : PropagatorJob(propagator)
-    , _filesToDownload(items)
-    , _parentDirJob(parentDirJob)
+                                                     PropagateDirectory *parentDirJob)
+    : PropagatorJob{propagator}
+    , _filesToDownload{}
+    , _parentDirJob{parentDirJob}
 {
 }
 
@@ -35,15 +32,15 @@ namespace
 {
 static QString makeRecallFileName(const QString &fn)
 {
-    QString recallFileName(fn);
+    auto recallFileName(fn);
     // Add _recall-XXXX  before the extension.
-    int dotLocation = recallFileName.lastIndexOf('.');
+    auto dotLocation = recallFileName.lastIndexOf('.');
     // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
     if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
         dotLocation = recallFileName.size();
     }
 
-    QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
+    const auto &timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
     recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
 
     return recallFileName;
@@ -55,28 +52,28 @@ void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJo
 
     FileSystem::setFileHidden(filePath, true);
 
-    QFile file(filePath);
+    auto file = QFile{filePath};
     if (!file.open(QIODevice::ReadOnly)) {
         qCWarning(lcBulkPropagatorDownloadJob) << "Could not open recall file" << file.errorString();
         return;
     }
-    QFileInfo existingFile(filePath);
-    QDir baseDir = existingFile.dir();
+    const auto existingFile = QFileInfo{filePath};
+    const auto &baseDir = existingFile.dir();
 
     while (!file.atEnd()) {
-        QByteArray line = file.readLine();
+        auto line = file.readLine();
         line.chop(1); // remove trailing \n
 
-        QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
+        const auto &recalledFile = QDir::cleanPath(baseDir.filePath(line));
         if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
             qCWarning(lcBulkPropagatorDownloadJob) << "Ignoring recall of " << recalledFile;
             continue;
         }
 
         // Path of the recalled file in the local folder
-        QString localRecalledFile = recalledFile.mid(folderPath.size());
+        const auto &localRecalledFile = recalledFile.mid(folderPath.size());
 
-        SyncJournalFileRecord record;
+        auto record = SyncJournalFileRecord{};
         if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
             qCWarning(lcBulkPropagatorDownloadJob) << "No db entry for recall of" << localRecalledFile;
             continue;
@@ -84,7 +81,7 @@ void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJo
 
         qCInfo(lcBulkPropagatorDownloadJob) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
 
-        QString targetPath = makeRecallFileName(recalledFile);
+        const auto &targetPath = makeRecallFileName(recalledFile);
 
         qCDebug(lcBulkPropagatorDownloadJob) << "Copy recall file: " << recalledFile << " -> " << targetPath;
         // Remove the target first, QFile::copy will not overwrite it.
@@ -112,7 +109,7 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    for (const auto &fileToDownload : _filesToDownload) {
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
         qCDebug(lcBulkPropagatorDownloadJob) << "Scheduling bulk propagator job:" << this << "and starting download of item"
                                              << "with file:" << fileToDownload->_file << "with size:" << fileToDownload->_size;
         _filesDownloading.push_back(fileToDownload);
@@ -219,11 +216,11 @@ void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
 
     qCDebug(lcBulkPropagatorDownloadJob) << item->_file << propagator()->_activeJobList.count();
 
-    const auto path = item->_file;
+    const auto &path = item->_file;
     const auto slashPosition = path.lastIndexOf('/');
-    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+    const auto &parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
-    SyncJournalFileRecord parentRec;
+    auto parentRec = SyncJournalFileRecord{};
     if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
         qCWarning(lcBulkPropagatorDownloadJob) << "could not get file from local DB" << parentPath;
         abortWithError(item, SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(parentPath));
@@ -234,10 +231,10 @@ void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
         startAfterIsEncryptedIsChecked(item);
     } else {
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, item, this);
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, [this, &item] {
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, this, [this, &item] {
             startAfterIsEncryptedIsChecked(item);
         });
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this, &item] {
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, this, [this, &item] {
             abortWithError(
                 item,
                 SyncFileItem::NormalError,
@@ -249,7 +246,7 @@ void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
 
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
 {
-    const auto fn = propagator()->fullLocalPath(item->_file);
+    const auto fullFileName = propagator()->fullLocalPath(item->_file);
     const auto result = propagator()->updateMetadata(*item);
     if (!result) {
         abortWithError(item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
@@ -264,7 +261,7 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     // handle the special recall file
     if (!item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (item->_file == QLatin1String(".sys.admin#recall#") || item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
+        handleRecallFile(fullFileName, propagator()->localPath(), *propagator()->_journal);
     }
 
     const auto isLockOwnedByCurrentUser = item->_lockOwnerId == propagator()->account()->davUser();
@@ -273,13 +270,13 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     const auto isTokenLockOwnedByCurrentUser = (item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock && isLockOwnedByCurrentUser);
 
     if (item->_locked == SyncFileItem::LockStatus::LockedItem && !isUserLockOwnedByCurrentUser && !isTokenLockOwnedByCurrentUser) {
-        qCDebug(lcBulkPropagatorDownloadJob()) << fn << "file is locked: making it read only";
-        FileSystem::setFileReadOnly(fn, true);
+        qCDebug(lcBulkPropagatorDownloadJob()) << fullFileName << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(fullFileName, true);
     } else {
-        qCDebug(lcBulkPropagatorDownloadJob()) << fn << "file is not locked: making it" << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite))
+        qCDebug(lcBulkPropagatorDownloadJob()) << fullFileName << "file is not locked: making it" << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite))
             ? "read only"
             : "read write");
-        FileSystem::setFileReadOnlyWeak(fn, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+        FileSystem::setFileReadOnlyWeak(fullFileName, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
     return true;
 }
