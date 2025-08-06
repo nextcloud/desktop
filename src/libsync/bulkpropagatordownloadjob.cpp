@@ -140,28 +140,7 @@ void BulkPropagatorDownloadJob::startAfterIsEncryptedIsChecked(const SyncFileIte
         return;
     }
 
-    // For virtual files just dehydrate or create the placeholder and be done
-    if (item->_type == ItemTypeVirtualFileDehydration) {
-        const auto fsPath = propagator()->fullLocalPath(item->_file);
-        if (!FileSystem::verifyFileUnchanged(fsPath, item->_previousSize, item->_previousModtime)) {
-            propagator()->_anotherSyncNeeded = true;
-            item->_errorString = tr("File has changed since discovery");
-            abortWithError(item, SyncFileItem::SoftError, tr("File has changed since discovery"));
-            return;
-        }
-        qCDebug(lcBulkPropagatorDownloadJob) << "dehydrating file" << item->_file;
-        const auto r = vfs->dehydratePlaceholder(*item);
-        if (!r) {
-            qCCritical(lcBulkPropagatorDownloadJob) << "Could not dehydrate a file" << QDir::toNativeSeparators(item->_file) << ":" <<  r.error();
-            abortWithError(item, SyncFileItem::NormalError, r.error());
-            return;
-        }
-        if (!propagator()->_journal->deleteFileRecord(item->_originalFile)) {
-            qCWarning(lcBulkPropagatorDownloadJob) << "could not delete file from local DB" << item->_originalFile;
-            abortWithError(item, SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(item->_originalFile));
-            return;
-        }
-    } else if (item->_type == ItemTypeVirtualFile) {
+    if (item->_type == ItemTypeVirtualFile) {
         qCDebug(lcBulkPropagatorDownloadJob) << "creating virtual file" << item->_file;
         const auto r = vfs->createPlaceholder(*item);
         if (!r) {
