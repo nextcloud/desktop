@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation>Reestablecer el ambiente de archivos virtuales</translation>
+        <translation>Reiniciar el ambiente de archivos virtuales</translation>
     </message>
 </context>
 <context>
@@ -498,11 +498,6 @@ macOS podría ignorar o demorar esta solicitud.</translation>
         <source>Unknown error: network reply was deleted</source>
         <translation>Error desconocido: la respuesta de red fue eliminada</translation>
     </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
-        <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>El servidor respondió &quot;%1 %2&quot; a &quot;%3 %4&quot;</translation>
-    </message>
 </context>
 <context>
     <name>OCC::Account</name>
@@ -528,14 +523,14 @@ macOS podría ignorar o demorar esta solicitud.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>Se detectó una cuenta desde un cliente de escritorio legado.
-¿Debería la cuenta ser importada?</translation>
+        <translation>Se detectó una cuenta desde un cliente de escritorio antiguo.
+¿Debería importar la cuenta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
         <location filename="../src/gui/accountmanager.cpp" line="311"/>
         <source>Legacy import</source>
-        <translation>Importación legada</translation>
+        <translation>Importación heredada</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="234"/>
@@ -664,7 +659,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation>Se ha configurado el cifrado. Recuerde &lt;b&gt;Cifrar&lt;/b&gt; una carpeta para cifrar de extremo a extremo cualesquiera archivos añadidos a esta.</translation>
+        <translation>Se ha configurado el cifrado. Recuerda &lt;b&gt;Cifrar&lt;/b&gt; una carpeta para tener cifrado de extremo a extremo cualquier archivo añadido a esta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="348"/>
@@ -690,8 +685,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation>No puede cifrar esta carpeta debido a que el cifrado de extremo a extremo no está configurado todavía en este dispositivo.
-¿Desea hacer esto ahora mismo?</translation>
+        <translation>No puede cifrar esta carpeta debido a que el cifrado de extremo a extremo aún no está configurado en este dispositivo.
+¿Desea hacerlo ahora mismo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
@@ -1189,7 +1184,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/application.cpp" line="510"/>
         <source>Legacy import</source>
-        <translation>Importación legada</translation>
+        <translation>Importación heredada</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="511"/>
@@ -1713,18 +1708,18 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="665"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="698"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Error del servidor: ¡la respuesta de PROPFIND no tiene formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="728"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="765"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="762"/>
         <source>Encrypted metadata setup error!</source>
         <translation>¡Hubo un error al configurar los metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="752"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="749"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Error de configuración de los metadatos cifrados: la firma inicial del servidor está vacía.</translation>
     </message>
@@ -2916,7 +2911,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation>Restaurar &amp;Predeterminados</translation>
+        <translation>Restaurar &amp;Default</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="378"/>
@@ -3294,12 +3289,12 @@ Los elementos que se permite su borrado se eliminarán si impiden que un directo
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation>Importación legada</translation>
+        <translation>Importación heredada</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation>Seleccione las carpetas a importar desde la configuración legada:</translation>
+        <translation>Seleccione las carpetas a importar desde la configuración heredada:</translation>
     </message>
 </context>
 <context>
@@ -6155,6 +6150,136 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="59"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
         <translation>Las rutas que comienzan con el carácter &apos;#&apos; no están soportadas en el modo VFS.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
+        <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="472"/>
+        <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="475"/>
+        <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
+        <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
+        <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
+        <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
+        <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
+        <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
+        <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
+        <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
+        <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
+        <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
+        <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
+        <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
+        <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
+        <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
+        <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
+        <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
+        <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
+        <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
+        <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
+        <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
+        <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
+        <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
+        <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
+        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
