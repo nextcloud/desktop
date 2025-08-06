@@ -458,10 +458,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
     const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     const auto httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
 
-    // Only adjust HTTP error messages of the expected format.
-    if (httpReason.isEmpty() || httpStatus == 0 || !base.contains(httpReason)) {
-        return base;
-    }
+    qCWarning(lcNetworkJob) << "Network request error" << base << "HTTP status" << httpStatus << "httpReason" << httpReason;
 
     QString userFriendlyMessage;
     switch (httpStatus) {
