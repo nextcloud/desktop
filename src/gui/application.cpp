@@ -88,7 +88,7 @@ namespace {
         "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
         "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
         "  --serverurl                : a server URL to use when creating an account via command-line.\n"
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
         "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n"
 #endif
         "  --reverse            : use a reverse layout direction.\n";
@@ -501,7 +501,7 @@ void Application::setupAccountsAndFolders()
         && !accounts.isEmpty()) {
 
         const auto accountsListSize = accounts.size();
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
         if (Theme::instance()->displayLegacyImportDialog()) {
             const auto accountsRestoreMessage = accountsListSize > 1
                 ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
@@ -879,7 +879,7 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _setLanguage = it.next();
             }
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
         } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
 #endif

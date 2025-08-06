@@ -19,7 +19,7 @@ class AccountManager : public QObject
 {
     Q_OBJECT
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     Q_PROPERTY(bool forceLegacyImport READ forceLegacyImport WRITE setForceLegacyImport NOTIFY forceLegacyImportChanged)
 #endif
 
@@ -70,7 +70,7 @@ public:
      * Returns whether the account setup will force an import of
      * legacy clients' accounts (true), or ask first (false)
      */
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     [[nodiscard]] bool forceLegacyImport() const;
 #endif
 
@@ -102,7 +102,7 @@ public slots:
     /// Remove all accounts
     void shutdown();
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     void setForceLegacyImport(const bool forceLegacyImport);
 #endif
 
@@ -111,7 +111,7 @@ signals:
     void accountRemoved(OCC::AccountState *account);
     void accountSyncConnectionRemoved(OCC::AccountState *account);
     void removeAccountFolders(OCC::AccountState *account);
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     void forceLegacyImportChanged();
 #endif
     void capabilitiesChanged();
@@ -137,7 +137,7 @@ private:
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     bool _forceLegacyImport = false;
 #endif
 };

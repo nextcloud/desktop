@@ -16,7 +16,7 @@
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
 #include "libsync/clientproxy.h"
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
 #include "legacyaccountselectiondialog.h"
 #endif
 
@@ -177,7 +177,7 @@ bool AccountManager::restoreFromLegacySettings()
     // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     auto wasLegacyImportDialogDisplayed = false;
     const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
     QStringList selectedAccountIds;
@@ -314,7 +314,7 @@ bool AccountManager::restoreFromLegacySettings()
         return true;
     }
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     if (wasLegacyImportDialogDisplayed) {
         QMessageBox::information(nullptr,
                                  tr("Legacy import"),
@@ -769,7 +769,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
     emit accountAdded(accountState);
 }
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
 bool AccountManager::forceLegacyImport() const
 {
     return _forceLegacyImport;

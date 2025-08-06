@@ -602,7 +602,7 @@ public:
      *
      * The user will interact with the dialog to import legacy account when set to true
      */
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
     [[nodiscard]] bool displayLegacyImportDialog() const;
 #endif
 

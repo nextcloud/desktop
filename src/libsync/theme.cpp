@@ -1034,14 +1034,10 @@ bool Theme::darkMode() const
     return isDarkFromStyle();
 }
 
-#ifndef DISABLE_ACCOUNT_MIGRATION
+#if !DISABLE_ACCOUNT_MIGRATION
 bool Theme::displayLegacyImportDialog() const
 {
-#if defined DISABLE_ACCOUNT_MIGRATION && DISABLE_ACCOUNT_MIGRATION
-    return false;
-#else
     return true;
-#endif
 }
 #endif
 
