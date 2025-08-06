@@ -16,7 +16,9 @@
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
 #include "libsync/clientproxy.h"
+#ifndef DISABLE_ACCOUNT_MIGRATION
 #include "legacyaccountselectiondialog.h"
+#endif
 
 #include <QSettings>
 #include <QDir>
@@ -175,6 +177,7 @@ bool AccountManager::restoreFromLegacySettings()
     // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
+#ifndef DISABLE_ACCOUNT_MIGRATION
     auto wasLegacyImportDialogDisplayed = false;
     const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
     QStringList selectedAccountIds;
@@ -274,6 +277,11 @@ bool AccountManager::restoreFromLegacySettings()
             }
         }
     }
+#else
+    // When migration is disabled, we only check for existing settings
+    QStringList selectedAccountIds;
+    auto wasLegacyImportDialogDisplayed = false;
+#endif
 
     ConfigFile configFile;
     configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
@@ -306,11 +314,13 @@ bool AccountManager::restoreFromLegacySettings()
         return true;
     }
 
+#ifndef DISABLE_ACCOUNT_MIGRATION
     if (wasLegacyImportDialogDisplayed) {
         QMessageBox::information(nullptr,
                                  tr("Legacy import"),
                                  tr("Could not import accounts from legacy client configuration."));
     }
+#endif
 
     return false;
 }
@@ -759,6 +769,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
     emit accountAdded(accountState);
 }
 
+#ifndef DISABLE_ACCOUNT_MIGRATION
 bool AccountManager::forceLegacyImport() const
 {
     return _forceLegacyImport;
@@ -773,4 +784,5 @@ void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
     _forceLegacyImport = forceLegacyImport;
     Q_EMIT forceLegacyImportChanged();
 }
+#endif
 }

@@ -153,8 +153,8 @@ set(client_SRCS
     userinfo.cpp
     vfsdownloaderrordialog.h
     vfsdownloaderrordialog.cpp
-    legacyaccountselectiondialog.h
-    legacyaccountselectiondialog.cpp
+$<$<NOT:$<BOOL:${DISABLE_ACCOUNT_MIGRATION}>>:legacyaccountselectiondialog.h>
+$<$<NOT:$<BOOL:${DISABLE_ACCOUNT_MIGRATION}>>:legacyaccountselectiondialog.cpp>
     accountstate.h
     accountstate.cpp
     addcertificatedialog.h

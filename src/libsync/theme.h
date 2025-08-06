@@ -602,7 +602,9 @@ public:
      *
      * The user will interact with the dialog to import legacy account when set to true
      */
+#ifndef DISABLE_ACCOUNT_MIGRATION
     [[nodiscard]] bool displayLegacyImportDialog() const;
+#endif
 
 public slots:
     void setOverrideServerUrl(const QString &overrideServerUrl);

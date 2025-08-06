@@ -6,6 +6,8 @@
 
 #include "legacyaccountselectiondialog.h"
 
+#ifndef DISABLE_ACCOUNT_MIGRATION
+
 #include <QCheckBox>
 #include <QDialogButtonBox>
 #include <QLabel>
@@ -48,4 +50,6 @@ QStringList LegacyAccountSelectionDialog::selectedAccountIds() const
 }
 
 } // namespace OCC
+
+#endif // DISABLE_ACCOUNT_MIGRATION
 
