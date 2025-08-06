@@ -33,7 +33,7 @@
     <?define VerStd = "$(var.VerMajor).$(var.VerMinor).$(var.VerRevision)" ?>
     <?define VerFull = "$(var.VerStd).$(var.VerBuild)" ?>
 
-    <?define VerDesc = "@MIRALL_VERSION_STRING@ (Git revision @GIT_REVISION@)" ?>
+    <?define VerDesc = "@MIRALL_HUMAN_VERSION_STRING@ (Git revision @GIT_REVISION@)" ?>
 
     <!-- MSI upgrade support -->
     <?define UpgradeCode = "@WIN_MSI_UPGRADE_CODE@" ?>
