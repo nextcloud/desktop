@@ -303,14 +303,18 @@ QByteArray AbstractNetworkJob::requestId()
 QString AbstractNetworkJob::errorString() const
 {
     if (_timedout) {
-        return tr("Connection timed out");
-    } else if (!reply()) {
-        return tr("Unknown error: network reply was deleted");
-    } else if (reply()->hasRawHeader("OC-ErrorString")) {
-        return reply()->rawHeader("OC-ErrorString");
-    } else {
-        return networkReplyErrorString(*reply());
+        return tr("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.");
     }
+
+    if (!reply()) {
+        return tr("An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.");
+    }
+
+    if (reply()->hasRawHeader("OC-ErrorString")) {
+        return reply()->rawHeader("OC-ErrorString");
+    }
+
+    return networkReplyErrorString(*reply());
 }
 
 QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
