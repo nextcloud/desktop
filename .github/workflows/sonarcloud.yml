@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: SonarCloud analysis
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, self-hosted]
     container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
