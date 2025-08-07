@@ -211,6 +211,21 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
     return result;
 }
 
+Result<void, QString> VfsCfApi::createPlaceholders(const QList<SyncFileItemPtr> &items)
+{
+    auto result = Result<void, QString>{};
+
+    for (const auto &oneItem : items) {
+        const auto itemResult = createPlaceholder(*oneItem);
+        if (!itemResult) {
+            result = itemResult;
+            break;
+        }
+    }
+
+    return result;
+}
+
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);

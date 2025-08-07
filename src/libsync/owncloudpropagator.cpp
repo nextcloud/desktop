@@ -690,7 +690,8 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
         const auto isDownload = item->_direction == SyncFileItem::Down &&
             (item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC);
         const auto isVirtualFile = item->_type == ItemTypeVirtualFile;
-        const auto shouldAddBulkPropagateDownloadItem = isDownload && isVirtualFile && isVfsCfApi;
+        const auto isEncrypted = item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted;
+        const auto shouldAddBulkPropagateDownloadItem = isDownload && isVirtualFile && isVfsCfApi && !isEncrypted;
 
         if (shouldAddBulkPropagateDownloadItem) {
             addBulkPropagateDownloadItem(item, directories);
