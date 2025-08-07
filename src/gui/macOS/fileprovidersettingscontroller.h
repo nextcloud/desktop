@@ -42,7 +42,7 @@ public:
     [[nodiscard]] Q_INVOKABLE FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const;
 
 public slots:
-    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
     void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
     void resetVfsForAccount(const QString &userIdAtHost);
 
