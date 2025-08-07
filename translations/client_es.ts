@@ -1523,7 +1523,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1161"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation>El inicio de sesión al Token falló luego de proporcionar el PIN del usuario. Podría ser inválido o incorrecto. ¡Por favor, intente de nuevo!</translation>
+        <translation>El inicio de sesión al Token falló luego de proporcionar el PIN del usuario. Podría ser inválido o incorrecto. ¡Por favor, inténtelo de nuevo!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2227"/>
@@ -1871,7 +1871,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="96"/>
         <source>Please try again.</source>
-        <translation>Por favor, vuelve a intentarlo.</translation>
+        <translation>Por favor, inténtelo de nuevo.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
@@ -5238,7 +5238,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (no realizado por el error anterior, intente de nuevo %2)</translation>
+        <translation>%1 (no realizado por el error anterior, intente de nuevo en %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="554"/>
@@ -6154,67 +6154,67 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>No pudimos procesar su solicitud. Por favor, intente sincronizar nuevamente más tarde. Si esto sigue sucediendo, contacte al administrador de su servidor para buscar ayuda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="472"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Debe iniciar sesión para continuar. Si tiene problema con sus credenciales, por favor, comuníquese con el administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="475"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>No tiene acceso a este recurso. Si cree que es un error, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>No pudimos encontrar lo que está buscando. Puede haber sido movido o eliminado. Si necesita ayuda, contacte al administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Parece estar utilizando un proxy que requiere autenticación. Por favor, verifique las configuraciones de su proxy y las credenciales. Si necesita ayuda, contacte al administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Está solicitud está tardando más de lo usual. Por favor, intente sincronizar nuevamente. Si todavía no funciona, comuníquese con el administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Los archivos en el servidor cambiaron mientras Ud. trabajaba. Por favor, intente sincronizar nuevamente. Contacte al administrador de su servidor si el problema persiste.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Esta carpeta o archivo ya no están disponibles. Si necesita asistencia, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>La solicitud no pudo ser completada debido a que algunas condiciones no se cumplieron. Por favor, intente sincronizar nuevamente más tarde. Si necesita asistencia, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo es demasiado grande para ser cargado. Podría necesitar escoger un archivo más pequeño, o, contactar al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>La dirección que se utilizó para hacer la solicitud es demasiado grande para que el servidor pueda utilizarla. Por favor, trate de acortar la información que está enviando, o, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Este tipo de archivo no está soportado. Por favor, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no pudo procesar su solicitud ya que alguna información era o bien incorrecta o estaba incompleta. Por favor, intente sincronizar nuevamente más tarde, o, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
@@ -6842,7 +6842,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 requiere una bandeja del sistema de trabajo. Si estás ejecutando XFCE, por favor, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucciones&lt;/a&gt;. Por otro lado, instale una bandeja del sistema de aplicaciones como &quot;trayer&quot; e inténtelo de nuevo.</translation>
+        <translation>%1 requiere una bandeja del sistema funcional. Si está ejecutando XFCE, por favor, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucciones&lt;/a&gt;. De lo contrario, instale una bandeja del sistema de aplicaciones tales como &quot;trayer&quot; e inténtelo de nuevo.</translation>
     </message>
 </context>
 <context>

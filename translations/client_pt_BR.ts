@@ -6154,27 +6154,27 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível processar sua solicitação. Tente sincronizar novamente mais tarde. Se isso continuar ocorrendo, entre em contato com a administração do seu servidor para obter ajuda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="472"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Você precisa fazer login para continuar. Se tiver problemas com suas credenciais, entre em contato com a administração do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="475"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Você não tem acesso a este recurso. Se você acredita que isso seja um erro, entre em contato com a administração do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível encontrar o que você estava procurando. Talvez tenha sido movido ou excluído. Se precisar de ajuda, entre em contato com a administração do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Parece que você está usando um proxy que requer autenticação. Verifique as configurações do seu proxy e suas credenciais. Se precisar de ajuda, entre em contato com a administração do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
