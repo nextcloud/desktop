@@ -58,6 +58,9 @@ option(ENFORCE_SINGLE_ACCOUNT "Enforce use of a single account in desktop client
 
 option( DO_NOT_USE_PROXY "Do not use system wide proxy, instead always do a direct connection to server" OFF )
 
+# Account migration/import control - when ON, disables legacy account migration and import functionality
+option( DISABLE_ACCOUNT_MIGRATION "Disable account migration/import functionality and UI" OFF )
+
 ## Theming options
 set(NEXTCLOUD_BACKGROUND_COLOR "#0082c9" CACHE STRING "Default Nextcloud background color")
 set( APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR ${NEXTCLOUD_BACKGROUND_COLOR} CACHE STRING "Hex color of the wizard header background")
