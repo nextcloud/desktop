@@ -25,6 +25,7 @@ using AccountPtr = QSharedPointer<Account>;
 class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
+using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
@@ -188,6 +189,9 @@ public:
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     [[nodiscard]] virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
+    /// Create a new dehydrated list of placeholders
+    [[nodiscard]] virtual Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &items) = 0;
+
     /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
      *
      * This is different from delete+create because preserving some file metadata
@@ -323,7 +327,10 @@ public:
     OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return {OCC::Vfs::ConvertToPlaceholderResult::Ok}; }
     Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
+
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
+    Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &) override { return {}; }
+
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
     Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, const UpdateMetadataTypes) override { return ConvertToPlaceholderResult::Ok; }
 

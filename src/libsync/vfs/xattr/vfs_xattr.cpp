@@ -97,6 +97,21 @@ Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
     return xattr::addNextcloudPlaceholderAttributes(path);
 }
 
+Result<void, QString> VfsXAttr::createPlaceholders(const QList<SyncFileItemPtr> &items)
+{
+    auto result = Result<void, QString>{};
+
+    for (const auto &oneItem : items) {
+        const auto itemResult = createPlaceholder(*oneItem);
+        if (!itemResult) {
+            result = itemResult;
+            break;
+        }
+    }
+
+    return result;
+}
+
 Result<void, QString> VfsXAttr::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto path = QString(_setupParams.filesystemPath + item._file);
