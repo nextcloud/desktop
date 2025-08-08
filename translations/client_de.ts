@@ -3786,156 +3786,146 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="273"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Erfolgreich mit  %1 verbunden: %2 Version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="301"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Die Verbindung zu %1 auf %2 konnte nicht hergestellt werden: &lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Zeitüberschreitung beim Verbindungsversuch mit %1 unter %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Zugang vom Server nicht erlaubt. &lt;a href=&quot;%1&quot;&gt;Klicken Sie hier&lt;/a&gt; zum Zugriff auf den Dienst mithilfe Ihres Browsers, so dass Sie sicherstellen können, dass Ihr Zugang ordnungsgemäß funktioniert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="298"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="299"/>
         <source>Invalid URL</source>
         <translation>Ungültige URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="355"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation>Verbindungsversuch mit %1 unter %2 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Die Authentifizierungs-Anfrage an den Server wurde weitergeleitet an &quot;%1&quot;. Diese Adresse ist ungültig, der Server ist falsch konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Ungültige Antwort auf eine WebDAV-Authentifizierungs-Anfrage</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="491"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokaler Sync-Ordner %1 existiert bereits, aktiviere Synchronistation.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
         <source>Creating local sync folder %1 …</source>
         <translation>Lokaler Ordner %1 für die Synchronisierung wird erstellt …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
         <source>failed.</source>
         <translation>fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="502"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
         <source>Could not create local folder %1</source>
         <translation>Der lokale Ordner %1 konnte nicht erstellt werden</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="562"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="563"/>
         <source>No remote folder specified!</source>
         <translation>Kein entfernter Ordner angegeben!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="569"/>
         <source>Error: %1</source>
         <translation>Fehler: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="581"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="582"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation>Erstelle Ordner auf Nextcloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="587"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Entfernter Ordner %1 erstellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="601"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Der Ordner %1 ist auf dem Server bereits vorhanden. Verbinde zur Synchronisierung.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="606"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Das Erstellen des Ordners erzeugte den HTTP-Fehler-Code %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="607"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="608"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Die Erstellung des entfernten Ordners ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. &lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie die Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="611"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="612"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Die Erstellung des entfernten Ordners ist fehlgeschlagen, vermutlich sind die angegebenen Zugangsdaten falsch.&lt;/font&gt;&lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie Ihre Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="616"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="617"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="618"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Entfernter Ordner %1 konnte mit folgendem Fehler nicht erstellt werden: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="631"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="632"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Eine Synchronisierungsverbindung für Ordner %1 zum entfernten Ordner %2 wurde eingerichtet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="636"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="637"/>
         <source>Successfully connected to %1!</source>
         <translation>Erfolgreich mit %1 verbunden!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="643"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Die Verbindung zu %1 konnte nicht hergestellt werden. Bitte prüfen Sie die Einstellungen erneut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="656"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
         <source>Folder rename failed</source>
         <translation>Ordner umbenennen fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="658"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Der Ordner kann nicht entfernt und gesichert werden, da der Ordner oder einer seiner Dateien in einem anderen Programm geöffnet ist. Bitte schließen Sie den Ordner oder die Datei und versuchen Sie es erneut oder beenden Sie die Installation.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="686"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="693"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Dateianbieter-basiertes Konto %1 erstellt!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="691"/>
-        <source>Virtual files enabled</source>
-        <translation>Virtuelle Dateien aktiviert</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="692"/>
-        <source>Your account is now syncing with virtual files support. This means that all your files are online-only by default, and will be downloaded on-demand when you open them. You may find your files under the &lt;b&gt;Locations&lt;/b&gt; section of the Finder sidebar.</source>
-        <translation>Ihr Konto wird jetzt mithilfe virtueller Dateien synchronisiert. Das bedeutet, dass alle Ihre Dateien standardmäßig online gespeichert sind und erst dann heruntergeladen werden, wenn Sie sie öffnen. Sie finden Ihre Dateien unter dem Abschnitt &lt;b&gt;Speicherorte&lt;/b&gt; in der Finder-Seitenleiste.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="735"/>
@@ -6153,12 +6143,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation>Wir konnten Ihre Anfrage nicht bearbeiten. Versuchen Sie bitte, die Synchronisierung später zu wiederholen, oder wenden sich für Hilfe an Ihre Serveradministration.</translation>
+        <translation>Die Anfrage konnte nicht bearbeitet werden. Bitte versuchen, die Synchronisierung später zu wiederholen, oder für Hilfe an die Serveradministration wenden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="472"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation>Sie müssen sich anmelden, um fortzufahren. Wenn Sie Probleme mit Ihren Anmeldedaten haben, wenden Sie sich bitte an Ihre Server-Administration.</translation>
+        <translation>Sie müssen sich anmelden, um fortzufahren. Wenn Sie Probleme mit Ihren Anmeldedaten haben, wenden Sie sich bitte an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="475"/>
@@ -6168,7 +6158,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation>Wir konnten nicht finden, wonach Sie gesucht haben. Möglicherweise wurde es verschoben oder gelöscht. Wenn Sie Hilfe benötigen, wenden Sie sich an Ihre Serveradministration.</translation>
+        <translation>Es konnte nicht gefunden werden, wonach Sie gesucht haben. Möglicherweise wurde es verschoben oder gelöscht. Wenn Sie Hilfe benötigen, wenden Sie sich an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
@@ -6178,12 +6168,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation>Die Anfrage dauert länger als üblich. Bitte versuchen Sie die Synchronisierung erneut. Wenn es immer noch nicht funktioniert, wenden Sie sich an Ihre Serveradministration.</translation>
+        <translation>Die Anfrage dauert länger als üblich. Bitte die Synchronisierung erneut versuchen. Wenn es immer noch nicht funktioniert, wenden Sie sich an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation>Die Serverdateien wurden während Ihrer Arbeit geändert. Bitte versuchen Sie die Synchronisierung erneut oder wenden Sie sich an Ihre Serveradministration, falls das Problem weiterhin besteht.</translation>
+        <translation>Die Serverdateien wurden während Ihrer Arbeit geändert. Bitte die Synchronisierung erneut versuchen oder wenden Sie sich an Ihre Serveradministration, falls das Problem weiterhin besteht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
@@ -6193,7 +6183,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation>Der Antrag konnte nicht abgeschlossen werden, weil einige erforderliche Bedingungen nicht erfüllt waren. Bitte versuchen Sie die Synchronisierung erneut. Wenn Sie Hilfe benötigen, wenden Sie sich an Ihre Serveradministration.</translation>
+        <translation>Die Anfrage konnte nicht abgeschlossen werden, weil einige erforderliche Bedingungen nicht erfüllt waren. Bitte die Synchronisierung erneut versuchen. Wenn Sie Hilfe benötigen, wenden Sie sich an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
@@ -6213,7 +6203,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation>Der Server konnte Ihre Anfrage nicht bearbeiten, da einige Informationen falsch oder unvollständig waren. Versuchen Sie bitte, die Synchronisierung später zu wiederholen, oder wenden sich an Ihre Serveradministration.</translation>
+        <translation>Der Server konnte Ihre Anfrage nicht bearbeiten, da einige Informationen falsch oder unvollständig waren. Bitte die Synchronisierung später wiederholen, oder wenden sich an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
@@ -6223,17 +6213,17 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation>Diese Anfrage konnte nicht abgeschlossen werden, da einige erforderliche Bedingungen fehlen. Versuchen Sie es später noch einmal oder wenden sich für Hilfe an Ihre Serveradministration.</translation>
+        <translation>Diese Anfrage konnte nicht abgeschlossen werden, da einige erforderliche Bedingungen fehlen. Bitte später noch einmal versuchen, oder wenden Sie sich für Hilfe an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation>Sie haben zu viele Anfragen gestellt. Bitte warten Sie und versuchen es erneut. Wenn Sie diese Meldung wieder sehen, kann Ihnen Ihre Serveradministration helfen.</translation>
+        <translation>Sie haben zu viele Anfragen gestellt. Bitte warten Sie und versuchen es erneut. Wenn Sie diese Meldung erneut sehen, kann Ihnen Ihre Serveradministration helfen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation>Auf dem Server ist etwas schief gelaufen. Bitte versuchen Sie es erneut oder informieren die Serveradministration, falls das Problem weiterhin besteht.</translation>
+        <translation>Auf dem Server ist etwas schief gelaufen. Bitte erneut versuchen, oder die Serveradministration informieren, falls das Problem weiterhin besteht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
@@ -6243,12 +6233,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation>Wir haben Probleme, uns mit dem Server zu verbinden. Informieren Sie die Serveradministration, falls das Problem weiterhin besteht.</translation>
+        <translation>Es bestehen Probleme, bei der Verbindung zum Server. Informieren Sie die Serveradministration, falls das Problem weiterhin besteht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation>Der Server ist im Moment sehr beschäftigt. Versuchen Sie die Synchronisierung in ein paar Minuten zu wiederholen, oder wenden Sie sich in dringenden Fällen an Ihre Serveradministration.</translation>
+        <translation>Der Server ist im Moment ausgelastet. Bitte die Synchronisierung in ein paar Minuten wiederholen, oder wenden Sie sich in dringenden Fällen an Ihre Serveradministration.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
@@ -6263,7 +6253,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation>Der Server verfügt nicht über genügend Speicherplatz, um Ihre Anfrage zu bearbeiten. Wenden Sie sich an Ihre Serveradministration, um zu prüfen, wie viel Speicherkontigent ihr Benutzer hat.</translation>
+        <translation>Der Server verfügt nicht über genügend Speicherplatz, um Ihre Anfrage zu bearbeiten. Wenden Sie sich an Ihre Serveradministration, um zu prüfen, wie viel Speicherkontigent ihr Konto hat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
