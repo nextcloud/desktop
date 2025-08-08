@@ -640,6 +640,8 @@ public:
 
     [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
 
+    [[nodiscard]] PropagateRootDirectory* rootJob() const;
+
 private slots:
 
     void abortTimeout()
@@ -684,9 +686,9 @@ private:
     std::unique_ptr<PropagateUploadFileCommon> createUploadJob(SyncFileItemPtr item,
                                                                bool deleteExisting);
 
-    void pushDelayedUploadTask(SyncFileItemPtr item);
+    void pushDelayedTask(SyncFileItemPtr item);
 
-    void resetDelayedUploadTasks();
+    void resetDelayedTasks();
 
     static void adjustDeletedFoldersWithNewChildren(SyncFileItemVector &items);
 

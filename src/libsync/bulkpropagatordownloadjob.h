@@ -19,7 +19,7 @@ class BulkPropagatorDownloadJob : public PropagatorJob
     Q_OBJECT
 
 public:
-    explicit BulkPropagatorDownloadJob(OwncloudPropagator *propagator, PropagateDirectory *parentDirJob);
+    explicit BulkPropagatorDownloadJob(OwncloudPropagator *propagator, PropagateDirectory *parentDirJob, const std::deque<SyncFileItemPtr> &items);
 
     bool scheduleSelfOrChild() override;
 
@@ -44,7 +44,7 @@ private:
 
     void checkPropagationIsDone();
 
-    QList<SyncFileItemPtr> _filesToDownload;
+    std::deque<SyncFileItemPtr> _filesToDownload;
 
     QList<SyncFileItemPtr> _filesDownloading;
 
