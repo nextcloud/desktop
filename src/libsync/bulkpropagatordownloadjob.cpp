@@ -21,9 +21,9 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcBulkPropagatorDownloadJob, "nextcloud.sync.propagator.bulkdownload", QtInfoMsg)
 
 BulkPropagatorDownloadJob::BulkPropagatorDownloadJob(OwncloudPropagator *propagator,
-                                                     PropagateDirectory *parentDirJob)
+                                                     PropagateDirectory *parentDirJob, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob{propagator}
-    , _filesToDownload{}
+    , _filesToDownload{items}
     , _parentDirJob{parentDirJob}
 {
 }
