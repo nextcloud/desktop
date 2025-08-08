@@ -375,7 +375,7 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
                 auto job = createUploadJob(item, deleteExisting);
                 return job.release();
             } else {
-                pushDelayedUploadTask(item);
+                pushDelayedTask(item);
                 return nullptr;
             }
         }
@@ -423,12 +423,12 @@ std::unique_ptr<PropagateUploadFileCommon> OwncloudPropagator::createUploadJob(S
     return job;
 }
 
-void OwncloudPropagator::pushDelayedUploadTask(SyncFileItemPtr item)
+void OwncloudPropagator::pushDelayedTask(SyncFileItemPtr item)
 {
     _delayedTasks.push_back(item);
 }
 
-void OwncloudPropagator::resetDelayedUploadTasks()
+void OwncloudPropagator::resetDelayedTasks()
 {
     _scheduleDelayedTasks = false;
     _delayedTasks.clear();
@@ -539,7 +539,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
 
-    resetDelayedUploadTasks();
+    resetDelayedTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
@@ -709,23 +709,7 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
 
 void OwncloudPropagator::addBulkPropagateDownloadItem(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
 {
-    auto bulkPropagatorDownloadJob = static_cast<BulkPropagatorDownloadJob*>(nullptr);
-    const auto foundBulkPrpagatorDownloadJobIt = std::find_if(std::cbegin(directories.top().second->_subJobs._jobsToDo),
-                                                              std::cend(directories.top().second->_subJobs._jobsToDo),
-                                                              [](PropagatorJob *job)
-                                                              {
-                                                                  const auto bulkDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(job);
-                                                                  return bulkDownloadJob != nullptr;
-                                                              }
-                                                              );
-
-    if (foundBulkPrpagatorDownloadJobIt == std::cend(directories.top().second->_subJobs._jobsToDo)) {
-        bulkPropagatorDownloadJob = new BulkPropagatorDownloadJob(this, directories.top().second);
-        directories.top().second->appendJob(bulkPropagatorDownloadJob);
-    } else {
-        bulkPropagatorDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(*foundBulkPrpagatorDownloadJobIt);
-    }
-    bulkPropagatorDownloadJob->addDownloadItem(item);
+    pushDelayedTask(item);
 }
 
 void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
@@ -1146,6 +1130,11 @@ void OwncloudPropagator::removeFromBulkUploadBlackList(const QString &file)
 bool OwncloudPropagator::isInBulkUploadBlackList(const QString &file) const
 {
     return _bulkUploadBlackList.contains(file);
+}
+
+PropagateRootDirectory *OwncloudPropagator::rootJob() const
+{
+    return _rootJob.get();
 }
 
 PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
@@ -1715,7 +1704,7 @@ void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status st
 bool PropagateRootDirectory::scheduleDelayedJobs()
 {
     propagator()->setScheduleDelayedTasks(true);
-    auto bulkPropagatorJob = std::make_unique<BulkPropagatorJob>(propagator(), propagator()->delayedTasks());
+    auto bulkPropagatorJob = std::make_unique<BulkPropagatorDownloadJob>(propagator(), propagator()->rootJob(), propagator()->delayedTasks());
     propagator()->clearDelayedTasks();
     _subJobs.appendJob(bulkPropagatorJob.release());
     _subJobs._state = Running;

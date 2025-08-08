@@ -625,7 +625,7 @@ public:
 
     [[nodiscard]] bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 
-    [[nodiscard]] const std::deque<SyncFileItemPtr>& delayedTasks() const
+    [[nodiscard]] const QList<SyncFileItemPtr>& delayedTasks() const
     {
         return _delayedTasks;
     }
@@ -639,6 +639,8 @@ public:
     void removeFromBulkUploadBlackList(const QString &file);
 
     [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
+
+    [[nodiscard]] PropagateRootDirectory* rootJob() const;
 
 private slots:
 
@@ -684,9 +686,9 @@ private:
     std::unique_ptr<PropagateUploadFileCommon> createUploadJob(SyncFileItemPtr item,
                                                                bool deleteExisting);
 
-    void pushDelayedUploadTask(SyncFileItemPtr item);
+    void pushDelayedTask(SyncFileItemPtr item);
 
-    void resetDelayedUploadTasks();
+    void resetDelayedTasks();
 
     static void adjustDeletedFoldersWithNewChildren(SyncFileItemVector &items);
 
@@ -698,7 +700,7 @@ private:
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteFolder; // remote folder, ends with '/'
 
-    std::deque<SyncFileItemPtr> _delayedTasks;
+    QList<SyncFileItemPtr> _delayedTasks;
     bool _scheduleDelayedTasks = false;
 
     QSet<QString> &_bulkUploadBlackList;
