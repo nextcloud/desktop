@@ -679,27 +679,28 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     deleteLater();
 }
 
-void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
+void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *reply)
 {
-    const auto contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
     const auto invalidContentType = !contentType.contains("application/xml; charset=utf-8") &&
                                     !contentType.contains("application/xml; charset=\"utf-8\"") &&
                                     !contentType.contains("text/xml; charset=utf-8") &&
                                     !contentType.contains("text/xml; charset=\"utf-8\"");
-    const auto httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    auto msg = r->errorString();
+    const auto httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    auto errorString = _lsColJob->errorString();
 
-    qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
+    qCWarning(lcDiscovery) << "LSCOL job error" << reply->errorString() << httpCode << reply->error();
 
-    if (r->error() == QNetworkReply::NoError && invalidContentType) {
-        msg = tr("Server error: PROPFIND reply is not XML formatted!");
+    if (reply->error() == QNetworkReply::NoError && invalidContentType) {
+        errorString = tr("The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”");
+        qCWarning(lcDiscovery) << "Server error: PROPFIND reply is not XML formatted!";
     }
 
-    if (r->error() == QNetworkReply::ContentAccessDenied) {
+    if (reply->error() == QNetworkReply::ContentAccessDenied) {
         emit _account->termsOfServiceNeedToBeChecked();
     }
 
-    emit finished(HttpError{ httpCode, msg });
+    emit finished(HttpError{ httpCode, errorString });
     deleteLater();
 }
 

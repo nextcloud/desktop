@@ -2283,9 +2283,9 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 _dirItem->_errorString = results.error().message;
                 emit this->finished();
             } else {
+                qCWarning(lcDisco) << "Error:" << results.error().message;
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
-                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory \"%1\" : %2")
-                    .arg(_currentFolder._server, results.error().message), ErrorCategory::NetworkError);
+                emit _discoveryData->fatalError(results.error().message, ErrorCategory::NetworkError);
             }
         }
     });

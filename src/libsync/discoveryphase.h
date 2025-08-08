@@ -190,7 +190,7 @@ signals:
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
-    void lsJobFinishedWithErrorSlot(QNetworkReply *);
+    void lsJobFinishedWithErrorSlot(QNetworkReply *reply);
     void fetchE2eMetadata();
     void metadataReceived(const QJsonDocument &json, int statusCode);
     void metadataError(const QByteArray& fileId, int httpReturnCode);
