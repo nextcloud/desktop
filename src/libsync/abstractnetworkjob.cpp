@@ -303,11 +303,11 @@ QByteArray AbstractNetworkJob::requestId()
 QString AbstractNetworkJob::errorString() const
 {
     if (_timedout) {
-        return tr("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.");
+        return tr("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administration.");
     }
 
     if (!reply()) {
-        return tr("An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.");
+        return tr("An unexpected error occurred. Please try syncing again or contact your server administration if the issue continues.");
     }
 
     if (reply()->hasRawHeader("OC-ErrorString")) {
@@ -467,82 +467,82 @@ QString networkReplyErrorString(const QNetworkReply &reply)
     QString userFriendlyMessage;
     switch (httpStatus) {
         case 400: //Bad Request
-            userFriendlyMessage = QObject::tr("We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.");
+            userFriendlyMessage = QObject::tr("We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administration for help.");
             break;
         case 401: //Unauthorized
-            userFriendlyMessage = QObject::tr("You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.");
+            userFriendlyMessage = QObject::tr("You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administration.");
             break;
         case 403: //Forbidden
-            userFriendlyMessage = QObject::tr("You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.");
+            userFriendlyMessage = QObject::tr("You don’t have access to this resource. If you think this is a mistake, please contact your server administration.");
             break;
         case 404: //Not Found
-            userFriendlyMessage = QObject::tr("We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.");
+            userFriendlyMessage = QObject::tr("We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administration.");
             break;
         case 407: //Proxy Authentication Required
-            userFriendlyMessage = QObject::tr("It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.");
+            userFriendlyMessage = QObject::tr("It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administration.");
             break;
         case 408: //Request Timeout
-            userFriendlyMessage = QObject::tr("The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.");
+            userFriendlyMessage = QObject::tr("The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administration.");
             break;
         case 409: //Conflict
-            userFriendlyMessage = QObject::tr("Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.");
+            userFriendlyMessage = QObject::tr("Server files changed while you were working. Please try syncing again. Contact your server administration if the issue persists.");
             break;
         case 410: //Gone
-            userFriendlyMessage = QObject::tr("This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.");
+            userFriendlyMessage = QObject::tr("This folder or file isn’t available anymore. If you need assistance, please contact your server administration.");
             break;
         case 412: //Precondition failed
-            userFriendlyMessage = QObject::tr("The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.");
+            userFriendlyMessage = QObject::tr("The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administration.");
             break;
         case 413: //Payload Too Large
-            userFriendlyMessage = QObject::tr("The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.");
+            userFriendlyMessage = QObject::tr("The file is too big to upload. You might need to choose a smaller file or contact your server administration for assistance.");
             break;
         case 414: //URI Too Long
-            userFriendlyMessage = QObject::tr("The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.");
+            userFriendlyMessage = QObject::tr("The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administration for assistance.");
             break;
         case 415: //Unsupported Media Type
-            userFriendlyMessage = QObject::tr("This file type isn’t supported. Please contact your server administrator for assistance.");
+            userFriendlyMessage = QObject::tr("This file type isn’t supported. Please contact your server administration for assistance.");
             break;
         case 422: //Unprocessable Entity
-            userFriendlyMessage = QObject::tr("The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.");
+            userFriendlyMessage = QObject::tr("The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administration for assistance.");
             break;
         case 423: //Locked
-            userFriendlyMessage = QObject::tr("The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.");
+            userFriendlyMessage = QObject::tr("The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administration for assistance.");
             break;
         case 428: //Precondition Required
-            userFriendlyMessage = QObject::tr("This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.");
+            userFriendlyMessage = QObject::tr("This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administration for help.");
             break;
         case 429: //Too Many Requests
-            userFriendlyMessage = QObject::tr("You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.");
+            userFriendlyMessage = QObject::tr("You made too many requests. Please wait and try again. If you keep seeing this, your server administration can help.");
             break;
         case 500: //Internal Server Error
-            userFriendlyMessage = QObject::tr("Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.");
+            userFriendlyMessage = QObject::tr("Something went wrong on the server. Please try syncing again later, or contact your server administration if the issue persists.");
             break;
         case 501: //Not Implemented
-            userFriendlyMessage = QObject::tr("The server does not recognize the request method. Please contact your server administrator for help.");
+            userFriendlyMessage = QObject::tr("The server does not recognize the request method. Please contact your server administration for help.");
             break;
         case 502: //Bad Gateway
-            userFriendlyMessage = QObject::tr("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.");
+            userFriendlyMessage = QObject::tr("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administration can help you.");
             break;
         case 503: //Service Unavailable
-            userFriendlyMessage = QObject::tr("The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.");
+            userFriendlyMessage = QObject::tr("The server is busy right now. Please try syncing again in a few minutes or contact your server administration if it’s urgent.");
             break;
         case 504: //Gateway Timeout
-            userFriendlyMessage = QObject::tr("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.");
+            userFriendlyMessage = QObject::tr("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administration.");
             break;
         case 505: //HTTP Version Not Supported
-            userFriendlyMessage = QObject::tr("The server does not support the version of the connection being used. Contact your server administrator for help.");
+            userFriendlyMessage = QObject::tr("The server does not support the version of the connection being used. Contact your server administration for help.");
             break;
         case 507: //Insufficient Storage
-            userFriendlyMessage = QObject::tr("The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.");
+            userFriendlyMessage = QObject::tr("The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administration.");
             break;
         case 511: //Network Authentication Required
-            userFriendlyMessage = QObject::tr("Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.");
+            userFriendlyMessage = QObject::tr("Your network needs extra authentication. Please check your connection. Contact your server administration for help if the issue persists.");
             break;
         case 513: //Resource Not Authorized
-            userFriendlyMessage = QObject::tr("You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.");
+            userFriendlyMessage = QObject::tr("You don’t have permission to access this resource. If you believe this is an error, contact your server administration to ask for assistance.");
             break;
         default:
-            userFriendlyMessage = QObject::tr("An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.");
+            userFriendlyMessage = QObject::tr("An unexpected error occurred. Please try syncing again or contact contact your server administration if the issue continues.");
             break;
     }
 
