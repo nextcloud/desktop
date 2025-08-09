@@ -63,7 +63,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
-    , _userInfo(account.data(), false, true)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -86,6 +85,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
+    connect(_account->account().data(), &Account::rootFolderQuotaChanged, this, &User::slotQuotaChanged);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
 
@@ -121,9 +121,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
-
-    _userInfo.setActive(true);
-    connect(&_userInfo, &UserInfo::quotaUpdated, this, &User::slotUpdateQuota);
 }
 
 void User::checkNotifiedNotifications()
@@ -1196,13 +1193,14 @@ void User::slotFetchGroupFolders()
     connect(groupFolderListJob, &SimpleNetworkJob::finishedSignal, this, &User::slotGroupFoldersFetched);
 }
 
-void User::slotUpdateQuota(qint64 total, qint64 used)
+void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes)
 {
+    int64_t total = usedBytes + availableBytes;
     if (total <= 0 || !ConfigFile().showQuotaWarningNotifications()) {
         return;
     }
 
-    const auto percent = (double)used / (double)total * 100.0;
+    const auto percent = (double)usedBytes / (double)total * 100.0;
     const auto percentInt = qMin(qRound(percent), 100);
     qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
 
@@ -1222,7 +1220,6 @@ void User::slotUpdateQuota(qint64 total, qint64 used)
     if (threshold_passed > 0) {
         _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
 
-        const auto localFolderName = getFolder();
         _lastQuotaActivity._type = Activity::OpenSettingsNotificationType;
         _lastQuotaActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(threshold_passed));

@@ -154,7 +154,6 @@ public slots:
     void forceSyncNow() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
     void slotFetchGroupFolders();
-    void slotUpdateQuota(qint64 total, qint64 used);
 
 private slots:
     void slotPushNotificationsReady();
@@ -163,6 +162,7 @@ private slots:
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
     void slotGroupFoldersFetched(QNetworkReply *reply);
+    void slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
     void checkNotifiedNotifications();
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
@@ -190,7 +190,6 @@ private:
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
-    UserInfo _userInfo;
     
     QVariantList _trayFolderInfos;
 
