@@ -154,7 +154,6 @@ public slots:
     void forceSyncNow() const;
     void slotAccountCapabilitiesChangedRefreshGroupFolders();
     void slotFetchGroupFolders();
-    void slotUpdateQuota(qint64 total, qint64 used);
 
 private slots:
     void slotPushNotificationsReady();
@@ -191,7 +190,6 @@ private:
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
-    UserInfo _userInfo;
     
     QVariantList _trayFolderInfos;
 

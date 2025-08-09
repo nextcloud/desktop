@@ -63,7 +63,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
-    , _userInfo(account.data(), false, true)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -122,9 +121,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             showDesktopNotification(certificateNeedMigration);
         }
     });
-
-    _userInfo.setActive(true);
-    connect(&_userInfo, &UserInfo::quotaUpdated, this, &User::slotUpdateQuota);
 }
 
 void User::checkNotifiedNotifications()
