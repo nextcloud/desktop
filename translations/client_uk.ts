@@ -491,12 +491,12 @@ macOS може ігнорувати запит або він виконуват�
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер занадто довго відповідає. Перевірте з&apos;єднання та спробуйте синхронізувати знову. Якщо це не допомогло, зверніться до адміністратора сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Сталася несподівана помилка. Спробуйте синхронізувати ще раз або зверніться до адміністратора сервера, якщо проблема не зникне.</translation>
     </message>
 </context>
 <context>
@@ -1713,7 +1713,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>Сервер повернув несподівану відповідь, яку неможливо прочитати. Зверніться до адміністратора сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
