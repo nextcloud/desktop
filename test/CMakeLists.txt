@@ -140,6 +140,7 @@ nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
 
 nextcloud_add_test(Account)
+nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
 
