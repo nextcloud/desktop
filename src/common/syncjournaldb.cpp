@@ -723,11 +723,15 @@ bool SyncJournalDb::updateMetadataTableStructure()
         return false;
     }
 
-    const auto addColumn = [this, &columns, &re] (const QString &columnName, const QString &dataType, const bool withIndex = false) {
+    const auto addColumn = [this, &columns, &re] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
         const auto latin1ColumnName = columnName.toLatin1();
         if (columns.indexOf(latin1ColumnName) == -1) {
             SqlQuery query(_db);
-            const auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2;").arg(columnName).arg(dataType);
+            auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName).arg(dataType);
+            if (!defaultCommand.isEmpty()) {
+                request.append(QStringLiteral(" ") + defaultCommand);
+            }
+            request.append(QStringLiteral(";"));
             query.prepare(request.toLatin1());
             if (!query.exec()) {
                 sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);
@@ -851,8 +855,8 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("quotaBytesUsed"), QStringLiteral("BIGINT"));
-    addColumn(QStringLiteral("quotaBytesAvailable"), QStringLiteral("BIGINT"));
+    addColumn(QStringLiteral("quotaBytesUsed"), QStringLiteral("BIGINT"), false, QStringLiteral("DEFAULT -1 NOT NULL"));
+    addColumn(QStringLiteral("quotaBytesAvailable"), QStringLiteral("BIGINT"), false, QStringLiteral("DEFAULT -1 NOT NULL"));
 
     return re;
 }
