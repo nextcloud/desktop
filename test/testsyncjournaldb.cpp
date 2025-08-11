@@ -98,6 +98,35 @@ private slots:
         QVERIFY(!record.isValid());
     }
 
+    void testFolderQuota()
+    {
+        const auto bigFolderRecord = QByteArray("bigfolder");
+        SyncJournalFileRecord record;
+        record._path = bigFolderRecord;
+        record._inode = std::numeric_limits<quint32>::max() + 12ull;
+        record._modtime = dropMsecs(QDateTime::currentDateTime());
+        record._type = ItemTypeDirectory;
+        record._etag = "123123";
+        record._fileId = "abcd";
+        record._fileSize = 213089999;
+        QVERIFY(_db.setFileRecord(record));
+
+        SyncJournalFileRecord storedRecord;
+        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
+        QVERIFY(storedRecord == record);
+        // default values
+        QCOMPARE(storedRecord._folderQuota.bytesAvailable, -1);
+        QCOMPARE(storedRecord._folderQuota.bytesUsed, -1);
+
+        record._folderQuota.bytesUsed = 100;
+        record._folderQuota.bytesAvailable = 5000;
+        QVERIFY(_db.setFileRecord(record));
+        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
+        QVERIFY(storedRecord == record);
+        QCOMPARE(storedRecord._folderQuota.bytesAvailable, 5000);
+        QCOMPARE(storedRecord._folderQuota.bytesUsed, 100);
+    }
+
     void testFileRecordChecksum()
     {
         // Try with and without a checksum
