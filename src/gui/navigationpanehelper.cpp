@@ -92,10 +92,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
                 const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
                 const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
-                auto title = Utility::syncFolderDisplayName(folder->shortGuiLocalPath(), currentAppName);
-                if (AccountManager::instance()->accounts().size() > 1) {
-                    title = QStringLiteral("%1 - %2").arg(title, folder->accountState()->account()->shortcutName());
-                } 
+                const auto title = folder->sidebarDisplayName();
                 qCDebug(lcNavPane) << "Folder" << folder->cleanPath() << "will use shortcutname" << title;
 
                 const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
