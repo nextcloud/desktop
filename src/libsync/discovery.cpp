@@ -1085,7 +1085,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const
 {
     const auto unlimitedFreeSpace = -3;
-    if (item->_size == 0 || item->_direction != SyncFileItem::Up || item->isDirectory()) {
+    if (item->_size == 0 || item->_direction != SyncFileItem::Up || item->isDirectory() || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
         return unlimitedFreeSpace;
     }
 
@@ -1093,8 +1093,7 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
         return unlimitedFreeSpace;
     }
 
-    if (item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
-        && (serverEntry == FolderQuota::ServerEntry::Valid || !_dirItem)) {
+    if (serverEntry == FolderQuota::ServerEntry::Valid || !_dirItem) {
         return _folderQuota.bytesAvailable;
     }
 
