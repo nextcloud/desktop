@@ -94,7 +94,6 @@ NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> set
 NEXTCLOUD_CFAPI_EXPORT Result<void, QString> createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
 
 struct PlaceholdersInfo {
-    QFileInfo fileInfo;
     QString relativePath;
     std::wstring platformNativeRelativePath;
     QByteArray fileId;

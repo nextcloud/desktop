@@ -908,22 +908,14 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 
 OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QString &localBasePath, const QList<PlaceholdersInfo> &itemsInfo)
 {
-    auto filteredItemsInfo = QList<PlaceholdersInfo>{};
-    filteredItemsInfo.reserve(itemsInfo.size());
-
-    std::copy_if(itemsInfo.begin(), itemsInfo.end(), std::back_inserter(filteredItemsInfo), [] (const auto &onePlaceholderInfo) -> bool {
-        if (onePlaceholderInfo.modtime <= 0) {
-            qCWarning(lcCfApiWrapper()) << "Skip invalid modtime file: " << onePlaceholderInfo.relativePath << "modtime:" << onePlaceholderInfo.modtime;
-            return false;
-        }
-
-        return true;
-    });
     const auto stdWStringBasePath = localBasePath.toStdWString();
-    auto cloudEntry = std::make_unique<CF_PLACEHOLDER_CREATE_INFO[]>(filteredItemsInfo.size());
+    auto cloudEntry = std::make_unique<CF_PLACEHOLDER_CREATE_INFO[]>(itemsInfo.size());
 
-    for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
-        const auto &placeholderInfo = filteredItemsInfo[itemIndice];
+    for(auto itemIndice = 0; itemIndice < itemsInfo.size(); ++itemIndice) {
+        const auto &placeholderInfo = itemsInfo[itemIndice];
+        if (placeholderInfo.modtime <= 0) {
+            return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(placeholderInfo.relativePath).arg(placeholderInfo.modtime)};
+        }
 
         cloudEntry[itemIndice].FileIdentity = placeholderInfo.fileId.data();
         cloudEntry[itemIndice].FileIdentityLength = static_cast<DWORD>(placeholderInfo.fileId.length());
@@ -937,31 +929,35 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QStri
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.LastAccessTime);
         OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.ChangeTime);
 
-        if (placeholderInfo.fileInfo.isDir()) {
+        const auto fileInfo = QFileInfo(localBasePath + placeholderInfo.relativePath);
+        if (fileInfo.isDir()) {
             cloudEntry[itemIndice].Flags |= CF_PLACEHOLDER_CREATE_FLAG_DISABLE_ON_DEMAND_POPULATION;
             cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_DIRECTORY;
             cloudEntry[itemIndice].FsMetadata.FileSize.QuadPart = 0;
         }
+
+        qCDebug(lcCfApiWrapper) << "CfCreatePlaceholders" << stdWStringBasePath << placeholderInfo.platformNativeRelativePath << placeholderInfo.modtime << placeholderInfo.size;
+        qCDebug(lcCfApiWrapper) << QString::fromStdWString(cloudEntry[itemIndice].RelativeFileName);
     }
 
     auto numberOfCreatedPlaceholders = 0ul;
-    const qint64 result = CfCreatePlaceholders(stdWStringBasePath.data(), cloudEntry.get(), filteredItemsInfo.size(), CF_CREATE_FLAG_NONE, &numberOfCreatedPlaceholders);
+    const qint64 result = CfCreatePlaceholders(stdWStringBasePath.data(), cloudEntry.get(), itemsInfo.size(), CF_CREATE_FLAG_NONE, &numberOfCreatedPlaceholders);
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't create placeholders info" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << "number of placeholders created:" << numberOfCreatedPlaceholders;
 
-        for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
+        for(auto itemIndice = 0; itemIndice < itemsInfo.size(); ++itemIndice) {
             qCDebug(lcCfApiWrapper) << QString::fromStdWString(cloudEntry[itemIndice].RelativeFileName) << QString::fromWCharArray(_com_error(cloudEntry[itemIndice].Result).ErrorMessage());
         }
 
         return { "Couldn't create placeholder info" };
     }
 
-    for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
-        const auto &placeholderInfo = filteredItemsInfo[itemIndice];
-        const auto parentInfo = findPlaceholderInfo(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absolutePath()));
+    for(auto itemIndice = 0; itemIndice < itemsInfo.size(); ++itemIndice) {
+        const auto &placeholderInfo = itemsInfo[itemIndice];
+        const auto parentInfo = findPlaceholderInfo(QDir::toNativeSeparators(QFileInfo(localBasePath + placeholderInfo.relativePath).absolutePath()));
         const auto state = parentInfo && parentInfo->PinState == CF_PIN_STATE_UNPINNED ? CF_PIN_STATE_UNPINNED : CF_PIN_STATE_INHERIT;
 
-        if (!setPinState(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absoluteFilePath()), cfPinStateToPinState(state), NoRecurse)) {
+        if (!setPinState(placeholderInfo.relativePath, cfPinStateToPinState(state), NoRecurse)) {
             return { "Couldn't set the default inherit pin state" };
         }
     }
