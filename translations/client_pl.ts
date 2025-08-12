@@ -491,12 +491,12 @@ macOS może zignorować lub opóźnić tą prośbę.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer zbyt długo nie odpowiadał. Sprawdź połączenie i spróbuj ponownie zsynchronizować. Jeśli to nie pomoże, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpił nieoczekiwany błąd. Spróbuj ponownie zsynchronizować lub skontaktuj się z administratorem serwera, jeśli problem będzie się powtarzał.</translation>
     </message>
 </context>
 <context>
@@ -523,7 +523,8 @@ macOS może zignorować lub opóźnić tą prośbę.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Wykryto konto ze starszego klienta desktopowego. 
+Czy zaimportować konto?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
@@ -1713,7 +1714,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>Serwer zwrócił nieoczekiwaną odpowiedź, której nie można było odczytać. Skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
@@ -1972,19 +1973,19 @@ Może to być problem z bibliotekami OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 miesiąc temu</numerusform><numerusform>%1 miesiące temu</numerusform><numerusform>%1 miesięcy temu</numerusform><numerusform>%1 miesięcy temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 rok temu</numerusform><numerusform>%1 lata temu</numerusform><numerusform>%1 lat temu</numerusform><numerusform>%1 lat temu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Zablokowane przez %1 – Wygasa za %2 minutę</numerusform><numerusform>Zablokowane przez %1 – Wygasa za %2 minuty</numerusform><numerusform>Zablokowane przez %1 – Wygasa za %2 minut</numerusform><numerusform>Zablokowane przez %1 – Wygasa za %2 minut</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2615,7 +2616,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Oczekiwanie na %n inny folder…</numerusform><numerusform>Oczekiwanie na %n inne folderów…</numerusform><numerusform>Oczekiwanie na %n innych folderów…</numerusform><numerusform>Oczekiwanie na %n innych folderów…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3292,12 +3293,12 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Import ze starszej wersji</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz konta do zaimportowania ze starszej konfiguracji:</translation>
     </message>
 </context>
 <context>
@@ -4967,7 +4968,7 @@ Serwer odpowiedział błędem: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Wygasa za %1 minutę</numerusform><numerusform>Wygasa za %1 minuty</numerusform><numerusform>Wygasa za %1 minut</numerusform><numerusform>Wygasa za %1 minut</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5566,7 +5567,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n powiadomienie</numerusform><numerusform>%n powiadomienia</numerusform><numerusform>%n powiadomień</numerusform><numerusform>%n powiadomień</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -6142,132 +6143,132 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Nie mogliśmy przetworzyć Twojego żądania. Spróbuj ponownie później. Jeśli problem będzie się powtarzał, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Musisz się zalogować, aby kontynuować. Jeśli masz problemy z danymi logowania, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Nie masz dostępu do tego zasobu. Jeśli uważasz, że to pomyłka, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Nie znaleziono szukanego zasobu. Mógł zostać przeniesiony lub usunięty. W razie problemów skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Wygląda na to, że używasz proxy wymagającego uwierzytelnienia. Sprawdź ustawienia proxy i dane logowania. W razie problemów skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Żądanie trwa dłużej niż zwykle. Spróbuj ponownie zsynchronizować. Jeśli to nie pomoże, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki na serwerze zostały zmienione podczas pracy. Spróbuj ponownie zsynchronizować. Jeśli problem będzie się powtarzał, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Ten folder lub plik nie jest już dostępny. W razie potrzeby skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można ukończyć żądania, ponieważ nie spełniono wymaganych warunków. Spróbuj ponownie później. W razie potrzeby skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Plik jest zbyt duży do przesłania. Wybierz mniejszy plik lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Adres użyty do wykonania żądania jest zbyt długi, aby serwer mógł go obsłużyć. Skróć przesyłane informacje lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Ten typ pliku nie jest obsługiwany. Skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie mógł przetworzyć żądania, ponieważ niektóre informacje były nieprawidłowe lub niekompletne. Spróbuj ponownie później lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Zasób, do którego próbujesz uzyskać dostęp, jest obecnie zablokowany i nie może być modyfikowany. Spróbuj później lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można ukończyć żądania, ponieważ brakuje wymaganych warunków. Spróbuj ponownie później lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation type="unfinished"/>
+        <translation>Wysłano zbyt wiele żądań. Odczekaj chwilę i spróbuj ponownie. Jeśli problem będzie się powtarzał, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpił błąd na serwerze. Spróbuj ponownie później lub skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie rozpoznaje metody żądania. Skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie rozpoznaje metody żądania. Skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer jest obecnie zajęty. Spróbuj ponownie za kilka minut lub skontaktuj się z administratorem serwera, jeśli to pilne.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Połączenie z serwerem trwa zbyt długo. Spróbuj ponownie później. W razie potrzeby skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie obsługuje wersji używanego połączenia. Skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie ma wystarczającej ilości miejsca, aby zrealizować żądanie. Sprawdź przydział miejsca użytkownika, kontaktując się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Twoja sieć wymaga dodatkowego uwierzytelnienia. Sprawdź połączenie. W razie potrzeby skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Nie masz uprawnień do tego zasobu. Jeśli uważasz, że to błąd, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpił nieoczekiwany błąd. Spróbuj ponownie zsynchronizować lub skontaktuj się z administratorem serwera, jeśli problem będzie się powtarzał.</translation>
     </message>
 </context>
 <context>
@@ -6281,7 +6282,7 @@ Serwer odpowiedział błędem: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 plik w konflikcie</numerusform><numerusform>%1 pliki w konflikcie</numerusform><numerusform>%1 plików w konflikcie</numerusform><numerusform>%1 plików w konflikcie</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6769,32 +6770,32 @@ Serwer odpowiedział błędem: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n rok</numerusform><numerusform>%n lata</numerusform><numerusform>%n lat</numerusform><numerusform>%n lat</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n miesiąc</numerusform><numerusform>%n miesiące</numerusform><numerusform>%n miesięcy</numerusform><numerusform>%n miesięcy</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dzień</numerusform><numerusform>%n dni</numerusform><numerusform>%n dni</numerusform><numerusform>%n dni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n godzinę</numerusform><numerusform>%n godziny</numerusform><numerusform>%n godzin</numerusform><numerusform>%n godzin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>

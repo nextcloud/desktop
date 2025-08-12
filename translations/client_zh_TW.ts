@@ -491,12 +491,12 @@ macOS 可能會忽略或延遲此請求。</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回應時間太長。請檢查您的連線並再次嘗試同步。若仍無法運作，請聯絡您的伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>發生意外錯誤。請再次嘗試同步，若問題持續，請聯絡您的伺服器管理員。</translation>
     </message>
 </context>
 <context>
@@ -1715,7 +1715,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回傳了無法讀取的預料之外的回應。請聯絡您的伺服器管理員。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
