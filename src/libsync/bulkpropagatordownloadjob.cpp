@@ -110,9 +110,34 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    start();
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+        Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFileDehydration || fileToDownload->_type == ItemTypeVirtualFile);
 
-    _state = Finished;
+        if (propagator()->localFileNameClash(fileToDownload->_file)) {
+            _parentDirJob->appendTask(fileToDownload);
+            finalizeOneFile(fileToDownload);
+            qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because it is non virtual!";
+            abortWithError(fileToDownload, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
+            return false;
+        }
+    }
+
+    const auto &vfs = propagator()->syncOptions()._vfs;
+    Q_ASSERT(vfs && vfs->mode() == Vfs::WindowsCfApi);
+
+    const auto r = vfs->createPlaceholders(_filesToDownload);
+
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+        if (!updateMetadata(fileToDownload)) {
+            return false;
+        }
+
+        if (!fileToDownload->_remotePerm.isNull() && !fileToDownload->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(fileToDownload->_file), true);
+        }
+        finalizeOneFile(fileToDownload);
+    }
 
     return false;
 }
