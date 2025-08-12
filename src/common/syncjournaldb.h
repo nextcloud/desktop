@@ -399,6 +399,7 @@ private:
     [[nodiscard]] bool updateDatabaseStructure();
     [[nodiscard]] bool updateMetadataTableStructure();
     [[nodiscard]] bool updateErrorBlacklistTableStructure();
+    [[nodiscard]] bool removeColumn(const QString &columnName);
     bool sqlFail(const QString &log, const SqlQuery &query);
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();

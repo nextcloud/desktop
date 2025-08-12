@@ -712,6 +712,20 @@ bool SyncJournalDb::updateDatabaseStructure()
     return true;
 }
 
+bool SyncJournalDb::removeColumn(const QString &columnName)
+{
+    SqlQuery query(_db);
+    const auto request = QStringLiteral("ALTER TABLE metadata DROP COLUMN %1;").arg(columnName);
+    query.prepare(request.toLatin1());
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("update metadata structure: drop %1 column").arg(columnName), query);
+        return false;
+    }
+
+    commitInternal(QStringLiteral("update database structure: drop %1 column").arg(columnName));
+    return true;
+}
+
 bool SyncJournalDb::updateMetadataTableStructure()
 {
     auto columns = tableColumns("metadata");
@@ -741,21 +755,6 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
 
         return !query.nullValue(0);
-    };
-
-    const auto removeColumn = [this, &re, &columns] (const QString &columnName) -> bool {
-        SqlQuery query(_db);
-        const auto request = QStringLiteral("ALTER TABLE metadata DROP COLUMN %1;").arg(columnName);
-        query.prepare(request.toLatin1());
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("update metadata structure: drop %1 column").arg(columnName), query);
-            re = false;
-            return false;
-        }
-        //update list
-        columns = tableColumns("metadata");
-        commitInternal(QStringLiteral("update database structure: drop %1 column").arg(columnName));
-        return true;
     };
 
     const auto addColumn = [this, &re, &columnExists] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
@@ -897,13 +896,15 @@ bool SyncJournalDb::updateMetadataTableStructure()
         const auto bigInt = QStringLiteral("BIGINT");
 
         if (columnExists(quotaBytesUsed) && !hasDefaultSet(quotaBytesUsed)) {
-            removeColumn(quotaBytesUsed);
+            re = removeColumn(quotaBytesUsed);
         }
-        addColumn(quotaBytesUsed, bigInt, false, defaultCommand);
 
         if (columnExists(quotaBytesAvailable) && !hasDefaultSet(quotaBytesAvailable)) {
-            removeColumn(quotaBytesAvailable);
+            re = removeColumn(quotaBytesAvailable);
         }
+
+        columns = tableColumns("metadata");
+        addColumn(quotaBytesUsed, bigInt, false, defaultCommand);
         addColumn(quotaBytesAvailable, bigInt, false, defaultCommand);
     }
 
