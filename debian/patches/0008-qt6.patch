@@ -52,10 +52,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..f40c5a62a
+index 000000000..ea3d16187
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,259 @@
+@@ -0,0 +1,273 @@
 +
 +#pragma once
 +
@@ -148,6 +148,20 @@ index 000000000..f40c5a62a
 +#define QLatin1StringOrView QLatin1StringView
 +#endif
 +
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 4, 0)
++namespace Qt { namespace StringLiterals {
++
++inline QLatin1StringOrView operator""_L1(const char *str, size_t size)
++{
++    return QLatin1StringOrView(str, size);
++}
++
++} }
++#endif
 +
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
@@ -1013,6 +1027,18 @@ index 850e9c919..fc0371170 100644
  
  using namespace OCC;
  
+diff --git a/test/testfolder.cpp b/test/testfolder.cpp
+index b45cf4911..060f9aca0 100644
+--- a/test/testfolder.cpp
++++ b/test/testfolder.cpp
+@@ -12,6 +12,7 @@
+ 
+ #include "accountstate.h"
+ #include "common/vfs.h"
++#include "common/qtcompat.h"
+ #include "folder.h"
+ 
+ #include "account.h"
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
 index c585ac618..cb0a4f741 100644
 --- a/test/testsyncengine.cpp
