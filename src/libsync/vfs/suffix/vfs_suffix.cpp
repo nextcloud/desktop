@@ -108,7 +108,7 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<void, QString> VfsSuffix::createPlaceholders(const QList<SyncFileItemPtr> &items)
+Result<void, QString> VfsSuffix::createPlaceholders(const std::deque<SyncFileItemPtr> &items)
 {
     auto result = Result<void, QString>{};
 

@@ -35,7 +35,7 @@ public:
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
-    Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &items) override;
+    Result<void, QString> createPlaceholders(const std::deque<SyncFileItemPtr> &items) override;
 
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
     Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &, UpdateMetadataTypes updateType) override;

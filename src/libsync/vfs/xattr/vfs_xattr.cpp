@@ -97,7 +97,7 @@ Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
     return xattr::addNextcloudPlaceholderAttributes(path);
 }
 
-Result<void, QString> VfsXAttr::createPlaceholders(const QList<SyncFileItemPtr> &items)
+Result<void, QString> VfsXAttr::createPlaceholders(const std::deque<SyncFileItemPtr> &items)
 {
     auto result = Result<void, QString>{};
 

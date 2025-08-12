@@ -46,8 +46,6 @@ private:
 
     std::deque<SyncFileItemPtr> _filesToDownload;
 
-    QList<SyncFileItemPtr> _filesDownloading;
-
     PropagateDownloadEncrypted *_downloadEncryptedHelper = nullptr;
 
     PropagateDirectory *_parentDirJob = nullptr;

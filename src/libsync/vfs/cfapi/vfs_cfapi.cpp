@@ -211,7 +211,7 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
     return result;
 }
 
-Result<void, QString> VfsCfApi::createPlaceholders(const QList<SyncFileItemPtr> &items)
+Result<void, QString> VfsCfApi::createPlaceholders(const std::deque<SyncFileItemPtr> &items)
 {
     auto result = Result<void, QString>{};
 

@@ -14,6 +14,7 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
+#include <deque>
 #include <memory>
 
 using csync_file_stat_t = struct csync_file_stat_s;
@@ -190,7 +191,7 @@ public:
     [[nodiscard]] virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
     /// Create a new dehydrated list of placeholders
-    [[nodiscard]] virtual Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &items) = 0;
+    [[nodiscard]] virtual Result<void, QString> createPlaceholders(const std::deque<SyncFileItemPtr> &items) = 0;
 
     /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
      *
@@ -329,7 +330,7 @@ public:
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
 
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
-    Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &) override { return {}; }
+    Result<void, QString> createPlaceholders(const std::deque<SyncFileItemPtr> &) override { return {}; }
 
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
     Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, const UpdateMetadataTypes) override { return ConvertToPlaceholderResult::Ok; }
