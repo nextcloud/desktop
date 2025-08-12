@@ -213,15 +213,14 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 
 Result<void, QString> VfsCfApi::createPlaceholders(const std::deque<SyncFileItemPtr> &items)
 {
-    auto result = Result<void, QString>{};
+    const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath);
 
+    auto allPlaceholdersInfo = QList<cfapi::PlaceholdersInfo>{};
     for (const auto &oneItem : items) {
-        const auto itemResult = createPlaceholder(*oneItem);
-        if (!itemResult) {
-            result = itemResult;
-            break;
-        }
+        allPlaceholdersInfo.emplace_back(oneItem->_file, QDir::toNativeSeparators(oneItem->_file).toStdWString(), oneItem->_fileId, oneItem->_modtime, oneItem->_size);
     }
+
+    const auto result = cfapi::createPlaceholdersInfo(localPath, {allPlaceholdersInfo});
 
     return result;
 }
