@@ -895,16 +895,20 @@ bool SyncJournalDb::updateMetadataTableStructure()
         const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
         const auto defaultCommand = QStringLiteral("DEFAULT -1 NOT NULL");
         const auto bigInt = QStringLiteral("BIGINT");
+        auto result = false;
 
         if (columnExists(quotaBytesUsed) && !hasDefaultValue(quotaBytesUsed)) {
-            re = removeColumn(quotaBytesUsed);
+            result = removeColumn(quotaBytesUsed);
         }
 
         if (columnExists(quotaBytesAvailable) && !hasDefaultValue(quotaBytesAvailable)) {
-            re = removeColumn(quotaBytesAvailable);
+            result = removeColumn(quotaBytesAvailable);
         }
 
-        columns = tableColumns("metadata");
+        if (result) {
+            columns = tableColumns("metadata");
+        }
+
         addColumn(quotaBytesUsed, bigInt, false, defaultCommand);
         addColumn(quotaBytesAvailable, bigInt, false, defaultCommand);
     }
