@@ -712,6 +712,24 @@ bool SyncJournalDb::updateDatabaseStructure()
     return true;
 }
 
+bool SyncJournalDb::hasDefaultValue(const QString &columnName)
+{
+    SqlQuery query(_db);
+    const auto selectDefault = QStringLiteral("SELECT dflt_value FROM pragma_table_info('metadata') WHERE name = '%1';").arg(columnName);
+    query.prepare(selectDefault.toLatin1());
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("check default value for: %1").arg(columnName), query);
+        return false;
+    }
+
+    if (const auto result = query.next();!result.ok || !result.hasData) {
+        qCWarning(lcDb) << "database error:" << query.error();
+        return false;
+    }
+
+    return !query.nullValue(0);
+}
+
 bool SyncJournalDb::removeColumn(const QString &columnName)
 {
     SqlQuery query(_db);
@@ -738,23 +756,6 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     const auto columnExists = [&columns] (const QString &columnName) -> bool {
         return columns.indexOf(columnName.toLatin1()) > -1;
-    };
-
-    const auto hasDefaultSet = [this] (const QString &columnName) -> bool {
-        SqlQuery query(_db);
-        const auto selectDefault = QStringLiteral("SELECT dflt_value FROM pragma_table_info('metadata') WHERE name = '%1';").arg(columnName);
-        query.prepare(selectDefault.toLatin1());
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("check default value for: %1").arg(columnName), query);
-            return false;
-        }
-
-        if (const auto result = query.next();!result.ok || !result.hasData) {
-            qCWarning(lcDb) << "database error:" << query.error();
-            return false;
-        }
-
-        return !query.nullValue(0);
     };
 
     const auto addColumn = [this, &re, &columnExists] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
@@ -895,11 +896,11 @@ bool SyncJournalDb::updateMetadataTableStructure()
         const auto defaultCommand = QStringLiteral("DEFAULT -1 NOT NULL");
         const auto bigInt = QStringLiteral("BIGINT");
 
-        if (columnExists(quotaBytesUsed) && !hasDefaultSet(quotaBytesUsed)) {
+        if (columnExists(quotaBytesUsed) && !hasDefaultValue(quotaBytesUsed)) {
             re = removeColumn(quotaBytesUsed);
         }
 
-        if (columnExists(quotaBytesAvailable) && !hasDefaultSet(quotaBytesAvailable)) {
+        if (columnExists(quotaBytesAvailable) && !hasDefaultValue(quotaBytesAvailable)) {
             re = removeColumn(quotaBytesAvailable);
         }
 
