@@ -14,6 +14,7 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
+#include <deque>
 #include <memory>
 
 using csync_file_stat_t = struct csync_file_stat_s;
