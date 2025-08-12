@@ -110,13 +110,33 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
     _state = Running;
 
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
-        qCDebug(lcBulkPropagatorDownloadJob) << "Scheduling bulk propagator job:" << this << "and starting download of item"
-                                             << "with file:" << fileToDownload->_file << "with size:" << fileToDownload->_size;
-        _filesDownloading.push_back(fileToDownload);
-        start(fileToDownload);
+        Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFileDehydration || fileToDownload->_type == ItemTypeVirtualFile);
+
+        if (propagator()->localFileNameClash(fileToDownload->_file)) {
+            _parentDirJob->appendTask(fileToDownload);
+            finalizeOneFile(fileToDownload);
+            qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because it is non virtual!";
+            abortWithError(fileToDownload, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
+            return false;
+        }
     }
 
-    _filesToDownload.clear();
+    const auto &vfs = propagator()->syncOptions()._vfs;
+    Q_ASSERT(vfs && vfs->mode() == Vfs::WindowsCfApi);
+
+    const auto r = vfs->createPlaceholders(_filesToDownload);
+
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+        if (!updateMetadata(fileToDownload)) {
+            return false;
+        }
+
+        if (!fileToDownload->_remotePerm.isNull() && !fileToDownload->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(fileToDownload->_file), true);
+        }
+        finalizeOneFile(fileToDownload);
+    }
 
     checkPropagationIsDone();
 
@@ -168,19 +188,19 @@ void BulkPropagatorDownloadJob::startAfterIsEncryptedIsChecked(const SyncFileIte
 
 void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
 {
-    const auto foundIt = std::find_if(std::cbegin(_filesDownloading), std::cend(_filesDownloading), [&file](const auto &fileDownloading) {
+    const auto foundIt = std::find_if(std::cbegin(_filesToDownload), std::cend(_filesToDownload), [&file](const auto &fileDownloading) {
         return fileDownloading == file;
     });
-    if (foundIt != std::cend(_filesDownloading)) {
+    if (foundIt != std::cend(_filesToDownload)) {
         emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
-        _filesDownloading.erase(foundIt);
+        _filesToDownload.erase(foundIt);
     }
     checkPropagationIsDone();
 }
 
 void BulkPropagatorDownloadJob::checkPropagationIsDone()
 {
-    if (_filesToDownload.empty()  && _filesDownloading.empty()) {
+    if (_filesToDownload.empty()  && _filesToDownload.empty()) {
         qCInfo(lcBulkPropagatorDownloadJob) << "finished with status" << SyncFileItem::Status::Success;
         emit finished(SyncFileItem::Status::Success);
         propagator()->scheduleNextJob();
@@ -209,17 +229,8 @@ void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
     if (!propagator()->account()->capabilities().clientSideEncryptionAvailable() || !parentRec.isValid() || !parentRec.isE2eEncrypted()) {
         startAfterIsEncryptedIsChecked(item);
     } else {
-        _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, item, this);
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, this, [this, &item] {
-            startAfterIsEncryptedIsChecked(item);
-        });
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, this, [this, &item] {
-            abortWithError(
-                item,
-                SyncFileItem::NormalError,
-                tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(item->_file)));
-        });
-        _downloadEncryptedHelper->start();
+        Q_ASSERT(false);
+        qCCritical(lcBulkPropagatorDownloadJob()) << "no encrypted fiels should be created via bulk download";
     }
 }
 
