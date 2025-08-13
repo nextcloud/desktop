@@ -2054,30 +2054,30 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1이 삭제되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1이 업데이트 되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1의 이름이 %2로 변경되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1이 %2로 이동되었습니다.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
@@ -2097,129 +2097,129 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1과 %n 다른 파일(들)이 추가되었습니다.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1이 추가되었습니다.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1과 %n 다른 파일(들)이 업데이트 되었습니다.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1의 이름이 %2로 변경되었고 %n 다른 파일(들)의 이름이  변경되었습니다.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1이 %2로 이동되었고 %n 다른 파일(들)의 이동되었습니다.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1과 %n 다른 파일(들)의 동기화가 충돌합니다.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1의 동기화가 충돌합니다. 충돌하는 파일을 확인하십시오.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1과 %n 다른 파일(들)이 오류때문에 동기화되지 않았습니다. 자세한 내용은 로그를 참조하십시오.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1이 오류때문에 동기화되지 않았습니다. 자세한 내용은 로그를 참조하십시오.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1과 %n 다른 파일(들)이 잠겨있습니다.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
         <translation>%1이 잠겨있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>Sync Activity</source>
         <translation>동기화 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>시스템 제외 파일을 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB보다 큰 폴더가 추가되었습니다: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>외부 저장소의 폴더가 추가되었습니다.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>다운로드하려면 설정으로 이동하여 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1464"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>폴더가 설정된 크기 제한인 %1MB를 초과했습니다: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>계속 동기화</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1483"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>동기화 중지</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>%1 폴더가 설정된 크기 제한인 %2MB를 초과했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1495"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>이 폴더의 동기화를 중단하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 폴더가 생성되었으나 이전에 동기화에서 제외되었습니다. 그 안의 데이터는 동기화되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1573"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 파일이 생성되었으나 이전에 동기화에서 제외되었습니다. 동기화되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1584"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2232,12 +2232,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1622"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>가상 파일 다운로드에 실패했으며, 코드는 &quot;%1&quot;, 상태는 &quot;%2&quot;, 오류 메시지는 &quot;%3&quot;입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1716"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2246,7 +2246,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 아니면 &apos;%1&apos; 폴더를 업로드하여 삭제된 모든 파일들을 복원할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1717"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2255,22 +2255,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 아니면 서버에서 이들을 다운로드하여 삭제된 모든 파일들을 복원할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1718"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
         <translation>파일을 모두 제거합니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1729"/>
         <source>Proceed with Deletion</source>
         <translation>삭제 진행</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
         <translation>서버로 파일을 복원</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
         <translation>서버로부터 파일을 복원</translation>
     </message>

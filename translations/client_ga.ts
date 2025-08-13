@@ -2057,30 +2057,30 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Baineadh % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Nuashonraíodh % 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Athainmníodh % 1 go % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 has been moved to %2.</source>
         <translation>Bogadh % 1 go % 2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform><numerusform>Baineadh %1 agus %n comhad eile.</numerusform></translation>
     </message>
@@ -2100,129 +2100,129 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <translation>Roghnaigh suíomh eile le do thoil. Ní fillteán inléite é %1.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform><numerusform>% 1 agus %n comhad(í) eile curtha leis.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>% 1 curtha leis.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform><numerusform>Nuashonraíodh % 1 agus %n comhad(í) eile.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform><numerusform>Athainmníodh % 1 go % 2 agus %n comhad(í) eile athainmnithe.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform><numerusform>Bogadh % 1 go % 2 agus bogadh %n comhad eile.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform><numerusform>Tá coinbhleachtaí sioncronaithe ag % 1 agus ag %n comhad eile.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>Tá coinbhleacht sioncronaithe ag % 1. Seiceáil an comhad coinbhleachta le do thoil!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform><numerusform>Níorbh fhéidir % 1 agus %n comhad eile a shioncronú de bharr earráidí. Féach ar an loga le haghaidh sonraí.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Níorbh fhéidir % 1 a shioncronú de bharr earráide. Féach ar an loga le haghaidh sonraí.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform><numerusform>Tá % 1 agus %n comhad(í) eile glasáilte faoi láthair.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
         <translation>Tá % 1 faoi ghlas faoi láthair.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>Sync Activity</source>
         <translation>Gníomhaíocht Sioncronaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>Níorbh fhéidir an córas a léamh agus an comhad a eisiamh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Cuireadh fillteán nua níos mó ná % 1 MB leis: % 2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Tá fillteán ó stóras seachtrach curtha leis.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Téigh isteach sna socruithe chun é a roghnú más mian leat é a íoslódáil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1464"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>Coinnigh sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1483"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>Stop sioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1495"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar mhaith leat stop a chur le sioncronú an fhillteáin seo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Cruthaíodh fillteán % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar sonraí taobh istigh de a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1573"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Cruthaíodh comhad % 1 ach fágadh as an áireamh é ón sioncronú roimhe seo. Ní dhéanfar é a shioncronú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1584"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2235,12 +2235,12 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1622"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1716"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2249,7 +2249,7 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 Nó, is féidir leat gach comhad scriosta a chur ar ais trí uaslódáil ó fhillteán &apos;%1&apos; go dtí an freastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1717"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2258,22 +2258,22 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n-íoslódáil ón bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1718"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
         <translation>Bain gach comhad?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1729"/>
         <source>Proceed with Deletion</source>
         <translation>Lean ar aghaidh leis an Scriosadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
         <translation>Athchóirigh Comhaid go Freastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
         <translation>Athchóirigh Comhaid ón bhfreastalaí</translation>
     </message>

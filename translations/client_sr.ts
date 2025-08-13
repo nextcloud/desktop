@@ -2056,30 +2056,30 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 је уклоњен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 је ажуриран.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 је преименован у %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 је премештен у %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 and %n други фајл су уклоњени.</numerusform><numerusform>%1 and %n других фајлова су уклоњени.</numerusform><numerusform>%1 and %n других фајлова су уклоњени.</numerusform></translation>
     </message>
@@ -2099,129 +2099,129 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Молимо вас да изаберете неку другу локацију. %1 није фолдер који може да се чита.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>Додат је %1 још %n други фајл.</numerusform><numerusform>Додат је %1 још %n друга фајла.</numerusform><numerusform>Додат је %1 још %n других фајлова.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>Додат је %1.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 и још %n други фајл је ажуриран.</numerusform><numerusform>%1 и још %n друга фајла су ажурирани.</numerusform><numerusform>%1 и још %n других фајлова су ажурирани.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 је преименован у %2, а још %n фајл је такође преименован.</numerusform><numerusform>%1 је преименован у %2, а још %n фајла су такође преименована.</numerusform><numerusform>%1 је преименован у %2, а још %n фајлова је такође преименовано.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 је померен у %2, а још %n фајл је такође померен.</numerusform><numerusform>%1 је померен у %2, а још %n фајла су такође померена.</numerusform><numerusform>%1 је померен у %2, а још %n фајлова је такође померено.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 и још %n фајл имају конфликте.</numerusform><numerusform>%1 и још %n друга фајла имају конфликте.</numerusform><numerusform>%1 и још %n других фајлова имају конфликте.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 има конфликт приликом синхронизације. Проверите конфликтни фајл!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 и још %n фајл није синхронизован због грешке. Погледајте записник за детаље.</numerusform><numerusform>%1 и још %n фајла нису синхронизовани због грешке. Погледајте записник за детаље.</numerusform><numerusform>%1 и још %n фајлова нису синхронизовани због грешке. Погледајте записник за детаље.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 није синхронизован због грешке. Погледајте записник за детаље.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 и још %n други фајл је тренутно закључан.</numerusform><numerusform>%1 и још %n друга фајла су тренутно закључана.</numerusform><numerusform>%1 и још %n других фајлова су тренутно закључани.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
         <translation>%1 је тренутно закључан.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>Sync Activity</source>
         <translation>Активност синхронизације</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>Не могу да прочитам системски списак за игнорисање</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Додата је нова фасцикла већа од %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Додата је фасцикла са спољног складишта.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Идите у поставке и означите ако желите да ја преузмете.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1464"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Фолдер је прешао постављено ограничење величине од %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>Настави синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1483"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>Заустави синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Фолдер %1 је прешао постављено ограничење величине од %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1495"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Желите ли да зауставите синхронизацију овог фолдера?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Фасцикла %1 је креирана, али је још раније искључена из синхронизације. Подаци унутар ње неће бити синхронизовани.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1573"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Фајл %1 је креиран, али је још раније искључен из синхронизације. Неће бити синхронизован.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1584"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2234,12 +2234,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1622"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Није успело виртуелно преузимање фајла, кôд „%1”, статус „%2” и порука о грешки „%3~</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1716"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2248,7 +2248,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 У супротном, све обрисане фајлове можете да обновите тако што их отпремите из фолдера ’%1’ на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1717"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2257,22 +2257,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 У супротном, све обрисане фајлове можете да обновите тако што их поново преузмете са сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1718"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
         <translation>Желите ли да уклоните све фајлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1729"/>
         <source>Proceed with Deletion</source>
         <translation>Настави са брисањем</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
         <translation>Врати фајлове на сервер</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
         <translation>Врати фајлове са сервера</translation>
     </message>

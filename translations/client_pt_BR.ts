@@ -2057,30 +2057,30 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 foi removido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 foi atualizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 foi renomeado para %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 foi movido para %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 e %n outro arquivo foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
     </message>
@@ -2100,129 +2100,129 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <translation>Por favor, escolha um local diferente. %1 não é uma pasta legível.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 e %n outro arquivo foram adicionados.</numerusform><numerusform>%1 e %n outros arquivos foram adicionados.</numerusform><numerusform>%1 e %n outros arquivos foram adicionados. </numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 foi adicionado.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 e %n outro arquivo foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 foi renomeado para %2 e %n outro arquivo foi renomeado.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 foi movido para %2 e %n outro arquivo foi movido.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 tem e %n outro arquivo têm conflitos na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos têm conflitos na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos têm conflitos na sincronização.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 tem um conflito na sincronização. Verifique o arquivo conflitante!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 e %n outro arquivo não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivos não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivos não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 não pôde ser sincronizado devido a um erro. Veja o log para obter detalhes.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
         <translation>%1 está atualmente bloqueado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>Sync Activity</source>
         <translation>Atividade de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>Não foi possível ler o arquivo de exclusão do sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Uma nova pasta maior que %1 MB foi adicionada: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Uma pasta de um armazenamento externo foi adicionada.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Por favor, vá às configurações para selecioná-la se desejar baixá-la.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1464"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Uma pasta ultrapassou o limite de tamanho de pasta definido de %1 MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation>Continuar sincronizando</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1483"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation>Parar de sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>A pasta %1 ultrapassou o limite de tamanho de pasta definido de %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1495"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Deseja interromper a sincronização desta pasta?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>A pasta %1 foi criada, mas foi excluída da sincronização anteriormente. Dados dentro dela não serão sincronizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1573"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>O arquivo %1 foi criado, mas foi excluído da sincronização anteriormente. Não será sincronizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1584"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2235,12 +2235,12 @@ Isso significa que o cliente de sincronização pode não fazer upload de altera
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1622"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Falha no download do arquivo virtual com código &quot;%1&quot;, status &quot;%2&quot; e mensagem de erro &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1716"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2249,7 +2249,7 @@ Por favor, confirme se você gostaria de prosseguir com essas exclusões.
 Como alternativa, você pode restaurar todos os arquivos excluídos fazendo upload da pasta  &apos;%1&apos; para o servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1717"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2258,22 +2258,22 @@ Por favor, confirme se você gostaria de prosseguir com essas exclusões.
 Como alternativa, você pode restaurar todos os arquivos excluídos baixando-os do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1718"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
         <translation>Remover todos os arquivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1729"/>
         <source>Proceed with Deletion</source>
         <translation>Prosseguir com a Exclusão</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
         <translation>Restaurar Arquivos para o Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
         <translation>Restaurar Arquivos do Servidor</translation>
     </message>

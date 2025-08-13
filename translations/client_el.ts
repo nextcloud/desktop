@@ -2048,30 +2048,30 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="453"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Το %1 αφαιρέθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="467"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Το %1 έχει ενημερωθεί.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Το %1 έχει μετονομαστεί σε %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 has been moved to %2.</source>
         <translation>Το %1 έχει μετακινηθεί στο %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -2091,128 +2091,128 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="460"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 έχει προστεθεί.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 έχει μια διένεξη συγχρονισμού. Παρακαλώ ελέγξτε τη διένεξη του αρχείου! </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 και %n άλλο(α) αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ιστορικό για λεπτομέρειες</numerusform><numerusform>%1 και %n άλλο αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ημερολόγιο για λεπτομέρειες. </numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 δεν ήταν δυνατό να συγχρονιστεί εξαιτίας ενός σφάλματος. Δείτε το αρχείο καταγραφής για λεπτομέρειες.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 και %n άλλo αρχείo(α) έχουν κλειδωθεί.</numerusform><numerusform>%1 και %n άλλo αρχείo(α) έχουν κλειδωθεί.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
         <translation>Το %1 είναι κλειδωμένο.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="500"/>
+        <location filename="../src/gui/folder.cpp" line="510"/>
         <source>Sync Activity</source>
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>Could not read system exclude file</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1403"/>
+        <location filename="../src/gui/folder.cpp" line="1410"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1413"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1414"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1464"/>
+        <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1475"/>
+        <location filename="../src/gui/folder.cpp" line="1482"/>
         <source>Keep syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1483"/>
+        <location filename="../src/gui/folder.cpp" line="1490"/>
         <source>Stop syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1495"/>
+        <location filename="../src/gui/folder.cpp" line="1502"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1570"/>
+        <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Ο φάκελος %1 που δημιουργήθηκε έχει εξαιρεθεί απο τον συγχρονισμό. Τα δεδομένα του δεν θα συγχρονιστούν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1573"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Το αρχείο %1 που δημιουργήθηκε έχει εξαιρεθεί απο τον συγχρονισμό. Δεν θα συγχρονιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1584"/>
+        <location filename="../src/gui/folder.cpp" line="1591"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -2223,41 +2223,41 @@ This means that the synchronization client might not upload local changes immedi
 Αυτό σημαίνει ότι η εφαρμογή δεν θα ανεβάσει τις τοπικές αλλαγές άμεσα, θα ελέγξει μόνο τις τοπικές αλλαγές και θα τις ανεβάσει περιοδικά (κάθε δύο ώρες από προεπιλογή).</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1622"/>
+        <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1716"/>
+        <location filename="../src/gui/folder.cpp" line="1723"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1717"/>
+        <location filename="../src/gui/folder.cpp" line="1724"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1718"/>
+        <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1722"/>
+        <location filename="../src/gui/folder.cpp" line="1729"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1723"/>
+        <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
