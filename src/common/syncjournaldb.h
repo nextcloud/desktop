@@ -21,6 +21,8 @@
 #include "common/result.h"
 #include "common/pinstate.h"
 
+class TestSyncJournalDB;
+
 namespace OCC {
 class SyncJournalFileRecord;
 
@@ -446,6 +448,8 @@ private:
     QByteArray _journalMode;
 
     PreparedSqlQueryManager _queryManager;
+
+    friend class ::TestSyncJournalDB;
 };
 
 bool OCSYNC_EXPORT
