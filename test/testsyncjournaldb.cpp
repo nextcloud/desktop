@@ -98,6 +98,52 @@ private slots:
         QVERIFY(!record.isValid());
     }
 
+    void testFolderQuota()
+    {
+        const auto bigFolderRecord = QByteArray("bigfolder");
+        SyncJournalFileRecord record;
+        record._path = bigFolderRecord;
+        record._inode = std::numeric_limits<quint32>::max() + 12ull;
+        record._modtime = dropMsecs(QDateTime::currentDateTime());
+        record._type = ItemTypeDirectory;
+        record._etag = "123123";
+        record._fileId = "abcd";
+        record._fileSize = 213089999;
+        QVERIFY(_db.setFileRecord(record));
+
+        SyncJournalFileRecord storedRecord;
+        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
+        QVERIFY(storedRecord == record);
+        // default values
+        QCOMPARE(storedRecord._folderQuota.bytesAvailable, -1);
+        QCOMPARE(storedRecord._folderQuota.bytesUsed, -1);
+
+        record._folderQuota.bytesUsed = 100;
+        record._folderQuota.bytesAvailable = 5000;
+        QVERIFY(_db.setFileRecord(record));
+        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
+        QVERIFY(storedRecord == record);
+        QCOMPARE(storedRecord._folderQuota.bytesAvailable, 5000);
+        QCOMPARE(storedRecord._folderQuota.bytesUsed, 100);
+    }
+
+    void testFolderMigration() {
+        const auto quotaBytesUsed =  QStringLiteral("quotaBytesUsed");
+        const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
+        const auto metadata = QStringLiteral("metadata");
+        const auto columnsBeforeRemoval = _db.tableColumns(metadata.toLatin1());
+        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesUsed.toLatin1()), -1);
+        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesAvailable.toLatin1()), -1);
+        QVERIFY(_db.removeColumn(quotaBytesAvailable));
+        QVERIFY(_db.removeColumn(quotaBytesUsed));
+        QVERIFY(_db.updateMetadataTableStructure());
+        const auto columnsAfterConnect = _db.tableColumns(metadata.toLatin1());
+        QVERIFY(columnsAfterConnect.indexOf(quotaBytesUsed.toLatin1()) > -1);
+        QVERIFY(columnsAfterConnect.indexOf(quotaBytesAvailable.toLatin1()) > -1);
+        QVERIFY(_db.hasDefaultValue(quotaBytesUsed));
+        QVERIFY(_db.hasDefaultValue(quotaBytesAvailable));
+    }
+
     void testFileRecordChecksum()
     {
         // Try with and without a checksum
