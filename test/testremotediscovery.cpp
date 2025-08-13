@@ -68,36 +68,36 @@ private slots:
         QTest::addColumn<QString>("expectedErrorString");
         QTest::addColumn<bool>("syncSucceeds");
 
-        const auto itemErrorMessage = "An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.";
+        const auto itemErrorMessage = "An unexpected error occurred. Please try syncing again or contact contact your server administration if the issue continues.";
 
-        QTest::newRow("400") << 400 << QStringLiteral("We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.") << false;
-        QTest::newRow("401") << 401 << QStringLiteral("You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.") << false;
-        QTest::newRow("403") << 403 << QStringLiteral("You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.") << true;
-        QTest::newRow("404") << 404 << QStringLiteral("We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.") << true;
-        QTest::newRow("407") << 407 << QStringLiteral("It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.") << true;
-        QTest::newRow("408") << 408 << QStringLiteral("The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.") << true;
-        QTest::newRow("409") << 409 << QStringLiteral("Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.") << true;
-        QTest::newRow("410") << 410 << QStringLiteral("This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.") << true;
-        QTest::newRow("412") << 412 << QStringLiteral("The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.") << true;
-        QTest::newRow("413") << 413 << QStringLiteral("The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.") << true;
-        QTest::newRow("414") << 414 << QStringLiteral("The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.") << true;
-        QTest::newRow("415") << 415 << QStringLiteral("This file type isn’t supported. Please contact your server administrator for assistance.") << true;
-        QTest::newRow("422") << 422 << QStringLiteral("The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.") << true;
-        QTest::newRow("423") << 423 << QStringLiteral("The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.") << true;
-        QTest::newRow("428") << 428 << QStringLiteral("This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.") << true;
-        QTest::newRow("429") << 429 << QStringLiteral("You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.") << true;
-        QTest::newRow("500") << 500 << QStringLiteral("Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.") << true;
-        QTest::newRow("502") << 502 << QStringLiteral("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.") << true;
-        QTest::newRow("503") << 503 << QStringLiteral("The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.") << true;
-        QTest::newRow("504") << 504 << QStringLiteral("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.") << true;
-        QTest::newRow("505") << 505 << QStringLiteral("The server does not support the version of the connection being used. Contact your server administrator for help.") << true;
-        QTest::newRow("507") << 507 << QStringLiteral("The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.") << true;
-        QTest::newRow("511") << 511 << QStringLiteral("Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.") << true;
-        QTest::newRow("513") << 513 << QStringLiteral("You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.") << true;
+        QTest::newRow("400") << 400 << QStringLiteral("We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administration for help.") << false;
+        QTest::newRow("401") << 401 << QStringLiteral("You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administration.") << false;
+        QTest::newRow("403") << 403 << QStringLiteral("You don’t have access to this resource. If you think this is a mistake, please contact your server administration.") << true;
+        QTest::newRow("404") << 404 << QStringLiteral("We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administration.") << true;
+        QTest::newRow("407") << 407 << QStringLiteral("It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administration.") << true;
+        QTest::newRow("408") << 408 << QStringLiteral("The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administration.") << true;
+        QTest::newRow("409") << 409 << QStringLiteral("Server files changed while you were working. Please try syncing again. Contact your server administration if the issue persists.") << true;
+        QTest::newRow("410") << 410 << QStringLiteral("This folder or file isn’t available anymore. If you need assistance, please contact your server administration.") << true;
+        QTest::newRow("412") << 412 << QStringLiteral("The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administration.") << true;
+        QTest::newRow("413") << 413 << QStringLiteral("The file is too big to upload. You might need to choose a smaller file or contact your server administration for assistance.") << true;
+        QTest::newRow("414") << 414 << QStringLiteral("The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administration for assistance.") << true;
+        QTest::newRow("415") << 415 << QStringLiteral("This file type isn’t supported. Please contact your server administration for assistance.") << true;
+        QTest::newRow("422") << 422 << QStringLiteral("The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administration for assistance.") << true;
+        QTest::newRow("423") << 423 << QStringLiteral("The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administration for assistance.") << true;
+        QTest::newRow("428") << 428 << QStringLiteral("This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administration for help.") << true;
+        QTest::newRow("429") << 429 << QStringLiteral("You made too many requests. Please wait and try again. If you keep seeing this, your server administration can help.") << true;
+        QTest::newRow("500") << 500 << QStringLiteral("Something went wrong on the server. Please try syncing again later, or contact your server administration if the issue persists.") << true;
+        QTest::newRow("502") << 502 << QStringLiteral("We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administration can help you.") << true;
+        QTest::newRow("503") << 503 << QStringLiteral("The server is busy right now. Please try syncing again in a few minutes or contact your server administration if it’s urgent.") << true;
+        QTest::newRow("504") << 504 << QStringLiteral("It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administration.") << true;
+        QTest::newRow("505") << 505 << QStringLiteral("The server does not support the version of the connection being used. Contact your server administration for help.") << true;
+        QTest::newRow("507") << 507 << QStringLiteral("The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administration.") << true;
+        QTest::newRow("511") << 511 << QStringLiteral("Your network needs extra authentication. Please check your connection. Contact your server administration for help if the issue persists.") << true;
+        QTest::newRow("513") << 513 << QStringLiteral("You don’t have permission to access this resource. If you believe this is an error, contact your server administration to ask for assistance.") << true;
         // 200 should be an error since propfind should return 207
         QTest::newRow("200") << 200 << itemErrorMessage << false;
         QTest::newRow("InvalidXML") << +InvalidXML << itemErrorMessage << false;
-        QTest::newRow("Timeout") << +Timeout << QStringLiteral("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.") << false;
+        QTest::newRow("Timeout") << +Timeout << QStringLiteral("The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administration.") << false;
     }
 
 
