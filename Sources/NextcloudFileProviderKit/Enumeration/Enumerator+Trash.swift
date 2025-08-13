@@ -11,7 +11,8 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
-        trashItems: [NKTrash]
+        trashItems: [NKTrash],
+        log: any FileProviderLogging
     ) {
         var metadatas = [SendableItemMetadata]()
         for trashItem in trashItems {
@@ -21,17 +22,18 @@ extension Enumerator {
         }
 
         Task { [metadatas] in
+            let logger = FileProviderLogger(category: "Enumerator", log: log)
+
             do {
-                let items = try await metadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
-                )
+                let items = try await metadatas.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: log)
+
                 Task { @MainActor in
                     observer.didEnumerate(items)
-                    Self.logger.info("Did enumerate \(items.count) trash items")
+                    logger.info("Did enumerate \(items.count) trash items.")
                     observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
                 }
             } catch let error {
-                Self.logger.info("Unexpected error enumerating trash items, observing error.")
+                logger.error("Finishing enumeration with error.")
                 Task { @MainActor in observer.finishEnumeratingWithError(error) }
             }
         }
@@ -43,8 +45,10 @@ extension Enumerator {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        trashItems: [NKTrash]
+        trashItems: [NKTrash],
+        log: any FileProviderLogging
     ) async {
+        let logger = FileProviderLogger(category: "Enumerator", log: log)
         var newTrashedItems = [NSFileProviderItem]()
 
         // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
@@ -68,16 +72,12 @@ extension Enumerator {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+                log: log
             )
             newTrashedItems.append(item)
 
-            Self.logger.debug(
-                """
-                Will enumerate changed trashed item with ocId: \(metadata.ocId, privacy: .public)
-                and name: \(metadata.fileName, privacy: .public)
-                """
-            )
+            logger.debug("Will enumerate changed trash item.", [.ocId: metadata.ocId, .name: metadata.fileName])
         }
 
         let deletedTrashedItemsIdentifiers = existingTrashedItems.map {
@@ -87,12 +87,8 @@ extension Enumerator {
             for itemIdentifier in deletedTrashedItemsIdentifiers {
                 dbManager.deleteItemMetadata(ocId: itemIdentifier.rawValue)
             }
-            Self.logger.debug(
-                """
-                Will enumerate deleted trashed items:
-                \(deletedTrashedItemsIdentifiers, privacy: .public)
-                """
-            )
+
+            logger.debug("Will enumerate deleted trashed items: \(deletedTrashedItemsIdentifiers)")
             observer.didDeleteItems(withIdentifiers: deletedTrashedItemsIdentifiers)
         }
 

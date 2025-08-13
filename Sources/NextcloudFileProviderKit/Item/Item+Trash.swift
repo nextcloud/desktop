@@ -10,27 +10,24 @@ extension Item {
         _ modifiedItem: Item,
         account: Account,
         dbManager: FilesDatabaseManager,
-        domain: NSFileProviderDomain?
+        domain: NSFileProviderDomain?,
+        log: any FileProviderLogging
     ) async -> (Item, Error?) {
-        let deleteError =
-            await modifiedItem.delete(trashing: true, domain: domain, dbManager: dbManager)
+        let logger = FileProviderLogger(category: "Item", log: log)
+
+        let deleteError = await modifiedItem.delete(trashing: true, domain: domain, dbManager: dbManager)
+
         guard deleteError == nil else {
-            Self.logger.error(
-                """
-                Error attempting to move item into trash:
-                \(modifiedItem.filename, privacy: .public)
-                \(deleteError?.localizedDescription ?? "", privacy: .public)
-                """
-            )
+            logger.error("Error attempting to move item into trash.", [.name: modifiedItem.filename, .error: deleteError])
             return (modifiedItem, deleteError)
         }
 
         let ocId = modifiedItem.itemIdentifier.rawValue
         guard let dirtyMetadata = dbManager.itemMetadata(ocId: ocId) else {
-            Self.logger.error(
+            logger.error(
                 """
                 Could not correctly process trashing results, dirty metadata not found.
-                \(modifiedItem.filename, privacy: .public) \(ocId, privacy: .public)
+                \(modifiedItem.filename) \(ocId)
                 """
             )
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
@@ -42,7 +39,8 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+            log: log
         )
 
         // The server may have renamed the trashed file so we need to scan the entire trash
@@ -61,10 +59,10 @@ extension Item {
         )
 
         guard error == .success else {
-            Self.logger.error(
+            logger.error(
                 """
                 Received bad error from post-trashing remote scan:
-                    \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                    \(error.errorDescription) \(files)
                 """
             )
             return (dirtyItem, error.fileProviderError)
@@ -76,15 +74,15 @@ extension Item {
             where: { $0.ocId == modifiedItem.metadata.ocId ||
                      $0.fileId == modifiedItem.metadata.fileId })
         else {
-            Self.logger.error(
+            logger.error(
                 """
                 Did not find trashed item:
-                    \(modifiedItem.filename, privacy: .public)
-                    \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
+                    \(modifiedItem.filename)
+                    \(modifiedItem.itemIdentifier.rawValue)
                 in trash. Asking for a rescan. Found trashed files were:
                     \(files.map {
                         ($0.ocId, $0.fileId, $0.fileName, $0.trashbinFileName)
-                    }, privacy: .public)
+                    })
                 """
             )
             if #available(macOS 11.3, *) {
@@ -104,7 +102,8 @@ extension Item {
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+            log: log
         )
 
         // Now we can directly update info on the child items
@@ -128,10 +127,10 @@ extension Item {
         )
 
         guard error == .success else {
-            Self.logger.error(
+            logger.error(
                 """
                 Received bad error or files from post-trashing child items remote scan:
-                \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                \(error.errorDescription) \(files)
                 """
             )
             return (postDeleteItem, childError.fileProviderError)
@@ -145,9 +144,9 @@ extension Item {
                 .filter({ $0.ocId == metadata.ocId || $0.fileId == metadata.fileId })
                 .first
             else {
-                Self.logger.info(
+                logger.info(
                     """
-                    Skipping post-trash child item metadata: \(metadata.fileName, privacy: .public)
+                    Skipping post-trash child item metadata: \(metadata.fileName)
                         Could not find matching existing item in database, cannot do ocId correction
                     """
                 )
@@ -155,7 +154,7 @@ extension Item {
             }
             metadata.ocId = original.ocId // Give original id back
             dbManager.addItemMetadata(metadata)
-            Self.logger.info("Note: that was a post-trash child item metadata")
+            logger.info("Note: that was a post-trash child item metadata")
         }
 
         return (postDeleteItem, nil)
@@ -167,8 +166,10 @@ extension Item {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        domain: NSFileProviderDomain?
+        domain: NSFileProviderDomain?,
+        log: any FileProviderLogging
     ) async -> (Item, Error?) {
+        let logger = FileProviderLogger(category: "Item", log: log)
 
         func finaliseRestore(target: NKFile) async -> (Item, Error?) {
             let restoredItemMetadata = target.toItemMetadata()
@@ -177,7 +178,7 @@ extension Item {
                 remoteInterface: remoteInterface,
                 account: account
             ) else {
-                Self.logger.error("Could not find parent item identifier for \(originalLocation)")
+                logger.error("Could not find parent item identifier for \(originalLocation)")
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
             }
 
@@ -196,7 +197,8 @@ extension Item {
                 account: account,
                 remoteInterface: modifiedItem.remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account)
+                remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+                log: log
             ), nil)
         }
 
@@ -207,18 +209,18 @@ extension Item {
             taskHandler: { _ in }
         )
         guard restoreError == .success else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not restore item \(modifiedItem.filename, privacy: .public) from trash
-                    Received error: \(restoreError.errorDescription, privacy: .public)
+                Could not restore item \(modifiedItem.filename) from trash
+                    Received error: \(restoreError.errorDescription)
                 """
             )
             return (modifiedItem, restoreError.fileProviderError)
         }
         guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not scan restored item \(modifiedItem.filename, privacy: .public).
+                Could not scan restored item \(modifiedItem.filename).
                 The trashed file's original location is invalid.
                 """
             )
@@ -241,11 +243,11 @@ extension Item {
             taskHandler: { _ in }
         )
         guard enumerateError == .success, !files.isEmpty, let target = files.first else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not scan restored state of file \(originalLocation, privacy: .public)
-                Received error: \(enumerateError.errorDescription, privacy: .public)
-                Files: \(files.count, privacy: .public)
+                Could not scan restored state of file \(originalLocation)
+                Received error: \(enumerateError.errorDescription)
+                Files: \(files.count)
                 """
             )
             if #available(macOS 11.3, *) {
@@ -255,10 +257,10 @@ extension Item {
         }
 
         guard target.ocId == modifiedItem.itemIdentifier.rawValue else {
-            Self.logger.warning(
+            logger.info(
                 """
-                Restored item \(originalLocation, privacy: .public)
-                does not match \(modifiedItem.filename, privacy: .public)
+                Restored item \(originalLocation)
+                does not match \(modifiedItem.filename)
                 (it is likely that when restoring from the trash, there was another identical item).
                 """
             )
@@ -269,9 +271,9 @@ extension Item {
             var parentDirectoryRemotePath = originalLocation
             parentDirectoryRemotePath.removeSubrange(finalSlashIndex..<originalLocation.endIndex)
 
-            Self.logger.info(
+            logger.info(
                 """
-                Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public) for current
+                Scanning parent folder at \(parentDirectoryRemotePath) for current
                 state of item restored from trash.
                 """
             )
@@ -288,9 +290,9 @@ extension Item {
             )
 
             guard folderScanError == .success else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public)
+                    Scanning parent folder at \(parentDirectoryRemotePath)
                     returned error: \(folderScanError.errorDescription)
                     """
                 )
@@ -300,9 +302,9 @@ extension Item {
             guard let actualTarget = files.first(
                 where: { $0.ocId == modifiedItem.itemIdentifier.rawValue }
             ) else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public)
+                    Scanning parent folder at \(parentDirectoryRemotePath)
                     finished successfully but the target item restored from trash not found.
                     """
                 )

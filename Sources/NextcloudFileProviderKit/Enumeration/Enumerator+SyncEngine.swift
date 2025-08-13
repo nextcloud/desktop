@@ -3,7 +3,6 @@
 
 import FileProvider
 import NextcloudKit
-import OSLog
 
 extension Enumerator {
     static func handlePagedReadResults(
@@ -38,7 +37,8 @@ extension Enumerator {
         account: Account,
         dbManager: FilesDatabaseManager,
         files: [NKFile],
-        pageIndex: Int?
+        pageIndex: Int?,
+        log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         newMetadatas: [SendableItemMetadata]?,
@@ -46,12 +46,9 @@ extension Enumerator {
         deletedMetadatas: [SendableItemMetadata]?,
         readError: NKError?
     ) {
-        Self.logger.debug(
-            """
-            Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public)
-                for user: \(account.ncKitAccount, privacy: .public)
-            """
-        )
+        let logger = FileProviderLogger(category: "Enumerator", log: log)
+
+        logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
 
         if let pageIndex {
             let (metadatas, error) =
@@ -62,7 +59,7 @@ extension Enumerator {
         guard var (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
         else {
-            Self.logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
+            logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
             return (nil, nil, nil, nil, .invalidData)
         }
 
@@ -113,7 +110,8 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
-        depth: EnumerateDepth = .targetAndDirectChildren
+        depth: EnumerateDepth = .targetAndDirectChildren,
+        log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         newMetadatas: [SendableItemMetadata]?,
@@ -123,20 +121,9 @@ extension Enumerator {
         readError: NKError?
     ) {
         let ncKitAccount = account.ncKitAccount
+        let logger = FileProviderLogger(category: "Enumerator", log: log)
 
-        Self.logger.debug(
-            """
-            Starting to read serverUrl: \(serverUrl, privacy: .public)
-                for user: \(ncKitAccount, privacy: .public)
-                at depth \(depth.rawValue, privacy: .public).
-                username: \(account.username, privacy: .public),
-                password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
-                pageToken: \(String(data: pageSettings?.page?.rawValue ?? Data(), encoding: .utf8) ?? "NIL", privacy: .public)
-                pageIndex: \(pageSettings?.index ?? -1, privacy: .public)
-                pageSize: \(pageSettings?.size ?? -1, privacy: .public)
-                serverUrl: \(account.serverUrl, privacy: .public)
-            """
-        )
+        logger.debug("Starting to read server URL.", [.url: serverUrl])
 
         let options: NKRequestOptions
         if let pageSettings {
@@ -169,38 +156,21 @@ extension Enumerator {
         )
 
         guard error == .success else {
-            Self.logger.error(
-                """
-                \(depth.rawValue, privacy: .public) depth read of url \(serverUrl, privacy: .public)
-                did not complete successfully, error: \(error.errorDescription, privacy: .public)
-                """
-            )
+            logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
             return (nil, nil, nil, nil, nil, error)
         }
 
         guard let data else {
-            Self.logger.error(
-                """
-                \(depth.rawValue, privacy: .public) depth read of url \(serverUrl, privacy: .public)
-                    did not return data.
-                """
-            )
+            logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
             return (nil, nil, nil, nil, nil, error)
         }
 
         // This will be nil if the page settings were also nil, as the server will not give us the
         // pagination-related headers.
-        let nextPage = EnumeratorPageResponse(
-            nkResponseData: data, index: (pageSettings?.index ?? 0) + 1
-        )
+        let nextPage = EnumeratorPageResponse(nkResponseData: data, index: (pageSettings?.index ?? 0) + 1, log: log)
 
         guard let receivedFile = files.first else {
-            Self.logger.error(
-                """
-                Received no items from readFileOrFolder of \(serverUrl, privacy: .public),
-                    not much we can do...
-                """
-            )
+            logger.error("Received no items.", [.url: serverUrl])
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
             return ([], nil, nil, nil, nextPage, nil)
@@ -215,13 +185,7 @@ extension Enumerator {
                   receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
                   (receivedFile.fileName == "." && receivedFile.serverUrl == "..")
             else {
-                Self.logger.debug(
-                    """
-                    Read item is a file.
-                        Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
-                        for user: \(account.ncKitAccount, privacy: .public)
-                    """
-                )
+                logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 var metadata = receivedFile.toItemMetadata()
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                 let isNew = existing == nil
@@ -254,7 +218,8 @@ extension Enumerator {
                 account: account,
                 dbManager: dbManager,
                 files: files,
-                pageIndex: pageSettings?.index
+                pageIndex: pageSettings?.index,
+                log: logger.log
             )
 
             return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nextPage, readError)

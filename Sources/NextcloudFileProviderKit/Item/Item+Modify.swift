@@ -4,7 +4,6 @@
 import FileProvider
 import Foundation
 import NextcloudKit
-import OSLog
 
 public extension Item {
 
@@ -37,18 +36,19 @@ public extension Item {
         )
 
         guard moveError == .success else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not move file or folder: \(oldRemotePath, privacy: .public)
-                    to \(newRemotePath, privacy: .public),
-                    received error: \(moveError.errorCode, privacy: .public)
-                    \(moveError.errorDescription, privacy: .public)
+                Could not move file or folder: \(oldRemotePath)
+                    to \(newRemotePath),
+                    received error: \(moveError.errorCode)
+                    \(moveError.errorDescription)
                 """
             )
             return (nil, await moveError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: newRemotePath,
                 dbManager: dbManager,
-                remoteInterface: remoteInterface
+                remoteInterface: remoteInterface,
+                log: logger.log
             ))
         }
 
@@ -67,9 +67,9 @@ public extension Item {
         }
 
         guard let newMetadata = dbManager.itemMetadata(ocId: ocId) else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not acquire metadata of item with identifier: \(ocId, privacy: .public),
+                Could not acquire metadata of item with identifier: \(ocId),
                     cannot correctly inform of modification
                 """
             )
@@ -85,7 +85,8 @@ public extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            log: logger.log
         )
         return (modifiedItem, nil)
     }
@@ -103,10 +104,10 @@ public extension Item {
         let ocId = itemIdentifier.rawValue
 
         guard let newContents else {
-            Self.logger.error(
+            logger.error(
                 """
                 ERROR. Could not upload modified contents as was provided nil contents url.
-                    ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
+                    ocId: \(ocId) filename: \(self.filename)
                 """
             )
             return (
@@ -116,8 +117,8 @@ public extension Item {
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            Self.logger.error(
-                "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
+            logger.error(
+                "Could not acquire metadata of item with identifier: \(ocId)"
             )
             return (
                 nil,
@@ -126,9 +127,9 @@ public extension Item {
         }
 
         guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
-            Self.logger.warning(
+            logger.info(
                 """
-                Could not acquire updated metadata of item: \(ocId, privacy: .public),
+                Could not acquire updated metadata of item: \(ocId),
                 unable to update item status to uploading
                 """
             )
@@ -148,6 +149,7 @@ public extension Item {
             dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
+            log: logger.log,
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain {
@@ -162,12 +164,12 @@ public extension Item {
         )
 
         guard error == .success else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not upload item \(ocId, privacy: .public)
-                with filename: \(self.filename, privacy: .public),
-                received error: \(error.errorCode, privacy: .public),
-                \(error.errorDescription, privacy: .public)
+                Could not upload item \(ocId)
+                with filename: \(self.filename),
+                received error: \(error.errorCode),
+                \(error.errorDescription)
                 """
             )
 
@@ -179,23 +181,24 @@ public extension Item {
             return (nil, await error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
-                remoteInterface: remoteInterface
+                remoteInterface: remoteInterface,
+                log: logger.log
             ))
         }
 
-        Self.logger.info(
+        logger.info(
             """
-            Successfully uploaded item with identifier: \(ocId, privacy: .public)
-            and filename: \(self.filename, privacy: .public)
+            Successfully uploaded item with identifier: \(ocId)
+            and filename: \(self.filename)
             """
         )
 
         let contentAttributes = try? FileManager.default.attributesOfItem(atPath: newContents.path)
         if let expectedSize = contentAttributes?[.size] as? Int64, size != expectedSize {
-            Self.logger.warning(
+            logger.info(
                 """
                 Item content modification upload reported as successful,
-                but there are differences between the received file size (\(size ?? -1, privacy: .public))
+                but there are differences between the received file size (\(size ?? -1))
                 and the original file size (\(self.documentSize?.int64Value ?? 0))
                 """
             )
@@ -222,8 +225,10 @@ public extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            log: logger.log
         )
+
         return (modifiedItem, nil)
     }
 
@@ -236,20 +241,20 @@ public extension Item {
         dbManager: FilesDatabaseManager
     ) async throws -> Item? {
         guard let contents = newContents else {
-            Self.logger.error(
+            logger.error(
                 """
                 Could not modify bundle or package contents as was provided nil contents url
-                    for item with ocID \(self.itemIdentifier.rawValue, privacy: .public)
-                    (\(self.filename, privacy: .public))
+                    for item with ocID \(self.itemIdentifier.rawValue)
+                    (\(self.filename))
                 """
             )
             throw NSFileProviderError(.cannotSynchronize)
         }
 
-        Self.logger.debug(
+        logger.debug(
             """
             Handling modified bundle/package/internal directory at:
-                \(contents.path, privacy: .public)
+                \(contents.path)
             """
         )
 
@@ -269,7 +274,8 @@ public extension Item {
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                log: logger.log
             )
             // Important note -- the enumerator will import found items' metadata into the database.
             // This is important for when we want to start deleting stale items and want to avoid trying
@@ -277,22 +283,22 @@ public extension Item {
             // its contents have been nuked already
 
             if let readError {
-                Self.logger.error(
+                logger.error(
                     """
                     Could not read server url for item with ocID
-                    \(self.itemIdentifier.rawValue, privacy: .public)
-                    (\(self.filename, privacy: .public)),
-                    received error: \(readError.errorDescription, privacy: .public)
+                    \(self.itemIdentifier.rawValue)
+                    (\(self.filename)),
+                    received error: \(readError.errorDescription)
                     """
                 )
                 throw remoteErrorToThrow(readError)
             }
             guard var metadatas else {
-                Self.logger.error(
+                logger.error(
                     """
                     Could not read server url for item with ocID
-                        \(self.itemIdentifier.rawValue, privacy: .public)
-                        (\(self.filename, privacy: .public)),
+                        \(self.itemIdentifier.rawValue)
+                        (\(self.filename)),
                         received nil metadatas
                     """
                 )
@@ -328,20 +334,20 @@ public extension Item {
         guard let enumerator = fm.enumerator(
             at: contents, includingPropertiesForKeys: Array(attributesToFetch)
         ) else {
-            Self.logger.error(
+            logger.error(
                 """
                 Could not create enumerator for contents of bundle or package
-                    at: \(contents.path, privacy: .public)
+                    at: \(contents.path)
                 """
             )
             throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
         }
 
         guard let enumeratorArray = enumerator.allObjects as? [URL] else {
-            Self.logger.error(
+            logger.error(
                 """
                 Could not create enumerator array for contents of bundle or package
-                    at: \(contents.path, privacy: .public)
+                    at: \(contents.path)
                 """
             )
             throw NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable)
@@ -367,9 +373,9 @@ public extension Item {
 
             // Do not re-create directories
             if childIsFolder, !staleItems.keys.contains(childRemoteUrl) {
-                Self.logger.debug(
+                logger.debug(
                     """
-                    Handling child bundle or package directory at: \(childUrlPath, privacy: .public)
+                    Handling child bundle or package directory at: \(childUrlPath)
                     """
                 )
                 let (_, _, _, createError) = await remoteInterface.createFolder(
@@ -388,11 +394,11 @@ public extension Item {
                 )
                 // Don't error if there is a collision
                 guard createError == .success || createError.matchesCollisionError else {
-                    Self.logger.error(
+                    logger.error(
                         """
-                        Could not create new bpi folder at: \(remotePath, privacy: .public),
-                        received error: \(createError.errorCode, privacy: .public)
-                        \(createError.errorDescription, privacy: .public)
+                        Could not create new bpi folder at: \(remotePath),
+                        received error: \(createError.errorCode)
+                        \(createError.errorDescription)
                         """
                     )
                     throw remoteErrorToThrow(createError)
@@ -400,9 +406,9 @@ public extension Item {
                 remoteDirectoriesPaths.append(childRemoteUrl)
 
             } else if !childIsFolder {
-                Self.logger.debug(
+                logger.debug(
                     """
-                    Handling child bundle or package file at: \(childUrlPath, privacy: .public)
+                    Handling child bundle or package file at: \(childUrlPath)
                     """
                 )
                 let (_, _, _, _, _, error) = await upload(
@@ -414,6 +420,7 @@ public extension Item {
                     dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
+                    log: logger.log,
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
                         if let domain {
@@ -428,11 +435,11 @@ public extension Item {
                 )
 
                 guard error == .success else {
-                    Self.logger.error(
+                    logger.error(
                         """
-                        Could not upload bpi file at: \(childUrlPath, privacy: .public),
-                        received error: \(error.errorCode, privacy: .public)
-                        \(error.errorDescription, privacy: .public)
+                        Could not upload bpi file at: \(childUrlPath),
+                        received error: \(error.errorCode)
+                        \(error.errorDescription)
                         """
                     )
                     throw remoteErrorToThrow(error)
@@ -462,11 +469,11 @@ public extension Item {
             )
 
             guard deleteError == .success else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Could not delete stale bpi item at: \(staleItem.key, privacy: .public),
-                    received error: \(deleteError.errorCode, privacy: .public)
-                    \(deleteError.errorDescription, privacy: .public)
+                    Could not delete stale bpi item at: \(staleItem.key),
+                    received error: \(deleteError.errorCode)
+                    \(deleteError.errorDescription)
                     """
                 )
                 throw remoteErrorToThrow(deleteError)
@@ -485,14 +492,15 @@ public extension Item {
                 remoteDirectoryPath,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                log: logger.log
             )
 
             if let readError, readError != .success {
-                Self.logger.error(
+                logger.error(
                     """
-                    Could not read new bpi folder at: \(remotePath, privacy: .public),
-                        received error: \(readError.errorDescription, privacy: .public)
+                    Could not read new bpi folder at: \(remotePath),
+                        received error: \(readError.errorDescription)
                     """
                 )
                 throw remoteErrorToThrow(readError)
@@ -502,10 +510,10 @@ public extension Item {
         guard let bundleRootMetadata = dbManager.itemMetadata(
             ocId: self.itemIdentifier.rawValue
         ) else {
-            Self.logger.error(
+            logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
-                    \(contentsPath, privacy: .public)
+                    \(contentsPath)
                 """
             )
             throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
@@ -519,7 +527,8 @@ public extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            log: logger.log
         )
     }
 
@@ -561,9 +570,9 @@ public extension Item {
         ).replacingOccurrences(of: account.davFilesUrl, with: "")
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            Self.logger.info(
+            logger.info(
                 """
-                File \(modifiedItem.filename, privacy: .public) is in the ignore list.
+                File \(modifiedItem.filename) is in the ignore list.
                     Will delete locally with no remote effect.
                 """
             )
@@ -580,8 +589,8 @@ public extension Item {
                 progress: progress,
                 dbManager: dbManager
             ) else {
-                Self.logger.error(
-                    "Unable to modify ignored file, got nil item: \(relativePath, privacy: .public)"
+                logger.error(
+                    "Unable to modify ignored file, got nil item: \(relativePath)"
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
@@ -613,11 +622,11 @@ public extension Item {
 
         let ocId = modifiedItem.itemIdentifier.rawValue
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not modify item: \(ocId, privacy: .public), different identifier to the
+                Could not modify item: \(ocId), different identifier to the
                     item the modification was targeting
-                    (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
+                    (\(itemTarget.itemIdentifier.rawValue))
                 """
             )
             return (
@@ -634,8 +643,8 @@ public extension Item {
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            Self.logger.warning(
-                "Modification for item: \(ocId, privacy: .public) may already exist"
+            logger.info(
+                "Modification for item: \(ocId) may already exist"
             )
         }
 
@@ -652,11 +661,11 @@ public extension Item {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: newParentItemIdentifier.rawValue
             ) else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Not modifying item: \(ocId, privacy: .public),
+                    Not modifying item: \(ocId),
                         could not find metadata for target parentItemIdentifier
-                        \(newParentItemIdentifier.rawValue, privacy: .public)
+                        \(newParentItemIdentifier.rawValue)
                     """
                 )
                 return (
@@ -670,19 +679,19 @@ public extension Item {
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
 
-        Self.logger.debug(
+        logger.debug(
             """
-            About to modify item with identifier: \(ocId, privacy: .public)
+            About to modify item with identifier: \(ocId)
             of type: \(modifiedItem.contentType.identifier)
-            (is folder: \(isFolder ? "yes" : "no", privacy: .public)
-            with filename: \(modifiedItem.filename, privacy: .public)
-            to filename: \(itemTarget.filename, privacy: .public)
+            (is folder: \(isFolder ? "yes" : "no")
+            with filename: \(modifiedItem.filename)
+            to filename: \(itemTarget.filename)
             from old server url:
-                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.metadata.fileName, privacy: .public)
-            to server url: \(newServerUrlFileName, privacy: .public)
-            old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue, privacy: .public)
-            new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
-            with contents located at: \(newContents?.path ?? "", privacy: .public)
+                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.metadata.fileName)
+            to server url: \(newServerUrlFileName)
+            old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue)
+            new parent identifier: \(itemTarget.parentItemIdentifier.rawValue)
+            with contents located at: \(newContents?.path ?? "")
             """
         )
 
@@ -691,22 +700,22 @@ public extension Item {
             && modifiedItem.metadata.isTrashed {
 
             if (changedFields.contains(.filename)) {
-                Self.logger.warning(
+                logger.info(
                     """
                     Tried to modify filename of already trashed item. This is not supported.
-                        ocId: \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
-                        filename: \(modifiedItem.metadata.fileName, privacy: .public)
-                        new filename: \(itemTarget.filename, privacy: .public)
+                        ocId: \(modifiedItem.itemIdentifier.rawValue)
+                        filename: \(modifiedItem.metadata.fileName)
+                        new filename: \(itemTarget.filename)
                     """
                 )
             }
 
-            Self.logger.info(
+            logger.info(
                 """
                 Tried to trash item that is in fact already trashed.
-                    ocId: \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
-                    filename: \(modifiedItem.metadata.fileName, privacy: .public)
-                    serverUrl: \(modifiedItem.metadata.serverUrl, privacy: .public)
+                    ocId: \(modifiedItem.itemIdentifier.rawValue)
+                    filename: \(modifiedItem.metadata.fileName)
+                    serverUrl: \(modifiedItem.metadata.serverUrl)
                 """
             )
             return (modifiedItem, nil)
@@ -715,17 +724,17 @@ public extension Item {
                 account: account, options: .init(), taskHandler: { _ in }
             )
             guard let capabilities, error == .success else {
-                Self.logger.error(
+                logger.error(
                     """
                     Could not acquire capabilities during item move to trash, won't proceed.
-                        Error: \(error.errorDescription, privacy: .public)
-                        Item: \(modifiedItem.filename, privacy: .public)
+                        Error: \(error.errorDescription)
+                        Item: \(modifiedItem.filename)
                     """
                 )
                 return (nil, error.fileProviderError)
             }
             guard capabilities.files?.undelete == true else {
-                Self.logger.error(
+                logger.error(
                     "Cannot delete \(modifiedItem.filename) as server does not support trashing."
                 )
                 return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
@@ -746,14 +755,7 @@ public extension Item {
                 )
 
                 guard renameError == nil, let renameModifiedItem else {
-                    Self.logger.error(
-                        """
-                        Could not rename pre-trash item with ocID \(ocId, privacy: .public)
-                        (\(modifiedItem.filename, privacy: .public)) to
-                        \(newServerUrlFileName, privacy: .public),
-                        received error: \(renameError?.localizedDescription ?? "", privacy: .public)
-                        """
-                    )
+                    logger.error("Could not rename pre-trash item.", [.ocId: ocId, .name: modifiedItem.filename, .error: error])
                     return (nil, renameError)
                 }
 
@@ -761,7 +763,7 @@ public extension Item {
             }
 
             let (trashedItem, trashingError) = await Self.trash(
-                modifiedItem, account: account, dbManager: dbManager, domain: domain
+                modifiedItem, account: account, dbManager: dbManager, domain: domain, log: logger.log
             )
             guard trashingError == nil else { return (modifiedItem, trashingError) }
             modifiedItem = trashedItem
@@ -776,7 +778,8 @@ public extension Item {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    domain: domain
+                    domain: domain,
+                    log: logger.log
                 )
                 guard restoreError == nil else {
                     return (modifiedItem, restoreError)
@@ -807,10 +810,10 @@ public extension Item {
         }
 
         guard !isFolder || bundleOrPackage else {
-            Self.logger.debug(
+            logger.debug(
                 """
-                System requested modification for folder with ocID \(ocId, privacy: .public)
-                (\(newServerUrlFileName, privacy: .public)) of something other than folder name.
+                System requested modification for folder with ocID \(ocId)
+                (\(newServerUrlFileName)) of something other than folder name.
                 This is not supported.
                 """
             )
@@ -818,10 +821,10 @@ public extension Item {
         }
 
         guard newParentItemIdentifier != .trashContainer else {
-            Self.logger.debug(
+            logger.debug(
                 """
-                System requested modification in trash for item with ocID \(ocId, privacy: .public)
-                (\(newServerUrlFileName, privacy: .public))
+                System requested modification in trash for item with ocID \(ocId)
+                (\(newServerUrlFileName))
                 This is not supported.
                 """
             )
@@ -829,10 +832,10 @@ public extension Item {
         }
 
         if changedFields.contains(.contents) {
-            Self.logger.debug(
+            logger.debug(
                 """
-                Item modification for \(ocId, privacy: .public)
-                \(modifiedItem.filename, privacy: .public)
+                Item modification for \(ocId)
+                \(modifiedItem.filename)
                 includes contents. Will begin upload.
                 """
             )
@@ -870,24 +873,17 @@ public extension Item {
             }
 
             guard contentError == nil, let contentModifiedItem else {
-                Self.logger.error(
-                    """
-                    Could not modify contents for item with ocID \(ocId, privacy: .public)
-                    (\(modifiedItem.filename, privacy: .public)) to
-                    \(newServerUrlFileName, privacy: .public),
-                    received error: \(contentError?.localizedDescription ?? "", privacy: .public)
-                    """
-                )
+                logger.error("Could not modify contents.", [.ocId: ocId, .name: modifiedItem.filename, .error: contentError])
                 return (nil, contentError)
             }
 
             modifiedItem = contentModifiedItem
         }
 
-        Self.logger.debug(
+        logger.debug(
             """
-            Nothing more to do with \(ocId, privacy: .public)
-            \(modifiedItem.filename, privacy: .public), modifications complete
+            Nothing more to do with \(ocId)
+            \(modifiedItem.filename), modifications complete
             """
         )
         return (modifiedItem, nil)

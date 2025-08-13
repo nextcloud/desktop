@@ -6,14 +6,8 @@ import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-import OSLog
-
-fileprivate let logger = Logger(
-    subsystem: Logger.subsystem, category: "NextcloudKitRemoteInterface"
-)
 
 extension NextcloudKit: RemoteInterface {
-
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
     }
@@ -92,6 +86,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void = { _ in },
         chunkCounter: @escaping (_ counter: Int) -> Void = { _ in },
+        log: any FileProviderLogging,
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void = { _ in },
         requestHandler: @escaping (_ request: UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
@@ -103,8 +98,9 @@ extension NextcloudKit: RemoteInterface {
         file: NKFile?,
         nkError: NKError
     ) {
+        let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
+
         guard let remoteUrl = URL(string: remotePath) else {
-            uploadLogger.error("NCKit ext: Could not get url from \(remotePath, privacy: .public)")
             return ("", nil, nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
@@ -115,9 +111,9 @@ extension NextcloudKit: RemoteInterface {
         do {
             try fm.createDirectory(at: chunksOutputDirectoryUrl, withIntermediateDirectories: true)
         } catch let error {
-            uploadLogger.error(
+            logger.error(
                 """
-                Could not create temporary directory for chunked files: \(error, privacy: .public)
+                Could not create temporary directory for chunked files: \(error)
                 """
             )
             return ("", nil, nil, .urlError)
@@ -135,26 +131,26 @@ extension NextcloudKit: RemoteInterface {
             .absoluteString
             .removingPercentEncoding
         else {
-            uploadLogger.error(
-                "NCKit ext: Could not get server url from \(remotePath, privacy: .public)"
+            logger.error(
+                "NCKit ext: Could not get server url from \(remotePath)"
             )
             return ("", nil, nil, .urlError)
         }
         let fileChunks = remainingChunks.toNcKitChunks()
 
-        uploadLogger.info(
+        logger.info(
             """
-            Beginning chunked upload of: \(localPath, privacy: .public)
-                directory: \(directory, privacy: .public)
-                fileChunksOutputDirectory: \(fileChunksOutputDirectory, privacy: .public)
-                fileName: \(fileName, privacy: .public)
-                destinationFileName: \(destinationFileName, privacy: .public)
-                date: \(modificationDate?.debugDescription ?? "", privacy: .public)
-                creationDate: \(creationDate?.debugDescription ?? "", privacy: .public)
-                serverUrl: \(serverUrl, privacy: .public)
-                chunkFolder: \(remoteChunkStoreFolderName, privacy: .public)
-                filesChunk: \(fileChunks, privacy: .public)
-                chunkSize: \(chunkSize, privacy: .public)
+            Beginning chunked upload of: \(localPath)
+                directory: \(directory)
+                fileChunksOutputDirectory: \(fileChunksOutputDirectory)
+                fileName: \(fileName)
+                destinationFileName: \(destinationFileName)
+                date: \(modificationDate?.debugDescription ?? "")
+                creationDate: \(creationDate?.debugDescription ?? "")
+                serverUrl: \(serverUrl)
+                chunkFolder: \(remoteChunkStoreFolderName)
+                filesChunk: \(fileChunks)
+                chunkSize: \(chunkSize)
             """
         )
 

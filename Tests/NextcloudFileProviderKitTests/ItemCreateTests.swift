@@ -8,6 +8,7 @@ import TestInterface
 import UniformTypeIdentifiers
 import XCTest
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -15,7 +16,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     )
 
     var rootItem: MockRemoteItem!
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
@@ -49,8 +50,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
+
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
         XCTAssertNil(error)
@@ -102,8 +105,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
+
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
         XCTAssertNil(error)
@@ -155,7 +160,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         XCTAssertNil(folderError)
@@ -185,7 +191,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
 
@@ -306,7 +313,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         let createdBundleItem = try XCTUnwrap(createdBundleItemMaybe)
@@ -388,7 +396,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             forcedChunkSize: chunkSize,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
@@ -479,7 +488,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             forcedChunkSize: chunkSize,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
@@ -535,7 +545,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteInterface: remoteInterface,
             ignoredFiles: ignoredMatcher,
             progress: .init(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         // Assert
@@ -615,7 +626,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         XCTAssertNotNil(createdItem)
@@ -701,7 +713,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         XCTAssertNil(createdItem)

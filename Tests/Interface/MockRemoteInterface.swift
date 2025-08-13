@@ -790,6 +790,7 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions,
         currentNumChunksUpdateHandler: @escaping (Int) -> Void = { _ in },
         chunkCounter: @escaping (Int) -> Void = { _ in },
+        log: any FileProviderLogging,
         chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
         requestHandler: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },

@@ -4,10 +4,12 @@
 import FileProvider
 import Foundation
 import NextcloudKit
-import OSLog
 
-fileprivate let logger = Logger(subsystem: Logger.subsystem, category: "thumbnails")
-
+///
+/// Stateless function to fetch thumbnails from the server.
+///
+/// > To Do: This needs to become part of the type implementing `NSFileProviderReplicatedExtension` once it is moved from the desktop client into this package.
+///
 public func fetchThumbnails(
     for itemIdentifiers: [NSFileProviderItemIdentifier],
     requestedSize size: CGSize,
@@ -19,8 +21,10 @@ public func fetchThumbnails(
         Data?,
         Error?
     ) -> Void,
+    log: any FileProviderLogging,
     completionHandler: @Sendable @escaping (Error?) -> Void
 ) -> Progress {
+    let logger = FileProviderLogger(category: "fetchThumbnails", log: log)
     let progress = Progress(totalUnitCount: Int64(itemIdentifiers.count))
 
     @Sendable func finishCurrent() {
@@ -37,14 +41,11 @@ public func fetchThumbnails(
                 identifier: itemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                log: logger.log
             ) else {
-                logger.error(
-                    """
-                    Could not find item with identifier: \(itemIdentifier.rawValue, privacy: .public),
-                    unable to download thumbnail!
-                    """
-                )
+                logger.error("Could not find item, unable to download thumbnail!", [.item: itemIdentifier.rawValue])
+
                 perThumbnailCompletionHandler(
                     itemIdentifier,
                     nil,

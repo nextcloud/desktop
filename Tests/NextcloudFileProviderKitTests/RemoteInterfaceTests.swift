@@ -8,6 +8,7 @@ import NextcloudKit
 import Testing
 @testable import TestInterface
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 @Suite("RemoteInterface Extension Tests", .serialized)
 struct RemoteInterfaceExtensionTests {

@@ -2,15 +2,14 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-import OSLog
 
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
-public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
+final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
@@ -24,7 +23,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     public var webSocketAuthenticationFailLimit = 3
     public var webSocketTaskActive: Bool { webSocketTask != nil }
 
-    private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
+    private let logger: FileProviderLogger
 
     private var workingSetCheckOngoing = false
     private var invalidated = false
@@ -66,13 +65,15 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         remoteInterface: RemoteInterface,
         changeNotificationInterface: ChangeNotificationInterface,
         domain: NSFileProviderDomain?,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging
     ) {
         self.account = account
         self.remoteInterface = remoteInterface
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
         self.dbManager = dbManager
+        self.logger = FileProviderLogger(category: "RemoteChangeObserver", log: log)
         super.init()
         connect()
     }
@@ -83,16 +84,16 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             pollingTimer = Timer.scheduledTimer(
                 withTimeInterval: pollInterval, repeats: true
             ) { [weak self] timer in
-                self?.logger.info("Polling timer timeout, notifying change")
+                self?.logger.info("Polling timer timeout, notifying change.")
                 self?.startWorkingSetCheck()
             }
-            logger.info("Starting polling timer")
+            logger.info("Starting polling timer.")
         }
     }
 
     private func stopPollingTimer() {
         Task { @MainActor in
-            logger.info("Stopping polling timer")
+            logger.info("Stopping polling timer.")
             pollingTimer?.invalidate()
             pollingTimer = nil
         }
@@ -115,17 +116,11 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         stopPollingTimer()
         resetWebSocket()
         guard networkReachability != .notReachable else {
-            logger.error("Network unreachable, will retry when reconnected")
+            logger.error("Network unreachable, will retry when reconnected.")
             return
         }
         guard webSocketAuthenticationFailCount < webSocketAuthenticationFailLimit else {
-            logger.error(
-                """
-                Exceeded authentication failures for notify push websocket
-                \(self.accountId, privacy: .public),
-                will poll instead.
-                """
-            )
+            logger.error("Exceeded authentication failures for notify push websocket \(accountId), will poll instead.", [.account: accountId])
             startPollingTimer()
             return
         }
@@ -163,13 +158,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         )
 
         guard error == .success else {
-            self.logger.error(
-                """
-                Could not get \(self.accountId, privacy: .public) capabilities:
-                \(error.errorCode, privacy: .public)
-                \(error.errorDescription, privacy: .public)
-                """
-            )
+            self.logger.error("Could not get capabilities: \(error.errorCode) \(error.errorDescription)", [.account: accountId])
             reconnectWebSocket()
             return
         }
@@ -177,21 +166,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         guard let capabilities,
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
-            logger.error(
-                """
-                Could not get notifyPush websocket \(self.accountId, privacy: .public), polling.
-                """
-            )
+            logger.error("Could not get notifyPush websocket \(self.accountId), polling.", [.account: accountId])
             startPollingTimer()
             return
         }
 
         guard let websocketEndpointUrl = URL(string: websocketEndpoint) else {
-            logger.error(
-                """
-                Received notifyPush endpoint is invalid: \(websocketEndpoint, privacy: .public)
-                """
-            )
+            logger.error("Received notifyPush endpoint is invalid: \(websocketEndpoint)")
+
             return
         }
         webSocketOperationQueue.isSuspended = false
@@ -202,11 +184,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         )
         webSocketTask = webSocketUrlSession?.webSocketTask(with: websocketEndpointUrl)
         webSocketTask?.resume()
-        logger.info(
-            """
-            Successfully configured push notifications for \(self.accountId, privacy: .public)
-            """
-        )
+        logger.info("Successfully configured push notifications for \(accountId)", [.account: accountId])
     }
 
     public func authenticationChallenge(
@@ -216,7 +194,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     ) {
         guard !invalidated else { return }
         let authMethod = challenge.protectionSpace.authenticationMethod
-        logger.debug("Received auth challenge with method: \(authMethod, privacy: .public)")
+        logger.debug("Received auth challenge with method: \(authMethod)")
         if authMethod == NSURLAuthenticationMethodHTTPBasic {
             let credential = URLCredential(
                 user: account.username,
@@ -227,14 +205,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         } else if authMethod == NSURLAuthenticationMethodServerTrust {
             // TODO: Validate the server trust
             guard let serverTrust = challenge.protectionSpace.serverTrust else {
-                logger.warning("Received server trust auth challenge but no trust avail")
+                logger.error("Received server trust auth challenge but no trust avail")
                 completionHandler(.cancelAuthenticationChallenge, nil)
                 return
             }
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {
-            logger.warning("Unhandled auth method: \(authMethod, privacy: .public)")
+            logger.error("Unhandled auth method: \(authMethod)")
             // Handle other authentication methods or cancel the challenge
             completionHandler(.performDefaultHandling, nil)
         }
@@ -246,7 +224,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         didOpenWithProtocol protocol: String?
     ) {
         guard !invalidated else { return }
-        logger.debug("Websocket connected \(self.accountId, privacy: .public) sending auth details")
+        logger.debug("Websocket connected \(accountId) sending auth details", [.account: accountId])
         Task { await authenticateWebSocket() }
     }
 
@@ -264,27 +242,28 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             return
         }
 
-        logger.debug("Socket connection closed for \(self.accountId, privacy: .public).")
+        logger.debug("Socket connection closed for \(accountId).", [.account: accountId])
+
         if let reason = reason {
-            logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "", privacy: .public)")
+            logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "")")
         }
-        logger.debug("Retrying websocket connection for \(self.accountId, privacy: .public).")
+
+        logger.debug("Retrying websocket connection for \(accountId).", [.account: accountId])
         reconnectWebSocket()
     }
 
     private func authenticateWebSocket() async {
-        guard !invalidated else { return }
+        guard !invalidated else {
+            return
+        }
+
         do {
             try await webSocketTask?.send(.string(account.username))
             try await webSocketTask?.send(.string(account.password))
         } catch let error {
-            logger.error(
-                """
-                Error authenticating websocket for \(self.accountId, privacy: .public):
-                \(error.localizedDescription, privacy: .public)
-                """
-            )
+            logger.error("Error authenticating websocket.", [.account: accountId, .error: error])
         }
+
         readWebSocket()
     }
 
@@ -299,12 +278,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
             do {
                 try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
             } catch let error {
-                self.logger.error(
-                    """
-                    Could not sleep websocket ping for \(self.accountId, privacy: .public):
-                    \(error.localizedDescription, privacy: .public)
-                    """
-                )
+                self.logger.error("Could not sleep websocket ping.", [.account: self.accountId, .error: error])
             }
             guard !Task.isCancelled else { return }
             self.pingWebSocket()
@@ -314,18 +288,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     private func pingWebSocket() {  // Keep the socket connection alive
         guard !invalidated else { return }
         guard networkReachability != .notReachable else {
-            logger.error("Not pinging \(self.accountId, privacy: .public), network is unreachable")
+            logger.error("Not pinging because network is unreachable.", [.account: self.accountId])
             return
         }
 
         webSocketTask?.sendPing { [weak self] error in
             guard let self, !self.invalidated else { return }
             guard error == nil else {
-                self.logger.warning(
-                    """
-                    Websocket ping failed: \(error?.localizedDescription ?? "", privacy: .public)
-                    """
-                )
+                self.logger.error("Websocket ping failed.", [.error: error])
                 self.webSocketPingFailCount += 1
                 if self.webSocketPingFailCount > self.webSocketPingFailLimit {
                     Task.detached(priority: .medium) { self.reconnectWebSocket() }
@@ -344,7 +314,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         webSocketTask?.receive { result in
             switch result {
             case .failure:
-                self.logger.debug("Failed to read websocket \(self.accountId, privacy: .public)")
+                    self.logger.debug("Failed to read websocket \(self.accountId)", [.account: self.accountId])
                 // Do not reconnect here, delegate methods will handle reconnecting
             case .success(let message):
                 switch message {
@@ -363,23 +333,23 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     private func processWebsocket(data: Data) {
         guard !invalidated else { return }
         guard let string = String(data: data, encoding: .utf8) else {
-            logger.error("Could parse websocket data for id: \(self.accountId, privacy: .public)")
+            logger.error("Could parse websocket data for id: \(accountId)", [.account: accountId])
             return
         }
         processWebsocket(string: string)
     }
 
     private func processWebsocket(string: String) {
-        logger.debug("Received websocket string: \(string, privacy: .public)")
+        logger.debug("Received websocket string: \(string)")
         if string == "notify_file" {
-            logger.debug("Received file notification for \(self.accountId, privacy: .public)")
+            logger.debug("Received file notification for \(accountId)", [.account: accountId])
             startWorkingSetCheck()
         } else if string == "notify_activity" {
-            logger.debug("Ignoring activity notification: \(self.accountId, privacy: .public)")
+            logger.debug("Ignoring activity notification: \(accountId)", [.account: accountId])
         } else if string == "notify_notification" {
-            logger.debug("Ignoring notification: \(self.accountId, privacy: .public)")
+            logger.debug("Ignoring notification: \(accountId)", [.account: accountId])
         } else if string == "authenticated" {
-            logger.debug("Correctly authed websocket \(self.accountId, privacy: .public), pinging")
+            logger.debug("Correctly authed websocket \(accountId), pinging", [.account: accountId])
             NotificationCenter.default.post(
                 name: NotifyPushAuthenticatedNotificationName, object: self
             )
@@ -387,19 +357,14 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         } else if string == "err: Invalid credentials" {
             logger.debug(
                 """
-                Invalid creds for websocket for \(self.accountId, privacy: .public),
+                Invalid creds for websocket for \(self.accountId),
                 reattempting auth.
                 """
             )
             webSocketAuthenticationFailCount += 1
             reconnectWebSocket()
         } else {
-            logger.warning(
-                """
-                Received unknown string from websocket \(self.accountId, privacy: .public):
-                \(string, privacy: .public)
-                """
-            )
+            logger.error("Received unknown string from websocket \(accountId): \(string)", [.account: accountId])
         }
     }
 
@@ -507,7 +472,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                depth: item.directory ? .targetAndDirectChildren : .target
+                depth: item.directory ? .targetAndDirectChildren : .target,
+                log: logger.log
             )
             guard !invalidated else { return }
             if readError?.errorCode == 404 {
@@ -520,13 +486,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                         examinedItemIds.insert(item.ocId)
                     }
             } else if let readError, readError != .success {
-                logger.info(
-                    """
-                    Finished change enumeration of working set for user:
-                        \(self.accountId, privacy: .public)
-                        with error: \(readError.errorDescription, privacy: .public)
-                    """
-                )
+                logger.info("Finished change enumeration of working set for user \(accountId) with error.", [.account: accountId, .error: readError])
                 return
             } else {
                 allDeletedMetadatas += deletedMetadatas ?? []
@@ -548,7 +508,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                     // If the target is not in the updated metadatas then neither it, nor
                     // any of its kids have changed. So skip examining all of them
                     if !allUpdatedMetadatas.contains(where: { $0.ocId == target.ocId }) {
-                        logger.debug("Target \(itemRemoteUrl, privacy: .public) has not changed. Skipping children")
+                        logger.debug("Target \(itemRemoteUrl) has not changed. Skipping children")
                         let materialisedChildren = materialisedItems.filter {
                             $0.serverUrl.hasPrefix(itemRemoteUrl)
                         }.map(\.ocId)
@@ -565,7 +525,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
                             if let localItem = materialisedItems.first(where: { $0.ocId == childDir.ocId }),
                                localItem.etag == childDir.etag {
                                 // Directory hasn't changed, mark as examined to skip separate enumeration
-                                logger.debug("Child directory \(childDir.fileName, privacy: .public) etag unchanged (\(childDir.etag, privacy: .public)), marking as examined")
+                                logger.debug("Child directory \(childDir.fileName) etag unchanged (\(childDir.etag)), marking as examined")
                                 examinedChildFilesAndDeletedItems.insert(childDir.ocId)
                                 
                                 // Also mark any materialized children of this directory as examined
@@ -612,11 +572,9 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         }
         _ = await task.result
 
-        logger.info(
-            "Finished change checking of working set for user: \(self.accountId, privacy: .public)"
-        )
-        logger.debug("Examined item ids: \(examinedItemIds, privacy: .public)")
-        logger.debug("Materialised item ids: \(materialisedItems.map(\.ocId), privacy: .public)")
+        logger.info("Finished change checking of working set for user: \(self.accountId)")
+        logger.debug("Examined item ids: \(examinedItemIds)")
+        logger.debug("Materialised item ids: \(materialisedItems.map(\.ocId))")
 
         if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
             logger.info("No changes found.")

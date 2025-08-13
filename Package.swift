@@ -35,9 +35,15 @@ let package = Package(
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
                 .product(name: "RealmSwift", package: "realm-swift")]),
         .target(
+            name: "NextcloudFileProviderKitMocks",
+            dependencies: [
+                "NextcloudFileProviderKit"
+            ]),
+        .target(
             name: "TestInterface",
             dependencies: [
                 "NextcloudFileProviderKit",
+                "NextcloudFileProviderKitMocks",
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "NIOHTTP1", package: "swift-nio"),

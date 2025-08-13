@@ -4,6 +4,7 @@
 import FileProvider
 import Foundation
 import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 public extension Item {
     convenience init(
@@ -19,7 +20,8 @@ public extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
     }
 }

@@ -5,6 +5,7 @@ import Alamofire
 import Foundation
 import Testing
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 @Suite struct EnumeratorPageResponseTests {
     private func createMockAFDataResponse(
@@ -45,7 +46,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
 
         #expect(enumeratorResponse != nil, "Initialization should succeed with valid values.")
         #expect(enumeratorResponse?.token == "nextToken123")
@@ -59,7 +60,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 1
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
 
         #expect(enumeratorResponse != nil, "Initialization should succeed with valid values.")
         #expect(enumeratorResponse?.token == "anotherToken456")
@@ -77,7 +78,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 2
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
 
         #expect(enumeratorResponse != nil, "Init should succeed with case-insensitive headers.")
         #expect(enumeratorResponse?.token == "mixedCaseToken789")
@@ -95,7 +96,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 3
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
 
         #expect(enumeratorResponse != nil, "Init should succeed even if total is not valid integer")
         #expect(enumeratorResponse?.token == "tokenWithInvalidTotal")
@@ -108,7 +109,7 @@ import Testing
     @Test("Init with nil nkResponseData returns nil")
     func initWithNilNkResponseData() {
         let index = 0
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: nil, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: nil, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if nkResponseData is nil.")
     }
 
@@ -124,7 +125,7 @@ import Testing
         )
         let index = 0
         let enumeratorResponse =
-            EnumeratorPageResponse(nkResponseData: afResponseWithNilHttp, index: index)
+            EnumeratorPageResponse(nkResponseData: afResponseWithNilHttp, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if HTTPURLResponse is nil.")
     }
 
@@ -133,7 +134,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: [:])
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if required headers empty")
     }
 
@@ -143,7 +144,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if PAGINATE header missing.")
     }
 
@@ -156,7 +157,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if PAGINATE header is false")
     }
 
@@ -166,7 +167,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if PAGINATE header not true")
     }
 
@@ -176,7 +177,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse == nil, "Initialization should fail if TOKEN header is missing.")
     }
 
@@ -187,7 +188,7 @@ import Testing
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
 
-        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index)
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: index, log: FileProviderLogMock())
         #expect(enumeratorResponse != nil, "Initialization should succeed with empty token string.")
         #expect(enumeratorResponse?.token == "", "Token should be an empty string.")
         #expect(enumeratorResponse?.index == 0)

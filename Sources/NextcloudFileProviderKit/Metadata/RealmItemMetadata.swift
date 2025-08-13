@@ -4,6 +4,12 @@
 import Foundation
 import RealmSwift
 
+///
+/// Realm data model for a file provider item as stored in the extension's own database for metadata.
+///
+/// > Warning: **Do not pass instances across the boundaries of different concurrency domains because they are not sendable!**
+/// Use ``SendableItemMetadata`` as a representation instead.
+///
 internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""

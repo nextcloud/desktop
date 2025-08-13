@@ -4,8 +4,10 @@
 import FileProvider
 import NextcloudKit
 import UniformTypeIdentifiers
-import OSLog
 
+///
+/// Data model implementation for file provider items as defined by the file provider framework and `NSFileProviderItemProtocol`.
+///
 public class Item: NSObject, NSFileProviderItem {
     public enum FileProviderItemTransferError: Error {
         case downloadError
@@ -27,11 +29,13 @@ public class Item: NSObject, NSFileProviderItem {
     public var capabilities: NSFileProviderItemCapabilities {
         var capabilities: NSFileProviderItemCapabilities = []
         let permissions = metadata.permissions.uppercased()
+
         if permissions.contains("G"), metadata.directory { // Readable
             capabilities.insert(.allowsContentEnumerating)
         } else if permissions.contains("G") {
             capabilities.insert(.allowsReading)
         }
+        
         if !metadata.lock {
             if permissions.contains("D") { // Deletable
                 capabilities.insert(.allowsDeleting)
@@ -78,20 +82,22 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var contentType: UTType {
-        if itemIdentifier == .rootContainer || (metadata.contentType.isEmpty && metadata.directory)
-        {
+        if itemIdentifier == .rootContainer || (metadata.contentType.isEmpty && metadata.directory) {
             return .folder
         } else if metadata.contentType == "httpd/unix-directory", metadata.directory {
             let filenameComponents = filename.components(separatedBy: ".")
+
             if filenameComponents.count > 1, let ext = filenameComponents.last {
                 return UTType(filenameExtension: ext, conformingTo: .directory) ?? .folder
             }
+
             return .folder
         } else if !metadata.contentType.isEmpty, let type = UTType(metadata.contentType) {
             return type
         }
 
         let filenameExtension = filename.components(separatedBy: ".").last ?? ""
+
         return UTType(filenameExtension: filenameExtension) ?? .content
     }
 
@@ -213,11 +219,17 @@ public class Item: NSObject, NSFileProviderItem {
         return metadata.keepDownloaded
     }
 
+    ///
+    /// Factory method to create a root container item.
+    ///
+    /// - Returns: A file provider item for the root container of the given account.
+    ///
     public static func rootContainer(
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        remoteSupportsTrash: Bool
+        remoteSupportsTrash: Bool,
+        log: any FileProviderLogging
     ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
@@ -251,7 +263,8 @@ public class Item: NSObject, NSFileProviderItem {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: remoteSupportsTrash
+            remoteSupportsTrash: remoteSupportsTrash,
+            log: log
         )
     }
 
@@ -259,7 +272,8 @@ public class Item: NSObject, NSFileProviderItem {
         remoteInterface: RemoteInterface,
         account: Account,
         dbManager: FilesDatabaseManager,
-        remoteSupportsTrash: Bool
+        remoteSupportsTrash: Bool,
+        log: any FileProviderLogging
     ) -> Item {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
@@ -292,11 +306,12 @@ public class Item: NSObject, NSFileProviderItem {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: remoteSupportsTrash
+            remoteSupportsTrash: remoteSupportsTrash,
+            log: log
         )
     }
 
-    static let logger = Logger(subsystem: Logger.subsystem, category: "item")
+    let logger: FileProviderLogger
 
     public required init(
         metadata: SendableItemMetadata,
@@ -304,11 +319,13 @@ public class Item: NSObject, NSFileProviderItem {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        remoteSupportsTrash: Bool
+        remoteSupportsTrash: Bool,
+        log: any FileProviderLogging
     ) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
+        self.logger = FileProviderLogger(category: "Item", log: log)
         self.remoteInterface = remoteInterface
         self.dbManager = dbManager
         self.remoteSupportsTrash = remoteSupportsTrash
@@ -319,7 +336,8 @@ public class Item: NSObject, NSFileProviderItem {
         identifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging
     ) async -> Item? {
         // resolve the given identifier to a record in the model
 
@@ -330,7 +348,8 @@ public class Item: NSObject, NSFileProviderItem {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: remoteSupportsTrash
+                remoteSupportsTrash: remoteSupportsTrash,
+                log: log
             )
         }
         guard identifier != .trashContainer else {
@@ -338,7 +357,8 @@ public class Item: NSObject, NSFileProviderItem {
                 remoteInterface: remoteInterface,
                 account: account,
                 dbManager: dbManager,
-                remoteSupportsTrash: remoteSupportsTrash
+                remoteSupportsTrash: remoteSupportsTrash,
+                log: log
             )
         }
 
@@ -347,6 +367,7 @@ public class Item: NSObject, NSFileProviderItem {
         }
 
         var parentItemIdentifier: NSFileProviderItemIdentifier?
+
         if metadata.isTrashed {
             parentItemIdentifier = .trashContainer
         } else {
@@ -356,7 +377,10 @@ public class Item: NSObject, NSFileProviderItem {
                 account: account
             )
         }
-        guard let parentItemIdentifier else { return nil }
+
+        guard let parentItemIdentifier else {
+            return nil
+        }
 
         return Item(
             metadata: metadata,
@@ -364,32 +388,21 @@ public class Item: NSObject, NSFileProviderItem {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: remoteSupportsTrash
+            remoteSupportsTrash: remoteSupportsTrash,
+            log: log
         )
     }
 
     public func localUrlForContents(domain: NSFileProviderDomain) async -> URL? {
         guard isDownloaded else {
-            Self.logger.error(
-                """
-                Unable to get local URL for item contents.
-                    filename: \(self.filename, privacy: .public)
-                    Item is not materialised.
-                """
-            )
+            logger.error("Unable to get local URL for item contents. Item is not materialised.", [.name: filename])
+
             return nil
         }
 
-        guard let manager = NSFileProviderManager(for: domain),
-              let fileUrl = try? await manager.getUserVisibleURL(for: itemIdentifier)
-        else {
-            Self.logger.error(
-                """
-                Unable to get manager or user visible url for item.
-                    filename: \(self.filename, privacy: .public)
-                    Cannot provide local URL for contents.
-                """
-            )
+        guard let manager = NSFileProviderManager(for: domain), let fileUrl = try? await manager.getUserVisibleURL(for: itemIdentifier) else {
+            logger.error("Unable to get manager or user visible url for item. Cannot provide local URL for contents.", [.name: filename])
+
             return nil
         }
         
@@ -397,21 +410,21 @@ public class Item: NSObject, NSFileProviderItem {
         let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let coordinator = NSFileCoordinator()
         var readData: Data?
+
         coordinator.coordinate(readingItemAt: fileUrl, options: [], error: nil) { readURL in
             readData = try? Data(contentsOf: readURL)
         }
-        guard let readData else { return nil }
+
+        guard let readData else {
+            return nil
+        }
+
         do {
             try readData.write(to: tempLocation)
         } catch let error {
-            Self.logger.error(
-                """
-                Unable to write file item contents \(self.filename, privacy: .public) to temp url.
-                    error: \(error.localizedDescription, privacy: .public)
-                    Cannot provide local URL for contents.
-                """
-            )
+            logger.error("Unable to write file item contents to temporary URL.", [.name: filename, .error: error])
         }
+
         return tempLocation
     }
 }

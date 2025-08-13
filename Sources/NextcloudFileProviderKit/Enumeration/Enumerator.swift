@@ -3,7 +3,6 @@
 
 import FileProvider
 import NextcloudKit
-import OSLog
 
 public class Enumerator: NSObject, NSFileProviderEnumerator {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
@@ -17,7 +16,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private let currentAnchor =
         NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
     private let pageItemCount: Int
-    static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
+    let logger: FileProviderLogger
     let account: Account
     let remoteInterface: RemoteInterface
     var isInvalidated = false
@@ -33,7 +32,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
-        pageSize: Int = 100
+        pageSize: Int = 100,
+        log: any FileProviderLogging
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
@@ -41,20 +41,21 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         self.dbManager = dbManager
         self.domain = domain
         self.pageItemCount = pageSize
+        self.logger = FileProviderLogger(category: "Enumerator", log: log)
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
-            Self.logger.debug(
+            logger.debug(
                 """
                 Providing enumerator for a system defined container:
-                \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                \(enumeratedItemIdentifier.rawValue)
                 """
             )
             serverUrl = account.davFilesUrl
         } else {
-            Self.logger.debug(
+            logger.debug(
                 """
                 Providing enumerator for item with identifier:
-                \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                \(enumeratedItemIdentifier.rawValue)
                 """
             )
 
@@ -64,29 +65,29 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 serverUrl =
                     enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
             } else {
-                Self.logger.error(
+                logger.error(
                     """
                     Could not find itemMetadata for file with identifier:
-                    \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                    \(enumeratedItemIdentifier.rawValue)
                     """
                 )
             }
         }
 
-        Self.logger.info(
+        logger.info(
             """
-            Set up enumerator for user: \(self.account.ncKitAccount, privacy: .public)
-            with serverUrl: \(self.serverUrl, privacy: .public)
+            Set up enumerator for user: \(self.account.ncKitAccount)
+            with serverUrl: \(self.serverUrl)
             """
         )
         super.init()
     }
 
     public func invalidate() {
-        Self.logger.debug(
+        logger.debug(
             """
             Enumerator is being invalidated for item with identifier:
-            \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
+            \(self.enumeratedItemIdentifier.rawValue)
             """
         )
         isInvalidated = true
@@ -97,11 +98,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     public func enumerateItems(
         for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
     ) {
-        Self.logger.debug(
+        logger.debug(
             """
             Received enumerate items request for enumerator with user:
-            \(self.account.ncKitAccount, privacy: .public)
-            with serverUrl: \(self.serverUrl, privacy: .public)
+            \(self.account.ncKitAccount)
+            with serverUrl: \(self.serverUrl)
             """
         )
         /*
@@ -118,10 +119,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .trashContainer {
-            Self.logger.debug(
+            logger.debug(
                 """
-                Enumerating trash set for user: \(self.account.ncKitAccount, privacy: .public)
-                with serverUrl: \(self.serverUrl, privacy: .public)
+                Enumerating trash set for user: \(self.account.ncKitAccount)
+                with serverUrl: \(self.serverUrl)
                 """
             )
 
@@ -130,16 +131,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account, options: .init(), taskHandler: { _ in }
                 )
                 guard let capabilities, error == .success else {
-                    Self.logger.error(
+                    logger.error(
                         """
                         Could not acquire capabilities, cannot check trash.
-                            Error: \(error.errorDescription, privacy: .public)
+                            Error: \(error.errorDescription)
                         """)
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
                 }
                 guard capabilities.files?.undelete == true else {
-                    Self.logger.error("Trash is unsupported on server, cannot enumerate items.")
+                    logger.error("Trash is unsupported on server, cannot enumerate items.")
                     observer.finishEnumeratingWithError(
                         NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
                     )
@@ -174,14 +175,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     numPage: 1,
-                    trashItems: trashedItems
+                    trashItems: trashedItems,
+                    log: logger.log
                 )
             }
             return
         }
 
         if enumeratedItemIdentifier == .workingSet {
-            Self.logger.info("Upcoming enumeration is of working set.")
+            logger.info("Upcoming enumeration is of working set.")
             let ncKitAccount = account.ncKitAccount
             // Visited folders and downloaded files
             let materialisedItems = dbManager.materialisedItemMetadatas(account: ncKitAccount)
@@ -190,10 +192,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         guard serverUrl != "" else {
-            Self.logger.error(
+            logger.error(
                 """
                 Enumerator has empty serverUrl -- can't enumerate that!
-                For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
+                For identifier: \(self.enumeratedItemIdentifier.rawValue)
                 """
             )
             let error = NSError.fileProviderErrorForNonExistentItem(
@@ -203,11 +205,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
-        Self.logger.debug(
+        logger.debug(
             """
-            Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
-                for user: \(self.account.ncKitAccount, privacy: .public)
-                with serverUrl: \(self.serverUrl, privacy: .public)
+            Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")
+                for user: \(self.account.ncKitAccount)
+                with serverUrl: \(self.serverUrl)
             """
         )
 
@@ -231,7 +233,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     }
                     pageIndex = enumPageResponse.index
                 } else {
-                    Self.logger.error("Could not parse page")
+                    logger.error("Could not parse page")
                 }
             }
 
@@ -241,20 +243,21 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                depth: .targetAndDirectChildren
+                depth: .targetAndDirectChildren,
+                log: logger.log
             )
             let metadatas = readResult.metadatas
             let readError = readResult.readError
             var nextPage = readResult.nextPage
 
             guard readError == nil else {
-                Self.logger.error(
+                logger.error(
                     """
                     Finishing enumeration for page:
-                        \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
-                        for: \(self.account.ncKitAccount, privacy: .public)
-                        with serverUrl: \(self.serverUrl, privacy: .public) 
-                        with error \(readError!.errorDescription, privacy: .public)
+                        \(String(data: page.rawValue, encoding: .utf8) ?? "")
+                        for: \(self.account.ncKitAccount)
+                        with serverUrl: \(self.serverUrl) 
+                        with error \(readError!.errorDescription)
                     """
                 )
 
@@ -267,10 +270,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             guard let metadatas else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
-                        with serverUrl: \(self.serverUrl, privacy: .public)
+                    Finishing enumeration for: \(self.account.ncKitAccount)
+                        with serverUrl: \(self.serverUrl)
                         with invalid metadatas.
                     """
                 )
@@ -282,18 +285,18 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             if let rPage = nextPage, let pageTotal, rPage.index * pageItemCount >= pageTotal {
                 // Server will sometimes provide a valid next page data even though there are no
                 // items to enumerate anymore
-                Self.logger.debug("No more items to enumerate, stopping paged enumeration")
+                logger.debug("No more items to enumerate, stopping paged enumeration")
                 nextPage = nil
             }
 
             nextPage = nil
 
-            Self.logger.info(
+            logger.info(
                 """
                 Finished reading page:
-                    \(String(data: page.rawValue, encoding: .utf8) ?? "", privacy: .public)
-                    serverUrl: \(self.serverUrl, privacy: .public)
-                    for user: \(self.account.ncKitAccount, privacy: .public).
+                    \(String(data: page.rawValue, encoding: .utf8) ?? "")
+                    serverUrl: \(self.serverUrl)
+                    for user: \(self.account.ncKitAccount).
                     Processed \(metadatas.count) metadatas
                 """
             )
@@ -305,12 +308,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     public func enumerateChanges(
         for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor
     ) {
-        Self.logger.debug(
+        logger.debug(
             """
             Received enumerate changes request for enumerator
-                for user: \(self.account.ncKitAccount, privacy: .public)
-                with serverUrl: \(self.serverUrl, privacy: .public)
-                with sync anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "", privacy: .public)
+                for user: \(self.account.ncKitAccount)
+                with serverUrl: \(self.serverUrl)
+                with sync anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")
             """
         )
         /*
@@ -324,20 +327,21 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .workingSet {
-            Self.logger.debug(
-                "Enumerating working set changes for \(self.account.ncKitAccount, privacy: .public)"
+            logger.debug(
+                "Enumerating working set changes for \(self.account.ncKitAccount)"
             )
 
             let formatter = ISO8601DateFormatter()
             guard let anchorDateString = String(data: anchor.rawValue, encoding: .utf8),
                   let date = formatter.date(from: anchorDateString)
             else {
-                Self.logger.error("Couldn't parse sync anchor \(anchor.rawValue, privacy: .public)")
+                logger.error("Couldn't parse sync anchor \(anchor.rawValue)")
                 observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
                 return
             }
             let pendingChanges = dbManager.pendingWorkingSetChanges(account: account, since: date)
-            Self.completeChangesObserver(
+
+            completeChangesObserver(
                 observer,
                 anchor: currentAnchor,
                 enumeratedItemIdentifier: enumeratedItemIdentifier,
@@ -348,10 +352,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 updatedMetadatas: pendingChanges.updated,
                 deletedMetadatas: pendingChanges.deleted
             )
+
             return
         } else if enumeratedItemIdentifier == .trashContainer {
-            Self.logger.debug(
-                "Enumerating changes in trash set for: \(self.account.ncKitAccount, privacy: .public)"
+            logger.debug(
+                "Enumerating changes in trash set for: \(self.account.ncKitAccount)"
             )
 
             Task {
@@ -359,16 +364,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account, options: .init(), taskHandler: { _ in }
                 )
                 guard let capabilities, error == .success else {
-                    Self.logger.error(
+                    logger.error(
                         """
                         Could not acquire capabilities, cannot check trash.
-                            Error: \(error.errorDescription, privacy: .public)
+                            Error: \(error.errorDescription)
                         """)
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
                 }
                 guard capabilities.files?.undelete == true else {
-                    Self.logger.error("Trash is unsupported on server, cannot enumerate changes.")
+                    logger.error("Trash is unsupported on server, cannot enumerate changes.")
                     observer.finishEnumeratingWithError(
                         NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
                     )
@@ -403,16 +408,17 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    trashItems: trashedItems
+                    trashItems: trashedItems,
+                    log: logger.log
                 )
             }
             return
         }
 
-        Self.logger.info(
+        logger.info(
             """
-            Enumerating changes for user: \(self.account.ncKitAccount, privacy: .public)
-            with serverUrl: \(self.serverUrl, privacy: .public)
+            Enumerating changes for user: \(self.account.ncKitAccount)
+            with serverUrl: \(self.serverUrl)
             """
         )
 
@@ -426,7 +432,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 serverUrl,
                 account: account,
                 remoteInterface: remoteInterface,
-                dbManager: dbManager
+                dbManager: dbManager,
+                log: logger.log
             )
 
             // If we get a 404 we might add more deleted metadatas
@@ -436,11 +443,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             guard readError == nil else {
-                Self.logger.error(
+                logger.error(
                     """
-                    Finishing enumeration of changes for: \(self.account.ncKitAccount, privacy: .public)
-                    with serverUrl: \(self.serverUrl, privacy: .public)
-                    with error: \(readError!.errorDescription, privacy: .public)
+                    Finishing enumeration of changes for: \(self.account.ncKitAccount)
+                    with serverUrl: \(self.serverUrl)
+                    with error: \(readError!.errorDescription)
                     """
                 )
 
@@ -449,16 +456,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 ) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError!.isNotFoundError {
-                    Self.logger.info(
+                    logger.info(
                         """
                         404 error means item no longer exists.
-                        Deleting metadata and reporting \(self.serverUrl, privacy: .public)
+                        Deleting metadata and reporting \(self.serverUrl)
                         as deletion without error
                         """
                     )
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
-                        Self.logger.error(
+                        logger.error(
                             """
                             Invalid enumeratedItemMetadata.
                             Could not delete metadata nor report deletion.
@@ -475,7 +482,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         {
                             currentDeletedMetadatas += deletedDirectoryMetadatas
                         } else {
-                            Self.logger.error(
+                            logger.error(
                                 """
                                 Something went wrong when recursively deleting directory.
                                 It's metadata was not found. Cannot report it as deleted.
@@ -486,7 +493,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
                     }
 
-                    Self.completeChangesObserver(
+                    completeChangesObserver(
                         observer,
                         anchor: anchor,
                         enumeratedItemIdentifier: self.enumeratedItemIdentifier,
@@ -499,7 +506,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     )
                     return
                 } else if readError!.isNoChangesError {  // All is well, just no changed etags
-                    Self.logger.info(
+                    logger.info(
                         """
                         Error was to say no changed files -- not bad error.
                         Finishing change enumeration.
@@ -513,14 +520,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            Self.logger.info(
+            logger.info(
                 """
-                Finished reading serverUrl: \(self.serverUrl, privacy: .public)
-                for user: \(self.account.ncKitAccount, privacy: .public)
+                Finished reading serverUrl: \(self.serverUrl)
+                for user: \(self.account.ncKitAccount)
                 """
             )
 
-            Self.completeChangesObserver(
+            completeChangesObserver(
                 observer,
                 anchor: anchor,
                 enumeratedItemIdentifier: self.enumeratedItemIdentifier,
@@ -554,16 +561,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Task {
             do {
                 let items = try await itemMetadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
                 )
 
                 Task { @MainActor in
                     observer.didEnumerate(items)
-                    Self.logger.info("Did enumerate \(items.count) items")
-                    Self.logger.info("Next page is nil: \(nextPage == nil, privacy: .public)")
+                    logger.info("Did enumerate \(items.count) items")
+                    logger.info("Next page is nil: \(nextPage == nil)")
 
                     if let nextPage, let nextPageData = try? JSONEncoder().encode(nextPage) {
-                        Self.logger.info(
+                        logger.info(
                             "Next page: \(String(data: nextPageData, encoding: .utf8) ?? "?")"
                         )
                         observer.finishEnumerating(upTo: NSFileProviderPage(nextPageData))
@@ -573,17 +580,18 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
-                    Self.logger.info("Not handling invalid parent in enumeration")
+                    logger.info("Not handling invalid parent in enumeration")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
                 do {
-                    let metadata = try await Self.attemptInvalidParentRecovery(
+                    let metadata = try await attemptInvalidParentRecovery(
                         error: error,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
+
                     completeEnumerationObserver(
                         observer,
                         nextPage: nextPage,
@@ -597,7 +605,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    private static func completeChangesObserver(
+    private func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
@@ -610,7 +618,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         handleInvalidParent: Bool = true
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
-            Self.logger.error(
+            logger.error(
                 """
                 Received invalid newMetadatas, updatedMetadatas or deletedMetadatas.
                     Finished enumeration of changes with error.
@@ -649,7 +657,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Task { [allUpdatedMetadatas, allDeletedMetadatas] in
             do {
                 let updatedItems = try await allUpdatedMetadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager
+                    account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
                 )
 
                 Task { @MainActor in
@@ -657,7 +665,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         observer.didUpdate(updatedItems)
                     }
 
-                    Self.logger.info(
+                    logger.info(
                     """
                     Processed \(updatedItems.count) new or updated metadatas.
                         \(allDeletedMetadatas.count) deleted metadatas.
@@ -667,13 +675,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
-                    Self.logger.info("Not handling invalid parent in change enumeration")
+                    logger.info("Not handling invalid parent in change enumeration.")
                     observer.finishEnumeratingWithError(error)
                     return
                 }
-                Self.logger.info("Attempting handling invalid parent in change enumeration")
+
+                logger.info("Attempting handling invalid parent in change enumeration.")
+
                 do {
-                    let metadata = try await Self.attemptInvalidParentRecovery(
+                    let metadata = try await attemptInvalidParentRecovery(
                         error: error,
                         account: account,
                         remoteInterface: remoteInterface,
@@ -681,7 +691,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     )
                     var modifiedNewMetadatas = newMetadatas
                     modifiedNewMetadatas?.append(metadata)
-                    Self.completeChangesObserver(
+                    completeChangesObserver(
                         observer,
                         anchor: anchor,
                         enumeratedItemIdentifier: enumeratedItemIdentifier,
@@ -700,38 +710,39 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    private static func attemptInvalidParentRecovery(
+    private func attemptInvalidParentRecovery(
         error: NSError,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) async throws -> SendableItemMetadata {
-        Self.logger.info("Attempting recovery from invalid parent identifier.")
+        logger.info("Attempting recovery from invalid parent identifier.")
         // Try to recover from errors involving missing metadata for a parent
         let userInfoKey =
             FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
         guard let urlToEnumerate = (error as NSError).userInfo[userInfoKey] as? String else {
-            Self.logger.fault("No missing parent server url and filename in error user info.")
+            logger.fault("No missing parent server url and filename in error user info.")
             assert(false)
             throw NSError()
         }
 
-        Self.logger.info(
-            "Recovering from invalid parent identifier at \(urlToEnumerate, privacy: .public)"
+        logger.info(
+            "Recovering from invalid parent identifier at \(urlToEnumerate)"
         )
         let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
             urlToEnumerate,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            depth: .target
+            depth: .target,
+            log: logger.log
         )
         guard error == nil || error == .success, let metadata = metadatas?.first else {
-            Self.logger.error(
+            logger.error(
                 """
                 Problem retrieving parent for metadata.
-                    Error: \(error?.errorDescription ?? "NONE", privacy: .public)
-                    Metadatas: \(metadatas?.count ?? -1, privacy: .public)
+                    Error: \(error?.errorDescription ?? "NONE")
+                    Metadatas: \(metadatas?.count ?? -1)
                 """
             )
             throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)

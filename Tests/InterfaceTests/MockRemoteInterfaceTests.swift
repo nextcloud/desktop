@@ -3,6 +3,7 @@
 
 import XCTest
 @testable import NextcloudFileProviderKit
+@testable import NextcloudFileProviderKitMocks
 @testable import TestInterface
 
 final class MockRemoteInterfaceTests: XCTestCase {
@@ -216,6 +217,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             modificationDate: .init(),
             account: Self.account,
             options: .init(),
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
 
@@ -286,6 +288,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             modificationDate: .init(),
             account: Self.account,
             options: .init(),
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
 

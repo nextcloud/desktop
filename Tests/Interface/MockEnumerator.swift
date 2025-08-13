@@ -4,6 +4,7 @@
 import Foundation
 import FileProvider
 import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let account: Account
@@ -35,7 +36,8 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: remoteSupportsTrash
+                remoteSupportsTrash: remoteSupportsTrash,
+                log: FileProviderLogMock()
             )
             items.append(item)
         }

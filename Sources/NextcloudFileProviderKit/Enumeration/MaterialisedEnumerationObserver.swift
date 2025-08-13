@@ -3,11 +3,10 @@
 
 import FileProvider
 import Foundation
-import OSLog
 import RealmSwift
 
 public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
-    static let logger = Logger(subsystem: Logger.subsystem, category: "materialisedobservation")
+    let logger: FileProviderLogger
     public let ncKitAccount: String
     let dbManager: FilesDatabaseManager
     private let completionHandler: (
@@ -18,12 +17,14 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     public required init(
         ncKitAccount: String,
         dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging,
         completionHandler: @escaping (
             _ materialisedIds: Set<String>, _ unmaterialisedIds: Set<String>
         ) -> Void
     ) {
         self.ncKitAccount = ncKitAccount
         self.dbManager = dbManager
+        self.logger = FileProviderLogger(category: "MaterialisedEnumerationObserver", log: log)
         self.completionHandler = completionHandler
         super.init()
     }
@@ -33,8 +34,9 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     public func finishEnumerating(upTo _: NSFileProviderPage?) {
-        Self.logger.debug("Handling enumerated materialised items.")
-        Self.handleEnumeratedItems(
+        logger.debug("Handling enumerated materialised items.")
+
+        handleEnumeratedItems(
             allEnumeratedItemIds,
             account: ncKitAccount,
             dbManager: dbManager,
@@ -43,10 +45,9 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     public func finishEnumeratingWithError(_ error: Error) {
-        Self.logger.error(
-            "Ran into error when enumerating materialised items: \(error.localizedDescription, privacy: .public). Handling items enumerated so far"
-        )
-        Self.handleEnumeratedItems(
+        logger.error("Finishing enumeration with error.", [.error: error])
+
+        handleEnumeratedItems(
             allEnumeratedItemIds,
             account: ncKitAccount,
             dbManager: dbManager,
@@ -54,7 +55,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         )
     }
 
-    static func handleEnumeratedItems(
+    func handleEnumeratedItems(
         _ itemIds: Set<String>,
         account: String,
         dbManager: FilesDatabaseManager,
@@ -77,38 +78,31 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 unmaterialisedIds.remove(enumeratedId)
             } else {
                 newMaterialisedIds.insert(enumeratedId)
+
                 guard var metadata = dbManager.itemMetadata(ocId: enumeratedId) else {
-                    Self.logger.error("No metadata for \(enumeratedId, privacy: .public) found")
+                    logger.error("No metadata for \(enumeratedId) found", [.ocId: enumeratedId])
                     continue
                 }
+
                 if metadata.directory {
                     metadata.visitedDirectory = true
                 } else {
                     metadata.downloaded = true
                 }
-                Self.logger.info(
-                    """
-                    Updating materialisation state for item to MATERIALISED
-                        with id \(enumeratedId, privacy: .public)
-                        with filename \(metadata.fileName, privacy: .public)
-                    """
-                )
+
+                logger.info("Updating materialisation state for item to MATERIALISED with id \(enumeratedId) with filename \(metadata.fileName)", [.ocId: enumeratedId, .name: metadata.fileName])
                 dbManager.addItemMetadata(metadata)
             }
         }
 
         for unmaterialisedId in unmaterialisedIds {
             guard var metadata = materialisedMetadatasMap[unmaterialisedId] else {
-                Self.logger.error("No materialised for \(unmaterialisedId, privacy: .public) found")
+                logger.error("No materialised for \(unmaterialisedId) found.", [.ocId: unmaterialisedId])
                 continue
             }
-            Self.logger.info(
-                """
-                Updating materialisation state for item to UNMATERIALISED
-                    with id \(unmaterialisedId, privacy: .public)
-                    with filename \(metadata.fileName, privacy: .public)
-                """
-            )
+
+            logger.info("Updating materialisation state for item to DATALESS with id \(unmaterialisedId) with filename \(metadata.fileName).", [.name: metadata.fileName, .ocId: unmaterialisedId])
+
             metadata.downloaded = false
             metadata.visitedDirectory = false
             dbManager.addItemMetadata(metadata)

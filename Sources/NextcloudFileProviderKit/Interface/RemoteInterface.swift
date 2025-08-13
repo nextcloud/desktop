@@ -6,7 +6,6 @@ import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-import OSLog
 
 
 public enum EnumerateDepth: String {
@@ -68,6 +67,7 @@ public protocol RemoteInterface {
         options: NKRequestOptions,
         currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void,
         chunkCounter: @escaping (_ counter: Int) -> Void,
+        log: any FileProviderLogging,
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
@@ -173,11 +173,6 @@ public protocol RemoteInterface {
 }
 
 public extension RemoteInterface {
-
-    private var logger: Logger {
-        Logger(subsystem: Logger.subsystem, category: "RemoteInterface")
-    }
-
     func currentCapabilities(
         account: Account,
         options: NKRequestOptions = .init(),
@@ -201,14 +196,15 @@ public extension RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> Bool {
         var remoteSupportsTrash = false
+        
         let (_, capabilities, _, _) = await currentCapabilities(
             account: account, options: .init(), taskHandler: { _ in }
         )
+
         if let filesCapabilities = capabilities?.files {
             remoteSupportsTrash = filesCapabilities.undelete
-        } else {
-            logger.warning("Could not get capabilities, will assume trash is unavailable.")
         }
+
         return remoteSupportsTrash
     }
 }

@@ -6,10 +6,11 @@ import RealmSwift
 import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
@@ -30,7 +31,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: Self.account,
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
 
         XCTAssertEqual(result.remoteError, .success)
@@ -58,6 +60,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             withAccount: Self.account,
             inChunksSized: chunkSize,
             dbManager: Self.dbManager,
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -128,6 +131,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             inChunksSized: chunkSize,
             usingChunkUploadId: uploadUuid,
             dbManager: Self.dbManager,
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -227,6 +231,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             usingRemoteInterface: remoteInterface,
             withAccount: Self.account,
             dbManager: Self.dbManager,
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)
@@ -306,6 +311,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             usingRemoteInterface: remoteInterface,
             withAccount: Self.account,
             dbManager: Self.dbManager,
+            log: FileProviderLogMock(),
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
         let resultChunks = try XCTUnwrap(result.chunks)

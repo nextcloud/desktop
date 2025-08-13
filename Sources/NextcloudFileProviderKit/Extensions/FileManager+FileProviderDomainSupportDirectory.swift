@@ -31,7 +31,7 @@ public extension FileManager {
         }
 
         // Designated file provider domain directories.
-        guard let applicationSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
+        guard let applicationSupportDirectory = try? url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
             return nil
         }
 

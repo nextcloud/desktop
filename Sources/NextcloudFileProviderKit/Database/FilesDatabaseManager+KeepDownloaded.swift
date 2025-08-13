@@ -5,46 +5,33 @@ import Foundation
 import RealmSwift
 
 public extension FilesDatabaseManager {
-    func set(
-        keepDownloaded: Bool, for metadata: SendableItemMetadata
-    ) throws -> SendableItemMetadata? {
+    func set(keepDownloaded: Bool, for metadata: SendableItemMetadata) throws -> SendableItemMetadata? {
         guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
-            let errorString = """
-                Could not update keepDownloaded status for item: \(metadata.fileName)
-                    as the system does not support this state.
-            """
-            Self.logger.error("\(errorString, privacy: .public)")
+            let error = "Could not update keepDownloaded status for item because the system does not support this state."
+            logger.error(error, [.ocId: metadata.ocId, .name: metadata.fileName])
+
             throw NSError(
                 domain: Self.errorDomain,
                 code: NSFeatureUnsupportedError,
-                userInfo: [NSLocalizedDescriptionKey: errorString]
+                userInfo: [NSLocalizedDescriptionKey: error]
             )
         }
 
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
-            let errorString = """
-                Did not update keepDownloaded for item metadata as it was not found.
-                    ocID: \(metadata.ocId)
-                    filename: \(metadata.fileName)
-            """
-            Self.logger.error("\(errorString, privacy: .public)")
+            let error = "Did not update keepDownloaded for item metadata as it was not found."
+            logger.error(error, [.ocId: metadata.ocId, .name: metadata.fileName])
+
             throw NSError(
                 domain: Self.errorDomain,
                 code: ErrorCode.metadataNotFound.rawValue,
-                userInfo: [NSLocalizedDescriptionKey: errorString]
+                userInfo: [NSLocalizedDescriptionKey: error]
             )
         }
 
         try ncDatabase().write {
             result.keepDownloaded = keepDownloaded
 
-            Self.logger.debug(
-                """
-                Updated keepDownloaded status for item metadata.
-                    ocID: \(metadata.ocId, privacy: .public)
-                    fileName: \(metadata.fileName, privacy: .public)
-                """
-            )
+            logger.debug("Updated keepDownloaded status for item metadata.", [.ocId: metadata.ocId, .name: metadata.fileName])
         }
         return SendableItemMetadata(value: result)
     }

@@ -19,10 +19,10 @@ extension Item {
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         guard newContents != nil || domain != nil else {
-            Self.logger.error(
+            logger.error(
                 """
                 Unable to upload modified item that was previously unuploaded.
-                    filename: \(self.filename, privacy: .public)
+                    filename: \(self.filename)
                     either the domain is nil, the provided contents are nil, or both.
                 """
             )
@@ -34,10 +34,10 @@ extension Item {
             // TODO: Find a way to test me
             assert(domain != nil)
             guard let domain, let localUrl = await localUrlForContents(domain: domain) else {
-                Self.logger.error(
+                logger.error(
                     """
                     Unable to upload modified item that was previously unuploaded.
-                        filename: \(modifiedItem.filename, privacy: .public)
+                        filename: \(modifiedItem.filename)
                         local url for contents could not be acquired.
                     """
                 )
@@ -54,7 +54,8 @@ extension Item {
             ignoredFiles: ignoredFiles,
             forcedChunkSize: forcedChunkSize,
             progress: progress,
-            dbManager: dbManager
+            dbManager: dbManager,
+            log: logger.log
         )
     }
 
@@ -91,10 +92,10 @@ extension Item {
             guard let parentMetadata = dbManager.itemMetadata(
                 ocId: itemTarget.parentItemIdentifier.rawValue
             ) else {
-                Self.logger.error(
+                logger.error(
                     """
                     Unable to find new parent item identifier during unuploaded item modification.
-                        Filename: \(self.filename, privacy: .public)
+                        Filename: \(self.filename)
                     """
                 )
                 return nil
@@ -121,7 +122,8 @@ extension Item {
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            log: logger.log
         )
     }
 }

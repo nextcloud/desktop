@@ -8,12 +8,13 @@ import TestInterface
 import UniformTypeIdentifiers
 import XCTest
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
@@ -364,7 +365,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
-            remoteSupportsTrash: remoteSupportsTrash
+            remoteSupportsTrash: remoteSupportsTrash,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(item.capabilities.contains(.allowsTrashing))
     }
@@ -384,7 +386,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             identifier: .init(metadata.ocId),
             account: Self.account,
             remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         XCTAssertEqual(item?.capabilities.contains(.allowsTrashing), false)
     }
@@ -402,7 +405,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             identifier: .init(metadata.ocId),
             account: Self.account,
             remoteInterface: remoteInterface,
-            dbManager: Self.dbManager
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
         )
         XCTAssertEqual(item?.capabilities.contains(.allowsTrashing), true)
     }
@@ -422,7 +426,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
 
         // 3. Assertions
@@ -447,7 +452,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
 
         // 3. Assertions
@@ -469,7 +475,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(
             canDeleteItem.capabilities.contains(.allowsDeleting),
@@ -488,7 +495,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotDeleteLockedItem.capabilities.contains(.allowsDeleting),
@@ -506,7 +514,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotDeleteNoPermsItem.capabilities.contains(.allowsDeleting),
@@ -525,7 +534,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(
             canTrashItem.capabilities.contains(.allowsTrashing),
@@ -539,7 +549,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: false
+            remoteSupportsTrash: false,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotTrashItem.capabilities.contains(.allowsTrashing),
@@ -557,7 +568,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotTrashLockedItem.capabilities.contains(.allowsTrashing),
@@ -574,7 +586,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotTrashLockFileItem.capabilities.contains(.allowsTrashing),
@@ -594,7 +607,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(
             canWriteItem.capabilities.contains(.allowsWriting),
@@ -611,7 +625,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotWriteLockedItem.capabilities.contains(.allowsWriting),
@@ -628,7 +643,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotWriteDirectoryItem.capabilities.contains(.allowsWriting),
@@ -650,7 +666,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(
             canModifyItem.capabilities.isSuperset(of: expected),
@@ -667,7 +684,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotModifyLockedItem.capabilities.isSuperset(of: expected),
@@ -687,7 +705,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertTrue(
             canAddSubItemsItem.capabilities.contains(.allowsAddingSubItems),
@@ -704,7 +723,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotAddToFileItem.capabilities.contains(.allowsAddingSubItems),
@@ -721,7 +741,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
         XCTAssertFalse(
             cannotAddToLockedDirItem.capabilities.contains(.allowsAddingSubItems),
@@ -740,7 +761,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
 
         let expected: NSFileProviderItemCapabilities = [
@@ -775,7 +797,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
 
         let expected: NSFileProviderItemCapabilities = [
@@ -807,7 +830,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             account: Self.account,
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager,
-            remoteSupportsTrash: true
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
         )
 
         // Trashing and Excluding from Sync might still be allowed as they don't depend on the
@@ -836,7 +860,8 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
                 account: Self.account,
                 remoteInterface: MockRemoteInterface(),
                 dbManager: Self.dbManager,
-                remoteSupportsTrash: true
+                remoteSupportsTrash: true,
+                log: FileProviderLogMock()
             )
 
             XCTAssertTrue(

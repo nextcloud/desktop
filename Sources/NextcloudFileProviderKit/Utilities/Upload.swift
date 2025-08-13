@@ -5,11 +5,9 @@ import Alamofire
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-import OSLog
 import RealmSwift
 
 let defaultFileChunkSize = 104_857_600 // 100 MiB
-let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
 
 func upload(
     fileLocatedAt localFilePath: String,
@@ -22,6 +20,7 @@ func upload(
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
     options: NKRequestOptions = .init(queue: .global(qos: .utility)),
+    log: any FileProviderLogging,
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
     taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
     progressHandler: @escaping (Progress) -> Void = { _ in },
@@ -34,12 +33,14 @@ func upload(
     size: Int64?,
     remoteError: NKError
 ) {
+    let uploadLogger = FileProviderLogger(category: "upload", log: log)
+
     let fileSize =
         (try? FileManager.default.attributesOfItem(atPath: localFilePath)[.size] as? Int64) ?? 0
 
     let chunkSize = await {
         if let chunkSize {
-            uploadLogger.info("Using provided chunkSize: \(chunkSize, privacy: .public)")
+            uploadLogger.info("Using provided chunkSize: \(chunkSize)")
             return chunkSize
         }
         let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
@@ -53,17 +54,17 @@ func upload(
             uploadLogger.info(
                 """
                 Received nil capabilities data.
-                    Received error: \(error.errorDescription, privacy: .public)
-                    Capabilities nil: \(capabilities == nil ? "YES" : "NO", privacy: .public)
+                    Received error: \(error.errorDescription)
+                    Capabilities nil: \(capabilities == nil ? "YES" : "NO")
                     (if capabilities are not nil the server may just not provide chunk size data).
-                    Using default file chunk size: \(defaultFileChunkSize, privacy: .public)
+                    Using default file chunk size: \(defaultFileChunkSize)
                 """
             )
             return defaultFileChunkSize
         }
         uploadLogger.info(
             """
-            Received file chunk size from server: \(serverChunkSize, privacy: .public)
+            Received file chunk size from server: \(serverChunkSize)
             """
         )
         return Int(serverChunkSize)
@@ -89,10 +90,10 @@ func upload(
 
     uploadLogger.info(
         """
-        Performing chunked upload to \(remotePath, privacy: .public)
-            localFilePath: \(localFilePath, privacy: .public)
-            remoteChunkStoreFolderName: \(chunkUploadId, privacy: .public)
-            chunkSize: \(chunkSize, privacy: .public)
+        Performing chunked upload to \(remotePath)
+            localFilePath: \(localFilePath)
+            remoteChunkStoreFolderName: \(chunkUploadId)
+            chunkSize: \(chunkSize)
         """
     )
 
@@ -116,12 +117,13 @@ func upload(
         chunkCounter: { currentChunk in
             uploadLogger.info(
                 """
-                \(localFilePath, privacy: .public) current chunk: \(currentChunk, privacy: .public)
+                \(localFilePath) current chunk: \(currentChunk)
                 """
             )
         },
+        log: log,
         chunkUploadStartHandler: { chunks in
-            uploadLogger.info("\(localFilePath, privacy: .public) chunked upload starting...")
+            uploadLogger.info("\(localFilePath) chunked upload starting...")
 
             // Do not add chunks to database if we have done this already
             guard remainingChunks.isEmpty else { return }
@@ -129,13 +131,8 @@ func upload(
             let db = dbManager.ncDatabase()
             do {
                 try db.write { db.add(chunks.map { RemoteFileChunk(value: $0) }) }
-            } catch let error {
-                uploadLogger.error(
-                    """
-                    Could not write chunks to db, won't be able to resume upload if transfer stops.
-                        \(error.localizedDescription, privacy: .public)
-                    """
-                )
+            } catch {
+                uploadLogger.error("Could not write chunks to db, won't be able to resume upload if transfer stops.")
             }
         },
         requestHandler: requestHandler,
@@ -143,7 +140,7 @@ func upload(
         progressHandler: progressHandler,
         chunkUploadCompleteHandler: { chunk in
             uploadLogger.info(
-                "\(localFilePath, privacy: .public) chunk \(chunk.fileName, privacy: .public) done"
+                "\(localFilePath) chunk \(chunk.fileName) done"
             )
             let db = dbManager.ncDatabase()
             do {
@@ -155,19 +152,15 @@ func upload(
                             $0.fileName == chunk.fileName
                         }
                         .forEach { db.delete($0) } }
-            } catch let error {
-                uploadLogger.error(
-                    """
-                    Could not delete chunks in db, won't resume upload correctly if transfer stops.
-                        \(error.localizedDescription, privacy: .public)
-                    """
-                )
+            } catch {
+                uploadLogger.error("Could not delete chunks in db, won't resume upload correctly if transfer stops.", [.error: error])
             }
+
             chunkUploadCompleteHandler(chunk)
         }
     )
 
-    uploadLogger.info("\(localFilePath, privacy: .public) successfully uploaded in chunks")
+    uploadLogger.info("\(localFilePath) successfully uploaded in chunks")
 
     return (file?.ocId, chunks, file?.etag, file?.date, file?.size, nkError)
 }

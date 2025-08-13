@@ -40,6 +40,9 @@ extension NKError {
         errorCode == 405
     }
 
+    ///
+    /// Derive an `NSFileProviderError` based on ``errorCode``.
+    ///
     var fileProviderError: NSFileProviderError? {
         if self == .success {
             nil
@@ -71,7 +74,8 @@ extension NKError {
     func fileProviderError(
         handlingCollisionAgainstItemInRemotePath problemRemotePath: String,
         dbManager: FilesDatabaseManager,
-        remoteInterface: RemoteInterface
+        remoteInterface: RemoteInterface,
+        log: any FileProviderLogging
     ) async -> Error? {
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
@@ -82,7 +86,8 @@ extension NKError {
             identifier: .init(collidingItemMetadata.ocId),
             account: dbManager.account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: dbManager,
+            log: log
         ) else {
             return NSFileProviderError(.filenameCollision)
         }

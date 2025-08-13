@@ -8,6 +8,7 @@ import RealmSwift
 import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 @available(macOS 14.0, iOS 17.0, *)
 final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitTestCase {
@@ -20,7 +21,7 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
     
     override func setUp() {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+        dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         mockRemoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
     }
     
@@ -108,7 +109,8 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
             remoteInterface: mockRemoteInterface,
             changeNotificationInterface: changeNotificationInterface,
             domain: nil,
-            dbManager: dbManager
+            dbManager: dbManager,
+            log: FileProviderLogMock()
         )
         
         // 5. Debug: Check what materialized items we have

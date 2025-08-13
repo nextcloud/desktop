@@ -5,6 +5,7 @@ import FileProvider
 import Foundation
 import NextcloudKit
 import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import RealmSwift
 import TestInterface
 import XCTest
@@ -20,7 +21,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
     }
 
     func testMaterialisedObserverWithNoPreexistingState() async {
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         // The database is intentionally left empty.
 
         let remoteInterface = MockRemoteInterface()
@@ -34,9 +35,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let expect = XCTestExpectation(description: "Enumerator completion handler called")
 
         // The observer's logic requires metadata to exist in the DB to update it.
-        let observer = MaterialisedEnumerationObserver(
-            ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager
-        ) { newlyMaterialisedIds, unmaterialisedIds in
+        let observer = MaterialisedEnumerationObserver(ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
             XCTAssertTrue(
                 unmaterialisedIds.isEmpty,
                 "Unmaterialised set should be empty when DB starts empty."
@@ -92,7 +91,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         dirD.directory = true
         dirD.visitedDirectory = true // Was materialised
 
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         dbManager.addItemMetadata(itemA)
         dbManager.addItemMetadata(itemB)
         dbManager.addItemMetadata(itemC)
@@ -102,9 +101,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let expect = XCTestExpectation(description: "Enumerator completion handler called")
         let enumeratorItemsToReturn = [itemB, itemC]
 
-        let observer = MaterialisedEnumerationObserver(
-            ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager
-        ) { newlyMaterialisedIds, unmaterialisedIds in
+        let observer = MaterialisedEnumerationObserver(ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
             // Unmaterialised: itemA and dirD were materialised but not in the latest enumeration.
             XCTAssertEqual(
                 unmaterialisedIds.count, 2, "itemA and dirD should be reported as unmaterialised."

@@ -3,8 +3,13 @@
 
 import Foundation
 
-/// Realm objects are inherently unsendable and not thread-safe. **DON'T EXPOSE THEM.**
-/// Make sure this is the only type that is returned to other code that is unaware of Realm.
+///
+/// Value type representation for `RealmItemMetadata`.
+///
+/// > Warning: Realm objects are inherently unsendable and not thread-safe.
+/// **Do not hand them across the boundaries of different concurrency domains!**
+/// Ensure that this representation is the only one passed around and always completely abstract Realm to upper layer calling code.
+///
 public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var ocId: String
     public var account: String

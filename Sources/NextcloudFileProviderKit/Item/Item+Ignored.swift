@@ -12,16 +12,20 @@ extension Item {
         account: Account,
         remoteInterface: RemoteInterface,
         progress: Progress,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let filename = itemTemplate.filename
-        Self.logger.info(
+        let logger = FileProviderLogger(category: "Item", log: log)
+
+        logger.info(
             """
-            File \(filename, privacy: .public) is in the ignore list.
-                \(parentItemRemotePath + "/" + filename, privacy: .public)
+            File \(filename) is in the ignore list.
+                \(parentItemRemotePath + "/" + filename)
                 Will not propagate creation to server.
             """
         )
+
         let metadata = SendableItemMetadata(
             ocId: itemTemplate.itemIdentifier.rawValue,
             account: account.ncKitAccount,
@@ -50,14 +54,17 @@ extension Item {
             user: account.username,
             userId: account.id
         )
+
         dbManager.addItemMetadata(metadata)
+
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account)
+            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            log: log
         )
 
         if #available(macOS 13.0, *) {

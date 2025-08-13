@@ -8,6 +8,7 @@ import TestInterface
 import UniformTypeIdentifiers
 import XCTest
 @testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -23,7 +24,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()

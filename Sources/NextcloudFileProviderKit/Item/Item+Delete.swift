@@ -5,7 +5,6 @@ import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-import OSLog
 
 public extension Item {
     // NOTE: The trashing parameter does not affect whether the server will trash this or not.
@@ -29,9 +28,9 @@ public extension Item {
         ).replacingOccurrences(of: metadata.urlBase, with: "")
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            Self.logger.info(
+            logger.info(
                 """
-                File \(self.filename, privacy: .public) is in the ignore list.
+                File \(self.filename) is in the ignore list.
                     Will delete locally with no remote effect.
                 """
             )
@@ -63,12 +62,12 @@ public extension Item {
         })
 
         guard error == .success else {
-            Self.logger.error(
+            logger.error(
                 """
-                Could not delete item with ocId \(ocId, privacy: .public)...
-                at \(serverFileNameUrl, privacy: .public)...
-                received error: \(error.errorCode, privacy: .public)
-                \(error.errorDescription, privacy: .public)
+                Could not delete item with ocId \(ocId)...
+                at \(serverFileNameUrl)...
+                received error: \(error.errorCode)
+                \(error.errorDescription)
                 """
             )
             return error.fileProviderError(
@@ -76,10 +75,10 @@ public extension Item {
             )
         }
 
-        Self.logger.info(
+        logger.info(
             """
-            Successfully deleted item with identifier: \(ocId, privacy: .public)...
-            at: \(serverFileNameUrl, privacy: .public)
+            Successfully deleted item with identifier: \(ocId)...
+            at: \(serverFileNameUrl)
             """
         )
 
@@ -119,10 +118,10 @@ public extension Item {
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            Self.logger.warning(
+            logger.info(
                 """
-                Could not find item metadata for \(self.filename, privacy: .public)
-                    \(self.itemIdentifier.rawValue, privacy: .public)!
+                Could not find item metadata for \(self.filename)
+                    \(self.itemIdentifier.rawValue)!
                     Cannot finish trashing procedure.
                 """
             )
