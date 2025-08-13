@@ -127,6 +127,23 @@ private slots:
         QCOMPARE(storedRecord._folderQuota.bytesUsed, 100);
     }
 
+    void testFolderMigration() {
+        const auto quotaBytesUsed =  QStringLiteral("quotaBytesUsed");
+        const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
+        const auto metadata = QStringLiteral("metadata");
+        const auto columnsBeforeRemoval = _db.tableColumns(metadata.toLatin1());
+        QVERIFY(columnsBeforeRemoval.indexOf(quotaBytesUsed.toLatin1()) > -1);
+        QVERIFY(columnsBeforeRemoval.indexOf(quotaBytesAvailable.toLatin1()) > -1);
+        QVERIFY(_db.removeColumn(quotaBytesAvailable));
+        QVERIFY(_db.removeColumn(quotaBytesUsed));
+        QVERIFY(_db.updateMetadataTableStructure());
+        const auto columnsAfterConnect = _db.tableColumns(metadata.toLatin1());
+        QVERIFY(columnsAfterConnect.indexOf(quotaBytesUsed.toLatin1()) > -1);
+        QVERIFY(columnsAfterConnect.indexOf(quotaBytesAvailable.toLatin1()) > -1);
+        QVERIFY(_db.hasDefaultValue(quotaBytesUsed));
+        QVERIFY(_db.hasDefaultValue(quotaBytesAvailable));
+    }
+
     void testFileRecordChecksum()
     {
         // Try with and without a checksum
