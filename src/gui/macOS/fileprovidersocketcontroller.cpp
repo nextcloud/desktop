@@ -96,7 +96,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
         sendIgnoreList();
         sendAccountDetails();
-        reportSyncState("SYNC_PREPARING");
+        reportSyncState("SYNC_FINISHED");
         return;
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
         reportSyncState(argument);
