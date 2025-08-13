@@ -712,9 +712,40 @@ bool SyncJournalDb::updateDatabaseStructure()
     return true;
 }
 
+bool SyncJournalDb::hasDefaultValue(const QString &columnName)
+{
+    SqlQuery query(_db);
+    const auto selectDefault = QStringLiteral("SELECT dflt_value FROM pragma_table_info('metadata') WHERE name = '%1';").arg(columnName);
+    query.prepare(selectDefault.toLatin1());
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("check default value for: %1").arg(columnName), query);
+        return false;
+    }
+
+    if (const auto result = query.next();!result.ok || !result.hasData) {
+        qCWarning(lcDb) << "database error:" << query.error();
+        return false;
+    }
+
+    return !query.nullValue(0);
+}
+
+bool SyncJournalDb::removeColumn(const QString &columnName)
+{
+    SqlQuery query(_db);
+    const auto request = QStringLiteral("ALTER TABLE metadata DROP COLUMN %1;").arg(columnName);
+    query.prepare(request.toLatin1());
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("update metadata structure: drop %1 column").arg(columnName), query);
+        return false;
+    }
+
+    commitInternal(QStringLiteral("update database structure: drop %1 column").arg(columnName));
+    return true;
+}
+
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-
     auto columns = tableColumns("metadata");
     bool re = true;
 
@@ -723,11 +754,18 @@ bool SyncJournalDb::updateMetadataTableStructure()
         return false;
     }
 
-    const auto addColumn = [this, &columns, &re] (const QString &columnName, const QString &dataType, const bool withIndex = false) {
-        const auto latin1ColumnName = columnName.toLatin1();
-        if (columns.indexOf(latin1ColumnName) == -1) {
+    const auto columnExists = [&columns] (const QString &columnName) -> bool {
+        return columns.indexOf(columnName.toLatin1()) > -1;
+    };
+
+    const auto addColumn = [this, &re, &columnExists] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
+        if (!columnExists(columnName)) {
             SqlQuery query(_db);
-            const auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2;").arg(columnName).arg(dataType);
+            auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName).arg(dataType);
+            if (!defaultCommand.isEmpty()) {
+                request.append(QStringLiteral(" ") + defaultCommand);
+            }
+            request.append(QStringLiteral(";"));
             query.prepare(request.toLatin1());
             if (!query.exec()) {
                 sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);
@@ -851,8 +889,29 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("quotaBytesUsed"), QStringLiteral("BIGINT"));
-    addColumn(QStringLiteral("quotaBytesAvailable"), QStringLiteral("BIGINT"));
+
+    {
+        const auto quotaBytesUsed =  QStringLiteral("quotaBytesUsed");
+        const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
+        const auto defaultCommand = QStringLiteral("DEFAULT -1 NOT NULL");
+        const auto bigInt = QStringLiteral("BIGINT");
+        auto result = false;
+
+        if (columnExists(quotaBytesUsed) && !hasDefaultValue(quotaBytesUsed)) {
+            result = removeColumn(quotaBytesUsed);
+        }
+
+        if (columnExists(quotaBytesAvailable) && !hasDefaultValue(quotaBytesAvailable)) {
+            result = removeColumn(quotaBytesAvailable);
+        }
+
+        if (result) {
+            columns = tableColumns("metadata");
+        }
+
+        addColumn(quotaBytesUsed, bigInt, false, defaultCommand);
+        addColumn(quotaBytesAvailable, bigInt, false, defaultCommand);
+    }
 
     return re;
 }
