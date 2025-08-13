@@ -132,8 +132,8 @@ private slots:
         const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
         const auto metadata = QStringLiteral("metadata");
         const auto columnsBeforeRemoval = _db.tableColumns(metadata.toLatin1());
-        QVERIFY(columnsBeforeRemoval.indexOf(quotaBytesUsed.toLatin1()) > -1);
-        QVERIFY(columnsBeforeRemoval.indexOf(quotaBytesAvailable.toLatin1()) > -1);
+        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesUsed.toLatin1()), -1);
+        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesAvailable.toLatin1()), -1);
         QVERIFY(_db.removeColumn(quotaBytesAvailable));
         QVERIFY(_db.removeColumn(quotaBytesUsed));
         QVERIFY(_db.updateMetadataTableStructure());
