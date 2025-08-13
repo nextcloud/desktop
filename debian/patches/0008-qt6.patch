@@ -1051,6 +1051,18 @@ index c585ac618..cb0a4f741 100644
  
  #include <QFile>
  #include <QtTest>
+diff --git a/test/testsyncjournaldb.cpp b/test/testsyncjournaldb.cpp
+index 424b439af..de20acf5c 100644
+--- a/test/testsyncjournaldb.cpp
++++ b/test/testsyncjournaldb.cpp
+@@ -14,6 +14,7 @@
+ 
+ #include "common/syncjournaldb.h"
+ #include "common/syncjournalfilerecord.h"
++#include "common/qtcompat.h"
+ #include "logger.h"
+ 
+ using namespace OCC;
 diff --git a/test/testsyncvirtualfiles.cpp b/test/testsyncvirtualfiles.cpp
 index e7eb0b196..7a4d22838 100644
 --- a/test/testsyncvirtualfiles.cpp
