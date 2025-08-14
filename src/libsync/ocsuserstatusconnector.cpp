@@ -210,6 +210,7 @@ OcsUserStatusConnector::OcsUserStatusConnector(AccountPtr account, QObject *pare
     Q_ASSERT(_account);
     _userStatusSupported = _account->capabilities().userStatus();
     _userStatusEmojisSupported = _account->capabilities().userStatusSupportsEmoji();
+    _userStatusBusySupported = _account->capabilities().userStatusSupportsBusy();
 }
 
 void OcsUserStatusConnector::fetchUserStatus()
@@ -446,6 +447,11 @@ void OcsUserStatusConnector::clearMessage()
 UserStatus OcsUserStatusConnector::userStatus() const
 {
     return _userStatus;
+}
+
+bool OcsUserStatusConnector::supportsBusyStatus() const
+{
+    return _userStatusBusySupported;
 }
 
 void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int statusCode)

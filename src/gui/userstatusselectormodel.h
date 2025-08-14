@@ -33,9 +33,11 @@ class UserStatusSelectorModel : public QObject
     Q_PROPERTY(QVariantList clearStageTypes READ clearStageTypes CONSTANT)
     Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
+    Q_PROPERTY(bool busyStatusSupported READ busyStatusSupported NOTIFY busyStatusSupportedChanged)
     Q_PROPERTY(QUrl onlineIcon READ onlineIcon CONSTANT)
     Q_PROPERTY(QUrl awayIcon READ awayIcon CONSTANT)
     Q_PROPERTY(QUrl dndIcon READ dndIcon CONSTANT)
+    Q_PROPERTY(QUrl busyIcon READ busyIcon CONSTANT)
     Q_PROPERTY(QUrl invisibleIcon READ invisibleIcon CONSTANT)
 
 public:
@@ -73,6 +75,7 @@ public:
     Q_REQUIRED_RESULT QUrl onlineIcon() const;
     Q_REQUIRED_RESULT QUrl awayIcon() const;
     Q_REQUIRED_RESULT QUrl dndIcon() const;
+    Q_REQUIRED_RESULT QUrl busyIcon() const;
     Q_REQUIRED_RESULT QUrl invisibleIcon() const;
 
     Q_REQUIRED_RESULT QString userStatusMessage() const;
@@ -87,6 +90,7 @@ public:
     [[nodiscard]] Q_INVOKABLE QString clearAtReadable(const OCC::UserStatus &status) const;
 
     Q_REQUIRED_RESULT QString errorMessage() const;
+    Q_REQUIRED_RESULT bool busyStatusSupported() const;
 
 public slots:
     void setUserIndex(const int userIndex);
@@ -98,6 +102,7 @@ public slots:
 signals:
     void userIndexChanged();
     void errorMessageChanged();
+    void busyStatusSupportedChanged();
     void userStatusChanged();
     void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
