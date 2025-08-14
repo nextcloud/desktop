@@ -130,8 +130,6 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
 {
     qCDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
     qCInfo(lcCfApiWrapper) << "Desktop client process id:" << QCoreApplication::applicationPid();
-    qCInfo(lcCfApiWrapper) << "Fetch data requested by process id:" << callbackInfo->ProcessInfo->ProcessId;
-    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
@@ -157,6 +155,15 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    if (!callbackInfo->ProcessInfo) {
+        qCCritical(lcCfApiWrapper) << "Callback parameters did not contain required process info required for the implicit hydration check, aborting" << path << requestId;
+        sendTransferError();
+        return;
+    }
+
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by process id:" << callbackInfo->ProcessInfo->ProcessId;
+    qCInfo(lcCfApiWrapper) << "Fetch data requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
 
     if (QCoreApplication::applicationPid() == callbackInfo->ProcessInfo->ProcessId) {
         qCCritical(lcCfApiWrapper) << "implicit hydration triggered by the client itself. Will lead to a deadlock. Cancel" << path << requestId;
