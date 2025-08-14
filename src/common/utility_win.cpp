@@ -118,11 +118,12 @@ QString Utility::systemPathToLinks()
     return pathToLinks;
 }
 
-void Utility::setupDesktopIni(const QString &folder, bool overwrite)
+void Utility::setupDesktopIni(const QString &folder, const QString localizedResourceName)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
-    if (!overwrite && desktopIni.exists()) {
+    const auto migration = !localizedResourceName.isEmpty();
+    if (!migration && desktopIni.exists()) {
         qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
         return;
     }
@@ -138,6 +139,10 @@ void Utility::setupDesktopIni(const QString &folder, bool overwrite)
 #endif
     desktopIni.write(",");
     desktopIni.write(iconIndex);
+    if (migration) {
+        desktopIni.write("\r\nLocalizedResourceName=");
+        desktopIni.write(localizedResourceName.toUtf8());
+    }
     desktopIni.write("\r\n");
     desktopIni.close();
 
@@ -192,21 +197,9 @@ void Utility::migrateFavLink(const QString &folder)
 {
     const QDir folderDir(QDir::fromNativeSeparators(folder));
     const auto oldDirName = folderDir.dirName();
-    const auto nextcloud = QStringLiteral("Nextcloud");
-    if (!oldDirName.startsWith(nextcloud)) {
-        qCWarning(lcUtility) << "Link name does not need to change for" << folder;
-        return;
-    }
-
     const auto folderDisplayName = syncFolderDisplayName(oldDirName, QStringLiteral(APPLICATION_NAME));
     // overwrite Desktop.ini, update icon, update folder display name
-    setupDesktopIni(folder, true);
-    QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
-    desktopIni.open(QFile::WriteOnly);
-    desktopIni.write("\r\nLocalizedResourceName=");
-    desktopIni.write(folderDisplayName.toUtf8());
-    desktopIni.write("\r\n");
-    desktopIni.close();
+    setupDesktopIni(folder, folderDisplayName);
 
     const auto pathToLinks = systemPathToLinks();
     if (pathToLinks.isEmpty()) {
@@ -255,7 +248,8 @@ void Utility::removeFavLink(const QString &folder)
     const QDir links(QString::fromWCharArray(path));
     CoTaskMemFree(path);
 
-    const auto linkName = QDir(links).absoluteFilePath(folderDir.dirName() + QLatin1String(".lnk"));
+    const auto folderDisplayName = syncFolderDisplayName(folderDir.dirName(), QStringLiteral(APPLICATION_NAME));
+    const auto linkName = QDir(links).absoluteFilePath(folderDisplayName + QLatin1String(".lnk"));
 
     qCDebug(lcUtility) << "Removing favorite link from" << folder << "to" << linkName;
     if (!QFile::remove(linkName)) {
