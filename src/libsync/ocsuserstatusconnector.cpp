@@ -33,6 +33,7 @@ OCC::UserStatus::OnlineStatus stringToUserOnlineStatus(const QString &status)
         { "online", OCC::UserStatus::OnlineStatus::Online },
         { "dnd", OCC::UserStatus::OnlineStatus::DoNotDisturb },
         { "away", OCC::UserStatus::OnlineStatus::Away },
+        { "busy", OCC::UserStatus::OnlineStatus::Busy },
         { "offline", OCC::UserStatus::OnlineStatus::Offline },
         { "invisible", OCC::UserStatus::OnlineStatus::Invisible }
     };
@@ -51,6 +52,8 @@ QString onlineStatusToString(OCC::UserStatus::OnlineStatus status)
         return QStringLiteral("dnd");
     case OCC::UserStatus::OnlineStatus::Away:
         return QStringLiteral("away");
+    case OCC::UserStatus::OnlineStatus::Busy:
+        return QStringLiteral("busy");
     case OCC::UserStatus::OnlineStatus::Offline:
         return QStringLiteral("offline");
     case OCC::UserStatus::OnlineStatus::Invisible:
