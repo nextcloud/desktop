@@ -866,8 +866,8 @@ final class ItemPropertyTests: XCTestCase {
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager
         )
-        XCTAssertTrue(sharedItem.isShared)
-        XCTAssertTrue(sharedItem.isSharedByCurrentUser)
+        XCTAssertFalse(sharedItem.isShared)
+        XCTAssertFalse(sharedItem.isSharedByCurrentUser)
         XCTAssertNil(sharedItem.ownerNameComponents) // Should be nil if it is shared by us
 
         var sharedByOtherMetadata = sharedMetadata
@@ -880,11 +880,9 @@ final class ItemPropertyTests: XCTestCase {
             remoteInterface: MockRemoteInterface(),
             dbManager: Self.dbManager
         )
-        XCTAssertTrue(sharedByOtherTime.isShared)
+        XCTAssertFalse(sharedByOtherTime.isShared)
         XCTAssertFalse(sharedByOtherTime.isSharedByCurrentUser)
-        XCTAssertNotNil(sharedByOtherTime.ownerNameComponents)
-        XCTAssertEqual(sharedByOtherTime.ownerNameComponents?.givenName, "Claudio")
-        XCTAssertEqual(sharedByOtherTime.ownerNameComponents?.familyName, "Cambra")
+        XCTAssertNil(sharedByOtherTime.ownerNameComponents)
 
         var notSharedMetadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)

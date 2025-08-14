@@ -151,11 +151,11 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isShared: Bool {
-        !metadata.shareType.isEmpty
+        false // !metadata.shareType.isEmpty // Interim solution to counteract Finder misleadingly displaying shared items with an iCloud branded banner.
     }
 
     public var isSharedByCurrentUser: Bool {
-        isShared && metadata.ownerId == account.id
+        false // isShared && metadata.ownerId == account.id // Interim solution to counteract Finder misleadingly displaying shared items with an iCloud branded banner.
     }
 
     public var ownerNameComponents: PersonNameComponents? {
