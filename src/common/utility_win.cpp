@@ -190,9 +190,6 @@ QString Utility::syncFolderDisplayName(const QString &currentDisplayName, const 
 
 void Utility::migrateFavLink(const QString &folder)
 {
-    //overwrite Desktop.ini, update icon
-    setupDesktopIni(folder, true);
-
     const QDir folderDir(QDir::fromNativeSeparators(folder));
     const auto oldDirName = folderDir.dirName();
     const auto nextcloud = QStringLiteral("Nextcloud");
@@ -200,6 +197,16 @@ void Utility::migrateFavLink(const QString &folder)
         qCWarning(lcUtility) << "Link name does not need to change for" << folder;
         return;
     }
+
+    const auto folderDisplayName = syncFolderDisplayName(oldDirName, QStringLiteral(APPLICATION_NAME));
+    // overwrite Desktop.ini, update icon, update folder display name
+    setupDesktopIni(folder, true);
+    QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
+    desktopIni.open(QFile::WriteOnly);
+    desktopIni.write("\r\nLocalizedResourceName=");
+    desktopIni.write(folderDisplayName.toUtf8());
+    desktopIni.write("\r\n");
+    desktopIni.close();
 
     const auto pathToLinks = systemPathToLinks();
     if (pathToLinks.isEmpty()) {
@@ -209,7 +216,7 @@ void Utility::migrateFavLink(const QString &folder)
 
     const QDir dirPathToLinks(pathToLinks);
     const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
-    const auto newLnkFilename = dirPathToLinks.filePath(syncFolderDisplayName(oldDirName, QStringLiteral(APPLICATION_NAME)) + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(folderDisplayName + QLatin1String(".lnk"));
 
     if (QFile::exists(newLnkFilename)) {
         qCWarning(lcUtility) << "New lnk file already exists" << newLnkFilename;
