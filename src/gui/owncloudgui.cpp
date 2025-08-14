@@ -309,33 +309,36 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (Mac::FileProvider::fileProviderAvailable()) {
         for (const auto &accountState : AccountManager::instance()->accounts()) {
-            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
+            const auto accountId = accountState->account()->userIdAtHostWithPort();
+            const auto domainId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
+
+            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountId)) {
                 continue;
             }
+
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
 
-            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
-                problemFileProviderAccounts.append(accountFpId);
+            if (!fileProvider->xpc()->fileProviderExtReachable(domainId)) {
+                problemFileProviderAccounts.append(accountId);
             } else {
                 switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                    idleFileProviderAccounts.append(accountFpId);
+                    idleFileProviderAccounts.append(accountId);
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
                 case SyncResult::SyncAbortRequested:
-                    syncingFileProviderAccounts.append(accountFpId);
+                    syncingFileProviderAccounts.append(accountId);
                     break;
                 case SyncResult::Success:
-                    successFileProviderAccounts.append(accountFpId);
+                    successFileProviderAccounts.append(accountId);
                     break;
                 case SyncResult::Problem:
                 case SyncResult::Error:
                 case SyncResult::SetupError:
-                    problemFileProviderAccounts.append(accountFpId);
+                    problemFileProviderAccounts.append(accountId);
                     break;
                 case SyncResult::Paused: // This is not technically possible with VFS
                     break;
