@@ -70,6 +70,12 @@ void Utility::migrateFavLink(const QString &folder)
     Q_UNUSED(folder)
 }
 
+void Utility::setupDesktopIni(const QString &folder, const QString localizedResourceName)
+{
+    Q_UNUSED(folder)
+    Q_UNUSED(localizedResourceName)
+}
+
 QString Utility::syncFolderDisplayName(const QString &folder, const QString &displayName)
 {
     Q_UNUSED(folder)
