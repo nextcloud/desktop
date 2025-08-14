@@ -164,18 +164,9 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
 
-    qCDebug(lcCfApiWrapper) << "Request hydration for" << path << requestId;
-
-    const auto invokeResult = QMetaObject::invokeMethod(vfs, [=] { vfs->requestHydration(requestId, path); }, Qt::QueuedConnection);
-    if (!invokeResult) {
-        qCCritical(lcCfApiWrapper) << "Failed to trigger hydration for" << path << requestId;
-        sendTransferError();
-        return;
-    }
-
-    qCDebug(lcCfApiWrapper) << "Successfully triggered hydration for" << path << requestId;
-
-    // Block and wait for vfs to signal back the hydration is ready
+    // Set up connections before requesting hydration as it could happen that
+    // the hydration request finishes before the connections were set up.
+    // The data transfer wouldn't start at all in this case otherwise.
     bool hydrationRequestResult = false;
     QEventLoop loop;
     QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestReady, &loop, [&](const QString &id) {
@@ -193,6 +184,19 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         }
     });
 
+    qCDebug(lcCfApiWrapper) << "Request hydration for" << path << requestId;
+
+    const auto invokeResult = QMetaObject::invokeMethod(vfs, [=] { vfs->requestHydration(requestId, path); }, Qt::QueuedConnection);
+    if (!invokeResult) {
+        qCCritical(lcCfApiWrapper) << "Failed to trigger hydration for" << path << requestId;
+        QObject::disconnect(vfs, nullptr, &loop, nullptr); // Ensure we properly cancel hydration on server errors
+        sendTransferError();
+        return;
+    }
+
+    qCDebug(lcCfApiWrapper) << "Successfully triggered hydration for" << path << requestId;
+
+    // Block and wait for vfs to signal back the hydration is ready
     qCDebug(lcCfApiWrapper) << "Starting event loop 1";
     loop.exec();
     QObject::disconnect(vfs, nullptr, &loop, nullptr); // Ensure we properly cancel hydration on server errors
