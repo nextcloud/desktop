@@ -90,6 +90,16 @@ enum SetPinRecurseMode {
 
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> setPinState(const QString &path, PinState state, SetPinRecurseMode mode);
 NEXTCLOUD_CFAPI_EXPORT Result<void, QString> createPlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
+
+struct PlaceholdersInfo {
+    QString relativePath;
+    std::wstring platformNativeRelativePath;
+    QByteArray fileId;
+    time_t modtime;
+    qint64 size;
+};
+
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> createPlaceholdersInfo(const QString &localBasePath, const QList<PlaceholdersInfo> &itemsInfo);
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath = QString());
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath);
 NEXTCLOUD_CFAPI_EXPORT Result<OCC::Vfs::ConvertToPlaceholderResult, QString> dehydratePlaceholder(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId);
