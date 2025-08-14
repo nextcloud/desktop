@@ -125,6 +125,8 @@ void UserStatusSelectorModel::init()
 
     _userStatusConnector->fetchUserStatus();
     _userStatusConnector->fetchPredefinedStatuses();
+    
+    emit busyStatusSupportedChanged();
 }
 
 void UserStatusSelectorModel::onUserStatusSet()
@@ -198,6 +200,10 @@ QUrl UserStatusSelectorModel::onlineIcon() const
 }
 
 QUrl UserStatusSelectorModel::awayIcon() const
+{
+    return Theme::instance()->statusAwayImageSource();
+}
+QUrl UserStatusSelectorModel::busyIcon() const
 {
     return Theme::instance()->statusAwayImageSource();
 }
@@ -393,6 +399,14 @@ void UserStatusSelectorModel::setClearAt(const ClearStageType clearStageType)
 QString UserStatusSelectorModel::errorMessage() const
 {
     return _errorMessage;
+}
+
+bool UserStatusSelectorModel::busyStatusSupported() const
+{
+    if (!_userStatusConnector) {
+        return false;
+    }
+    return _userStatusConnector->supportsBusyStatus();
 }
 
 QString UserStatusSelectorModel::timeDifferenceToString(int differenceSecs) const
