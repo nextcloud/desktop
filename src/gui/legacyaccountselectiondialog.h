@@ -6,6 +6,8 @@
 
 #pragma once
 
+#if !DISABLE_ACCOUNT_MIGRATION
+
 #include <QDialog>
 #include <QMap>
 #include <QStringList>
@@ -33,4 +35,6 @@ private:
 };
 
 } // namespace OCC
+
+#endif // !DISABLE_ACCOUNT_MIGRATION
 

@@ -1034,14 +1034,12 @@ bool Theme::darkMode() const
     return isDarkFromStyle();
 }
 
+#if !DISABLE_ACCOUNT_MIGRATION
 bool Theme::displayLegacyImportDialog() const
 {
-#if defined APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG && APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG
     return true;
-#else
-    return false;
-#endif
 }
+#endif
 
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
 {
