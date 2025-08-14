@@ -307,7 +307,7 @@ QString AbstractNetworkJob::errorString() const
     }
 
     if (!reply()) {
-        return tr("An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.");
+        return tr("An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.");
     }
 
     if (reply()->hasRawHeader("OC-ErrorString")) {
