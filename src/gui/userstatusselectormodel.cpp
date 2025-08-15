@@ -205,7 +205,7 @@ QUrl UserStatusSelectorModel::awayIcon() const
 }
 QUrl UserStatusSelectorModel::busyIcon() const
 {
-    return Theme::instance()->statusAwayImageSource();
+    return Theme::instance()->statusBusyImageSource();
 }
 QUrl UserStatusSelectorModel::dndIcon() const
 {
