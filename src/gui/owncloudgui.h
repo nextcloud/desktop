@@ -96,6 +96,7 @@ public slots:
     void slotShowShareDialog(const QString &localPath) const;
     void slotShowFileActivityDialog(const QString &localPath) const;
     void slotNewAccountWizard();
+    void slotShowFileActionsDialog(const QString &localPath) const;
 
 private slots:
     void slotLogin();

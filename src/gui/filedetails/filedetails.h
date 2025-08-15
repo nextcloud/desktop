@@ -29,7 +29,7 @@ class FileDetails : public QObject
     Q_PROPERTY(QString lockExpireString READ lockExpireString NOTIFY lockExpireStringChanged)
     Q_PROPERTY(bool isFolder READ isFolder NOTIFY isFolderChanged)
     Q_PROPERTY(FileTagModel* fileTagModel READ fileTagModel NOTIFY fileTagModelChanged)
-    Q_PROPERTY(bool sharingAvailable READ sharingAvailable NOTIFY fileChanged)
+    Q_PROPERTY(bool fileActionsAvailable READ fileActionsAvailable NOTIFY fileChanged)
 
 public:
     explicit FileDetails(QObject *parent = nullptr);
@@ -43,6 +43,7 @@ public:
     [[nodiscard]] bool isFolder() const;
     [[nodiscard]] FileTagModel *fileTagModel() const;
     [[nodiscard]] bool sharingAvailable() const;
+    [[nodiscard]] bool fileActionsAvailable() const;
 
 public slots:
     void setLocalPath(const QString &localPath);
@@ -75,6 +76,7 @@ private:
 
     std::unique_ptr<FileTagModel> _fileTagModel;
     bool _sharingAvailable = true;
+    bool _fileActionsAvailable = true;
 };
 
 } // namespace OCC
