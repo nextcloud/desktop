@@ -491,12 +491,17 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
+        <translation>O servidor demorou muito para responder. Verifique sua conexão e tente sincronizar novamente. Se ainda não funcionar, entre em contato com o administrador do servidor.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro inesperado. Tente sincronizar novamente ou entre em contato com o administrador do servidor se o problema persistir.</translation>
     </message>
 </context>
 <context>
@@ -1714,7 +1719,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>O servidor retornou uma resposta inesperada que não pôde ser lida. Entre em contato com o administrador do seu servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
