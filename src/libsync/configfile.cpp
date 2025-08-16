@@ -216,6 +216,19 @@ void ConfigFile::setShowCallNotifications(bool show)
     settings.sync();
 }
 
+bool ConfigFile::showQuotaWarningNotifications() const
+{
+    const QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(showQuotaWarningNotificationsC, true).toBool() && optionalServerNotifications();
+}
+
+void ConfigFile::setShowQuotaWarningNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(showQuotaWarningNotificationsC, show);
+    settings.sync();
+}
+
 bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =

@@ -282,6 +282,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC, configFile.promptDeleteFiles()).toBool());
     configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC, configFile.showCallNotifications()).toBool());
     configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC, configFile.showChatNotifications()).toBool());
+    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC, configFile.showQuotaWarningNotifications()).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC, configFile.showInExplorerNavigationPane()).toBool());
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
     configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
