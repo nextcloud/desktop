@@ -441,10 +441,10 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
                 if (secs < 5) {
                     return QObject::tr("now");
                 } else {
-                    return QObject::tr("1m", "one minute after activity date and time");
+                    return QObject::tr("1min", "one minute after activity date and time");
                 }
             } else {
-                return (QObject::tr("%nm", "delay in minutes after an activity", minutes));
+                return (QObject::tr("%nmin", "delay in minutes after an activity", minutes));
             }
         }
     }
