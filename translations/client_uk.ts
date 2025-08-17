@@ -496,7 +496,7 @@ macOS може ігнорувати запит або він виконуват�
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Неочікувана помилка. Спробуйте синхронізувати повторно або сконтактуйте з адміністратором, якщо помилка не зникне.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
