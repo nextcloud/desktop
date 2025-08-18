@@ -400,12 +400,12 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="282"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation>Грешка при премахването на „% 1“:% 2</translation>
+        <translation>Грешка при премахването на „%1“: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="325"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation> Не можа да бъде премахната папката „% 1“</translation>
+        <translation> Не можа да бъде премахната папката „%1“</translation>
     </message>
 </context>
 <context>
@@ -951,7 +951,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1312"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation> Версия % 1 на съсрвъра не се поддържа! Продължете на свой риск.</translation>
+        <translation> Версия %1 на сървъра не се поддържа! Продължете на свой риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
@@ -971,7 +971,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1339"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Грешка в конфигурацията на сървъра:% 1 при% 2.</translation>
+        <translation>Грешка в конфигурацията на сървъра: %1 при %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1348"/>
@@ -1202,7 +1202,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
+        <translation>Възникна грешка при достъпа до конфигурационния файл при %1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
     </message>
 </context>
 <context>
@@ -1300,7 +1300,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Файлът е премахнат (стартиране на качване) % 1</translation>
+        <translation>Файлът е премахнат (стартиране на качване) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
@@ -1341,7 +1341,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="775"/>
         <source>Restoration failed: %1</source>
-        <translation> Възстановяването е неуспешно: % 1</translation>
+        <translation> Възстановяването е неуспешно: %1</translation>
     </message>
 </context>
 <context>
@@ -1645,12 +1645,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="194"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Искате ли да изтриете директорията&lt;i&gt;% 1&lt;/i&gt; и цялото й съдържание завинаги?</translation>
+        <translation>Искате ли да изтриете директорията&lt;i&gt;%1&lt;/i&gt; и цялото ѝ съдържание завинаги?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="195"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Искате ли да изтриете файла &lt;i&gt;% 1&lt;/i&gt; завинаги?</translation>
+        <translation>Искате ли да изтриете файла &lt;i&gt;%1&lt;/i&gt; завинаги?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="196"/>
@@ -1733,7 +1733,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="316"/>
         <source>Error while opening directory %1</source>
-        <translation>Грешка при отваряне на директория % 1</translation>
+        <translation>Грешка при отваряне на директория %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
@@ -1743,7 +1743,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="322"/>
         <source>Directory not found: %1</source>
-        <translation>Директорията не е намерена:% 1</translation>
+        <translation>Директорията не е намерена: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="353"/>
@@ -2153,7 +2153,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
-        <translation>В момента % 1 е заключен.</translation>
+        <translation>В момента %1 е заключен.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="510"/>
@@ -2213,12 +2213,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1577"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Папката % 1 е създадена, но преди това е била изключена от синхронизацията. Данните вътре в нея няма да бъдат синхронизирани.</translation>
+        <translation>Папката %1 е създадена, но преди това е била изключена от синхронизацията. Данните вътре в нея няма да бъдат синхронизирани.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Папката % 1 е създадена, но преди това е била изключена от синхронизацията. Данните вътре в нея няма да бъдат синхронизирани.</translation>
+        <translation>Папката %1 е създадена, но преди това е била изключена от синхронизацията. Данните вътре в нея няма да бъдат синхронизирани.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1591"/>
@@ -2231,7 +2231,7 @@ This means that the synchronization client might not upload local changes immedi
 
 Това означава, че клиентът за синхронизация може да не качва локални промени веднага и вместо това само ще сканира за локални промени и ще ги качва през определен интервал от време(на всеки два часа по подразбиране).
 
-% 1</translation>
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1629"/>
@@ -2688,17 +2688,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="257"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Неуспешно удостоверяване при достъпа % 1</translation>
+        <translation>Неуспешно удостоверяване при достъпа %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Неуспешно създаване на папката на % 1 . Моля, проверете ръчно.</translation>
+        <translation>Неуспешно създаване на папката на %1 . Моля, проверете ръчно.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="277"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation> Неуспешно вписване на папка в списък. Грешка:% 1</translation>
+        <translation> Неуспешно вписване на папка в списък. Грешка: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="358"/>
@@ -3039,7 +3039,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 %1</source>
         <translation>Невъзможност да се извлече или да се създаде публичната връзка за споделяне. Грешка:
 
-% 1</translation>
+%1</translation>
     </message>
 </context>
 <context>
@@ -3324,7 +3324,7 @@ Since log files can get large, the client will start a new one for each sync run
 If enabled, logs will be written to %1</source>
         <translation>Клиентът може да пише журнали за отстраняване на грешки във временна папка. Тези журнали са много полезни за диагностициране на проблеми.
 Тъй като регистрационните файлове могат да станат големи, клиентът ще стартира нов за всяко изпълнение на синхронизирането и ще компресира по-старите. Също така ще изтрива регистрационните файлове след няколко часа, за да избегне консумацията на твърде много дисково пространство.
-Ако е активирано, журналите ще се записват в % 1</translation>
+Ако е активирано, журналите ще се записват в %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="56"/>
@@ -3356,7 +3356,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/logger.cpp" line="371"/>
         <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Файл „% 1“&lt;br/&gt; не може да бъде отворен за записване.&lt;br/&gt;&lt;br/&gt; Изходът на регистрационния файл &lt;b&gt;не&lt;/b&gt; може да бъде записан!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Файл „%1“&lt;br/&gt; не може да бъде отворен за записване.&lt;br/&gt;&lt;br/&gt; Изходът на регистрационния файл &lt;b&gt;не&lt;/b&gt; може да бъде записан!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3412,7 +3412,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Налична е нова версия на % 1 Клиент, но процесът на актуализиране е неуспешен.&lt;/p&gt;&lt;p&gt;&lt;b&gt;% 2&lt;/b&gt; са изтеглени. Инсталираната версия е% 3. Ако потвърдите рестартиране и актуализиране, компютърът ви може да се рестартира, за да завърши инсталацията.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Налична е нова версия на %1 Клиент, но процесът на актуализиране е неуспешен.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; са изтеглени. Инсталираната версия е %3. Ако потвърдите рестартиране и актуализиране, компютърът ви може да се рестартира, за да завърши инсталацията.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
@@ -3558,7 +3558,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="99"/>
         <source>New %1 update ready</source>
-        <translation>Готова е нова актуализация на % 1</translation>
+        <translation>Готова е нова актуализация на %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
@@ -3573,7 +3573,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="146"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>% 1 наличен .Рестартиране на приложение, за да стартира актуализацията.</translation>
+        <translation>%1 наличен. Рестартиране на приложение, за да стартира актуализацията.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -3588,12 +3588,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>Наличен е нов % 1. Моля, отворете &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, за изтегляне на актуализацията.</translation>
+        <translation>Наличен е нов %1. Моля, отворете &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, за изтегляне на актуализацията.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>Наличен е нов % 1. Моля, отворете %2, за изтегляне на актуализацията.</translation>
+        <translation>Наличен е нов %1. Моля, отворете %2, за изтегляне на актуализацията.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
@@ -3633,7 +3633,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Използване &amp; на виртуални файлове, вместо да се изтегля съдържание веднага % 1</translation>
+        <translation>Използване на &amp;виртуални файлове, вместо да се изтегля съдържание веднага %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
@@ -3719,7 +3719,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Неуспешно свързване със защитения адрес на сървъра&lt;em&gt;% 1&lt;/em&gt;. Как бихте искали да продължите?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Неуспешно свързване със защитения адрес на сървъра&lt;em&gt;%1&lt;/em&gt;. Как бихте искали да продължите?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3783,12 +3783,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="301"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Неуспешно свързване с % 1 пр и% 2:&lt;br/&gt;%3</translation>
+        <translation>Неуспешно свързване с %1 при %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Време за изчакване при опит за свързване с % 1 при % 2.</translation>
+        <translation>Време за изчакване при опит за свързване с %1 при %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
@@ -3803,7 +3803,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>Опит се да се свърже с % 1 при % 2 ...</translation>
+        <translation>Опит се да се свърже с %1 при %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
@@ -3818,12 +3818,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Местната папка за синхронизиране % 1 вече съществува, настройка за синхронизиране. &lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Местната папка за синхронизиране %1 вече съществува, настройка за синхронизиране. &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Създаване на местна папка за синхронизиране % 1</translation>
+        <translation>Създаване на местна папка за синхронизиране %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
@@ -3863,7 +3863,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Отдалечената папка % 1 вече съществува. Свързване за синхронизиране.</translation>
+        <translation>Отдалечената папка %1 вече съществува. Свързване за синхронизиране.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
@@ -3890,7 +3890,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="632"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Установена е връзка за синхронизиране от % 1 към отдалечена директория % 2.</translation>
+        <translation>Установена е връзка за синхронизиране от %1 към отдалечена директория %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="637"/>
@@ -3900,7 +3900,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Връзката с % 1 не можа да бъде установена. Моля проверете отново.</translation>
+        <translation>Връзката с %1 не можа да бъде установена. Моля проверете отново.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
@@ -3954,7 +3954,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Когато режимът &quot;виртуални файлове&quot; е активиран, първоначално няма да започне изтегляне на файлове. Вместо това ще бъде създаден малък файл „% 1“ за всеки файл, който съществува на сървъра. Съдържанието им може да бъде изтеглено чрез стартирането на тези файлове или чрез тяхното контекстно меню.
+        <translation>Когато режимът &quot;виртуални файлове&quot; е активиран, първоначално няма да започне изтегляне на файлове. Вместо това ще бъде създаден малък файл „%1“ за всеки файл, който съществува на сървъра. Съдържанието им може да бъде изтеглено чрез стартирането на тези файлове или чрез тяхното контекстно меню.
 
 Режимът на виртуални файлове се изключва взаимно със селективното синхронизиране. Понастоящем неизбраните папки ще бъдат преведени  само в онлайн папки и вашите настройки за селективно синхронизиране ще бъдат нулирани.
 
@@ -4144,7 +4144,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="780"/>
         <source>Server reported no %1</source>
-        <translation>Сървърът е отчел не % 1</translation>
+        <translation>Сървърът не е отчел %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1166"/>
@@ -4274,7 +4274,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="538"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Файл % 1 не може да бъде изтеглен поради сблъсък с името на локален файл!</translation>
+        <translation>Файл %1 не може да бъде изтеглен поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
@@ -4299,7 +4299,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation>Изтегленият файл е празен, но сървърът обяви, че е трябвало да бъде % 1.</translation>
+        <translation>Изтегленият файл е празен, но сървърът обяви, че е трябвало да бъде %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
@@ -4334,12 +4334,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Възстановяването е Неуспешно: % 1</translation>
+        <translation>; Възстановяването е неуспешно: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Файл или папка бяха премахнати от споделянето само за четене, но възстановяването не бе успешно: % 1</translation>
+        <translation>Файл или папка бяха премахнати от споделянето само за четене, но възстановяването не бе успешно: %1</translation>
     </message>
 </context>
 <context>
@@ -4347,7 +4347,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="196"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>не можа да се изтрие файл % 1, грешка:% 2</translation>
+        <translation>не можа да се изтрие файл %1, грешка: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="211"/>
@@ -4387,7 +4387,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="96"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>% 1 не можа да се премахне поради сблъсък с името на локален файл!</translation>
+        <translation>%1 не можа да се премахне поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="136"/>
@@ -4457,7 +4457,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="116"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Грешен HTTP код, върнат от сървъра. Очаквани 204, но са получени „% 1% 2“.</translation>
+        <translation>Грешен HTTP код, върнат от сървъра. Очакван 204, но е получен „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="124"/>
@@ -4470,7 +4470,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="149"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Грешен HTTP код, върнат от сървъра. Очаквани 204, но са получени „% 1% 2“.</translation>
+        <translation>Грешен HTTP код, върнат от сървъра. Очакван 204, но е получен „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -4478,7 +4478,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Грешен HTTP код, върнат от сървъра. Очаквани 201, но са получени „% 1% 2“.</translation>
+        <translation>Грешен HTTP код, върнат от сървъра. Очакван 201, но е получен „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="251"/>
@@ -4501,7 +4501,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="162"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>Не можа да се преименува % 1 на % 2, грешка: % 3</translation>
+        <translation>Не можа да се преименува %1 на %2, грешка: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="219"/>
@@ -4518,7 +4518,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="236"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Грешен HTTP код, върнат от сървъра. Очаквани 201, но са получени „% 1% 2“.</translation>
+        <translation>Грешен HTTP код, върнат от сървъра. Очакван 201, но е получен „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="255"/>
@@ -4599,7 +4599,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="407"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Файлът е премахнат (стартиране на качване) % 1</translation>
+        <translation>Файлът е премахнат (стартиране на качване) %1</translation>
     </message>
 </context>
 <context>
@@ -4622,7 +4622,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>Неочакван код за връщане от сървър (% 1)</translation>
+        <translation>Неочакван код за връщане от сървър (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="523"/>
@@ -5082,7 +5082,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="129"/>
         <source>%1 (self-signed)</source>
-        <translation>% 1 (самоподписано)</translation>
+        <translation>%1 (самоподписано)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="131"/>
@@ -5218,7 +5218,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/syncengine.cpp" line="554"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Наличен е само % 1, за започване трябват поне % 2</translation>
+        <translation>Наличен е само %1, за започване трябват поне %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="587"/>
@@ -5248,12 +5248,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="403"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation>Невъзможност да се актуализират метаданните на виртуалния файл: % 1</translation>
+        <translation>Невъзможност да се актуализират метаданните на виртуалния файл: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not update file metadata: %1</source>
-        <translation>Невъзможност да се актуализират метаданните на файла: % 1</translation>
+        <translation>Невъзможност да се актуализират метаданните на файла: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="420"/>
@@ -5400,7 +5400,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <source>Exit %1</source>
-        <translation>Изход % 1</translation>
+        <translation>Изход %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192"/>
@@ -5457,7 +5457,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="621"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Това издание е предоставено от % 1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Това издание е предоставено от %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5774,7 +5774,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="240"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>Сървър „% 1“ е предоставил невалиден сертификат. Продължавате ли?</translation>
+        <translation>Сървър „%1“ е предоставил невалиден сертификат. Продължавате ли?</translation>
     </message>
 </context>
 <context>
@@ -5782,7 +5782,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Излязохте от вашият профил % 1 в % 2. Моля да влезте отново.</translation>
+        <translation>Излязохте от вашият профил %1 в %2. Моля да влезте отново.</translation>
     </message>
 </context>
 <context>
@@ -6816,7 +6816,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>% 1 изисква в работеща системна област. Ако използвате XFCE, моля следвайте &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;тези инструкции&lt;/a&gt;. В противен случай, моля, инсталирайте приложение в системната област, като например „trayer“ и опитайте отново.</translation>
+        <translation>%1 изисква в работеща системна област. Ако използвате XFCE, моля следвайте &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;тези инструкции&lt;/a&gt;. В противен случай, моля, инсталирайте приложение в системната област, като например „trayer“ и опитайте отново.</translation>
     </message>
 </context>
 <context>
@@ -6867,7 +6867,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation>Преместен в % 1</translation>
+        <translation>Преместен в %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
