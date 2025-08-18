@@ -69,9 +69,9 @@ namespace Utility {
      * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
      *
      * @param folder absolute file path to folder
-     * @param overwrite boolean to create or overwrite ini file
+     * @param localizedResourceName new folder name to be used as display name (migration)
      */
-    OCSYNC_EXPORT void setupDesktopIni(const QString &folder, bool overwrite = false);
+    OCSYNC_EXPORT void setupDesktopIni(const QString &folder, const QString localizedResourceName = {});
     /**
      * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
      *
