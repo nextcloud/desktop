@@ -478,6 +478,7 @@ import OSLog
                         item: \(item.filename, privacy: .public)
                     """
                 )
+                removeSyncAction(actionId)
                 completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
                 return
             }
