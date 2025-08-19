@@ -498,11 +498,6 @@ macOS kann diese Anforderung ignorieren oder verzögern.</translation>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Es ist ein unerwarteter Fehler aufgetreten. Bitte die Synchronisierung erneut versuchen oder wenden Sie sich an Ihre Serveradministration, wenn das Problem weiterhin besteht.</translation>
     </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation>Es ist ein unerwarteter Fehler aufgetreten. Bitte die Synchronisierung erneut versuchen oder die Serveradministration kontaktieren, wenn das Problem weiterhin besteht.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::Account</name>
