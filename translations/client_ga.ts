@@ -498,11 +498,6 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation>Tharla earráid gan choinne. Déan iarracht sioncrónú arís nó déan teagmháil le riarthóir do fhreastalaí má leanann an fhadhb ar aghaidh.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::Account</name>
