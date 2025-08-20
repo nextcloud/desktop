@@ -226,12 +226,6 @@ void OwncloudAdvancedSetupPage::initializePage()
             }
         });
     }
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && useVirtualFileSync()) {
-        _ocWizard->successfulStep();
-    }
-#endif
 }
 
 void OwncloudAdvancedSetupPage::fetchUserAvatar()

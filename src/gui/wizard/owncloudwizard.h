@@ -61,6 +61,7 @@ public:
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
     [[nodiscard]] bool needsToAcceptTermsOfService() const;
+    [[nodiscard]] bool useVirtualFileSyncByDefault() const;
 
     void displayError(const QString &, bool retryHTTPonly);
     [[nodiscard]] AbstractCredentials *getCredentials() const;
