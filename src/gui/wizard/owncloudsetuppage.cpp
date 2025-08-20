@@ -80,6 +80,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
+
+    connect(_ui.proxySettingsButton, &QPushButton::clicked,
+            this, &OwncloudSetupPage::slotSetProxySettings);
 }
 
 void OwncloudSetupPage::setLogo()
@@ -168,6 +171,12 @@ void OwncloudSetupPage::slotUrlEditFinished()
         url.prepend("https://");
         _ui.leUrl->setFullText(url);
     }
+}
+
+void OwncloudSetupPage::slotSetProxySettings()
+{
+    _proxySettingsDialog = new WizardProxySettings{this};
+    _proxySettingsDialog->show();
 }
 
 bool OwncloudSetupPage::isComplete() const
