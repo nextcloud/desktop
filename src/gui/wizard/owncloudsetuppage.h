@@ -14,6 +14,7 @@
 
 #include "../addcertificatedialog.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
+#include "wizard/wizardproxysettings.h"
 
 #include "ui_owncloudsetupnocredspage.h"
 
@@ -59,6 +60,8 @@ protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
 
+    void slotSetProxySettings();
+
     void setupCustomization();
 
 signals:
@@ -80,6 +83,8 @@ private:
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
     AddCertificateDialog *addCertDial = nullptr;
+
+    WizardProxySettings *_proxySettingsDialog = nullptr;
 
     // Grab the forceLoginV2-setting from the wizard
     bool useFlow2 = _ocWizard->useFlow2();
