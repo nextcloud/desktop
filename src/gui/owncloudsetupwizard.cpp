@@ -479,7 +479,16 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
 {
-    qCInfo(lcWizard) << "Setup local sync folder for new oC connection " << localFolder;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (Mac::FileProvider::fileProviderAvailable() && _ocWizard->useVirtualFileSync()) {
+        qCInfo(lcWizard) << "Not creating local or remote folder at" << localFolder
+                         << "because macOS File Provider has its own sync root and does not support selective sync.";
+        finalizeSetup(true);
+        return;
+    }
+#endif
+
+    qCInfo(lcWizard) << "Setup local sync folder for new Nextcloud connection " << localFolder;
     const QDir fi(localFolder);
 
     bool nextStep = true;
