@@ -6078,7 +6078,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
         <source>You renamed %1</source>
-        <translation>Jūs pārdēvējāt %1</translation>
+        <translation>Tu pārdēvēji %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="812"/>
