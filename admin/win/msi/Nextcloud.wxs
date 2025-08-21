@@ -17,7 +17,7 @@
          But we then should never change the UpgradeCode.
      -->
     <Product Name="$(var.AppName)" Manufacturer="$(var.AppVendor)"
-        Id="*" 
+        Id="$(var.ProductCode)"
         UpgradeCode="$(var.UpgradeCode)"
         Language="1033" Codepage="$(var.codepage)" Version="$(var.VerFull)">
     <Package Id="*" Keywords="Installer" Description="$(var.AppName) $(var.VerDesc)" Manufacturer="$(var.AppVendor)"

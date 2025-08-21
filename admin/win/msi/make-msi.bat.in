@@ -53,6 +53,12 @@ if "%WISUBSTG%" == "" (
   echo :: Did not find WiLangId.vbs ^(environment variable 'WILANGID'^), the resulting MSI will be in English by default
 ))
 
+REM generate a ProductCode to use in the resulting MSI to ensure that the embedded
+REM transforms don't break managed deployments (see #8610)
+REM the uuidgen tool is provided by the Visual Studio CLI tools
+for /f %%i in ('uuidgen -c') do set PRODUCTCODE=%%i
+echo/
+echo :: Using ProductCode=%PRODUCTCODE%
 
 echo/
 echo :: Harvesting files for MSI
@@ -101,7 +107,7 @@ exit 0
   set codepage=%~1
 
   echo :: Compiling MSI project for codepage !codepage!
-  "%WIX%\bin\candle.exe" -dcodepage=!codepage! -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
+  "%WIX%\bin\candle.exe" -dcodepage=!codepage! -dProductCode=%PRODUCTCODE% -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
   if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
   echo/
 
