@@ -161,6 +161,7 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
+    _ui.proxySettingsButton->setEnabled(!_ui.leUrl->fullText().isEmpty());
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
@@ -175,7 +176,7 @@ void OwncloudSetupPage::slotUrlEditFinished()
 
 void OwncloudSetupPage::slotSetProxySettings()
 {
-    _proxySettingsDialog = new WizardProxySettings{this};
+    _proxySettingsDialog = new WizardProxySettings{QUrl::fromUserInput(_ui.leUrl->fullText()), this};
     _proxySettingsDialog->show();
 }
 
@@ -200,6 +201,7 @@ void OwncloudSetupPage::initializePage()
     }
 
     _ui.leUrl->setFocus();
+    _ui.proxySettingsButton->setEnabled(false);
 
     const auto isServerUrlOverridden = !Theme::instance()->overrideServerUrl().isEmpty();
     if (isServerUrlOverridden && !Theme::instance()->forceOverrideServerUrl()) {
