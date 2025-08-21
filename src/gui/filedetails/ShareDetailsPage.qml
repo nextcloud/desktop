@@ -267,7 +267,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + palette.windowText
+                    source: "image://svgimage-custom-color/label.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
@@ -684,7 +684,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + palette.windowText
+                    source: "image://svgimage-custom-color/comment.svg/" + palette.windowText
                     sourceSize.width: scrollContentsColumn.rowIconWidth
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
