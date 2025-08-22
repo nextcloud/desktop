@@ -21,26 +21,37 @@ fileprivate let lfuLogger = Logger(subsystem: Logger.subsystem, category: "local
 ///
 /// Resolve the path of the shared container for the app group of the file provider extension.
 ///
-/// - Returns: Container URL for the extension's app group.
+/// - Returns: Container URL for the extension's app group or `nil`, if it could not be found.
 ///
 public func pathForAppGroupContainer() -> URL? {
     guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "NCFPKAppGroupIdentifier") as? String else {
-        lfuLogger.critical("Could not get app group container URL due to missing value for NCFPKAppGroupIdentifier key in Info.plist!")
+        lfuLogger.error("Could not get app group container URL due to missing value for NCFPKAppGroupIdentifier key in Info.plist!")
         return nil
     }
 
-    return FileManager.default.containerURL(
-        forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+    return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
 ///
 /// Resolve the path where the file provider extension store its data.
 ///
+/// In the past, this used a subdirectory in the application group container.
+/// If already existent, this will still be used.
+/// Otherwise the data will be stored in a new location.
+/// To comply with sandboxing and conventional directory structure of the platform, this uses the dedicated application support directory in the container of the file provider extension instead.
+///
 /// - Returns: The root location in which the extension can store its specific data.
 ///
-public func pathForFileProviderExtData() -> URL? {
-    let containerUrl = pathForAppGroupContainer()
-    return containerUrl?.appendingPathComponent("FileProviderExt")
+public func urlForFileProviderExtensionData() -> URL? {
+    if let containerUrl = pathForAppGroupContainer() {
+        let legacyLocation = containerUrl.appendingPathComponent("FileProviderExt")
+
+        if FileManager.default.fileExists(atPath: legacyLocation.path) {
+            return legacyLocation
+        }
+    }
+
+    return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
 }
 
 public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {

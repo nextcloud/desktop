@@ -71,7 +71,7 @@ public final class FilesDatabaseManager: Sendable {
 
         let manager = FileManager.default
 
-        guard let extensionData = pathForFileProviderExtData() else {
+        guard let extensionData = urlForFileProviderExtensionData() else {
             Self.logger.fault("Failed to resolve the file provider extension data directory!")
             assertionFailure("Failed to resolve the file provider extension data directory!")
             return manager.temporaryDirectory // Only to satisfy the non-optional return type. The extension is unusable at this point anyway.
