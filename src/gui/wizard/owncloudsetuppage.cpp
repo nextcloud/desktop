@@ -18,6 +18,7 @@
 #include <QBuffer>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMetaObject>
 
 #include "QProgressIndicator.h"
 
@@ -81,8 +82,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
 
-    connect(_ui.proxySettingsButton, &QPushButton::clicked,
-            this, &OwncloudSetupPage::slotSetProxySettings);
 }
 
 void OwncloudSetupPage::setLogo()
@@ -94,6 +93,21 @@ void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 {
     const auto appName = Theme::instance()->appNameGUI();
     _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.", "%1 will be replaced with the application name").arg(appName));
+}
+
+void OwncloudSetupPage::setProxySettingsButtonEnabled(bool enable)
+{
+    if (!wizard()) {
+        return;
+    }
+
+    const auto proxySettingsButton = wizard()->button(QWizard::CustomButton3);
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    proxySettingsButton->setEnabled(enable);
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -161,7 +175,7 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
-    _ui.proxySettingsButton->setEnabled(!_ui.leUrl->fullText().isEmpty());
+    setProxySettingsButtonEnabled(!_ui.leUrl->fullText().isEmpty());
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
@@ -201,7 +215,8 @@ void OwncloudSetupPage::initializePage()
     }
 
     _ui.leUrl->setFocus();
-    _ui.proxySettingsButton->setEnabled(false);
+
+    setProxySettingsButtonEnabled(false);
 
     const auto isServerUrlOverridden = !Theme::instance()->overrideServerUrl().isEmpty();
     if (isServerUrlOverridden && !Theme::instance()->forceOverrideServerUrl()) {
@@ -220,6 +235,26 @@ void OwncloudSetupPage::initializePage()
         validatePage();
         setVisible(false);
     }
+
+    ensureProxySettingsButtonIsConnected();
+}
+
+void OwncloudSetupPage::ensureProxySettingsButtonIsConnected()
+{
+    if (!wizard()) {
+        return;
+    }
+
+    const auto proxySettingsButton = wizard()->button(QWizard::CustomButton3);
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    disconnect(_proxyButtonIsConnected);
+
+    _proxyButtonIsConnected = connect(proxySettingsButton, &QPushButton::clicked,
+                                      this, &OwncloudSetupPage::slotSetProxySettings);
 }
 
 int OwncloudSetupPage::nextId() const

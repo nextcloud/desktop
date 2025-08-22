@@ -72,6 +72,9 @@ private:
     void customizeStyle();
     void setupServerAddressDescriptionLabel();
 
+    void setProxySettingsButtonEnabled(bool enable);
+    void ensureProxySettingsButtonIsConnected();
+
     Ui_OwncloudSetupPage _ui{};
 
     QString _oCUrl;
@@ -85,6 +88,7 @@ private:
     AddCertificateDialog *addCertDial = nullptr;
 
     WizardProxySettings *_proxySettingsDialog = nullptr;
+    QMetaObject::Connection _proxyButtonIsConnected;
 
     // Grab the forceLoginV2-setting from the wizard
     bool useFlow2 = _ocWizard->useFlow2();

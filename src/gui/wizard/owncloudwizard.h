@@ -115,6 +115,8 @@ private:
     [[nodiscard]] QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
     [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
 
+    void ensureWelcomePageCorrectLayout();
+
     AccountPtr _account;
     WelcomePage *_welcomePage = nullptr;
     OwncloudSetupPage *_setupPage = nullptr;
