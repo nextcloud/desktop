@@ -253,6 +253,13 @@ set(client_SRCS
     wizard/linklabel.cpp
     )
 
+if (NOT DISABLE_ACCOUNT_MIGRATION)
+    list(APPEND client_SRCS
+        legacyaccountselectiondialog.h
+        legacyaccountselectiondialog.cpp
+    )
+endif()
+
 if (WITH_WEBENGINE)
   list(APPEND client_SRCS
     wizard/webviewpage.h

@@ -14,6 +14,7 @@
 
 #include "accountmanager.h"
 
+#include "config.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "creds/credentialsfactory.h"
@@ -116,10 +117,12 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     }
 
     // If there are no accounts, check the old format.
+#if !DISABLE_ACCOUNT_MIGRATION
     if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
         return AccountsRestoreSuccessFromLegacyVersion;
     }
+#endif
 
     auto result = AccountsRestoreSuccess;
     const auto settingsChildGroups = settings->childGroups();
@@ -171,7 +174,7 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
         deleteKeys->append(settings->group());
     }
 }
-
+#if !DISABLE_ACCOUNT_MIGRATION
 bool AccountManager::restoreFromLegacySettings()
 {
     qCInfo(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
@@ -289,6 +292,12 @@ bool AccountManager::restoreFromLegacySettings()
 
     return false;
 }
+#else
+bool AccountManager::restoreFromLegacySettings()
+{
+    return false;
+}
+#endif
 
 void AccountManager::save(bool saveCredentials)
 {
