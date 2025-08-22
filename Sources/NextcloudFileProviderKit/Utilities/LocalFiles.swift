@@ -51,14 +51,17 @@ public func urlForFileProviderExtensionData() -> URL? {
         }
     }
 
-    return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    do {
+        return try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    } catch {
+        lfuLogger.error("Failed to get URL for application support directory in user mask!")
+        return nil
+    }
 }
 
 public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
     guard let fpManager = NSFileProviderManager(for: domain) else {
-        lfuLogger.error(
-            "Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)"
-        )
+        lfuLogger.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)")
         throw NSFileProviderError(.providerNotFound)
     }
 

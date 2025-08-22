@@ -62,40 +62,29 @@ public final class FilesDatabaseManager: Sendable {
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
     ///
-    /// Check for the existence of the directory where to place database files and attempt to create it if it does not exist yet.
+    /// Check for the existence of the directory where to place database files and return it.
     ///
-    /// - Returns: The location of the database files directory. Otherwise, failing assertions cause a crash because the extension would be completely dysfunctional anyway.
+    /// - Returns: The location of the database files directory.
     ///
     private static func assertDatabaseDirectory() -> URL {
         Self.logger.debug("Asserting existence of database directory...")
 
         let manager = FileManager.default
 
-        guard let extensionData = urlForFileProviderExtensionData() else {
+        guard let fileProviderExtensionDataDirectory = urlForFileProviderExtensionData() else {
             Self.logger.fault("Failed to resolve the file provider extension data directory!")
             assertionFailure("Failed to resolve the file provider extension data directory!")
             return manager.temporaryDirectory // Only to satisfy the non-optional return type. The extension is unusable at this point anyway.
         }
 
-        let databaseDirectory = extensionData.appendingPathComponent("Database", isDirectory: true)
-        var isDirectory: ObjCBool = false
-        let exists = manager.fileExists(atPath: databaseDirectory.path, isDirectory: &isDirectory)
+        let databaseDirectory = fileProviderExtensionDataDirectory.appendingPathComponent("Database", isDirectory: true)
+        let exists = manager.fileExists(atPath: databaseDirectory.path)
 
         if exists {
-            if isDirectory.boolValue {
-                Self.logger.info("Database directory exists at: \(databaseDirectory.path, privacy: .public)")
-            } else {
-                Self.logger.fault("Database directory exists but is a file at: \(databaseDirectory.path, privacy: .public)")
-                assertionFailure("Failed to ensure file provider extension database directory exists as expected!")
-            }
+            Self.logger.info("Database directory exists at: \(databaseDirectory.path, privacy: .public)")
         } else {
-            do {
-                try manager.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
-                Self.logger.info("Created database directory at: \(databaseDirectory.path, privacy: .public)")
-            } catch {
-                Self.logger.fault("Failed to create database directory at \"\(databaseDirectory.path, privacy: .public)\" because of error: \(error.localizedDescription, privacy: .public)")
-                assertionFailure("Failed to ensure file provider extension database directory exists as expected!")
-            }
+            Self.logger.info("Due to nonexistent \"Database\" directory, assume it is not a legacy location and returning file provider extension data directory at: \(fileProviderExtensionDataDirectory.path, privacy: .public)")
+            return fileProviderExtensionDataDirectory
         }
 
         // Disable file protection for database directory.
