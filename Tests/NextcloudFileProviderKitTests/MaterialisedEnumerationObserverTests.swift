@@ -13,7 +13,7 @@ import RealmSwift
 import TestInterface
 import XCTest
 
-final class MaterialisedEnumerationObserverTests: XCTestCase {
+final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -24,9 +24,7 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
     }
 
     func testMaterialisedObserverWithNoPreexistingState() async {
-        let dbManager = FilesDatabaseManager(
-            realmConfig: .defaultConfiguration, account: Self.account
-        )
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
         // The database is intentionally left empty.
 
         let remoteInterface = MockRemoteInterface()
@@ -98,9 +96,7 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
         dirD.directory = true
         dirD.visitedDirectory = true // Was materialised
 
-        let dbManager = FilesDatabaseManager(
-            realmConfig: .defaultConfiguration, account: Self.account
-        )
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
         dbManager.addItemMetadata(itemA)
         dbManager.addItemMetadata(itemB)
         dbManager.addItemMetadata(itemC)

@@ -12,15 +12,13 @@ import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
 
-final class ItemFetchTests: XCTestCase {
+final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
 
     override func setUp() {
         super.setUp()

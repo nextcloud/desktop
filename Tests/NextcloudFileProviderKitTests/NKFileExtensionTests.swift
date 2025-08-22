@@ -10,7 +10,7 @@ import FileProvider
 import NextcloudKit
 @testable import NextcloudFileProviderKit
 
-final class NKFileExtensionsTests: XCTestCase {
+final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
 
     static let account = Account(
         user: "testUser",

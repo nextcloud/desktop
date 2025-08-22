@@ -10,11 +10,9 @@ import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
 
-final class UploadTests: XCTestCase {
+final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
 
     override func setUp() {
         super.setUp()

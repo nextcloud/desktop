@@ -20,14 +20,12 @@ fileprivate let serverUrl = "localhost"
 fileprivate let password = "abcd"
 
 @available(macOS 14.0, iOS 17.0, *)
-final class RemoteChangeObserverTests: XCTestCase {
+final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     static let timeout = 5_000 // tries
     static let account = Account(
         user: username, id: userId, serverUrl: serverUrl, password: password
     )
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
     static let notifyPushServer = MockNotifyPushServer(
         host: serverUrl,
         port: 8888,

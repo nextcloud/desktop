@@ -12,7 +12,7 @@ import XCTest
 @testable import TestInterface
 @testable import NextcloudFileProviderKit
 
-final class EnumeratorTests: XCTestCase {
+final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -28,9 +28,7 @@ final class EnumeratorTests: XCTestCase {
     var remoteTrashItemB: MockRemoteItem!
     var remoteTrashItemC: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
 
     override func setUp() {
         super.setUp()

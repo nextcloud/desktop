@@ -12,14 +12,12 @@ import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
 
-final class FilesDatabaseManagerTests: XCTestCase {
+final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
 
     override func setUp() {
         super.setUp()
@@ -854,30 +852,12 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let account1 = Account(user: "account1", id: "account1", serverUrl: "c.nc.c", password: "a")
         let account2 = Account(user: "account2", id: "account2", serverUrl: "c.nc.c", password: "b")
 
-        // 1. Create a unique temporary directory for the file provider data directory.
-        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        let temporaryDirectory = makeDatabaseDirectory()
+        let oldRealmURL = temporaryDirectory.appendingPathComponent(FilesDatabaseManager.databaseFilename)
 
-        // 2. Define a custom relative database folder path.
-        // For example, if you normally use "Nextcloud/Realm/", here we use "Test/Realm/".
-        let customRelativeDatabaseFolderPath = "Test/Realm/"
-
-        // 3. Build the expected old Realm file URL using the custom relative path
-        // and the class’s databaseFilename.
-        let oldRealmURL = tempDir.appendingPathComponent(
-            customRelativeDatabaseFolderPath + databaseFilename
-        )
-        try FileManager.default.createDirectory(
-            at: oldRealmURL.deletingLastPathComponent(), withIntermediateDirectories: true
-        )
-
-        // 4. Create the old Realm configuration and insert test objects.
+        // Create the old Realm configuration and insert test objects.
         // Use stable2_0SchemaVersion and the appropriate object types.
-        let oldConfig = Realm.Configuration(
-            fileURL: oldRealmURL,
-            schemaVersion: stable2_0SchemaVersion,
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
-        )
+        let oldConfig = Realm.Configuration(fileURL: oldRealmURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
         let oldRealm = try Realm(configuration: oldConfig)
 
         // Create test objects
@@ -901,36 +881,25 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(oldRealm.objects(RealmItemMetadata.self).count, 2)
         XCTAssertEqual(oldRealm.objects(RemoteFileChunk.self).count, 1)
 
-        // 5. Prepare a new Realm configuration for the target per‑account database.
-        let newRealmURL = tempDir.appendingPathComponent("new.realm")
-        let newConfig = Realm.Configuration(
-            fileURL: newRealmURL,
-            schemaVersion: stable2_0SchemaVersion,
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
-        )
+        // Prepare a new Realm configuration for the target per‑account database.
+        let newRealmURL = temporaryDirectory.appendingPathComponent("new.realm")
+        let newConfig = Realm.Configuration(fileURL: newRealmURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
 
-        // 6. Call the initializer that performs the migration.
+        // Call the initializer that performs the migration.
         // It will search for the old database at:
         // fileProviderDataDirUrl/appendingPathComponent(customRelativeDbFolderPath + dbFilename)
         // and migrate only metadata objects with account == "account1" plus remote file chunks.
-        let dbManager = FilesDatabaseManager(
-            realmConfig: newConfig,
-            account: account1,
-            fileProviderDataDirUrl: tempDir,
-            relativeDatabaseFolderPath: customRelativeDatabaseFolderPath
-        )
+        let dbManager = FilesDatabaseManager(realmConfiguration: newConfig, account: account1, databaseDirectory: temporaryDirectory)
 
-        // 7. Verify that the new Realm now contains the migrated objects.
+        // Verify that the new Realm now contains the migrated objects.
         let newRealm = dbManager.ncDatabase()
         let newMigratedItems = newRealm.objects(RealmItemMetadata.self)
         let newRemoteChunks = newRealm.objects(RemoteFileChunk.self)
-        XCTAssertEqual(
-            newMigratedItems.count, 1, "Only one metadata item for account1 should be migrated"
-        )
+        XCTAssertEqual(newMigratedItems.count, 1, "Exactly one metadata item for account1 should be migrated!")
         XCTAssertEqual(newMigratedItems.first?.account, account1.ncKitAccount)
         XCTAssertEqual(newRemoteChunks.count, 1, "Remote file chunks should be migrated")
 
-        // 8. Verify that the old Realm has retained the migrated objects.
+        // Verify that the old Realm has retained the migrated objects.
         let oldRealmAfter = try Realm(configuration: oldConfig)
         let allItems = oldRealmAfter.objects(RealmItemMetadata.self)
         let allChunks = oldRealmAfter.objects(RemoteFileChunk.self)
@@ -948,10 +917,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(
             allChunks.count, 1, "The remote file chunks should be retained in the old realm"
         )
-
-
-        // 9. Clean up by removing the temporary directory.
-        try FileManager.default.removeItem(at: tempDir)
     }
 
     func testMigrationIsNotPerformedTwice() throws {
@@ -960,12 +925,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
         try fm.createDirectory(at: tempDir, withIntermediateDirectories: true)
 
         let customRelativePath = "Test/Realm/"
-        let oldRealmURL = tempDir.appendingPathComponent(
-            customRelativePath + NextcloudFileProviderKit.databaseFilename
-        )
-        try fm.createDirectory(
-            at: oldRealmURL.deletingLastPathComponent(), withIntermediateDirectories: true
-        )
+        let oldRealmURL = tempDir.appendingPathComponent(customRelativePath + FilesDatabaseManager.databaseFilename)
+        try fm.createDirectory(at: oldRealmURL.deletingLastPathComponent(), withIntermediateDirectories: true)
 
         let account1 = Account(user: "account1", id: "account1", serverUrl: "c.nc.c", password: "a")
         let account2 = Account(user: "account2", id: "account2", serverUrl: "c.nc.c", password: "b")
@@ -1006,10 +967,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         // First migration
         let newDbManager = FilesDatabaseManager(
-            realmConfig: newConfig,
+            realmConfiguration: newConfig,
             account: accounts.migrated,
-            fileProviderDataDirUrl: tempDir,
-            relativeDatabaseFolderPath: customRelativePath
+            databaseDirectory: tempDir.appendingPathComponent(customRelativePath)
         )
 
         let newRealm = newDbManager.ncDatabase()
@@ -1034,10 +994,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         // Second migration call; new objects added after the first migration must not be added
         let secondNewDbManager = FilesDatabaseManager(
-            realmConfig: newConfig,
+            realmConfiguration: newConfig,
             account: accounts.migrated,
-            fileProviderDataDirUrl: tempDir,
-            relativeDatabaseFolderPath: customRelativePath
+            databaseDirectory: tempDir.appendingPathComponent(customRelativePath)
         )
 
         let secondNewRealm = secondNewDbManager.ncDatabase()

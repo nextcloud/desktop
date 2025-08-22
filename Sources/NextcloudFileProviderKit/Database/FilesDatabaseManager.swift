@@ -20,21 +20,34 @@ import RealmSwift
 internal let stable1_0SchemaVersion: UInt64 = 100
 internal let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
 
-public let relativeDatabaseFolderPath = "Database/"
-public let databaseFilename = "fileproviderextdatabase.realm"
-
+///
+/// Realm database abstraction and management.
+///
 public final class FilesDatabaseManager: Sendable {
+    ///
+    /// File name suffix for Realm database files.
+    ///
+    /// In the past, before account-specific databases, there was a single and shared database which had this file name.
+    ///
+    /// > Important: The value must not change, as it is used to migrate from the old unified database to the new per-account databases.
+    ///
+    static let databaseFilename = "fileproviderextdatabase.realm"
+
     public enum ErrorCode: Int {
         case metadataNotFound = -1000
         case parentMetadataNotFound = -1001
     }
+
     public enum ErrorUserInfoKey: String {
         case missingParentServerUrlAndFileName = "MissingParentServerUrlAndFileName"
     }
+    
     static let errorDomain = "FilesDatabaseManager"
+
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
         NSError(domain: Self.errorDomain, code: code.rawValue, userInfo: userInfo)
     }
+
     static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
         error(
             code: .parentMetadataNotFound,
@@ -43,108 +56,90 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     private static let schemaVersion = stable2_0SchemaVersion
-    static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
+    static let logger = Logger(subsystem: Logger.subsystem, category: "FilesDatabaseManager")
     let account: Account
 
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
-    public init(
-        realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration,
-        account: Account,
-        fileProviderDataDirUrl: URL? = pathForFileProviderExtData(),
-        relativeDatabaseFolderPath: String = relativeDatabaseFolderPath
-    ) {
-        self.account = account
+    ///
+    /// Check for the existence of the directory where to place database files and attempt to create it if it does not exist yet.
+    ///
+    /// - Returns: The location of the database files directory. Otherwise, failing assertions cause a crash because the extension would be completely dysfunctional anyway.
+    ///
+    private static func assertDatabaseDirectory() -> URL {
+        Self.logger.debug("Asserting existence of database directory...")
 
-        let fm = FileManager.default
-        let dbPath = realmConfig.fileURL?.path
-        let migrate = dbPath != nil && !fm.fileExists(atPath: dbPath!)
+        let manager = FileManager.default
 
-        Realm.Configuration.defaultConfiguration = realmConfig
-
-        do {
-            _ = try Realm()
-            Self.logger.info("Successfully started Realm db for NextcloudFileProviderKit")
-        } catch let error {
-            Self.logger.error("Error opening Realm db: \(error, privacy: .public)")
+        guard let extensionData = pathForFileProviderExtData() else {
+            Self.logger.fault("Failed to resolve the file provider extension data directory!")
+            assertionFailure("Failed to resolve the file provider extension data directory!")
+            return manager.temporaryDirectory // Only to satisfy the non-optional return type. The extension is unusable at this point anyway.
         }
 
-        // Migrate from old unified database to new per-account DB
-        guard let fileProviderDataDirUrl, migrate else { return }
-        let oldRelativeDatabaseFilePath = relativeDatabaseFolderPath + databaseFilename
-        let oldDatabasePath = fileProviderDataDirUrl.appendingPathComponent(
-            oldRelativeDatabaseFilePath
-        )
-        guard FileManager.default.fileExists(atPath: oldDatabasePath.path) == true else {
-            Self.logger.debug("No old database found at \(oldDatabasePath.path) skipping migration")
-            return
-        }
-        Self.logger.info(
-            "Migrating old database to database for \(account.ncKitAccount, privacy: .public)"
-        )
-        let oldConfig = Realm.Configuration(
-            fileURL: oldDatabasePath,
-            schemaVersion: stable2_0SchemaVersion,
-            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
-        )
-        do {
-            let oldRealm = try Realm(configuration: oldConfig)
-            let itemMetadatas = oldRealm
-                .objects(RealmItemMetadata.self)
-                .filter { $0.account == account.ncKitAccount }
-            let remoteFileChunks = oldRealm.objects(RemoteFileChunk.self)
-            Self.logger.info(
-                "Migrating \(itemMetadatas.count) metadatas and \(remoteFileChunks.count) chunks"
-            )
+        let databaseDirectory = extensionData.appendingPathComponent("Database", isDirectory: true)
+        var isDirectory: ObjCBool = false
+        let exists = manager.fileExists(atPath: databaseDirectory.path, isDirectory: &isDirectory)
 
-            let currentRealm = try Realm()
-            try currentRealm.write {
-                itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
-                remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
+        if exists {
+            if isDirectory.boolValue {
+                Self.logger.info("Database directory exists at: \(databaseDirectory.path, privacy: .public)")
+            } else {
+                Self.logger.fault("Database directory exists but is a file at: \(databaseDirectory.path, privacy: .public)")
+                assertionFailure("Failed to ensure file provider extension database directory exists as expected!")
             }
-        } catch let error {
-            Self.logger.error(
-                """
-                Error migrating old database to account-specific database
-                    for: \(account.ncKitAccount, privacy: .public)
-                    Received error: \(error, privacy: .public)
-                """
-            )
+        } else {
+            do {
+                try manager.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
+                Self.logger.info("Created database directory at: \(databaseDirectory.path, privacy: .public)")
+            } catch {
+                Self.logger.fault("Failed to create database directory at \"\(databaseDirectory.path, privacy: .public)\" because of error: \(error.localizedDescription, privacy: .public)")
+                assertionFailure("Failed to ensure file provider extension database directory exists as expected!")
+            }
         }
+
+        // Disable file protection for database directory.
+        // See: https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/
+
+        do {
+            try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: databaseDirectory.path)
+            Self.logger.info("Set protectionKey attribute for database directory to FileProtectionType.completeUntilFirstUserAuthentication.")
+        } catch {
+            Self.logger.error("Could not set protectionKey attribute to FileProtectionType.completeUntilFirstUserAuthentication for database directory: \(error, privacy: .public)")
+        }
+
+        return databaseDirectory
     }
 
-    public convenience init?(account: Account) {
-        let relativeDatabaseFilePath =
-            relativeDatabaseFolderPath + account.fileName + "-" + databaseFilename
-        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
-        let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
+    ///
+    /// Convenience initializer which defines a default configuration for Realm.
+    ///
+    /// - Parameters:
+    ///     - customConfiguration: Optional custom Realm configuration to use instead of the default one.
+    ///     - account: The Nextcloud account for which the database is being created.
+    ///     - customDatabaseDirectory: Optional custom directory where the database files should be stored. If not provided, the default directory will be used.
+    ///
+    public init(realmConfiguration customConfiguration: Realm.Configuration? = nil, account: Account, databaseDirectory customDatabaseDirectory: URL? = nil) {
+        self.account = account
 
-        // Disable file protection for directory DB
-        // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/
-        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFolderPath)
-        let dbFolderPath = dbFolder.path
-        do {
-            try FileManager.default.createDirectory(at: dbFolder, withIntermediateDirectories: true)
-            try FileManager.default.setAttributes(
-                [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
-                ofItemAtPath: dbFolderPath
-            )
-        } catch {
-            Self.logger.error(
-                "Could not set permission level for db folder: \(error, privacy: .public)"
-            )
-        }
+        Self.logger.info("Initializing for account: \(account.ncKitAccount, privacy: .public)")
 
-        let config = Realm.Configuration(
-            fileURL: databasePath,
+        let databaseDirectory = customDatabaseDirectory ?? Self.assertDatabaseDirectory()
+        let accountDatabaseFilename = account.fileName + "-" + Self.databaseFilename
+        let databaseLocation = databaseDirectory.appendingPathComponent(accountDatabaseFilename)
+
+        let configuration = customConfiguration ?? Realm.Configuration(
+            fileURL: databaseLocation,
             schemaVersion: Self.schemaVersion,
             migrationBlock: { migration, oldSchemaVersion in
                 if oldSchemaVersion == stable1_0SchemaVersion {
                     var localFileMetadataOcIds = Set<String>()
+
                     migration.enumerateObjects(ofType: "LocalFileMetadata") { oldObject, _ in
                         guard let oldObject, let lfmOcId = oldObject["ocId"] as? String else {
                             return
                         }
+
                         localFileMetadataOcIds.insert(lfmOcId)
                     }
 
@@ -153,6 +148,7 @@ public final class FilesDatabaseManager: Sendable {
                               let imOcId = newObject["ocId"] as? String,
                               localFileMetadataOcIds.contains(imOcId)
                         else { return }
+
                         newObject["downloaded"] = true
                         newObject["uploaded"] = true
                     }
@@ -161,7 +157,57 @@ public final class FilesDatabaseManager: Sendable {
             },
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
-        self.init(realmConfig: config, account: account)
+
+        Realm.Configuration.defaultConfiguration = configuration
+
+        let fileManager = FileManager.default
+        let databasePathFromRealmConfiguration = configuration.fileURL?.path
+        let migrate = databasePathFromRealmConfiguration != nil && fileManager.fileExists(atPath: databasePathFromRealmConfiguration!) == false
+
+        do {
+            _ = try Realm()
+            Self.logger.info("Successfully created Realm.")
+        } catch let error {
+            Self.logger.fault("Error creating Realm: \(error, privacy: .public)")
+        }
+
+        // Migrate from old unified database to new per-account DB
+        guard migrate else {
+            Self.logger.debug("No migration needed for \(account.ncKitAccount, privacy: .public)")
+            return
+        }
+
+        let sharedDatabaseURL = databaseDirectory.appendingPathComponent(Self.databaseFilename)
+
+        guard FileManager.default.fileExists(atPath: sharedDatabaseURL.path) == true else {
+            Self.logger.debug("No shared legacy database found at \"\(sharedDatabaseURL.path)\", skipping migration.")
+            return
+        }
+
+        Self.logger.info("Migrating shared legacy database to new database for \(account.ncKitAccount, privacy: .public)")
+
+        let legacyConfiguration = Realm.Configuration(fileURL: sharedDatabaseURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
+
+        do {
+            let legacyRealm = try Realm(configuration: legacyConfiguration)
+
+            let itemMetadatas = legacyRealm
+                .objects(RealmItemMetadata.self)
+                .filter { $0.account == account.ncKitAccount }
+
+            let remoteFileChunks = legacyRealm.objects(RemoteFileChunk.self)
+
+            Self.logger.info("Migrating \(itemMetadatas.count) metadatas and \(remoteFileChunks.count) chunks.")
+
+            let currentRealm = try Realm()
+
+            try currentRealm.write {
+                itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
+                remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
+            }
+        } catch let error {
+            Self.logger.error("Error migrating shared legacy database to account-specific database for: \(account.ncKitAccount, privacy: .public) because of error: \(error, privacy: .public)")
+        }
     }
 
     func ncDatabase() -> Realm {

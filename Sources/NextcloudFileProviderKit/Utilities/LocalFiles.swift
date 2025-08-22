@@ -24,12 +24,8 @@ fileprivate let lfuLogger = Logger(subsystem: Logger.subsystem, category: "local
 /// - Returns: Container URL for the extension's app group.
 ///
 public func pathForAppGroupContainer() -> URL? {
-    guard let appGroupIdentifier = Bundle.main.object(
-        forInfoDictionaryKey: "NCFPKAppGroupIdentifier"
-    ) as? String else {
-        lfuLogger.critical(
-            "Could not get app group container url as Info.plist missing NCFPKAppGroupIdentifier!"
-        )
+    guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "NCFPKAppGroupIdentifier") as? String else {
+        lfuLogger.critical("Could not get app group container URL due to missing value for NCFPKAppGroupIdentifier key in Info.plist!")
         return nil
     }
 

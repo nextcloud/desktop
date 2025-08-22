@@ -8,7 +8,7 @@
 @testable import NextcloudFileProviderKit
 import XCTest
 
-final class ChunkedArrayTests: XCTestCase {
+final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     // MARK: - chunked(into:)
     func testChunkedEmptyArray() {
         let emptyArray: [Int] = []

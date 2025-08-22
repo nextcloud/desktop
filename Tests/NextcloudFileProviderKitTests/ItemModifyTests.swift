@@ -13,7 +13,7 @@ import UniformTypeIdentifiers
 import XCTest
 @testable import NextcloudFileProviderKit
 
-final class ItemModifyTests: XCTestCase {
+final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -27,9 +27,7 @@ final class ItemModifyTests: XCTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(
-        realmConfig: .defaultConfiguration, account: account
-    )
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
 
     override func setUp() {
         super.setUp()

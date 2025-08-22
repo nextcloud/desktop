@@ -13,7 +13,7 @@ import XCTest
 @testable import NextcloudFileProviderKit
 
 @available(macOS 14.0, iOS 17.0, *)
-final class RemoteChangeObserverEtagOptimizationTests: XCTestCase {
+final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "localhost", password: "abcd"
     )
@@ -23,7 +23,7 @@ final class RemoteChangeObserverEtagOptimizationTests: XCTestCase {
     
     override func setUp() {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration, account: Self.account)
+        dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
         mockRemoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
     }
     
