@@ -153,8 +153,6 @@ set(client_SRCS
     userinfo.cpp
     vfsdownloaderrordialog.h
     vfsdownloaderrordialog.cpp
-    legacyaccountselectiondialog.h
-    legacyaccountselectiondialog.cpp
     accountstate.h
     accountstate.cpp
     addcertificatedialog.h
@@ -257,6 +255,13 @@ set(client_SRCS
     wizard/linklabel.h
     wizard/linklabel.cpp
     )
+
+if (NOT DISABLE_ACCOUNT_MIGRATION)
+    list(APPEND client_SRCS
+        legacyaccountselectiondialog.h
+        legacyaccountselectiondialog.cpp
+    )
+endif()
 
 if (WITH_WEBENGINE)
   list(APPEND client_SRCS
