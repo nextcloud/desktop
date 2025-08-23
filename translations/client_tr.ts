@@ -6060,6 +6060,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation><numerusform>%ns</numerusform><numerusform>%ns</numerusform></translation>
     </message>
     <message>
+        <location filename="../src/common/utility.cpp" line="442"/>
+        <source>now</source>
+        <translation>şimdi</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="444"/>
+        <source>1min</source>
+        <comment>one minute after activity date and time</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
@@ -6067,14 +6078,15 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
+        <source>%nmin</source>
+        <comment>delay in minutes after an activity</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
         <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="442"/>
-        <source>now</source>
-        <translation>şimdi</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>

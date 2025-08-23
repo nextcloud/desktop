@@ -6064,6 +6064,17 @@ Server replied with error: %2</source>
         <translation><numerusform>%n 小時</numerusform></translation>
     </message>
     <message>
+        <location filename="../src/common/utility.cpp" line="442"/>
+        <source>now</source>
+        <translation>現在</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="444"/>
+        <source>1min</source>
+        <comment>one minute after activity date and time</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
@@ -6071,14 +6082,15 @@ Server replied with error: %2</source>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
+        <source>%nmin</source>
+        <comment>delay in minutes after an activity</comment>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
         <translation><numerusform>%n 分鐘</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="442"/>
-        <source>now</source>
-        <translation>現在</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
