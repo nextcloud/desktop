@@ -15,6 +15,8 @@ Page {
     signal finished
 
     property int userIndex: -1
+    property bool showOnlineStatusSection: true
+    property bool showStatusMessageSection: true
     property NC.UserStatusSelectorModel model: NC.UserStatusSelectorModel {
         userIndex: page.userIndex
         onFinished: page.finished()
@@ -31,5 +33,7 @@ Page {
         id: userStatusSelector
         userStatusSelectorModel: model
         spacing: Style.standardSpacing
+        showOnlineStatusSection: page.showOnlineStatusSection
+        showStatusMessageSection: page.showStatusMessageSection
     }
 }

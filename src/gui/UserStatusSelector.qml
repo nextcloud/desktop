@@ -17,12 +17,16 @@ ColumnLayout {
     id: rootLayout
     spacing: Style.standardSpacing * 2
     property NC.UserStatusSelectorModel userStatusSelectorModel
+    property bool showOnlineStatusSection: true
+    property bool showStatusMessageSection: true
 
     ColumnLayout {
         id: statusButtonsLayout
 
         Layout.fillWidth: true
         spacing: Style.smallSpacing
+        visible: rootLayout.showOnlineStatusSection
+        Layout.preferredHeight: visible ? implicitHeight : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -122,6 +126,8 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         spacing: Style.smallSpacing
+        visible: rootLayout.showStatusMessageSection
+        Layout.preferredHeight: visible ? implicitHeight : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
