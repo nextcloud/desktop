@@ -468,6 +468,7 @@ signals:
     void encryptionCertificateFingerprintChanged();
     void userCertificateNeedsMigrationChanged();
 
+    void rootFolderQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
