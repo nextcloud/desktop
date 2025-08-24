@@ -211,6 +211,20 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
     return result;
 }
 
+Result<void, QString> VfsCfApi::createPlaceholders(const std::deque<SyncFileItemPtr> &items)
+{
+    const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath);
+
+    auto allPlaceholdersInfo = QList<cfapi::PlaceholdersInfo>{};
+    for (const auto &oneItem : items) {
+        allPlaceholdersInfo.emplace_back(oneItem->_file, QDir::toNativeSeparators(oneItem->_file).toStdWString(), oneItem->_fileId, oneItem->_modtime, oneItem->_size);
+    }
+
+    const auto result = cfapi::createPlaceholdersInfo(localPath, {allPlaceholdersInfo});
+
+    return result;
+}
+
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
@@ -534,7 +548,7 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
         const auto dir = QDir(info.absoluteFilePath());
         Q_ASSERT(dir.exists());
         const auto children = dir.entryList();
-        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=](const HydratationAndPinStates &currentState, const QString &name) {
+        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=, this](const HydratationAndPinStates &currentState, const QString &name) {
             if (name == QStringLiteral("..") || name == QStringLiteral(".")) {
                 return currentState;
             }
