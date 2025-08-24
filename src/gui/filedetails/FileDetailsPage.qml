@@ -43,6 +43,10 @@ Page {
                 return;
             }
 
+            if (!root.fileDetails.fileActionsAvailable && page == Systray.FileDetailsPage.Actions) {
+                return;
+            }
+
             if (fileLocalPath === root.localPath) {
                 switch(page) {
                 case Systray.FileDetailsPage.Activity:
@@ -50,6 +54,9 @@ Page {
                     break;
                 case Systray.FileDetailsPage.Sharing:
                     swipeView.currentIndex = shareViewLoader.swipeIndex;
+                    break;
+                case Systray.FileDetailsPage.Actions:
+                    swipeView.currentIndex = fileActionsViewLoader.swipeIndex;
                     break;
                 }
             }
@@ -228,6 +235,16 @@ Page {
                 onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
                 visible: root.fileDetails.sharingAvailable
             }
+
+            NCTabButton {
+                width: visible ? implicitWidth : 0
+                height: visible ? implicitHeight : 0
+                svgCustomColorSource: "image://svgimage-custom-color/settings.svg"
+                text: qsTr("File actions")
+                checked: swipeView.currentIndex === fileActivityView.swipeIndex
+                onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
+                visible: root.fileDetails.fileActionsAvailable
+            }
         }
     }
 
@@ -260,6 +277,31 @@ Page {
 
             sourceComponent: ShareView {
                 id: shareView
+
+                anchors.fill: parent
+
+                accountState: root.accountState
+                localPath: root.localPath
+                fileDetails: root.fileDetails
+                horizontalPadding: root.intendedPadding
+                iconSize: root.iconSize
+                rootStackView: root.rootStackView
+                backgroundsVisible: root.backgroundsVisible
+                accentColor: root.accentColor
+            }
+        }
+
+        Loader {
+            id: fileActionsViewLoader
+
+            readonly property int swipeIndex: SwipeView.index
+
+            width: swipeView.width
+            height: swipeView.height
+            active: root.fileDetails.fileActionsAvailable
+
+            sourceComponent: FileActionsView {
+                id: fileActionsView
 
                 anchors.fill: parent
 
