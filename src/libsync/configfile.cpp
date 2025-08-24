@@ -33,7 +33,7 @@
 #include <QStandardPaths>
 #include <QOperatingSystemVersion>
 
-#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_REMOTE_POLL_INTERVAL 30000
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace {

@@ -221,7 +221,7 @@
          <item>
           <widget class="QSpinBox" name="remotePollIntervalSpinBox">
            <property name="minimum">
-            <number>30</number>
+            <number>5</number>
            </property>
            <property name="maximum">
             <number>999999</number>
