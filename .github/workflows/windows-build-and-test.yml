@@ -12,7 +12,7 @@ jobs:
       CRAFT_TARGET: windows-msvc2022_64-cl
       COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
-      CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
+      CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster-CI.ini
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
