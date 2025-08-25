@@ -12,7 +12,7 @@
 
 namespace OCC {
 
-class WizardProxySettings : public QDialog
+class WizardProxySettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
@@ -21,15 +21,22 @@ public:
         NoAuthentication,
     };
 
-    explicit WizardProxySettings(QUrl serverURL, QWidget *parent = nullptr);
+    struct WizardProxySettings
+    {
+        QString _user;
+        QString _password;
+        QString _host;
+        quint16 _port;
+        ProxyAuthentication _needsAuth = ProxyAuthentication::NoAuthentication;
+        QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
+    };
+
+    explicit WizardProxySettingsDialog(QUrl serverURL,
+                                       WizardProxySettings proxySettings,
+                                       QWidget *parent = nullptr);
 
 Q_SIGNALS:
-    void proxySettingsAccepted(QString user,
-                               QString password,
-                               QString host,
-                               int port,
-                               WizardProxySettings::ProxyAuthentication needsAuth,
-                               QNetworkProxy::ProxyType proxyType);
+    void proxySettingsAccepted(const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
 
 private Q_SLOTS:
     /// Red marking of host field if empty and enabled
@@ -50,12 +57,7 @@ private:
 
     bool _valid = false;
 
-    QString _user;
-    QString _password;
-    QString _host;
-    int _port;
-    ProxyAuthentication _needsAuth = ProxyAuthentication::NoAuthentication;
-    QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
+    WizardProxySettings _settings;
 };
 
 }

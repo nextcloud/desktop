@@ -255,8 +255,8 @@ set(client_SRCS
     wizard/welcomepage.cpp
     wizard/linklabel.h
     wizard/linklabel.cpp
-    wizard/wizardproxysettings.h
-    wizard/wizardproxysettings.cpp
+    wizard/wizardproxysettingsdialog.h
+    wizard/wizardproxysettingsdialog.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
