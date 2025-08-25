@@ -138,10 +138,14 @@ ApplicationWindow {
         }
 
         property int userIndex: 0
+        property bool showOnlineStatusSection: true
+        property bool showStatusMessageSection: true
 
-        function openUserStatusDrawer(index) {
+        function openUserStatusDrawer(index, onlineStatusSection, statusMessageSection) {
             console.log(`About to show dialog for user with index ${index}`);
             userIndex = index;
+            showOnlineStatusSection = onlineStatusSection;
+            showStatusMessageSection = statusMessageSection;
             open();
         }
 
@@ -152,6 +156,8 @@ ApplicationWindow {
             sourceComponent: UserStatusSelectorPage {
                 anchors.fill: parent
                 userIndex: userStatusDrawer.userIndex
+                showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
+                showStatusMessageSection: userStatusDrawer.showStatusMessageSection
                 onFinished: userStatusDrawer.close()
             }
         }
