@@ -906,6 +906,69 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
     return {};
 }
 
+OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholdersInfo(const QString &localBasePath, const QList<PlaceholdersInfo> &itemsInfo)
+{
+    auto filteredItemsInfo = QList<PlaceholdersInfo>{};
+    filteredItemsInfo.reserve(itemsInfo.size());
+
+    std::copy_if(itemsInfo.begin(), itemsInfo.end(), std::back_inserter(filteredItemsInfo), [] (const auto &onePlaceholderInfo) -> bool {
+        if (onePlaceholderInfo.modtime <= 0) {
+            qCWarning(lcCfApiWrapper()) << "Skip invalid modtime file: " << onePlaceholderInfo.relativePath << "modtime:" << onePlaceholderInfo.modtime;
+            return false;
+        }
+
+        return true;
+    });
+    const auto stdWStringBasePath = localBasePath.toStdWString();
+    auto cloudEntry = std::make_unique<CF_PLACEHOLDER_CREATE_INFO[]>(filteredItemsInfo.size());
+
+    for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
+        const auto &placeholderInfo = filteredItemsInfo[itemIndice];
+
+        cloudEntry[itemIndice].FileIdentity = placeholderInfo.fileId.data();
+        cloudEntry[itemIndice].FileIdentityLength = static_cast<DWORD>(placeholderInfo.fileId.length());
+
+        cloudEntry[itemIndice].RelativeFileName = placeholderInfo.platformNativeRelativePath.data();
+        cloudEntry[itemIndice].Flags = CF_PLACEHOLDER_CREATE_FLAG_MARK_IN_SYNC;
+        cloudEntry[itemIndice].FsMetadata.FileSize.QuadPart = placeholderInfo.size;
+        cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_NORMAL;
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.CreationTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.LastWriteTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.LastAccessTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(placeholderInfo.modtime, &cloudEntry[itemIndice].FsMetadata.BasicInfo.ChangeTime);
+
+        if (placeholderInfo.fileInfo.isDir()) {
+            cloudEntry[itemIndice].Flags |= CF_PLACEHOLDER_CREATE_FLAG_DISABLE_ON_DEMAND_POPULATION;
+            cloudEntry[itemIndice].FsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_DIRECTORY;
+            cloudEntry[itemIndice].FsMetadata.FileSize.QuadPart = 0;
+        }
+    }
+
+    auto numberOfCreatedPlaceholders = 0ul;
+    const qint64 result = CfCreatePlaceholders(stdWStringBasePath.data(), cloudEntry.get(), filteredItemsInfo.size(), CF_CREATE_FLAG_NONE, &numberOfCreatedPlaceholders);
+    if (result != S_OK) {
+        qCWarning(lcCfApiWrapper) << "Couldn't create placeholders info" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << "number of placeholders created:" << numberOfCreatedPlaceholders;
+
+        for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
+            qCDebug(lcCfApiWrapper) << QString::fromStdWString(cloudEntry[itemIndice].RelativeFileName) << QString::fromWCharArray(_com_error(cloudEntry[itemIndice].Result).ErrorMessage());
+        }
+
+        return { "Couldn't create placeholder info" };
+    }
+
+    for(auto itemIndice = 0; itemIndice < filteredItemsInfo.size(); ++itemIndice) {
+        const auto &placeholderInfo = filteredItemsInfo[itemIndice];
+        const auto parentInfo = findPlaceholderInfo(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absolutePath()));
+        const auto state = parentInfo && parentInfo->PinState == CF_PIN_STATE_UNPINNED ? CF_PIN_STATE_UNPINNED : CF_PIN_STATE_INHERIT;
+
+        if (!setPinState(QDir::toNativeSeparators(QFileInfo(localBasePath + QDir::separator() + placeholderInfo.relativePath).absoluteFilePath()), cfPinStateToPinState(state), NoRecurse)) {
+            return { "Couldn't set the default inherit pin state" };
+        }
+    }
+
+    return {};
+}
+
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     return updatePlaceholderState(path, modtime, size, fileId, replacesPath, CfApiUpdateMetadataType::AllMetadata);

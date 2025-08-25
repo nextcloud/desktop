@@ -523,14 +523,14 @@ public:
      */
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
-    Q_REQUIRED_RESULT QString fullLocalPath(const QString &tmp_file_name) const;
+    [[nodiscard]] QString fullLocalPath(const QString &tmp_file_name) const;
     [[nodiscard]] QString localPath() const;
 
     /**
      * Returns the full remote path including the folder root of a
      * folder sync path.
      */
-    Q_REQUIRED_RESULT QString fullRemotePath(const QString &tmp_file_name) const;
+    [[nodiscard]] QString fullRemotePath(const QString &tmp_file_name) const;
     [[nodiscard]] QString remotePath() const;
 
     [[nodiscard]] QString fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const;
@@ -623,9 +623,9 @@ public:
                                                                                  SyncJournalDb * const journal,
                                                                                  Vfs::UpdateMetadataTypes updateType);
 
-    Q_REQUIRED_RESULT bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
+    [[nodiscard]] bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 
-    Q_REQUIRED_RESULT const std::deque<SyncFileItemPtr>& delayedTasks() const
+    [[nodiscard]] const std::deque<SyncFileItemPtr>& delayedTasks() const
     {
         return _delayedTasks;
     }

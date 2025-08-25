@@ -8,21 +8,18 @@
 #include "owncloudpropagator.h"
 #include "abstractnetworkjob.h"
 
-#include <QLoggingCategory>
-#include <QVector>
+#include <QList>
 
 namespace OCC {
 
 class PropagateDownloadEncrypted;
-
-Q_DECLARE_LOGGING_CATEGORY(lcBulkPropagatorDownloadJob)
 
 class BulkPropagatorDownloadJob : public PropagatorJob
 {
     Q_OBJECT
 
 public:
-    explicit BulkPropagatorDownloadJob(OwncloudPropagator *propagator, PropagateDirectory *parentDirJob, const std::vector<SyncFileItemPtr> &items = {});
+    explicit BulkPropagatorDownloadJob(OwncloudPropagator *propagator, PropagateDirectory *parentDirJob);
 
     bool scheduleSelfOrChild() override;
 
@@ -31,11 +28,9 @@ public:
 public slots:
     void addDownloadItem(const OCC::SyncFileItemPtr &item);
 
-    void start(const OCC::SyncFileItemPtr &item);
+    [[nodiscard]] bool start();
 
 private slots:
-    void startAfterIsEncryptedIsChecked(const OCC::SyncFileItemPtr &item);
-
     void finalizeOneFile(const OCC::SyncFileItemPtr &file);
 
     void done(const OCC::SyncFileItem::Status status);
@@ -47,9 +42,7 @@ private:
 
     void checkPropagationIsDone();
 
-    std::vector<SyncFileItemPtr> _filesToDownload;
-
-    std::vector<SyncFileItemPtr> _filesDownloading;
+    QList<SyncFileItemPtr> _filesToDownload;
 
     PropagateDownloadEncrypted *_downloadEncryptedHelper = nullptr;
 
