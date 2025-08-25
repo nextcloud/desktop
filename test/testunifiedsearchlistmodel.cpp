@@ -274,12 +274,12 @@ FakeSearchResultsStorage *FakeSearchResultsStorage::_instance = nullptr;
 
 }
 
-class TestUnifiedSearchListmodel : public QObject
+class TestUnifiedSearchListModel : public QObject
 {
     Q_OBJECT
 
 public:
-    TestUnifiedSearchListmodel() = default;
+    TestUnifiedSearchListModel() = default;
 
     QScopedPointer<FakeQNAM> fakeQnam;
     OCC::AccountPtr account;
@@ -578,10 +578,19 @@ private slots:
                 const auto providerId =
                     model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
                         .toString();
+
+                const auto subline = 
+                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::SublineRole)
+                        .toString();
+
+                const auto title = 
+                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TitleRole)
+                        .toString();
+
                 urlForClickedResult = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole).toString();
 
                 if (!providerId.isEmpty() && !urlForClickedResult.isEmpty()) {
-                    model->resultClicked(providerId, QUrl(urlForClickedResult));
+                    model->resultClicked(providerId, QUrl(urlForClickedResult), subline, title);
                     break;
                 }
             }
@@ -632,5 +641,5 @@ private slots:
     }
 };
 
-QTEST_MAIN(TestUnifiedSearchListmodel)
+QTEST_MAIN(TestUnifiedSearchListModel)
 #include "testunifiedsearchlistmodel.moc"
