@@ -358,7 +358,7 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
         const QStringList localFiles = FolderMan::instance()->findFileInLocalFolders(relativePath, _accountState->account());
         if (!localFiles.isEmpty()) {
             qCInfo(lcUnifiedSearch) << "Opening file: " << localFiles.constFirst();
-            const bool fileOpenedLocally = QDesktopServices::openUrl(QUrl::fromLocalFile(localFiles.constFirst()));
+            const auto fileOpenedLocally = QDesktopServices::openUrl(QUrl::fromLocalFile(localFiles.constFirst()));
             if (fileOpenedLocally) {
                 return;
             } else {
