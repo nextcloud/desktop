@@ -344,8 +344,7 @@ void UnifiedSearchResultsListModel::resultClicked(
             // file is direct child of syncfolder
             if (subline.isEmpty()) {
                 dir = title;
-            }
-            else {
+            } else {
                 dir = subline.split(' ', Qt::SkipEmptyParts).last();
                 fileName = QLatin1Char('/') + title;
             }
