@@ -146,20 +146,34 @@ void OwncloudSetupWizard::startWizard()
 }
 
 // also checks if an installation is valid and determines auth type in a second step
-void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
+void OwncloudSetupWizard::slotCheckServer(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings)
 {
-    QString fixedUrl = urlString;
-    QUrl url = QUrl::fromUserInput(fixedUrl);
-    // fromUserInput defaults to http, not http if no scheme is specified
-    if (!fixedUrl.startsWith("http://") && !fixedUrl.startsWith("https://")) {
-        url.setScheme("https");
-    }
     AccountPtr account = _ocWizard->account();
-    account->setUrl(url);
+    account->setUrl(serverURL);
 
-    // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
-    // when there was a previous account.
-    account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+    account->setProxyType(proxySettings._proxyType);
+    switch (proxySettings._proxyType)
+    {
+    case QNetworkProxy::HttpCachingProxy:
+    case QNetworkProxy::FtpCachingProxy:
+    case QNetworkProxy::NoProxy:
+    case QNetworkProxy::ProxyType::DefaultProxy:
+        // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
+        // when there was a previous account.
+        account->networkAccessManager()->setProxy({QNetworkProxy::NoProxy});
+        break;
+    case QNetworkProxy::Socks5Proxy:
+    case QNetworkProxy::HttpProxy:
+        account->setProxyHostName(proxySettings._host);
+        account->setProxyPort(proxySettings._port);
+        account->setProxyNeedsAuth(proxySettings._needsAuth == WizardProxySettingsDialog::ProxyAuthentication::AuthenticationRequired);
+        if (account->proxyNeedsAuth()) {
+            account->setProxyUser(proxySettings._user);
+            account->setProxyPassword(proxySettings._password);
+        }
+
+        break;
+    }
 
     // And also reset the QSslConfiguration, for the same reason (#6832)
     // Here the client certificate is added, if any. Later it'll be in HttpCredentials
