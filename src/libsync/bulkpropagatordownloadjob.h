@@ -28,11 +28,9 @@ public:
 public slots:
     void addDownloadItem(const OCC::SyncFileItemPtr &item);
 
-    void start(const OCC::SyncFileItemPtr &item);
+    [[nodiscard]] bool start();
 
 private slots:
-    void startAfterIsEncryptedIsChecked(const OCC::SyncFileItemPtr &item);
-
     void finalizeOneFile(const OCC::SyncFileItemPtr &file);
 
     void done(const OCC::SyncFileItem::Status status);

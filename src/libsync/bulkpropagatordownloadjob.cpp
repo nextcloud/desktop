@@ -109,6 +109,41 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     _state = Running;
 
+    return start();
+}
+
+PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
+{
+    return PropagatorJob::JobParallelism::FullParallelism;
+}
+
+void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
+{
+    const auto foundIt = std::find_if(std::cbegin(_filesToDownload), std::cend(_filesToDownload), [&file](const auto &fileDownloading) {
+        return fileDownloading == file;
+    });
+    if (foundIt != std::cend(_filesToDownload)) {
+        emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
+        _filesToDownload.erase(foundIt);
+    }
+    checkPropagationIsDone();
+}
+
+void BulkPropagatorDownloadJob::checkPropagationIsDone()
+{
+    if (_filesToDownload.empty()) {
+        qCInfo(lcBulkPropagatorDownloadJob) << "finished with status" << SyncFileItem::Status::Success;
+        emit finished(SyncFileItem::Status::Success);
+        propagator()->scheduleNextJob();
+    }
+}
+
+bool BulkPropagatorDownloadJob::start()
+{
+    if (propagator()->_abortRequested) {
+        return false;
+    }
+
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
         Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFileDehydration || fileToDownload->_type == ItemTypeVirtualFile);
 
@@ -126,6 +161,14 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     const auto r = vfs->createPlaceholders(_filesToDownload);
 
+    if (!r) {
+        qCCritical(lcBulkPropagatorDownloadJob) << "Could not create placholders:" << r.error();
+        for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+            abortWithError(fileToDownload, SyncFileItem::NormalError, r.error());
+        }
+        return false;
+    }
+
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
         if (!updateMetadata(fileToDownload)) {
             return false;
@@ -140,98 +183,7 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     checkPropagationIsDone();
 
-    return true;
-}
-
-PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
-{
-    return PropagatorJob::JobParallelism::FullParallelism;
-}
-
-void BulkPropagatorDownloadJob::startAfterIsEncryptedIsChecked(const SyncFileItemPtr &item)
-{
-    const auto &vfs = propagator()->syncOptions()._vfs;
-    Q_ASSERT(vfs && vfs->mode() == Vfs::WindowsCfApi);
-    Q_ASSERT(item->_type == ItemTypeVirtualFileDehydration || item->_type == ItemTypeVirtualFile);
-
-    if (propagator()->localFileNameClash(item->_file)) {
-        _parentDirJob->appendTask(item);
-        finalizeOneFile(item);
-        return;
-    }
-
-    if (item->_type == ItemTypeVirtualFile) {
-        qCDebug(lcBulkPropagatorDownloadJob) << "creating virtual file" << item->_file;
-        const auto r = vfs->createPlaceholder(*item);
-        if (!r) {
-            qCCritical(lcBulkPropagatorDownloadJob) << "Could not create a placholder for a file" << QDir::toNativeSeparators(item->_file) << ":" << r.error();
-            abortWithError(item, SyncFileItem::NormalError, r.error());
-            return;
-        }
-    } else {
-        // we should never get here, as BulkPropagatorDownloadJob must only ever be instantiated and only contain virtual files
-        qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(item->_file) << "can not be downloaded because it is non virtual!";
-        abortWithError(item, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(item->_file)));
-        return;
-    }
-    
-    if (!updateMetadata(item)) {
-        return;
-    }
-
-    if (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-        // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
-        FileSystem::setFileReadOnly(propagator()->fullLocalPath(item->_file), true);
-    }
-    finalizeOneFile(item);
-}
-
-void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
-{
-    const auto foundIt = std::find_if(std::cbegin(_filesToDownload), std::cend(_filesToDownload), [&file](const auto &fileDownloading) {
-        return fileDownloading == file;
-    });
-    if (foundIt != std::cend(_filesToDownload)) {
-        emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
-        _filesToDownload.erase(foundIt);
-    }
-    checkPropagationIsDone();
-}
-
-void BulkPropagatorDownloadJob::checkPropagationIsDone()
-{
-    if (_filesToDownload.empty()  && _filesToDownload.empty()) {
-        qCInfo(lcBulkPropagatorDownloadJob) << "finished with status" << SyncFileItem::Status::Success;
-        emit finished(SyncFileItem::Status::Success);
-        propagator()->scheduleNextJob();
-    }
-}
-
-void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
-{
-    if (propagator()->_abortRequested) {
-        return;
-    }
-
-    qCDebug(lcBulkPropagatorDownloadJob) << item->_file << propagator()->_activeJobList.count();
-
-    const auto &path = item->_file;
-    const auto slashPosition = path.lastIndexOf('/');
-    const auto &parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
-
-    auto parentRec = SyncJournalFileRecord{};
-    if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
-        qCWarning(lcBulkPropagatorDownloadJob) << "could not get file from local DB" << parentPath;
-        abortWithError(item, SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(parentPath));
-        return;
-    }
- 
-    if (!propagator()->account()->capabilities().clientSideEncryptionAvailable() || !parentRec.isValid() || !parentRec.isE2eEncrypted()) {
-        startAfterIsEncryptedIsChecked(item);
-    } else {
-        Q_ASSERT(false);
-        qCCritical(lcBulkPropagatorDownloadJob()) << "no encrypted fiels should be created via bulk download";
-    }
+    return !_filesToDownload.empty();
 }
 
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
