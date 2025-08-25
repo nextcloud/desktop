@@ -575,15 +575,15 @@ private slots:
             const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
 
             if (type == OCC::UnifiedSearchResult::Type::Default) {
-                const QString providerId =
+                const auto providerId =
                     model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
                         .toString();
 
-                const QString subline = 
+                const auto subline = 
                     model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::SublineRole)
                         .toString();
 
-                const QString title = 
+                const auto title = 
                     model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TitleRole)
                         .toString();
 
