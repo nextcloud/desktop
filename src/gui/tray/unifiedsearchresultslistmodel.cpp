@@ -331,15 +331,14 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
                                                                                            const QString &title) const
 {
     const QUrlQuery urlQuery{resourceUrl};
-    QString dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded);
-    QString fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded);
+    auto dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded);
+    auto fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded);
 
     if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)){
         if (!_accountState || !_accountState->account()) {
             return;
         }
 
-        QString relativePath;
         // server version above 20
         if (dir.isEmpty() && fileName.isEmpty()) {
             // file is direct child of syncfolder
@@ -353,7 +352,7 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
         // server version 20
             fileName.prepend(QLatin1Char('/'));
         }
-        relativePath = dir + fileName;
+        const auto relativePath = dir + fileName;
 
         const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relativePath, _accountState->account());
         if (!localFiles.isEmpty()) {
