@@ -120,7 +120,7 @@ public:
     /*
      * Get whether the share has a password set
      */
-    [[nodiscard]] [[nodiscard]] bool isPasswordSet() const;
+    [[nodiscard]] bool isPasswordSet() const;
 
      /*
      * Is it a share with a user or group (local or remote)
