@@ -362,8 +362,9 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
             const bool fileOpenedLocally = QDesktopServices::openUrl(QUrl::fromLocalFile(localFiles.constFirst()));
             if (fileOpenedLocally) {
                 return;
+            } else {
+                qCWarning(lcUnifiedSearch) << "Warning: QDesktopServices::openUrl unexpectedly failed to open the file. Opening resourceUrl in web browser is attempted next.";
             }
-            qCWarning(lcUnifiedSearch) << "Warning: QDesktopServices::openUrl unexpectedly failed to open the file. Opening resourceUrl in web browser is attempted next.";
         }
     }
     Utility::openBrowser(resourceUrl);
