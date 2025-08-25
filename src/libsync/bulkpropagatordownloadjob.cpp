@@ -183,7 +183,7 @@ bool BulkPropagatorDownloadJob::start()
 
     checkPropagationIsDone();
 
-    return !_filesToDownload.empty();
+    return false;
 }
 
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
