@@ -62,6 +62,7 @@ public:
     [[nodiscard]] bool filesLockTypeAvailable() const;
     [[nodiscard]] bool userStatus() const;
     [[nodiscard]] bool userStatusSupportsEmoji() const;
+    [[nodiscard]] bool userStatusSupportsBusy() const;
     [[nodiscard]] bool ncAssistantEnabled() const;
     [[nodiscard]] QColor serverColor() const;
     [[nodiscard]] QColor serverTextColor() const;
