@@ -335,7 +335,7 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
     QString fileName = urlQuery.queryItemValue(QStringLiteral("scrollto"), QUrl::ComponentFormattingOption::FullyDecoded);
 
     if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)){
-        if (_accountState == nullptr || _accountState->account() == nullptr) {
+        if (!_accountState || !_accountState->account()) {
             return;
         }
 
