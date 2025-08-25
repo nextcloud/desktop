@@ -349,9 +349,8 @@ void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
                 dir = subline.split(' ', Qt::SkipEmptyParts).last();
                 fileName = QLatin1Char('/') + title;
             }
-        }
+        } else if (dir.length() > 1) {
         // server version 20
-        else if (dir.length() > 1) {
             fileName.prepend(QLatin1Char('/'));
         }
         relativePath = dir + fileName;
