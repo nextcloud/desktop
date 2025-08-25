@@ -25,7 +25,7 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "wizard/slideshow.h"
+#include "wizard/wizardproxysettingsdialog.h"
 #include "theme.h"
 #include "account.h"
 #include "config.h"
@@ -190,8 +190,13 @@ void OwncloudSetupPage::slotUrlEditFinished()
 
 void OwncloudSetupPage::slotSetProxySettings()
 {
-    _proxySettingsDialog = new WizardProxySettings{QUrl::fromUserInput(_ui.leUrl->fullText()), this};
-    _proxySettingsDialog->show();
+    if (!_proxySettingsDialog) {
+        _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->fullText()), _proxySettings, this};
+
+        connect(_proxySettingsDialog, &WizardProxySettingsDialog::proxySettingsAccepted, this, [this] (const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings) { _proxySettings = proxySettings;});
+    }
+
+    _proxySettingsDialog->open();
 }
 
 bool OwncloudSetupPage::isComplete() const
@@ -291,8 +296,8 @@ bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
         slotUrlEditFinished();
-        QString u = url();
-        QUrl qurl(u);
+        const auto urlString = url();
+        const auto qurl = QUrl::fromUserInput(urlString);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
             setErrorString(tr("Server address does not seem to be valid"), false);
             return false;
@@ -303,7 +308,7 @@ bool OwncloudSetupPage::validatePage()
         startSpinner();
         emit completeChanged();
 
-        emit determineAuthType(u);
+        Q_EMIT determineAuthType(qurl, _proxySettings);
         return false;
     } else {
         // connecting is running
@@ -328,7 +333,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
     } else {
         if (retryHTTPonly) {
             const auto urlString = url();
-            QUrl url(urlString);
+            auto url = QUrl::fromUserInput(urlString);
             if (url.scheme() == "https") {
                 // Ask the user how to proceed when connecting to a https:// URL fails.
                 // It is possible that the server is secured with client-side TLS certificates,
