@@ -325,9 +325,10 @@ bool UnifiedSearchResultsListModel::isSearchInProgress() const
 }
 
 
-void UnifiedSearchResultsListModel::resultClicked(
-    const QString &providerId, const QUrl &resourceUrl, const QString &subline, const QString &title
-) const
+void UnifiedSearchResultsListModel::resultClicked(const QString &providerId,
+                                                                                           const QUrl &resourceUrl,
+                                                                                           const QString &subline,
+                                                                                           const QString &title) const
 {
     const QUrlQuery urlQuery{resourceUrl};
     QString dir = urlQuery.queryItemValue(QStringLiteral("dir"), QUrl::ComponentFormattingOption::FullyDecoded);
