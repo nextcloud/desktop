@@ -29,11 +29,17 @@ public:
         quint16 _port;
         ProxyAuthentication _needsAuth = ProxyAuthentication::NoAuthentication;
         QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
+
+        bool operator == (const WizardProxySettings &other) const = default;
     };
 
     explicit WizardProxySettingsDialog(QUrl serverURL,
                                        WizardProxySettings proxySettings,
                                        QWidget *parent = nullptr);
+
+    void setServerUrl(QUrl serverUrl);
+
+    void setProxySettings(WizardProxySettings proxySettings);
 
 Q_SIGNALS:
     void proxySettingsAccepted(const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);

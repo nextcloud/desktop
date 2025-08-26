@@ -16,8 +16,6 @@ WizardProxySettingsDialog::WizardProxySettingsDialog(QUrl serverURL,
                                                      WizardProxySettings proxySettings,
                                                      QWidget *parent)
     : QDialog(parent)
-    , _serverURL{std::move(serverURL)}
-    , _settings{std::move(proxySettings)}
 {
     _ui.setupUi(this);
 
@@ -44,27 +42,41 @@ WizardProxySettingsDialog::WizardProxySettingsDialog(QUrl serverURL,
     connect(_ui.manualProxyRadioButton, &QAbstractButton::toggled, this, &WizardProxySettingsDialog::validateProxySettings);
 
     connect(_ui.typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &WizardProxySettingsDialog::validateProxySettings);
-    connect(_ui.hostLineEdit, &QLineEdit::editingFinished, this, &WizardProxySettingsDialog::validateProxySettings);
-    connect(_ui.userLineEdit, &QLineEdit::editingFinished, this, &WizardProxySettingsDialog::validateProxySettings);
-    connect(_ui.passwordLineEdit, &QLineEdit::editingFinished, this, &WizardProxySettingsDialog::validateProxySettings);
-    connect(_ui.portSpinBox, &QAbstractSpinBox::editingFinished, this, &WizardProxySettingsDialog::validateProxySettings);
     connect(_ui.authRequiredcheckBox, &QAbstractButton::toggled, this, &WizardProxySettingsDialog::validateProxySettings);
 
     // Warn about empty proxy host
-    connect(_ui.hostLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::checkEmptyProxyHost);
     connect(_ui.hostLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::validateProxySettings);
-
-    connect(_ui.userLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::checkEmptyProxyCredentials);
-    connect(_ui.passwordLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::checkEmptyProxyCredentials);
-    connect(_ui.authRequiredcheckBox, &QAbstractButton::toggled, this, &WizardProxySettingsDialog::checkEmptyProxyCredentials);
+    connect(_ui.userLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::validateProxySettings);
+    connect(_ui.passwordLineEdit, &QLineEdit::textChanged, this, &WizardProxySettingsDialog::validateProxySettings);
+    connect(_ui.portSpinBox, &QSpinBox::valueChanged, this, &WizardProxySettingsDialog::validateProxySettings);
+    connect(_ui.authRequiredcheckBox, &QAbstractButton::toggled, this, &WizardProxySettingsDialog::validateProxySettings);
 
     connect(_ui.buttonBox, &QDialogButtonBox::accepted,
             this, &WizardProxySettingsDialog::settingsDone);
     connect(_ui.buttonBox, &QDialogButtonBox::rejected,
             this, &WizardProxySettingsDialog::reject);
 
-    checkEmptyProxyHost();
+    setServerUrl(std::move(serverURL));
+    setProxySettings(std::move(proxySettings));
+}
+
+void WizardProxySettingsDialog::setServerUrl(QUrl serverUrl)
+{
+    if (_serverURL == serverUrl) {
+        return;
+    }
+
+    _serverURL = std::move(serverUrl);
     checkAccountLocalhost();
+}
+
+void WizardProxySettingsDialog::setProxySettings(WizardProxySettings proxySettings)
+{
+    if (_settings == proxySettings) {
+        return;
+    }
+
+    _settings = std::move(proxySettings);
 
     if (!_settings._user.isEmpty()) {
         _ui.userLineEdit->setText(_settings._user);
@@ -100,6 +112,8 @@ WizardProxySettingsDialog::WizardProxySettingsDialog(QUrl serverURL,
     case QNetworkProxy::FtpCachingProxy:
         break;
     }
+
+    validateProxySettings();
 }
 
 void WizardProxySettingsDialog::checkEmptyProxyHost()
@@ -148,6 +162,8 @@ void WizardProxySettingsDialog::checkAccountLocalhost()
 void WizardProxySettingsDialog::validateProxySettings()
 {
     checkEmptyProxyHost();
+    checkEmptyProxyCredentials();
+    checkAccountLocalhost();
 
     _settings._user = _ui.userLineEdit->text();
     _settings._password = _ui.passwordLineEdit->text();
