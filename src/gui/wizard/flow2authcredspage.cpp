@@ -100,6 +100,10 @@ int Flow2AuthCredsPage::nextId() const
         return WizardCommon::Page_TermsOfService;
     }
 
+    if (ocWizard->useVirtualFileSyncByDefault()) {
+        return -1;
+    }
+
     return WizardCommon::Page_AdvancedSetup;
 }
 
