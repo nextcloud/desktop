@@ -69,6 +69,8 @@ private:
     void setupServerAddressDescriptionLabel();
 
     void setProxySettingsButtonEnabled(bool enable);
+    void setProxySettingsButtonVisible(bool visible);
+    [[nodiscard]] QAbstractButton* getProxySettingsButton() const;
     void ensureProxySettingsButtonIsConnected();
 
     Ui_OwncloudSetupPage _ui{};

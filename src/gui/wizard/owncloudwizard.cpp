@@ -355,7 +355,11 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         setButtonLayout({QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton});
         setNextButtonAsDefault();
     } else if (id == WizardCommon::Page_ServerSetup) {
-        setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::CustomButton3, QWizard::NextButton});
+        if constexpr (Theme::doNotUseProxy()) {
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
+        } else {
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::CustomButton3, QWizard::NextButton});
+        }
         setNextButtonAsDefault();
     } else {
         setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});

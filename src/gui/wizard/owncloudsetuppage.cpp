@@ -97,17 +97,37 @@ void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 
 void OwncloudSetupPage::setProxySettingsButtonEnabled(bool enable)
 {
-    if (!wizard()) {
-        return;
-    }
-
-    const auto proxySettingsButton = wizard()->button(QWizard::CustomButton3);
+    const auto proxySettingsButton = getProxySettingsButton();
 
     if (!proxySettingsButton) {
         return;
     }
 
     proxySettingsButton->setEnabled(enable);
+}
+
+void OwncloudSetupPage::setProxySettingsButtonVisible(bool visible)
+{
+    const auto proxySettingsButton = getProxySettingsButton();
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    proxySettingsButton->setVisible(visible);
+}
+
+QAbstractButton *OwncloudSetupPage::getProxySettingsButton() const
+{
+    auto result = static_cast<QAbstractButton *>(nullptr);
+
+    if (!wizard()) {
+        return result;
+    }
+
+    result = wizard()->button(QWizard::CustomButton3);
+
+    return result;
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -224,8 +244,6 @@ void OwncloudSetupPage::initializePage()
 
     _ui.leUrl->setFocus();
 
-    setProxySettingsButtonEnabled(false);
-
     const auto isServerUrlOverridden = !Theme::instance()->overrideServerUrl().isEmpty();
     if (isServerUrlOverridden && !Theme::instance()->forceOverrideServerUrl()) {
         // If the url is overwritten but we don't force to use that url
@@ -244,16 +262,13 @@ void OwncloudSetupPage::initializePage()
         setVisible(false);
     }
 
+    setProxySettingsButtonEnabled(false);
     ensureProxySettingsButtonIsConnected();
 }
 
 void OwncloudSetupPage::ensureProxySettingsButtonIsConnected()
 {
-    if (!wizard()) {
-        return;
-    }
-
-    const auto proxySettingsButton = wizard()->button(QWizard::CustomButton3);
+    const auto proxySettingsButton = getProxySettingsButton();
 
     if (!proxySettingsButton) {
         return;
