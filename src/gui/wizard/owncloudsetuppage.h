@@ -9,15 +9,12 @@
 
 #include <QWizard>
 
-#include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 
 #include "../addcertificatedialog.h"
-#include "wizard/owncloudconnectionmethoddialog.h"
+#include "wizard/wizardproxysettingsdialog.h"
 
 #include "ui_owncloudsetupnocredspage.h"
-
-#include "config.h"
 
 class QLabel;
 class QVariant;
@@ -59,15 +56,22 @@ protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
 
+    void slotSetProxySettings();
+
     void setupCustomization();
 
 signals:
-    void determineAuthType(const QString &);
+    void determineAuthType(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
 
 private:
     void setLogo();
     void customizeStyle();
     void setupServerAddressDescriptionLabel();
+
+    void setProxySettingsButtonEnabled(bool enable);
+    void setProxySettingsButtonVisible(bool visible);
+    [[nodiscard]] QAbstractButton* getProxySettingsButton() const;
+    void ensureProxySettingsButtonIsConnected();
 
     Ui_OwncloudSetupPage _ui{};
 
@@ -80,6 +84,10 @@ private:
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
     AddCertificateDialog *addCertDial = nullptr;
+
+    WizardProxySettingsDialog *_proxySettingsDialog = nullptr;
+    WizardProxySettingsDialog::WizardProxySettings _proxySettings;
+    QMetaObject::Connection _proxyButtonIsConnected;
 
     // Grab the forceLoginV2-setting from the wizard
     bool useFlow2 = _ocWizard->useFlow2();
