@@ -7,11 +7,14 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include "config.h"
+
+#include "syncresult.h"
+
 #include <QIcon>
 #include <QObject>
 #include <QPalette>
 #include <QGuiApplication>
-#include "syncresult.h"
 
 class QString;
 class QObject;
@@ -275,7 +278,10 @@ public:
      *
      * When true, the app always connects to the server directly
      */
-    [[nodiscard]] bool doNotUseProxy() const;
+    [[nodiscard]] constexpr static bool doNotUseProxy()
+    {
+        return DO_NOT_USE_PROXY;
+    }
 
     /**
      * This is only useful when previous version had a different overrideServerUrl

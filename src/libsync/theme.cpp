@@ -5,7 +5,6 @@
  */
 
 #include "theme.h"
-#include "config.h"
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
@@ -505,14 +504,7 @@ bool Theme::forbidBadSSL() const
 #endif
 }
 
-bool Theme::doNotUseProxy() const
-{
-#ifdef DO_NOT_USE_PROXY
-    return true;
-#else
-    return false;
-#endif
-}
+
 
 QString Theme::forceConfigAuthType() const
 {
