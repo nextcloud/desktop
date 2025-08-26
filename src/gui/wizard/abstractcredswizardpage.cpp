@@ -26,4 +26,21 @@ void AbstractCredentialsWizardPage::cleanupPage()
         }
     }
 }
+
+int AbstractCredentialsWizardPage::nextId() const
+{
+    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    Q_ASSERT(ocWizard);
+
+    if (ocWizard->needsToAcceptTermsOfService()) {
+        return WizardCommon::Page_TermsOfService;
+    }
+
+    if (ocWizard->useVirtualFileSyncByDefault()) {
+        return -1;
+    }
+
+    return WizardCommon::Page_AdvancedSetup;
+}
+
 }
