@@ -259,59 +259,6 @@ private slots:
         QTest::newRow("delete") << false;
     }
 
-    void testLocalDeleteWithReuploadForNewLocalFiles()
-    {
-        QFETCH(bool, moveToTrashEnabled);
-
-        FakeFolder fakeFolder{FileInfo{}};
-
-        auto syncOptions = fakeFolder.syncEngine().syncOptions();
-        syncOptions._moveFilesToTrash = moveToTrashEnabled;
-        fakeFolder.syncEngine().setSyncOptions(syncOptions);
-
-        // create folders hierarchy with some nested dirs and files
-        fakeFolder.localModifier().mkdir("A");
-        fakeFolder.localModifier().insert("A/existingfile_A.txt", 100);
-        fakeFolder.localModifier().mkdir("A/B");
-        fakeFolder.localModifier().insert("A/B/existingfile_B.data", 100);
-        fakeFolder.localModifier().mkdir("A/B/C");
-        fakeFolder.localModifier().mkdir("A/B/C/c1");
-        fakeFolder.localModifier().mkdir("A/B/C/c1/c2");
-        fakeFolder.localModifier().insert("A/B/C/c1/c2/existingfile_C2.md", 100);
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        // make sure everything is uploaded
-        QVERIFY(fakeFolder.currentRemoteState().find("A/B/C/c1/c2"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/existingfile_A.txt"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/B/existingfile_B.data"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/B/C/c1/c2/existingfile_C2.md"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // remove a folder "A" on the server
-        fakeFolder.remoteModifier().remove("A");
-
-        // put new files and folders into a local folder "A"
-        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfile.txt", 100);
-        fakeFolder.localModifier().insert("A/B/C/c1/c2/Readme.data", 100);
-        fakeFolder.localModifier().mkdir("A/B/C/c1/c2/newfiles");
-        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfiles/newfile.txt", 100);
-        fakeFolder.localModifier().insert("A/B/C/c1/c2/newfiles/Readme.data", 100);
-
-        QVERIFY(fakeFolder.syncOnce());
-        // make sure new files and folders are uploaded (restored)
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/Readme.data"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/newfiles/newfile.txt"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/C/c1/c2/newfiles/Readme.data"));
-        // and the old files are removed
-        QVERIFY(!fakeFolder.currentLocalState().find("A/existingfile_A.txt"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/B/existingfile_B.data"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/B/C/c1/c2/existingfile_C2.md"));
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
     void testEmlLocalChecksum() {
         FakeFolder fakeFolder{FileInfo{}};
         fakeFolder.localModifier().insert("a1.eml", 64, 'A');
@@ -2488,6 +2435,31 @@ private slots:
 
         // last sync without changes, expect no files to be touched
         syncAndExpectNoTouchedFiles();
+    }
+
+    void testSyncFolderNewDeleteConflictExpectDeletion()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().insert("directory/file1");
+        fakeFolder.remoteModifier().insert("directory/file2");
+        fakeFolder.remoteModifier().insert("directory/file3");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt1.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt2.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt3.txt");
+
+        // perform an initial sync to ensure local and remote have the same state
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("directory");
+        fakeFolder.localModifier().mkdir("directory/subFolder");
+        fakeFolder.localModifier().insert("directory/file4");
+        fakeFolder.localModifier().insert("directory/subdir/fileTxt4.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        const auto directoryItem = fakeFolder.remoteModifier().find("directory");
+        QCOMPARE(directoryItem, nullptr);
     }
 };
 
