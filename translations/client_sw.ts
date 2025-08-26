@@ -2408,35 +2408,35 @@ Vinginevyo, unaweza kurejesha faili zote zilizofutwa kwa kuzipakua kutoka kwa se
         <location filename="../src/gui/folderman.cpp" line="1875"/>
         <location filename="../src/gui/folderman.cpp" line="1954"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation>Please choose a different location. %1 is already being used as a sync folder.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 tayari inatumika kama folda ya kusawazisha.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1884"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation>Please choose a different location. The path %1 doesn&apos;t exist.</translation>
+        <translation>Tafadhali chagua eneo tofauti. Njia %1 haipo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1888"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation>Please choose a different location. The path %1 isn&apos;t a folder.</translation>
+        <translation>Tafadhali chagua eneo tofauti. Njia %1 si folda.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1896"/>
         <location filename="../src/gui/folderman.cpp" line="1901"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation>Please choose a different location. You don&apos;t have enough permissions to write to %1.</translation>
+        <translation>Tafadhali chagua eneo tofauti. Huna ruhusa za kutosha kuandika kwa %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1961"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation>Please choose a different location. %1 is already contained in a folder used as a sync folder.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 tayari iko kwenye folda inayotumika kama folda ya kusawazisha.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1976"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation>Please choose a different location. %1 is already being used as a sync folder for %2.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 tayari inatumika kama folda ya kusawazisha ya %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2113"/>
@@ -2444,20 +2444,20 @@ Vinginevyo, unaweza kurejesha faili zote zilizofutwa kwa kuzipakua kutoka kwa se
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation>The folder %1 is linked to multiple accounts.
-This setup can cause data loss and it is no longer supported.
-To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
-For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</translation>
+        <translation>Folda %1 imeunganishwa kwenye akaunti nyingi.
+Usanidi huu unaweza kusababisha kupoteza data na hautumiki tena.
+Ili kutatua suala hili: tafadhali ondoa %1 kutoka kwa mojawapo ya akaunti na uunde folda mpya ya usawazishaji.
+Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za hifadhidata zinazopatikana katika folda moja. Tafadhali angalia %1 kwa faili za .sync_*.db zilizopitwa na wakati na ambazo hazijatumika na uziondoe.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1853"/>
         <source>Sync is paused.</source>
-        <translation>Sync is paused.</translation>
+        <translation>Usawazishaji umesitishwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1859"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Sync is paused)</translation>
+        <translation>%1 (Usawazishaji umesitishwa.)</translation>
     </message>
 </context>
 <context>
@@ -2465,12 +2465,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Add Folder Sync Connection</translation>
+        <translation>Ongeza Muunganisho wa Usawazishaji wa Folda</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="287"/>
         <source>File</source>
-        <translation>File</translation>
+        <translation>Faili</translation>
     </message>
 </context>
 <context>
@@ -2478,17 +2478,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>You need to be connected to add a folder</source>
-        <translation>You need to be connected to add a folder</translation>
+        <translation>Unahitaji kuunganishwa ili kuongeza folda</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Click this button to add a folder to synchronize.</translation>
+        <translation>Bofya kitufe hiki ili kuongeza folda ili kusawazisha.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="167"/>
         <source>Could not decrypt!</source>
-        <translation>Could not decrypt!</translation>
+        <translation>Haikuweza kusimbua!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
@@ -2499,42 +2499,42 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="212"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Error while loading the list of folders from the server.</translation>
+        <translation>Hitilafu wakati wa kupakia orodha ya folda kutoka kwa seva.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="255"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Virtual file support is enabled.</translation>
+        <translation>Usaidizi wa faili pepe umewezeshwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
         <source>Signed out</source>
-        <translation>Signed out</translation>
+        <translation>Umeondoka</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="320"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation>Synchronizing virtual files in local folder</translation>
+        <translation>Inasawazisha faili pepe kwenye folda ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
         <source>Synchronizing files in local folder</source>
-        <translation>Synchronizing files in local folder</translation>
+        <translation>Inasawazisha faili kwenye folda ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Checking for changes in remote &quot;%1&quot;</translation>
+        <translation>Inatafuta mabadiliko katika &quot;%1&quot; ya mbali</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Checking for changes in local &quot;%1&quot;</translation>
+        <translation>Inatafuta mabadiliko katika &quot;%1&quot; ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
         <source>Syncing local and remote changes</source>
-        <translation>Syncing local and remote changes</translation>
+        <translation>Inasawazisha mabadiliko ya ndani na ya mbali</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
@@ -2546,17 +2546,17 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Download %1/s</translation>
+        <translation>Pakua %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1128"/>
         <source>File %1 of %2</source>
-        <translation>File %1 of %2</translation>
+        <translation>Faili %1 ya %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="242"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>There are unresolved conflicts. Click for details.</translation>
+        <translation>Kuna migogoro ambayo haijatatuliwa. Bofya kwa maelezo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
@@ -2567,7 +2567,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="216"/>
         <source>Fetching folder list from server …</source>
-        <translation>Fetching folder list from server …</translation>
+        <translation>Inaleta orodha ya folda kutoka kwa seva…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -2578,7 +2578,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Upload %1/s</translation>
+        <translation>Pakia %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
@@ -2601,33 +2601,33 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>A few seconds left, %1 of %2, file %3 of %4</translation>
+        <translation>Zimesalia sekunde chache, %1 ya %2, faili %3 ya %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1112"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>%5 left, %1 of %2, file %3 of %4</translation>
+        <translation>%5 zimesalia, %1 ya %2, faili %3 ya %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1121"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 of %2, file %3 of %4</translation>
+        <translation>%1 ya %2, faili %3 ya %4</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Waiting for %n other folder …</numerusform><numerusform>Waiting for %n other folders …</numerusform></translation>
+        <translation><numerusform>Waiting for %n other folder …</numerusform><numerusform>Inasubiri folda zingine %n ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>About to start syncing</source>
-        <translation>About to start syncing</translation>
+        <translation>Inakaribia kuanza kusawazisha</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1186"/>
         <source>Preparing to sync …</source>
-        <translation>Preparing to sync …</translation>
+        <translation>Inajitayarisha kusawazisha...</translation>
     </message>
 </context>
 <context>
@@ -2635,7 +2635,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="124"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>The watcher did not receive a test notification.</translation>
+        <translation>Mtazamaji hakupokea arifa ya jaribio.</translation>
     </message>
 </context>
 <context>
@@ -2643,7 +2643,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="80"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</translation>
+        <translation>Shida hii kawaida hufanyika wakati saa za inotify zimechoka. Angalia Maswali Yanayoulizwa Mara kwa Mara kwa maelezo.</translation>
     </message>
 </context>
 <context>
@@ -2651,12 +2651,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="689"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Add Folder Sync Connection</translation>
+        <translation>Ongeza Muunganisho wa Usawazishaji wa Folda</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="691"/>
         <source>Add Sync Connection</source>
-        <translation>Add Sync Connection</translation>
+        <translation>Ongeza Muunganisho wa Usawazishaji</translation>
     </message>
 </context>
 <context>
@@ -2664,17 +2664,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="77"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Click to select a local folder to sync.</translation>
+        <translation>Bofya ili kuchagua folda ya ndani ya kusawazisha.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Enter the path to the local folder.</translation>
+        <translation>Ingiza njia ya folda ya ndani.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="145"/>
         <source>Select the source folder</source>
-        <translation>Select the source folder</translation>
+        <translation>Chagua folda ya chanzo</translation>
     </message>
 </context>
 <context>
@@ -2682,48 +2682,48 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Create Remote Folder</source>
-        <translation>Create Remote Folder</translation>
+        <translation>Unda Folda ya Mbali</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="218"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation>Enter the name of the new folder to be created below &quot;%1&quot;:</translation>
+        <translation>Ingiza jina la folda mpya itakayoundwa chini ya &quot;%1&quot;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="247"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Folder was successfully created on %1.</translation>
+        <translation>Folda iliundwa kwa mafanikio mnamo %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="257"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Authentication failed accessing %1</translation>
+        <translation>Uthibitishaji umeshindwa kufikia %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Failed to create the folder on %1. Please check manually.</translation>
+        <translation>Imeshindwa kuunda folda kwenye %1. Tafadhali angalia mwenyewe.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="277"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Failed to list a folder. Error: %1</translation>
+        <translation>Imeshindwa kuorodhesha folda. Hitilafu: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="358"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Choose this to sync the entire account</translation>
+        <translation>Chagua hii ili kusawazisha akaunti nzima</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="498"/>
         <location filename="../src/gui/folderwizard.cpp" line="510"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation>Please choose a different location. %1 is already being synced to %2.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 tayari inasawazishwa hadi %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation>You are already syncing the subfolder %1 at %2.</translation>
+        <translation>Tayari unasawazisha folda %1 kwa %2.</translation>
     </message>
 </context>
 <context>
@@ -2732,23 +2732,23 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Use virtual files instead of downloading content immediately %1</translation>
+        <translation>Tumia faili pepe badala ya kupakua maudhui mara moja %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
-        <translation>(experimental)</translation>
+        <translation>(majaribio)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</translation>
+        <translation>Faili pepe hazitumiki kwa mizizi ya kizigeu cha Windows kama folda ya ndani. Tafadhali chagua folda ndogo halali chini ya herufi ya hifadhi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="630"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation>Virtual files are not supported at the selected location</translation>
+        <translation>Faili pepe hazitumiki katika eneo lililochaguliwa</translation>
     </message>
 </context>
 <context>
@@ -2756,27 +2756,27 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>No E-Tag received from server, check Proxy/Gateway</translation>
+        <translation>Hakuna E-Tag iliyopokelewa kutoka kwa seva, angalia Proksi/Lango</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>We received a different E-Tag for resuming. Retrying next time.</translation>
+        <translation>Tulipokea E-Tag tofauti kwa kuanza tena. Inajaribu tena wakati ujao.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="205"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>We received an unexpected download Content-Length.</translation>
+        <translation>Tulipokea Urefu wa Maudhui ya upakuaji usiotarajiwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="233"/>
         <source>Server returned wrong content-range</source>
-        <translation>Server returned wrong content-range</translation>
+        <translation>Seva ilirejesha masafa ya maudhui yasiyo sahihi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="359"/>
         <source>Connection Timeout</source>
-        <translation>Connection Timeout</translation>
+        <translation>Muda wa Muunganisho umekwisha</translation>
     </message>
 </context>
 <context>
@@ -2784,32 +2784,32 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>General Settings</translation>
+        <translation>Mipangilio ya Jumla</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation>Show Call Notifications</translation>
+        <translation>Onyesha Arifa za Simu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation>For System Tray</translation>
+        <translation>Kwa Tray ya Mfumo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation>Show Chat Notifications</translation>
+        <translation>Onyesha Arifa za Gumzo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Show Server &amp;Notifications</translation>
+        <translation>Onyesha Seva &amp;Arifa</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>Advanced</source>
-        <translation>Advanced</translation>
+        <translation>A kiwango cha juu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -2820,42 +2820,42 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Ask for confirmation before synchronizing external storages</translation>
+        <translation>Omba uthibitisho kabla ya kusawazisha hifadhi za nje</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Launch on System Startup</translation>
+        <translation>&amp;Zindua kwenye Kuanzisha Mfumo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Use &amp;Monochrome Icons</translation>
+        <translation>Tumia Aikoni za &amp;Monochrome</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Ask for confirmation before synchronizing new folders larger than</translation>
+        <translation>Omba uthibitisho kabla ya kusawazisha folda mpya kubwa kuliko</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Notify when synchronised folders grow larger than specified limit</translation>
+        <translation>Arifu wakati folda zilizosawazishwa zinakua kubwa kuliko kikomo kilichobainishwa</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Automatically disable synchronisation of folders that overcome limit</translation>
+        <translation>Zima kiotomatiki ulandanishi wa folda zinazoshinda kikomo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
-        <translation>Move removed files to trash</translation>
+        <translation>Hamisha faili zilizoondolewa hadi kwenye tupio</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>Show sync folders in &amp;Explorer&apos;s navigation pane</translation>
+        <translation>Onyesha folda za usawazishaji katika kidirisha cha kusogeza cha &amp;Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="217"/>
@@ -3959,7 +3959,7 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="482"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Enable experimental feature?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="483"/>
@@ -3970,17 +3970,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
+
+Switching to this mode will abort any currently running synchronization.
+
+This is a new, experimental mode. If you decide to use it, please report any issues that come up.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="497"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Enable experimental placeholder mode</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="498"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Stay safe</translation>
     </message>
 </context>
 <context>
@@ -3988,12 +3994,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Password for share required</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Please enter a password for your share:</translation>
     </message>
 </context>
 <context>
@@ -4001,7 +4007,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="141"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Invalid JSON reply from the poll URL</translation>
     </message>
 </context>
 <context>
@@ -4009,54 +4015,54 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="379"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Symbolic links are not supported in syncing.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>File is listed on the ignore list.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>File names ending with a period are not supported on this file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Folder names containing the character &quot;%1&quot; are not supported on this file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>File names containing the character &quot;%1&quot; are not supported on this file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Folder name contains at least one invalid character</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>File name contains at least one invalid character</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Folder name is a reserved name on this file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>File name is a reserved name on this file system.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Filename contains trailing spaces.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4064,37 +4070,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="435"/>
         <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Cannot be renamed or uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Cannot be renamed or uploaded.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Jina la faili lina nafasi zinazoongoza.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Jina la faili lina nafasi zinazoongoza na zinazofuata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="439"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Jina la faili ni refu sana.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Faili/Folda imepuuzwa kwa sababu imefichwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Takwimu imeshindwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="449"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Migogoro: Toleo la seva limepakuliwa, nakala ya ndani imebadilishwa jina na haijapakiwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="453"/>

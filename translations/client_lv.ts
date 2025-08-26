@@ -711,7 +711,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>Edit Ignored Files</source>
-        <translation>Labot vērā neņemtās datnes</translation>
+        <translation>Labot vērā neņemamās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
@@ -2632,7 +2632,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="80"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Šis sarežģījumus parasti notiek, kad inotify skatījumi ir pārtērēti. Jāieskatās BUJ, lai uzzinātu vairāk.</translation>
     </message>
 </context>
 <context>
@@ -2773,12 +2773,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>Vispārīgie iestatījumi</translation>
+        <translation>Vispārīgi iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt zvanu paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -2788,17 +2788,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt tērzēšanas paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt servera &amp;paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>Advanced</source>
-        <translation>Papildus</translation>
+        <translation>Papildu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -2809,32 +2809,32 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt pēc apstiprinājuma pirms ārēju krātuvju sinhronizēšanas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Palaist pēc sistēmas ieslēgšanās</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Izmantot &amp;vienkrāsainas ikonas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt apstiprinājumu pirms jaunu mapju sinhronizēšanas, kas ir lielākas par</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Paziņot, kad sinhronizētās mapes kļūst lielākas par norādīto ierobežojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automātiski atspējot sinhronizēšanu mapēm, kuras pārsniedz ierobežojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
@@ -2859,7 +2859,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="271"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Labot vērā neņemtās datnes</translation>
+        <translation>Labot vērā &amp;neņemamās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
@@ -2870,7 +2870,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="303"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>Informācija</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="318"/>
@@ -5432,7 +5432,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="411"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 darbvirsmas klienta versija %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="603"/>
