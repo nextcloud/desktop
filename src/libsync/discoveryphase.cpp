@@ -24,6 +24,7 @@
 #include <QLoggingCategory>
 #include <QUrl>
 #include <QFile>
+#include <QDir>
 #include <QFileInfo>
 #include <QTextCodec>
 #include <cstring>
@@ -214,6 +215,33 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
 
         _directoryNamesToRestoreOnPropagation.push_back(path);
     }
+}
+
+bool DiscoveryPhase::recursiveCheckForDeletedParents(const QString &itemPath) const
+{
+    const auto &allKeys = _deletedItem.keys();
+    qCDebug(lcDiscovery()) << allKeys.join(", ");
+
+    auto result = false;
+    const auto &pathElements = itemPath.split('/');
+    auto currentParentFolder = QString{};
+    for (const auto &onePathComponent : pathElements) {
+        if (!currentParentFolder.isEmpty()) {
+            currentParentFolder += '/';
+        }
+        currentParentFolder += onePathComponent;
+
+        qCDebug(lcDiscovery()) << "checks" << currentParentFolder << "for" << allKeys.join(", ");
+        if (_deletedItem.find(currentParentFolder) == _deletedItem.end()) {
+            continue;
+        }
+
+        qCDebug(lcDiscovery()) << "deleted parent found";
+        result = true;
+        break;
+    }
+
+    return result;
 }
 
 void DiscoveryPhase::markPermanentDeletionRequests()
