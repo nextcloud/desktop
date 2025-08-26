@@ -22,7 +22,7 @@ WizardProxySettingsDialog::WizardProxySettingsDialog(QUrl serverURL,
     _ui.setupUi(this);
 
     setWindowModality(Qt::WindowModal);
-    setWindowTitle(tr("Proxy Settigs", "Dialog window title for proxy settings"));
+    setWindowTitle(tr("Proxy Settings", "Dialog window title for proxy settings"));
 
     _ui.hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
     _ui.userLineEdit->setPlaceholderText(tr("Username for proxy server"));
