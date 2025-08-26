@@ -233,6 +233,7 @@
         <file>theme/colored/user-status-online.svg</file>
         <file>theme/colored/user-status-invisible.svg</file>
         <file>theme/colored/user-status-away.svg</file>
+        <file>theme/colored/user-status-busy.svg</file>
         <file>theme/colored/user-status-dnd.svg</file>
         <file>theme/black/email.svg</file>
         <file>theme/black/edit.svg</file>

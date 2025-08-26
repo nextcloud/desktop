@@ -33,6 +33,7 @@ OCC::UserStatus::OnlineStatus stringToUserOnlineStatus(const QString &status)
         { "online", OCC::UserStatus::OnlineStatus::Online },
         { "dnd", OCC::UserStatus::OnlineStatus::DoNotDisturb },
         { "away", OCC::UserStatus::OnlineStatus::Away },
+        { "busy", OCC::UserStatus::OnlineStatus::Busy },
         { "offline", OCC::UserStatus::OnlineStatus::Offline },
         { "invisible", OCC::UserStatus::OnlineStatus::Invisible }
     };
@@ -51,6 +52,8 @@ QString onlineStatusToString(OCC::UserStatus::OnlineStatus status)
         return QStringLiteral("dnd");
     case OCC::UserStatus::OnlineStatus::Away:
         return QStringLiteral("away");
+    case OCC::UserStatus::OnlineStatus::Busy:
+        return QStringLiteral("busy");
     case OCC::UserStatus::OnlineStatus::Offline:
         return QStringLiteral("offline");
     case OCC::UserStatus::OnlineStatus::Invisible:
@@ -210,6 +213,7 @@ OcsUserStatusConnector::OcsUserStatusConnector(AccountPtr account, QObject *pare
     Q_ASSERT(_account);
     _userStatusSupported = _account->capabilities().userStatus();
     _userStatusEmojisSupported = _account->capabilities().userStatusSupportsEmoji();
+    _userStatusBusySupported = _account->capabilities().userStatusSupportsBusy();
 }
 
 void OcsUserStatusConnector::fetchUserStatus()
@@ -446,6 +450,11 @@ void OcsUserStatusConnector::clearMessage()
 UserStatus OcsUserStatusConnector::userStatus() const
 {
     return _userStatus;
+}
+
+bool OcsUserStatusConnector::supportsBusyStatus() const
+{
+    return _userStatusBusySupported;
 }
 
 void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int statusCode)

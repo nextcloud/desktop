@@ -30,6 +30,8 @@ public:
 
     [[nodiscard]] UserStatus userStatus() const override;
 
+    [[nodiscard]] bool supportsBusyStatus() const override;
+
 private:
     void onUserStatusFetched(const QJsonDocument &json, int statusCode);
     void onPredefinedStatusesFetched(const QJsonDocument &json, int statusCode);
@@ -49,6 +51,7 @@ private:
 
     bool _userStatusSupported = false;
     bool _userStatusEmojisSupported = false;
+    bool _userStatusBusySupported = false;
 
     QPointer<JsonApiJob> _clearMessageJob {};
     QPointer<JsonApiJob> _setMessageJob {};

@@ -67,6 +67,11 @@ public:
         return {}; // Not implemented
     }
 
+    [[nodiscard]] bool supportsBusyStatus() const override
+    {
+        return true;
+    }
+
     void setFakeUserStatus(const OCC::UserStatus &userStatus)
     {
         _userStatus = userStatus;

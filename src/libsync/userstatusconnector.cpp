@@ -52,6 +52,9 @@ QUrl UserStatus::stateIcon() const
     switch (_state) {
     case UserStatus::OnlineStatus::Away:
         return Theme::instance()->statusAwayImageSource();
+    
+    case UserStatus::OnlineStatus::Busy:
+        return Theme::instance()->statusBusyImageSource();
 
     case UserStatus::OnlineStatus::DoNotDisturb:
         return Theme::instance()->statusDoNotDisturbImageSource();

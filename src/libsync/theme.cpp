@@ -163,6 +163,11 @@ QUrl Theme::statusAwayImageSource() const
     return imagePathToUrl(themeImagePath("user-status-away", 16));
 }
 
+QUrl Theme::statusBusyImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-busy", 16));
+}
+
 QUrl Theme::statusInvisibleImageSource() const
 {
     return imagePathToUrl(themeImagePath("user-status-invisible", 64));

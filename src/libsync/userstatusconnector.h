@@ -51,6 +51,7 @@ public:
         Online,
         DoNotDisturb,
         Away,
+        Busy,
         Offline,
         Invisible
     };
@@ -117,6 +118,8 @@ public:
     virtual void clearMessage() = 0;
 
     [[nodiscard]] virtual UserStatus userStatus() const = 0;
+
+    [[nodiscard]] virtual bool supportsBusyStatus() const = 0;
 
 signals:
     void userStatusFetched(const OCC::UserStatus &userStatus);
