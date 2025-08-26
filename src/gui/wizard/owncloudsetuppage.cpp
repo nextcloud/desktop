@@ -194,6 +194,9 @@ void OwncloudSetupPage::slotSetProxySettings()
         _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->fullText()), _proxySettings, this};
 
         connect(_proxySettingsDialog, &WizardProxySettingsDialog::proxySettingsAccepted, this, [this] (const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings) { _proxySettings = proxySettings;});
+    } else {
+        _proxySettingsDialog->setServerUrl(QUrl::fromUserInput(_ui.leUrl->fullText()));
+        _proxySettingsDialog->setProxySettings(_proxySettings);
     }
 
     _proxySettingsDialog->open();
