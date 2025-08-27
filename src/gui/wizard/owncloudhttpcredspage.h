@@ -30,7 +30,6 @@ public:
     void initializePage() override;
     void cleanupPage() override;
     bool validatePage() override;
-    [[nodiscard]] int nextId() const override;
     void setConnected();
     void setErrorString(const QString &err);
 

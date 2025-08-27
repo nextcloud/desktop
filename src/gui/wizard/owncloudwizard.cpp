@@ -34,6 +34,10 @@
 
 #include <cstdlib>
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
@@ -224,6 +228,15 @@ bool OwncloudWizard::isConfirmBigFolderChecked() const
 bool OwncloudWizard::needsToAcceptTermsOfService() const
 {
     return _needsToAcceptTermsOfService;
+}
+
+bool OwncloudWizard::useVirtualFileSyncByDefault() const
+{
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    return Mac::FileProvider::fileProviderAvailable();
+#else
+    return false;
+#endif
 }
 
 QString OwncloudWizard::ocUrl() const
