@@ -129,6 +129,7 @@
         <file>theme/white/comment.svg</file>
         <file>theme/white/deck.svg</file>
         <file>theme/white/edit.svg</file>
+		<file>theme/white/label.svg</file>
         <file>theme/white/email.svg</file>
         <file>theme/white/settings.svg</file>
         <file>theme/white/state-error.svg</file>
@@ -237,6 +238,7 @@
         <file>theme/colored/user-status-dnd.svg</file>
         <file>theme/black/email.svg</file>
         <file>theme/black/edit.svg</file>
+		<file>theme/black/label.svg</file>
         <file>theme/black/more-apps.svg</file>
         <file>theme/delete.svg</file>
         <file>theme/send.svg</file>
