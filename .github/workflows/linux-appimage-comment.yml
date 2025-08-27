@@ -1,0 +1,91 @@
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: Linux Appimage Comment
+on:
+  workflow_run:
+    workflows: ["Linux Appimage Package"]
+    types: [completed]
+
+jobs:
+  comment-appimage:
+    name: Create a comment with a link to the built AppImage
+    runs-on: ubuntu-latest
+    if: |-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Comment AppImage
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Discover the origin pull request ID.
+            // Since GitHub does not include any pull requests from forks as part of a WorkflowRun we need to look up the PR ourselves.
+            const pullRequestsForThisBranch = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.payload.workflow_run.head_repository.owner.login,
+              repo: context.payload.workflow_run.head_repository.name,
+              run_id: context.payload.workflow_run.head_branch,
+            });
+            const latestPullRequest = pullRequestsForThisBranch.data.sort((a, b) => b.id - a.id)[0];
+            if (!latestPullRequest) {
+              console.log("Could not find recent pull request related to this workflow run");
+              return;
+            };
+            const prId = latestPullRequest.number;
+            console.log(`Discovered pull request #${prId}`);
+
+            const workflowArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+            const artifact = workflowArtifacts.data.artifacts.filter((artifact) => artifact.name == `nextcloud-appimage-pr-${prId}`)[0];
+
+            if (!artifact) {
+              console.log("Could not find matching artifact");
+              return;
+            }
+
+            // artifact.url and artifact.archive_download_url contain a URL that's supposed to be used by API clients only
+            const artifactUrl = `https://github.com/nextcloud/desktop/actions/runs/${artifact.workflow_run.id}/artifacts/${artifact.id}`;
+
+            const comment_identifier_string = "<!-- automated comment for an appimage build -->";
+
+            const comment_body = `
+              ${comment_identifier_string}
+
+              Artifact containing the AppImage: [${artifact.name}.zip](${artifactUrl})
+
+              Digest: \`${artifact.digest}\`
+
+              To test this change/fix you can download the above artifact file, unzip it, and run it.
+
+              Please make sure to quit your existing Nextcloud app and backup your data.
+            `;
+
+            console.log("fetching old comments")
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prId,
+            });
+
+            comments
+              .data
+              .filter(comment => comment.body?.includes(comment_identifier_string))
+              .forEach(comment => {
+                console.log(`deleting previous AppImage comment with ID ${comment.id}`)
+                github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                })
+              });
+
+            console.log("creating new comment")
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prId,
+              body: comment_body,
+            });
