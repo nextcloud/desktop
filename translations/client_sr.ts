@@ -491,12 +491,12 @@ macOS може да закасни или да игнорише овај зах�
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Серверу је требало доста времена да одговори. Проверите везу и покушајте поново синхронизацију. Ако и даље не ради, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до неочекиване грешке. Ако се проблем настави, молимо вас да поново покушате синхронизацију или да се обратите администратору сервера.</translation>
     </message>
 </context>
 <context>
@@ -523,7 +523,8 @@ macOS може да закасни или да игнорише овај зах�
         <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Откривен је налог са застареле верзије десктоп клијента.
+Да ли желите да се увезе?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="233"/>
@@ -1713,7 +1714,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је вратио неочекивани одговор који не може да се прочита. Молимо вас да се обратите администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
@@ -1972,19 +1973,19 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 месец</numerusform><numerusform>пре %1 месеца</numerusform><numerusform>пре %1 месеци</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 годину</numerusform><numerusform>пре %1 године</numerusform><numerusform>пре %1 година</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Закључао %1 - Истиче за %2 минут</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2615,7 +2616,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Чека се на %n преостали фолдер…</numerusform><numerusform>Чека се на %n преостала фолдера…</numerusform><numerusform>Чека се на %n преосталих фолдера…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3292,12 +3293,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Увоз из старе верзије</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Изаберите налоге које желите да увезете из старе верзије конфигурације:</translation>
     </message>
 </context>
 <context>
@@ -3953,6 +3954,24 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
         <source>Cancel</source>
         <translation>Откажи</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="482"/>
@@ -4967,7 +4986,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Истиче за %1 минут</numerusform><numerusform>Истиче за %1 минута</numerusform><numerusform>Истиче за %1 минута</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5566,7 +5585,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n обавештење</numerusform><numerusform>%n обавештења</numerusform><numerusform>%n обавештења</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -5843,6 +5862,40 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ownCloudGui</name>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -6043,6 +6096,49 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="427"/>
@@ -6070,7 +6166,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1мин</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
@@ -6082,7 +6178,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nмин</numerusform><numerusform>%nмин</numerusform><numerusform>%nмин</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
@@ -6154,52 +6250,52 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Нисмо могли да обрадимо ваш захтев. Молимо вас да покушате синхронизацију касније. Ако ово настави да се дешава, обратите се за помоћ администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Да бисте наставили, морате да се пријавите. Ако имате проблема са подацима за пријаву, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Немате приступ овом ресурсу. Ако мислите да је у питању грешка, молимо вас да се обратите администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Нисмо пронашли то што тражите. Можда је премештено или обрисано. Ако вам је потребна помоћ, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Изгледа да користите прокси који захтева потврду идентитета. Молимо вас да проверите прокси подешавања и податке за пријаву. Ако вам је потребна помоћ, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Овај захтев се обрађује дуже него обично. Молимо вас да покушате синхронизацију касније. Ако и даље не ради, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Фајлови на серверу су се променили док сте радили. Молимо вас да поново покушате синхронизацију. Ако се проблем настави, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Овај фолдер или фајл више нису доступни. Ако вам је потребна помоћ, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Захтев није могао да се доврши јер нису били задовољени неки потребни услови. Молимо вас да покушате синхронизацију касније. Ако вам је потребна помоћ, обратите се администратору сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је сувише велики да би се отпремио. Мораћете да изаберете мањи фајл или да се обратите администратору сервера за помоћ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
@@ -6699,6 +6795,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
         <source>Away</source>
         <translation>Одсутан</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>

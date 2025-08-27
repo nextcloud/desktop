@@ -3955,6 +3955,24 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
         <translation>Katkesta</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="482"/>
         <source>Enable experimental feature?</source>
         <translation>Kas lülitame katselise funktsionaalsuse sisse?</translation>
@@ -5843,6 +5861,40 @@ Veateade serveri päringuvastuses: %2</translation>
     </message>
 </context>
 <context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ownCloudGui</name>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -6040,6 +6092,49 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="262"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
         <translation>See on sinu %1i kasutajaliidese veebiaadress, kui sa avad ta veebibrauseris.</translation>
+    </message>
+</context>
+<context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6699,6 +6794,11 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
         <source>Away</source>
         <translation>Eemal</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>

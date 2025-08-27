@@ -3776,23 +3776,23 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="93"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="208"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
         <source>&amp;Next &gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="251"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="320"/>
         <source>Server address does not seem to be valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="363"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="432"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3800,149 +3800,149 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="273"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="287"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="301"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="333"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="299"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="313"/>
         <source>Invalid URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="517"/>
         <source>Creating local sync folder %1 …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="507"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="521"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="509"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="523"/>
         <source>failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="511"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="525"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="585"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="591"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="609"/>
         <source>Remote folder %1 created successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="610"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="612"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="614"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="626"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="628"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="616"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="630"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="634"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="625"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="626"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="639"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="640"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="640"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="654"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
         <source>Successfully connected to %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="652"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="665"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="679"/>
         <source>Folder rename failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="680"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="715"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="743"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="757"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3965,12 +3965,30 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="499"/>
         <source>Enable experimental feature?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="483"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="500"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -3981,12 +3999,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="497"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="514"/>
         <source>Enable experimental placeholder mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="498"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="515"/>
         <source>Stay safe</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5461,18 +5479,18 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="411"/>
+        <location filename="../src/libsync/theme.cpp" line="415"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="603"/>
+        <location filename="../src/libsync/theme.cpp" line="600"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="621"/>
+        <location filename="../src/libsync/theme.cpp" line="618"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5627,75 +5645,75 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="164"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="168"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="351"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="446"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="460"/>
         <source>Don&apos;t clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="354"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <source>30 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>1 hour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <source>4 hours</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="435"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="449"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="437"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
         <source>This week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="401"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
         <source>Less than a minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
         <source>%n minute(s)</source>
         <translation>
             <numerusform>%n minute</numerusform>
@@ -5703,7 +5721,7 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>%n hour(s)</source>
         <translation>
             <numerusform>%n hour</numerusform>
@@ -5711,7 +5729,7 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n day</numerusform>
@@ -5854,6 +5872,40 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
         <source>Host your own server</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6037,7 +6089,7 @@ Server replied with error: %2</source>
     <name>OwncloudSetupPage</name>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="356"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="355"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6047,13 +6099,56 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
         <source>Server address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="262"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6716,52 +6811,57 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Do not disturb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
         <source>Mute all notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="106"/>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="107"/>
         <source>Appear offline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="131"/>
         <source>Status message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="185"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="200"/>
         <source>What is your status?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="229"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="244"/>
         <source>Clear status message after</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="262"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="277"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="269"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="274"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="289"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6881,7 +6981,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="584"/>
+        <location filename="../src/libsync/theme.cpp" line="581"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7009,52 +7109,52 @@ Server replied with error: %2</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Sync status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Waiting to start syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync is running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync was successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="106"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync was successful but some files were ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Error occurred during sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="112"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Error occurred during setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="118"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Stopping sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="115"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Preparing to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="121"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is paused</source>
         <translation type="unfinished"></translation>
     </message>
