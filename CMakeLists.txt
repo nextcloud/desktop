@@ -63,6 +63,7 @@ else()
 endif()
 
 option( APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG "Display legacy import dialog" ON )
+option( DISABLE_ACCOUNT_MIGRATION "Exclude legacy account migration and import" OFF )
 
 # For usage in XML files we preprocess
 string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")

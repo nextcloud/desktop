@@ -15,6 +15,7 @@
 #include "libsync/configfile.h"
 #include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
+#include "wizard/wizardproxysettingsdialog.h"
 #include "accountfwd.h"
 
 namespace OCC {
@@ -94,7 +95,7 @@ public slots:
 
 signals:
     void clearPendingRequests();
-    void determineAuthType(const QString &);
+    void determineAuthType(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
     void connectToOCUrl(const QString &);
     void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
@@ -114,6 +115,8 @@ private:
     void customizeStyle();
     [[nodiscard]] QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
     [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
+
+    void ensureWelcomePageCorrectLayout();
 
     AccountPtr _account;
     WelcomePage *_welcomePage = nullptr;

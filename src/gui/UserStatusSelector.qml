@@ -68,6 +68,21 @@ ColumnLayout {
 
             }
             UserStatusSelectorButton {
+                visible: userStatusSelectorModel.busyStatusSupported
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Busy
+                checkable: true
+                icon.source: userStatusSelectorModel.busyIcon
+                icon.color: "transparent"
+                text: qsTr("Busy")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Busy
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+                Layout.preferredHeight: topButtonsLayout.maxButtonHeight
+                onImplicitHeightChanged: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+                Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+            }
+            UserStatusSelectorButton {
                 checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
                 checkable: true
                 icon.source: userStatusSelectorModel.dndIcon

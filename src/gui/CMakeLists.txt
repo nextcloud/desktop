@@ -49,6 +49,7 @@ set(client_UI_SRCS
     wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
     wizard/welcomepage.ui
+    wizard/proxysettings.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -153,8 +154,6 @@ set(client_SRCS
     userinfo.cpp
     vfsdownloaderrordialog.h
     vfsdownloaderrordialog.cpp
-    legacyaccountselectiondialog.h
-    legacyaccountselectiondialog.cpp
     accountstate.h
     accountstate.cpp
     addcertificatedialog.h
@@ -256,7 +255,16 @@ set(client_SRCS
     wizard/welcomepage.cpp
     wizard/linklabel.h
     wizard/linklabel.cpp
+    wizard/wizardproxysettingsdialog.h
+    wizard/wizardproxysettingsdialog.cpp
     )
+
+if (NOT DISABLE_ACCOUNT_MIGRATION)
+    list(APPEND client_SRCS
+        legacyaccountselectiondialog.h
+        legacyaccountselectiondialog.cpp
+    )
+endif()
 
 if (WITH_WEBENGINE)
   list(APPEND client_SRCS

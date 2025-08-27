@@ -711,7 +711,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>Edit Ignored Files</source>
-        <translation>Labot vērā neņemtās datnes</translation>
+        <translation>Labot vērā neņemamās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
@@ -2632,7 +2632,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="80"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Šis sarežģījumus parasti notiek, kad inotify skatījumi ir pārtērēti. Jāieskatās BUJ, lai uzzinātu vairāk.</translation>
     </message>
 </context>
 <context>
@@ -2773,12 +2773,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>Vispārīgie iestatījumi</translation>
+        <translation>Vispārīgi iestatījumi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt zvanu paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -2788,17 +2788,17 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt tērzēšanas paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Rādīt servera &amp;paziņojumus</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>Advanced</source>
-        <translation>Papildus</translation>
+        <translation>Papildu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -2809,32 +2809,32 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt pēc apstiprinājuma pirms ārēju krātuvju sinhronizēšanas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Palaist pēc sistēmas ieslēgšanās</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Izmantot &amp;vienkrāsainas ikonas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Vaicāt apstiprinājumu pirms jaunu mapju sinhronizēšanas, kas ir lielākas par</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Paziņot, kad sinhronizētās mapes kļūst lielākas par norādīto ierobežojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automātiski atspējot sinhronizēšanu mapēm, kuras pārsniedz ierobežojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
@@ -2859,7 +2859,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="271"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Labot vērā neņemtās datnes</translation>
+        <translation>Labot vērā &amp;neņemamās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
@@ -2870,7 +2870,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="303"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>Informācija</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="318"/>
@@ -3811,109 +3811,109 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
         <source>Creating local sync folder %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="507"/>
         <source>OK</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="509"/>
         <source>failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="511"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="563"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="569"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
         <source>Error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="582"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="587"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
         <source>Remote folder %1 created successfully.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="610"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Attālā mape %1 jau pastāv. Savienojas ar to, lai sinhronizētu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="606"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="612"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="614"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="608"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="616"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="612"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="617"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="618"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="625"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="626"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="632"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="640"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="637"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Successfully connected to %1!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="652"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="665"/>
         <source>Folder rename failed</source>
         <translation>Mapes pārdēvēšana neizdevās</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="658"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="666"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="693"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="701"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="735"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="743"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3933,6 +3933,24 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
         <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
+        <source>Proxy Settings</source>
+        <comment>Proxy Settings button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <source>Next</source>
+        <comment>Next button text in new account wizard</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
+        <source>Back</source>
+        <comment>Next button text in new account wizard</comment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5432,7 +5450,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="411"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 darbvirsmas klienta versija %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="603"/>
@@ -5814,6 +5832,40 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>OCC::WizardProxySettingsDialog</name>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
+        <source>Proxy Settings</source>
+        <comment>Dialog window title for proxy settings</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
+        <source>Hostname of proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
+        <source>Username for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
+        <source>Password for proxy server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
+        <source>HTTP(S) proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
+        <source>SOCKS5 proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ownCloudGui</name>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -6014,6 +6066,49 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>ProxySettings</name>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
+        <source>Proxy Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
+        <source>Host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
+        <source>Proxy server requires authentication</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
+        <source>Use system proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
+        <source>No proxy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="427"/>
@@ -6033,6 +6128,17 @@ Server replied with error: %2</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
+        <location filename="../src/common/utility.cpp" line="442"/>
+        <source>now</source>
+        <translation>tikko</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="444"/>
+        <source>1min</source>
+        <comment>one minute after activity date and time</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
@@ -6040,14 +6146,15 @@ Server replied with error: %2</source>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
-        <source>%nm</source>
+        <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="442"/>
-        <source>now</source>
-        <translation>tikko</translation>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="447"/>
+        <source>%nm</source>
+        <comment>delay in minutes after an activity</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
@@ -6658,6 +6765,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
         <source>Away</source>
         <translation>Prom</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
