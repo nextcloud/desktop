@@ -34,10 +34,10 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - Client Communication Protocol methods
 
-    func getExtensionAccountId(completionHandler: @escaping (String?, Error?) -> Void) {
-        let accountUserId = self.fpExtension.domain.identifier.rawValue
-        Logger.desktopClientConnection.info("Sending extension account ID \(accountUserId, privacy: .public)")
-        completionHandler(accountUserId, nil)
+    func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
+        let identifier = self.fpExtension.domain.identifier.rawValue
+        Logger.desktopClientConnection.info("Returning file provider domain identifier \(identifier, privacy: .public)")
+        completionHandler(identifier, nil)
     }
 
     func configureAccount(
