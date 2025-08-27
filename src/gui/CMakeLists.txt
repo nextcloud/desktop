@@ -49,6 +49,7 @@ set(client_UI_SRCS
     wizard/termsofservicecheckwidget.ui
     wizard/webview.ui
     wizard/welcomepage.ui
+    wizard/proxysettings.ui
 )
 
 qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -254,6 +255,8 @@ set(client_SRCS
     wizard/welcomepage.cpp
     wizard/linklabel.h
     wizard/linklabel.cpp
+    wizard/wizardproxysettingsdialog.h
+    wizard/wizardproxysettingsdialog.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
