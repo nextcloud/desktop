@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f0db33034..9436c3ebe 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -360,7 +360,7 @@ elseif(BUILD_CLIENT)
+     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
+ endif()
+ 
+-if(LINUX AND BUILD_CLIENT)
++if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_CLIENT)
+     set(bindir ${CMAKE_INSTALL_FULL_BINDIR})
+     configure_file(systemd/nextcloud-desktop.service.in "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service")
+ 
