@@ -78,7 +78,7 @@ public:
     enum class WindowPosition { Default, Center };
     Q_ENUM(WindowPosition);
 
-    enum class FileDetailsPage { Activity, Sharing };
+    enum class FileDetailsPage { Activity, Sharing, Actions };
     Q_ENUM(FileDetailsPage);
 
     Q_REQUIRED_RESULT QString windowTitle() const;
@@ -146,8 +146,8 @@ public slots:
 
     void createShareDialog(const QString &localPath);
     void createFileActivityDialog(const QString &localPath);
-
     void presentShareViewInTray(const QString &localPath);
+    void createFileActionsDialog(const QString &localPath);
 
 private slots:
     void slotUpdateSyncPausedState();
