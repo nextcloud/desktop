@@ -1,25 +1,34 @@
 # SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
 # SPDX-License-Identifier: GPL-2.0-or-later
 name: 'Close stale issues'
+
 on:
-    schedule:
-        -   cron: '30 */8 * * *'
+  schedule:
+    - cron: '30 */8 * * *'
+
+permissions:
+  contents: read
 
 jobs:
-    stale:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
-                with:
-                    operations-per-run: 1500
-                    days-before-stale: 28
-                    days-before-close: 14
-                    days-before-pr-close: -1
-                    only-labels: 'bug,need info'
-                    exempt-issue-labels: 'approved'
-                    stale-issue-message: 'This bug report did not receive an update in the last 4 weeks.
-                                        Please take a look again and update the issue with new details,
-                                        otherwise the issue will be automatically closed in 2 weeks. Thank you!'
-                    close-issue-message: "This bug report is getting automatically closed due to no answer
-                                          since the issue has been staled. Thank you!"
-                    exempt-all-pr-milestones: true
+  stale:
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+
+    steps:
+      - uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
+        with:
+          operations-per-run: 1500
+          days-before-stale: 28
+          days-before-close: 14
+          days-before-pr-close: -1
+          stale-issue-label: 'stale'
+          only-labels: 'needs info'
+          exempt-issue-labels: '1. to develop,2. developing,3. to review,4. to release,security'
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has not had
+            recent activity and seems to be missing some essential information.
+            It will be closed if no further activity occurs. Thank you
+            for your contributions.
+          exempt-all-pr-milestones: true
