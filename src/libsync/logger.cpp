@@ -164,10 +164,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             dumpCrashLog();
             closeNoLock();
             s_originalMessageHandler(type, ctx, message);
-#if defined(Q_OS_WIN)
-            // Make application terminate in a way that can be caught by the crash reporter
-            Utility::crash();
-#endif
         }
     }
     emit logWindowLog(msg);
