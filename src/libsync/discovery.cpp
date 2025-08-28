@@ -382,7 +382,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_NOT_EXCLUDED:
         case CSYNC_FILE_SILENTLY_EXCLUDED:
         case CSYNC_FILE_EXCLUDE_AND_REMOVE:
-            qFatal("These were handled earlier");
+            qCFatal(lcDisco) << "These were handled earlier";
+            break;
         case CSYNC_FILE_EXCLUDE_LIST:
             item->_errorString = tr("File is listed on the ignore list.");
             break;
