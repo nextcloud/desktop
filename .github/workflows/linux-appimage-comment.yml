@@ -24,7 +24,7 @@ jobs:
             const pullRequestsForThisBranch = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner: context.payload.workflow_run.head_repository.owner.login,
               repo: context.payload.workflow_run.head_repository.name,
-              run_id: context.payload.workflow_run.head_branch,
+              commit_sha: context.payload.workflow_run.head_branch,
             });
             const latestPullRequest = pullRequestsForThisBranch.data.sort((a, b) => b.id - a.id)[0];
             if (!latestPullRequest) {
