@@ -361,7 +361,11 @@ void OcsUserStatusConnector::setUserStatusMessageCustom(const UserStatus &userSt
     _setMessageJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;
-    dataObject.insert("statusIcon", userStatus.icon());
+    QJsonValue statusIcon;
+    if (!userStatus.icon().isEmpty()) {
+        statusIcon = userStatus.icon();
+    }
+    dataObject.insert("statusIcon", statusIcon);
     dataObject.insert("message", userStatus.message());
     const auto clearAt = userStatus.clearAt();
     if (clearAt) {
