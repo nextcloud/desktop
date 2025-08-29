@@ -224,7 +224,7 @@ void DiscoveryPhase::markPermanentDeletionRequests()
 {
     // since we don't know in advance which files/directories need to be permanently deleted,
     // we have to look through all of them at the end of the run
-    for (const auto &originalPath : _permanentDeletionRequests) {
+    for (const auto &originalPath : std::as_const(_permanentDeletionRequests)) {
         const auto it = _deletedItem.find(originalPath);
         if (it == _deletedItem.end()) {
             qCWarning(lcDiscovery) << "didn't find an item for" << originalPath << "(yet)";
@@ -591,7 +591,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     // hence, we need to find its path and pass to any subfolder's metadata, so it will fetch the top level metadata when needed
     // see https://github.com/nextcloud/end_to_end_encryption_rfc/blob/v2.1/RFC.md
     auto topLevelFolderPath = QStringLiteral("/");
-    for (const QString &topLevelPath : _topLevelE2eeFolderPaths) {
+    for (const QString &topLevelPath : std::as_const(_topLevelE2eeFolderPaths)) {
         if (_subPath == topLevelPath) {
             topLevelFolderPath = QStringLiteral("/");
             break;
