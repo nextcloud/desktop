@@ -126,7 +126,6 @@ void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
         emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
         _filesToDownload.erase(foundIt);
     }
-    checkPropagationIsDone();
 }
 
 void BulkPropagatorDownloadJob::checkPropagationIsDone()
@@ -145,13 +144,12 @@ bool BulkPropagatorDownloadJob::start()
     }
 
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
-        Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFileDehydration || fileToDownload->_type == ItemTypeVirtualFile);
+        Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFile);
 
         if (propagator()->localFileNameClash(fileToDownload->_file)) {
-            _parentDirJob->appendTask(fileToDownload);
             finalizeOneFile(fileToDownload);
-            qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because it is non virtual!";
-            abortWithError(fileToDownload, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
+            qCWarning(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because of a local file name clash!";
+            abortWithError(fileToDownload, SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
             return false;
         }
     }
