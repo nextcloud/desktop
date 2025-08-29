@@ -465,7 +465,10 @@ void ShareManager::createShare(const QString &path,
         [=, this](const QJsonDocument &reply) {
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionAll;
-            for (const auto &element : reply.object()["ocs"].toObject()["data"].toArray()) {
+            const auto &replyObject = reply.object();
+            const auto &ocsObject = replyObject["ocs"].toObject();
+            const auto &dataArray = ocsObject["data"].toArray();
+            for (const auto &element : dataArray) {
                 auto map = element.toObject();
                 if (map["file_target"] == path)
                     existingPermissions = Share::Permissions(map["permissions"].toInt());
@@ -554,7 +557,7 @@ void ShareManager::fetchSharedWithMe(const QString &path)
 const QList<SharePtr> ShareManager::parseShares(const QJsonDocument &reply) const
 {
     qDebug() << reply;
-    auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
+    const auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
     const QString versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
 

@@ -309,7 +309,7 @@ private slots:
         auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
         QByteArray a1conflict;
         QByteArray a2conflict;
-        for (const auto & conflict : conflicts) {
+        for (const auto & conflict : std::as_const(conflicts)) {
             if (conflict.contains("a1"))
                 a1conflict = conflict.toUtf8();
             if (conflict.contains("a2"))
@@ -564,7 +564,7 @@ private slots:
         QVERIFY(conflicts.size() == 2);
         QVERIFY(conflicts[0].contains("A (conflicted copy"));
         QVERIFY(conflicts[1].contains("B (conflicted copy"));
-        for (const auto& conflict : conflicts)
+        for (const auto& conflict : std::as_const(conflicts))
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -602,7 +602,7 @@ private slots:
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         QVERIFY(conflicts.size() == 1);
         QVERIFY(conflicts[0].contains("A (conflicted copy"));
-        for (const auto& conflict : conflicts)
+        for (const auto& conflict : std::as_const(conflicts))
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
 
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
