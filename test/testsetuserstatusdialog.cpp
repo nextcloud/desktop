@@ -247,7 +247,7 @@ private slots:
         OCC::UserStatusSelectorModel model(nullptr, nullptr);
 
         QCOMPARE(model.userStatusMessage(), "");
-        QCOMPARE(model.userStatusEmoji(), "😀");
+        QCOMPARE(model.userStatusEmoji(), "");
         QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
     }
 
@@ -260,7 +260,7 @@ private slots:
 
         QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
-        QCOMPARE(model.userStatusEmoji(), "😀");
+        QCOMPARE(model.userStatusEmoji(), "");
         QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
     }
 

@@ -24,16 +24,14 @@ UserStatusSelectorModel::UserStatusSelectorModel(QObject *parent)
     : QObject(parent)
     , _dateTimeProvider(new DateTimeProvider)
 {
-    _userStatus.setIcon("😀");
 }
 
 UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector, QObject *parent)
     : QObject(parent)
     , _userStatusConnector(userStatusConnector)
-    , _userStatus("no-id", "", "😀", UserStatus::OnlineStatus::Online, false, {})
+    , _userStatus("no-id", "", "", UserStatus::OnlineStatus::Online, false, {})
     , _dateTimeProvider(new DateTimeProvider)
 {
-    _userStatus.setIcon("😀");
     init();
 }
 
@@ -44,7 +42,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConne
     , _userStatusConnector(userStatusConnector)
     , _dateTimeProvider(std::move(dateTimeProvider))
 {
-    _userStatus.setIcon("😀");
     init();
 }
 
@@ -54,7 +51,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     , _userStatus(userStatus)
     , _dateTimeProvider(std::move(dateTimeProvider))
 {
-    _userStatus.setIcon("😀");
 }
 
 UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
@@ -62,7 +58,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     : QObject(parent)
     , _userStatus(userStatus)
 {
-    _userStatus.setIcon("😀");
 }
 
 int UserStatusSelectorModel::userIndex() const
@@ -253,9 +248,7 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
     _userStatus.setId(userStatus.id());
     _userStatus.setClearAt(userStatus.clearAt());
 
-    if (!userStatus.icon().isEmpty()) {
-        _userStatus.setIcon(userStatus.icon());
-    }
+    _userStatus.setIcon(userStatus.icon());
 
     emit userStatusChanged();
     emit clearAtDisplayStringChanged();
