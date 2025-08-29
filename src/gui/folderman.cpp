@@ -385,7 +385,8 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
         const auto foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
         qCInfo(lcFolderMan) << "FolderDefinition::maxSettingsVersion:" << FolderDefinition::maxSettingsVersion();
         if (foldersVersion <= maxFoldersVersion) {
-            for (const auto &folderAlias : settings->childGroups()) {
+            const auto &childGroups = settings->childGroups();
+            for (const auto &folderAlias : childGroups) {
                 settings->beginGroup(folderAlias);
                 const auto folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
@@ -591,7 +592,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
                 legacyBlacklist << settings.value(QLatin1String("blackList")).toStringList();
                 if (!legacyBlacklist.isEmpty()) {
                     qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
-                    for (const auto &legacyFolder : legacyBlacklist) {
+                    for (const auto &legacyFolder : std::as_const(legacyBlacklist)) {
                         folder->migrateBlackListPath(legacyFolder);
                     }
                     settings.remove(QLatin1String("blackList"));

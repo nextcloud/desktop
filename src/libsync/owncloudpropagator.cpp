@@ -748,7 +748,7 @@ void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &ite
         if (foundDirectory.second) {
             topLevelitem = foundDirectory.second->_item;
             if (!foundDirectory.second->_subJobs._jobsToDo.isEmpty()) {
-                for (const auto jobToDo : foundDirectory.second->_subJobs._jobsToDo) {
+                for (const auto jobToDo : std::as_const(foundDirectory.second->_subJobs._jobsToDo)) {
                     if (const auto foundExistingUpdateMigratedE2eeMetadataJob = qobject_cast<UpdateMigratedE2eeMetadataJob *>(jobToDo)) {
                         existingUpdateJob = foundExistingUpdateMigratedE2eeMetadataJob;
                         break;

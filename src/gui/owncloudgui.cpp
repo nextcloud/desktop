@@ -287,7 +287,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     bool allPaused = true;
     QVector<AccountStatePtr> problemAccounts;
 
-    for (const auto &account : AccountManager::instance()->accounts()) {
+    const auto &allAccounts = AccountManager::instance()->accounts();
+    for (const auto &account : allAccounts) {
         if (!account->isSignedOut()) {
             allSignedOut = false;
         }
@@ -308,7 +309,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QList<QString> idleFileProviderAccounts;
 
     if (Mac::FileProvider::fileProviderAvailable()) {
-        for (const auto &accountState : AccountManager::instance()->accounts()) {
+        const auto &allAccounts = AccountManager::instance()->accounts();
+        for (const auto &accountState : allAccounts) {
             const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
             if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
                 continue;

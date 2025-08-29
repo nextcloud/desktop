@@ -525,7 +525,7 @@ void SelectiveSyncDialog::accept()
         //The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
         auto blackListSet = QSet<QString>{blackList.begin(), blackList.end()};
-        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         for (const auto &it : changes) {
             _folder->journalDb()->schedulePathForRemoteDiscovery(it);
             _folder->schedulePathForLocalDiscovery(it);
