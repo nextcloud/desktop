@@ -262,7 +262,7 @@ void DiscoveryPhase::markPermanentDeletionRequests()
         }
 
         qCInfo(lcDiscovery) << "requested permanent server-side deletion for" << originalPath;
-        item->_wantsPermanentDeletion = true;
+        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::WantsPermanentDeletion;
     }
 }
 
