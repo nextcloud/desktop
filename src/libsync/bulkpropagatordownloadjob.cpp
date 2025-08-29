@@ -109,7 +109,11 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    return start();
+    start();
+
+    _state = Finished;
+
+    return false;
 }
 
 PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
@@ -128,19 +132,11 @@ void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
     }
 }
 
-void BulkPropagatorDownloadJob::checkPropagationIsDone()
-{
-    if (_filesToDownload.empty()) {
-        qCInfo(lcBulkPropagatorDownloadJob) << "finished with status" << SyncFileItem::Status::Success;
-        emit finished(SyncFileItem::Status::Success);
-        propagator()->scheduleNextJob();
-    }
-}
-
-bool BulkPropagatorDownloadJob::start()
+void BulkPropagatorDownloadJob::start()
 {
     if (propagator()->_abortRequested) {
-        return false;
+        abortWithError({}, SyncFileItem::NormalError, {});
+        return;
     }
 
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
@@ -150,7 +146,7 @@ bool BulkPropagatorDownloadJob::start()
             finalizeOneFile(fileToDownload);
             qCWarning(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because of a local file name clash!";
             abortWithError(fileToDownload, SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
-            return false;
+            return;
         }
     }
 
@@ -162,14 +158,16 @@ bool BulkPropagatorDownloadJob::start()
     if (!r) {
         qCCritical(lcBulkPropagatorDownloadJob) << "Could not create placholders:" << r.error();
         for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
-            abortWithError(fileToDownload, SyncFileItem::NormalError, r.error());
+            finalizeOneFile(fileToDownload);
         }
-        return false;
+        abortWithError({}, SyncFileItem::NormalError, r.error());
+        return;
     }
 
     for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
         if (!updateMetadata(fileToDownload)) {
-            return false;
+            abortWithError(fileToDownload, SyncFileItem::NormalError, tr("Unable to update metadata of new file %1.", "error with update metadata of new Win VFS file").arg(fileToDownload->_file));
+            return;
         }
 
         if (!fileToDownload->_remotePerm.isNull() && !fileToDownload->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
@@ -179,9 +177,7 @@ bool BulkPropagatorDownloadJob::start()
         finalizeOneFile(fileToDownload);
     }
 
-    checkPropagationIsDone();
-
-    return false;
+    done(SyncFileItem::Success);
 }
 
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)

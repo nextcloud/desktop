@@ -28,7 +28,7 @@ public:
 public slots:
     void addDownloadItem(const OCC::SyncFileItemPtr &item);
 
-    [[nodiscard]] bool start();
+    void start();
 
 private slots:
     void finalizeOneFile(const OCC::SyncFileItemPtr &file);
@@ -39,8 +39,6 @@ private slots:
 
 private:
     bool updateMetadata(const SyncFileItemPtr &item);
-
-    void checkPropagationIsDone();
 
     QList<SyncFileItemPtr> _filesToDownload;
 
