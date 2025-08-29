@@ -1531,7 +1531,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
     if (isE2eeMove) {
-        qCInfo(lcDisco) << "requesting permanent deletion for" << originalPath;
+        qCDebug(lcDisco) << "requesting permanent deletion for" << originalPath;
         _discoveryData->_permanentDeletionRequests.insert(originalPath);
     }
 
