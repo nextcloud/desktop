@@ -81,12 +81,12 @@ public:
     enum class FileDetailsPage { Activity, Sharing };
     Q_ENUM(FileDetailsPage);
 
-    Q_REQUIRED_RESULT QString windowTitle() const;
-    Q_REQUIRED_RESULT bool useNormalWindow() const;
+    [[nodiscard]] QString windowTitle() const;
+    [[nodiscard]] bool useNormalWindow() const;
 
-    Q_REQUIRED_RESULT bool syncIsPaused() const;
-    Q_REQUIRED_RESULT bool anySyncFolders() const;
-    Q_REQUIRED_RESULT bool isOpen() const;
+    [[nodiscard]] bool syncIsPaused() const;
+    [[nodiscard]] bool anySyncFolders() const;
+    [[nodiscard]] bool isOpen() const;
 
     [[nodiscard]] bool enableAddAccount() const;
 

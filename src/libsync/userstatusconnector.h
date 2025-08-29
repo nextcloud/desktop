@@ -62,11 +62,11 @@ public:
     UserStatus(const QString &id, const QString &message, const QString &icon,
         OnlineStatus state, bool messagePredefined, const Optional<ClearAt> &clearAt = {});
 
-    Q_REQUIRED_RESULT QString id() const;
-    Q_REQUIRED_RESULT QString message() const;
-    Q_REQUIRED_RESULT QString icon() const;
-    Q_REQUIRED_RESULT OnlineStatus state() const;
-    Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
+    [[nodiscard]] QString id() const;
+    [[nodiscard]] QString message() const;
+    [[nodiscard]] QString icon() const;
+    [[nodiscard]] OnlineStatus state() const;
+    [[nodiscard]] Optional<ClearAt> clearAt() const;
 
     [[nodiscard]] QString clearAtDisplayString() const;
 
@@ -77,9 +77,9 @@ public:
     void setMessagePredefined(bool value);
     void setClearAt(const Optional<ClearAt> &dateTime);
 
-    Q_REQUIRED_RESULT bool messagePredefined() const;
+    [[nodiscard]] bool messagePredefined() const;
 
-    Q_REQUIRED_RESULT QUrl stateIcon() const;
+    [[nodiscard]] QUrl stateIcon() const;
 
 private:
     QString _id;

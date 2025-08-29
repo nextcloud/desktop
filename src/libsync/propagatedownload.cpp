@@ -533,11 +533,6 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         const auto fsPath = propagator()->fullLocalPath(_item->_file);
         makeParentFolderModifiable(fsPath);
 
-        // do a klaas' case clash check.
-        if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
-            return;
-        }
         auto r = vfs->createPlaceholder(*_item);
         if (!r) {
             done(SyncFileItem::NormalError, r.error(), ErrorCategory::GenericError);

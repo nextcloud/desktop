@@ -5,7 +5,6 @@
 
 #include "bulkpropagatordownloadjob.h"
 
-#include "owncloudpropagator_p.h"
 #include "syncfileitem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
@@ -13,7 +12,6 @@
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "account.h"
-#include "networkjobs.h"
 #include "propagatedownloadencrypted.h"
 
 #include <QDir>
@@ -23,11 +21,10 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcBulkPropagatorDownloadJob, "nextcloud.sync.propagator.bulkdownload", QtInfoMsg)
 
 BulkPropagatorDownloadJob::BulkPropagatorDownloadJob(OwncloudPropagator *propagator,
-                                                     PropagateDirectory *parentDirJob,
-                                                     const std::vector<SyncFileItemPtr> &items)
-    : PropagatorJob(propagator)
-    , _filesToDownload(items)
-    , _parentDirJob(parentDirJob)
+                                                     PropagateDirectory *parentDirJob)
+    : PropagatorJob{propagator}
+    , _filesToDownload{}
+    , _parentDirJob{parentDirJob}
 {
 }
 
@@ -35,15 +32,15 @@ namespace
 {
 static QString makeRecallFileName(const QString &fn)
 {
-    QString recallFileName(fn);
+    auto recallFileName(fn);
     // Add _recall-XXXX  before the extension.
-    int dotLocation = recallFileName.lastIndexOf('.');
+    auto dotLocation = recallFileName.lastIndexOf('.');
     // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
     if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
         dotLocation = recallFileName.size();
     }
 
-    QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
+    const auto &timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
     recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
 
     return recallFileName;
@@ -55,28 +52,28 @@ void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJo
 
     FileSystem::setFileHidden(filePath, true);
 
-    QFile file(filePath);
+    auto file = QFile{filePath};
     if (!file.open(QIODevice::ReadOnly)) {
         qCWarning(lcBulkPropagatorDownloadJob) << "Could not open recall file" << file.errorString();
         return;
     }
-    QFileInfo existingFile(filePath);
-    QDir baseDir = existingFile.dir();
+    const auto existingFile = QFileInfo{filePath};
+    const auto &baseDir = existingFile.dir();
 
     while (!file.atEnd()) {
-        QByteArray line = file.readLine();
+        auto line = file.readLine();
         line.chop(1); // remove trailing \n
 
-        QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
+        const auto &recalledFile = QDir::cleanPath(baseDir.filePath(line));
         if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
             qCWarning(lcBulkPropagatorDownloadJob) << "Ignoring recall of " << recalledFile;
             continue;
         }
 
         // Path of the recalled file in the local folder
-        QString localRecalledFile = recalledFile.mid(folderPath.size());
+        const auto &localRecalledFile = recalledFile.mid(folderPath.size());
 
-        SyncJournalFileRecord record;
+        auto record = SyncJournalFileRecord{};
         if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
             qCWarning(lcBulkPropagatorDownloadJob) << "No db entry for recall of" << localRecalledFile;
             continue;
@@ -84,7 +81,7 @@ void handleRecallFile(const QString &filePath, const QString &folderPath, SyncJo
 
         qCInfo(lcBulkPropagatorDownloadJob) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
 
-        QString targetPath = makeRecallFileName(recalledFile);
+        const auto &targetPath = makeRecallFileName(recalledFile);
 
         qCDebug(lcBulkPropagatorDownloadJob) << "Copy recall file: " << recalledFile << " -> " << targetPath;
         // Remove the target first, QFile::copy will not overwrite it.
@@ -112,18 +109,11 @@ bool BulkPropagatorDownloadJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    for (const auto &fileToDownload : _filesToDownload) {
-        qCDebug(lcBulkPropagatorDownloadJob) << "Scheduling bulk propagator job:" << this << "and starting download of item"
-                                             << "with file:" << fileToDownload->_file << "with size:" << fileToDownload->_size;
-        _filesDownloading.push_back(fileToDownload);
-        start(fileToDownload);
-    }
+    start();
 
-    _filesToDownload.clear();
+    _state = Finished;
 
-    checkPropagationIsDone();
-
-    return true;
+    return false;
 }
 
 PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
@@ -131,125 +121,68 @@ PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
     return PropagatorJob::JobParallelism::FullParallelism;
 }
 
-void BulkPropagatorDownloadJob::startAfterIsEncryptedIsChecked(const SyncFileItemPtr &item)
-{
-    const auto &vfs = propagator()->syncOptions()._vfs;
-    Q_ASSERT(vfs && vfs->mode() == Vfs::WindowsCfApi);
-    Q_ASSERT(item->_type == ItemTypeVirtualFileDehydration || item->_type == ItemTypeVirtualFile);
-
-    if (propagator()->localFileNameClash(item->_file)) {
-        _parentDirJob->appendTask(item);
-        finalizeOneFile(item);
-        return;
-    }
-
-    // For virtual files just dehydrate or create the placeholder and be done
-    if (item->_type == ItemTypeVirtualFileDehydration) {
-        const auto fsPath = propagator()->fullLocalPath(item->_file);
-        if (!FileSystem::verifyFileUnchanged(fsPath, item->_previousSize, item->_previousModtime)) {
-            propagator()->_anotherSyncNeeded = true;
-            item->_errorString = tr("File has changed since discovery");
-            abortWithError(item, SyncFileItem::SoftError, tr("File has changed since discovery"));
-            return;
-        }
-        qCDebug(lcBulkPropagatorDownloadJob) << "dehydrating file" << item->_file;
-        const auto r = vfs->dehydratePlaceholder(*item);
-        if (!r) {
-            qCCritical(lcBulkPropagatorDownloadJob) << "Could not dehydrate a file" << QDir::toNativeSeparators(item->_file) << ":" <<  r.error();
-            abortWithError(item, SyncFileItem::NormalError, r.error());
-            return;
-        }
-        if (!propagator()->_journal->deleteFileRecord(item->_originalFile)) {
-            qCWarning(lcBulkPropagatorDownloadJob) << "could not delete file from local DB" << item->_originalFile;
-            abortWithError(item, SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(item->_originalFile));
-            return;
-        }
-    } else if (item->_type == ItemTypeVirtualFile) {
-        qCDebug(lcBulkPropagatorDownloadJob) << "creating virtual file" << item->_file;
-        const auto r = vfs->createPlaceholder(*item);
-        if (!r) {
-            qCCritical(lcBulkPropagatorDownloadJob) << "Could not create a placholder for a file" << QDir::toNativeSeparators(item->_file) << ":" << r.error();
-            abortWithError(item, SyncFileItem::NormalError, r.error());
-            return;
-        }
-    } else {
-        // we should never get here, as BulkPropagatorDownloadJob must only ever be instantiated and only contain virtual files
-        qCCritical(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(item->_file) << "can not be downloaded because it is non virtual!";
-        abortWithError(item, SyncFileItem::NormalError, tr("File %1 cannot be downloaded because it is non virtual!").arg(QDir::toNativeSeparators(item->_file)));
-        return;
-    }
-    
-    if (!updateMetadata(item)) {
-        return;
-    }
-
-    if (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-        // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
-        FileSystem::setFileReadOnly(propagator()->fullLocalPath(item->_file), true);
-    }
-    finalizeOneFile(item);
-}
-
 void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
 {
-    const auto foundIt = std::find_if(std::cbegin(_filesDownloading), std::cend(_filesDownloading), [&file](const auto &fileDownloading) {
+    const auto foundIt = std::find_if(std::cbegin(_filesToDownload), std::cend(_filesToDownload), [&file](const auto &fileDownloading) {
         return fileDownloading == file;
     });
-    if (foundIt != std::cend(_filesDownloading)) {
+    if (foundIt != std::cend(_filesToDownload)) {
         emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
-        _filesDownloading.erase(foundIt);
-    }
-    checkPropagationIsDone();
-}
-
-void BulkPropagatorDownloadJob::checkPropagationIsDone()
-{
-    if (_filesToDownload.empty()  && _filesDownloading.empty()) {
-        qCInfo(lcBulkPropagatorDownloadJob) << "finished with status" << SyncFileItem::Status::Success;
-        emit finished(SyncFileItem::Status::Success);
-        propagator()->scheduleNextJob();
+        _filesToDownload.erase(foundIt);
     }
 }
 
-void BulkPropagatorDownloadJob::start(const SyncFileItemPtr &item)
+void BulkPropagatorDownloadJob::start()
 {
     if (propagator()->_abortRequested) {
+        abortWithError({}, SyncFileItem::NormalError, {});
         return;
     }
 
-    qCDebug(lcBulkPropagatorDownloadJob) << item->_file << propagator()->_activeJobList.count();
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+        Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFile);
 
-    const auto path = item->_file;
-    const auto slashPosition = path.lastIndexOf('/');
-    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+        if (propagator()->localFileNameClash(fileToDownload->_file)) {
+            finalizeOneFile(fileToDownload);
+            qCWarning(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because of a local file name clash!";
+            abortWithError(fileToDownload, SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
+            return;
+        }
+    }
 
-    SyncJournalFileRecord parentRec;
-    if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
-        qCWarning(lcBulkPropagatorDownloadJob) << "could not get file from local DB" << parentPath;
-        abortWithError(item, SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(parentPath));
+    const auto &vfs = propagator()->syncOptions()._vfs;
+    Q_ASSERT(vfs && vfs->mode() == Vfs::WindowsCfApi);
+
+    const auto r = vfs->createPlaceholders(_filesToDownload);
+
+    if (!r) {
+        qCCritical(lcBulkPropagatorDownloadJob) << "Could not create placholders:" << r.error();
+        for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+            finalizeOneFile(fileToDownload);
+        }
+        abortWithError({}, SyncFileItem::NormalError, r.error());
         return;
     }
- 
-    if (!propagator()->account()->capabilities().clientSideEncryptionAvailable() || !parentRec.isValid() || !parentRec.isE2eEncrypted()) {
-        startAfterIsEncryptedIsChecked(item);
-    } else {
-        _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, item, this);
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, [this, &item] {
-            startAfterIsEncryptedIsChecked(item);
-        });
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this, &item] {
-            abortWithError(
-                item,
-                SyncFileItem::NormalError,
-                tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(item->_file)));
-        });
-        _downloadEncryptedHelper->start();
+
+    for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+        if (!updateMetadata(fileToDownload)) {
+            abortWithError(fileToDownload, SyncFileItem::NormalError, tr("Unable to update metadata of new file %1.", "error with update metadata of new Win VFS file").arg(fileToDownload->_file));
+            return;
+        }
+
+        if (!fileToDownload->_remotePerm.isNull() && !fileToDownload->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+            // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
+            FileSystem::setFileReadOnly(propagator()->fullLocalPath(fileToDownload->_file), true);
+        }
+        finalizeOneFile(fileToDownload);
     }
+
+    done(SyncFileItem::Success);
 }
 
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
 {
-    const auto fn = propagator()->fullLocalPath(item->_file);
+    const auto fullFileName = propagator()->fullLocalPath(item->_file);
     const auto result = propagator()->updateMetadata(*item);
     if (!result) {
         abortWithError(item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
@@ -264,7 +197,7 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     // handle the special recall file
     if (!item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (item->_file == QLatin1String(".sys.admin#recall#") || item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
+        handleRecallFile(fullFileName, propagator()->localPath(), *propagator()->_journal);
     }
 
     const auto isLockOwnedByCurrentUser = item->_lockOwnerId == propagator()->account()->davUser();
@@ -273,13 +206,13 @@ bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
     const auto isTokenLockOwnedByCurrentUser = (item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock && isLockOwnedByCurrentUser);
 
     if (item->_locked == SyncFileItem::LockStatus::LockedItem && !isUserLockOwnedByCurrentUser && !isTokenLockOwnedByCurrentUser) {
-        qCDebug(lcBulkPropagatorDownloadJob()) << fn << "file is locked: making it read only";
-        FileSystem::setFileReadOnly(fn, true);
+        qCDebug(lcBulkPropagatorDownloadJob()) << fullFileName << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(fullFileName, true);
     } else {
-        qCDebug(lcBulkPropagatorDownloadJob()) << fn << "file is not locked: making it" << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite))
+        qCDebug(lcBulkPropagatorDownloadJob()) << fullFileName << "file is not locked: making it" << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite))
             ? "read only"
             : "read write");
-        FileSystem::setFileReadOnlyWeak(fn, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+        FileSystem::setFileReadOnlyWeak(fullFileName, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
     return true;
 }
