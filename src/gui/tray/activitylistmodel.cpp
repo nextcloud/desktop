@@ -664,7 +664,7 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 void ActivityListModel::removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications)
 {
     ActivityList activitiesToRemove;
-    for (const auto &activity : _finalList) {
+    for (const auto &activity : std::as_const(_finalList)) {
         if (activity._type != Activity::NotificationType || receivedNotifications.contains(activity)) {
             continue;
         }

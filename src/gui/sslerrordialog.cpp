@@ -44,7 +44,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 
         // Check if this host has an active HSTS policy
         auto hstsPolicies = qnam->strictTransportSecurityHosts();
-        for (const auto &policy : hstsPolicies) {
+        for (const auto &policy : std::as_const(hstsPolicies)) {
             if (policy.host() == host && !policy.isExpired()) {
                 // HSTS is active for this host, don't show the dialog
                 qCInfo(lcSslErrorDialog) << "SSL certificate error, but HSTS is active. Rejecting connection.";
@@ -152,7 +152,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
     msg += QL("<div id=\"ca_errors\">");
-    for (const auto &cert : _unknownCerts) {
+    for (const auto &cert : std::as_const(_unknownCerts)) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
         for (const auto &err : errors) {
