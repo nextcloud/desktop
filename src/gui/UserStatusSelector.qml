@@ -129,7 +129,7 @@ ColumnLayout {
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
-                text: userStatusSelectorModel.userStatusEmoji
+                text: "😀"
                 padding: 0
                 z: showBorder ? 2 : 0 // Make sure highlight is seen on top of text field
                 hoverEnabled: true
@@ -145,12 +145,21 @@ ColumnLayout {
 
                 contentItem: Label {
                     text: fieldButton.text
+                    opacity: 0.7
                     textFormat: Text.PlainText
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
 
                 onClicked: emojiDialog.open()
+            }
+
+            Binding {
+                when: userStatusSelectorModel.userStatusEmoji.length > 0
+                fieldButton {
+                    text: userStatusSelectorModel.userStatusEmoji
+                    contentItem.opacity: 1.0
+                }
             }
 
             Popup {
