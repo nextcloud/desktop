@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
         if: |
-          github.event.comment.user.type !== "Bot" &&
+          github.event.comment.user.type != "Bot" &&
             !contains(fromJSON('["camilasan", "i2h3", "mgallien", "nilsding", "Rello"]'), github.event.comment.user.login)
         with:
           labels: 'needs info'
