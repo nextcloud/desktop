@@ -491,12 +491,12 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucunun yanıt vermesi çok uzun sürdü. Bağlantınızı denetleyin ve yeniden eşitlemeyi deneyin. Sorun sürüyorsa, sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Beklenmeyen bir sorun çıktı. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
 </context>
 <context>
@@ -523,13 +523,14 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Eski bilgisayar istemcisini kullanan bir hesap var.
+Hesap içe aktarılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
         <location filename="../src/gui/accountmanager.cpp" line="316"/>
         <source>Legacy import</source>
-        <translation>Eski içe aktarma</translation>
+        <translation>Eskilerin içe aktarılması</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="239"/>
@@ -1183,7 +1184,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="512"/>
         <source>Legacy import</source>
-        <translation>Eskileri içe aktarma</translation>
+        <translation>Eskilerin içe aktarılması</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="513"/>
@@ -1713,7 +1714,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu, okunamayan beklenmedik bir yanıt verdi. Lütfen sunucu yöneticiniz ile görüşün.&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
@@ -1972,19 +1973,19 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ay önce</numerusform><numerusform>%1 ay önce</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 yıl önce</numerusform><numerusform>%1 yıl önce</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2613,7 +2614,7 @@ Uzman kullanıcılar için: Bu sorun, bir klasörde bulunan birden fazla eşitle
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Diğer %n klasör bekleniyor…</numerusform><numerusform>Diğer %n klasör bekleniyor…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -3290,12 +3291,12 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Eskilerin içe aktarılması</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Eski yapılandırmadan içe aktarılacak hesapları seçin:</translation>
     </message>
 </context>
 <context>
@@ -3956,19 +3957,19 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>İleri</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Back</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Geri</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="499"/>
@@ -4983,7 +4984,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dakika sonra geçerlilik süresi dolacak</numerusform><numerusform>%1 dakika sonra geçerlilik süresi dolacak</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5582,7 +5583,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bildirim</numerusform><numerusform>%n bildirim</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -5864,32 +5865,32 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu parolası</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S) vekil sunucu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5 vekil sunucu</translation>
     </message>
 </context>
 <context>
@@ -6097,42 +6098,42 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucuyu el ile ayarlayın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu için kimlik doğrulaması gerekiyor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Not: Vekil sunucu ayarları localhost üzerindeki hesaplar için uygulanmaz</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sistem vekil sunucusu kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Vekil sunucu yok</translation>
     </message>
 </context>
 <context>
@@ -6163,7 +6164,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1dk</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
@@ -6175,7 +6176,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%ndk</numerusform><numerusform>%ndk</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
@@ -6247,132 +6248,132 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>İsteğiniz işlenemedi. Lütfen bir süre sonra yeniden eşitlemeyi deneyin. Sorun sürerse, yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>İlerlemek için oturum açmalısınız. Kimlik doğrulama bilgilerinizde sorun varsa lütfen sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Bu kaynağa erişme izniniz yok. Bir yanlışlık olduğunu düşünüyorsanız, lütfen sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Aradığınızı bulamadık. Taşınmış veya silinmiş olabilir. Yardıma gerek duyuyorsanız, sunucu yöneticiniz ile iletişime geçin.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik doğrulaması gereken bir vekil sunucu kullanıyorsunuz gibi görünüyor. Lütfen vekil sunucu ayarlarınızı ve kimlik bilgilerinizi denetleyin. Yardıma gerek duyarsanız, sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>İsteğin işlenmesi normalden uzun sürdü. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa, sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Siz üzerinde çalışırken sunucu tarafındaki dosyalar değişti. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasör ya da dosya artık kullanılamıyor. Yardıma gerek duyarsanız, lütfen sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Bazı gerekli koşullar karşılanmadığından istek işlenemedi. Lütfen bir süre sonra yeniden eşitlemeyi deneyin. Yardıma gerek duyarsanız, lütfen sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yüklenemeyecek kadar büyük. Daha küçük bir dosya seçmeniz ya da yardım almak için sunucu yöneticiniz ile görüşmeniz gerekebilir.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>İstek için kullanılan adres sunucunun işleyemeyeceği kadar uzun. Gönderdiğiniz bilgiyi kısaltmanız ya da yardım almak için sunucu yöneticiniz ile görüşmeniz gerekebilir.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Bu dosya türü desteklenmiyor. Lütfen yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Bazı bilgiler yanlış veya eksik olduğu için sunucu isteğinizi işleyemedi. Lütfen bir süre sonra yeniden eşitlemeyi deneyin ya da yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Erişmeye çalıştığınız kaynak şu anda kilitli ve değiştirilemiyor. Lütfen bir süre sonra değiştirmeyi deneyin ya da yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Bazı gerekli koşullar eksik olduğu için bu istek işlenemedi. Lütfen bir süre sonra yeniden deneyin ya da yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation type="unfinished"/>
+        <translation>Çok fazla sayıda istekte bulundunuz. Lütfen bir süre bekledikten sonra yeniden deneyin. Bu ileti görüntülenmeyi sürdürürse, yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu tarafında bir sorun çıktı. Lütfen bir süre sonra yeniden eşitlemeyi deneyin ya da sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu istek yöntemini tanıyamadı. Yardım almak için lütfen sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu ile bağlantı kurmakta sorun çıktı. Lütfen kısa bir süre sonra yeniden deneyin. Sorun sürüyorsa yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu şu anda meşgul. Lütfen birkaç dakika sonra yeniden eşitlemeyi deneyin. Aceleniz varsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu ile bağlantı kurmak çok uzun sürüyor. Lütfen bir süre sonra yeniden deneyin. Yardıma gerek duyarsanız sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu, kullanılan bağlantı sürümünü desteklemiyor. Yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuda isteğinizi tamamlamak için yeterli depolama alanı yok. Lütfen sunucu yöneticiniz ile görüşerek kullanıcınızın ne kadar kotası olduğunu denetleyin.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Ağınız için ek kimlik doğrulaması gerekiyor. Lütfen bağlantınızı denetleyin. Sorun sürüyorsa yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Bu kaynağa erişme izniniz yok. Bir yanlışlık olduğunu düşünüyorsanız, yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Beklenmeyen bir sorun çıktı. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
     </message>
 </context>
 <context>
@@ -6386,7 +6387,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dosya çakışıyor</numerusform><numerusform>%1 dosya çakışıyor</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
@@ -6796,7 +6797,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Meşgul</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
@@ -6879,32 +6880,32 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n yıl</numerusform><numerusform>%n yıl</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ay</numerusform><numerusform>%n ay</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n gün</numerusform><numerusform>%n gün</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saat</numerusform><numerusform>%n saat</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dakika</numerusform><numerusform>%n dakika</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saniye</numerusform><numerusform>%n saniye</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>

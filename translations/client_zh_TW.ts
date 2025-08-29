@@ -6126,17 +6126,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>注意：代理伺服器設定對於在 localhost 的帳號無效</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>使用系統代理伺服器</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>無代理伺服器</translation>
     </message>
 </context>
 <context>
@@ -6800,7 +6800,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>忙碌</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
