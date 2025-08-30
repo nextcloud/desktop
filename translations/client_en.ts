@@ -1236,38 +1236,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
-        <source>File has changed since discovery</source>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
-        <source>Could not delete file record %1 from local DB</source>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <source>Unable to update metadata of new file %1.</source>
+        <comment>error with update metadata of new Win VFS file</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
-        <source>File %1 cannot be downloaded because it is non virtual!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
-        <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="188"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="191"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1489,7 +1474,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1761"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1762"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3767,8 +3752,8 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="961"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1038"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="962"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1039"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4253,38 +4238,38 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1464"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1465"/>
         <source>Could not delete file %1 from local DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1478"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1511"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1517"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1523"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1546"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1552"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1558"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1512"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1518"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1547"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1553"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1523"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1558"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
         <source>unknown exception</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1565"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1569"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1570"/>
         <source>File is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4303,64 +4288,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1370"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1365"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="538"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="696"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="700"/>
         <source>Free space on disk is less than %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="863"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="858"/>
         <source>File was deleted from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="935"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
         <source>The file could not be downloaded completely.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="942"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="937"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1204"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1218"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1199"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1213"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1291"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1286"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1402"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1397"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1405"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1400"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="492"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1320"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1315"/>
         <source>File has changed since discovery</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5645,75 +5625,75 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="164"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="168"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="460"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="453"/>
         <source>Don&apos;t clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>30 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
         <source>1 hour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
         <source>4 hours</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="449"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="362"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="442"/>
         <source>Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="451"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="365"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="444"/>
         <source>This week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="415"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="408"/>
         <source>Less than a minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="418"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="411"/>
         <source>%n minute(s)</source>
         <translation>
             <numerusform>%n minute</numerusform>
@@ -5721,7 +5701,7 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>%n hour(s)</source>
         <translation>
             <numerusform>%n hour</numerusform>
@@ -5729,7 +5709,7 @@ Server replied with error: %2</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="424"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="417"/>
         <source>%n day(s)</source>
         <translation>
             <numerusform>%n day</numerusform>
@@ -6841,27 +6821,27 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="200"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="244"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="253"/>
         <source>Clear status message after</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="277"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="286"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="293"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="289"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="298"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>

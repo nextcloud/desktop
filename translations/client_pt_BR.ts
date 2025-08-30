@@ -496,7 +496,7 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro inesperado. Tente sincronizar novamente ou entre em contato com a administração do seu servidor se o problema persistir.</translation>
     </message>
 </context>
 <context>
@@ -1244,6 +1244,11 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
@@ -1255,19 +1260,15 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Não foi possível excluir o registro de arquivo %1 do banco de dados local</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <source>Unable to update metadata of new file %1.</source>
+        <comment>error with update metadata of new Win VFS file</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation>O arquivo %1 não pode ser baixado porque não é virtual!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>Não foi possível obter o arquivo %1 do BD local</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
-        <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>O arquivo %1 não pode ser baixado porque faltam informações de criptografia.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
@@ -1278,6 +1279,16 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está sendo usado no momento</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>Não foi possível obter o arquivo %1 do BD local</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation>O arquivo %1 não pode ser baixado porque faltam informações de criptografia.</translation>
     </message>
 </context>
 <context>
@@ -5640,85 +5651,85 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="141"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>Não foi possível buscar status predefinidos. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Não foi possível obter o status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>O recurso de status não é suportado. Você não poderá definir seu status.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>Emojis não são suportados. Algumas funcionalidades de status podem não funcionar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>Não foi possível definir o status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>Não foi possível limpar a mensagem de status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="351"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="446"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="344"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="439"/>
         <source>Don&apos;t clear</source>
         <translation>Não limpe</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="354"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="347"/>
         <source>30 minutes</source>
         <translation>30 minutos</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
         <source>1 hour</source>
         <translation>1 hora</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>4 hours</source>
         <translation>4 horas</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="435"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>Today</source>
         <translation>Hoje</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="437"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>This week</source>
         <translation>Esta semana</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="401"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="394"/>
         <source>Less than a minute</source>
         <translation>Menos de um minuto</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuto</numerusform><numerusform>%n de minutos</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n hora</numerusform><numerusform>%n de horas</numerusform><numerusform>%n horas</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dia</numerusform><numerusform>%n de dias</numerusform><numerusform>%n dias</numerusform></translation>
     </message>
@@ -5872,27 +5883,27 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome do host do servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuário para servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Senha para servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -6105,37 +6116,37 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações de Proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Especificar manualmente o proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>O servidor proxy requer autenticação</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Observação: as configurações de proxy não têm efeito para contas no localhost.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Usar proxy do sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sem proxy</translation>
     </message>
 </context>
 <context>
@@ -6827,27 +6838,27 @@ Servidor respondeu com erro: %2</translation>
         <translation>Mensagem de status</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="185"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
         <translation>Qual é o seu status?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="229"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
         <translation>Limpar mensagem de status após</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="262"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="269"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
         <translation>Limpar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="274"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>

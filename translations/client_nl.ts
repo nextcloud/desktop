@@ -1241,6 +1241,11 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
@@ -1252,18 +1257,14 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <source>Unable to update metadata of new file %1.</source>
+        <comment>error with update metadata of new Win VFS file</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
-        <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1274,6 +1275,16 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5624,85 +5635,85 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="141"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>Kan vooraf gedefinieerde statussen niet ophalen. Zorg ervoor dat je verbonden bent met de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Kan status niet ophalen. Zorg ervoor dat je verbonden bent met de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>Gebruikersstatus functie wordt niet ondersteund. Je zult je gebruikersstatus niet kunnen instellen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>Emoji&apos;s worden niet ondersteund. Sommige gebruikersstatusfuncties werken mogelijk niet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>Kan status niet instellen. Zorg ervoor dat je verbonden bent met de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>Kan het statusbericht niet wissen. Zorg ervoor dat je verbonden bent met de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="351"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="446"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="344"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="439"/>
         <source>Don&apos;t clear</source>
         <translation>Niet wissen</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="354"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="347"/>
         <source>30 minutes</source>
         <translation>30 minuten</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
         <source>1 hour</source>
         <translation>1 uur</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>4 hours</source>
         <translation>4 uren</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="435"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>Today</source>
         <translation>Vandaag</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="437"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>This week</source>
         <translation>Deze week</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="401"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="394"/>
         <source>Less than a minute</source>
         <translation>Minder dan een minuut</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -6811,27 +6822,27 @@ Server antwoordde met fout: %2</translation>
         <translation>Statusbericht</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="185"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
         <translation>Wat is je status?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="229"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
         <translation>Statusbericht wissen na</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="262"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="269"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="274"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
         <translation type="unfinished"/>
     </message>
