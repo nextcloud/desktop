@@ -7,7 +7,9 @@
 
 #include "account.h"
 #include "accountstate.h"
+#include "folderman.h"
 #include "syncenginetestutils.h"
+#include "testhelper.h"
 
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>
@@ -30,7 +32,8 @@ public:
 
 public:
 signals:
-    void resultClicked(const QUrl &url);
+    void resultClickedBrowser(const QUrl &url);
+    void resultClickedLocalFile(const QUrl &url);
 };
 
 /**
@@ -278,6 +281,8 @@ class TestUnifiedSearchListModel : public QObject
 {
     Q_OBJECT
 
+    std::unique_ptr<OCC::FolderMan> _folderMan;
+
 public:
     TestUnifiedSearchListModel() = default;
 
@@ -305,6 +310,7 @@ private slots:
         account->setUrl(QUrl(("http://example.de")));
 
         accountState.reset(new OCC::AccountState(account));
+        _folderMan.reset(new OCC::FolderMan{});
 
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             Q_UNUSED(device);
@@ -538,71 +544,173 @@ private slots:
         }
     }
 
-    void testSearchResultlicked()
+    void testSearchResultClicked()
     {
-        // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
-        QVERIFY(model->rowCount() == 0);
+        QDesktopServices::setUrlHandler("http", fakeDesktopServicesUrlHandler.data(), "resultClickedBrowser");
+        QDesktopServices::setUrlHandler("https", fakeDesktopServicesUrlHandler.data(), "resultClickedBrowser");
+        QDesktopServices::setUrlHandler("file", fakeDesktopServicesUrlHandler.data(), "resultClickedLocalFile");
 
-        // test that search term gets set, search gets started and enough results get returned
-        model->setSearchTerm(model->searchTerm() + QStringLiteral("discuss"));
+        QSignalSpy resultClickedBrowser(fakeDesktopServicesUrlHandler.data(), &FakeDesktopServicesUrlHandler::resultClickedBrowser);
+        QSignalSpy resultClickedLocalFile(fakeDesktopServicesUrlHandler.data(), &FakeDesktopServicesUrlHandler::resultClickedLocalFile);
 
-        QSignalSpy searchInProgressChanged(
-            model.data(), &OCC::UnifiedSearchResultsListModel::isSearchInProgressChanged);
+        // Setup folder structure for further tests
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        const auto localFolderPrefix = "file:///" + fakeFolder.localPath();
+        auto folderDef = folderDefinition(fakeFolder.localPath());
+        folderDef.targetPath = "";
+        const auto folder = OCC::FolderMan::instance()->addFolder(accountState.data(), folderDef);
+        QVERIFY(folder);
 
-        QVERIFY(searchInProgressChanged.wait());
+        // Provider IDs which are not files, will be opened in the browser
+        const auto providerIdTestProviderId = "settings_apps";
+        const auto sublineTestProviderId = "John Doe in Apps";
+        const auto titleTestProviderId = " We had a discussion about Apps already. But, let's have a follow up tomorrow afternoon.";
+        const auto resourceUrlTestProviderId = "http://example.de/call/abcde12345#message_12345";
+        model->resultClicked(providerIdTestProviderId,
+            QUrl(resourceUrlTestProviderId), sublineTestProviderId, titleTestProviderId);
 
-        // make sure search has started
-        QCOMPARE(searchInProgressChanged.count(), 1);
-        QVERIFY(model->isSearchInProgress());
+        QCOMPARE(resultClickedBrowser.count(), 1);
+        QCOMPARE(resultClickedLocalFile.count(), 0);
 
-        QVERIFY(searchInProgressChanged.wait());
+        auto arguments = resultClickedBrowser.takeFirst();
+        auto urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, resourceUrlTestProviderId);
 
-        // make sure search has finished and some results has been received
-        QVERIFY(!model->isSearchInProgress());
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
 
-        QVERIFY(model->rowCount() != 0);
+        // Nextcloud 20 opens in browser if the folder is not available locally
+        const auto providerIdTestNextcloud20Browser = "file";
+        const auto sublineTestNextcloud20Browser = "in folder/nested/searched_file.cpp";
+        const auto titleTestNextcloud20Browser = "searched_file.cpp";
+        const auto resourceUrlTestNextcloud20Browser = "http://example.de/files/?dir=folder/nested&scrollto=searched_file.cpp";
+        model->resultClicked(providerIdTestNextcloud20Browser,
+            QUrl(resourceUrlTestNextcloud20Browser), sublineTestNextcloud20Browser, titleTestNextcloud20Browser);
 
-        QDesktopServices::setUrlHandler("http", fakeDesktopServicesUrlHandler.data(), "resultClicked");
-        QDesktopServices::setUrlHandler("https", fakeDesktopServicesUrlHandler.data(), "resultClicked");
+        QCOMPARE(resultClickedBrowser.count(), 1);
+        QCOMPARE(resultClickedLocalFile.count(), 0);
 
-        QSignalSpy resultClicked(fakeDesktopServicesUrlHandler.data(), &FakeDesktopServicesUrlHandler::resultClicked);
- 
-        //  test click on a result item
-        QString urlForClickedResult;
+        arguments = resultClickedBrowser.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, resourceUrlTestNextcloud20Browser);
 
-        for (int i = 0; i < model->rowCount(); ++i) {
-            const auto type = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TypeRole);
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
 
-            if (type == OCC::UnifiedSearchResult::Type::Default) {
-                const auto providerId =
-                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ProviderIdRole)
-                        .toString();
+        // Nextcloud versions above 20 opens in browser if the folder is not available locally
+        const auto providerIdTestNextcloudAbove20Browser = "file";
+        const auto sublineTestNextcloudAbove20Browser = "in folder/nested";
+        const auto titleTestNextcloudAbove20Browser = "searched_file.cpp";
+        const auto resourceUrlTestNextcloudAbove20Browser = "http://example.de/index.php/f/123";
+        model->resultClicked(providerIdTestNextcloudAbove20Browser,
+            QUrl(resourceUrlTestNextcloudAbove20Browser), sublineTestNextcloudAbove20Browser,
+            titleTestNextcloudAbove20Browser);
 
-                const auto subline = 
-                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::SublineRole)
-                        .toString();
+        QCOMPARE(resultClickedBrowser.count(), 1);
+        QCOMPARE(resultClickedLocalFile.count(), 0);
 
-                const auto title = 
-                    model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::TitleRole)
-                        .toString();
+        arguments = resultClickedBrowser.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, resourceUrlTestNextcloudAbove20Browser);
 
-                urlForClickedResult = model->data(model->index(i), OCC::UnifiedSearchResultsListModel::DataRole::ResourceUrlRole).toString();
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
 
-                if (!providerId.isEmpty() && !urlForClickedResult.isEmpty()) {
-                    model->resultClicked(providerId, QUrl(urlForClickedResult), subline, title);
-                    break;
-                }
-            }
-        }
+        // Nextcloud 20 opens in local files if the file is available locally
+        const auto providerIdTestNextcloud20LocalFile = "file";
+        const auto sublineTestNextcloud20LocalFile = "in B/b1";
+        const auto titleTestNextcloud20LocalFile = "b1";
+        const auto resourceUrlTestNextcloud20LocalFile = "http://example.de/files/?dir=/B&scrollto=b1";
+        const auto expectedFileUrlNextcloud20 = localFolderPrefix + "B/b1";
+        model->resultClicked(providerIdTestNextcloud20LocalFile,
+            QUrl(resourceUrlTestNextcloud20LocalFile), sublineTestNextcloud20LocalFile, titleTestNextcloud20LocalFile);
 
-        QCOMPARE(resultClicked.count(), 1);
+        QCOMPARE(resultClickedBrowser.count(), 0);
+        QCOMPARE(resultClickedLocalFile.count(), 1);
 
-        const auto arguments = resultClicked.takeFirst();
+        arguments = resultClickedLocalFile.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, expectedFileUrlNextcloud20);
 
-        const auto urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
 
-        QCOMPARE(urlOpenTriggeredViaDesktopServices, urlForClickedResult);
+        // Nextcloud 20 opens in local files if the file is available locally
+        // The rood directory has a special syntax
+        const auto providerIdTestNextcloud20LocalFileRoot = "file";
+        const auto sublineTestNextcloud20LocalFileRoot = "in B";
+        const auto titleTestNextcloud20LocalFileRoot = "/B";
+        const auto resourceUrlTestNextcloud20LocalFileRoot = "http://example.de/files/?dir=/&scrollto=B";
+        const auto expectedFileUrlNextcloud20Root = localFolderPrefix + "B";
+        model->resultClicked(providerIdTestNextcloud20LocalFileRoot,
+            QUrl(resourceUrlTestNextcloud20LocalFileRoot), sublineTestNextcloud20LocalFileRoot, titleTestNextcloud20LocalFileRoot);
+
+        QCOMPARE(resultClickedBrowser.count(), 0);
+        QCOMPARE(resultClickedLocalFile.count(), 1);
+
+        arguments = resultClickedLocalFile.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, expectedFileUrlNextcloud20Root);
+
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
+
+        // Nextcloud versions above 20 opens in local file if the file is available locally
+        const auto providerIdTestNextcloudAbove20LocalFile = "file";
+        const auto sublineTestNextcloudAbove20LocalFile = "in A";
+        const auto titleTestNextcloudAbove20LocalFile = "a1";
+        const auto resourceUrlTestNextcloudAbove20LocalFile = "http://example.de/index.php/f/456";
+        const auto expectedFileUrlNextcloudAbove20 = localFolderPrefix + "A/a1";
+        model->resultClicked(providerIdTestNextcloudAbove20LocalFile,
+            QUrl(resourceUrlTestNextcloudAbove20LocalFile), sublineTestNextcloudAbove20LocalFile,
+            titleTestNextcloudAbove20LocalFile);
+
+        QCOMPARE(resultClickedBrowser.count(), 0);
+        QCOMPARE(resultClickedLocalFile.count(), 1);
+
+        arguments = resultClickedLocalFile.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, expectedFileUrlNextcloudAbove20);
+
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
+
+        // Nextcloud versions above 20 opens in local folder if the file is available locally
+        // In this case the local folder is opened in the root directory
+        const auto providerIdTestNextcloudAbove20LocalFileRoot = "file";
+        const auto sublineTestNextcloudAbove20LocalFileRoot = "";
+        const auto titleTestNextcloudAbove20LocalFileRoot = "A";
+        const auto resourceUrlTestNextcloudAbove20LocalFileRoot = "http://example.de/index.php/f/789";
+        const auto expectedFileUrlNextcloudAbove20Root = localFolderPrefix + "A";
+        model->resultClicked(providerIdTestNextcloudAbove20LocalFileRoot,
+            QUrl(resourceUrlTestNextcloudAbove20LocalFileRoot), sublineTestNextcloudAbove20LocalFileRoot,
+            titleTestNextcloudAbove20LocalFileRoot);
+
+        QCOMPARE(resultClickedBrowser.count(), 0);
+        QCOMPARE(resultClickedLocalFile.count(), 1);
+
+        arguments = resultClickedLocalFile.takeFirst();
+        urlOpenTriggeredViaDesktopServices = arguments.at(0).toString();
+        QCOMPARE(urlOpenTriggeredViaDesktopServices, expectedFileUrlNextcloudAbove20Root);
+
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
+
+        // Accountptr is invalid
+        model.reset(new OCC::UnifiedSearchResultsListModel(nullptr));
+        modelTester.reset(new QAbstractItemModelTester(model.data()));
+        const auto providerIdTestNullptr = "file";
+        const auto sublineTestNullptr = "";
+        const auto titleTestNullptr = "A";
+        const auto resourceUrlTestNullptr = "http://example.de/index.php/f/789";
+        model->resultClicked(providerIdTestNullptr,
+            QUrl(resourceUrlTestNullptr), sublineTestNullptr, titleTestNullptr);
+
+        QCOMPARE(resultClickedBrowser.count(), 0);
+        QCOMPARE(resultClickedLocalFile.count(), 0);
+
+        resultClickedBrowser.clear();
+        resultClickedLocalFile.clear();
     }
 
     void testSetSearchTermResultsError()
