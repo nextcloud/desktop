@@ -14,6 +14,8 @@ import com.nextcloud.desktopclient
 RowLayout {
     id: root
 
+    required property color adaptiveTextColor
+
     property variant activityData: {{}}
 
     property variant activity: {{}}
@@ -141,6 +143,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Item {
@@ -157,6 +160,7 @@ RowLayout {
                 text: root.activityData.dateTime
                 font.pixelSize: Style.subLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Row {
@@ -228,6 +232,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Item {
@@ -248,6 +253,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             ActivityItemActions {
