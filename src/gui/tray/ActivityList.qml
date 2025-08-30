@@ -29,10 +29,15 @@ ScrollView {
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
-    padding: 0
+    leftPadding: 0
+    topPadding: 0
+    bottomPadding: 0
+    rightPadding: ScrollBar.vertical.width
+    
     focus: false
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem
