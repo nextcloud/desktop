@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 52a310dec..2baef40cb 100644
+index d306001c9..6627f8399 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -11,7 +11,7 @@ index 52a310dec..2baef40cb 100644
  
  # CfAPI Shell Extensions
  set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
-@@ -138,7 +138,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+@@ -139,7 +139,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
      add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
  endif()
  
@@ -52,10 +52,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..ea3d16187
+index 000000000..08f327baa
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,273 @@
+@@ -0,0 +1,281 @@
 +
 +#pragma once
 +
@@ -161,6 +161,14 @@ index 000000000..ea3d16187
 +}
 +
 +} }
++#endif
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 5, 0)
++#include <QDebug>
++#define qCFatal(category) QDebug(QtFatalMsg)
 +#endif
 +
 +//-----------------------------------------------------------------------------
@@ -364,7 +372,7 @@ index 0855b028d..5c5ec1f6a 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 9c16fa412..02e58f89c 100644
+index a9491e5be..b80e79fd7 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -376,7 +384,7 @@ index 9c16fa412..02e58f89c 100644
  find_package(KF6GuiAddons)
  
  if (NOT TARGET Qt::GuiPrivate)
-@@ -573,9 +573,16 @@ target_link_libraries(nextcloudCore
+@@ -581,9 +581,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -394,7 +402,7 @@ index 9c16fa412..02e58f89c 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -784,3 +791,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -792,3 +799,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -406,7 +414,7 @@ index 9c16fa412..02e58f89c 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index cebf1c832..458338bff 100644
+index 8303e4cd5..9ab09009a 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -417,7 +425,7 @@ index cebf1c832..458338bff 100644
  
  #include "config.h"
  
-@@ -1011,7 +1012,7 @@ void Application::setupTranslations()
+@@ -1017,7 +1018,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -665,6 +673,18 @@ index 370a1a30a..4ba1db6ee 100644
  
      return decryptedAndUnGzipped;
  }
+diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
+index 1b314040d..0a2b0f3d3 100644
+--- a/src/libsync/discovery.cpp
++++ b/src/libsync/discovery.cpp
+@@ -23,6 +23,7 @@
+ #include <QThreadPool>
+ #include <common/checksums.h>
+ #include <common/constants.h>
++#include <common/qtcompat.h>
+ #include "csync_exclude.h"
+ #include "csync.h"
+ 
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
 index 32f8db83b..5f773c409 100644
 --- a/src/libsync/filesystem.cpp
@@ -933,10 +953,10 @@ index c7c259ab0..e7ab6d6ad 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index cf7271963..56d3d8bdd 100644
+index 8541f81ed..4924f2215 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
-@@ -10,6 +10,7 @@
+@@ -9,6 +9,7 @@
  #include "version.h"
  #include "configfile.h"
  #include "common/vfs.h"
@@ -944,7 +964,7 @@ index cf7271963..56d3d8bdd 100644
  
  #include <QtCore>
  #ifndef TOKEN_AUTH_ONLY
-@@ -850,14 +851,12 @@ QString Theme::versionSwitchOutput() const
+@@ -847,14 +848,12 @@ QString Theme::versionSwitchOutput() const
  
  double Theme::getColorDarkness(const QColor &color)
  {
@@ -961,7 +981,7 @@ index cf7271963..56d3d8bdd 100644
  }
  
  QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
-@@ -965,7 +964,7 @@ QColor Theme::defaultColor()
+@@ -962,7 +961,7 @@ QColor Theme::defaultColor()
  void Theme::connectToPaletteSignal() const
  {
      if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
@@ -970,7 +990,7 @@ index cf7271963..56d3d8bdd 100644
      }
  }
  
-@@ -1008,19 +1007,6 @@ QVariantMap Theme::systemPalette() const
+@@ -1005,19 +1004,6 @@ QVariantMap Theme::systemPalette() const
  bool Theme::darkMode() const
  {
      connectToPaletteSignal();
@@ -990,7 +1010,7 @@ index cf7271963..56d3d8bdd 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1031,7 +1017,8 @@ bool Theme::darkMode() const
+@@ -1028,7 +1014,8 @@ bool Theme::darkMode() const
          }
      }
  #endif
