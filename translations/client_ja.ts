@@ -1243,6 +1243,11 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
@@ -1254,19 +1259,15 @@ This action will abort any currently running synchronization.</source>
         <translation>ローカルDBからファイルレコード %1 を削除できませんでした</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <source>Unable to update metadata of new file %1.</source>
+        <comment>error with update metadata of new Win VFS file</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation>ファイル%1は非仮想のためダウンロードできません!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>ローカルDBからファイル %1 を取得できませんでした</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
-        <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>暗号化情報がないためファイル%1をダウンロードできません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
@@ -1277,6 +1278,16 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation>ファイル %1 は現在使用中です</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>ローカルDBからファイル %1 を取得できませんでした</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation>暗号化情報がないためファイル%1をダウンロードできません。</translation>
     </message>
 </context>
 <context>
@@ -5638,85 +5649,85 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="141"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>事前定義されたステータスを取得できませんでした。サーバーに接続していることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>ステータスを取得できませんでした。サーバに接続していることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>ステータス機能はサポートされていません。あなたのステータスを設定することはできません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>絵文字はサポートされていません。一部のステータス機能が動作しない場合があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>ステータスを設定できませんでした。サーバに接続していることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>ステータスメッセージをクリアできませんでした。サーバに接続していることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="351"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="446"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="344"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="439"/>
         <source>Don&apos;t clear</source>
         <translation>消去しない</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="354"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="347"/>
         <source>30 minutes</source>
         <translation>30分</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
         <source>1 hour</source>
         <translation>1 時間</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>4 hours</source>
         <translation>4時間</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="435"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>Today</source>
         <translation>今日</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="437"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>This week</source>
         <translation>今週</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="401"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="394"/>
         <source>Less than a minute</source>
         <translation>1分以内</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
@@ -6825,27 +6836,27 @@ Server replied with error: %2</source>
         <translation>ステータスメッセージ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="185"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
         <translation>現在のオンラインステータスは？</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="229"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
         <translation>メッセージ有効期限</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="262"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="269"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
         <translation>クリア</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="274"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
         <translation>適用</translation>
     </message>

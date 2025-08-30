@@ -1244,6 +1244,11 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
@@ -1255,19 +1260,15 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Impossibile eliminare il record del file %1 dal DB locale</translation>
     </message>
     <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <source>Unable to update metadata of new file %1.</source>
+        <comment>error with update metadata of new Win VFS file</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
         <translation>Il file %1non può essere scaricato perché non è virtuale!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>Impossibile ottenere il file %1 dal DB locale</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
-        <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Impossibile scaricare il file %1 perché mancano le informazioni di crittografia.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
@@ -1278,6 +1279,16 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
         <translation>Il file %1 è attualmente in uso</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>Impossibile ottenere il file %1 dal DB locale</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
+        <source>File %1 cannot be downloaded because encryption information is missing.</source>
+        <translation>Impossibile scaricare il file %1 perché mancano le informazioni di crittografia.</translation>
     </message>
 </context>
 <context>
@@ -5634,85 +5645,85 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::UserStatusSelectorModel</name>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="146"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="141"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
         <translation>Impossibile recuperare gli stati preimpostati. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="150"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Impossibile recuperare lo stato. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="154"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation>La funzionalità dello stato non è supportata. Non potrai impostare il tuo stato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="158"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation>Gli emoji non sono supportati. Alcune caratteristiche dello stato potrebbero non funzionare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="162"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
         <translation>Impossibile impostare lo stato. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="166"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation>Impossibile cancellare il messaggio di stato. Assicurati di essere connesso al server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="351"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="446"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="344"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="439"/>
         <source>Don&apos;t clear</source>
         <translation>Non cancellare</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="354"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="347"/>
         <source>30 minutes</source>
         <translation>30 minuti</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="357"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
         <source>1 hour</source>
         <translation>1 ora</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>4 hours</source>
         <translation>4 ore</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="435"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>Today</source>
         <translation>Oggi</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="437"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>This week</source>
         <translation>Questa settimana</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="401"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="394"/>
         <source>Less than a minute</source>
         <translation>Meno di un minuto</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="404"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuto</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minuti</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="407"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n ora</numerusform><numerusform>%n ore</numerusform><numerusform>%n ore</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n giorno</numerusform><numerusform>%n giorni</numerusform><numerusform>%n giorni</numerusform></translation>
     </message>
@@ -6821,27 +6832,27 @@ Il server ha risposto con errore: %2</translation>
         <translation>Messaggio di stato</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="185"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
         <translation>Qual è il tuo stato?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="229"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
         <translation>Cancella il messaggio di stato dopo</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="262"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="269"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="274"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
         <translation>Applica</translation>
     </message>
