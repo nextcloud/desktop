@@ -1246,7 +1246,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>%1 faili ei saa alla laadida - nimi läheb kohaliku faili nimega vastuollu!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
@@ -1263,7 +1263,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Uue faili (%1) metateabe uuendamine ei õnnestu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
@@ -6355,32 +6355,32 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Server on hetkel hõivatud. Proovi andmeid hiljem uuesti sünkroonida ja sellega on kiire, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendamine serveriga kestab liiga kaua. Palun proovi hiljem uuesti.  Vajadusel aitab sinu serveri haldaja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Server ei toeta ühenduse sellist versiooni. Abiteavet saad oma serveri haldaja käest.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pole piisavalt andmeruumi sinu päringule vastamiseks. Oma serveri haldaja käes saad teavet antud kasutaja andmeruumi kvoodi kohta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Sinu võrk eeldab täiendava autentimise kasutamist. Palun kontrolli om arvuti või nutiseadme võrguühenduse toimimist. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Sul puuduvad õigused ligipääsuks sellele ressursile. Kui arvad, et see on viga, siis palun küsi abi serveri haldajalt või peakasutajalt</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>

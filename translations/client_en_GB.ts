@@ -1246,7 +1246,7 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 can not be downloaded because of a local file name clash!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
@@ -1263,7 +1263,7 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Unable to update metadata of new file %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
