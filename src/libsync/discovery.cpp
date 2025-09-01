@@ -913,11 +913,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     // Unknown in db: new file on the server
     Q_ASSERT(!dbEntry.isValid());
 
-    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
-        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        emit _discoveryData->itemDiscovered(item);
+    if (checkNewDeleteConflict(item)) {
         return;
     }
 
@@ -1433,11 +1429,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
-    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
-        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        emit _discoveryData->itemDiscovered(item);
+    if (checkNewDeleteConflict(item)) {
         return;
     }
 
@@ -2466,4 +2458,19 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     }
     return result;
 }
+
+bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) const
+{
+    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
+        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+        emit _discoveryData->itemDiscovered(item);
+        return true;
+    }
+
+    return false;
+}
+
 }

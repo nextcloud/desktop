@@ -252,6 +252,8 @@ private:
     bool maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
                                             CSYNC_EXCLUDE_TYPE excludeReason);
 
+    [[nodiscard]] bool checkNewDeleteConflict(const SyncFileItemPtr &item) const;
+
     qint64 _lastSyncTimestamp = 0;
 
     QueryMode _queryServer = QueryMode::NormalQuery;
