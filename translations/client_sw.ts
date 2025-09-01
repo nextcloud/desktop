@@ -1247,7 +1247,7 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 haiwezi kupakuliwa kwa sababu ya mgongano wa jina la faili la ndani!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
@@ -1264,7 +1264,7 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Imeshindwa kusasisha metadata ya faili mpya %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
@@ -5207,49 +5207,49 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="236"/>
         <source>Organization: %1</source>
-        <translation>Organization: %1</translation>
+        <translation>Shirika: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="237"/>
         <source>Unit: %1</source>
-        <translation>Unit: %1</translation>
+        <translation>Kitengo: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="213"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="238"/>
         <source>Country: %1</source>
-        <translation>Country: %1</translation>
+        <translation>Nchi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="220"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Alama za vidole (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="225"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Alama za vidole (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="226"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Alama za vidole (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="228"/>
         <source>Effective Date: %1</source>
-        <translation>Effective Date: %1</translation>
+        <translation>Tarehe ya Kutumika: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="229"/>
         <source>Expiration Date: %1</source>
-        <translation>Expiration Date: %1</translation>
+        <translation>Tarehe ya kumalizika muda wake: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="233"/>
         <source>Issuer: %1</source>
-        <translation>Issuer: %1</translation>
+        <translation>Mtoaji: %1</translation>
     </message>
 </context>
 <context>
@@ -5257,73 +5257,73 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (skipped due to earlier error, trying again in %2)</translation>
+        <translation>%1 (imerukwa kwa sababu ya hitilafu ya awali, ikijaribu tena katika %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="554"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Only %1 are available, need at least %2 to start</translation>
+        <translation>%1 pekee ndio zinapatikana, zinahitaji angalau %2 ili kuanza</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="587"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</translation>
+        <translation>Haiwezi kufungua au kuunda hifadhidata ya ndani ya usawazishaji. Hakikisha una idhini ya kuandika katika folda ya kusawazisha.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1433"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Disk space is low: Downloads that would reduce free space below %1 were skipped.</translation>
+        <translation>Nafasi ya diski ni ndogo: Vipakuliwa ambavyo vinaweza kupunguza nafasi ya bure chini ya %1 vilirukwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1440"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>There is insufficient space available on the server for some uploads.</translation>
+        <translation>Hakuna nafasi ya kutosha kwenye seva kwa upakiaji fulani.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="452"/>
         <source>Unresolved conflict.</source>
-        <translation>Unresolved conflict.</translation>
+        <translation>Mzozo ambao haujatatuliwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="374"/>
         <source>Could not update file: %1</source>
-        <translation>Could not update file: %1</translation>
+        <translation>Haikuweza kusasisha faili: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="403"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation>Could not update virtual file metadata: %1</translation>
+        <translation>Haikuweza kusasisha metadata ya faili pepe: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not update file metadata: %1</source>
-        <translation>Could not update file metadata: %1</translation>
+        <translation>Haikuweza kusasisha metadata ya faili: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="420"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation>Could not set file record to local DB: %1</translation>
+        <translation>Haikuweza kuweka rekodi ya faili kwa DB ya ndani: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="603"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Using virtual files with suffix, but suffix is not set</translation>
+        <translation>Kutumia faili pepe zilizo na kiambishi tamati, lakini kiambishi tamati hakijawekwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="615"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Unable to read the blacklist from the local database</translation>
+        <translation>Haiwezi kusoma orodha iliyoidhinishwa kutoka kwa hifadhidata ya ndani</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="655"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Unable to read from the sync journal.</translation>
+        <translation>Haiwezi kusoma kutoka kwa jarida la usawazishaji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="811"/>
         <source>Cannot open the sync journal</source>
-        <translation>Cannot open the sync journal</translation>
+        <translation>Haiwezi kufungua jarida la usawazishaji</translation>
     </message>
 </context>
 <context>
@@ -5333,74 +5333,74 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="406"/>
         <source>Offline</source>
-        <translation>Offline</translation>
+        <translation>Nje ya mtandao</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="128"/>
         <source>You need to accept the terms of service</source>
-        <translation>You need to accept the terms of service</translation>
+        <translation>Unahitaji kukubali sheria na masharti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="178"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="409"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
         <source>All synced!</source>
-        <translation>All synced!</translation>
+        <translation>Zote zimesawazishwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="187"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation>Some files couldn&apos;t be synced!</translation>
+        <translation>Baadhi ya faili hazikuweza kusawazishwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="188"/>
         <source>See below for errors</source>
-        <translation>See below for errors</translation>
+        <translation>Tazama hapa chini kwa makosa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="195"/>
         <source>Checking folder changes</source>
-        <translation>Checking folder changes</translation>
+        <translation>Inaangalia mabadiliko ya folda</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="197"/>
         <source>Syncing changes</source>
-        <translation>Syncing changes</translation>
+        <translation>Inasawazisha mabadiliko</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="206"/>
         <source>Sync paused</source>
-        <translation>Sync paused</translation>
+        <translation>Usawazishaji umesitishwa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="214"/>
         <source>Some files could not be synced!</source>
-        <translation>Some files could not be synced!</translation>
+        <translation>Baadhi ya faili hazikuweza kusawazishwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="215"/>
         <source>See below for warnings</source>
-        <translation>See below for warnings</translation>
+        <translation>Tazama hapa chini kwa maonyo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="284"/>
         <source>Syncing</source>
-        <translation>Syncing</translation>
+        <translation>Inasawazisha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="297"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 of %2 · %3 left</translation>
+        <translation>%1 kati ya%2 · %3imebaki </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="301"/>
         <source>%1 of %2</source>
-        <translation>%1 of %2</translation>
+        <translation>%1 kati ya%2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="306"/>
         <source>Syncing file %1 of %2</source>
-        <translation>Syncing file %1 of %2</translation>
+        <translation>Inasawazisha faili %1 kati ya %2</translation>
     </message>
 </context>
 <context>
@@ -5408,54 +5408,54 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="78"/>
         <source>Download</source>
-        <translation>Download</translation>
+        <translation>Pakua</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Add account</source>
-        <translation>Add account</translation>
+        <translation>Ongeza akaunti</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open main dialog</source>
-        <translation>Open main dialog</translation>
+        <translation>Fungua mazungumzo makuu</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <location filename="../src/gui/systray.cpp" line="192"/>
         <source>Pause sync</source>
-        <translation>Pause sync</translation>
+        <translation>Sitisha usawazishaji</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="183"/>
         <location filename="../src/gui/systray.cpp" line="198"/>
         <source>Resume sync</source>
-        <translation>Resume sync</translation>
+        <translation>Endelea kusawazisha</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="184"/>
         <source>Settings</source>
-        <translation>Settings</translation>
+        <translation>Mipangilio</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation>Msaada</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <source>Exit %1</source>
-        <translation>Exit %1</translation>
+        <translation>Toka %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="192"/>
         <source>Pause sync for all</source>
-        <translation>Pause sync for all</translation>
+        <translation>Sitisha usawazishaji kwa wote</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="198"/>
         <source>Resume sync for all</source>
-        <translation>Resume sync for all</translation>
+        <translation>Endelea kusawazisha kwa wote</translation>
     </message>
 </context>
 <context>
@@ -5463,27 +5463,27 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
         <source>Waiting for terms to be accepted</source>
-        <translation>Waiting for terms to be accepted</translation>
+        <translation>Inasubiri masharti kukubaliwa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
         <source>Polling</source>
-        <translation>Polling</translation>
+        <translation>Upigaji kura</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
         <source>Link copied to clipboard.</source>
-        <translation>Link copied to clipboard.</translation>
+        <translation>Kiungo kimenakiliwa kwenye ubao wa kunakili.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
         <source>Open Browser</source>
-        <translation>Open Browser</translation>
+        <translation>Fungua Kivinjari</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
         <source>Copy Link</source>
-        <translation>Copy Link</translation>
+        <translation>Nakili Kiungo</translation>
     </message>
 </context>
 <context>
@@ -5492,17 +5492,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="410"/>
         <source>%1 Desktop Client Version %2 (%3)</source>
         <comment>%1 is application name. %2 is the human version string. %3 is the operating system name.</comment>
-        <translation>%1 Desktop Client Version %2 (%3)</translation>
+        <translation>%1Toleo la Mteja wa Eneo-kazi  %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="595"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Kutumia programu-jalizi ya faili pepe: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="613"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Toleo hili lilitolewa na %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5510,22 +5510,22 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="396"/>
         <source>Failed to fetch providers.</source>
-        <translation>Failed to fetch providers.</translation>
+        <translation>Imeshindwa kuleta watoa huduma.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="407"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>Failed to fetch search providers for &apos;%1&apos;. Error: %2</translation>
+        <translation>Imeshindwa kuleta watoa huduma za utafutaji wa &apos;%1&apos;. Hitilafu: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="441"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation>Search has failed for &apos;%2&apos;.</translation>
+        <translation>Utafutaji wa &apos;%2&apos; umeshindwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="470"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation>Search has failed for &apos;%1&apos;. Error: %2</translation>
+        <translation>Utafutaji wa &apos;%1&apos; umeshindwa. Hitilafu: %2</translation>
     </message>
 </context>
 <context>
@@ -5533,17 +5533,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="123"/>
         <source>Failed to update folder metadata.</source>
-        <translation>Failed to update folder metadata.</translation>
+        <translation>Imeshindwa kusasisha metadata ya folda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="146"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Failed to unlock encrypted folder.</translation>
+        <translation>Imeshindwa kufungua folda iliyosimbwa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="156"/>
         <source>Failed to finalize item.</source>
-        <translation>Failed to finalize item.</translation>
+        <translation>Imeshindwa kukamilisha kipengee.</translation>
     </message>
 </context>
 <context>
@@ -5559,27 +5559,27 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="192"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="251"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation>Error updating metadata for a folder %1</translation>
+        <translation>Hitilafu katika kusasisha metadata ya folda %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="81"/>
         <source>Could not fetch public key for user %1</source>
-        <translation>Could not fetch public key for user %1</translation>
+        <translation>Haikuweza kuleta ufunguo wa umma kwa mtumiaji %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="88"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation>Could not find root encrypted folder for folder %1</translation>
+        <translation>Haikuweza kupata folda ya mizizi iliyosimbwa kwa folda %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="109"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation>Could not add or remove user %1 to access folder %2</translation>
+        <translation>Haikuweza kuongeza au kuondoa mtumiaji %1 ili kufikia folda %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="229"/>
         <source>Failed to unlock a folder.</source>
-        <translation>Failed to unlock a folder.</translation>
+        <translation>Imeshindwa kufungua folda.</translation>
     </message>
 </context>
 <context>
@@ -5587,43 +5587,43 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="108"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation>End-to-end certificate needs to be migrated to a new one</translation>
+        <translation>Cheti cha mwisho hadi mwisho kinahitaji kuhamishwa hadi mpya</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="110"/>
         <source>Trigger the migration</source>
-        <translation>Trigger the migration</translation>
+        <translation>Anzisha uhamiaji</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation><numerusform>%n notification</numerusform><numerusform>%n notifications</numerusform></translation>
+        <translation><numerusform>%n notification</numerusform><numerusform>%n arifa</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
         <source>Retry all uploads</source>
-        <translation>Retry all uploads</translation>
+        <translation>Jaribu tena vipakizi vyote</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="729"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="891"/>
         <source>Resolve conflict</source>
-        <translation>Resolve conflict</translation>
+        <translation>Tatua mzozo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
         <source>Rename file</source>
-        <translation>Rename file</translation>
+        <translation>Badilisha jina la faili</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation>Open Nextcloud Assistant in browser</translation>
+        <translation>Fungua Msaidizi wa Nextcloud kwenye kivinjari</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Open Nextcloud Talk in browser</translation>
+        <translation>Fungua Nextcloud Talk katika kivinjari</translation>
     </message>
 </context>
 <context>
@@ -5631,22 +5631,22 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
         <source>Confirm Account Removal</source>
-        <translation>Confirm Account Removal</translation>
+        <translation>Thibitisha Uondoaji wa Akaunti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Je, kweli unataka kuondoa muunganisho kwenye akaunti &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Kumbuka:&lt;/b&gt; Hii &lt;b&gt;not&lt;/b&gt; itafuta faili zozote.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1497"/>
         <source>Remove connection</source>
-        <translation>Remove connection</translation>
+        <translation>Ondoa muunganisho</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1498"/>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation>Ghairi</translation>
     </message>
 </context>
 <context>
@@ -5654,85 +5654,85 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="141"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>Could not fetch predefined statuses. Make sure you are connected to the server.</translation>
+        <translation>Haikuweza kuleta hali zilizobainishwa awali. Hakikisha umeunganishwa kwenye seva.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Could not fetch status. Make sure you are connected to the server.</translation>
+        <translation>Haikuweza kuleta hali. Hakikisha umeunganishwa kwenye seva.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Status feature is not supported. You will not be able to set your status.</translation>
+        <translation>Kipengele cha hali hakitumiki. Hutaweza kuweka hali yako.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emojis are not supported. Some status functionality may not work.</translation>
+        <translation>Emoji hazitumiki. Utendaji fulani wa hali huenda usifanye kazi.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Could not set status. Make sure you are connected to the server.</translation>
+        <translation>Haikuweza kuweka hali. Hakikisha umeunganishwa kwenye seva.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Could not clear status message. Make sure you are connected to the server.</translation>
+        <translation>Haikuweza kufuta ujumbe wa hali. Hakikisha umeunganishwa kwenye seva.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="344"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="439"/>
         <source>Don&apos;t clear</source>
-        <translation>Don&apos;t clear</translation>
+        <translation>Usifute</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="347"/>
         <source>30 minutes</source>
-        <translation>30 minutes</translation>
+        <translation>30 dakika</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="350"/>
         <source>1 hour</source>
-        <translation>1 hour</translation>
+        <translation>1 saa</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="353"/>
         <source>4 hours</source>
-        <translation>4 hours</translation>
+        <translation>4 masaa</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="356"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>Today</source>
-        <translation>Today</translation>
+        <translation>Leo</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>This week</source>
-        <translation>This week</translation>
+        <translation>Wiki hii</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="394"/>
         <source>Less than a minute</source>
-        <translation>Less than a minute</translation>
+        <translation>Chini ya dakika moja</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n dakika</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hour</numerusform><numerusform>%n hours</numerusform></translation>
+        <translation><numerusform>%n hour</numerusform><numerusform>%n masaa</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n day</numerusform><numerusform>%n days</numerusform></translation>
+        <translation><numerusform>%n day</numerusform><numerusform>%n siku</numerusform></translation>
     </message>
 </context>
 <context>
@@ -5740,17 +5740,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="64"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 ni hifadhi. Haitumii faili pepe.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="68"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 si mfumo wa faili wa NTFS. Haiungi mkono faili za kawaida.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</translation>
+        <translation>Tafadhali chagua eneo tofauti. %1 ni kiendeshi cha mtandao. Haiungi mkono faili za kawaida.</translation>
     </message>
 </context>
 <context>
@@ -5758,37 +5758,37 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation>Download error</translation>
+        <translation>Hitilafu ya upakuaji</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation>Error downloading</translation>
+        <translation>Hitilafu katika kupakua</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation>could not be downloaded</translation>
+        <translation>haikuweza kupakuliwa</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation>&gt; More details</translation>
+        <translation>&gt;Maelezo zaidi</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation>More details</translation>
+        <translation>Maelezo zaidi</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="17"/>
         <source>Error downloading %1</source>
-        <translation>Error downloading %1</translation>
+        <translation>Hitilafu katika kupakua %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="18"/>
         <source>%1 could not be downloaded.</source>
-        <translation>%1 could not be downloaded.</translation>
+        <translation>%1 haikuweza kupakuliwa.</translation>
     </message>
 </context>
 <context>
@@ -5797,7 +5797,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="74"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Error updating metadata due to invalid modification time</translation>
+        <translation>Hitilafu imetokea wakati wa kusasisha metadata kutokana na muda batili wa kurekebisha</translation>
     </message>
 </context>
 <context>
@@ -5806,7 +5806,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Error updating metadata due to invalid modification time</translation>
+        <translation>Hitilafu imetokea wakati wa kusasisha metadata kutokana na muda batili wa kurekebisha</translation>
     </message>
 </context>
 <context>
@@ -5814,12 +5814,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="239"/>
         <source>Invalid certificate detected</source>
-        <translation>Invalid certificate detected</translation>
+        <translation>Cheti batili kimegunduliwa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="240"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>The host &quot;%1&quot; provided an invalid certificate. Continue?</translation>
+        <translation>Mwenyeji &quot;%1&quot; alitoa cheti batili. Ungependa kuendelea?</translation>
     </message>
 </context>
 <context>
@@ -5827,7 +5827,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>You have been logged out of your account %1 at %2. Please login again.</translation>
+        <translation>Umetoka kwenye akaunti yako %1 kwa %2. Tafadhali ingia tena.</translation>
     </message>
 </context>
 <context>
@@ -5835,42 +5835,42 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Fomu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation>Log in</translation>
+        <translation>Ingia</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation>Sign up with provider</translation>
+        <translation>Jisajili na mtoa huduma</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Keep your data secure and under your control</translation>
+        <translation>Weka data yako salama na chini ya udhibiti wako</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Secure collaboration &amp; file exchange</translation>
+        <translation>Ushirikiano salama &amp; kubadilishana faili</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Easy-to-use web mail, calendaring &amp; contacts</translation>
+        <translation>Barua pepe ya wavuti, kalenda na anwani ni rahisi kutumia</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Screensharing, online meetings &amp; web conferences</translation>
+        <translation>Kushiriki skrini, mikutano ya mtandaoni na mikutano ya wavuti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
         <source>Host your own server</source>
-        <translation>Host your own server</translation>
+        <translation>Kuwa mwenyeji wa seva yako mwenyewe</translation>
     </message>
 </context>
 <context>
@@ -5879,32 +5879,32 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation>Proxy Settings</translation>
+        <translation>Mipangilio ya Wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation>Hostname of proxy server</translation>
+        <translation>Jina la mwenyeji wa seva ya wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation>Username for proxy server</translation>
+        <translation>Jina la mtumiaji kwa seva ya wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation>Password for proxy server</translation>
+        <translation>Nenosiri la seva ya wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) proxy</translation>
+        <translation>HTTP(S) wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 proxy</translation>
+        <translation>SOCKS5 wakala</translation>
     </message>
 </context>
 <context>
@@ -5912,37 +5912,37 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Please sign in</source>
-        <translation>Please sign in</translation>
+        <translation>Tafadhali ingia</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="461"/>
         <source>There are no sync folders configured.</source>
-        <translation>There are no sync folders configured.</translation>
+        <translation>Hakuna folda za usawazishaji zilizosanidiwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Disconnected from %1</source>
-        <translation>Disconnected from %1</translation>
+        <translation>Imetenganishwa na %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="263"/>
         <source>Unsupported Server Version</source>
-        <translation>Unsupported Server Version</translation>
+        <translation>Toleo la Seva Lisiloungwa</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</translation>
+        <translation>Seva kwenye akaunti %1 inaendesha toleo lisilotumika %2. Kutumia mteja huyu na matoleo ya seva ambayo hayatumiki haijajaribiwa na kunaweza kuwa hatari. Endelea kwa hatari yako mwenyewe.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="276"/>
         <source>Terms of service</source>
-        <translation>Terms of service</translation>
+        <translation>Masharti ya huduma</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</translation>
+        <translation>Akaunti yako %1 inakuhitaji ukubali sheria na masharti ya seva yako. Utaelekezwa kwa %2 ili kukiri kwamba umeisoma na unakubaliana nayo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="444"/>
@@ -5953,42 +5953,42 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation>macOS VFS for %1: Sync is running.</translation>
+        <translation>macOS VFS ya %1: Usawazishaji unaendelea.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="451"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation>macOS VFS for %1: Last sync was successful.</translation>
+        <translation>macOS VFS ya %1: Usawazishaji wa mwisho ulifanikiwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="454"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation>macOS VFS for %1: A problem was encountered.</translation>
+        <translation>macOS VFS ya %1: Tatizo lilipatikana.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="520"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Checking for changes in remote &quot;%1&quot;</translation>
+        <translation>Inatafuta mabadiliko katika &quot;%1&quot; ya mbali</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Checking for changes in local &quot;%1&quot;</translation>
+        <translation>Inatafuta mabadiliko katika &quot;%1&quot; ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Disconnected from accounts:</source>
-        <translation>Disconnected from accounts:</translation>
+        <translation>Imetenganishwa na akaunti:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Account %1: %2</source>
-        <translation>Account %1: %2</translation>
+        <translation>Akaunti %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Account synchronization is disabled</source>
-        <translation>Account synchronization is disabled</translation>
+        <translation>Usawazishaji wa akaunti umezimwa</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="540"/>
@@ -6104,7 +6104,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Hiki ni kiungo cha kiolesura chako cha wavuti %1 unapokifungua kwenye kivinjari.</translation>
     </message>
 </context>
 <context>
@@ -6112,42 +6112,42 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Fomu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Mipangilio ya wakala</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Bainisha wakala kikawaida</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Mwenyeji</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Seva ya wakala inahitaji uthibitisho</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Kumbuka: mipangilio ya seva mbadala haina athari kwa akaunti kwenye uenyeji wa ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Tumia wakala wa mfumo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Hakuna wakala</translation>
     </message>
 </context>
 <context>
@@ -6156,238 +6156,238 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/common/utility.cpp" line="427"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="431"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>katika siku zijazo</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="436"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="442"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>sasa</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1min</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1m</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Wakati fulani uliopita</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="131"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="32"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Folda mpya</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="125"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Imeshindwa kuunda jalada la urekebishaji</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="126"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kuunda kumbukumbu ya utatuzi katika eneo lililochaguliwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="810"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Ulibadilisha jina la %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="812"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Ulifuta %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="814"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Uliunda %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="816"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Ulibadilisha %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="840"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Imesawazishwa %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="314"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu katika kufuta faili</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="59"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation type="unfinished"/>
+        <translation>Njia zinazoanza na herufi &apos;#&apos; hazitumiki katika hali ya VFS.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Hatukuweza kuchakata ombi lako. Tafadhali jaribu kusawazisha tena baadaye. Hili likiendelea kutokea, wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Unahitaji kuingia ili kuendelea. Ikiwa unatatizika na kitambulisho chako, tafadhali wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Huna ufikiaji wa rasilimali hii. Ikiwa unafikiri hili ni kosa, tafadhali wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Hatukuweza kupata ulichokuwa unatafuta. Huenda imehamishwa au kufutwa. Ikiwa unahitaji usaidizi, wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Inaonekana unatumia proksi ambayo ilihitaji uthibitishaji. Tafadhali angalia mipangilio yako ya seva mbadala na vitambulisho. Ikiwa unahitaji usaidizi, wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Ombi linachukua muda mrefu kuliko kawaida. Tafadhali jaribu kusawazisha tena. Ikiwa bado haifanyi kazi, wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Faili za seva zilibadilishwa ulipokuwa unafanya kazi. Tafadhali jaribu kusawazisha tena. Wasiliana na msimamizi wa seva yako ikiwa suala litaendelea.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Folda au faili hii haipatikani tena. Ikiwa unahitaji usaidizi, tafadhali wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Ombi halijakamilika kwa sababu baadhi ya masharti yanayohitajika hayakutimizwa. Tafadhali jaribu kusawazisha tena baadaye. Ikiwa unahitaji usaidizi, tafadhali wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Faili ni kubwa sana kupakia. Huenda ukahitaji kuchagua faili ndogo zaidi au uwasiliane na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Anwani iliyotumiwa kutuma ombi ni ndefu sana kwa seva kushughulikia. Tafadhali jaribu kufupisha maelezo unayotuma au wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Aina hii ya faili haitumiki. Tafadhali wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haikuweza kuchakata ombi lako kwa sababu baadhi ya maelezo hayakuwa sahihi au hayajakamilika. Tafadhali jaribu kusawazisha tena baadaye, au wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Nyenzo unayojaribu kufikia imefungwa kwa sasa na haiwezi kurekebishwa. Tafadhali jaribu kuibadilisha baadaye, au wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Ombi hili halijakamilika kwa sababu linakosa baadhi ya masharti yanayohitajika. Tafadhali jaribu tena baadaye, au wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation type="unfinished"/>
+        <translation>Umetuma maombi mengi sana. Tafadhali subiri na ujaribu tena. Ukiendelea kuona hili, msimamizi wa seva yako anaweza kukusaidia.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu imetokea kwenye seva. Tafadhali jaribu kusawazisha tena baadaye, au wasiliana na msimamizi wa seva yako ikiwa tatizo litaendelea.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haitambui mbinu ya ombi. Tafadhali wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation type="unfinished"/>
+        <translation>Tunatatizika kuunganisha kwenye seva. Tafadhali jaribu tena hivi karibuni. Tatizo likiendelea, msimamizi wa seva yako anaweza kukusaidia.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Seva ina shughuli nyingi sasa hivi. Tafadhali jaribu kusawazisha tena baada ya dakika chache au wasiliana na msimamizi wa seva yako ikiwa ni dharura.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Inachukua muda mrefu sana kuunganisha kwenye seva. Tafadhali jaribu tena baadaye. Ikiwa unahitaji usaidizi, wasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haiauni toleo la muunganisho unaotumika. Wasiliana na msimamizi wa seva yako kwa usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Seva haina nafasi ya kutosha kukamilisha ombi lako. Tafadhali angalia ni kiasi gani cha mgao ambacho mtumiaji wako anacho kwa kuwasiliana na msimamizi wa seva yako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation type="unfinished"/>
+        <translation>Mtandao wako unahitaji uthibitishaji wa ziada. Tafadhali angalia muunganisho wako. Wasiliana na msimamizi wa seva yako kwa usaidizi ikiwa tatizo litaendelea.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Huna ruhusa ya kufikia nyenzo hii. Ikiwa unaamini kuwa hii ni hitilafu, wasiliana na msimamizi wa seva yako ili uombe usaidizi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu isiyotarajiwa imetokea. Tafadhali jaribu kusawazisha tena au wasiliana na msimamizi wa seva yako ikiwa suala litaendelea.</translation>
     </message>
 </context>
 <context>
@@ -6395,38 +6395,38 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="31"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Tatua mizozo ya usawazishaji</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 file in conflict</numerusform><numerusform>%1 faili zinazokinzana</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Chagua ikiwa ungependa kuweka toleo la ndani, toleo la seva, au zote mbili. Ukichagua zote mbili, faili ya ndani itakuwa na nambari iliyoongezwa kwa jina lake.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Matoleo yote ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Matoleo yote ya seva</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Tatua migogoro</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Ghairi</translation>
     </message>
 </context>
 <context>
@@ -6434,7 +6434,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>Imenakiliwa!</translation>
     </message>
 </context>
 <context>
@@ -6442,83 +6442,83 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="90"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu imetokea wakati wa kuweka nenosiri la kushiriki.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Hariri shiriki</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Shiriki lebo</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Ruhusu upakiaji na uhariri</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Tazama pekee</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Kuacha faili (kupakia pekee)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Ruhusu kushiriki upya</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="432"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Ficha upakuaji</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="459"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Ulinzi wa nenosiri</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="569"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Weka tarehe ya mwisho wa matumizi</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="654"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nukuu kwa mpokeaji</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="700"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Weka dokezo kwa mpokeaji</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Batilisha kushiriki</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="729"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Ongeza kiungo kingine</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Kiungo cha shiriki kimenakiliwa!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Nakili kiungo cha kushiriki</translation>
     </message>
 </context>
 <context>
@@ -6526,37 +6526,37 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="84"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Nenosiri linahitajika kwa ushiriki mpya</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="112"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Shiriki nenosiri</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="148"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Imeshirikiwa na wewe na %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="154"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Inaisha muda wake %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="304"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Kushiriki kumezimwa</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="311"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Kipengee hiki hakiwezi kushirikiwa.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="319"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Kushiriki kumezimwa.</translation>
     </message>
 </context>
 <context>
@@ -6564,12 +6564,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Tafuta watumiaji au vikundi...</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Kushiriki hakupatikani kwa folda hii</translation>
     </message>
 </context>
 <context>
@@ -6577,7 +6577,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1050"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Imeshindwa kuunganisha hifadhidata.</translation>
     </message>
 </context>
 <context>
@@ -6585,17 +6585,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="99"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sawazisha sasa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="118"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Tatua migogoro</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="131"/>
         <source>Open browser</source>
-        <translation type="unfinished"/>
+        <translation>Fungua kivinjari</translation>
     </message>
 </context>
 <context>
@@ -6603,12 +6603,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="21"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Jibu kwa…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="56"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Tuma jibu kwa ujumbe wa gumzo</translation>
     </message>
 </context>
 <context>
@@ -6616,17 +6616,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
         <source>Terms of Service</source>
-        <translation type="unfinished"/>
+        <translation>Masharti ya Huduma</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
         <source>Switch to your browser to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Badili hadi kwenye kivinjari chako ili ukubali sheria na masharti</translation>
     </message>
 </context>
 <context>
@@ -6634,42 +6634,42 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Fungua folda za ndani au za kikundi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Fungua folda ya ndani</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Imeunganishwa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Imetenganishwa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Fungua folda ya ndani &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Fungua folda ya kikundi &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="213"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Fungua %1 katika kichunguzi cha faili</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="218"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Kikundi cha watumiaji na menyu ya folda za ndani</translation>
     </message>
 </context>
 <context>
@@ -6677,17 +6677,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="66"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Fungua folda za ndani au za kikundi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="101"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Programu zaidi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="124"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Fungua %1 kwenye kivinjari</translation>
     </message>
 </context>
 <context>
@@ -6695,7 +6695,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="31"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Tafuta faili, ujumbe, matukio …</translation>
     </message>
 </context>
 <context>
@@ -6703,7 +6703,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="30"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Anza kuandika ili kutafuta</translation>
     </message>
 </context>
 <context>
@@ -6711,7 +6711,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="36"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Pakia matokeo zaidi</translation>
     </message>
 </context>
 <context>
@@ -6719,7 +6719,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Mifupa ya matokeo ya utafutaji.</translation>
     </message>
 </context>
 <context>
@@ -6727,7 +6727,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="34"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Pakia matokeo zaidi</translation>
     </message>
 </context>
 <context>
@@ -6735,7 +6735,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="31"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Hakuna matokeo kwa</translation>
     </message>
 </context>
 <context>
@@ -6743,7 +6743,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="24"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Sehemu ya matokeo ya utafutaji %1</translation>
     </message>
 </context>
 <context>
@@ -6751,44 +6751,44 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="22"/>
         <source>Switch to account</source>
-        <translation type="unfinished"/>
+        <translation>Badili hadi akaunti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="61"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Hali ya sasa ya akaunti iko mtandaoni</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="61"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Hali ya sasa ya akaunti ni usisumbue</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="124"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Matendo ya akaunti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="138"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Weka hali</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Toka</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Ingia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="168"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Ondoa akaunti</translation>
     </message>
 </context>
 <context>
@@ -6796,72 +6796,72 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="32"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Hali ya mtandao</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="52"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Mtandaoni</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Mbali</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Bize</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Usisumbue</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zima arifa zote</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Isiyoonekana</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Onekana nje ya mtandao</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Hali ya ujumbe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Hali yako ni ipi?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Futa ujumbe wa hali baada </translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Ghairi</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Futa</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Omba</translation>
     </message>
 </context>
 <context>
@@ -6869,62 +6869,62 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="107"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="111"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="115"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="96"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="103"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="286"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n year</numerusform><numerusform>%n miaka</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="287"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n month</numerusform><numerusform>%n miezi</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="288"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n day</numerusform><numerusform>%n siku</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hour</numerusform><numerusform>%n masaa</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n dakika</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n second</numerusform><numerusform>%n sekunde</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -6932,17 +6932,17 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="250"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Kichwa cha hundi hakijaundwa vizuri.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="284"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Kichwa cha hundi kilikuwa na aina ya hundi isiyojulikana &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="289"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Faili iliyopakuliwa hailingani na hundi, itarejeshwa. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -6950,12 +6950,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Tray ya Mfumo haipatikani</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 inahitaji kwenye trei ya mfumo wa kufanya kazi. Ikiwa unaendesha XFCE, tafadhali fuata &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; maagizo haya&lt;/a&gt;. Vinginevyo, tafadhali sakinisha programu ya trei ya mfumo kama vile &quot;treya&quot; na ujaribu tena.</translation>
     </message>
 </context>
 <context>
@@ -6963,7 +6963,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Imejengwa kutoka kwa marekebisho ya Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; kwa %3,%4 kwa kutumia Qt%5,%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6971,119 +6971,119 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Faili pepe imeundwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Imebadilishwa na faili ya mtandaoni</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Imepakuliwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Imepakiwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Toleo la seva limepakuliwa, limenakiliwa kubadilisha faili ya ndani kuwa faili ya mgongano</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Toleo la seva limepakuliwa, limenakiliwa kubadilisha faili ya ndani kuwa faili ya migogoro ya kesi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Imefutwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Imehamishwa mpaka %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Imepuuzwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu ya ufikiaji wa mfumo wa faili</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Ilisasisha metadata ya ndani</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Ilisasisha metadata ya faili pepe za ndani</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Imesasisha metadata ya usimbaji wa mwanzo hadi mwisho</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Haijulikani</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Inapakua</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Inapakia</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Inafuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Inahama</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="80"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Inapuuza</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="85"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Inasasisha metadata ya ndani</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Inasasisha metadata ya faili pepe za ndani</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Inasasisha metadata ya usimbaji fiche kutoka mwisho hadi mwisho</translation>
     </message>
 </context>
 <context>
@@ -7091,52 +7091,52 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Hali ya usawazishaji haijulikani</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Inasubiri kuanza kusawazisha</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Usawazishaji unaendelea</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Usawazishaji umefaulu</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Usawazishaji ulifanikiwa lakini faili zingine hazikuzingatiwa</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu ilitokea wakati wa kusawazisha</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Hitilafu ilitokea wakati wa kusanidi</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Inasimamisha usawazishaji</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Inajiandaa kusawazisha</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Usawazishaji umesitishwa</translation>
     </message>
 </context>
 <context>
@@ -7144,52 +7144,52 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="37"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kufungua kivinjari</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="38"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Kulikuwa na hitilafu wakati wa kuzindua kivinjari kwenda kwa URL %1. Labda hakuna kivinjari chaguo-msingi kimesanidiwa?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="61"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Haikuweza kufungua kiteja cha barua pepe</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="62"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Kulikuwa na hitilafu wakati wa kuzindua mteja wa barua pepe ili kuunda ujumbe mpya. Labda hakuna mteja chaguo-msingi wa barua pepe aliyesanidiwa?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="77"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Inapatikana kila wakati ndani ya nchi</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="79"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Kwa sasa inapatikana ndani ya nchi</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="81"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Baadhi zinapatikana mtandaoni pekee</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Inapatikana mtandaoni pekee</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Ifanye ipatikane kila wakati ndani ya nchi</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Achia nafasi ya ndani</translation>
     </message>
 </context>
 </TS>
