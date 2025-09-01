@@ -31,10 +31,18 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
+
+    void willDeleteItemToClientTrashBin(const QString &itemFilePath)
+    {
+        _deleteToClientTrashBin.insert(itemFilePath);
+    }
+
     void start() override;
 
 private:
     bool removeRecursively(const QString &path);
+
+    QSet<QString> _deleteToClientTrashBin;
 
     bool _moveToTrash = false;
 };
