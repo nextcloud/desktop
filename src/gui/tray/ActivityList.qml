@@ -38,8 +38,8 @@ ScrollView {
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
     ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, controlRoot.width * 0.03)
-    ScrollBar.vertical.minimumSize: 0.05
+    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
+    ScrollBar.vertical.minimumSize: Style.minimumScrollBarThumbSize
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem
