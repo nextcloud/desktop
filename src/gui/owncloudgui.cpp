@@ -33,6 +33,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
+#include "declarativeui/declarativeui.h"
 #include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
@@ -134,6 +135,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterType<DeclarativeUi>("com.nextcloud.desktopclient", 1, 0, "DeclarativeUi");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "Activity", "Activity");
@@ -706,6 +708,11 @@ void ownCloudGui::slotShowShareDialog(const QString &localPath) const
 void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
     _tray->createFileActivityDialog(localPath);
+}
+
+void ownCloudGui::slotShowDeclarativeUiDialog(const QString &localPath) const
+{
+    _tray->showDeclarativeUiDialog(localPath);
 }
 
 } // end namespace
