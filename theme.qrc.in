@@ -9,22 +9,22 @@
         <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-256.png">theme/colored/256-@APPLICATION_ICON_NAME@-icon.png</file>
         <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-512.png">theme/colored/512-@APPLICATION_ICON_NAME@-icon.png</file>
         <file alias="theme/colored/@APPLICATION_ICON_NAME@-icon-1024.png">theme/colored/1024-@APPLICATION_ICON_NAME@-icon.png</file>
-        <file>theme/colored/state-error-32.png</file>
-        <file>theme/colored/state-error-64.png</file>
-        <file>theme/colored/state-error-128.png</file>
-        <file>theme/colored/state-error-256.png</file>
-        <file>theme/colored/state-ok-32.png</file>
-        <file>theme/colored/state-ok-64.png</file>
-        <file>theme/colored/state-ok-128.png</file>
-        <file>theme/colored/state-ok-256.png</file>
-        <file>theme/colored/state-pause-32.png</file>
-        <file>theme/colored/state-pause-64.png</file>
-        <file>theme/colored/state-pause-128.png</file>
-        <file>theme/colored/state-pause-256.png</file>
-        <file>theme/colored/state-sync-32.png</file>
-        <file>theme/colored/state-sync-64.png</file>
-        <file>theme/colored/state-sync-128.png</file>
-        <file>theme/colored/state-sync-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-error-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-error-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-error-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-error-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-ok-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-ok-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-ok-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-ok-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-pause-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-pause-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-pause-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-pause-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-sync-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-sync-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-sync-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-sync-256.png</file>
         <file>theme/colored/wizard_logo.png</file>
         <file>theme/colored/wizard_logo@2x.png</file>
         <file>theme/colored/wizard_logo.svg</file>
@@ -65,26 +65,26 @@
         <file>theme/black/state-sync-64.png</file>
         <file>theme/black/state-sync-128.png</file>
         <file>theme/black/state-sync-256.png</file>
-        <file>theme/colored/state-error.svg</file>
-        <file>theme/colored/state-error-16.png</file>
-        <file>theme/colored/state-offline.svg</file>
-        <file>theme/colored/state-offline-16.png</file>
-        <file>theme/colored/state-offline-32.png</file>
-        <file>theme/colored/state-offline-64.png</file>
-        <file>theme/colored/state-offline-128.png</file>
-        <file>theme/colored/state-offline-256.png</file>
-        <file>theme/colored/state-ok.svg</file>
-        <file>theme/colored/state-ok-16.png</file>
-        <file>theme/colored/state-pause.svg</file>
-        <file>theme/colored/state-pause-16.png</file>
-        <file>theme/colored/state-sync.svg</file>
-        <file>theme/colored/state-sync-16.png</file>
-        <file>theme/colored/state-warning.svg</file>
-        <file>theme/colored/state-warning-16.png</file>
-        <file>theme/colored/state-warning-32.png</file>
-        <file>theme/colored/state-warning-64.png</file>
-        <file>theme/colored/state-warning-128.png</file>
-        <file>theme/colored/state-warning-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-error.svg</file>
+        <file>theme/@STATE_SUBDIR@state-error-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-offline.svg</file>
+        <file>theme/@STATE_SUBDIR@state-offline-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-offline-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-offline-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-offline-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-offline-256.png</file>
+        <file>theme/@STATE_SUBDIR@state-ok.svg</file>
+        <file>theme/@STATE_SUBDIR@state-ok-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-pause.svg</file>
+        <file>theme/@STATE_SUBDIR@state-pause-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-sync.svg</file>
+        <file>theme/@STATE_SUBDIR@state-sync-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-warning.svg</file>
+        <file>theme/@STATE_SUBDIR@state-warning-16.png</file>
+        <file>theme/@STATE_SUBDIR@state-warning-32.png</file>
+        <file>theme/@STATE_SUBDIR@state-warning-64.png</file>
+        <file>theme/@STATE_SUBDIR@state-warning-128.png</file>
+        <file>theme/@STATE_SUBDIR@state-warning-256.png</file>
         <file>theme/black/folder.png</file>
         <file>theme/black/folder.svg</file>
         <file>theme/black/folder-group.svg</file>

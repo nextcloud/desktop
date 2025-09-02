@@ -18,6 +18,13 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
+# Branding switch (Qt 6 only; default OFF)
+option(IS_BRANDED_CLIENT "If ON, use neutral (unbranded) state icons" OFF)
+set(STATE_SUBDIR "colored/")
+if(IS_BRANDED_CLIENT)
+    set(STATE_SUBDIR "neutral/")
+endif()
+
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
@@ -435,7 +442,7 @@ if(NOT DEFINED APPLICATION_FOLDER_ICON_INDEX)
     set(APPLICATION_FOLDER_ICON_INDEX 0)
 endif()
 
-set(STATE_ICONS_COLORS colored black white)
+set(STATE_ICONS_COLORS colored black white neutral)
 
 foreach(state_icons_color ${STATE_ICONS_COLORS})
     set(STATE_ICONS_PATH "${theme_dir}/${state_icons_color}/")
