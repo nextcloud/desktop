@@ -10,6 +10,7 @@ import QtQuick.Controls
 
 import com.nextcloud.desktopclient
 import Style
+import "../tray"
 
 ApplicationWindow {
     id: root
@@ -19,11 +20,52 @@ ApplicationWindow {
     minimumHeight: 300
     LayoutMirroring.childrenInherit: true
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
+    flags: Qt.Window
+    color: Style.currentUserHeaderColor
 
     property var accountState: ({})
     property string localPath: ""
 
     title: qsTr("File actions for %1").arg(root.localPath)
+
+    EndpointModel {
+        id: endpointModel
+        accountState: root.accountState
+        localPath: root.localPath
+    }
+
+    RowLayout {
+        spacing: 8
+        Layout.fillWidth: true
+
+        Image {
+            source: "image://svgimage-custom-color/folder.svg/" + palette.windowText
+            Layout.minimumWidth: Style.headerButtonIconSize
+            Layout.minimumHeight: Style.headerButtonIconSize
+        }
+
+        EnforcedPlainTextLabel {
+            text: root.localPath
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+        }
+
+        Button {
+            icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+            icon.width: Style.activityListButtonIconSize
+            icon.height: Style.activityListButtonIconSize
+            Layout.minimumWidth: Style.activityListButtonWidth
+            Layout.minimumHeight: Style.activityListButtonHeight
+        }
+
+        Button {
+            icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
+            icon.width: Style.activityListButtonIconSize
+            icon.height: Style.activityListButtonIconSize
+            Layout.minimumWidth: Style.activityListButtonWidth
+            Layout.minimumHeight: Style.activityListButtonHeight
+        }
+    }
 
     Component {
         id: fileActionsDelegate
@@ -33,9 +75,7 @@ ApplicationWindow {
             width: parent.width
             height: 40
 
-            required property string type
             required property string name
-            required property string url
 
             Row {
                 anchors.fill: parent
@@ -43,34 +83,15 @@ ApplicationWindow {
                 spacing: 5
                 height: implicitHeight
 
-                Text {
-                    text: fileActionsItem.type
-                    color: Style.accentColor
-                    font.pixelSize: Style.pixelSize
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Text {
+                Button {
+                    icon.source: "image://svgimage-custom-color/files.svg/" + palette.windowText
                     text: fileActionsItem.name
-                    color: Style.accentColor
                     font.pixelSize: Style.pixelSize
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Text {
-                    text: fileActionsItem.url
-                    color: Style.accentColor
-                    font.pixelSize: Style.pixelSize
-                    verticalAlignment: Text.AlignVCenter
+                    height: implicitHeight
+                    onClicked: endpointModel.createRequest(endpointModel.index)
                 }
             }
         }
-    }
-
-    EndpointModel {
-        id: endpointModel
-        accountState: root.accountState
-        localPath: root.localPath
     }
 
     ListView {

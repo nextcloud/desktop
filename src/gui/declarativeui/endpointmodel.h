@@ -26,7 +26,11 @@ public:
     enum DataRole {
         EndpointTypeRole = Qt::UserRole + 1,
         EndpointNameRole,
-        EndpointUrlRole
+        EndpointUrlRole,
+        EndpointIconRole,
+        EndpointFilterRole,
+        EndpointParameterRole,
+        EndpointVerbRole
     };
     Q_ENUM(DataRole)
 
@@ -42,12 +46,30 @@ signals:
     void endpointModelChanged();
     void localPathChanged();
     void accountStateChanged();
+    void requestDone();
+
+public slots:
+    void createRequest(const int row);
+    void processRequest(const QJsonDocument &json);
 
 private:
+    struct Response {
+        QString name;
+        QString type;
+        QString label;
+        QString url;
+        QString text;
+    };
+    Response _response;
+
     struct Endpoint {
         QString type;
         QString name;
         QString url;
+        QString icon;
+        QString filter;
+        QString parameter;
+        QString verb;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;
