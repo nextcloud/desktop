@@ -70,6 +70,8 @@ QtObject {
 
     property int minActivityHeight: variableSize(32)
 
+    property int minimumScrollBarWidth: 12
+    property real minimumScrollBarThumbSize: 0
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
     property int currentAccountLabelWidth: 128
