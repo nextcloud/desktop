@@ -175,6 +175,9 @@ public:
     [[nodiscard]] bool serverHasValidSubscription() const;
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
+    [[nodiscard]] bool serverHasDeclarativeUi() const;
+    [[nodiscard]] QVariantList declarativeUiEndpoints() const;
+
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
@@ -184,7 +187,6 @@ private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
-
     QList<DirectEditor*> _directEditors;
 };
 

@@ -437,6 +437,18 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
     return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
 }
 
+bool Capabilities::serverHasDeclarativeUi() const
+{
+    return _capabilities[QStringLiteral("declarativeui")].toMap().isEmpty();
+}
+
+QVariantList Capabilities::declarativeUiEndpoints() const
+{
+    const auto declarativeUi = _capabilities.value("declarativeui").toMap();
+    const auto hooks = declarativeUi.value("hooks").toList();
+    return hooks;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
@@ -465,6 +477,7 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
 
     return nullptr;
 }
+
 
 /*-------------------------------------------------------------------------------------*/
 
