@@ -136,6 +136,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<DeclarativeUi>("com.nextcloud.desktopclient", 1, 0, "DeclarativeUi");
+    qmlRegisterType<EndpointModel>("com.nextcloud.desktopclient", 1, 0, "EndpointModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "Activity", "Activity");
@@ -713,6 +714,11 @@ void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 void ownCloudGui::slotShowDeclarativeUiDialog(const QString &localPath) const
 {
     _tray->showDeclarativeUiDialog(localPath);
+}
+
+void ownCloudGui::slotShowFileActionsDialog(const QString &localPath) const
+{
+    _tray->showFileActionsDialog(localPath);
 }
 
 } // end namespace
