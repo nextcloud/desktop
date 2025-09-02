@@ -18,10 +18,9 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
-# Branding switch
-option(IS_BRANDED_CLIENT "If ON, use neutral state icons; if OFF, use Nextcloud themed state icons" OFF)
+# Icon switch: if branding is done, use the neutral state icons
 set(STATE_SUBDIR "")
-if(IS_BRANDED_CLIENT)
+if(NOT APPLICATION_NAME STREQUAL "Nextcloud")
     set(STATE_SUBDIR "neutral/")
 endif()
 
