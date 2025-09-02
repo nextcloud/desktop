@@ -18,11 +18,11 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
-# Branding switch (Qt 6 only; default ON for backward compatibility)
-option(IS_BRANDED_CLIENT "If ON, use branded (colored) state icons; if OFF, use neutral (unbranded) state icons" ON)
-set(STATE_SUBDIR "neutral/")
+# Branding switch
+option(IS_BRANDED_CLIENT "If ON, use neutral state icons; if OFF, use Nextcloud themed state icons" OFF)
+set(STATE_SUBDIR "")
 if(IS_BRANDED_CLIENT)
-    set(STATE_SUBDIR "colored/")
+    set(STATE_SUBDIR "neutral/")
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
