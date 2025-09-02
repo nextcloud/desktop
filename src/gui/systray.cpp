@@ -16,6 +16,7 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
+#include "declarativeui/declarativeui.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -436,6 +437,88 @@ void Systray::createFileActivityDialog(const QString &localPath)
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
 }
 
+void Systray::showDeclarativeUiDialog(const QString &localPath)
+{
+    createDeclarativeUiDialog(localPath);
+}
+
+void Systray::showFileActionsDialog(const QString &localPath)
+{
+    createFileActionsDialog(localPath);
+}
+
+void Systray::createDeclarativeUiDialog(const QString &localPath)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open declarative UI dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open declarative UI dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    QQmlComponent declarativeUiQml(trayEngine(), QStringLiteral("qrc:/qml/src/gui/declarativeui/DeclarativeUiWindow.qml"));
+    if (declarativeUiQml.isError()) {
+        qCWarning(lcSystray) << declarativeUiQml.errorString();
+        qCWarning(lcSystray) << declarativeUiQml.errors();
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
+    const auto declarativeUiDialog = declarativeUiQml.createWithInitialProperties(initialProperties);
+    const auto dialog = qobject_cast<QQuickWindow*>(declarativeUiDialog);
+    if (!dialog) {
+        qCWarning(lcSystray) << "Declarative UI dialog window resulted in creation of object that was not a window!";
+        return;
+    }
+
+    dialog->show();
+    dialog->raise();
+    dialog->requestActivate();
+}
+
+void Systray::createFileActionsDialog(const QString &localPath)
+{
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file actions dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    QQmlComponent fileActionsQml(trayEngine(), QStringLiteral("qrc:/qml/src/gui/declarativeui/FileActionsWindow.qml"));
+    if (fileActionsQml.isError()) {
+        qCWarning(lcSystray) << fileActionsQml.errorString();
+        qCWarning(lcSystray) << fileActionsQml.errors();
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
+    const auto fileActionsDialog = fileActionsQml.createWithInitialProperties(initialProperties);
+    const auto dialog = qobject_cast<QQuickWindow*>(fileActionsDialog);
+    if (!dialog) {
+        qCWarning(lcSystray) << "File Actions dialog window resulted in creation of object that was not a window!";
+        return;
+    }
+
+    dialog->show();
+    dialog->raise();
+    dialog->requestActivate();
+}
+
 void Systray::presentShareViewInTray(const QString &localPath)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
@@ -446,6 +529,18 @@ void Systray::presentShareViewInTray(const QString &localPath)
     qCDebug(lcSystray) << "Opening file details view in tray for " << localPath;
 
     Q_EMIT showFileDetails(folder->accountState(), localPath, FileDetailsPage::Sharing);
+}
+
+void Systray::presentDeclarativeUiViewInSystray(const QString &localPath)
+{
+    qCDebug(lcSystray) << "Opening declarative ui view in tray for " << localPath;
+    createDeclarativeUiDialog(localPath);
+}
+
+void Systray::presentFileActionsViewInSystray(const QString &localPath)
+{
+    qCDebug(lcSystray) << "Opening file actions view in tray for " << localPath;
+    createFileActionsDialog(localPath);
 }
 
 void Systray::slotCurrentUserChanged()

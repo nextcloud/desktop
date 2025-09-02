@@ -8,14 +8,17 @@
 #include <QLoggingCategory>
 #include <QtCore>
 
+#include "accountstate.h"
+
 namespace OCC {
 
 class EndpointModel : public QAbstractListModel {
     Q_OBJECT
+    Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
+    Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
 
 public:
     explicit EndpointModel(QObject *const parent = nullptr);
-
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
@@ -27,25 +30,28 @@ public:
     };
     Q_ENUM(DataRole)
 
-    enum EndpointType {
-        ContextMenuRole,
-        CreateMenuRole
-    };
-    Q_ENUM(EndpointType)
+    void parseEndpoints();
 
+    void setAccountState(AccountState *accountState);
+    void setLocalPath(const QString &localPath);
+
+    [[nodiscard]] AccountState *accountState() const;
+    [[nodiscard]] QString localPath() const;
+
+signals:
+    void endpointModelChanged();
+    void localPathChanged();
+    void accountStateChanged();
+
+private:
     struct Endpoint {
-        EndpointType type;
+        QString type;
         QString name;
         QString url;
     };
-
-    using Endpoints = QList<Endpoint>;
-
-    void parseElements(const QVariantList &elementsList);
-
-private:
-    EndpointType stringToEnum(const QString &type);
-    Endpoints _endpoints;
+    QList<Endpoint> _endpoints;
+    AccountState *_accountState;
+    QString _localPath;
 };
 
 }
