@@ -432,7 +432,10 @@ Application::Application(int &argc, char **argv)
         _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActionsCommandReceived,
-            _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
+            _gui.data(), &ownCloudGui::slotShowFileActionsDialog);
+
+    connect(FolderMan::instance()->socketApi(), &SocketApi::declarativeUiCommandReceived,
+            _gui.data(), &ownCloudGui::slotShowDeclarativeUiDialog);
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);

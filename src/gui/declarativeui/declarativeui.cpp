@@ -15,12 +15,6 @@ Q_LOGGING_CATEGORY(lcDeclarativeUi, "nextcloud.gui.declarativeui", QtInfoMsg)
 DeclarativeUi::DeclarativeUi(QObject *parent)
     : QObject(parent)
 {
-    _endpointModel = std::make_unique<EndpointModel>(this);
-}
-
-void DeclarativeUi::fetchEndpoints()
-{
-    _endpointModel->parseElements(_accountState->account()->capabilities().declarativeUiEndpoints());
 }
 
 void DeclarativeUi::setAccountState(AccountState *accountState)
@@ -39,6 +33,7 @@ void DeclarativeUi::setAccountState(AccountState *accountState)
             this, &DeclarativeUi::declarativeUiFetched);
     connect(this, &DeclarativeUi::declarativeUiFetched,
             this, &DeclarativeUi::declarativeUiModelChanged);
+
     Q_EMIT accountStateChanged();
 }
 
@@ -68,10 +63,6 @@ QString DeclarativeUi::localPath() const
 
 DeclarativeUiModel *DeclarativeUi::declarativeUiModel() const {
     return _declarativeUiModel.get();
-}
-
-EndpointModel *DeclarativeUi::endpointModel() const {
-    return _endpointModel.get();
 }
 
 }

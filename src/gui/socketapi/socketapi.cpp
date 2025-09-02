@@ -621,6 +621,12 @@ void SocketApi::processFileActionsRequest(const QString &localFile)
     emit fileActionsCommandReceived(fileData.localPath);
 }
 
+void SocketApi::processDeclarativeUiRequest(const QString &localFile)
+{
+    const auto fileData = FileData::get(localFile);
+    emit declarativeUiCommandReceived(fileData.localPath);
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
