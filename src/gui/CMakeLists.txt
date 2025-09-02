@@ -442,7 +442,7 @@ if(NOT DEFINED APPLICATION_FOLDER_ICON_INDEX)
     set(APPLICATION_FOLDER_ICON_INDEX 0)
 endif()
 
-set(STATE_ICONS_COLORS colored black white neutral)
+set(STATE_ICONS_COLORS colored black white)
 
 foreach(state_icons_color ${STATE_ICONS_COLORS})
     set(STATE_ICONS_PATH "${theme_dir}/${state_icons_color}/")
