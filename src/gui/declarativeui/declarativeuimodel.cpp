@@ -5,7 +5,6 @@
 
 #include "declarativeuimodel.h"
 #include "networkjobs.h"
-#include "accountstate.h"
 
 namespace OCC {
 
