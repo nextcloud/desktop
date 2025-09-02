@@ -97,6 +97,8 @@
 		<file alias="theme/white/state-warning-128.png">theme/white/@STATE_SUBDIR@state-warning-128.png</file>
 		<file alias="theme/white/state-warning-256.png">theme/white/@STATE_SUBDIR@state-warning-256.png</file>
 
+		<file alias="theme/white/state-info.svg">theme/white/@STATE_SUBDIR@state-info.svg</file>
+
 		<!-- client state icons (black) -->
 		<file alias="theme/black/state-error.svg">theme/black/@STATE_SUBDIR@state-error.svg</file>
 		<file alias="theme/black/state-error-16.png">theme/black/@STATE_SUBDIR@state-error-16.png</file>
@@ -139,6 +141,8 @@
 		<file alias="theme/black/state-warning-64.png">theme/black/@STATE_SUBDIR@state-warning-64.png</file>
 		<file alias="theme/black/state-warning-128.png">theme/black/@STATE_SUBDIR@state-warning-128.png</file>
 		<file alias="theme/black/state-warning-256.png">theme/black/@STATE_SUBDIR@state-warning-256.png</file>
+
+		<file alias="theme/black/state-info.svg">theme/black/@STATE_SUBDIR@state-info.svg</file>
 
 		<!-- other icons -->
 
@@ -199,7 +203,6 @@
 		<file>theme/black/more-apps.svg</file>
 		<file>theme/black/search.svg</file>
 		<file>theme/black/settings.svg</file>
-		<file>theme/black/state-info.svg</file>
 		<file>theme/black/user.svg</file>
 		<file>theme/black/wizard-files.png</file>
 		<file>theme/black/wizard-files@2x.png</file>
