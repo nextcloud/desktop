@@ -45,28 +45,20 @@ ApplicationWindow {
                 spacing: 5
                 height: implicitHeight
 
-                Row {
-                    anchors.fill: parent
-                    anchors.margins: 8
-                    spacing: 5
-                    height: implicitHeight
+                Text {
+                    text: declarativeUiItem.text
+                    color: Style.accentColor
+                    font.pixelSize: Style.pixelSize
+                    verticalAlignment: Text.AlignVCenter
+                    visible: declarativeUiItem.name == "Text"
+                }
 
-                    Text {
-                        text: declarativeUiItem.text
-                        color: Style.accentColor
-                        font.pixelSize: Style.pixelSize
-                        verticalAlignment: Text.AlignVCenter
-                        visible: declarativeUiItem.name == "Text"
-                    }
-
-                    Image {
-                        source: declarativeUiItem.url
-                        width: 50
-                        height: 50
-                        verticalAlignment: Text.AlignVCenter
-                        visible: declarativeUiItem.name == "Image"
-                    }
-
+                Image {
+                    source: declarativeUiItem.url
+                    width: 50
+                    height: 50
+                    verticalAlignment: Text.AlignVCenter
+                    visible: declarativeUiItem.name == "Image"
                 }
 
                 Button {
