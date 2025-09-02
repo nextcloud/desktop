@@ -5,7 +5,7 @@
  */
 
 #include <QLoggingCategory>
-#include <QNetworkRequest>
+#include <QHstsPolicy>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -314,6 +314,10 @@ QString AbstractNetworkJob::errorString() const
         return reply()->rawHeader("OC-ErrorString");
     }
 
+    if (const auto hstsError = hstsErrorStringFromReply(reply())) {
+        return *hstsError;
+    }
+
     return networkReplyErrorString(*reply());
 }
 
@@ -563,6 +567,31 @@ void AbstractNetworkJob::retry()
     // The cookie will be added automatically, we don't want AccessManager::createRequest to duplicate them
     req.setRawHeader("cookie", QByteArray());
     sendRequest(verb, requestedUrl, req, _requestBody);
+}
+
+std::optional<QString> AbstractNetworkJob::hstsErrorStringFromReply(QNetworkReply *reply)
+{
+    if (!reply) {
+        return {};
+    }
+
+    if (reply->error() != QNetworkReply::SslHandshakeFailedError) {
+        return {};
+    }
+
+    if (!(reply->manager() && reply->manager()->isStrictTransportSecurityEnabled())) {
+        return {};
+    }
+
+    const auto host = reply->url().host();
+    const auto policies = reply->manager()->strictTransportSecurityHosts();
+    for (const auto &policy : policies) {
+        if (policy.host() == host && !policy.isExpired()) {
+            return tr("The server enforces strict transport security and does not accept untrusted certificates.");
+        }
+    }
+
+    return {};
 }
 
 } // namespace OCC
