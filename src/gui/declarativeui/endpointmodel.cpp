@@ -28,7 +28,9 @@ void EndpointModel::parseEndpoints()
             const auto element = endpoint.toMap();
             _endpoints.append({element.value("type").toString(),
                                element.value("name").toString(),
-                               element.value("url").toString()});
+                               element.value("url").toString(),
+                               element.value("desktop_icon").toString(),
+                               element.value("filter").toString()});
         }
     }
 
@@ -46,6 +48,10 @@ QVariant EndpointModel::data(const QModelIndex &index, int role) const
         return _endpoints.at(row).name; // Deck board
     case EndpointUrlRole:
         return _endpoints.at(row).url; // /ocs/v2.php/apps/declarativetest/newDeckBoard
+    case EndpointIconRole:
+        return _endpoints.at(row).icon; // zip
+    case EndpointFilterRole:
+        return _endpoints.at(row).filter; // image/
     }
 
     return {};
@@ -66,6 +72,8 @@ QHash<int, QByteArray> EndpointModel::roleNames() const
     roles[EndpointTypeRole] = "type";
     roles[EndpointNameRole] = "name";
     roles[EndpointUrlRole] = "url";
+    roles[EndpointIconRole] = "icon";
+    roles[EndpointFilterRole] = "filter";
 
     return roles;
 }
