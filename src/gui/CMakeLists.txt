@@ -259,6 +259,10 @@ set(client_SRCS
     wizard/wizardproxysettingsdialog.cpp
     declarativeui/declarativeuimodel.h
     declarativeui/declarativeuimodel.cpp
+    declarativeui/declarativeui.h
+    declarativeui/declarativeui.cpp
+    declarativeui/endpointmodel.h
+    declarativeui/endpointmodel.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
