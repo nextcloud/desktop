@@ -26,7 +26,9 @@ public:
     enum DataRole {
         EndpointTypeRole = Qt::UserRole + 1,
         EndpointNameRole,
-        EndpointUrlRole
+        EndpointUrlRole,
+        EndpointIconRole,
+        EndpointFilterRole
     };
     Q_ENUM(DataRole)
 
@@ -48,6 +50,8 @@ private:
         QString type;
         QString name;
         QString url;
+        QString icon;
+        QString filter;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;

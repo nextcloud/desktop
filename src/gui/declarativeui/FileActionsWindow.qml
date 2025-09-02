@@ -36,6 +36,8 @@ ApplicationWindow {
             required property string type
             required property string name
             required property string url
+            required property string icon
+            required property string filter
 
             Row {
                 anchors.fill: parent
@@ -59,6 +61,20 @@ ApplicationWindow {
 
                 Text {
                     text: fileActionsItem.url
+                    color: Style.accentColor
+                    font.pixelSize: Style.pixelSize
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Text {
+                    text: fileActionsItem.icon
+                    color: Style.accentColor
+                    font.pixelSize: Style.pixelSize
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Text {
+                    text: fileActionsItem.filter
                     color: Style.accentColor
                     font.pixelSize: Style.pixelSize
                     verticalAlignment: Text.AlignVCenter
