@@ -92,11 +92,6 @@ ApplicationWindow {
 
         anchors.fill: parent
         anchors.margins: 10
-
-        Component.onCompleted: {
-            console.log("Completed DeclarativeUi ListView!")
-            console.log("Row count:", declarativeUi.declarativeUiModel.rowCount())
-        }
     }
 
 

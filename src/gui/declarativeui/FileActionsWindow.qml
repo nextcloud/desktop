@@ -80,10 +80,6 @@ ApplicationWindow {
 
         anchors.fill: parent
         anchors.margins: 10
-
-        Component.onCompleted: {
-            console.log("Row count:", endpointModel.rowCount())
-        }
     }
 
 }
