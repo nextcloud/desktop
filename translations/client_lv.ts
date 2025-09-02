@@ -2264,7 +2264,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1725"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Noņemt visas datnes?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1729"/>
@@ -2274,12 +2274,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Atjaunot datnes serverī</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1730"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Atjaunot datnes no servera</translation>
     </message>
 </context>
 <context>
