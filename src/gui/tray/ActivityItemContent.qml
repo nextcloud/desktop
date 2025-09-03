@@ -206,13 +206,13 @@ RowLayout {
                             onClicked: Systray.presentFileActionsViewInSystray(model.openablePath)
                         }
 
-                        MenuItem {
-                            height: visible ? implicitHeight : 0
-                            text: qsTr("Declarative UI")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.presentDeclarativeUiViewInSystray(model.openablePath)
-                        }
+                        // MenuItem {
+                        //     height: visible ? implicitHeight : 0
+                        //     text: qsTr("Declarative UI")
+                        //     font.pixelSize: Style.topLinePixelSize
+                        //     hoverEnabled: true
+                        //     onClicked: Systray.presentDeclarativeUiViewInSystray(model.openablePath)
+                        // }
                     }
                 }
 
