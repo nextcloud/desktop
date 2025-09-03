@@ -32,7 +32,8 @@ void EndpointModel::parseEndpoints()
                                element.value("url").toString(),
                                element.value("desktop_icon").toString(),
                                element.value("filter").toString(),
-                               element.value("parameter").toString()});
+                               element.value("parameter").toString(),
+                               element.value("verb").toString()});
         }
     }
 
@@ -115,6 +116,12 @@ void EndpointModel::setLocalPath(const QString &localPath)
     Q_EMIT localPathChanged();
 }
 
+void EndpointModel::setResponse(const Response &response)
+{
+    _response = response;
+    Q_EMIT responseChanged();
+}
+
 AccountState *EndpointModel::accountState() const
 {
     return _accountState;
@@ -123,6 +130,56 @@ AccountState *EndpointModel::accountState() const
 QString EndpointModel::localPath() const
 {
     return _localPath;
+}
+
+QString EndpointModel::name() const
+{
+    return _response.name;
+}
+
+void EndpointModel::setName(const QString &name)
+{
+    _response.name = name;
+}
+
+QString EndpointModel::type() const
+{
+    return _response.type;
+}
+
+void EndpointModel::setType(const QString &type)
+{
+    _response.type = type;
+}
+
+QString EndpointModel::label() const
+{
+    return _response.label;
+}
+
+void EndpointModel::setLabel(const QString &label)
+{
+    _response.label = label;
+}
+
+QString EndpointModel::url() const
+{
+    return _response.url;
+}
+
+void EndpointModel::setUrl(const QString &url)
+{
+    _response.url = url;
+}
+
+QString EndpointModel::text() const
+{
+    return _response.text;
+}
+
+void EndpointModel::setText(const QString &text)
+{
+    _response.text = text;
 }
 
 void EndpointModel::createRequest(const int row)
@@ -169,6 +226,8 @@ void EndpointModel::processRequest(const QJsonDocument &json)
             _response.text = child.value(QStringLiteral("text")).toString();
         }
     }
+
+    Q_EMIT responseChanged();
 }
 
 } // namespace OCC
