@@ -22,6 +22,7 @@ ApplicationWindow {
     property var accountState: ({})
     property string localPath: ""
     property string shortLocalPath: ""
+    property var response: ({})
 
     title: qsTr("File actions for %1").arg(root.shortLocalPath)
 
@@ -82,6 +83,27 @@ ApplicationWindow {
             }
 
             Rectangle {
+                Layout.fillWidth: true
+                height: Style.extraExtraSmallSpacing
+                color: Style.accentColor
+            }
+
+            Text {
+                id: response
+                text: endpointModel.declarativeUiText
+                textFormat: Text.RichText
+                color: Style.ncHeaderTextColor
+                font.pointSize: Style.pixelSize
+                font.underline: true
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally(endpointModel.declarativeUiUrl)
+                }
+            }
+
+            Rectangle {
+                visible: response.text != ""
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
                 color: Style.accentColor
