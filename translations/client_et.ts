@@ -6320,17 +6320,17 @@ Veateade serveri päringuvastuses: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna osa teabest oli puudulik või vigane, siis sellele päringule server ei saa vastata. Palun proovi sünkroonimist hiljem uuesti või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation type="unfinished"/>
+        <translation>Ressurss, mida soovid kasutada on lukus ja seda ei saa muuta. Palun proovi hiljem uuesti muuta või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation type="unfinished"/>
+        <translation>Kuna puudu on mõned olulised tingimused, siis sellele päringule ei saa vastata. Palun proovi hiljem uuesti või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
