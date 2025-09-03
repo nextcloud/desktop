@@ -503,10 +503,14 @@ void Systray::createFileActionsDialog(const QString &localPath)
         return;
     }
 
+    QFileInfo localFile{localPath};
+    const auto shortLocalPath = localFile.fileName();
     const QVariantMap initialProperties{
         {"accountState", QVariant::fromValue(folder->accountState())},
-        {"localPath", localPath},
+        {"shortLocalPath", shortLocalPath},
+        {"localPath", localPath}
     };
+
     const auto fileActionsDialog = fileActionsQml.createWithInitialProperties(initialProperties);
     const auto dialog = qobject_cast<QQuickWindow*>(fileActionsDialog);
     if (!dialog) {
