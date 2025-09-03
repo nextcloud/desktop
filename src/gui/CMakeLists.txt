@@ -18,6 +18,12 @@ IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
 
+# Icon switch: if branding is done, use the neutral state icons
+set(STATE_SUBDIR "")
+if(NOT APPLICATION_NAME STREQUAL "Nextcloud")
+    set(STATE_SUBDIR "neutral/")
+endif()
+
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 
