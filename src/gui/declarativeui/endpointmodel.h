@@ -16,6 +16,11 @@ class EndpointModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
+    Q_PROPERTY(QString declarativeUiName READ name WRITE setName NOTIFY responseChanged)
+    Q_PROPERTY(QString declarativeUiType READ type WRITE setType NOTIFY responseChanged)
+    Q_PROPERTY(QString declarativeUiLabel READ type WRITE setLabel NOTIFY responseChanged)
+    Q_PROPERTY(QString declarativeUiUrl READ url WRITE setUrl NOTIFY responseChanged)
+    Q_PROPERTY(QString declarativeUiText READ text WRITE setText NOTIFY responseChanged)
 
 public:
     explicit EndpointModel(QObject *const parent = nullptr);
@@ -34,25 +39,6 @@ public:
     };
     Q_ENUM(DataRole)
 
-    void parseEndpoints();
-
-    void setAccountState(AccountState *accountState);
-    void setLocalPath(const QString &localPath);
-
-    [[nodiscard]] AccountState *accountState() const;
-    [[nodiscard]] QString localPath() const;
-
-signals:
-    void endpointModelChanged();
-    void localPathChanged();
-    void accountStateChanged();
-    void requestDone();
-
-public slots:
-    void createRequest(const int row);
-    void processRequest(const QJsonDocument &json);
-
-private:
     struct Response {
         QString name;
         QString type;
@@ -60,6 +46,43 @@ private:
         QString url;
         QString text;
     };
+
+    void parseEndpoints();
+
+    void setAccountState(AccountState *accountState);
+    void setLocalPath(const QString &localPath);
+    void setResponse(const Response &response);
+
+    [[nodiscard]] AccountState *accountState() const;
+    [[nodiscard]] QString localPath() const;
+
+    [[nodiscard]] QString name() const;
+    void setName(const QString &name);
+
+    [[nodiscard]] QString type() const;
+    void setType(const QString &type);
+
+    [[nodiscard]] QString label() const;
+    void setLabel(const QString &label);
+
+    [[nodiscard]] QString url() const;
+    void setUrl(const QString &url);
+
+    [[nodiscard]] QString text() const;
+    void setText(const QString &text);
+
+
+signals:
+    void endpointModelChanged();
+    void localPathChanged();
+    void accountStateChanged();
+    void responseChanged();
+
+public slots:
+    void createRequest(const int row);
+    void processRequest(const QJsonDocument &json);
+
+private:
     Response _response;
 
     struct Endpoint {
