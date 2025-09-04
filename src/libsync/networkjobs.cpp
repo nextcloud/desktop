@@ -1464,6 +1464,23 @@ QByteArray SimpleApiJob::verbToString() const
     return "GET";
 }
 
+SimpleApiJob::Verb SimpleApiJob::stringToVerb(const QString &verb) const
+{
+    if (verb == QStringLiteral("POST")) {
+        return Verb::Post;
+    }
+
+    if (verb == QStringLiteral("PUT")) {
+        return Verb::Put;
+    }
+
+    if (verb == QStringLiteral("DELETE")) {
+        return Verb::Delete;
+    }
+
+    return Verb::Get;
+}
+
 void SimpleApiJob::start()
 {
     addRawHeader("OCS-APIREQUEST", "true");
