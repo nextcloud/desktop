@@ -123,13 +123,7 @@ PropagatorJob::JobParallelism BulkPropagatorDownloadJob::parallelism() const
 
 void BulkPropagatorDownloadJob::finalizeOneFile(const SyncFileItemPtr &file)
 {
-    const auto foundIt = std::find_if(std::cbegin(_filesToDownload), std::cend(_filesToDownload), [&file](const auto &fileDownloading) {
-        return fileDownloading == file;
-    });
-    if (foundIt != std::cend(_filesToDownload)) {
-        emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
-        _filesToDownload.erase(foundIt);
-    }
+    emit propagator()->itemCompleted(file, ErrorCategory::GenericError);
 }
 
 void BulkPropagatorDownloadJob::start()
@@ -143,6 +137,7 @@ void BulkPropagatorDownloadJob::start()
         Q_ASSERT(fileToDownload->_type == ItemTypeVirtualFile);
 
         if (propagator()->localFileNameClash(fileToDownload->_file)) {
+            fileToDownload->_status = SyncFileItem::FileNameClash;
             finalizeOneFile(fileToDownload);
             qCWarning(lcBulkPropagatorDownloadJob) << "File" << QDir::toNativeSeparators(fileToDownload->_file) << "can not be downloaded because of a local file name clash!";
             abortWithError(fileToDownload, SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(fileToDownload->_file)));
@@ -158,6 +153,7 @@ void BulkPropagatorDownloadJob::start()
     if (!r) {
         qCCritical(lcBulkPropagatorDownloadJob) << "Could not create placholders:" << r.error();
         for (const auto &fileToDownload : std::as_const(_filesToDownload)) {
+            fileToDownload->_status = SyncFileItem::NormalError;
             finalizeOneFile(fileToDownload);
         }
         abortWithError({}, SyncFileItem::NormalError, r.error());
@@ -174,8 +170,11 @@ void BulkPropagatorDownloadJob::start()
             // make sure ReadOnly flag is preserved for placeholder, similarly to regular files
             FileSystem::setFileReadOnly(propagator()->fullLocalPath(fileToDownload->_file), true);
         }
+        fileToDownload->_status = SyncFileItem::Success;
         finalizeOneFile(fileToDownload);
     }
+
+    _filesToDownload.clear();
 
     done(SyncFileItem::Success);
 }
