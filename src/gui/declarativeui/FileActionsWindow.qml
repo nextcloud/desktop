@@ -26,8 +26,8 @@ ApplicationWindow {
 
     title: qsTr("File actions for %1").arg(root.shortLocalPath)
 
-    EndpointModel {
-        id: endpointModel
+    FileActionsModel {
+        id: fileActionModel
         accountState: root.accountState
         localPath: root.localPath
     }
@@ -44,6 +44,7 @@ ApplicationWindow {
             spacing: Style.standardSpacing
 
             RowLayout {
+                id: windowHeader
                 Layout.fillWidth: true
                 spacing: Style.standardSpacing
 
@@ -67,6 +68,7 @@ ApplicationWindow {
             }
 
             Rectangle {
+                id: lineTop
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
                 color: Style.accentColor
@@ -74,7 +76,7 @@ ApplicationWindow {
 
             ListView {
                 id: fileActionsView
-                model: endpointModel
+                model: fileActionModel
                 clip: true
                 spacing: Style.trayHorizontalMargin
                 Layout.fillWidth: true
@@ -83,6 +85,7 @@ ApplicationWindow {
             }
 
             Rectangle {
+                id: lineBottom
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
                 color: Style.accentColor
@@ -101,6 +104,7 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 contentItem: Row {
+                    id: responseContent
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
@@ -115,7 +119,7 @@ ApplicationWindow {
 
                     Text {
                         id: response
-                        text: endpointModel.declarativeUiText
+                        text: fileActionModel.responseLabel
                         textFormat: Text.RichText
                         color: Style.ncHeaderTextColor
                         font.pointSize: Style.pixelSize
@@ -125,18 +129,19 @@ ApplicationWindow {
                             id: responseArea
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: Qt.openUrlExternally(endpointModel.declarativeUiUrl)
+                            onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
                         }
                     }
                 }
 
                 ToolTip {
                     visible: responseButton.hovered
-                    text: qsTr("Download file")
+                    text: fileActionModel.responseLabel
                 }
             }
 
             Rectangle {
+                id: repsonseLineBottom
                 visible: response.text != ""
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
@@ -155,6 +160,7 @@ ApplicationWindow {
 
             required property string name
             required property int index
+            required property string icon
 
             Button {
                 id: fileActionButton
@@ -168,12 +174,13 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 contentItem: Row {
+                    id: fileActionsContent
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
 
                     Image {
-                        source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+                        source: icon
                         width: Style.minimumActivityItemHeight
                         height: Style.minimumActivityItemHeight
                         fillMode: Image.PreserveAspectFit
@@ -194,7 +201,7 @@ ApplicationWindow {
                     text: name
                 }
 
-                onClicked: endpointModel.createRequest(index)
+                onClicked: fileActionModel.createRequest(index)
             }
         }
     }

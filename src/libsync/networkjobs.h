@@ -439,6 +439,8 @@ public:
 
     void setVerb(Verb value);
 
+    [[nodiscard]] Verb stringToVerb(const QString &verb) const;
+
     /**
      * @brief addQueryParams - add more parameters to the ocs call
      * @param params: list pairs of strings containing the parameter name and the value.

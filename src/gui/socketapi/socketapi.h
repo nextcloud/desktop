@@ -154,7 +154,7 @@ private:
 
     // Sends the context menu options relating to sharing to listener
     void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, SharingContextItemEncryptedFlag itemEncryptionFlag, SharingContextItemRootEncryptedFolderFlag rootE2eeFolderFlag);
-
+    void sendFileActionsContextMenuOptions(const FileData &fileData, SocketListener *listener);
     void sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
                                              const FileData &fileData,
                                              const bool isE2eEncryptedPath,
