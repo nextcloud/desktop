@@ -1135,9 +1135,9 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
 {
     static std::array<std::pair<const char *, QString>, 7> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
+        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
         { "FILE_ACTIVITY_MENU_TITLE", tr("Activity") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
-        { "FILE_ACTIONS_MENU_TITLE", tr("File actions") },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
         { "CONTEXT_MENU_ICON", APPLICATION_ICON_NAME },
@@ -1182,6 +1182,14 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     // Disabled: only providing email option for private links would look odd,
     // and the copy option is more general.
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
+}
+
+void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, SocketListener *listener)
+{
+    const auto record = fileData.journalRecord();
+    const auto isOnTheServer = record.isValid();
+    const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
 }
 
 void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
@@ -1368,6 +1376,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const auto itemEncryptionFlag = isE2eEncryptedPath ? SharingContextItemEncryptedFlag::EncryptedItem : SharingContextItemEncryptedFlag::NotEncryptedItem;
         const auto rootE2eeFolderFlag = isE2eEncryptedRootFolder ? SharingContextItemRootEncryptedFolderFlag::RootEncryptedFolder : SharingContextItemRootEncryptedFolderFlag::NonRootEncryptedFolder;
         sendSharingContextMenuOptions(fileData, listener, itemEncryptionFlag, rootE2eeFolderFlag);
+        sendFileActionsContextMenuOptions(fileData, listener);
 
         // Conflict files get conflict resolution actions
         bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
