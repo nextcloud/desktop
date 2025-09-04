@@ -1243,7 +1243,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 ne peut pas être téléchargé en raison d&apos;un conflit de nom de fichier local !</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
@@ -1260,7 +1260,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Impossible de mettre à jour les métadonnées du nouveau fichier %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
@@ -3967,19 +3967,19 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Paramètres de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Suivant</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Back</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Retour</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="499"/>
@@ -5875,32 +5875,32 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished"/>
+        <translation>Paramètres de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;hôte du serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nom d’utilisateur pour le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Mot de passe pour le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -6108,42 +6108,42 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Spécifier manuellement le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Hôte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur proxy requiert une authentification</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Remarque: les paramètres de proxy n&apos;ont aucun effet sur les comptes sur localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser le proxy système</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Aucun serveur proxy</translation>
     </message>
 </context>
 <context>
@@ -6174,7 +6174,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1min</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
@@ -6186,7 +6186,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
@@ -6807,7 +6807,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Occupé</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
