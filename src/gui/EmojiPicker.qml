@@ -54,6 +54,7 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: emoji
+                font.pointSize: Style.defaultFontPtSize + 2
             }
 
             Rectangle {
@@ -112,6 +113,13 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: modelData === undefined ? "" : modelData.unicode
+                font.pointSize: Style.defaultFontPtSize + 4
+            }
+
+            ToolTip {
+                text: modelData === undefined ? "" : modelData.shortname
+                visible: emojiDelegate.hovered
+                delay: Qt.styleHints.mousePressAndHoldInterval
             }
 
             onClicked: {
