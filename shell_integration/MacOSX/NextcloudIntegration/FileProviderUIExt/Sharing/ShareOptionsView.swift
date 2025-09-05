@@ -35,7 +35,7 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var groupShareMenuItem: NSMenuItem!
     @IBOutlet private weak var emailShareMenuItem: NSMenuItem!
     @IBOutlet private weak var federatedCloudShareMenuItem: NSMenuItem!
-    @IBOutlet private weak var circleShare: NSMenuItem!
+    @IBOutlet private weak var teamShare: NSMenuItem!
     @IBOutlet private weak var talkConversationShare: NSMenuItem!
 
     let kit = NextcloudKit.shared
@@ -111,7 +111,7 @@ class ShareOptionsView: NSView {
         groupShareMenuItem.title = String(localized: "Group share")
         emailShareMenuItem.title = String(localized: "Email share")
         federatedCloudShareMenuItem.title = String(localized: "Federated cloud share")
-        circleShare.title = String(localized: "Team share")
+        teamShare.title = String(localized: "Team share")
         talkConversationShare.title = String(localized: "Talk conversation share")
 
         shareRecipientTextField.placeholderString = String(localized: "Share recipient")
@@ -236,8 +236,8 @@ class ShareOptionsView: NSView {
             selectedShareType = .email
         } else if selectedShareTypeItem == federatedCloudShareMenuItem {
             selectedShareType = .federatedCloud
-        } else if selectedShareTypeItem == circleShare {
-            selectedShareType = .circle
+        } else if selectedShareTypeItem == teamShare {
+            selectedShareType = .team
         } else if selectedShareTypeItem == talkConversationShare {
             selectedShareType = .talkConversation
         }
