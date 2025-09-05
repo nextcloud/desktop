@@ -216,7 +216,7 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::trashDeletionEnabledStateF
         return std::nullopt;
     }
 
-    __block BOOL receivedTrashDeletionEnabled = YES; // What is the value of the setting being used by the extension?
+    __block BOOL receivedTrashDeletionEnabled = NO; // What is the value of the setting being used by the extension?
     __block BOOL receivedTrashDeletionEnabledSet = NO; // Has the setting been set by the user?
     __block BOOL receivedResponse = NO;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
