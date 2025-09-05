@@ -36,7 +36,7 @@ class Sharee
 
 public:
     // Keep in sync with Share::ShareType
-    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Circle = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
+    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Team = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
     Q_ENUM(Type);
     explicit Sharee() = default;
     explicit Sharee(const QString &shareWith, const QString &displayName, const Type type, const QString &iconUrl = {});
