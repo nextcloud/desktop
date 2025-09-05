@@ -293,7 +293,8 @@ Application::Application(int &argc, char **argv)
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
-        for (const auto &accountState : AccountManager::instance()->accounts()) {
+        const auto &allAccounts = AccountManager::instance()->accounts();
+        for (const auto &accountState : allAccounts) {
             if (accountState && accountState->account()) {
                 accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }
@@ -401,7 +402,8 @@ Application::Application(int &argc, char **argv)
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
-        for (const auto &accountState : AccountManager::instance()->accounts()) {
+        const auto &allAccounts = AccountManager::instance()->accounts();
+        for (const auto &accountState : allAccounts) {
             if (accountState && accountState->account()) {
                 accountState->account()->setProxyType(QNetworkProxy::NoProxy);
             }

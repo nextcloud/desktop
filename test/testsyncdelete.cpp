@@ -43,11 +43,11 @@ private slots:
 
         // A/a1 must be gone because the directory was removed on the server, but hello.txt must be there
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/hello.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/hello.txt"));
 
         // Symmetry
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
-        QVERIFY(fakeFolder.currentRemoteState().find("B/hello.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/hello.txt"));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }

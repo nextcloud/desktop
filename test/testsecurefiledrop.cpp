@@ -93,7 +93,7 @@ private slots:
         QJsonObject fakeFileDropPart;
 
         QJsonArray fileDropUsers;
-        for (const auto &folderUser : metadata->_folderUsers) {
+        for (const auto &folderUser : std::as_const(metadata->_folderUsers)) {
             QJsonObject fileDropUser;
             fileDropUser.insert("userId", folderUser.userId);
             fileDropUser.insert("encryptedFiledropKey", QString::fromUtf8(folderUser.encryptedMetadataKey.toBase64()));
