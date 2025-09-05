@@ -575,7 +575,7 @@ private slots:
                 return;
             case Share::TypeUser:
             case Share::TypeGroup:
-            case Share::TypeCircle:
+            case Share::TypeTeam:
             case Share::TypeRoom:
                 expectedExpireDateTime = QDate::currentDate().addDays(internalExpireDays).startOfDay(QTimeZone::utc());
                 break;
