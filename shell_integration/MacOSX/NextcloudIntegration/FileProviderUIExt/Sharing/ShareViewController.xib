@@ -446,7 +446,7 @@
                                 <constraint firstAttribute="bottom" secondItem="T4D-9c-PyA" secondAttribute="bottom" constant="10" id="r5C-pm-lv4"/>
                             </constraints>
                             <connections>
-                                <outlet property="circleShare" destination="yDE-lS-rJZ" id="yHV-25-RJd"/>
+                                <outlet property="teamShare" destination="yDE-lS-rJZ" id="yHV-25-RJd"/>
                                 <outlet property="deleteButton" destination="Bmf-yY-Y7V" id="Wd0-LR-DV5"/>
                                 <outlet property="emailShareMenuItem" destination="5DB-JD-Ij0" id="LD5-P8-V2l"/>
                                 <outlet property="expirationDateCheckbox" destination="HaL-4Z-csA" id="vIf-I8-e3i"/>
