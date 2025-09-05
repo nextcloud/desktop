@@ -90,7 +90,7 @@ HeaderButton {
                     id: folderStateIndicatorBackground
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
-                    color: root.parentBackgroundColor
+                    color: "white"
                     anchors.centerIn: parent
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -1
