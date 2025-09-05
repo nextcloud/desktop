@@ -114,7 +114,10 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testFileUpload() {
@@ -123,7 +126,9 @@ private slots:
         fakeFolder.localModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testDirDownload() {
@@ -136,7 +141,9 @@ private slots:
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Y"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z/d0"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testDirUpload() {
@@ -149,7 +156,9 @@ private slots:
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Y"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z/d0"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testDirUploadWithDelayedAlgorithm() {
@@ -182,7 +191,9 @@ private slots:
         QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r0") > 1);
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r1"));
         QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r1") > 1);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testDirUploadWithDelayedAlgorithmWithNewChecksum() {
@@ -216,7 +227,9 @@ private slots:
         QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r0") > 1);
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r1"));
         QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r1") > 1);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
 
@@ -240,7 +253,9 @@ private slots:
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testRemoteDelete() {
@@ -249,7 +264,9 @@ private slots:
         fakeFolder.localModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testLocalDeleteWithReuploadForNewLocalFiles_data()
@@ -352,7 +369,9 @@ private slots:
         QVERIFY(!itemDidComplete(completeSpy, "a1.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a2.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a3.eml"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testSelectiveSyncBug() {
@@ -379,7 +398,9 @@ private slots:
             }}
         }}};
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
         auto expectedServerState = fakeFolder.currentRemoteState();
 
         // Remove subFolderA with selectiveSync:
@@ -441,7 +462,7 @@ private slots:
     /** Verify that an incompletely propagated directory doesn't have the server's
      * etag stored in the database yet. */
     void testDirEtagAfterIncompleteSync() {
-        FakeFolder fakeFolder{FileInfo{}};
+        FakeFolder fakeFolder{FileInfo{}, {}, {}, OCC::Vfs::Mode::Off};
         QSignalSpy finishedSpy(&fakeFolder.syncEngine(), &SyncEngine::finished);
         fakeFolder.serverErrorPaths().append("NewFolder/foo");
         fakeFolder.remoteModifier().mkdir("NewFolder");
@@ -455,7 +476,7 @@ private slots:
     }
 
     void testDirDownloadWithError() {
-        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12(), {}, {}, OCC::Vfs::Mode::Off};
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().mkdir("Y");
         fakeFolder.remoteModifier().mkdir("Y/Z");
@@ -707,7 +728,7 @@ private slots:
     // Checks whether downloads with bad checksums are accepted
     void testChecksumValidation()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12(), {}, {}, OCC::Vfs::Mode::Off};
         QObject parent;
 
         QByteArray checksumValue;
@@ -739,7 +760,9 @@ private slots:
         // Basic case
         fakeFolder.remoteModifier().create("A/a3", 16, 'A');
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // Bad OC-Checksum
         checksumValue = "SHA1:bad";
@@ -752,7 +775,9 @@ private slots:
         // Good OC-Checksum
         checksumValue = matchedSha1Checksum; // printf 'A%.0s' {1..16} | sha1sum -
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
         checksumValue = QByteArray();
 
         // Bad Content-MD5
@@ -763,7 +788,9 @@ private slots:
         // Good Content-MD5
         contentMd5Value = "d8a73157ce10cd94a91c2079fc9a92c8"; // printf 'A%.0s' {1..16} | md5sum -
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // Invalid OC-Checksum is ignored
         checksumValue = "garbage";
@@ -775,7 +802,9 @@ private slots:
         QVERIFY(!fakeFolder.syncOnce());
         contentMd5Value.clear();
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // OC-Checksum contains Unsupported checksums
         checksumValue = "Unsupported:XXXX SHA1:invalid Invalid:XxX";
@@ -783,7 +812,9 @@ private slots:
         QVERIFY(!fakeFolder.syncOnce()); // Since the supported SHA1 checksum is invalid, no download
         checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
         QVERIFY(fakeFolder.syncOnce()); // The supported SHA1 checksum is valid now, so the file are downloaded
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // Begin Test mismatch recalculation---------------------------------------------------------------------------------
 
@@ -808,7 +839,9 @@ private slots:
         checksumValue = mismatchedSha1Checksum;
         checksumValueRecalculated = matchedSha1Checksum;
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
         checksumValue = QByteArray();
 
         fakeFolder.account()->setServerVersion(prevServerVersion);
@@ -825,7 +858,9 @@ private slots:
         fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
         fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // For legacy servers, some characters were forbidden by the client
         fakeFolder.syncEngine().account()->setServerVersion("8.0.0");
@@ -837,7 +872,9 @@ private slots:
         // We can override that by setting the capability
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // Check that new servers also accept the capability
         fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
@@ -851,7 +888,9 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // We can't depend on currentLocalState for hidden files since
         // it should rightfully skip things like download temporaries
@@ -882,7 +921,9 @@ private slots:
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // Utf8 locale can sync both
         fakeFolder.remoteModifier().insert("A/tößt");
@@ -994,7 +1035,9 @@ private slots:
         fakeFolder.remoteModifier().mkdir("foo");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         QVERIFY(fakeFolder.currentLocalState().find("foo"));
 
@@ -1011,7 +1054,9 @@ private slots:
         fakeFolder.remoteModifier().find("foo")->lastModified = datetime;
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
     }
@@ -1033,7 +1078,9 @@ private slots:
         const auto expectedMtime = localFileInfo.metadataChangeTime();
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         const auto currentMtime = localFileInfo.metadataChangeTime();
         QCOMPARE(currentMtime, expectedMtime);
@@ -1186,7 +1233,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nPUT, 9);
         QCOMPARE(nPOST, 0);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testNetworkErrorsWithSmallerBatchSizes()
@@ -1283,7 +1332,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
         QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // try to move from a big shared folder to your own folder
         fakeFolder.localModifier().mkdir("own_folder");
@@ -1315,7 +1366,9 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_A.data"));
         QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_B.data"));
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testRemoteMoveFailedForbiddenLocalMoveRolledBack()
@@ -1332,7 +1385,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_A.data"));
         QVERIFY(fakeFolder.currentLocalState().find("big_shared_folder/shared_files/big_shared_file_B.data"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // try to move from a big shared folder to your own folder
         fakeFolder.localModifier().mkdir("own_folder");
@@ -1366,12 +1421,14 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_A.data"));
         QVERIFY(!fakeFolder.currentLocalState().find("own_folder/big_shared_file_B.data"));
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testFolderWithFilesInError()
     {
-        FakeFolder fakeFolder{FileInfo{}};
+        FakeFolder fakeFolder{FileInfo{}, {}, {}, OCC::Vfs::Mode::Off};
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
             Q_UNUSED(outgoingData)
@@ -1403,7 +1460,9 @@ private slots:
         constexpr auto CURRENT_MTIME = 1646057277;
 
         FakeFolder fakeFolder{FileInfo{}};
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         const QString fooFileRootFolder("foo");
         const QString barFileRootFolder("bar");
@@ -1436,7 +1495,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         auto expectedState = fakeFolder.currentLocalState();
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        }
     }
 
     void testInvalidMtimeRecovery()
@@ -1445,7 +1506,9 @@ private slots:
         constexpr auto CURRENT_MTIME = 1646057277;
 
         FakeFolder fakeFolder{FileInfo{}};
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         const QString fooFileRootFolder("foo");
         const QString barFileRootFolder("bar");
@@ -1481,7 +1544,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         auto expectedState = fakeFolder.currentLocalState();
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        }
     }
 
     void testLocalInvalidMtimeCorrection()
@@ -1490,7 +1555,9 @@ private slots:
         const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
 
         FakeFolder fakeFolder{FileInfo{}};
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         fakeFolder.localModifier().insert(QStringLiteral("invalid"));
         fakeFolder.localModifier().setModTime("invalid", INVALID_MTIME);
@@ -1513,7 +1580,9 @@ private slots:
         // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
         QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testLocalInvalidMtimeCorrectionBulkUpload()
@@ -1524,7 +1593,9 @@ private slots:
         const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
 
         FakeFolder fakeFolder{FileInfo{}};
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
 
         fakeFolder.localModifier().insert(QStringLiteral("invalid"));
@@ -1548,7 +1619,9 @@ private slots:
         // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
         QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testServerUpdatingMTimeShouldNotCreateConflicts()
@@ -1564,7 +1637,9 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(fakeFolder.syncOnce());
         auto localState = fakeFolder.currentLocalState();
-        QCOMPARE(localState, fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(localState, fakeFolder.currentRemoteState());
+        }
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         const auto fileFirstSync = localState.find(testFile);
 
@@ -1576,7 +1651,9 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
         localState = fakeFolder.currentLocalState();
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         const auto fileSecondSync = localState.find(testFile);
         QVERIFY(fileSecondSync);
@@ -1616,7 +1693,9 @@ private slots:
         fakeFolder.remoteModifier().insert("A/file");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         fakeFolder.remoteModifier().insert("A/FILE");
         QVERIFY(fakeFolder.syncOnce());
@@ -1640,7 +1719,7 @@ private slots:
         constexpr auto shouldHaveCaseClashConflict = true;
 #endif
 
-        FakeFolder fakeFolder{ FileInfo{} };
+        FakeFolder fakeFolder{FileInfo{}};
 
         fakeFolder.remoteModifier().insert("otherFile.txt");
         fakeFolder.remoteModifier().insert(testLowerCaseFile);
@@ -2137,7 +2216,9 @@ private slots:
         fakeFolder.remoteModifier().insert("A/abcdęfg.txt");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/abcdęfg.txt"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testRemoteTypeChangeExistingLocalMustGetRemoved()
@@ -2152,7 +2233,9 @@ private slots:
         fakeFolder.remoteModifier().remove("a/TESTFILE");
         fakeFolder.remoteModifier().mkdir("a/TESTFILE");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         // test directory change to file on remote
         fakeFolder.remoteModifier().mkdir("a/TESTDIR");
@@ -2161,7 +2244,9 @@ private slots:
         fakeFolder.remoteModifier().remove("a/TESTDIR");
         fakeFolder.remoteModifier().insert("a/TESTDIR");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testRemoveAllFilesWithNextcloudCmd()
@@ -2217,7 +2302,9 @@ private slots:
         fakeFolder.remoteModifier().insert("file3");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         fakeFolder.remoteModifier().remove("folder");
         fakeFolder.remoteModifier().remove("folder2");
@@ -2351,7 +2438,9 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryEnforceWindowsFileNameCompatibility(true);
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        if (fakeFolder.syncEngine().syncOptions()._vfs->mode() == Vfs::Mode::Off) {
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
 
         const QString fileWithSpaces1(" foo");
         const QString fileWithSpaces2(" bar ");
