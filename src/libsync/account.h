@@ -120,6 +120,8 @@ public:
     [[nodiscard]] QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
+    [[nodiscard]] QString userFromCredentials() const;
+
     [[nodiscard]] QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
