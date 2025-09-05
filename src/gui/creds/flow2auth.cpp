@@ -97,11 +97,16 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
         _loginUrl = loginUrl;
 
         if (_account->isUsernamePrefillSupported()) {
-            if (const auto userName = Utility::getCurrentUserName();
-                !userName.isEmpty()) {
-                auto query = QUrlQuery(_loginUrl);
+            constexpr auto setUserNameForLogin = [] (const auto &userName, auto &loginUrl) -> void {
+                auto query = QUrlQuery(loginUrl);
                 query.addQueryItem(QStringLiteral("user"), userName);
-                _loginUrl.setQuery(query);
+                loginUrl.setQuery(query);
+            };
+
+            if (const auto userName = _account->userFromCredentials(); !userName.isEmpty()) {
+                setUserNameForLogin(userName, _loginUrl);
+            } else if (const auto userName = Utility::getCurrentUserName(); !userName.isEmpty()) {
+                setUserNameForLogin(userName, _loginUrl);
             }
         }
 
