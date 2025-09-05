@@ -39,7 +39,7 @@ AbstractButton {
             Rectangle {
                 id: accountStatusIndicatorBackground
                 visible: model.isConnected && model.serverHasUserStatus
-                width: accountStatusIndicator.sourceSize.width + 2
+                width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 color: "white"
                 anchors.bottom: accountAvatar.bottom
@@ -52,8 +52,8 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 source: model.statusIcon
                 cache: false
-                x: accountStatusIndicatorBackground.x + 1
-                y: accountStatusIndicatorBackground.y + 1
+                x: accountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
+                y: accountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
@@ -181,3 +181,4 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+
