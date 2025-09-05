@@ -11,6 +11,6 @@ public enum ShareType: Int {
     case publicLink = 3
     case email = 4
     case federatedCloudShare = 6
-    case circle = 7
+    case team = 7
     case talkConversation = 10
 }
