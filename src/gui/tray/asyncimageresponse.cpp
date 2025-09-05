@@ -8,6 +8,8 @@
 #include <QIcon>
 #include <QPainter>
 #include <QSvgRenderer>
+#include <QMimeDatabase>
+#include <QPixmap>
 
 #include "accountmanager.h"
 
@@ -62,6 +64,23 @@ void AsyncImageResponse::processNextImage()
     } else if (imagePath.startsWith(QStringLiteral(":/fileicon"))) {
         const auto filePath = imagePath.mid(10);
         const auto fileInfo = QFileInfo(filePath);
+        
+        // Check if it's an image file that we can generate a thumbnail for
+        QMimeDatabase mimeDb;
+        const auto mimeType = mimeDb.mimeTypeForFile(fileInfo);
+        
+        if (mimeType.name().startsWith("image/") && fileInfo.exists() && fileInfo.isFile()) {
+            // Try to load the image directly for thumbnail generation
+            QPixmap originalPixmap(filePath);
+            if (!originalPixmap.isNull() && !_requestedImageSize.isEmpty()) {
+                // Scale the image to the requested size while maintaining aspect ratio
+                QPixmap scaledPixmap = originalPixmap.scaled(_requestedImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                setImageAndEmitFinished(scaledPixmap.toImage());
+                return;
+            }
+        }
+        
+        // Fall back to file icon if it's not an image or couldn't be loaded
         setImageAndEmitFinished(_fileIconProvider.icon(fileInfo).pixmap(_requestedImageSize).toImage());
         return;
     }

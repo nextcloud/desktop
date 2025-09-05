@@ -15,6 +15,7 @@
 #include <QMimeDatabase>
 #include <QPushButton>
 #include <QUrl>
+#include <QPixmap>
 
 namespace {
 void forceHeaderFont(QWidget *widget)
@@ -128,11 +129,28 @@ void ConflictDialog::updateWidgets()
         sizeLabel->setText(locale().formattedDataSize(info.size()));
 
         const auto mime = mimeDb.mimeTypeForFile(filename);
-        if (QIcon::hasThemeIcon(mime.iconName())) {
-            button->setIcon(QIcon::fromTheme(mime.iconName()));
-        } else {
-            button->setIcon(QIcon(":/qt-project.org/styles/commonstyle/images/file-128.png"));
+        
+        // Try to generate a thumbnail for image files
+        QIcon buttonIcon;
+        if (mime.name().startsWith("image/") && info.exists() && info.isFile()) {
+            QPixmap originalPixmap(filename);
+            if (!originalPixmap.isNull()) {
+                // Scale the image to button size (64x64) while maintaining aspect ratio
+                QPixmap scaledPixmap = originalPixmap.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                buttonIcon = QIcon(scaledPixmap);
+            }
         }
+        
+        // Fall back to mimetype icon if thumbnail generation failed
+        if (buttonIcon.isNull()) {
+            if (QIcon::hasThemeIcon(mime.iconName())) {
+                buttonIcon = QIcon::fromTheme(mime.iconName());
+            } else {
+                buttonIcon = QIcon(":/qt-project.org/styles/commonstyle/images/file-128.png");
+            }
+        }
+        
+        button->setIcon(buttonIcon);
     };
 
     const auto localVersion = _solver->localVersionFilename();
