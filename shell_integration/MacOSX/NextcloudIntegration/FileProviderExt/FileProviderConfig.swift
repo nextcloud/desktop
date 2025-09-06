@@ -33,7 +33,7 @@ struct FileProviderConfig {
     }
 
     var trashDeletionEnabled: Bool {
-        get { internalConfig[ConfigKey.trashDeletionEnabled.rawValue] as? Bool ?? true }
+        get { internalConfig[ConfigKey.trashDeletionEnabled.rawValue] as? Bool ?? false }
         set { internalConfig[ConfigKey.trashDeletionEnabled.rawValue] = newValue }
     }
 
