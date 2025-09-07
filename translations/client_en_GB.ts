@@ -5061,12 +5061,12 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="85"/>
         <source>Organization (O):</source>
-        <translation>Organization (O):</translation>
+        <translation>Organisation (O):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="86"/>
         <source>Organizational Unit (OU):</source>
-        <translation>Organizational Unit (OU):</translation>
+        <translation>Organisational Unit (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="87"/>
