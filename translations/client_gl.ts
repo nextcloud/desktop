@@ -3060,7 +3060,7 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Non foi posíbel recuperar ou crear a ligazón pública compartida. Erro:
+        <translation>Non foi posíbel recuperar ou crear a ligazón pública para compartir. Erro:
 
 %1</translation>
     </message>
