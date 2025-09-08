@@ -20,8 +20,8 @@ endif()
 
 # Icon switch: if branding is done, use the neutral state icons
 set(STATE_SUBDIR "")
-if(NOT APPLICATION_NAME STREQUAL "Nextcloud")
-    set(STATE_SUBDIR "neutral/")
+if(APPLICATION_NAME STREQUAL "Nextcloud")
+    set(STATE_SUBDIR "nextcloud/")
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
