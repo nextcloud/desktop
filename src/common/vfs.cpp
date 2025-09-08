@@ -37,6 +37,8 @@ QString Vfs::modeToString(Mode mode)
         return QStringLiteral("wincfapi");
     case XAttr:
         return QStringLiteral("xattr");
+    case DBusApi:
+        return QStringLiteral("dbusapi");
     }
     return QStringLiteral("off");
 }
@@ -50,6 +52,8 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
         return WithSuffix;
     } else if (str == QLatin1String("wincfapi")) {
         return WindowsCfApi;
+    } else if (str == QLatin1String("dbusapi")) {
+        return DBusApi;
     }
     return {};
 }
@@ -193,6 +197,10 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 {
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         return Vfs::WindowsCfApi;
+    }
+
+    if (isVfsPluginAvailable(Vfs::DBusApi)) {
+        return Vfs::DBusApi;
     }
 
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
