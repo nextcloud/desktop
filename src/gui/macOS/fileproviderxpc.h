@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QHash>
 #include <QDateTime>
+#include <QTimer>
 
 #include "accountstate.h"
 
@@ -36,6 +37,7 @@ public slots:
     void authenticateExtension(const QString &extensionAccountId) const;
     void unauthenticateExtension(const QString &extensionAccountId) const;
     void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename);
+    void checkExtensionConnectivity(); // New method for periodic checks
 
     void setIgnoreList() const;
     void setTrashDeletionEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
@@ -44,8 +46,12 @@ private slots:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
+    void attemptReconnectToExtension(const QString &extensionAccountId) const;
+
     QHash<QString, void*> _clientCommServices;
     QHash<QString, QDateTime> _unreachableAccountExtensions;
+    mutable QHash<QString, AccountState::State> _previousAccountStates;
+    QTimer _connectivityCheckTimer;
 };
 
 } // namespace OCC::Mac

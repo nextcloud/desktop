@@ -7,12 +7,14 @@
 #include "fileproviderxpc.h"
 
 #include <QLoggingCategory>
+#include <QTimer>
 
 #include "csync/csync_exclude.h"
 
 #include "libsync/configfile.h"
 
 #include "gui/accountmanager.h"
+#include "gui/accountstate.h"
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileproviderdomainmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
@@ -31,6 +33,11 @@ Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", Qt
 FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}
 {
+    // Set up periodic connectivity check timer (every 5 minutes)
+    _connectivityCheckTimer.setInterval(300000); // 5 minutes in milliseconds
+    _connectivityCheckTimer.setSingleShot(false);
+    connect(&_connectivityCheckTimer, &QTimer::timeout, this, &FileProviderXPC::checkExtensionConnectivity);
+    _connectivityCheckTimer.start();
 }
 
 void FileProviderXPC::connectToExtensions()
@@ -89,6 +96,14 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     const auto slotSender = dynamic_cast<AccountState*>(sender());
     Q_ASSERT(slotSender);
     const auto extensionAccountId = slotSender->account()->userIdAtHostWithPort();
+    const auto previousState = _previousAccountStates.value(extensionAccountId, AccountState::Disconnected);
+
+    qCInfo(lcFileProviderXPC) << "Account state changed for" << extensionAccountId 
+                              << "from" << AccountState::stateString(previousState)
+                              << "to" << AccountState::stateString(state);
+
+    // Store the current state as previous for next transition
+    _previousAccountStates[extensionAccountId] = state;
 
     switch(state) {
     case AccountState::Disconnected:
@@ -96,7 +111,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::NetworkError:
     case AccountState::ServiceUnavailable:
     case AccountState::MaintenanceMode:
-        // Do nothing, File Provider will by itself figure out connection issue
+        // Store that we had a connection issue to handle recovery properly
         break;
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
@@ -106,11 +121,72 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
         unauthenticateExtension(extensionAccountId);
         break;
     case AccountState::Connected:
-        // Provide credentials
-        authenticateExtension(extensionAccountId);
+        // Check if we're recovering from a network error state
+        const bool wasInErrorState = (previousState == AccountState::NetworkError ||
+                                      previousState == AccountState::Disconnected ||
+                                      previousState == AccountState::ServiceUnavailable ||
+                                      previousState == AccountState::MaintenanceMode ||
+                                      previousState == AccountState::ConfigurationError);
+        
+        if (wasInErrorState) {
+            qCInfo(lcFileProviderXPC) << "Recovering from error state for" << extensionAccountId
+                                      << "- attempting to reconnect extension";
+            attemptReconnectToExtension(extensionAccountId);
+        } else {
+            // Normal authentication
+            authenticateExtension(extensionAccountId);
+        }
         break;
     }
 }
+
+void FileProviderXPC::attemptReconnectToExtension(const QString &extensionAccountId) const
+{
+    qCInfo(lcFileProviderXPC) << "Attempting to reconnect extension" << extensionAccountId;
+    
+    // First, check if the extension is reachable
+    if (!fileProviderExtReachable(extensionAccountId, true, true)) {
+        qCWarning(lcFileProviderXPC) << "Extension" << extensionAccountId 
+                                     << "is not reachable after reconnection attempt";
+        
+        // Try to reconnect to the extension services
+        qCInfo(lcFileProviderXPC) << "Attempting to reconnect to extension services for" << extensionAccountId;
+        connectToExtensions();
+        
+        // Retry authentication after service reconnection
+        if (fileProviderExtReachable(extensionAccountId, false, false)) {
+            qCInfo(lcFileProviderXPC) << "Extension" << extensionAccountId 
+                                      << "became reachable after service reconnection";
+            authenticateExtension(extensionAccountId);
+        } else {
+            qCWarning(lcFileProviderXPC) << "Extension" << extensionAccountId 
+                                         << "still unreachable after service reconnection";
+        }
+    } else {
+        // Extension is reachable, proceed with authentication
+        qCInfo(lcFileProviderXPC) << "Extension" << extensionAccountId << "is reachable, authenticating";
+        authenticateExtension(extensionAccountId);
+    }
+}
+
+void FileProviderXPC::checkExtensionConnectivity()
+{
+    qCDebug(lcFileProviderXPC) << "Performing periodic extension connectivity check";
+    
+    for (const auto &extensionAccountId : _clientCommServices.keys()) {
+        const auto accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(extensionAccountId);
+        if (!accountState || !accountState->isConnected()) {
+            continue; // Skip if account is not connected
+        }
+
+        if (!fileProviderExtReachable(extensionAccountId, false, false)) {
+            qCWarning(lcFileProviderXPC) << "Extension" << extensionAccountId 
+                                         << "is unreachable despite connected account state. Attempting reconnection.";
+            attemptReconnectToExtension(extensionAccountId);
+        }
+    }
+}
+
 void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename)
 {
     qCInfo(lcFileProviderXPC) << "Creating debug archive for extension" << extensionAccountId << "at" << filename;
