@@ -24,6 +24,7 @@
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
     constexpr auto reachableRetryTimeout = 300; // seconds
+    constexpr auto connectivityCheckIntervalMs = 300000; // 5 minutes in milliseconds
 }
 
 namespace OCC::Mac {
@@ -34,10 +35,13 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}
 {
     // Set up periodic connectivity check timer (every 5 minutes)
-    _connectivityCheckTimer.setInterval(300000); // 5 minutes in milliseconds
+    _connectivityCheckTimer.setInterval(::connectivityCheckIntervalMs);
     _connectivityCheckTimer.setSingleShot(false);
     connect(&_connectivityCheckTimer, &QTimer::timeout, this, &FileProviderXPC::checkExtensionConnectivity);
     _connectivityCheckTimer.start();
+    
+    qCInfo(lcFileProviderXPC) << "FileProviderXPC initialized with connectivity check interval:" 
+                              << ::connectivityCheckIntervalMs << "ms";
 }
 
 void FileProviderXPC::connectToExtensions()
