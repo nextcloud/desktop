@@ -51,7 +51,7 @@
                                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSY-fV-uws">
                                             <rect key="frame" x="51" y="0.0" width="375" height="43"/>
                                             <subviews>
-                                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="slV-H6-zJ3">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="slV-H6-zJ3">
                                                     <rect key="frame" x="-2" y="24" width="78" height="19"/>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="File name" id="Uuo-1j-to8">
                                                         <font key="font" metaFont="systemBold" size="16"/>
@@ -59,7 +59,7 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-nE-MrU">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-nE-MrU">
                                                     <rect key="frame" x="-2" y="0.0" width="146" height="16"/>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="File size · Last modified" id="1GC-Gr-x29">
                                                         <font key="font" usesAppearanceFont="YES"/>
@@ -125,7 +125,7 @@
                                     <rect key="frame" x="0.0" y="308" width="480" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <subviews>
-                                        <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="770-HW-oC7">
+                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="770-HW-oC7">
                                             <rect key="frame" x="0.0" y="0.0" width="405" height="40"/>
                                             <textFieldCell key="cell" selectable="YES" borderStyle="border" alignment="left" title="A long error message that provides detail about why some operations with the shares failed" drawsBackground="YES" id="Jvl-L9-x8K">
                                                 <font key="font" metaFont="systemSemibold" size="13"/>
@@ -226,7 +226,7 @@
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
                                     <rect key="frame" x="10" y="10" width="460" height="308"/>
                                     <subviews>
-                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
                                             <rect key="frame" x="-2" y="292" width="464" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Share options" id="fzf-0v-uHo">
                                                 <font key="font" metaFont="systemBold"/>
@@ -263,7 +263,7 @@
                                                 <action selector="shareTypePickerAction:" target="EXb-m8-yzj" id="LN7-TC-RvV"/>
                                             </connections>
                                         </popUpButton>
-                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f8k-Ae-oQc">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f8k-Ae-oQc">
                                             <rect key="frame" x="0.0" y="240" width="460" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Share recipient" bezelStyle="round" id="Ahi-gU-lmO">
                                                 <font key="font" metaFont="system"/>
@@ -271,7 +271,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CXW-ZO-B2f">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CXW-ZO-B2f">
                                             <rect key="frame" x="0.0" y="213" width="460" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Share label" bezelStyle="round" id="ZsJ-zc-mFT">
                                                 <font key="font" metaFont="system"/>
@@ -303,7 +303,7 @@
                                                 <action selector="passwordCheckboxAction:" target="EXb-m8-yzj" id="QMn-RM-jdf"/>
                                             </connections>
                                         </button>
-                                        <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-9L-nhv">
+                                        <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-9L-nhv">
                                             <rect key="frame" x="0.0" y="123" width="460" height="22"/>
                                             <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Enter a new password" usesSingleLineMode="YES" bezelStyle="round" id="hcA-we-oYG">
                                                 <font key="font" metaFont="system"/>
@@ -328,8 +328,8 @@
                                             <rect key="frame" x="0.0" y="73" width="463" height="28"/>
                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="EHU-Gu-Dfh">
                                                 <font key="font" metaFont="system"/>
-                                                <date key="date" timeIntervalSinceReferenceDate="775403508.62005496">
-                                                    <!--2025-07-28 13:51:48 +0000-->
+                                                <date key="date" timeIntervalSinceReferenceDate="779107999.87250698">
+                                                    <!--2025-09-09 10:53:19 +0000-->
                                                 </date>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -345,7 +345,7 @@
                                                 <action selector="noteForRecipientCheckboxAction:" target="EXb-m8-yzj" id="j7a-Tc-uiu"/>
                                             </connections>
                                         </button>
-                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="io6-Kg-fLl">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="io6-Kg-fLl">
                                             <rect key="frame" x="0.0" y="25" width="460" height="22"/>
                                             <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Note for the recipient" bezelStyle="round" id="z5W-BH-NnM">
                                                 <font key="font" metaFont="system"/>
@@ -446,7 +446,6 @@
                                 <constraint firstAttribute="bottom" secondItem="T4D-9c-PyA" secondAttribute="bottom" constant="10" id="r5C-pm-lv4"/>
                             </constraints>
                             <connections>
-                                <outlet property="teamShare" destination="yDE-lS-rJZ" id="yHV-25-RJd"/>
                                 <outlet property="deleteButton" destination="Bmf-yY-Y7V" id="Wd0-LR-DV5"/>
                                 <outlet property="emailShareMenuItem" destination="5DB-JD-Ij0" id="LD5-P8-V2l"/>
                                 <outlet property="expirationDateCheckbox" destination="HaL-4Z-csA" id="vIf-I8-e3i"/>
@@ -465,6 +464,7 @@
                                 <outlet property="shareRecipientTextField" destination="f8k-Ae-oQc" id="bfc-Vn-Zu9"/>
                                 <outlet property="shareTypePicker" destination="aRB-vw-b4r" id="Dfx-Dw-zEM"/>
                                 <outlet property="talkConversationShare" destination="aHo-Mr-vTn" id="hxF-qw-VQO"/>
+                                <outlet property="teamShare" destination="yDE-lS-rJZ" id="yHV-25-RJd"/>
                                 <outlet property="uploadEditPermissionCheckbox" destination="luZ-Vf-V24" id="ojW-WP-98U"/>
                                 <outlet property="userShareMenuItem" destination="CpL-qc-lAA" id="R2q-dc-og5"/>
                             </connections>
@@ -480,7 +480,7 @@
                         <real value="250"/>
                     </holdingPriorities>
                 </splitView>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="K3D-6U-Cbr">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="K3D-6U-Cbr">
                     <rect key="frame" x="8" y="474" width="484" height="31"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="No shares" id="byC-34-Vtu">
                         <font key="font" textStyle="largeTitle" name=".SFNS-Regular"/>
