@@ -12,6 +12,7 @@
 #include "accountfwd.h"
 #include "networkjobs.h"
 #include "clientsideencryptiontokenselector.h"
+#include "common/result.h"
 
 #include <QString>
 #include <QObject>
@@ -141,12 +142,12 @@ OWNCLOUDSYNC_EXPORT QByteArray decryptStringSymmetric(
 
 [[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                                                     int paddingMode,
-                                                                                    const ClientSideEncryption &encryptionEngine,
+                                                                                    ClientSideEncryption &encryptionEngine,
                                                                                     const QByteArray &binaryData);
 
 [[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                                                     int paddingMode,
-                                                                                    const ClientSideEncryption &encryptionEngine,
+                                                                                    ClientSideEncryption &encryptionEngine,
                                                                                     const QByteArray &base64Data);
 
 QByteArray privateKeyToPem(const QByteArray key);
@@ -238,7 +239,15 @@ class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_PROPERTY(bool canDecrypt READ canDecrypt NOTIFY canDecryptChanged FINAL)
     Q_PROPERTY(bool userCertificateNeedsMigration READ userCertificateNeedsMigration NOTIFY userCertificateNeedsMigrationChanged FINAL)
 public:
-    ClientSideEncryption();
+    enum class EncryptionErrorType
+    {
+        RetryOnError,
+        FatalError,
+    };
+
+    Q_ENUM(EncryptionErrorType)
+
+    explicit ClientSideEncryption();
 
     [[nodiscard]] bool isInitialized() const;
 
@@ -380,7 +389,7 @@ private:
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     [[nodiscard]] bool sensitiveDataRemaining() const;
 
-    [[nodiscard]] bool checkEncryptionIsWorking() const;
+    [[nodiscard]] bool checkEncryptionIsWorking();
 
     void failedToInitialize();
 

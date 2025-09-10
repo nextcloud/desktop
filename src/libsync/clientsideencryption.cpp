@@ -567,21 +567,21 @@ QByteArray privateKeyToPem(const QByteArray key) {
 
 namespace internals {
 
-[[nodiscard]] std::optional<QByteArray> encryptStringAsymmetric(ENGINE *sslEngine,
-                                                                EVP_PKEY *publicKey,
-                                                                int pad_mode,
-                                                                const QByteArray& binaryData);
+[[nodiscard]] OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> encryptStringAsymmetric(ClientSideEncryption &encryptionEngine,
+                                                                                                              EVP_PKEY *publicKey,
+                                                                                                              int pad_mode,
+                                                                                                              const QByteArray& binaryData);
 
-[[nodiscard]] std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
-                                                                EVP_PKEY *privateKey,
-                                                                int pad_mode,
-                                                                const QByteArray& binaryData);
+[[nodiscard]] OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptStringAsymmetric(ClientSideEncryption &encryptionEngine,
+                                                                                                              EVP_PKEY *privateKey,
+                                                                                                              int pad_mode,
+                                                                                                              const QByteArray& binaryData);
 
 }
 
 std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                   const int paddingMode,
-                                                  const ClientSideEncryption &encryptionEngine,
+                                                  ClientSideEncryption &encryptionEngine,
                                                   const QByteArray &binaryData)
 {
     if (!encryptionEngine.isInitialized()) {
@@ -595,17 +595,26 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
         qCDebug(lcCseEncryption()) << "use certificate on software storage";
     }
 
-    const auto publicKey = selectedCertificate.getEvpPublicKey();
-    Q_ASSERT(publicKey);
+    auto encryptedBase64Result = QByteArray{};
+    for (auto i = 0; i < 2; ++i) {
+        const auto publicKey = selectedCertificate.getEvpPublicKey();
+        Q_ASSERT(publicKey);
 
-    auto encryptedBase64Result = internals::encryptStringAsymmetric(encryptionEngine.sslEngine(), publicKey, paddingMode, binaryData);
+        const auto encryptionResult = internals::encryptStringAsymmetric(encryptionEngine, publicKey, paddingMode, binaryData);
 
-    if (!encryptedBase64Result) {
-        qCWarning(lcCseEncryption()) << "encrypt failed";
-        return {};
+        if (encryptionResult) {
+            encryptedBase64Result = *encryptionResult;
+            break;
+        } else if (encryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
+            qCInfo(lcCseDecryption()) << "retry encryption after error";
+            continue;
+        } else {
+            qCWarning(lcCseEncryption()) << "encrypt failed";
+            return {};
+        }
     }
 
-    if (encryptedBase64Result->isEmpty()) {
+    if (encryptedBase64Result.isEmpty()) {
         qCWarning(lcCseEncryption()) << "ERROR. Could not encrypt data";
         return {};
     }
@@ -615,7 +624,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
 
 std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                   const int paddingMode,
-                                                  const ClientSideEncryption &encryptionEngine,
+                                                  ClientSideEncryption &encryptionEngine,
                                                   const QByteArray &base64Data)
 {
     if (!encryptionEngine.isInitialized()) {
@@ -628,19 +637,29 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     } else {
         qCDebug(lcCseDecryption()) << "use certificate on software storage";
     }
-    const auto key = selectedCertificate.getEvpPrivateKey();
-    if (!key) {
-        qCWarning(lcCseDecryption()) << "invalid private key handle";
-        return {};
+
+    auto decryptBase64Result = QByteArray{};
+    for (auto i = 0; i < 2; ++i) {
+        const auto key = selectedCertificate.getEvpPrivateKey();
+        if (!key) {
+            qCWarning(lcCseDecryption()) << "invalid private key handle";
+            return {};
+        }
+
+        const auto decryptionResult = internals::decryptStringAsymmetric(encryptionEngine, key, paddingMode, QByteArray::fromBase64(base64Data));
+        if (decryptionResult) {
+            decryptBase64Result = *decryptionResult;
+            break;
+        } else if (decryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
+            qCInfo(lcCseDecryption()) << "retry decryption after error";
+            continue;
+        } else {
+            qCWarning(lcCseDecryption()) << "decrypt failed";
+            return {};
+        }
     }
 
-    const auto decryptBase64Result = internals::decryptStringAsymmetric(encryptionEngine.sslEngine(), key, paddingMode, QByteArray::fromBase64(base64Data));
-    if (!decryptBase64Result) {
-        qCWarning(lcCseDecryption()) << "decrypt failed";
-        return {};
-    }
-
-    if (decryptBase64Result->isEmpty()) {
+    if (decryptBase64Result.isEmpty()) {
         qCWarning(lcCseDecryption()) << "ERROR. Could not decrypt data";
         return {};
     }
@@ -724,52 +743,58 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 
 namespace internals {
 
-std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
-                                                  EVP_PKEY *privateKey,
-                                                  int pad_mode,
-                                                  const QByteArray& binaryData) {
+OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptStringAsymmetric(ClientSideEncryption &encryptionEngine,
+                                                                                                EVP_PKEY *privateKey,
+                                                                                                int pad_mode,
+                                                                                                const QByteArray& binaryData)
+{
+    const auto sslEngine = encryptionEngine.sslEngine();
     int err = -1;
 
     auto ctx = PKeyCtx::forKey(privateKey, sslEngine);
     if (!ctx) {
         qCInfo(lcCseDecryption()) << "Could not create the PKEY context." << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     err = EVP_PKEY_decrypt_init(ctx);
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not init the decryption of the metadata" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, pad_mode) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting the encryption padding." << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting OAEP SHA 256" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting MGF1 padding" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     size_t outlen = 0;
     err = EVP_PKEY_decrypt(ctx, nullptr, &outlen,  (unsigned char *)binaryData.constData(), binaryData.size());
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     QByteArray out(static_cast<int>(outlen), '\0');
 
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)binaryData.constData(), binaryData.size()) <= 0) {
         const auto error = handleErrors();
+        if (error.contains(":Device removed:")) {
+            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
+            return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
+        }
         qCCritical(lcCseDecryption()) << "Could not decrypt the data." << error;
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     // we don't need extra zeroes in out, so let's only return meaningful data
@@ -777,46 +802,57 @@ std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
     return out.toBase64();
 }
 
-std::optional<QByteArray> encryptStringAsymmetric(ENGINE *sslEngine,
-                                                  EVP_PKEY *publicKey,
-                                                  int pad_mode,
-                                                  const QByteArray& binaryData) {
+OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptStringAsymmetric(ClientSideEncryption &encryptionEngine,
+                                                                                           EVP_PKEY *publicKey,
+                                                                                           int pad_mode,
+                                                                                           const QByteArray& binaryData) {
+    const auto sslEngine = encryptionEngine.sslEngine();
     auto ctx = PKeyCtx::forKey(publicKey, sslEngine);
     if (!ctx) {
         qCInfo(lcCseEncryption()) << "Could not initialize the pkey context." << publicKey << sslEngine;
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (EVP_PKEY_encrypt_init(ctx) != 1) {
         qCInfo(lcCseEncryption()) << "Error initilaizing the encryption." << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, pad_mode) <= 0) {
         qCInfo(lcCseEncryption()) << "Error setting the encryption padding." << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseEncryption()) << "Error setting OAEP SHA 256" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseEncryption()) << "Error setting MGF1 padding" << handleErrors();
-        return {};
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     size_t outLen = 0;
     if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
-        qCInfo(lcCseEncryption()) << "Error retrieving the size of the encrypted data" << handleErrors();
-        return {};
+        const auto error = handleErrors();
+        if (error.contains(":Device removed:")) {
+            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
+            return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
+        }
+        qCCritical(lcCseDecryption()) << "Error retrieving the size of the encrypted data" << error;
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     QByteArray out(static_cast<int>(outLen), '\0');
     if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
-        qCInfo(lcCseEncryption()) << "Could not encrypt key." << handleErrors();
-        return {};
+        const auto error = handleErrors();
+        if (error.contains(":Device removed:")) {
+            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
+            return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
+        }
+        qCCritical(lcCseEncryption()) << "Could not encrypt key." << error;
+        return {OCC::ClientSideEncryption::EncryptionErrorType::FatalError};
     }
 
     // Transform the encrypted data into base64.
@@ -1314,7 +1350,7 @@ void ClientSideEncryption::fetchPublicKeyFromKeyChain()
     job->start();
 }
 
-bool ClientSideEncryption::checkEncryptionIsWorking() const
+bool ClientSideEncryption::checkEncryptionIsWorking()
 {
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
     QByteArray data = EncryptionHelper::generateRandom(64);
