@@ -162,8 +162,10 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
             // Retry a few times if we have a connection issue
+            let options = NKRequestOptions(checkInterceptor: false)
+
             for authTimeout in AuthenticationTimeouts {
-                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account)
+                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
 
                 guard authAttemptState == .connectionError else {
                     break
