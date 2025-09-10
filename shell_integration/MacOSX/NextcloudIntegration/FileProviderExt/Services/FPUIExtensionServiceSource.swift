@@ -41,10 +41,26 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - FPUIExtensionService protocol methods
 
+    func authenticate() async -> NSError? {
+        Logger.fpUiExtensionService.info("Authenticating...")
+
+        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = Keychain.getPassword(for: user, on: serverUrl) else {
+            Logger.fpUiExtensionService.error("Missing account information, cannot authenticate!")
+            return NSError(.missingAccountInformation)
+        }
+
+        return await withCheckedContinuation { continuation in
+            fpExtension.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password) { error in
+                continuation.resume(returning: error)
+            }
+        }
+    }
+
     func userAgent() async -> NSString? {
         guard let account = fpExtension.ncAccount?.ncKitAccount else {
             return nil
         }
+
         let nkSession = fpExtension.ncKit.getSession(account: account)
         return nkSession?.userAgent as NSString?
     }

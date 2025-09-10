@@ -51,15 +51,17 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
             return
         }
     }
-    
+
     override func prepare(forError error: Error) {
-        Logger.actionViewController.info(
-            "Preparing for error: \(error.localizedDescription, privacy: .public)"
-        )
+        Logger.actionViewController.info("Preparing for error: \(error.localizedDescription, privacy: .public)")
+
+        let storyboard = NSStoryboard(name: "Authentication", bundle: Bundle(for: type(of: self)))
+        let viewController = storyboard.instantiateInitialController() as! NSViewController
+
+        prepare(childViewController: viewController)
     }
 
     override public func loadView() {
         self.view = NSView()
     }
 }
-
