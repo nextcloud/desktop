@@ -55,4 +55,4 @@ like `git config --global alias.ci 'commit -s'`. Now you can commit with
 
 ## Translations
 
-Please submit translations via [Transifex](https://www.transifex.com/nextcloud/nextcloud/).
+Please submit translations via [Transifex](https://explore.transifex.com/nextcloud/).
