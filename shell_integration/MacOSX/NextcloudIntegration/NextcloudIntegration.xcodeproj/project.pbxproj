@@ -207,7 +207,6 @@
 		AA7F17E02E7017230000E928 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+FileProviderErrorCode.swift"; sourceTree = "<group>"; };
-		AA995C842E708A6F00B2C428 /* NextcloudFileProviderKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NextcloudFileProviderKit; path = /Users/iva/Projekte/nextcloud/NextcloudFileProviderKit; sourceTree = "<absolute>"; };
 		AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -406,7 +405,6 @@
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
-				AA995C842E708A6F00B2C428 /* NextcloudFileProviderKit */,
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
