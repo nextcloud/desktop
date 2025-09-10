@@ -142,6 +142,11 @@ void Account::setDavUser(const QString &newDavUser)
     emit prettyNameChanged();
 }
 
+QString Account::userFromCredentials() const
+{
+    return _credentials ? _credentials->user() : QString{};
+}
+
 #ifndef TOKEN_AUTH_ONLY
 QImage Account::avatar() const
 {
