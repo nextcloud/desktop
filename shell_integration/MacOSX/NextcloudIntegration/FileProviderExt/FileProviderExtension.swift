@@ -15,8 +15,8 @@ import OSLog
     ///
     /// NextcloudKit instance used by this file provider extension object.
     ///
-    let ncKit = NextcloudKit.shared
-    
+    let ncKit: NextcloudKit
+
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
@@ -59,6 +59,23 @@ import OSLog
         // the extension for that domain, and call methods on the instance.
         Logger.fileProviderExtension.debug("Initializing with domain identifier: \(domain.identifier.rawValue)")
         self.domain = domain
+
+        // Set up NextcloudKit.
+        self.ncKit = NextcloudKit.shared
+
+        if let logDirectory = FileManager.default.fileProviderDomainSupportDirectory(for: domain.identifier) {
+            Logger.fileProviderExtension.info("NextcloudKit log file directory: \(logDirectory.path)")
+
+            #if DEBUG
+            let nextcloudKitLogLevel = 2
+            #else
+            let nextcloudKitLogLevel = 1
+            #endif
+
+            Logger.fileProviderExtension.info("NextcloudKit log level: \(nextcloudKitLogLevel)")
+            ncKit.setupLog(pathLog: logDirectory.path, levelLog: nextcloudKitLogLevel, copyLogToDocumentDirectory: true)
+        }
+
         super.init()
         socketClient?.start()
     }
