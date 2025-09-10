@@ -429,7 +429,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Une erreur s&apos;est produite pendant la connexion. Veuillez ré-essayer.</translation>
+        <translation>Une erreur est survenue pendant la connexion. Veuillez ré-essayer.</translation>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation>Une erreur inattendue s&apos;est produite. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
+        <translation>Une erreur inattendue est survenue. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
 </context>
 <context>
@@ -1809,7 +1809,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="406"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation>Une erreur s&apos;est produite lors de la synchronisation du fichier à éditer localement.</translation>
+        <translation>Une erreur est survenue lors de la synchronisation du fichier à éditer localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="358"/>
@@ -2246,7 +2246,7 @@ Cela signifie que le client de bureau ne va pas téléverser immédiatement les 
     <message>
         <location filename="../src/gui/folder.cpp" line="1629"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation>Le téléchargement du fichier virtuel a échoué avec le code « %1 », état « %2 » et le message d&apos;erreur « %3 »</translation>
+        <translation>Le téléchargement du fichier virtuel a échoué avec le code &quot;%1&quot;, statut &quot;%2&quot; et le message d&apos;erreur &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1723"/>
@@ -3379,7 +3379,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/libsync/logger.cpp" line="371"/>
         <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Le fichier &quot;%1&quot;&lt;br/&gt;ne peut pas être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;Le fichier journal &lt;b&gt;ne peut pas&lt;/b&gt; être sauvegardé !&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Le fichier &quot;%1&quot;&lt;br/&gt;ne peut pas être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;Le fichier de log &lt;b&gt;ne peut pas&lt;/b&gt; être sauvegardé !&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -6383,7 +6383,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation>Une erreur inattendue s&apos;est produite. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
+        <translation>Une erreur inattendue est survenue. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
 </context>
 <context>
