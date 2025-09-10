@@ -11,7 +11,12 @@ import OSLog
 
 @objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
+
+    ///
+    /// NextcloudKit instance used by this file provider extension object.
+    ///
     let ncKit = NextcloudKit.shared
+    
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
@@ -45,13 +50,14 @@ import OSLog
     // Since it's not desirable to cancel a long recursive enumeration half-way through, we do the
     // fast enumeration by default. We prompt the user on the client side to run a proper, full
     // enumeration if they want for safety.
-    lazy var config = FileProviderConfig(domainIdentifier: domain.identifier)
+    lazy var config = FileProviderDomainDefaults(identifier: domain.identifier)
 
     required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using 
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
+        Logger.fileProviderExtension.debug("Initializing with domain identifier: \(domain.identifier.rawValue)")
         self.domain = domain
         super.init()
         socketClient?.start()
@@ -59,9 +65,7 @@ import OSLog
 
     func invalidate() {
         // TODO: cleanup any resources
-        Logger.fileProviderExtension.debug(
-            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down"
-        )
+        Logger.fileProviderExtension.debug("Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
     }
 
     func insertSyncAction(_ actionId: UUID) {
