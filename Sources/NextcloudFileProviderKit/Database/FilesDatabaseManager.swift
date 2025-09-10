@@ -66,12 +66,12 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// - Returns: The location of the database files directory.
     ///
-    private static func assertDatabaseDirectory() -> URL {
+    private static func assertDatabaseDirectory(for identifier: NSFileProviderDomainIdentifier) -> URL {
         Self.logger.debug("Asserting existence of database directory...")
 
         let manager = FileManager.default
 
-        guard let fileProviderExtensionDataDirectory = urlForFileProviderExtensionData() else {
+        guard let fileProviderExtensionDataDirectory = manager.fileProviderDomainSupportDirectory(for: identifier) else {
             Self.logger.fault("Failed to resolve the file provider extension data directory!")
             assertionFailure("Failed to resolve the file provider extension data directory!")
             return manager.temporaryDirectory // Only to satisfy the non-optional return type. The extension is unusable at this point anyway.
@@ -108,13 +108,20 @@ public final class FilesDatabaseManager: Sendable {
     ///     - account: The Nextcloud account for which the database is being created.
     ///     - customDatabaseDirectory: Optional custom directory where the database files should be stored. If not provided, the default directory will be used.
     ///
-    public init(realmConfiguration customConfiguration: Realm.Configuration? = nil, account: Account, databaseDirectory customDatabaseDirectory: URL? = nil) {
+    public init(realmConfiguration customConfiguration: Realm.Configuration? = nil, account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier) {
         self.account = account
 
         Self.logger.info("Initializing for account: \(account.ncKitAccount, privacy: .public)")
 
-        let databaseDirectory = customDatabaseDirectory ?? Self.assertDatabaseDirectory()
-        let accountDatabaseFilename = account.fileName + "-" + Self.databaseFilename
+        let databaseDirectory = customDatabaseDirectory ?? Self.assertDatabaseDirectory(for: fileProviderDomainIdentifier)
+        let accountDatabaseFilename: String
+
+        if UUID(uuidString: fileProviderDomainIdentifier.rawValue) != nil {
+            accountDatabaseFilename = "\(fileProviderDomainIdentifier.rawValue).realm"
+        } else {
+            accountDatabaseFilename = account.fileName + "-" + Self.databaseFilename
+        }
+
         let databaseLocation = databaseDirectory.appendingPathComponent(accountDatabaseFilename)
 
         let configuration = customConfiguration ?? Realm.Configuration(

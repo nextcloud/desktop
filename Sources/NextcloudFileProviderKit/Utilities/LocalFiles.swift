@@ -32,33 +32,6 @@ public func pathForAppGroupContainer() -> URL? {
     return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
-///
-/// Resolve the path where the file provider extension store its data.
-///
-/// In the past, this used a subdirectory in the application group container.
-/// If already existent, this will still be used.
-/// Otherwise the data will be stored in a new location.
-/// To comply with sandboxing and conventional directory structure of the platform, this uses the dedicated application support directory in the container of the file provider extension instead.
-///
-/// - Returns: The root location in which the extension can store its specific data.
-///
-public func urlForFileProviderExtensionData() -> URL? {
-    if let containerUrl = pathForAppGroupContainer() {
-        let legacyLocation = containerUrl.appendingPathComponent("FileProviderExt")
-
-        if FileManager.default.fileExists(atPath: legacyLocation.path) {
-            return legacyLocation
-        }
-    }
-
-    do {
-        return try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    } catch {
-        lfuLogger.error("Failed to get URL for application support directory in user mask!")
-        return nil
-    }
-}
-
 public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
     guard let fpManager = NSFileProviderManager(for: domain) else {
         lfuLogger.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)")
