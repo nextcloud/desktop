@@ -85,7 +85,7 @@ body:
     attributes:
       label: Which version of the operating system you are running.
       description: In case of Linux, provide the distribution + version.
-      placeholder: Windows 10
+      placeholder: Windows 11
     validations:
       required: true
   - type: dropdown
@@ -97,6 +97,7 @@ body:
         - "Official Linux AppImage"
         - "Official Windows MSI"
         - "Official macOS 12+ universal pkg"
+        - "Official macOS Virtual files 12+ universal pkg"
         - "Community FlatPak"
         - "Community SNAP package"
         - "Distro package manager"
@@ -117,7 +118,7 @@ body:
     attributes:
       label: Nextcloud Desktop Client version
       description: Nextcloud Desktop Client version.
-      placeholder: 3.12.0
+      placeholder: 3.16.0
     validations:
       required: true
   - type: dropdown
@@ -126,8 +127,8 @@ body:
       label: Is this bug present after an update or on a fresh install?
       description: Select if bug is present after an update or on a fresh install.
       options:
-        - "Updated from a minor version (ex. 3.4.2 to 3.4.4)"
-        - "Updated to a major version (ex. 3.3.6 to 3.4.0)"
+        - "Updated from a minor version (ex. 3.16.1 to 3.16.2)"
+        - "Updated to a major version (ex. 3.16.3 to 3.17.0)"
         - "Fresh desktop client install"
     validations:
       required: true
