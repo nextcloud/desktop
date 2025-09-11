@@ -93,8 +93,8 @@ public:
 
     [[nodiscard]] bool canFetchMore(const QModelIndex &) const override;
 
-    ActivityList activityList() { return _finalList; }
-    ActivityList errorsList() { return _notificationErrorsLists; }
+    [[nodiscard]] const ActivityList& activityList() const { return _finalList; }
+    [[nodiscard]] const ActivityList& errorsList() const { return _notificationErrorsLists; }
 
     [[nodiscard]] AccountState *accountState() const;
 

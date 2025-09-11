@@ -360,7 +360,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
     }
     QStringList sortedList = list;
     Utility::sortFilenames(sortedList);
-    for (auto path : sortedList) {
+    for (auto path : std::as_const(sortedList)) {
         path.remove(webdavFolder);
 
         // Don't allow to select subfolders of encrypted subfolders

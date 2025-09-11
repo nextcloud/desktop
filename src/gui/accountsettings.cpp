@@ -1139,7 +1139,8 @@ void AccountSettings::forgetEncryptionOnDeviceForAccount(const AccountPtr &accou
 
 void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
 {
-    for (const auto action : _ui->encryptionMessage->actions()) {
+    const auto &allActions = _ui->encryptionMessage->actions();
+    for (const auto action : allActions) {
         _ui->encryptionMessage->removeAction(action);
     }
 
@@ -1699,7 +1700,8 @@ void AccountSettings::setupE2eEncryption()
 
 void AccountSettings::forgetE2eEncryption()
 {
-    for (const auto action : _ui->encryptionMessage->actions()) {
+    const auto &allActions = _ui->encryptionMessage->actions();
+    for (const auto action : allActions) {
         _ui->encryptionMessage->removeAction(action);
     }
     _ui->encryptionMessage->setText({});
