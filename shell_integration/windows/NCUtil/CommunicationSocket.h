@@ -14,6 +14,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include <WinSock2.h>
 
 class __declspec(dllexport) CommunicationSocket
@@ -27,15 +28,17 @@ public:
     bool Connect(const std::wstring& pipename);
     bool Close();
 
-    bool SendMsg(const wchar_t*) const;
-    bool ReadLine(std::wstring*);
+    bool SendMsg(const wchar_t *, std::ofstream &logger) const;
+    bool ReadLine(std::wstring *, std::ofstream &logger) const;
 
     HANDLE Event() { return _pipe; }
 
 private:    
     HANDLE _pipe;
-    std::vector<char> _buffer;
+    mutable std::vector<char> _buffer;
     bool _connected = false;
+
+    mutable OVERLAPPED _overlapped = {};
 };
 
 #endif
