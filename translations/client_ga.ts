@@ -1244,7 +1244,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Ní féidir an comhad %1 a íoslódáil mar gheall ar choimhlint ainm comhaid áitiúil!</translation>
     </message>
@@ -1260,7 +1260,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Níorbh fhéidir taifead comhaid %1 a scriosadh ón mbunachar sonraí áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Ní féidir meiteashonraí an chomhaid nua %1 a nuashonrú.</translation>

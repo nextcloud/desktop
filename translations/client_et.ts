@@ -1244,7 +1244,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 faili ei saa alla laadida - nimi läheb kohaliku faili nimega vastuollu!</translation>
     </message>
@@ -1260,7 +1260,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>Ei õnnestunud kustutada „%1“ faili kirjet kohalikust andmebaasist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Uue faili (%1) metateabe uuendamine ei õnnestu.</translation>

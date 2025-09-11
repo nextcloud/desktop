@@ -1245,7 +1245,7 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Faili %1 haiwezi kupakuliwa kwa sababu ya mgongano wa jina la faili la ndani!</translation>
     </message>
@@ -1261,7 +1261,7 @@ Kitendo hiki kitakomesha ulandanishi wowote unaoendeshwa kwa sasa.</translation>
         <translation>Haikuweza kufuta rekodi ya faili %1 kutoka kwa DB ya ndani</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Imeshindwa kusasisha metadata ya faili mpya %1.</translation>

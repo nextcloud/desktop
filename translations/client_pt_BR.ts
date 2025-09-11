@@ -1244,7 +1244,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
@@ -1260,7 +1260,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Não foi possível excluir o registro de arquivo %1 do banco de dados local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Não é possível atualizar os metadados do novo arquivo %1.</translation>

@@ -460,7 +460,7 @@ macOS ignorerer eller forsinker måske denne efterspørgsel.</translation>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="109"/>
         <source>Refresh</source>
-        <translation>Opdater</translation>
+        <translation>Opdatér</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="123"/>
@@ -712,7 +712,7 @@ Vent på en ny synkronisering, og krypter herefter mappen.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>Edit Ignored Files</source>
-        <translation>Rediger ignorerede filer</translation>
+        <translation>Redigér ignorerede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
@@ -1242,7 +1242,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -1258,7 +1258,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation type="unfinished"/>
@@ -2002,7 +2002,7 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>Den returnerede URL starter ikke med HTTPS selvom log på URL&apos;en starter med HTTPS. Log på vil ikke være muligt for dette kan være et sikkerhedsproblem. Kontakt venligst din  administrator.</translation>
+        <translation>Den returnerede URL starter ikke med HTTPS selvom login URL&apos;en starter med HTTPS. Login vil ikke være muligt fordi dette kan være et sikkerhedsproblem. Kontakt venligst din  administrator.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="249"/>
@@ -2532,12 +2532,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Kontrol af ændringer i ekstern &quot;%1&quot;</translation>
+        <translation>Kontrollerer for ændringer i ekstern &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Kontrol af ændringer i lokal &quot;%1&quot;</translation>
+        <translation>Kontrollerer for ændringer i lokal &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
@@ -2609,7 +2609,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>Et par sekunder tilbage, %1 af %2, filen %3 af %4</translation>
+        <translation>Et par sekunder tilbage, %1 ud af %2, fil %3 ud af %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1112"/>
@@ -2643,7 +2643,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="124"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>Watcher ikke modtaget en test anmeldelse.</translation>
+        <translation>Observatøren modtog ikke en testnotifikation.</translation>
     </message>
 </context>
 <context>
@@ -2751,7 +2751,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuelle filer er ikke understøttet til Windows partition rødder som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
+        <translation>Virtuelle filer er ikke understøttet for Windows partitions rødder, som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="630"/>
@@ -2868,17 +2868,17 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="217"/>
         <source>Server poll interval</source>
-        <translation>Servervalginterval</translation>
+        <translation>Interval for serverforespørgsler</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="237"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation>sekunder (hvis &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; ikke er tilgængelig)</translation>
+        <translation>sekunder (hvis &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Klient Push&lt;/a&gt; ikke er tilgængelig)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="271"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Rediger &amp;Ignorerede Filer</translation>
+        <translation>Redigér &amp;Ignorerede Filer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="278"/>
@@ -2914,12 +2914,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="438"/>
         <source>Usage Documentation</source>
-        <translation>Brugsdokumentation</translation>
+        <translation>Anvendelsesdokumentation</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="445"/>
         <source>Legal Notice</source>
-        <translation>Juridisk Notits</translation>
+        <translation>Juridisk notits</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
@@ -2929,7 +2929,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.ui" line="378"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Genstart &amp;&amp; Opdater</translation>
+        <translation>&amp;Genstart &amp;&amp; Opdatér</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="188"/>
@@ -2944,12 +2944,12 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
-        <translation>Vis opkaldsanmeldelsesdialoger.</translation>
+        <translation>Vis opkaldsnotifikationsdialoger.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Du kan ikke deaktivere autostart, fordi system- wide autostart er aktiveret.</translation>
+        <translation>Du kan ikke deaktivere autostart, fordi system-wide autostart er aktiveret.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
@@ -2974,7 +2974,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="431"/>
         <source>enterprise</source>
-        <translation>virksomhed</translation>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
@@ -2983,10 +2983,10 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation>- beta: indeholder versioner med nye funktioner, der ikke kan testes grundigt
+        <translation>- beta: indeholder versioner med nye funktioner, der ikke er testet grundigt
 - dagligt: indeholder versioner, der er skabt dagligt kun til afprøvning og udvikling
 
-Nedgradering versioner er ikke muligt med det samme: skifte fra beta til stabile midler venter på den nye stabile version.</translation>
+Nedgradering af versioner er ikke muligt med det samme: skift fra beta til stabil, betyder at der skal ventes på den nye stabile version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
@@ -2996,7 +2996,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
         <translation>- enterprise: indeholder stabile versioner til kunder.
 
-Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virksomhed betyder venter på den nye virksomhed version.</translation>
+Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til enterprise, betyder at der skal ventes på den nye enterprise version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="481"/>
@@ -3010,7 +3010,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
         <translation>Kanalen bestemmer hvilke opgraderinger der vil blive tilbudt at installere:
-- Stabile: indeholder testede versioner anses for pålidelige
+- stabil: indeholder testede versioner som anses for pålidelige
 </translation>
     </message>
     <message>
@@ -3026,7 +3026,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="626"/>
         <source>Zip Archives</source>
-        <translation>Zip Archives</translation>
+        <translation>Zip arkiver</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="636"/>
@@ -3114,7 +3114,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="32"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation>Denne indgang leveres af systemet ved &quot;%1&quot; og kan ikke ændres i dette synspunkt.</translation>
+        <translation>Denne indgang leveres af systemet ved &quot;%1&quot; og kan ikke ændres i denne visning.</translation>
     </message>
 </context>
 <context>
@@ -3244,7 +3244,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="127"/>
         <source>Checking rename permissions …</source>
-        <translation>Kontrol af omdøbte tilladelser..</translation>
+        <translation>Kontrol af omdøbningstilladelser ..</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
@@ -3264,12 +3264,12 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="186"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder førende mellemrum.</translation>
+        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="188"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
+        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="193"/>
@@ -3346,9 +3346,9 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>Klienten kan skrive debug logs til en midlertidig mappe. Disse logfiler er meget nyttige til diagnosticering af problemer.
-Da logfiler kan blive store, vil klienten starte en ny for hver sync køre og komprimere ældre dem. Det vil også slette logfiler efter et par timer for at undgå at forbruge for meget diskplads.
-Hvis aktiveret, vil logfiler blive skrevet til %1</translation>
+        <translation>Klienten kan skrive fejlsøgningslogs til en midlertidig mappe. Disse logfiler er meget nyttige til diagnosticering af problemer.
+Da logfiler kan blive store, vil klienten starte en ny for hver synkroniseringskørsel og komprimere ældre filer. Det vil også slette logfiler efter et par timer for at undgå at forbruge for meget diskplads.
+Hvis aktiveret, så vil logfiler blive skrevet til %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="56"/>
@@ -3360,7 +3360,7 @@ Hvis aktiveret, vil logfiler blive skrevet til %1</translation>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
         <translation>Denne indstilling fortsætter på tværs klient genstarter.
-Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne indstilling.</translation>
+Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsidesætte denne indstilling.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="69"/>
@@ -3380,7 +3380,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
         <location filename="../src/libsync/logger.cpp" line="371"/>
         <location filename="../src/libsync/logger.cpp" line="401"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan ikke åbnes til skrivning.&lt;br/&gt;&lt;br/&gt;Log output &lt;b&gt;kan ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan ikke åbnes for skrivning.&lt;br/&gt;&lt;br/&gt;Log output &lt;b&gt;kan ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3403,12 +3403,12 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="72"/>
         <source>Could not get file ID.</source>
-        <translation>Kunne ikke få fil- id.</translation>
+        <translation>Kunne ikke hente fil ID.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="80"/>
         <source>Could not get file identifier.</source>
-        <translation>Could not get file identifier.</translation>
+        <translation>Kunne ikke hente filidentifikator.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="80"/>
@@ -3446,12 +3446,12 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Restart and update</source>
-        <translation>Genstart og opdatering</translation>
+        <translation>Genstart og opdatér</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Update manually</source>
-        <translation>Opdatering manuelt</translation>
+        <translation>Opdatér manuelt</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="426"/>
@@ -3597,7 +3597,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="146"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>%1 tilgængelig. Genstart programet til at starte opdateringen.</translation>
+        <translation>%1 tilgængelig. Genstart programmet for at starte opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -3657,12 +3657,12 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="118"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Brug &amp; virtuelle filer i stedet for at downloade indhold med det samme %1</translation>
+        <translation>Brug &amp;virtuel filer i stedet for at downloade indhold med det samme %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="272"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuelle filer er ikke understøttet til Windows partition som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
+        <translation>Virtuelle filer er ikke understøttet til Windows partition roden som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
@@ -3710,7 +3710,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="650"/>
         <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>I afsnittet &quot;Placeringer&quot; i Finder</translation>
+        <translation>I sidebjælkesektionen &quot;Placeringer&quot; i Finder</translation>
     </message>
 </context>
 <context>
@@ -3779,7 +3779,7 @@ Bemærk at ved at bruge nogen logning kommandolinjeflag vil tilsidesætte denne 
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>Linket til din netgrænseflade %1 når du åbner den i browseren.</translation>
+        <translation>Linket til din webinterface %1 når du åbner det i browseren.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="260"/>
@@ -3996,13 +3996,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Når &quot;virtuelle filer&quot; tilstand er aktiveret ingen filer vil blive downloadet i første omgang. I stedet oprettes en lille &quot;%1&quot; fil for hver fil der findes på serveren. Indholdet kan downloades ved at køre disse filer eller ved hjælp af deres sammenhængsmenu.
+        <translation>Når tilstanden &quot;virtuelle filer&quot; er aktiveret så vil ingen filer blive downloadet i første omgang. I stedet oprettes en lille &quot;%1&quot; fil for hver fil der findes på serveren. Indholdet kan downloades ved at køre disse filer eller ved hjælp af deres kontekstmenu.
 
-Den virtuelle filer tilstand er gensidigt eksklusivt med selektiv synkronisering. I øjeblikket vil umarkerede mapper blive oversat til online- only mapper og dine selektive synkroniseringsindstillinger vil blive nulstillet.
+Den virtuelle fil tilstand er gensidig eksklusiv med selektiv synkronisering. Aktuelt vil ikke markerede mapper blive oversat til kun online mapper og dine selektive synkroniseringsindstillinger vil blive nulstillet.
 
 Skift til denne tilstand vil afbryde enhver igangværende synkronisering.
 
-Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du rapportere eventuelle spørgsmål, der kommer op.</translation>
+Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du rapportere eventuelle spørgsmål, der opstår.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="514"/>
@@ -4046,12 +4046,12 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Filen er opført på ignoreringslisten.</translation>
+        <translation>Filen er listet på ignoreringslisten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Filnavne der slutter med en periode er ikke understøttet på dette filsystem.</translation>
+        <translation>Filnavne der slutter med et punktum er ikke understøttet på dette filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="403"/>
@@ -4088,7 +4088,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterfølgende mellemrum.</translation>
+        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="421"/>
@@ -4101,27 +4101,27 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder førende mellemrum.</translation>
+        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnavn indeholder indledende og afsluttende mellemrum.</translation>
+        <translation>Filnavn indeholder foranstillede og efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="439"/>
         <source>Filename is too long.</source>
-        <translation>Filnavn er for længe.</translation>
+        <translation>Filnavn er for langt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Fil / mappe ignoreres, fordi den er skjult.</translation>
+        <translation>Fil/mappe ignoreres, fordi den er skjult.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source>Stat failed.</source>
-        <translation>Stat mislykkedes.</translation>
+        <translation>Statistik mislykkedes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="449"/>
@@ -4166,7 +4166,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="618"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation>Filen har udvidelse forbeholdt virtuelle filer.</translation>
+        <translation>Filen har en endelse der er forbeholdt virtuelle filer.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="770"/>
@@ -4181,7 +4181,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>file id</source>
-        <translation>fil- id</translation>
+        <translation>fil id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="780"/>
@@ -4191,7 +4191,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1166"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation>Kan ikke synkronisere på grund af ugyldig ændringstid</translation>
+        <translation>Kan ikke synkronisere på grund af ugyldigt ændringstidspunkt</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1182"/>
@@ -4211,13 +4211,13 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1251"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation>Fejl under sletning af filregistrering %1 fra databasen</translation>
+        <translation>Fejl under sletning af filposten %1 fra databasen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1526"/>
         <location filename="../src/libsync/discovery.cpp" line="1992"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Flyttet til ugyldig mål, genoprette</translation>
+        <translation>Flyttet til ugyldigt mål, genopretter</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1854"/>
@@ -4227,28 +4227,28 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1916"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignoreret på grund af &quot;vælg hvad du skal synkronisere&quot; sortliste</translation>
+        <translation>Ignoreret på grund af &quot;vælg hvad der skal synkroniseres&quot; blackliste</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1950"/>
         <location filename="../src/libsync/discovery.cpp" line="2153"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Ikke tilladt, fordi du ikke har tilladelse til at tilføje undermapper til denne mappe</translation>
+        <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje undermapper til denne mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1956"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Ikke tilladt, fordi du ikke har tilladelse til at tilføje filer i denne mappe</translation>
+        <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje filer i denne mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1970"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Ikke tilladt at uploade denne fil, fordi det er read- kun på serveren, genoprette</translation>
+        <translation>Ikke tilladt at uploade denne fil, fordi det er læs kun på serveren, genopretter</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2006"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Ikke tilladt at fjerne, genoprette</translation>
+        <translation>Ikke tilladt at fjerne, genopretter</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="2196"/>
@@ -4266,7 +4266,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1478"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstid</translation>
+        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstidspunkt</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1511"/>
@@ -4292,7 +4292,7 @@ Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1569"/>
         <source>File is currently in use</source>
-        <translation>Filen er i brug</translation>
+        <translation>Filen er aktuelt i brug</translation>
     </message>
 </context>
 <context>

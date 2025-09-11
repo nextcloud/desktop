@@ -1248,7 +1248,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>檔案 %1 無法被下載，因為近端端的檔案名稱已毀損!</translation>
     </message>
@@ -1264,7 +1264,7 @@ This action will abort any currently running synchronization.</source>
         <translation>無法從近端數據庫中刪除檔案記録 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>無法更新新檔案 %1 元數據。</translation>
