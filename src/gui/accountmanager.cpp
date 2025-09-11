@@ -673,7 +673,7 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
     settings->remove(account->account()->id());
 
     // Forget E2E keys
-    account->account()->e2e()->forgetSensitiveData(account->account());
+    account->account()->e2e()->forgetSensitiveData();
 
     account->account()->deleteAppToken();
 
