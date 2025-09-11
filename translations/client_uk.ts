@@ -1243,7 +1243,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Неможливо завантажити файл %1 через конфлікт з ім&apos;ям файлу на пристрої!</translation>
     </message>
@@ -1259,7 +1259,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Неможливо вилучити запис %1 з бази даних на пристрої</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation>Неможливо оновити метадані нового файлу %1.</translation>

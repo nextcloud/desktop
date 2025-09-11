@@ -503,17 +503,17 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1025"/>
+        <location filename="../src/libsync/account.cpp" line="1030"/>
         <source>File %1 is already locked by %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1027"/>
+        <location filename="../src/libsync/account.cpp" line="1032"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1029"/>
+        <location filename="../src/libsync/account.cpp" line="1034"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1236,23 +1236,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="148"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="169"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="188"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="187"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="191"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="190"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1986,27 +1986,27 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="244"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="249"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="254"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="252"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="257"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="255"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="260"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"></translation>
     </message>
