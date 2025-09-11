@@ -69,7 +69,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
         }
         connect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain,
             this, &UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain);
-        _account->e2e()->fetchCertificateFromKeyChain(_account, _folderUserId);
+        _account->e2e()->fetchCertificateFromKeyChain(_folderUserId);
         return;
     }
     slotStartE2eeMetadataJobs();
@@ -282,7 +282,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain(const 
                &UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain);
     if (certificate.isNull()) {
         // get folder user's public key
-        _account->e2e()->getUsersPublicKeyFromServer(_account, {_folderUserId});
+        _account->e2e()->getUsersPublicKeyFromServer({_folderUserId});
         connect(_account->e2e(),
                 &ClientSideEncryption::certificatesFetchedFromServer,
                 this,
@@ -301,7 +301,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const Q
         emit certificateReady();
         return;
     }
-    _account->e2e()->writeCertificate(_account, _folderUserId, certificate);
+    _account->e2e()->writeCertificate(_folderUserId, certificate);
     connect(_account->e2e(), &ClientSideEncryption::certificateWriteComplete, this, &UpdateE2eeFolderUsersMetadataJob::certificateReady);
 }
 
