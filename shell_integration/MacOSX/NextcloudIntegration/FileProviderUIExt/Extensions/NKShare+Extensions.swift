@@ -17,7 +17,7 @@ extension NKShare {
         case publicLink = 3
         case email = 4
         case federatedCloud = 6
-        case circle = 7
+        case team = 7
         case talkConversation = 10
     }
 
@@ -63,10 +63,10 @@ extension NKShare {
                 systemSymbolName: "cloud.circle.fill",
                 accessibilityDescription: String(localized: "Federated cloud share icon")
             )
-        case ShareType.circle.rawValue:
+        case ShareType.team.rawValue:
             image = NSImage(
                 systemSymbolName: "circle.circle.fill",
-                accessibilityDescription: String(localized: "Circle share icon")
+                accessibilityDescription: String(localized: "Team share icon")
             )
         case ShareType.talkConversation.rawValue:
             image = NSImage(
@@ -104,8 +104,8 @@ extension NKShare {
             return String(format: String(localized: "Email share (%@)"), shareWith)
         case ShareType.federatedCloud.rawValue:
             return String(format: String(localized: "Federated cloud share (%@)"), shareWith)
-        case ShareType.circle.rawValue:
-            return String(format: String(localized: "Circle share (%@)"), shareWith)
+        case ShareType.team.rawValue:
+            return String(format: String(localized: "Team share (%@)"), shareWith)
         case ShareType.talkConversation.rawValue:
             return String(format: String(localized: "Talk conversation share (%@)"), shareWith)
         default:

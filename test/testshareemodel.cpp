@@ -58,8 +58,8 @@ public:
         case Sharee::Invalid:
             category = QStringLiteral("invalid");
             break;
-        case Sharee::Circle:
-            category = QStringLiteral("circles");
+        case Sharee::Team:
+            category = QStringLiteral("teams");
             break;
         case Sharee::Email:
             category = QStringLiteral("emails");

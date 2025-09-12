@@ -822,7 +822,7 @@ long long ShareModel::enforcedMaxExpireDateForShare(const SharePtr &share) const
 
     } else if ((share->getShareType() == Share::TypeUser ||
                 share->getShareType() == Share::TypeGroup ||
-                share->getShareType() == Share::TypeCircle ||
+                share->getShareType() == Share::TypeTeam ||
                 share->getShareType() == Share::TypeRoom) &&
                _accountState->account()->capabilities().shareInternalEnforceExpireDate()) {
         expireDays = _accountState->account()->capabilities().shareInternalExpireDateDays();
@@ -851,7 +851,7 @@ bool ShareModel::expireDateEnforcedForShare(const SharePtr &share) const
 
     } else if (share->getShareType() == Share::TypeUser ||
                share->getShareType() == Share::TypeGroup ||
-               share->getShareType() == Share::TypeCircle ||
+               share->getShareType() == Share::TypeTeam ||
                share->getShareType() == Share::TypeRoom) {
         return _accountState->account()->capabilities().shareInternalEnforceExpireDate();
 
