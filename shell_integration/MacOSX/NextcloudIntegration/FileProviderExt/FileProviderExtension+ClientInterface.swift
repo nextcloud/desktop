@@ -117,6 +117,8 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             return
         }
 
+        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
+
         Task {
             ncKit.appendSession(
                 account: account.ncKitAccount,
@@ -180,7 +182,8 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 } else {
                     Logger.fileProviderExtension.error("Invalid db manager, cannot start RCO")
                 }
-                ncKit.setup(delegate: changeObserver)
+
+                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!, delegate: changeObserver)
                 signalEnumeratorAfterAccountSetup()
             }
         }
