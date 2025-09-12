@@ -1,10 +1,7 @@
-//
-//  RemoteChangeObserverEtagOptimizationTests.swift
-//
-//
-//  Created by Claudio Cambra on 07/07/25.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
+import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import RealmSwift
@@ -23,7 +20,7 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
     
     override func setUp() {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
+        dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
         mockRemoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
     }
     

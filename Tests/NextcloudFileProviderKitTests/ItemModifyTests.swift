@@ -1,9 +1,5 @@
-//
-//  ItemModifyTests.swift
-//
-//
-//  Created by Claudio Cambra on 13/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -27,7 +23,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()
@@ -434,7 +430,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(bundleItemMetadata)
 
         var bundleIndexZipMetadata = remoteKeynoteIndexZip.toItemMetadata(account: Self.account)
-        bundleIndexZipMetadata.classFile = NKCommon.TypeClassFile.compress.rawValue
+        bundleIndexZipMetadata.classFile = NKTypeClassFile.compress.rawValue
         bundleIndexZipMetadata.contentType = UTType.zip.identifier
         Self.dbManager.addItemMetadata(bundleIndexZipMetadata)
 
@@ -447,7 +443,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
         var bundleDataRandomFileMetadata =
             remoteKeynoteDataRandomFile.toItemMetadata(account: Self.account)
-        bundleDataRandomFileMetadata.classFile = NKCommon.TypeClassFile.image.rawValue
+        bundleDataRandomFileMetadata.classFile = NKTypeClassFile.image.rawValue
         bundleDataRandomFileMetadata.contentType = UTType.image.identifier
         Self.dbManager.addItemMetadata(bundleDataRandomFileMetadata)
 

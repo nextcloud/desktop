@@ -1,9 +1,5 @@
-//
-//  Substring+Extensions.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2024-12-11.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 public extension Substring {
     func toString() -> String { String(self) }

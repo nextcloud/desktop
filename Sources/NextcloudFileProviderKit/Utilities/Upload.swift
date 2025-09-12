@@ -1,9 +1,5 @@
-//
-//  Upload.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2024-12-29.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
 import Foundation
@@ -36,7 +32,6 @@ func upload(
     etag: String?,
     date: Date?,
     size: Int64?,
-    afError: AFError?,
     remoteError: NKError
 ) {
     let fileSize =
@@ -75,7 +70,7 @@ func upload(
     }()
 
     guard fileSize > chunkSize else {
-        let (_, ocId, etag, date, size, _, afError, remoteError) = await remoteInterface.upload(
+        let (_, ocId, etag, date, size, _, remoteError) = await remoteInterface.upload(
             remotePath: remotePath,
             localPath: localFilePath,
             creationDate: creationDate,
@@ -87,7 +82,7 @@ func upload(
             progressHandler: progressHandler
         )
 
-        return (ocId, nil, etag, date as? Date, size, afError, remoteError)
+        return (ocId, nil, etag, date as? Date, size, remoteError)
     }
 
     let chunkUploadId = chunkUploadId ?? UUID().uuidString
@@ -107,7 +102,7 @@ func upload(
         .where({ $0.remoteChunkStoreFolderName == chunkUploadId })
         .toUnmanagedResults()
 
-    let (_, chunks, file, afError, remoteError) = await remoteInterface.chunkedUpload(
+    let (_, chunks, file, nkError) = await remoteInterface.chunkedUpload(
         localPath: localFilePath,
         remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,
@@ -174,5 +169,5 @@ func upload(
 
     uploadLogger.info("\(localFilePath, privacy: .public) successfully uploaded in chunks")
 
-    return (file?.ocId, chunks, file?.etag, file?.date, file?.size, afError, remoteError)
+    return (file?.ocId, chunks, file?.etag, file?.date, file?.size, nkError)
 }

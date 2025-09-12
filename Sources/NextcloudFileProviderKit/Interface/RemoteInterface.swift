@@ -1,9 +1,5 @@
-//
-//  RemoteInterface.swift
-//
-//
-//  Created by Claudio Cambra on 16/4/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
 import FileProvider
@@ -57,7 +53,6 @@ public protocol RemoteInterface {
         date: NSDate?,
         size: Int64,
         response: HTTPURLResponse?,
-        afError: AFError?,
         remoteError: NKError
     )
 
@@ -82,8 +77,7 @@ public protocol RemoteInterface {
         account: String,
         fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
-        afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     )
 
     func move(
@@ -108,9 +102,9 @@ public protocol RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        response: HTTPURLResponse?,
+        headers: [AnyHashable: Any]?,
         afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     )
 
     func enumerate(

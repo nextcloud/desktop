@@ -1,9 +1,5 @@
-//
-//  ItemPropertyTests.swift
-//
-//
-//  Created by Claudio Cambra on 24/7/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -17,7 +13,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()

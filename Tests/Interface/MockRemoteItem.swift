@@ -1,9 +1,5 @@
-//
-//  MockRemoteItem.swift
-//
-//
-//  Created by Claudio Cambra on 9/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation
@@ -148,7 +144,7 @@ public class MockRemoteItem: Equatable {
     }
 
     public func toNKTrash() -> NKTrash {
-        let trashItem = NKTrash()
+        var trashItem = NKTrash()
         trashItem.ocId = identifier
         trashItem.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         trashItem.fileName = name
@@ -177,7 +173,7 @@ public class MockRemoteItem: Equatable {
         return SendableItemMetadata(
             ocId: identifier,
             account: account.ncKitAccount,
-            classFile: directory ? NKCommon.TypeClassFile.directory.rawValue : "",
+            classFile: directory ? NKTypeClassFile.directory.rawValue : "",
             contentType: directory ? UTType.folder.identifier : "",
             creationDate: creationDate, // Use provided or fallback to default
             date: modificationDate, // Use provided or fallback to default

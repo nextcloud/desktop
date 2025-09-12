@@ -1,9 +1,5 @@
-//
-//  EnumeratorTests.swift
-//
-//
-//  Created by Claudio Cambra on 14/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -28,7 +24,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     var remoteTrashItemB: MockRemoteItem!
     var remoteTrashItemC: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()

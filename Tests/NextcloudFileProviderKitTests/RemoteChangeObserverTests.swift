@@ -1,10 +1,7 @@
-//
-//  RemoteChangeObserverTests.swift
-//
-//
-//  Created by Claudio Cambra on 16/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
+import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import RealmSwift
@@ -25,7 +22,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: username, id: userId, serverUrl: serverUrl, password: password
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
     static let notifyPushServer = MockNotifyPushServer(
         host: serverUrl,
         port: 8888,

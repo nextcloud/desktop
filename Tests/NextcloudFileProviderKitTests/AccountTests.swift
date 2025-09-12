@@ -1,9 +1,5 @@
-//
-//  AccountTests.swift
-//  
-//
-//  Created by Claudio Cambra on 17/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
 import XCTest

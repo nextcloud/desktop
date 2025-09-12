@@ -1,9 +1,5 @@
-//
-//  NextcloudKit+RemoteInterface.swift
-//  
-//
-//  Created by Claudio Cambra on 16/4/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
 import FileProvider
@@ -57,7 +53,6 @@ extension NextcloudKit: RemoteInterface {
         date: NSDate?,
         size: Int64,
         response: HTTPURLResponse?,
-        afError: AFError?,
         remoteError: NKError
     ) {
         return await withCheckedContinuation { continuation in
@@ -71,7 +66,7 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, ocId, etag, date, size, response, afError, nkError in
+            ) { account, ocId, etag, date, size, response, nkError in
                 continuation.resume(returning: (
                     account,
                     ocId,
@@ -79,7 +74,6 @@ extension NextcloudKit: RemoteInterface {
                     date as NSDate?,
                     size,
                     response?.response,
-                    afError,
                     nkError
                 ))
             }
@@ -107,12 +101,11 @@ extension NextcloudKit: RemoteInterface {
         account: String,
         fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
-        afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     ) {
         guard let remoteUrl = URL(string: remotePath) else {
             uploadLogger.error("NCKit ext: Could not get url from \(remotePath, privacy: .public)")
-            return ("", nil, nil, nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -127,7 +120,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error, privacy: .public)
                 """
             )
-            return ("", nil, nil, nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -145,7 +138,7 @@ extension NextcloudKit: RemoteInterface {
             uploadLogger.error(
                 "NCKit ext: Could not get server url from \(remotePath, privacy: .public)"
             )
-            return ("", nil, nil, nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
         let fileChunks = remainingChunks.toNcKitChunks()
 
@@ -201,11 +194,11 @@ extension NextcloudKit: RemoteInterface {
                     )
                     chunkUploadCompleteHandler(chunk)
                 }
-            ) { account, receivedChunks, file, afError, error in
+            ) { account, receivedChunks, file, error in
                 let chunks = RemoteFileChunk.fromNcKitChunks(
                     receivedChunks ?? [], remoteChunkStoreFolderName: remoteChunkStoreFolderName
                 )
-                continuation.resume(returning: (account, chunks, file, afError, error))
+                continuation.resume(returning: (account, chunks, file, error))
             }
         }
     }
@@ -245,9 +238,9 @@ extension NextcloudKit: RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        response: HTTPURLResponse?,
+        headers: [AnyHashable: Any]?,
         afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     ) {
         return await withCheckedContinuation { continuation in
             download(
@@ -258,15 +251,15 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, etag, date, length, data, afError, remoteError in
+            ) { account, etag, date, length, headers, afError, nkError in
                 continuation.resume(returning: (
                     account, 
                     etag,
                     date as NSDate?,
                     length,
-                    data?.response,
+                    headers,
                     afError,
-                    remoteError
+                    nkError
                 ))
             }
         }
@@ -389,12 +382,12 @@ extension NextcloudKit: RemoteInterface {
             forAccount: ncKitAccount, ongoing: true
         )
         let result = await withCheckedContinuation { continuation in
-            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
+            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, capabilities, responseData, error in
                 let capabilities: Capabilities? = {
-                    guard let realData = data?.data else { return nil }
+                    guard let realData = responseData?.data else { return nil }
                     return Capabilities(data: realData)
                 }()
-                continuation.resume(returning: (account, capabilities, data?.data, error))
+                continuation.resume(returning: (account, capabilities, responseData?.data, error))
             }
         }
         await RetrievedCapabilitiesActor.shared.setOngoingFetch(
@@ -432,7 +425,7 @@ extension NextcloudKit: RemoteInterface {
             await enumerate(remotePath: account.davFilesUrl + "/", depth: .target, account: account)
 
         if error != .success {
-            logger.error("Error in auth check: \(error.errorDescription, privacy: .public)")
+            nkLog(error: "Error in auth check: \(error.errorDescription)")
         }
 
         if error == .success {

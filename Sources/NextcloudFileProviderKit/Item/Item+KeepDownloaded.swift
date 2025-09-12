@@ -1,9 +1,5 @@
-//
-//  Item+KeepDownloaded.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 13/5/25.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 

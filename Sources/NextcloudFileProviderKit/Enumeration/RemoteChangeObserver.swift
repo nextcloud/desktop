@@ -1,9 +1,5 @@
-//
-//  RemoteChangeObserver.swift
-//
-//
-//  Created by Claudio Cambra on 17/4/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
 import FileProvider
@@ -51,7 +47,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
     public var pollingActive: Bool { pollingTimer != nil }
 
-    private(set) var networkReachability: NKCommon.TypeReachability = .unknown {
+    private(set) var networkReachability: NKTypeReachability = .unknown {
         didSet {
             if networkReachability == .notReachable {
                 logger.info("Network unreachable, stopping websocket and stopping polling")
@@ -409,7 +405,7 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
 
     // MARK: - NextcloudKitDelegate methods
 
-    public func networkReachabilityObserver(_ typeReachability: NKCommon.TypeReachability) {
+    public func networkReachabilityObserver(_ typeReachability: NKTypeReachability) {
         networkReachability = typeReachability
     }
 

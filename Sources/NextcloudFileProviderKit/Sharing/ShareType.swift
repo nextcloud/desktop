@@ -1,9 +1,5 @@
-//
-//  ShareType.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 28/4/25.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 public enum ShareType: Int {
     case user = 0

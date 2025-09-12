@@ -1,10 +1,7 @@
-//
-//  UploadTests.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2025-01-07.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
+import FileProvider
 import RealmSwift
 import TestInterface
 import XCTest
@@ -12,7 +9,7 @@ import XCTest
 
 final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()

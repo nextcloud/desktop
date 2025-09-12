@@ -1,9 +1,5 @@
-//
-//  MockRemoteInterfaceTests.swift
-//
-//
-//  Created by Claudio Cambra on 13/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import XCTest
 @testable import NextcloudFileProviderKit
@@ -226,7 +222,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let resultChunks = try XCTUnwrap(result.fileChunks)
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(result.nkError, .success)
         XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
@@ -296,7 +292,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let resultChunks = try XCTUnwrap(result.fileChunks)
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(result.nkError, .success)
         XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
@@ -401,7 +397,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             localPath: fileUrl.path,
             account: Self.account
         )
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(result.nkError, .success)
 
         let downloadedData = try Data(contentsOf: fileUrl)
         XCTAssertEqual(downloadedData, fileData)

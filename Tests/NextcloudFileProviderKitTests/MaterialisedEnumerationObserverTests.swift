@@ -1,9 +1,5 @@
-//
-//  MaterialisedEnumerationObserverTests.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2024-12-20.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation
@@ -24,7 +20,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
     }
 
     func testMaterialisedObserverWithNoPreexistingState() async {
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
         // The database is intentionally left empty.
 
         let remoteInterface = MockRemoteInterface()
@@ -96,7 +92,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         dirD.directory = true
         dirD.visitedDirectory = true // Was materialised
 
-        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory())
+        let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
         dbManager.addItemMetadata(itemA)
         dbManager.addItemMetadata(itemB)
         dbManager.addItemMetadata(itemC)

@@ -1,9 +1,5 @@
-//
-//  Item+CreateIgnored.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 17/4/25.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -29,7 +25,7 @@ extension Item {
         let metadata = SendableItemMetadata(
             ocId: itemTemplate.itemIdentifier.rawValue,
             account: account.ncKitAccount,
-            classFile: NKCommon.TypeClassFile.unknow.rawValue,
+            classFile: NKTypeClassFile.unknow.rawValue,
             contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
             creationDate: itemTemplate.creationDate as? Date ?? Date(),
             date: itemTemplate.contentModificationDate as? Date ?? Date(),

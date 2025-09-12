@@ -1,9 +1,5 @@
-//
-//  ItemCreateTests.swift
-//
-//
-//  Created by Claudio Cambra on 13/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -19,7 +15,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     )
 
     var rootItem: MockRemoteItem!
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()
@@ -37,7 +33,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ocId: "folder-id", fileName: "folder", account: Self.account
         )
         folderItemMetadata.directory = true
-        folderItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
         folderItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let folderItemTemplate = Item(
@@ -88,7 +84,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         var fileItemMetadata = SendableItemMetadata(
             ocId: "file-id", fileName: "file", account: Self.account
         )
-        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         try Data("Hello world".utf8).write(to: tempUrl)
@@ -142,7 +138,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ocId: "folder-id", fileName: "folder", account: Self.account
         )
         folderItemMetadata.directory = true
-        folderItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        folderItemMetadata.classFile = NKTypeClassFile.directory.rawValue
         folderItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let folderItemTemplate = Item(
@@ -169,7 +165,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         var fileItemMetadata = SendableItemMetadata(
             ocId: "file-id", fileName: "file", account: Self.account
         )
-        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
         fileItemMetadata.serverUrl = Self.account.davFilesUrl + fileRelativeRemotePath
 
         let fileItemTemplate = Item(
@@ -234,7 +230,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         )
         bundleItemMetadata.directory = true
         bundleItemMetadata.serverUrl = Self.account.davFilesUrl
-        bundleItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        bundleItemMetadata.classFile = NKTypeClassFile.directory.rawValue
         bundleItemMetadata.contentType = UTType.bundle.identifier
 
         let fm = FileManager.default
@@ -371,7 +367,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         var fileItemMetadata = SendableItemMetadata(
             ocId: "file-id", fileName: "file", account: Self.account
         )
-        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
 
         let chunkSize = 2
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
@@ -463,7 +459,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ocId: illegalChunkUploadId, fileName: "file", account: Self.account
         )
         fileItemMetadata.ocId = illegalChunkUploadId
-        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.classFile = NKTypeClassFile.document.rawValue
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         let tempData = Data(repeating: 1, count: chunkSize * 3)

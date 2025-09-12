@@ -1,9 +1,5 @@
-//
-//  ItemFetchTests.swift
-//
-//
-//  Created by Claudio Cambra on 14/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit
@@ -18,7 +14,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()

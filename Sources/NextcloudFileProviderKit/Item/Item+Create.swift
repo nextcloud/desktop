@@ -1,9 +1,5 @@
-//
-//  Item+Create.swift
-//
-//
-//  Created by Claudio Cambra on 16/4/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation
@@ -120,7 +116,7 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let chunkUploadId =
             itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
-        let (ocId, _, etag, date, size, _, error) = await upload(
+        let (ocId, _, etag, date, size, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -328,7 +324,7 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath, privacy: .public)
                     """
                 )
-                let (_, _, _, _, _, _, error) = await upload(
+                let (_, _, _, _, _, error) = await upload(
                     fileLocatedAt: childUrlPath,
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,

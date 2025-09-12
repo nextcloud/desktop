@@ -1,9 +1,5 @@
-//
-//  MockRemoteInterface.swift
-//
-//
-//  Created by Claudio Cambra on 9/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Alamofire
 import Foundation
@@ -722,7 +718,6 @@ public class MockRemoteInterface: RemoteInterface {
         date: NSDate?,
         size: Int64,
         response: HTTPURLResponse?,
-        afError: AFError?,
         remoteError: NKError
     ) {
         var itemName: String
@@ -730,7 +725,7 @@ public class MockRemoteInterface: RemoteInterface {
             itemName = try name(from: remotePath)
             debugPrint("Handling item upload:", itemName)
         } catch {
-            return (account.ncKitAccount, nil, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, .urlError)
         }
 
         let itemLocalUrl = URL(fileURLWithPath: localPath)
@@ -739,11 +734,11 @@ public class MockRemoteInterface: RemoteInterface {
             itemData = try Data(contentsOf: itemLocalUrl)
             debugPrint("Acquired data:", itemData)
         } catch {
-            return (account.ncKitAccount, nil, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, .urlError)
         }
 
         guard let parent = parentItem(path: remotePath, account: account) else {
-            return (account.ncKitAccount, nil, nil, nil, 0, nil, nil, .urlError)
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, .urlError)
         }
         debugPrint("Parent is:", parent.remotePath)
 
@@ -779,7 +774,6 @@ public class MockRemoteInterface: RemoteInterface {
             item.modificationDate as NSDate,
             item.size,
             nil,
-            nil,
             .success
         )
     }
@@ -805,12 +799,11 @@ public class MockRemoteInterface: RemoteInterface {
         account: String,
         fileChunks: [RemoteFileChunk]?,
         file: NKFile?,
-        afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     ) {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
-            return ("", nil, nil, nil, .urlError)
+            return ("", nil, nil, .urlError)
         }
 
         // Create temp directory for file and create chunks within it
@@ -838,7 +831,7 @@ public class MockRemoteInterface: RemoteInterface {
         currentChunks[remoteChunkStoreFolderName] = totalChunks
         chunkUploadStartHandler(newChunks)
 
-        let (_, ocId, etag, date, size, _, afError, remoteError) = await upload(
+        let (_, ocId, etag, date, size, _, remoteError) = await upload(
             remotePath: remotePath,
             localPath: localPath,
             creationDate: creationDate,
@@ -868,7 +861,7 @@ public class MockRemoteInterface: RemoteInterface {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, totalChunks, file, afError, remoteError)
+        return (account.ncKitAccount, totalChunks, file, remoteError)
     }
 
     public func move(
@@ -992,9 +985,9 @@ public class MockRemoteInterface: RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        response: HTTPURLResponse?,
+        headers: [AnyHashable: Any]?,
         afError: AFError?,
-        remoteError: NKError
+        nkError: NKError
     ) {
         guard let item = item(remotePath: remotePath, account: account) else {
             return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)

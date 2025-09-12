@@ -1,9 +1,5 @@
-//
-//  FilesDatabaseManagerTests.swift
-//
-//
-//  Created by Claudio Cambra on 15/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation
@@ -17,7 +13,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory())
+    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
     override func setUp() {
         super.setUp()
@@ -889,7 +885,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // It will search for the old database at:
         // fileProviderDataDirUrl/appendingPathComponent(customRelativeDbFolderPath + dbFilename)
         // and migrate only metadata objects with account == "account1" plus remote file chunks.
-        let dbManager = FilesDatabaseManager(realmConfiguration: newConfig, account: account1, databaseDirectory: temporaryDirectory)
+        let dbManager = FilesDatabaseManager(realmConfiguration: newConfig, account: account1, databaseDirectory: temporaryDirectory, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"))
 
         // Verify that the new Realm now contains the migrated objects.
         let newRealm = dbManager.ncDatabase()
@@ -969,7 +965,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let newDbManager = FilesDatabaseManager(
             realmConfiguration: newConfig,
             account: accounts.migrated,
-            databaseDirectory: tempDir.appendingPathComponent(customRelativePath)
+            databaseDirectory: tempDir.appendingPathComponent(customRelativePath),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test")
         )
 
         let newRealm = newDbManager.ncDatabase()
@@ -996,7 +993,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let secondNewDbManager = FilesDatabaseManager(
             realmConfiguration: newConfig,
             account: accounts.migrated,
-            databaseDirectory: tempDir.appendingPathComponent(customRelativePath)
+            databaseDirectory: tempDir.appendingPathComponent(customRelativePath),
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test")
         )
 
         let secondNewRealm = secondNewDbManager.ncDatabase()

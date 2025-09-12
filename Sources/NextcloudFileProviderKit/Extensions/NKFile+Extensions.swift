@@ -1,9 +1,5 @@
-//
-//  NKFile+Extensions.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2024-12-02.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation
@@ -23,8 +19,8 @@ extension NKFile {
         let creationDate = creationDate ?? date
         let uploadDate = uploadDate ?? date
         let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown")
-            && classFile == NKCommon.TypeClassFile.unknow.rawValue
-                ? NKCommon.TypeClassFile.document.rawValue
+            && classFile == NKTypeClassFile.unknow.rawValue
+                ? NKTypeClassFile.document.rawValue
                 : classFile
         // Support for finding the correct filename for e2ee files should go here
 

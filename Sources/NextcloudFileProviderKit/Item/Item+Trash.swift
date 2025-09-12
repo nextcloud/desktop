@@ -1,9 +1,5 @@
-//
-//  Item+Trash.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 9/5/25.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import NextcloudKit

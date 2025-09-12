@@ -1,9 +1,5 @@
-//
-//  Item+Fetch.swift
-//
-//
-//  Created by Claudio Cambra on 16/4/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation

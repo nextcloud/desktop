@@ -1,9 +1,5 @@
-//
-//  MockEnumerationObserver.swift
-//
-//
-//  Created by Claudio Cambra on 14/5/24.
-//
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
 import Foundation

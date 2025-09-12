@@ -1,9 +1,5 @@
-//
-//  RemoteFileChunk.swift
-//  NextcloudFileProviderKit
-//
-//  Created by Claudio Cambra on 2025-01-08.
-//
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
 import NextcloudKit
