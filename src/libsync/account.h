@@ -406,6 +406,10 @@ public:
     [[nodiscard]] QByteArray encryptionCertificateFingerprint() const;
     void setEncryptionCertificateFingerprint(const QByteArray &fingerprint);
 
+    [[nodiscard]] const QString& synchronizationType() const;
+
+    void setSynchronizationType(const QString &type);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
