@@ -241,9 +241,10 @@ private slots:
         const auto enabledAccounts = nsEnabledAccounts();
 
         for (NSString *const accountIdentifier in enabledAccounts) {
+            const auto qAccountIdentifier = QString::fromNSString(accountIdentifier);
             const auto domainIdentifier = FileProviderUtils::domainIdentifierForAccountIdentifier(accountIdentifier);
             const auto syncStatus = new FileProviderDomainSyncStatus(domainIdentifier, q);
-            _fileProviderDomainSyncStatuses.insert(domainIdentifier, syncStatus);
+            _fileProviderDomainSyncStatuses.insert(qAccountIdentifier, syncStatus);
         }
     }
 
@@ -295,8 +296,8 @@ private:
     void initialCheck()
     {
         qCInfo(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
-
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+
         if (vfsEnabledAccounts != nil) {
             updateDomainSyncStatuses();
             connect(q, &FileProviderSettingsController::vfsEnabledAccountsChanged, this, &MacImplementation::updateDomainSyncStatuses);
