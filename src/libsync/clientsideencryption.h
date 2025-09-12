@@ -293,6 +293,8 @@ public:
 
     void setAccount(const AccountPtr &account);
 
+    [[nodiscard]] static bool checkEncryptionErrorForHardwareTokenResetState(const QByteArray &errorString);
+
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
     void sensitiveDataForgotten();

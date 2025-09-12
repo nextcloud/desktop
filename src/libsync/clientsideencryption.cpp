@@ -789,7 +789,7 @@ OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptS
 
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)binaryData.constData(), binaryData.size()) <= 0) {
         const auto error = handleErrors();
-        if (error.contains(":Device removed:")) {
+        if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             encryptionEngine.initializeHardwareTokenEncryption(nullptr);
             return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
         }
@@ -836,7 +836,7 @@ OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptString
     size_t outLen = 0;
     if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
         const auto error = handleErrors();
-        if (error.contains(":Device removed:")) {
+        if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             encryptionEngine.initializeHardwareTokenEncryption(nullptr);
             return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
         }
@@ -847,7 +847,7 @@ OCC::Result<QByteArray, ClientSideEncryption::EncryptionErrorType> encryptString
     QByteArray out(static_cast<int>(outLen), '\0');
     if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)binaryData.constData(), binaryData.size()) != 1) {
         const auto error = handleErrors();
-        if (error.contains(":Device removed:")) {
+        if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
             encryptionEngine.initializeHardwareTokenEncryption(nullptr);
             return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
         }
@@ -1904,6 +1904,11 @@ void ClientSideEncryption::cacheTokenPin(const QString pin)
     QTimer::singleShot(86400000, this, [this] () {
         _cachedPin.clear();
     });
+}
+
+bool ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(const QByteArray &errorString)
+{
+    return errorString.contains(":Device removed:") || errorString.contains(":Session handle invalid:") || errorString.contains(":Object handle invalid:");
 }
 
 void ClientSideEncryption::checkAllSensitiveDataDeleted()
