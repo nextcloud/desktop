@@ -8,6 +8,7 @@
 #include <QClipboard>
 #include <QTimer>
 #include <QBuffer>
+#include "abstractnetworkjob.h"
 #include "account.h"
 #include "flow2auth.h"
 #include <QJsonObject>
@@ -254,8 +255,12 @@ QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
             errorReason = tr("Error returned from the server: <em>%1</em>")
             .arg(errorFromJson.toHtmlEscaped());
         } else if (reply->error() != QNetworkReply::NoError) {
+            auto errorStringFromReply = reply->errorString();
+            if (const auto hstsError = AbstractNetworkJob::hstsErrorStringFromReply(reply)) {
+                errorStringFromReply = *hstsError;
+            }
             errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
-            .arg(reply->errorString().toHtmlEscaped());
+            .arg(errorStringFromReply.toHtmlEscaped());
         } else if (jsonParseError.error != QJsonParseError::NoError) {
             errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
             .arg(jsonParseError.errorString());
