@@ -100,7 +100,7 @@ macro(nextcloud_add_benchmark test_class)
     add_executable(${OWNCLOUD_TEST_CLASS}Bench benchmarks/bench${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
-    target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
+    target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench PRIVATE
       Nextcloud::sync
       testutils
       nextcloudCore
@@ -112,8 +112,20 @@ macro(nextcloud_add_benchmark test_class)
       Qt::Core5Compat
     )
 
+if (WIN32)
+    target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench PRIVATE
+        nextcloudsync_vfs_cfapi
+    )
+endif()
+
+if (LINUX)
+    target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench PRIVATE
+        nextcloudsync_vfs_xattr
+    )
+endif()
+
     IF(BUILD_UPDATER)
-        target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench PRIVATE
             updater
         )
     endif()
