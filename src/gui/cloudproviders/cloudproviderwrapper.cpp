@@ -221,7 +221,14 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     _mainMenu = g_menu_new();
 
     section = g_menu_new();
-    item = addMenuItem(tr("Open website"), "cloudprovider.openwebsite");
+    item = addMenuItem(tr("Open main dialog"), "cloudprovider.openmaindialog");
+    g_menu_append_item(section, item);
+    g_clear_object (&item);
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&section);
+
+    section = g_menu_new();
+    item = addMenuItem(tr("Open in browser"), "cloudprovider.openwebsite");
     g_menu_append_item(section, item);
     g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
@@ -281,6 +288,10 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
         gui->slotShowSettings();
     }
 
+    if(g_str_equal(name, "openmaindialog")) {
+        gui->slotOpenMainDialog();
+    }
+
     if(g_str_equal(name, "openwebsite")) {
         QDesktopServices::openUrl(self->folder()->accountState()->account()->url());
     }
@@ -330,6 +341,7 @@ activate_action_pause (GSimpleAction *action,
 }
 
 static GActionEntry actions[] = {
+    { "openmaindialog",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "openwebsite",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "quit",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "logout",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
