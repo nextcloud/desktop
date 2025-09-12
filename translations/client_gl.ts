@@ -304,12 +304,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
         <source>Remove local copies</source>
-        <translation type="unfinished"/>
+        <translation>Retirar as copias locais</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
         <source>Local copies</source>
-        <translation type="unfinished"/>
+        <translation>Copias locais</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
@@ -345,12 +345,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="103"/>
         <source>Allow deletion of items in Trash</source>
-        <translation type="unfinished"/>
+        <translation>Permitir a eliminación de elementos do cesto do lixo</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
+        <translation>Restabelecer o contorno de ficheiros virtuais</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
         <source>Free up space …</source>
-        <translation type="unfinished"/>
+        <translation>Liberar espazo…</translation>
     </message>
 </context>
 <context>
@@ -491,12 +491,12 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="306"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor tardou demasiado en responder. Comprobe a súa conexión e tente volver sincronizar. Se aínda así non funciona, póñase en contacto coa administración do servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro non agardado. Tente sincronizar de novo ou póñase en contacto coa administración do servidor se o problema continúa.</translation>
     </message>
 </context>
 <context>
@@ -523,7 +523,8 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
         <location filename="../src/gui/accountmanager.cpp" line="236"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Detectouse unha conta dun cliente de escritorio estilo antigo.
+Debería importarse a conta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="238"/>
@@ -648,7 +649,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Esquecer a configuración do cifrado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="308"/>
@@ -658,7 +659,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation type="unfinished"/>
+        <translation>O cifrado está configurado. Lembre &lt;b&gt;cifrar&lt;/b&gt; un cartafol para cifrar de extremo a extremo calquera ficheiro novo que engada nel.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="348"/>
@@ -684,7 +685,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation type="unfinished"/>
+        <translation>Non pode cifrar este cartafol porque o cifrado de extremo a extremo aínda non está configurado neste dispositivo.
+Gustaríalle facelo agora?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
