@@ -602,7 +602,7 @@ Page {
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
 
-                NCInputDateField {
+                NCCalendarPicker {
                     id: expireDateField
 
                     Layout.fillWidth: true
