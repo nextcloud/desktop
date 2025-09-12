@@ -66,9 +66,14 @@ public:
     {
         QStringList qEnabledAccounts;
         NSArray<NSString *> *const enabledAccounts = nsEnabledAccounts();
+
         for (NSString *const userIdAtHostString in enabledAccounts) {
+            qCDebug(lcFileProviderSettingsController) << "Found VFS-enabled account in user defaults:"
+                                                      << userIdAtHostString;
+
             qEnabledAccounts.append(QString::fromNSString(userIdAtHostString));
         }
+
         return qEnabledAccounts;
     }
 
@@ -231,13 +236,15 @@ public slots:
 private slots:
     void updateDomainSyncStatuses()
     {
-        qCInfo(lcFileProviderSettingsController) << "Updating domain sync statuses";
+        qCInfo(lcFileProviderSettingsController) << "Updating file provider domain sync statuses.";
         _fileProviderDomainSyncStatuses.clear();
         const auto enabledAccounts = nsEnabledAccounts();
-        for (NSString *const domainIdentifier in enabledAccounts) {
-            const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
-            const auto syncStatus = new FileProviderDomainSyncStatus(qDomainIdentifier, q);
-            _fileProviderDomainSyncStatuses.insert(qDomainIdentifier, syncStatus);
+
+        for (NSString *const accountIdentifier in enabledAccounts) {
+            const auto qAccountIdentifier = QString::fromNSString(accountIdentifier);
+            const auto domainIdentifier = FileProviderUtils::domainIdentifierForAccountIdentifier(accountIdentifier);
+            const auto syncStatus = new FileProviderDomainSyncStatus(domainIdentifier, q);
+            _fileProviderDomainSyncStatuses.insert(qAccountIdentifier, syncStatus);
         }
     }
 
@@ -249,7 +256,7 @@ private:
 
     void fetchMaterialisedFilesStorageUsage()
     {
-        qCInfo(lcFileProviderSettingsController) << "Fetching materialised files storage usage";
+        qCInfo(lcFileProviderSettingsController) << "Fetching used storage space of materialized items.";
 
         [NSFileProviderManager getDomainsWithCompletionHandler: ^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
             if (error != nil) {
@@ -289,8 +296,8 @@ private:
     void initialCheck()
     {
         qCInfo(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
-
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+
         if (vfsEnabledAccounts != nil) {
             updateDomainSyncStatuses();
             connect(q, &FileProviderSettingsController::vfsEnabledAccountsChanged, this, &MacImplementation::updateDomainSyncStatuses);
@@ -377,37 +384,52 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
 bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();
+
     if (!xpc) {
         return true;
     }
-    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForExtension(userIdAtHost)) {
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
         return trashDeletionState->first;
     }
+
     return true;
 }
 
 bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();
+
     if (!xpc) {
         return false;
     }
-    if (const auto state = xpc->trashDeletionEnabledStateForExtension(userIdAtHost)) {
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    if (const auto state = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
         return state->second;
     }
+
     return false;
 }
 
 void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
 {
     const auto xpc = FileProvider::instance()->xpc();
+
     if (!xpc) {
         // Reset state of UI elements
         emit trashDeletionEnabledForAccountChanged(userIdAtHost);
         emit trashDeletionSetForAccountChanged(userIdAtHost);
         return;
     }
-    xpc->setTrashDeletionEnabledForExtension(userIdAtHost, setEnabled);
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    xpc->setTrashDeletionEnabledForFileProviderDomain(domainId, setEnabled);
+
     emit trashDeletionEnabledForAccountChanged(userIdAtHost);
     emit trashDeletionSetForAccountChanged(userIdAtHost);
 }
@@ -502,7 +524,7 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
         qCWarning(lcFileProviderSettingsController) << "Could not create debug archive, FileProviderXPC is not available.";
         return;
     }
-    xpc->createDebugArchiveForExtension(userIdAtHost, filename);
+    xpc->createDebugArchiveForFileProviderDomain(userIdAtHost, filename);
 }
 
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
