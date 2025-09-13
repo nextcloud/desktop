@@ -305,7 +305,7 @@ signals:
     void finished();
     // The root etag of this directory was fetched
     void etag(const QByteArray &, const QDateTime &time);
-    void updatedRootFolderQuota(const int64_t &bytesUSed, const int64_t &bytesAvailable);
+    void updatedRootFolderQuota(const int64_t &bytesUsed, const int64_t &bytesAvailable);
 
 private slots:
     void setFolderQuota(const FolderQuota &folderQuota);
