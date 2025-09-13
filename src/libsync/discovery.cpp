@@ -2300,7 +2300,7 @@ void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
     _folderQuota.bytesUsed = folderQuota.bytesUsed;
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 
-    if (_currentFolder._original == "") {
+    if (_currentFolder._original.isEmpty()) {
         emit updatedRootFolderQuota(_folderQuota.bytesUsed, _folderQuota.bytesAvailable);
     }
 }
