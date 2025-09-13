@@ -33,6 +33,7 @@ class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
 using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
+class HydrationJob;
 
 enum class VirtualItemCreationStatus {
     Unknown,
@@ -293,6 +294,15 @@ public:
      */
     [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) = 0;
 
+    /** Start a hydration (download of remote contents) of a file.
+     *
+     * The fileId is the SyncFileItem::id() value of the file to hydrate.
+     * The targetPath is the absolute path to the local file to hydrate.
+     *
+     * Returns a QFuture<Result> void if successful and QFuture<Result> QString if an error occurs.
+     */
+    [[nodiscard]] virtual HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) = 0;
+
 public Q_SLOTS:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *
@@ -373,6 +383,8 @@ public:
     bool setPinState(const QString &, PinState) override { return true; }
     Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
     AvailabilityResult availability(const QString &, const AvailabilityRecursivity) override { return VfsItemAvailability::AlwaysLocal; }
+
+    [[nodiscard]] HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) override;
 
 public Q_SLOTS:
     void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}

@@ -27,6 +27,7 @@ class Folder;
 class SocketListener;
 class DirectEditor;
 class SocketApiJob;
+class SocketApiJobV2;
 
 namespace Mac {
     class FinderSyncService;
@@ -151,6 +152,7 @@ private:
     Q_INVOKABLE void command_UNLOCK_FILE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_FILE_ACTIONS(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_FILES_GOVERNANCE_LABELS(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_V2_HYDRATE_FILE(const QSharedPointer<SocketApiJobV2> &job) const;
 
     void setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const;
 

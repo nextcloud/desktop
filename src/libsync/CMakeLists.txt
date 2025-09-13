@@ -168,6 +168,8 @@ set(libsync_SRCS
     settings/migration.cpp
     chronoelapsedtimer.h
     chronoelapsedtimer.cpp
+    hydrationjob.h
+    hydrationjob.cpp
 )
 
 if (WIN32)
