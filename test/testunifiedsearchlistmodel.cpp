@@ -697,6 +697,7 @@ private slots:
         resultClickedLocalFile.clear();
 
         // Accountptr is invalid
+        const auto prevAccountState = accountState.data();
         model.reset(new OCC::UnifiedSearchResultsListModel(nullptr));
         modelTester.reset(new QAbstractItemModelTester(model.data()));
         const auto providerIdTestNullptr = "file";
@@ -711,6 +712,9 @@ private slots:
 
         resultClickedBrowser.clear();
         resultClickedLocalFile.clear();
+
+        model.reset(new OCC::UnifiedSearchResultsListModel(prevAccountState));
+        modelTester.reset(new QAbstractItemModelTester(model.data()));
     }
 
     void testSetSearchTermResultsError()
