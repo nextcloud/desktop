@@ -1208,23 +1208,23 @@ void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBy
 
     int thresholdPassed = 0;
     if (_lastQuotaPercent < 80 && percentInt >= 80) {
-        threshold_passed = 80;
+        thresholdPassed = 80;
     }
 
     if (_lastQuotaPercent < 90 && percentInt >= 90) {
-        threshold_passed = 90;
+        thresholdPassed = 90;
     }
 
     if (_lastQuotaPercent < 95 && percentInt >= 95) {
-        threshold_passed = 95;
+        thresholdPassed = 95;
     }
 
-    if (threshold_passed > 0) {
+    if (thresholdPassed > 0) {
         _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
 
         _lastQuotaActivity._type = Activity::OpenSettingsNotificationType;
         _lastQuotaActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
-        _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(threshold_passed));
+        _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(thresholdPassed));
         _lastQuotaActivity._accName = account()->displayName();
         _lastQuotaActivity._id = qHash(QDateTime::currentMSecsSinceEpoch());
         showDesktopNotification(_lastQuotaActivity);
