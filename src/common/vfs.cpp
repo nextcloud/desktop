@@ -138,6 +138,11 @@ VfsOff::VfsOff(QObject *parent)
 
 VfsOff::~VfsOff() = default;
 
+HydrationJob *VfsOff::hydrateFile([[maybe_unused]] const QByteArray &fileId, [[maybe_unused]] const QString &targetPath)
+{
+    return nullptr;
+}
+
 static QString modeToPluginName(Vfs::Mode mode)
 {
     switch (mode) {

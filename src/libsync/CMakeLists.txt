@@ -168,6 +168,8 @@ set(libsync_SRCS
     caseclashconflictsolver.cpp
     chronoelapsedtimer.h
     chronoelapsedtimer.cpp
+    hydrationjob.h
+    hydrationjob.cpp
 )
 
 if (WIN32)

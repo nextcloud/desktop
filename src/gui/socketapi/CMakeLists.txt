@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 target_sources(nextcloudCore PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/socketapi.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi_p.h
     ${CMAKE_CURRENT_SOURCE_DIR}/socketapi.cpp
 )
 

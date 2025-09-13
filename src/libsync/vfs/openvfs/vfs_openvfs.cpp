@@ -7,13 +7,13 @@
 #include "vfs_openvfs.h"
 
 #include "account.h"
+#include "common/path.h"
 #include "common/syncjournaldb.h"
 #include "filesystem.h"
-#include "libsync/theme.h"
-#include "xattr.h"
-#include "syncfileitem.h"
 #include "hydrationjob.h"
-#include "common/path.h"
+#include "syncfileitem.h"
+#include "theme.h"
+#include "xattr.h"
 
 #include <openvfs/openvfs.h>
 

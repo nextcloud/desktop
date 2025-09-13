@@ -6,13 +6,14 @@
 #include "owncloudlib.h"
 
 #include "common/syncjournalfilerecord.h"
-#include "propagatedownload.h"
 
 #include <QIODevice>
 #include <QObject>
 
-namespace OCC {
+namespace OCC
+{
 class Vfs;
+class GETFileJob;
 
 class OWNCLOUDSYNC_EXPORT HydrationJob : public QObject
 {
@@ -24,14 +25,17 @@ public:
     void abort();
 
     // In case the device to write to is a file, it can be passed here to the result slots
-    void setTargetFile(const QString& fileName);
+    void setTargetFile(const QString &fileName);
     [[nodiscard]] QString targetFileName() const;
 
     [[nodiscard]] Vfs *vfs() const;
 
     [[nodiscard]] SyncJournalFileRecord record() const;
 
-    [[nodiscard]] QByteArray fileId() const { return _fileId; }
+    [[nodiscard]] QByteArray fileId() const
+    {
+        return _fileId;
+    }
 
 Q_SIGNALS:
     void finished();

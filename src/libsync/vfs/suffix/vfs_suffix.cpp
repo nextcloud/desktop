@@ -177,6 +177,11 @@ bool VfsSuffix::setPinState(const QString &folderPath, PinState state)
     return setPinStateInDb(folderPath, state);
 }
 
+HydrationJob *VfsSuffix::hydrateFile([[maybe_unused]] const QByteArray &fileId, [[maybe_unused]] const QString &targetPath)
+{
+    return nullptr;
+}
+
 Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck)
 {
     Q_UNUSED(recursiveCheck)
