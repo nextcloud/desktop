@@ -15,7 +15,7 @@ HydrationJob::HydrationJob(Vfs *vfs, const QByteArray &fileId, std::unique_ptr<Q
 {
 }
 
-void HydrationJob::setTargetFile(const QString& fileName)
+void HydrationJob::setTargetFile(const QString &fileName)
 {
     _fileName = fileName;
 }
