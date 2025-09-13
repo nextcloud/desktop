@@ -18,8 +18,6 @@ if (NOT WIN32)
             vfs_openvfs.cpp
             xattr.h
             xattr.cpp
-            hydrationjob.h
-            hydrationjob.cpp
         )
 
         add_library(nextcloudsync_vfs_openvfs SHARED

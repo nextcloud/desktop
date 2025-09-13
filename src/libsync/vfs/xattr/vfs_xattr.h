@@ -50,6 +50,8 @@ public:
     Optional<PinState> pinState(const QString &folderPath) override;
     AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) override;
 
+    [[nodiscard]] HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) override;
+
 public Q_SLOTS:
     void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
 

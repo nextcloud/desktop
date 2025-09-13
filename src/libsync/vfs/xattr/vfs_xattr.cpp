@@ -196,6 +196,11 @@ Optional<PinState> VfsXAttr::pinState(const QString &folderPath)
     return pinStateInDb(folderPath);
 }
 
+HydrationJob *VfsXAttr::hydrateFile([[maybe_unused]] const QByteArray &fileId, [[maybe_unused]] const QString &targetPath)
+{
+    return nullptr;
+}
+
 Vfs::AvailabilityResult VfsXAttr::availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck)
 {
     Q_UNUSED(recursiveCheck)
