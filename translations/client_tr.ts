@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
         <source>Open file details</source>
         <translation>Dosya bilgilerini aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
         <source>Dismiss</source>
         <translation>Yok say</translation>
     </message>
@@ -28,17 +28,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="48"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
         <source>Activity list</source>
         <translation>İşlem listesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="132"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
         <source>Scroll to top</source>
         <translation>Üste git</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
         <source>No activities yet</source>
         <translation>Henüz bir işlem yok</translation>
     </message>
@@ -497,6 +497,11 @@ macOS bu isteği yok sayabilir veya geciktirebilir.</translation>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Beklenmeyen bir sorun çıktı. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
+        <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

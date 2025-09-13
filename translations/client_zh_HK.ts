@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
         <source>Open file details</source>
         <translation>打開檔案細節</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
         <source>Dismiss</source>
         <translation>撤銷</translation>
     </message>
@@ -28,17 +28,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="48"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
         <source>Activity list</source>
         <translation>活動紀錄清單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="132"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
         <source>Scroll to top</source>
         <translation>滾動到頂部</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
         <source>No activities yet</source>
         <translation>尚無系統事件</translation>
     </message>
@@ -497,6 +497,11 @@ macOS 可能會不理會或延遲此請求。</translation>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>發生意外錯誤。請再次嘗試同步，若問題持續，請聯絡您的伺服器管理員。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
+        <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

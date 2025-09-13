@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
         <source>Open file details</source>
         <translation>Abrir os detalles do ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
         <source>Dismiss</source>
         <translation>Rexeitar</translation>
     </message>
@@ -28,17 +28,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="48"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
         <source>Activity list</source>
         <translation>Lista de actividades</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="132"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
         <source>Scroll to top</source>
         <translation>Desprazarse cara arriba</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
         <source>No activities yet</source>
         <translation>Aínda non hai actividades</translation>
     </message>
@@ -498,6 +498,11 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Produciuse un erro non agardado. Tente sincronizar de novo ou póñase en contacto coa administración do servidor se o problema continúa.</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
+        <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::Account</name>
@@ -809,22 +814,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1093"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation type="unfinished"/>
+        <translation>Para protexer a súa identidade criptográfica, cifrámola cun mnemotécnico de 12 palabras do dicionario. Anóteas a poñas a seguro. Serán necesarias para configurar a sincronización de cartafoles cifrados nos seus outros dispositivos.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1118"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Ignorar o cifrado de extremo a extremo neste dispositivo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1119"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Confirma que quere ignorar os axustes de cifrado de extremo a extremo para %1 neste dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1120"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ignorar o cifrado de extremo a extremo eliminará os datos sensíbeis e todos os ficheiros cifrados deste dispositivo.&lt;br&gt;Porén, os ficheiros cifrados permanecerán no servidor e en todos os seus outros dispositivos, se están configurados.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1192"/>
@@ -854,12 +859,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1690"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation type="unfinished"/>
+        <translation>O cifrado de extremo a extremo foi iniciado nesta conta con outro dispositivo.&lt;br&gt;Introduza o mnemotécnico único para que os cartafoles cifrados tamén se sincronicen neste dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1747"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation type="unfinished"/>
+        <translation>Esta conta admite o cifrado de extremo a extremo, mais hai que configuralo primeiro.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1751"/>
@@ -1246,49 +1251,49 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel descargar o ficheiro %1 por mor dunha colisión co nome dun ficheiro local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro cambiou após ser achado</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel actualizar os metadatos do novo ficheiro %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>Non se pode descargar o ficheiro %1 por mor de que non é virtual.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="255"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="258"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 está en uso neste momento</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel obter o ficheiro %1 da BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
     </message>
 </context>
 <context>
@@ -1301,7 +1306,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
         <source>File contains leading or trailing spaces and couldn&apos;t be renamed</source>
-        <translation type="unfinished"/>
+        <translation>O nome do ficheiro contén espazos ao principio ou ao final e non foi posíbel cambiarlle o nome</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
@@ -1519,7 +1524,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/clientsideencryption.cpp" line="1142"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation type="unfinished"/>
+        <translation>Introducir o código PIN</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1143"/>
@@ -1725,7 +1730,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="695"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu unha resposta non agardada que non foi posíbel ler. Póñase en contacto coa administración do seu servidor.”</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="726"/>
@@ -1984,19 +1989,19 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Hai %1 mes</numerusform><numerusform>Hai %1 meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Hai %1 ano</numerusform><numerusform>Hai %1 anos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 — Caduca en %2 minuto</numerusform><numerusform>Bloqueado por %1 — Caduca en %2 minutos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2019,7 +2024,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>A resposta do servidor non contiña todos os campos agardados: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="255"/>
@@ -2093,7 +2098,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 e outro ficheiro foi retirado.</numerusform><numerusform>%1 e outros %n ficheiros foron retirados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="189"/>
@@ -2627,7 +2632,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Agardando por outro cartafol…</numerusform><numerusform>Agardando por outros %n cartafoles…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1181"/>
@@ -2733,7 +2738,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="505"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Xa está a sincronizar o subcartafol %1 en %2.</translation>
     </message>
 </context>
 <context>
@@ -2926,7 +2931,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/generalsettings.ui" line="455"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Restabelecer os &amp;predeterminados</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="378"/>
@@ -2956,7 +2961,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="343"/>
         <source>Restore to &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar en &amp;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="419"/>
@@ -3037,7 +3042,7 @@ Non é posíbel reverter as versións inmediatamente: cambiar de estábel a empr
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="637"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Redacte a información considerada sensíbel antes de compartir! O ficheiro de depuración foi creado en %1</translation>
     </message>
 </context>
 <context>
@@ -3215,7 +3220,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Os seguintes caracteres non están permitidos no sistema: : \ / : ? * &quot; &lt; &gt; | e os espazos ao principio ou ao final</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
@@ -3303,12 +3308,12 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importar o herdado</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Seleccione as contas a importar desde a configuración herdada:</translation>
     </message>
 </context>
 <context>
@@ -3628,12 +3633,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Está a empregar a canle de actualización %1. A instalación xa está na versión máis recente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Non hai actualizacións dispoñíbeis. A instalación xa está na versión máis recente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="194"/>
@@ -3969,19 +3974,19 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="101"/>
         <source>Proxy Settings</source>
         <comment>Proxy Settings button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Axustes do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
         <source>Next</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Seguinte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
         <source>Back</source>
         <comment>Next button text in new account wizard</comment>
-        <translation type="unfinished"/>
+        <translation>Atrás</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="499"/>
@@ -4058,33 +4063,33 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Os nomes de cartafol que conteñen o carácter «%1» non están admitidos neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Os nomes de ficheiros que conteñen o carácter «%1» non están admitidos neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>O nome do cartafol contén algún carácter non aceptado</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>File name contains at least one invalid character</source>
-        <translation>O nome de ficheiro contén algún carácter non aceptado</translation>
+        <translation>O nome do ficheiro contén algún carácter non aceptado</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>Folder name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do cartafol é un nome reservado neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do ficheiro é un nome reservado neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
@@ -4996,7 +5001,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Caduca en %1 minuto</numerusform><numerusform>Caduca en %1 minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1389"/>
@@ -5595,7 +5600,7 @@ O servidor respondeu co erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/tray/usermodel.cpp" line="181"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notificación</numerusform><numerusform>%n notificacións</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
@@ -5720,17 +5725,17 @@ O servidor respondeu co erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="397"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="400"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="403"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n día</numerusform><numerusform>%n días</numerusform></translation>
     </message>
 </context>
 <context>
@@ -5877,32 +5882,32 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
         <source>Proxy Settings</source>
         <comment>Dialog window title for proxy settings</comment>
-        <translation type="unfinished"/>
+        <translation>Axustes do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome de máquina para o servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuario para o servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Contrasinal para o servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -6110,42 +6115,42 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulario</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Axustes do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Especificar manualmente o proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>O servidor proxy precisa autenticación</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Nota: Os axustes do proxy non teñen efectos para as contas en localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Usar o servidor proxy do sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sen proxy</translation>
     </message>
 </context>
 <context>
@@ -6176,7 +6181,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/common/utility.cpp" line="444"/>
         <source>1min</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1min</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="444"/>
@@ -6188,7 +6193,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/common/utility.cpp" line="447"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="447"/>
@@ -6250,7 +6255,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="314"/>
         <source>Error deleting the file</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao eliminar o ficheiro</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="59"/>

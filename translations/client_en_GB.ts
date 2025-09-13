@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
         <source>Open file details</source>
         <translation>Open file details</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="199"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
         <source>Dismiss</source>
         <translation>Dismiss</translation>
     </message>
@@ -28,17 +28,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="48"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="55"/>
         <source>Activity list</source>
         <translation>Activity list</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="132"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="139"/>
         <source>Scroll to top</source>
         <translation>Scroll to top</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="161"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="168"/>
         <source>No activities yet</source>
         <translation>No activities yet</translation>
     </message>
@@ -497,6 +497,11 @@ macOS may ignore or delay this request.</translation>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="310"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
+        <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
