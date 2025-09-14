@@ -501,7 +501,7 @@ macOS podría ignorar o demorar esta solicitud.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor hace obligatoria la seguridad estricta en el transporte y no acepta certificados sin confianza.</translation>
     </message>
 </context>
 <context>
@@ -1677,22 +1677,22 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="174"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
         <source>Timeout</source>
         <translation>Tiempo de espera superado</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="292"/>
         <source>The configured server for this client is too old</source>
         <translation>La configuración del servidor para este cliente es demasiado antigua</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="293"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, actualice a la última versión del servidor y reinicie el cliente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="162"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Error de autenticación: El usuario o la contraseña son incorrectos</translation>
     </message>
@@ -1702,7 +1702,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>La cuenta Nextcloud no está configurada</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="211"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
         <source>The provided credentials are not correct</source>
         <translation>Las credenciales proporcionadas no son correctas</translation>
     </message>
@@ -2007,27 +2007,27 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation>La URL de consulta no comienza con HTTPS a pesar de que la URL de inicio de sesión comenzó con HTTPS. El inicio de sesión no será posible porque esto podría ser un problema de seguridad. Por favor, póngase en contacto con su administrador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="249"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="250"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Error devuelto por el servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="252"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="257"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Hubo un error accediendo al &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>La respuesta del servidor no contiene todos los campos esperados: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="255"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="260"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>No se pudo procesar el código JSON recibido del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
@@ -6264,132 +6264,132 @@ El servidor respondió con el error: %2</translation>
         <translation>Las rutas que comienzan con el carácter &apos;#&apos; no están soportadas en el modo VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="474"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>No pudimos procesar su solicitud. Por favor, intente sincronizar nuevamente más tarde. Si esto sigue sucediendo, contacte al administrador de su servidor para buscar ayuda.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="477"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Debe iniciar sesión para continuar. Si tiene problema con sus credenciales, por favor, comuníquese con el administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="480"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>No tiene acceso a este recurso. Si cree que es un error, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="483"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>No pudimos encontrar lo que está buscando. Puede haber sido movido o eliminado. Si necesita ayuda, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="486"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Parece estar utilizando un proxy que requiere autenticación. Por favor, verifique las configuraciones de su proxy y las credenciales. Si necesita ayuda, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="489"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Está solicitud está tardando más de lo usual. Por favor, intente sincronizar nuevamente. Si todavía no funciona, comuníquese con el administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="492"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Los archivos en el servidor cambiaron mientras Ud. trabajaba. Por favor, intente sincronizar nuevamente. Contacte al administrador de su servidor si el problema persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="495"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Esta carpeta o archivo ya no están disponibles. Si necesita asistencia, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="498"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>La solicitud no pudo ser completada debido a que algunas condiciones no se cumplieron. Por favor, intente sincronizar nuevamente más tarde. Si necesita asistencia, por favor, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="501"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>El archivo es demasiado grande para ser cargado. Podría necesitar escoger un archivo más pequeño, o, contactar al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="504"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>La dirección que se utilizó para hacer la solicitud es demasiado grande para que el servidor pueda utilizarla. Por favor, trate de acortar la información que está enviando, o, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="507"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Este tipo de archivo no está soportado. Por favor, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="510"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>El servidor no pudo procesar su solicitud ya que alguna información era, o bien incorrecta o estaba incompleta. Por favor, intente sincronizar nuevamente más tarde, o, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="513"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>El recurso al que está intentando acceder está actualmente bloqueado y no puede ser modificado. Por favor, intente cambiarlo más tarde, o, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="516"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Esta solicitud no pudo ser completada por que le faltan algunas condiciones requeridas. Por favor, intente nuevamente más tarde, o, contacte al administrador de su servidor para que le ayude.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="519"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Ha hecho demasiadas solicitudes. Por favor, espere e intente de nuevo. Si sigue viendo esto, el administrador de su servidor le podrá ayudar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="522"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Algo ha salido mal en el servidor. Por favor, intente sincronizar nuevamente más tarde, o, contacte al administrador de su servidor si el problema persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="525"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Es servidor no reconoce el método de la solicitud. Por favor, contacte al administrador de su servidor para que le ayude.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="528"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Estamos teniendo problemas conectándonos al servidor. Por favor, intente nuevamente en breve. Si el problema persiste, el administrador de su servidor puede ayudarle.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="531"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>El servidor está ocupado ahora mismo. Por favor, intente sincronizar nuevamente en unos pocos minutos , o, contacte al administrador del servidor si es urgente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="534"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Está tomando mucho tiempo conectarse al servidor. Por favor, intente nuevamente más tarde. Si necesita ayuda, contacte al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="537"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>El servidor no soporta la versión de la conexión en uso. Contacte al administrador de su servidor para que le ayude.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="540"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>El servidor no tiene suficiente espacio para completar su solicitud. Por favor, verifique el nivel de cuota restante que tiene su usuario contactando al administrador de su servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="543"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Su red necesita autenticación adicional. Por favor, verifique su conexión. Contacte al administrador de su servidor para que le ayude si el problema persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="546"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>No tiene permisos para acceder a este recurso. Si cree que esto es un error, contacte al administrador de su servidor para que le asista.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Ha ocurrido un error inesperado. Por favor intente sincronizar nuevamente, o, contacte al administrador de su servidor si el problema continúa.</translation>
     </message>
