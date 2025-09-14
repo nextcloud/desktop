@@ -501,7 +501,7 @@ macOS võib seda eirata või alustamisega viivitada.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Server järgib HSTS-standardit ja ei luba kasutada mitteusaldusväärseid sertifikaate.</translation>
     </message>
 </context>
 <context>
@@ -1677,22 +1677,22 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="174"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
         <source>Timeout</source>
         <translation>Aegumine</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="292"/>
         <source>The configured server for this client is too old</source>
         <translation>Seadistatud server on selle kliendi jaoks liiga vana</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="293"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Palun uuenda server viimasele versioonile ning taaskäivita klient.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="162"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Viga autentimisel: Kasutajanimi või salasõna on vale</translation>
     </message>
@@ -1702,7 +1702,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <translation>Ühtegi Nextcloudi kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="211"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
         <source>The provided credentials are not correct</source>
         <translation>Sisestatud kasutajatunnused pole õiged</translation>
     </message>
@@ -2007,27 +2007,27 @@ See võib olla seotud kasutatavate OpenSSl-i teekidega.</translation>
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation>Serveri vastuses leiuduva võrguaadressi alguses puudub https-protokoll, aga sisselogimisaadressi puhul oli ta olemas. Kuna tegemist võib olla turvaprobleemiga, siis sisselogimine pole võimalik. Palun võta ühendust oma peakasutajaga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="249"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="250"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Viga serveripäringu vastuseks: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="252"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="257"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Ligipääsul „token“ otspunktile tekkis viga: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Serverist saadetud vastuses polnud kõiki eeldatud välju: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="255"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="260"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Serveripäringu vastuseks saadud JSON-i töötlemine ei õnnestunud: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
@@ -6263,132 +6263,132 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Asukohad, mille alguses on „#“ pole toetatud virtuaalsete failide režiimis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="474"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Sinu tehtud päringu töötlemine polnud võimalik. Proovi uuesti andmeid uuesti hiljem sünkroonida. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="477"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Jätkamiseks pead logima sisse. Kui sul on probleeme oma kasutajanime/salasõnaga, siis palun võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="480"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Sul puudub ligipääs sellele ressursile. Kui arvad, et see on viga, siis palun küsi abi serveri haldajalt või peakasutajalt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="483"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Me ei suutnud leida otsitavat. See võib olla teisaldatud või kustutatud. Vajadusel palun küsi abi oma serveri haldajalt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="486"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="489"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="492"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="495"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="498"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="501"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="504"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="507"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Failitüüp pole toetatud. Vajadusel aitab sind serveri haldaja.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="510"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Kuna osa teabest oli puudulik või vigane, siis sellele päringule server ei saa vastata. Palun proovi sünkroonimist hiljem uuesti või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="513"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Ressurss, mida soovid kasutada on lukus ja seda ei saa muuta. Palun proovi hiljem uuesti muuta või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="516"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Kuna puudu on mõned olulised tingimused, siis sellele päringule ei saa vastata. Palun proovi hiljem uuesti või võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="519"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Sa oled teinud liiga palju päringuid. Palun proovi hiljem uuesti. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="522"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Serveris tekkis ootamatu viga. Proovi hiljem uuesti andmeid sünkroonida ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="525"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Server ei oska aru saada päringu meetodist. Palun võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="528"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Ei õnnestu ühendada serveriga. Palun proovi hiljem uuesti. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="531"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Server on hetkel hõivatud. Proovi andmeid hiljem uuesti sünkroonida ja sellega on kiire, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="534"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Ühendamine serveriga kestab liiga kaua. Palun proovi hiljem uuesti.  Vajadusel aitab sinu serveri haldaja.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="537"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Server ei toeta ühenduse sellist versiooni. Abiteavet saad oma serveri haldaja käest.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="540"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Serveris pole piisavalt andmeruumi sinu päringule vastamiseks. Oma serveri haldaja käes saad teavet antud kasutaja andmeruumi kvoodi kohta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="543"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Sinu võrk eeldab täiendava autentimise kasutamist. Palun kontrolli om arvuti või nutiseadme võrguühenduse toimimist. Kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="546"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Sul puuduvad õigused ligipääsuks sellele ressursile. Kui arvad, et see on viga, siis palun küsi abi serveri haldajalt või peakasutajalt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Tekkis ootamatu viga. Proovi uuesti andmeid sünkroonida ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
     </message>

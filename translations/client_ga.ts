@@ -1677,22 +1677,22 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="174"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
         <source>Timeout</source>
         <translation>Sos</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="292"/>
         <source>The configured server for this client is too old</source>
         <translation>Tá an freastalaí cumraithe don chliant seo ró-shean</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="293"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Nuashonraigh chuig an bhfreastalaí is déanaí agus atosaigh an cliant le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="162"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Earráid fhíordheimhnithe: Tá ainm úsáideora nó pasfhocal mícheart.</translation>
     </message>
@@ -1702,7 +1702,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Níl cuntas Nextcloud cumraithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="211"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="214"/>
         <source>The provided credentials are not correct</source>
         <translation>Níl na dintiúir a thugtar ceart</translation>
     </message>
@@ -2007,27 +2007,27 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation>Ní thosaíonn URL an fhreastalaí ar ais le HTTPS in ainneoin gur thosaigh an URL logáil isteach le HTTPS. Ní bheidh tú in ann logáil isteach toisc go bhféadfadh gur ceist slándála é seo. Déan teagmháil le do riarthóir le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="249"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="250"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Earráid aischurtha ón bhfreastalaí: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="252"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="257"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Tharla earráid agus an críochphointe &quot;comhartha&quot; á rochtain:&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="258"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="263"/>
         <source>The reply from the server did not contain all expected fields: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Ní raibh gach réimse ionchais sa fhreagra ón bhfreastalaí:&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="255"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="260"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Níorbh fhéidir an JSON a cuireadh ar ais ón bhfreastalaí a pharsáil: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
@@ -6264,132 +6264,132 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ní thacaítear le conairí a thosaíonn le carachtar &apos;#&apos; sa mhód VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="470"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="474"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Ní raibh muid in ann d’iarratas a phróiseáil. Déan iarracht sioncrónú arís ar ball. Má leanann sé seo ar aghaidh, déan teagmháil le riarthóir do fhreastalaí le haghaidh cabhrach.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="473"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="477"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Ní mór duit síniú isteach le leanúint ar aghaidh. Má bhíonn trioblóid agat le do chuid dintiúir, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="480"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Níl rochtain agat ar an acmhainn seo. Má cheapann tú gur botún é seo, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="483"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Ní bhfuaireamar a raibh á lorg agat. B’fhéidir gur aistríodh nó gur scriosadh é. Má theastaíonn cabhair uait, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="486"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Is cosúil go bhfuil tú ag úsáid seachfhreastalaí a raibh fíordheimhniú ag teastáil uaidh. Seiceáil do shocruithe seachfhreastalaí agus do dhintiúir le do thoil. Má theastaíonn cabhair uait, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="489"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Tá an t-iarratas ag glacadh níos faide ná mar is gnách. Déan iarracht sioncrónú arís. Mura n-oibríonn sé fós, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="492"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Athraíodh comhaid an fhreastalaí agus tú ag obair. Déan iarracht sioncrónú arís. Téigh i dteagmháil le riarthóir do fhreastalaí má leanann an fhadhb ar aghaidh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="495"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Níl an fillteán nó an comhad seo ar fáil a thuilleadh. Má theastaíonn cúnamh uait, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="498"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>Níorbh fhéidir an t-iarratas a chríochnú mar nach raibh roinnt coinníollacha riachtanacha comhlíonta. Déan iarracht sioncrónú arís ar ball. Má theastaíonn cúnamh uait, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="501"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Tá an comhad rómhór le huaslódáil. B’fhéidir go mbeadh ort comhad níos lú a roghnú nó dul i dteagmháil le riarthóir do fhreastalaí le haghaidh cúnaimh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="504"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>Tá an seoladh a úsáideadh chun an t-iarratas a dhéanamh rófhada don fhreastalaí le láimhseáil. Déan iarracht an fhaisnéis atá á seoladh agat a ghiorrú nó déan teagmháil le riarthóir do fhreastalaí le haghaidh cúnaimh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="507"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Ní thacaítear leis an gcineál comhaid seo. Téigh i dteagmháil le riarthóir do fhreastalaí le haghaidh cúnaimh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="510"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Ní raibh an freastalaí in ann d’iarratas a phróiseáil mar gheall ar roinnt faisnéise mícheart nó neamhiomlán. Déan iarracht sioncrónú arís ar ball, nó déan teagmháil le riarthóir do fhreastalaí le haghaidh cúnaimh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="513"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Tá an acmhainn atá tú ag iarraidh rochtain a fháil uirthi faoi ghlas faoi láthair agus ní féidir í a mhodhnú. Déan iarracht í a athrú níos déanaí, nó déan teagmháil le riarthóir do fhreastalaí le haghaidh cúnaimh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="516"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Níorbh fhéidir an t-iarratas seo a chomhlánú mar gheall ar roinnt coinníollacha riachtanacha atá in easnamh. Déan iarracht arís ar ball, nó déan teagmháil le riarthóir do fhreastalaí le haghaidh cabhrach.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="519"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Rinne tú an iomarca iarratas. Fan agus déan iarracht arís. Má leanann tú air ag feiceáil seo, is féidir le riarthóir do fhreastalaí cabhrú leat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="522"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Tharla fadhb ar an bhfreastalaí. Déan iarracht sioncrónú arís ar ball, nó déan teagmháil le riarthóir do fhreastalaí má leanann an fhadhb.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="525"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Ní aithníonn an freastalaí an modh iarrata. Téigh i dteagmháil le riarthóir do fhreastalaí le haghaidh cabhrach.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="528"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Tá deacracht againn ceangal leis an bhfreastalaí. Déan iarracht arís go luath. Má leanann an fhadhb, is féidir le riarthóir do fhreastalaí cabhrú leat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="531"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Tá an freastalaí gnóthach faoi láthair. Déan iarracht sioncrónú arís i gceann cúpla nóiméad nó déan teagmháil le riarthóir do fhreastalaí más gá práinn a bheith agat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="534"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Tá sé ag glacadh ró-fhada ceangal leis an bhfreastalaí. Déan iarracht arís ar ball. Má theastaíonn cabhair uait, déan teagmháil le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="537"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Ní thacaíonn an freastalaí leis an leagan den nasc atá in úsáid. Téigh i dteagmháil le riarthóir do fhreastalaí le haghaidh cabhrach.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="540"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Níl dóthain spáis ag an bhfreastalaí chun d’iarratas a chomhlánú. Seiceáil cé mhéad cuóta atá ag d’úsáideoir trí theagmháil a dhéanamh le riarthóir do fhreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="543"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Tá fíordheimhniú breise ag teastáil ó do líonra. Seiceáil do nasc le do thoil. Téigh i dteagmháil le riarthóir do fhreastalaí le haghaidh cabhrach má leanann an fhadhb.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="546"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Níl cead agat rochtain a fháil ar an acmhainn seo. Má chreideann tú gur earráid í seo, déan teagmháil le riarthóir do fhreastalaí chun cúnamh a iarraidh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Tharla earráid gan choinne. Déan iarracht sioncrónú arís nó déan teagmháil le riarthóir do fhreastalaí má leanann an fhadhb ar aghaidh.</translation>
     </message>
