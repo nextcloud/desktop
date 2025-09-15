@@ -1084,7 +1084,9 @@ QString User::featuredAppIcon() const
 
 QString User::featuredAppAccessibleName() const
 {
-    return isNcAssistantEnabled() ? tr("Open Nextcloud Assistant in browser") : tr("Open Nextcloud Talk in browser");
+    return isNcAssistantEnabled() ?
+        tr("Open %1 Assistant in browser", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME) :
+        tr("Open %1 Talk in browser", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
 }
 
 AccountApp *User::talkApp() const
