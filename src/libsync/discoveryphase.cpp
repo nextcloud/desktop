@@ -511,9 +511,12 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
 
         // all folders will contain both
-        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
+        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {          
             _folderQuota = {map.value(FolderQuota::usedBytesC).toLongLong(),
                             map.value(FolderQuota::availableBytesC).toLongLong()};
+            qCWarning(lcDiscovery) << "Setting quota for" << file
+                                   << "bytesUsed:" << _folderQuota.bytesUsed
+                                   << "bytesAvailable:" << _folderQuota.bytesAvailable;
             emit setfolderQuota(_folderQuota);
         }
     } else {
@@ -521,11 +524,12 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        if (map.contains(FolderQuota::usedBytesC)) {
-            result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
-        }
-        if (map.contains(FolderQuota::availableBytesC))     {
+        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
             result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
+            result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
+            qCWarning(lcDiscovery) << "Setting quota for" << file
+                                   << "bytesUsed:" <<  result.folderQuota.bytesUsed
+                                   << "bytesAvailable:" << result.folderQuota.bytesAvailable;
         }
         LsColJob::propertyMapToRemoteInfo(map,
                                           _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
