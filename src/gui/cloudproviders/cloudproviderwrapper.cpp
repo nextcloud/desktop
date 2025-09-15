@@ -95,7 +95,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     // Build recently changed files list
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
-        QFontMetrics fm = QApplication::fontMetrics();
+        const auto fm = QFontMetricsF{QApplication::font()};
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
         QString elidedKindStr = fm.elidedText(kindStr, Qt::ElideRight, preferredTextWidth);
         QString timeStr = QTime::currentTime().toString("hh:mm");
@@ -168,6 +168,10 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
 void CloudProviderWrapper::updateStatusText(QString statusText)
 {
+    if (!_folder) {
+        return;
+    }
+
     QString status = QStringLiteral("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
     cloud_providers_account_exporter_set_status_details(_cloudProviderAccount, status.toUtf8().data());
 }
@@ -207,7 +211,7 @@ void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
 
 static GMenuItem* addMenuItem(const QString text, const gchar *action)
 {
-    QFontMetrics fm = QApplication::fontMetrics();
+    const auto fm = QFontMetricsF{QApplication::font()};
     CloudProviderWrapper::preferredTextWidth = MAX (CloudProviderWrapper::preferredTextWidth, (fm.boundingRect (text)).width ());
     return menu_item_new (text, action);
 }
@@ -216,7 +220,6 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
 
     GMenu* section = nullptr;
     GMenuItem* item = nullptr;
-    QString item_label;
 
     _mainMenu = g_menu_new();
 
