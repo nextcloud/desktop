@@ -36,7 +36,7 @@ GridLayout {
         padding: 0
         spacing: 0
         imageSource: root.syncStatus.icon
-        running: root.syncStatus.syncing
+        running: false // avoid rotating the icon when syncing
     }
 
     EnforcedPlainTextLabel {
