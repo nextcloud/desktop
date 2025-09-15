@@ -277,5 +277,6 @@
 		<file>theme/talk-app.svg</file>
 		<file>theme/chevron-double-up.svg</file>
 		<file>theme/call-notification.wav</file>
+  		<file>theme/info.svg</file>
     </qresource>
 </RCC>
