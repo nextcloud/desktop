@@ -1104,27 +1104,41 @@ int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, c
     const auto isUpdateMetadataOrRename = item->_instruction != CSYNC_INSTRUCTION_SYNC && item->_instruction != CSYNC_INSTRUCTION_NEW;
     const auto isFileDownloadOrDirectory = item->_direction != SyncFileItem::Up || item->isDirectory();
 
+    qCInfo(lcDisco) << "Checking quota for item:" <<  item->_file
+                    << "isTypeChange?" << isTypeChange
+                    << "isUpdateMetadataOrRename?" << isUpdateMetadataOrRename
+                    << "isFileDownloadOrDirectory?" << isFileDownloadOrDirectory
+                    << "_dirItem?" << _dirItem
+                    << "_dirParentItem?" << _dirParentItem
+                    << "item->_size:" << item->_size
+                    << "_folderQuota.bytesAvailable:" << _folderQuota.bytesAvailable
+                    << "_folderQuota.bytesUsed:" << _folderQuota.bytesUsed;
+
     if (item->_size == 0 || isTypeChange || isFileDownloadOrDirectory || isUpdateMetadataOrRename) {
-        qCInfo(lcDisco) << "Returning unlimited free space for item:" << item->_file;
+        qCInfo(lcDisco) << "Returning unlimited free space (-3) for item quota.";
         return unlimitedFreeSpace;
     }
 
     if (serverEntry == FolderQuota::ServerEntry::Valid) {
-        qCInfo(lcDisco) << "Returning cached _folderQuota.bytesAvailable" << _folderQuota.bytesAvailable << "for item:" << item->_file;
+        qCInfo(lcDisco) << "Returning cached _folderQuota.bytesAvailable for item quota.";
         return _folderQuota.bytesAvailable;
     }
 
     if (!_dirItem) {
-        qCInfo(lcDisco) << "Returning unlimited free space for item with no _dirItem:" << item->_file;
+        qCInfo(lcDisco) << "Returning unlimited free space (-3) for item quota with no _dirItem.";
         return unlimitedFreeSpace;
     }
 
+    qCInfo(lcDisco) << "_dirItem->_folderQuota.bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
+
     SyncJournalFileRecord dirItemDbRecord;
     if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
-        qCInfo(lcDisco) << "Returning db value dirItemDbRecord._folderQuota.bytesAvailable" << dirItemDbRecord._folderQuota.bytesAvailable << "for item:" << item->_file;
-        return dirItemDbRecord._folderQuota.bytesAvailable;
+        const auto dirDbBytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
+        qCInfo(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
+        return dirDbBytesAvailable;
     }
 
+    qCInfo(lcDisco) << "Returning _dirItem->_folderQuota.bytesAvailable for item quota.";
     return _dirItem->_folderQuota.bytesAvailable;
 }
 
@@ -2275,7 +2289,9 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
                 _discoveryData->_anotherSyncNeeded = !alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
             }
-            qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected;
+            qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected
+                            << "with quota bytesUSed:" << _dirItem->_folderQuota.bytesUsed
+                            << "bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
         }
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
@@ -2317,6 +2333,9 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 
 void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
 {
+    qCInfo(lcDisco) << "Setting quota for folder" <<  _discoveryData->_localDir + _currentFolder._local
+                    << "bytes used:" << folderQuota.bytesUsed
+                    << "bytes available:" <<  folderQuota.bytesAvailable;
     _folderQuota.bytesUsed = folderQuota.bytesUsed;
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 
