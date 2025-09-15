@@ -233,7 +233,7 @@ ApplicationWindow {
         color: Style.colorWithoutTransparency(palette.base)
 
         Accessible.role: Accessible.Grouping
-        Accessible.name: qsTr("Desktop main window")
+        Accessible.name: qsTr("Main content")
 
         MouseArea {
             anchors.fill: parent
