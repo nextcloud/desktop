@@ -501,7 +501,7 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor aplica unha estrita seguridade de transporte e non acepta certificados non fiábeis.</translation>
     </message>
 </context>
 <context>
@@ -558,7 +558,7 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="85"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Os cartafoles non seleccionados van sere &lt;b&gt;retirados&lt;/b&gt; do seu sistema de ficheiros local e non volverán sincronizarse con este computador</translation>
+        <translation>Os cartafoles non seleccionados van ser &lt;b&gt;retirados&lt;/b&gt; do seu sistema de ficheiros local e non volverán sincronizarse con este computador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="237"/>
@@ -4202,12 +4202,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation type="unfinished"/>
+        <translation>O envío de %1 excede en %2 o espazo restante nos ficheiros persoais.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation type="unfinished"/>
+        <translation>O envío de %1 excede en %2 o espazo restante no cartafol %3.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1201"/>
@@ -4442,7 +4442,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagatorjobs.cpp" line="145"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro temporal ao eliminar o elemento local eliminado do servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="164"/>
