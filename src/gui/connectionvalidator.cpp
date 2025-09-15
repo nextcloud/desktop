@@ -43,7 +43,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No Nextcloud account configured");
+        _errors << tr("No %1 account configured", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
         reportResult(NotConfigured);
         return;
     }
