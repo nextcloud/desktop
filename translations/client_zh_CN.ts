@@ -501,7 +501,7 @@ macOS 可能会忽略或延迟此请求。</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>服务器强制执行严格的传输安全，不接受不受信任的证书。</translation>
     </message>
 </context>
 <context>
