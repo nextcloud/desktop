@@ -42,14 +42,14 @@ public:
         QString url;
     };
 
-    void parseEndpoints();
-
-    void setAccountState(AccountState *accountState);
-    void setLocalPath(const QString &localPath);
-    void setResponse(const Response &response);
-
     [[nodiscard]] AccountState *accountState() const;
+    void setAccountState(AccountState *accountState);
+
     [[nodiscard]] QString localPath() const;
+    void setLocalPath(const QString &localPath);
+
+    [[nodiscard]] QByteArray fileId() const;
+    void setFileId();
 
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
@@ -57,11 +57,16 @@ public:
     [[nodiscard]] QString url() const;
     void setUrl(const QString &url);
 
+    void setResponse(const Response &response);
+
+    void parseEndpoints();
+    QString parseUrl(const QString &url) const;
+
 signals:
-    void endpointModelChanged();
-    void localPathChanged();
     void accountStateChanged();
+    void localPathChanged();
     void responseChanged();
+    void endpointModelChanged();
 
 public slots:
     void createRequest(const int row);
@@ -82,6 +87,7 @@ private:
     QList<Endpoint> _endpoints;
     AccountState *_accountState;
     QString _localPath;
+    QByteArray _fileId;
 };
 
 }
