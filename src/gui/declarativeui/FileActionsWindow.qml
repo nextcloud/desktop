@@ -44,6 +44,7 @@ ApplicationWindow {
             spacing: Style.standardSpacing
 
             RowLayout {
+                id: windowHeader
                 Layout.fillWidth: true
                 spacing: Style.standardSpacing
 
@@ -67,6 +68,7 @@ ApplicationWindow {
             }
 
             Rectangle {
+                id: lineTop
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
                 color: Style.accentColor
@@ -83,6 +85,7 @@ ApplicationWindow {
             }
 
             Rectangle {
+                id: lineBottom
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
                 color: Style.accentColor
@@ -101,6 +104,7 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 contentItem: Row {
+                    id: responseContent
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
@@ -115,7 +119,7 @@ ApplicationWindow {
 
                     Text {
                         id: response
-                        text: endpointModel.declarativeUiText
+                        text: endpointModel.responseLabel
                         textFormat: Text.RichText
                         color: Style.ncHeaderTextColor
                         font.pointSize: Style.pixelSize
@@ -125,18 +129,19 @@ ApplicationWindow {
                             id: responseArea
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: Qt.openUrlExternally(endpointModel.declarativeUiUrl)
+                            onClicked: Qt.openUrlExternally(endpointModel.responseUrl)
                         }
                     }
                 }
 
                 ToolTip {
                     visible: responseButton.hovered
-                    text: qsTr("Download file")
+                    text: endpointModel.responseLabel
                 }
             }
 
             Rectangle {
+                id: repsonseLineBottom
                 visible: response.text != ""
                 Layout.fillWidth: true
                 height: Style.extraExtraSmallSpacing
@@ -168,12 +173,13 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 contentItem: Row {
+                    id: fileActionsContent
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
 
                     Image {
-                        source: "image://svgimage-custom-color/settings.svg/" + palette.windowText
+                        source: icon
                         width: Style.minimumActivityItemHeight
                         height: Style.minimumActivityItemHeight
                         fillMode: Image.PreserveAspectFit
