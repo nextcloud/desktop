@@ -508,7 +508,7 @@ void Systray::createFileActionsDialog(const QString &localPath)
     const QVariantMap initialProperties{
         {"accountState", QVariant::fromValue(folder->accountState())},
         {"shortLocalPath", shortLocalPath},
-        {"localPath", localPath}
+        {"localPath", localPath},
     };
 
     const auto fileActionsDialog = fileActionsQml.createWithInitialProperties(initialProperties);
