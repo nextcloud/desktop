@@ -214,7 +214,10 @@
 		<file>theme/black/wizard-talk.png</file>
 		<file>theme/black/wizard-talk@2x.png</file>
 		<file>theme/black/wizard-talk.svg</file>
-
+		<file>theme/black/info.svg</file>
+		<file>theme/black/warning.svg</file>
+  		<file>theme/black/error.svg</file>
+	
 		<!-- white icons -->
 		<file>theme/white/activity.svg</file>
 		<file>theme/white/add.svg</file>
@@ -250,7 +253,10 @@
 		<file>theme/white/wizard-nextcloud@2x.png</file>
 		<file>theme/white/wizard-talk.png</file>
 		<file>theme/white/wizard-talk@2x.png</file>
-
+		<file>theme/white/info.svg</file>
+		<file>theme/white/warning.svg</file>
+  		<file>theme/white/error.svg</file>
+	
 		<!-- generic (not themed) -->
 		<file>theme/sync-arrow.svg</file>
 		<file>theme/close.svg</file>
