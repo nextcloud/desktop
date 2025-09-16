@@ -27,12 +27,10 @@ public:
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     enum DataRole {
-        EndpointTypeRole = Qt::UserRole + 1,
-        EndpointIconRole,
+        EndpointIconRole = Qt::UserRole + 1,
         EndpointNameRole,
         EndpointUrlRole,
         EndpointMethodRole,
-        EndpointMimetypeFiltersRole,
         EndpointParamsRole
     };
     Q_ENUM(DataRole)
@@ -42,14 +40,17 @@ public:
         QString url;
     };
 
-    void parseEndpoints();
-
-    void setAccountState(AccountState *accountState);
-    void setLocalPath(const QString &localPath);
-    void setResponse(const Response &response);
-
     [[nodiscard]] AccountState *accountState() const;
+    void setAccountState(AccountState *accountState);
+
     [[nodiscard]] QString localPath() const;
+    void setLocalPath(const QString &localPath);
+
+    [[nodiscard]] QByteArray fileId() const;
+    void setFileId();
+
+    [[nodiscard]] QMimeType mimeType() const;
+    void setMimeType();
 
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
@@ -57,11 +58,16 @@ public:
     [[nodiscard]] QString url() const;
     void setUrl(const QString &url);
 
+    void setResponse(const Response &response);
+
+    void parseEndpoints();
+    QString parseUrl(const QString &url) const;
+
 signals:
-    void endpointModelChanged();
-    void localPathChanged();
     void accountStateChanged();
+    void localPathChanged();
     void responseChanged();
+    void endpointModelChanged();
 
 public slots:
     void createRequest(const int row);
@@ -71,17 +77,17 @@ private:
     Response _response;
 
     struct Endpoint {
-        QString type;
         QString icon;
         QString name;
         QString url;
         QString method;
-        QString mimetypeFilters;
         QString params;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;
     QString _localPath;
+    QByteArray _fileId;
+    QMimeType _mimeType;
 };
 
 }

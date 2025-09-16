@@ -160,6 +160,7 @@ ApplicationWindow {
 
             required property string name
             required property int index
+            required property string icon
 
             Button {
                 id: fileActionButton

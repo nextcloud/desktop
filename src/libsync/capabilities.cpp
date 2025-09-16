@@ -448,6 +448,50 @@ QVariantMap Capabilities::declarativeUiEndpoints() const
     return declarativeUi;
 }
 
+QList<QVariantMap> Capabilities::declarativeUiContextMenu() const
+{
+    const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
+    QList<QVariantMap> contextMenu;
+    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
+        const auto contextMenuMap = declarativeUiApp.toMap();
+        if (!contextMenuMap.contains("context-menu")) {
+            continue;
+        }
+
+        for (const auto &contextMenuItem : contextMenuMap) {
+            const auto contextMenuList = contextMenuItem.toList();
+            for (const auto &contextMenuMap : contextMenuList) {
+                contextMenu.append(contextMenuMap.toMap());
+            }
+        }
+    }
+
+    return contextMenu;
+}
+
+QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
+{
+    const auto contextMenu = declarativeUiContextMenu();
+    qDebug() << "fileMimeType:" << fileMimeType.name();
+    qDebug() << "parentMimeTypes:" << fileMimeType.parentMimeTypes();
+    qDebug() << "allAncestors:" << fileMimeType.allAncestors();
+    QList<QVariantMap> contextMenuByMimeType;
+    for (const auto &contextMenuMap : contextMenu) {
+        const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
+        const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
+        for (const auto mimeType : filesMimeTypeFilterList) {
+            const auto mimeTypeName = mimeType.trimmed();
+            qDebug() << "API mimeType:" << mimeTypeName;
+            if (fileMimeType.inherits(mimeTypeName) || fileMimeType.parentMimeTypes().contains(mimeTypeName)) {
+                contextMenuByMimeType.append(contextMenuMap);
+                break;
+            }
+        }
+    }
+
+    return contextMenuByMimeType;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing

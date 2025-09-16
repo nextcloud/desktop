@@ -6,6 +6,7 @@
 #include "endpointmodel.h"
 #include "networkjobs.h"
 #include "account.h"
+#include "folderman.h"
 
 namespace OCC {
 
@@ -14,41 +15,11 @@ EndpointModel::EndpointModel(QObject *parent)
 {
 }
 
-void EndpointModel::parseEndpoints()
-{
-    if (!_accountState->isConnected()) {
-        return;
-    }
-
-    const auto declarativeUiMap = _accountState->account()->capabilities().declarativeUiEndpoints();
-    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
-        const auto contextMenuMap = declarativeUiApp.toMap();
-        for (const auto &contextMenuItem : contextMenuMap) {
-            const auto contextMenuList = contextMenuItem.toList();
-            for (const auto &contextMenuMap : contextMenuList) {
-                const auto contextMenu = contextMenuMap.toMap();
-                _endpoints.append({contextMenu.value("type").toString(),
-                                   _accountState->account()->url().toString()
-                                       + contextMenu.value("icon").toString(),
-                                   contextMenu.value("name").toString(),
-                                   contextMenu.value("url").toString(),
-                                   contextMenu.value("method").toString(),
-                                   contextMenu.value("mimetypeFilters").toString(),
-                                   contextMenu.value("params").toString()});
-            }
-        }
-    }
-
-    Q_EMIT endpointModelChanged();
-}
-
 QVariant EndpointModel::data(const QModelIndex &index, int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
     const auto row = index.row();
     switch (role) {
-    case EndpointTypeRole:
-        return _endpoints.at(row).type; //context-menu, create-new
     case EndpointIconRole:
         return _endpoints.at(row).icon; // deck.svg
     case EndpointNameRole:
@@ -57,8 +28,6 @@ QVariant EndpointModel::data(const QModelIndex &index, int role) const
         return _endpoints.at(row).url; // /ocs/v2.php/apps/declarativetest/newDeckBoard
     case EndpointMethodRole:
         return _endpoints.at(row).method; // GET
-    case EndpointMimetypeFiltersRole:
-        return _endpoints.at(row).mimetypeFilters; // image
     case EndpointParamsRole:
         return _endpoints.at(row).params; // filePath
     }
@@ -78,15 +47,18 @@ int EndpointModel::rowCount(const QModelIndex &parent) const
 QHash<int, QByteArray> EndpointModel::roleNames() const
 {
     auto roles = QAbstractListModel::roleNames();
-    roles[EndpointTypeRole] = "type";
     roles[EndpointIconRole] = "icon";
     roles[EndpointNameRole] = "name";
     roles[EndpointUrlRole] = "url";
     roles[EndpointMethodRole] = "method";
-    roles[EndpointMimetypeFiltersRole] = "mimeTypeFilters";
     roles[EndpointParamsRole] = "params";
 
     return roles;
+}
+
+AccountState *EndpointModel::accountState() const
+{
+    return _accountState;
 }
 
 void EndpointModel::setAccountState(AccountState *accountState)
@@ -100,9 +72,14 @@ void EndpointModel::setAccountState(AccountState *accountState)
     }
 
     _accountState = accountState;
-    parseEndpoints();
     Q_EMIT accountStateChanged();
 }
+
+QString EndpointModel::localPath() const
+{
+    return _localPath;
+}
+
 
 void EndpointModel::setLocalPath(const QString &localPath)
 {
@@ -115,25 +92,53 @@ void EndpointModel::setLocalPath(const QString &localPath)
     }
 
     _localPath = localPath;
+
+    setFileId();
+    setMimeType();
+    parseEndpoints();
+
     Q_EMIT localPathChanged();
 }
 
-void EndpointModel::setResponse(const Response &response)
+QByteArray EndpointModel::fileId() const
 {
-    _response = response;
-    Q_EMIT responseChanged();
+    return _fileId;
 }
 
-AccountState *EndpointModel::accountState() const
+void EndpointModel::setFileId()
 {
-    return _accountState;
+    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
+    const auto file = _localPath.mid(folderForPath->cleanPath().length() + 1);
+    SyncJournalFileRecord fileRecord;
+    if (!folderForPath->journalDb()->getFileRecord(file, &fileRecord)) {
+        qDebug() << "Invalid file record for path:" << _localPath;
+        return;
+    }
+
+    _fileId = fileRecord._fileId;
 }
 
-QString EndpointModel::localPath() const
+QMimeType EndpointModel::mimeType() const
 {
-    return _localPath;
+    return _mimeType;
 }
 
+void EndpointModel::setMimeType()
+{
+    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
+    const auto file = _localPath.mid(folderForPath->cleanPath().length() + 1);
+    SyncJournalFileRecord fileRecord;
+    if (!folderForPath->journalDb()->getFileRecord(file, &fileRecord)) {
+        qDebug() << "Invalid file record for path:" << _localPath;
+        return;
+    }
+
+    const auto mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
+                                                          : QMimeDatabase::MatchDefault;
+    QMimeDatabase mimeDb;
+    const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
+    _mimeType = mimeType;
+}
 
 QString EndpointModel::label() const
 {
@@ -155,21 +160,56 @@ void EndpointModel::setUrl(const QString &url)
     _response.url = url;
 }
 
+void EndpointModel::setResponse(const Response &response)
+{
+    _response = response;
+    Q_EMIT responseChanged();
+}
+
+void EndpointModel::parseEndpoints()
+{
+    if (!_accountState->isConnected()) {
+        return;
+    }
+
+    const auto contextMenuList = _accountState->account()->capabilities().contextMenuByMimeType(_mimeType);
+    for (const auto &contextMenu : contextMenuList) {
+        _endpoints.append({_accountState->account()->url().toString()
+                               + contextMenu.value("icon").toString(),
+                           contextMenu.value("name").toString(),
+                           contextMenu.value("url").toString(),
+                           contextMenu.value("method").toString(),
+                           contextMenu.value("params").toString()});
+    }
+
+    Q_EMIT endpointModelChanged();
+}
+
+QString EndpointModel::parseUrl(const QString &url) const
+{
+    auto unparsedUrl = url;
+    const auto fileIdParam = QStringLiteral("{fileId}");
+    const auto parsedUrl = unparsedUrl.replace(QRegularExpression(fileIdParam), _fileId);
+    return parsedUrl;
+}
+
 void EndpointModel::createRequest(const int row)
 {
     if (!_accountState) {
         return;
     }
 
+    const auto requesturl = parseUrl(_endpoints.at(row).url);
     auto job = new JsonApiJob(_accountState->account(),
-                                _endpoints.at(row).url,
+                                requesturl,
                                 this);
     connect(job, &JsonApiJob::jsonReceived,
             this, &EndpointModel::processRequest);
     QUrlQuery params;
-    params.addQueryItem(_endpoints.at(row).params, 0); //fileId
+    params.addQueryItem(_endpoints.at(row).params, _fileId);
     job->addQueryParams(params);
-    job->setVerb(SimpleApiJob::Verb::Post); //fixit _endpoints.at(row).verb
+    const auto verb = job->stringToVerb(_endpoints.at(row).method);
+    job->setVerb(verb);
     job->start();
 }
 
