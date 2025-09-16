@@ -176,7 +176,7 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
     [[nodiscard]] bool serverHasDeclarativeUi() const;
-    [[nodiscard]] QVariantList declarativeUiEndpoints() const;
+    [[nodiscard]] QVariantMap declarativeUiEndpoints() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);

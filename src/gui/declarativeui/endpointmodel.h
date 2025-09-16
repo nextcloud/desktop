@@ -14,13 +14,11 @@ namespace OCC {
 
 class EndpointModel : public QAbstractListModel {
     Q_OBJECT
+
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
-    Q_PROPERTY(QString declarativeUiName READ name WRITE setName NOTIFY responseChanged)
-    Q_PROPERTY(QString declarativeUiType READ type WRITE setType NOTIFY responseChanged)
-    Q_PROPERTY(QString declarativeUiLabel READ type WRITE setLabel NOTIFY responseChanged)
-    Q_PROPERTY(QString declarativeUiUrl READ url WRITE setUrl NOTIFY responseChanged)
-    Q_PROPERTY(QString declarativeUiText READ text WRITE setText NOTIFY responseChanged)
+    Q_PROPERTY(QString responseLabel READ label WRITE setLabel NOTIFY responseChanged)
+    Q_PROPERTY(QString responseUrl READ url WRITE setUrl NOTIFY responseChanged)
 
 public:
     explicit EndpointModel(QObject *const parent = nullptr);
@@ -30,21 +28,18 @@ public:
 
     enum DataRole {
         EndpointTypeRole = Qt::UserRole + 1,
+        EndpointIconRole,
         EndpointNameRole,
         EndpointUrlRole,
-        EndpointIconRole,
-        EndpointFilterRole,
-        EndpointParameterRole,
-        EndpointVerbRole
+        EndpointMethodRole,
+        EndpointMimetypeFiltersRole,
+        EndpointParamsRole
     };
     Q_ENUM(DataRole)
 
     struct Response {
-        QString name;
-        QString type;
         QString label;
         QString url;
-        QString text;
     };
 
     void parseEndpoints();
@@ -56,21 +51,11 @@ public:
     [[nodiscard]] AccountState *accountState() const;
     [[nodiscard]] QString localPath() const;
 
-    [[nodiscard]] QString name() const;
-    void setName(const QString &name);
-
-    [[nodiscard]] QString type() const;
-    void setType(const QString &type);
-
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
 
     [[nodiscard]] QString url() const;
     void setUrl(const QString &url);
-
-    [[nodiscard]] QString text() const;
-    void setText(const QString &text);
-
 
 signals:
     void endpointModelChanged();
@@ -87,12 +72,12 @@ private:
 
     struct Endpoint {
         QString type;
+        QString icon;
         QString name;
         QString url;
-        QString icon;
-        QString filter;
-        QString parameter;
-        QString verb;
+        QString method;
+        QString mimetypeFilters;
+        QString params;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;

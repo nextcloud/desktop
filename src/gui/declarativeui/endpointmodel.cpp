@@ -20,20 +20,22 @@ void EndpointModel::parseEndpoints()
         return;
     }
 
-    const auto elementsList = _accountState->account()->capabilities().declarativeUiEndpoints();
-    for (const auto &element : elementsList) {
-        const auto elementMap = element.toMap();
-        const auto type = elementMap.value("type").toString(); // context-menu, create-new
-        const auto endpoints = elementMap.value("endpoints").toList();
-        for (const auto &endpoint : endpoints) {
-            const auto element = endpoint.toMap();
-            _endpoints.append({element.value("type").toString(),
-                               element.value("name").toString(),
-                               element.value("url").toString(),
-                               element.value("desktop_icon").toString(),
-                               element.value("filter").toString(),
-                               element.value("parameter").toString(),
-                               element.value("verb").toString()});
+    const auto declarativeUiMap = _accountState->account()->capabilities().declarativeUiEndpoints();
+    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
+        const auto contextMenuMap = declarativeUiApp.toMap();
+        for (const auto &contextMenuItem : contextMenuMap) {
+            const auto contextMenuList = contextMenuItem.toList();
+            for (const auto &contextMenuMap : contextMenuList) {
+                const auto contextMenu = contextMenuMap.toMap();
+                _endpoints.append({contextMenu.value("type").toString(),
+                                   _accountState->account()->url().toString()
+                                       + contextMenu.value("icon").toString(),
+                                   contextMenu.value("name").toString(),
+                                   contextMenu.value("url").toString(),
+                                   contextMenu.value("method").toString(),
+                                   contextMenu.value("mimetypeFilters").toString(),
+                                   contextMenu.value("params").toString()});
+            }
         }
     }
 
@@ -47,18 +49,18 @@ QVariant EndpointModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case EndpointTypeRole:
         return _endpoints.at(row).type; //context-menu, create-new
+    case EndpointIconRole:
+        return _endpoints.at(row).icon; // deck.svg
     case EndpointNameRole:
-        return _endpoints.at(row).name; // Deck board
+        return _endpoints.at(row).name; // Convert file
     case EndpointUrlRole:
         return _endpoints.at(row).url; // /ocs/v2.php/apps/declarativetest/newDeckBoard
-    case EndpointIconRole:
-        return _endpoints.at(row).icon; // zip
-    case EndpointFilterRole:
-        return _endpoints.at(row).filter; // image/
-    case EndpointParameterRole:
-        return _endpoints.at(row).parameter; // fileId
-    case EndpointVerbRole:
-        return _endpoints.at(row).verb; // POST, GET
+    case EndpointMethodRole:
+        return _endpoints.at(row).method; // GET
+    case EndpointMimetypeFiltersRole:
+        return _endpoints.at(row).mimetypeFilters; // image
+    case EndpointParamsRole:
+        return _endpoints.at(row).params; // filePath
     }
 
     return {};
@@ -77,12 +79,12 @@ QHash<int, QByteArray> EndpointModel::roleNames() const
 {
     auto roles = QAbstractListModel::roleNames();
     roles[EndpointTypeRole] = "type";
+    roles[EndpointIconRole] = "icon";
     roles[EndpointNameRole] = "name";
     roles[EndpointUrlRole] = "url";
-    roles[EndpointIconRole] = "icon";
-    roles[EndpointFilterRole] = "filter";
-    roles[EndpointParameterRole] = "parameter";
-    roles[EndpointVerbRole] = "verb";
+    roles[EndpointMethodRole] = "method";
+    roles[EndpointMimetypeFiltersRole] = "mimeTypeFilters";
+    roles[EndpointParamsRole] = "params";
 
     return roles;
 }
@@ -132,25 +134,6 @@ QString EndpointModel::localPath() const
     return _localPath;
 }
 
-QString EndpointModel::name() const
-{
-    return _response.name;
-}
-
-void EndpointModel::setName(const QString &name)
-{
-    _response.name = name;
-}
-
-QString EndpointModel::type() const
-{
-    return _response.type;
-}
-
-void EndpointModel::setType(const QString &type)
-{
-    _response.type = type;
-}
 
 QString EndpointModel::label() const
 {
@@ -172,16 +155,6 @@ void EndpointModel::setUrl(const QString &url)
     _response.url = url;
 }
 
-QString EndpointModel::text() const
-{
-    return _response.text;
-}
-
-void EndpointModel::setText(const QString &text)
-{
-    _response.text = text;
-}
-
 void EndpointModel::createRequest(const int row)
 {
     if (!_accountState) {
@@ -194,7 +167,7 @@ void EndpointModel::createRequest(const int row)
     connect(job, &JsonApiJob::jsonReceived,
             this, &EndpointModel::processRequest);
     QUrlQuery params;
-    params.addQueryItem(_endpoints.at(row).parameter, 0); //fileId
+    params.addQueryItem(_endpoints.at(row).params, 0); //fileId
     job->addQueryParams(params);
     job->setVerb(SimpleApiJob::Verb::Post); //fixit _endpoints.at(row).verb
     job->start();
@@ -218,12 +191,9 @@ void EndpointModel::processRequest(const QJsonDocument &json)
 
         for (const auto &childValue : children) {
             const auto child = childValue.toObject();
-            _response.name = child.value(QStringLiteral("element")).toString();
-            _response.type = child.value(QStringLiteral("type")).toString();
-            _response.label = child.value(QStringLiteral("label")).toString();
+            _response.label = child.value(QStringLiteral("element")).toString();
             _response.url = _accountState->account()->url().toString() +
                 child.value(QStringLiteral("url")).toString();
-            _response.text = child.value(QStringLiteral("text")).toString();
         }
     }
 
