@@ -473,7 +473,7 @@ macOS may ignore or delay this request.</source>
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
-        <source>Nextcloud desktop main dialog</source>
+        <source>Main content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1641,6 +1641,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
+        <source>No %1 account configured</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="177"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
@@ -1658,11 +1664,6 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="165"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
-        <source>No Nextcloud account configured</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5594,35 +5595,37 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
-        <source>Open Nextcloud Assistant in browser</source>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <source>Open %1 Assistant in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
-        <source>Open Nextcloud Talk in browser</source>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1492"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1494"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1493"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1497"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1499"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1498"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1500"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6629,32 +6632,22 @@ Server replied with error: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
-        <source>Connected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
-        <source>Disconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
         <source>Open group folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="213"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="186"/>
         <source>Open %1 in file explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="218"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="191"/>
         <source>User group and local folders menu</source>
         <translation type="unfinished"></translation>
     </message>
