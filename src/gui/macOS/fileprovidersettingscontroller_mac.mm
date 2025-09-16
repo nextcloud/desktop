@@ -378,12 +378,12 @@ bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QStrin
 {
     const auto xpc = FileProvider::instance()->xpc();
     if (!xpc) {
-        return true;
+        return false;
     }
     if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForExtension(userIdAtHost)) {
         return trashDeletionState->first;
     }
-    return true;
+    return false;
 }
 
 bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
