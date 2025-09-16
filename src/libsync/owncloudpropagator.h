@@ -323,6 +323,8 @@ public:
         _subJobs.appendTask(item);
     }
 
+    void willDeleteItemToClientTrashBin(const SyncFileItemPtr &item);
+
     bool scheduleSelfOrChild() override;
     [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override

@@ -642,7 +642,7 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 void ActivityListModel::checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities)
 {
     ActivityList activitiesToRemove;
-    for (const auto &activity : _finalList) {
+    for (const auto &activity : std::as_const(_finalList)) {
         const auto isTalkActiity = activity._objectType == QStringLiteral("chat") ||
             activity._objectType == QStringLiteral("call");
         if (isTalkActiity && !newActivities.contains(activity)) {
