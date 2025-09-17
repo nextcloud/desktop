@@ -93,7 +93,7 @@ ApplicationWindow {
 
             Button {
                 id: responseButton
-                visible: response.text !== ""
+                visible: responseText.text !== ""
                 flat: true
                 Layout.fillWidth: true
                 implicitHeight: Style.activityListButtonHeight
@@ -118,7 +118,7 @@ ApplicationWindow {
                     }
 
                     Text {
-                        id: response
+                        id: responseText
                         text: fileActionModel.responseLabel
                         textFormat: Text.RichText
                         color: Style.ncHeaderTextColor
