@@ -1,228 +1,241 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "Account data is unavailable, cannot reload data!": {
-      "comment": "Error message"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Account data is unavailable, cannot reload data!" : {
+      "comment" : "Error message"
     },
-    "Allow upload and editing": {
-      "comment": "Checkbox title",
-      "extractionState": "manual"
+    "Allow upload and editing" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual"
     },
-    "Cancel": {},
-    "Cancel create icon": {
-      "comment": "Accessibility description for delete button"
+    "Authenticating…" : {
+
     },
-    "Checkmark in a circle": {
-      "comment": "Accessibility description for image"
+    "Cancel" : {
+
     },
-    "Team share (%@)": {
-      "comment": "Text label"
+    "Cancel create icon" : {
+      "comment" : "Accessibility description for delete button"
     },
-    "Team share icon": {
-      "comment": "Accessibility description for image"
+    "Checkmark in a circle" : {
+      "comment" : "Accessibility description for image"
     },
-    "Close": {
-      "comment": "Button title",
-      "extractionState": "manual"
+    "Close" : {
+      "comment" : "Button title",
+      "extractionState" : "manual"
     },
-    "Communicating with server, locking file…": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Communicating with server, locking file…" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "Communicating with server, unlocking file…": {},
-    "Could not fetch capabilities as account is invalid.": {
-      "comment": "Error message"
+    "Communicating with server, unlocking file…" : {
+
     },
-    "Could not get identifier for item, no shares can be acquired.": {
-      "comment": "Error message"
+    "Could not fetch capabilities as account is invalid." : {
+      "comment" : "Error message"
     },
-    "Could not lock unknown item…": {
-      "comment": "Text label"
+    "Could not get identifier for item, no shares can be acquired." : {
+      "comment" : "Error message"
     },
-    "Could not reload data: %@, will try again.": {
-      "comment": "Error message"
+    "Could not lock unknown item…" : {
+      "comment" : "Text label"
     },
-    "Create new share": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Could not reload data: %@, will try again." : {
+      "comment" : "Error message"
     },
-    "Delete": {},
-    "Delete trash icon": {
-      "comment": "Accessibility description for image on delete button"
+    "Create new share" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "Dismiss": {
-      "comment": "Button title",
-      "extractionState": "manual"
+    "Delete" : {
+
     },
-    "Document symbol": {
-      "comment": "Accessibility description for image"
+    "Delete trash icon" : {
+      "comment" : "Accessibility description for image on delete button"
     },
-    "Email share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Dismiss" : {
+      "comment" : "Button title",
+      "extractionState" : "manual"
     },
-    "Email share (%@)": {
-      "comment": "Text label"
+    "Document symbol" : {
+      "comment" : "Accessibility description for image"
     },
-    "Email share icon": {
-      "comment": "Accessibility description for image"
+    "Email share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "Enter a new password": {
-      "comment": "Text field placeholder",
-      "extractionState": "manual"
+    "Email share (%@)" : {
+      "comment" : "Text label"
     },
-    "Error creating: %@": {
-      "comment": "Error message"
+    "Email share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Error fetching shares: %@": {
-      "comment": "Error message"
+    "Enter a new password" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual"
     },
-    "Error getting server caps: %@": {
-      "comment": "Error message"
+    "Error creating: %@" : {
+      "comment" : "Error message"
     },
-    "Expiration date": {
-      "comment": "Checkbox title",
-      "extractionState": "manual"
+    "Error fetching shares: %@" : {
+      "comment" : "Error message"
     },
-    "Failed to get details from File Provider Extension. Retrying.": {
-      "comment": "Error message"
+    "Error getting server caps: %@" : {
+      "comment" : "Error message"
     },
-    "Federated cloud share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Expiration date" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual"
     },
-    "Federated cloud share (%@)": {
-      "comment": "Text label"
+    "Failed to get details from File Provider Extension. Retrying." : {
+      "comment" : "Error message"
     },
-    "Federated cloud share icon": {
-      "comment": "Accessibility description for image"
+    "Federated cloud share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "File \"%@\" locked!": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Federated cloud share (%@)" : {
+      "comment" : "Text label"
     },
-    "File \"%@\" unlocked!": {},
-    "Group share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Federated cloud share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Group share (%@)": {
-      "comment": "Text label"
+    "File \"%@\" locked!" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "Group share icon": {
-      "comment": "Accessibility description for image"
+    "File \"%@\" unlocked!" : {
+
     },
-    "Hide download": {
-      "comment": "Checkbox title",
-      "extractionState": "manual"
+    "Group share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "Internal link share icon": {
-      "comment": "Accessibility description for image"
+    "Group share (%@)" : {
+      "comment" : "Text label"
     },
-    "Internal share (requires access to file)": {
-      "comment": "Text label"
+    "Group share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Last modified: %@": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Hide download" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual"
     },
-    "Locking file \"%@\"…": {
-      "comment": "Text label"
+    "Internal link share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "NextcloudKit instance or account is unavailable, cannot fetch shares!": {
-      "comment": "Error message"
+    "Internal share (requires access to file)" : {
+      "comment" : "Text label"
     },
-    "No item URL, cannot reload data!": {
-      "comment": "Error message"
+    "Last modified: %@" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "Note for the recipient": {
-      "comment": "Checkbox title",
-      "extractionState": "manual"
+    "Locking file \"%@\"…" : {
+      "comment" : "Text label"
     },
-    "Password protect": {
-      "comment": "Checkbox title",
-      "extractionState": "manual"
+    "NextcloudKit instance or account is unavailable, cannot fetch shares!" : {
+      "comment" : "Error message"
     },
-    "Public link has been copied icon": {
-      "comment": "Accessibility description for button"
+    "No item URL, cannot reload data!" : {
+      "comment" : "Error message"
     },
-    "Public link share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Note for the recipient" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual"
     },
-    "Public link share icon": {
-      "comment": "Accessibility description for image"
+    "Password protect" : {
+      "comment" : "Checkbox title",
+      "extractionState" : "manual"
     },
-    "Save": {
-      "comment": "Button title",
-      "extractionState": "manual"
+    "Public link has been copied icon" : {
+      "comment" : "Accessibility description for button"
     },
-    "Server does not support shares.": {
-      "comment": "Error message"
+    "Public link share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "Share label": {
-      "comment": "Text field placeholder",
-      "extractionState": "manual"
+    "Public link share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Share options": {
-      "comment": "Text label; Context menu item label",
-      "extractionState": "manual"
+    "Save" : {
+      "comment" : "Button title",
+      "extractionState" : "manual"
     },
-    "Share recipient": {
-      "comment": "Text field placeholder",
-      "extractionState": "manual"
+    "Server does not support shares." : {
+      "comment" : "Error message"
     },
-    "Talk conversation share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Share label" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual"
     },
-    "Talk conversation share (%@)": {
-      "comment": "Text label"
+    "Share options" : {
+      "comment" : "Text label; Context menu item label",
+      "extractionState" : "manual"
     },
-    "Talk conversation share icon": {
-      "comment": "Accessibility description for image"
+    "Share recipient" : {
+      "comment" : "Text field placeholder",
+      "extractionState" : "manual"
     },
-    "Team share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Talk conversation share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "This file cannot be shared.": {
-      "comment": "Error message"
+    "Talk conversation share (%@)" : {
+      "comment" : "Text label"
     },
-    "Unable to retrieve file metadata…": {},
-    "Unknown item": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Talk conversation share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Unknown modification date": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Team share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
     },
-    "Unknown share": {
-      "comment": "Text label"
+    "Team share (%@)" : {
+      "comment" : "Text label"
     },
-    "Unknown size": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Team share icon" : {
+      "comment" : "Accessibility description for image"
     },
-    "Unlock file": {
-      "comment": "Context menu item label",
-      "extractionState": "manual"
+    "This file cannot be shared." : {
+      "comment" : "Error message"
     },
-    "Unlocking file \"%@\"…": {
-      "comment": "Text label",
-      "extractionState": "manual"
+    "Unable to retrieve file metadata…" : {
+
     },
-    "User share": {
-      "comment": "Menu item label",
-      "extractionState": "manual"
+    "Unknown item" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "User share (%@)": {
-      "comment": "Text label"
+    "Unknown modification date" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
     },
-    "User share icon": {
-      "comment": "Accessibility description for image"
+    "Unknown share" : {
+      "comment" : "Text label"
+    },
+    "Unknown size" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
+    },
+    "Unlock file" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual"
+    },
+    "Unlocking file \"%@\"…" : {
+      "comment" : "Text label",
+      "extractionState" : "manual"
+    },
+    "User share" : {
+      "comment" : "Menu item label",
+      "extractionState" : "manual"
+    },
+    "User share (%@)" : {
+      "comment" : "Text label"
+    },
+    "User share icon" : {
+      "comment" : "Accessibility description for image"
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }
