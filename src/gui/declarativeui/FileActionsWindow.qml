@@ -26,8 +26,8 @@ ApplicationWindow {
 
     title: qsTr("File actions for %1").arg(root.shortLocalPath)
 
-    EndpointModel {
-        id: endpointModel
+    FileActionsModel {
+        id: fileActionModel
         accountState: root.accountState
         localPath: root.localPath
     }
@@ -76,7 +76,7 @@ ApplicationWindow {
 
             ListView {
                 id: fileActionsView
-                model: endpointModel
+                model: fileActionModel
                 clip: true
                 spacing: Style.trayHorizontalMargin
                 Layout.fillWidth: true
@@ -119,7 +119,7 @@ ApplicationWindow {
 
                     Text {
                         id: response
-                        text: endpointModel.responseLabel
+                        text: fileActionModel.responseLabel
                         textFormat: Text.RichText
                         color: Style.ncHeaderTextColor
                         font.pointSize: Style.pixelSize
@@ -129,14 +129,14 @@ ApplicationWindow {
                             id: responseArea
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: Qt.openUrlExternally(endpointModel.responseUrl)
+                            onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
                         }
                     }
                 }
 
                 ToolTip {
                     visible: responseButton.hovered
-                    text: endpointModel.responseLabel
+                    text: fileActionModel.responseLabel
                 }
             }
 
@@ -201,7 +201,7 @@ ApplicationWindow {
                     text: name
                 }
 
-                onClicked: endpointModel.createRequest(index)
+                onClicked: fileActionModel.createRequest(index)
             }
         }
     }

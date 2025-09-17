@@ -176,7 +176,6 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
 
     [[nodiscard]] bool serverHasDeclarativeUi() const;
-    [[nodiscard]] QVariantMap declarativeUiEndpoints() const;
     [[nodiscard]] QList<QVariantMap> declarativeUiContextMenu() const;
     [[nodiscard]] QList<QVariantMap> contextMenuByMimeType(const QMimeType fileMimeType) const;
 

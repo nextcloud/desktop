@@ -136,7 +136,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
     qmlRegisterType<DeclarativeUi>("com.nextcloud.desktopclient", 1, 0, "DeclarativeUi");
-    qmlRegisterType<EndpointModel>("com.nextcloud.desktopclient", 1, 0, "EndpointModel");
+    qmlRegisterType<FileActionsModel>("com.nextcloud.desktopclient", 1, 0, "FileActionsModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "activity", "Activity");
