@@ -442,42 +442,46 @@ bool Capabilities::serverHasDeclarativeUi() const
     return _capabilities[QStringLiteral("declarativeui")].toMap().isEmpty();
 }
 
-QList<QVariantMap> Capabilities::declarativeUiContextMenu() const
+QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
 {
     const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
-    QList<QVariantMap> contextMenu;
+    QVariantList contextMenuMapList;
     for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
-        const auto contextMenuMap = declarativeUiApp.toMap();
-        if (!contextMenuMap.contains("context-menu")) {
+        const auto declarativeUiContextMenuMap = declarativeUiApp.toMap();
+        if (!declarativeUiContextMenuMap.contains("context-menu")) {
             continue;
         }
 
-        for (const auto &contextMenuItem : contextMenuMap) {
-            const auto contextMenuList = contextMenuItem.toList();
-            for (const auto &contextMenuMap : contextMenuList) {
-                contextMenu.append(contextMenuMap.toMap());
-            }
-        }
+        contextMenuMapList.append(declarativeUiContextMenuMap.value("context-menu").toList());
     }
 
-    return contextMenu;
-}
+    if (contextMenuMapList.empty()) {
+        qCDebug(lcServerCapabilities) << "There is no context menu available in the capabilities.";
+        return {};
+    }
 
-QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
-{
-    const auto contextMenu = declarativeUiContextMenu();
     const auto fileMimeTypeName = fileMimeType.name();
+    qCDebug(lcServerCapabilities) << "Filtering file actions by mimeType:" << fileMimeTypeName;
     const auto fileMimeTypeAliases = fileMimeType.aliases();
+    qCDebug(lcServerCapabilities) << "File actions mimeType aliases:" << fileMimeTypeAliases;
+
     QList<QVariantMap> contextMenuByMimeType;
-    for (const auto &contextMenuMap : contextMenu) {
+    for (const auto &contextMenu : contextMenuMapList) {
+        const auto contextMenuMap = contextMenu.toMap();
         const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
         const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
+
         for (const auto mimeType : filesMimeTypeFilterList) {
             auto capabilitiesMimeTypeName = mimeType.trimmed();
-            if (fileMimeTypeName.startsWith(capabilitiesMimeTypeName) || fileMimeTypeAliases.contains(capabilitiesMimeTypeName)) {
-                contextMenuByMimeType.append(contextMenuMap);
-                break;
+            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << capabilitiesMimeTypeName;
+
+            if (!fileMimeTypeName.startsWith(capabilitiesMimeTypeName) && !fileMimeTypeAliases.contains(capabilitiesMimeTypeName)) {
+                continue;
             }
+
+            qCDebug(lcServerCapabilities) << "Found file action:" << contextMenuMap;
+            contextMenuByMimeType.append(contextMenuMap);
+            break;
         }
     }
 
