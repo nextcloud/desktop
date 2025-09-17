@@ -93,8 +93,7 @@ void EndpointModel::setLocalPath(const QString &localPath)
 
     _localPath = localPath;
 
-    setFileId();
-    setMimeType();
+    setupFileProperties();
     parseEndpoints();
 
     Q_EMIT localPathChanged();
@@ -105,39 +104,28 @@ QByteArray EndpointModel::fileId() const
     return _fileId;
 }
 
-void EndpointModel::setFileId()
+void EndpointModel::setupFileProperties()
 {
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    const auto file = _localPath.mid(folderForPath->cleanPath().length() + 1);
+    _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
     SyncJournalFileRecord fileRecord;
-    if (!folderForPath->journalDb()->getFileRecord(file, &fileRecord)) {
+    if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
         qDebug() << "Invalid file record for path:" << _localPath;
         return;
     }
 
     _fileId = fileRecord._fileId;
-}
-
-QMimeType EndpointModel::mimeType() const
-{
-    return _mimeType;
-}
-
-void EndpointModel::setMimeType()
-{
-    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    const auto file = _localPath.mid(folderForPath->cleanPath().length() + 1);
-    SyncJournalFileRecord fileRecord;
-    if (!folderForPath->journalDb()->getFileRecord(file, &fileRecord)) {
-        qDebug() << "Invalid file record for path:" << _localPath;
-        return;
-    }
 
     const auto mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
                                                           : QMimeDatabase::MatchDefault;
     QMimeDatabase mimeDb;
     const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
     _mimeType = mimeType;
+}
+
+QMimeType EndpointModel::mimeType() const
+{
+    return _mimeType;
 }
 
 QString EndpointModel::label() const
@@ -187,7 +175,7 @@ void EndpointModel::parseEndpoints()
                            contextMenu.value("name").toString(),
                            contextMenu.value("url").toString(),
                            contextMenu.value("method").toString(),
-                           contextMenu.value("params").toString()});
+                           contextMenu.value("params").toStringList()});
     }
 
     Q_EMIT endpointModelChanged();
@@ -196,8 +184,7 @@ void EndpointModel::parseEndpoints()
 QString EndpointModel::parseUrl(const QString &url) const
 {
     auto unparsedUrl = url;
-    const auto fileIdParam = QStringLiteral("{fileId}");
-    const auto parsedUrl = unparsedUrl.replace(QRegularExpression(fileIdParam), _fileId);
+    const auto parsedUrl = unparsedUrl.replace(QRegularExpression(fileIdUrlC), _fileId);
     return parsedUrl;
 }
 
@@ -214,7 +201,15 @@ void EndpointModel::createRequest(const int row)
     connect(job, &JsonApiJob::jsonReceived,
             this, &EndpointModel::processRequest);
     QUrlQuery params;
-    //params.addQueryItem(_endpoints.at(row).params, _fileId);
+    for (const auto &param : _endpoints.at(row).params) {
+        if (param == fileIdC) {
+            params.addQueryItem(param, _fileId);
+        }
+
+        if (param == filePathC) {
+            params.addQueryItem(param, _filePath);
+        }
+    }
     job->addQueryParams(params);
     const auto verb = job->stringToVerb(_endpoints.at(row).method);
     job->setVerb(verb);

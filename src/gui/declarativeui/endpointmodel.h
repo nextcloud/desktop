@@ -47,10 +47,8 @@ public:
     void setLocalPath(const QString &localPath);
 
     [[nodiscard]] QByteArray fileId() const;
-    void setFileId();
-
     [[nodiscard]] QMimeType mimeType() const;
-    void setMimeType();
+    void setupFileProperties();
 
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
@@ -75,19 +73,23 @@ public slots:
 
 private:
     Response _response;
-
     struct Endpoint {
         QString icon;
         QString name;
         QString url;
         QString method;
-        QString params;
+        QList<QString> params;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;
     QString _localPath;
     QByteArray _fileId;
     QMimeType _mimeType;
+    QString _filePath;
+
+    static constexpr char fileIdUrlC[] = "{fileId}";
+    static constexpr char fileIdC[] = "fileId";
+    static constexpr char filePathC[] = "filePath";
 };
 
 }
