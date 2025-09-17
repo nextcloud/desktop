@@ -267,8 +267,8 @@ set(client_SRCS
     declarativeui/declarativeuimodel.cpp
     declarativeui/declarativeui.h
     declarativeui/declarativeui.cpp
-    declarativeui/endpointmodel.h
-    declarativeui/endpointmodel.cpp
+    declarativeui/fileactionsmodel.h
+    declarativeui/fileactionsmodel.cpp
     )
 
 if (NOT DISABLE_ACCOUNT_MIGRATION)
