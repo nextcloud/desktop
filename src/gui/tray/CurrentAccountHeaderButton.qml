@@ -79,8 +79,12 @@ Button {
                     onClicked: UserModel.currentUserId = model.index;
                 }
             }
-            onObjectAdded: accountMenu.insertItem(index, object)
-            onObjectRemoved: accountMenu.removeItem(object)
+            onObjectAdded: function(index, object) {
+                accountMenu.insertItem(index, object)
+            }
+            onObjectRemoved: function(index, object) {
+                accountMenu.removeItem(object)
+            }
         }
 
         MenuItem {
