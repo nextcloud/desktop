@@ -703,7 +703,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         auto account = applyAccountChanges();
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-        if (Mac::FileProvider::fileProviderAvailable() && _ocWizard->useVirtualFileSync()) {
+        if (_ocWizard->useVirtualFileSyncByDefault()) {
             Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
             auto const accountId = account->account()->userIdAtHostWithPort();
             // let the user settings know that VFS is enabled

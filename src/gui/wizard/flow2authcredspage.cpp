@@ -92,17 +92,6 @@ void Flow2AuthCredsPage::slotFlow2AuthResult(Flow2Auth::Result r, const QString 
     }
 }
 
-int Flow2AuthCredsPage::nextId() const
-{
-    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
-    if (ocWizard->needsToAcceptTermsOfService()) {
-        return WizardCommon::Page_TermsOfService;
-    }
-
-    return WizardCommon::Page_AdvancedSetup;
-}
-
 void Flow2AuthCredsPage::setConnected()
 {
     auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
