@@ -12,7 +12,7 @@
 
 namespace OCC {
 
-class EndpointModel : public QAbstractListModel {
+class FileActionsModel : public QAbstractListModel {
     Q_OBJECT
 
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
@@ -21,17 +21,17 @@ class EndpointModel : public QAbstractListModel {
     Q_PROPERTY(QString responseUrl READ url WRITE setUrl NOTIFY responseChanged)
 
 public:
-    explicit EndpointModel(QObject *const parent = nullptr);
+    explicit FileActionsModel(QObject *const parent = nullptr);
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     enum DataRole {
-        EndpointIconRole = Qt::UserRole + 1,
-        EndpointNameRole,
-        EndpointUrlRole,
-        EndpointMethodRole,
-        EndpointParamsRole
+        FileActionIconRole = Qt::UserRole + 1,
+        FileActionNameRole,
+        FileActionUrlRole,
+        FileActionMethodRole,
+        FileActionParamsRole
     };
     Q_ENUM(DataRole)
 
@@ -47,10 +47,8 @@ public:
     void setLocalPath(const QString &localPath);
 
     [[nodiscard]] QByteArray fileId() const;
-    void setFileId();
-
     [[nodiscard]] QMimeType mimeType() const;
-    void setMimeType();
+    void setupFileProperties();
 
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
@@ -67,7 +65,7 @@ signals:
     void accountStateChanged();
     void localPathChanged();
     void responseChanged();
-    void endpointModelChanged();
+    void fileActionModelChanged();
 
 public slots:
     void createRequest(const int row);
@@ -75,19 +73,23 @@ public slots:
 
 private:
     Response _response;
-
-    struct Endpoint {
+    struct FileAction {
         QString icon;
         QString name;
         QString url;
         QString method;
-        QString params;
+        QList<QString> params;
     };
-    QList<Endpoint> _endpoints;
+    QList<FileAction> _fileActions;
     AccountState *_accountState;
     QString _localPath;
     QByteArray _fileId;
     QMimeType _mimeType;
+    QString _filePath;
+
+    static constexpr char fileIdUrlC[] = "{fileId}";
+    static constexpr char fileIdC[] = "fileId";
+    static constexpr char filePathC[] = "filePath";
 };
 
 }

@@ -10,7 +10,7 @@
 
 #include "accountstate.h"
 #include "declarativeuimodel.h"
-#include "endpointmodel.h"
+#include "fileactionsmodel.h"
 
 namespace OCC {
 
