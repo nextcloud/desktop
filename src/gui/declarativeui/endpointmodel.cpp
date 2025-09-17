@@ -172,6 +172,14 @@ void EndpointModel::parseEndpoints()
         return;
     }
 
+    if (_fileId.isEmpty()) {
+        return;
+    }
+
+    if (!_mimeType.isValid()) {
+        return;
+    }
+
     const auto contextMenuList = _accountState->account()->capabilities().contextMenuByMimeType(_mimeType);
     for (const auto &contextMenu : contextMenuList) {
         _endpoints.append({_accountState->account()->url().toString()
@@ -206,36 +214,24 @@ void EndpointModel::createRequest(const int row)
     connect(job, &JsonApiJob::jsonReceived,
             this, &EndpointModel::processRequest);
     QUrlQuery params;
-    params.addQueryItem(_endpoints.at(row).params, _fileId);
+    //params.addQueryItem(_endpoints.at(row).params, _fileId);
     job->addQueryParams(params);
     const auto verb = job->stringToVerb(_endpoints.at(row).method);
     job->setVerb(verb);
     job->start();
 }
 
-void EndpointModel::processRequest(const QJsonDocument &json)
+void EndpointModel::processRequest(const QJsonDocument &json, int statusCode)
 {
-    const auto root = json.object().value(QStringLiteral("root")).toObject();
-    if (root.empty()) {
-        return;
-    }
-    const auto orientation = root.value(QStringLiteral("orientation")).toString();
-    const auto rows = root.value(QStringLiteral("rows")).toArray();
-    if (rows.empty()) {
+    Q_UNUSED(json)
+    auto message = tr("File action succeded, access your instance for the result.");
+    if (statusCode != 200) {
+        message = tr("File action did not succeed, access your instance for details.");
         return;
     }
 
-    for (const auto &rowValue : rows) {
-        const auto row = rowValue.toObject();
-        const auto children = row.value("children").toArray();
-
-        for (const auto &childValue : children) {
-            const auto child = childValue.toObject();
-            _response.label = child.value(QStringLiteral("element")).toString();
-            _response.url = _accountState->account()->url().toString() +
-                child.value(QStringLiteral("url")).toString();
-        }
-    }
+    _response.label = message;
+    _response.url = _accountState->account()->url().toString();
 
     Q_EMIT responseChanged();
 }

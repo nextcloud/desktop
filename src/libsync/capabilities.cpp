@@ -472,17 +472,15 @@ QList<QVariantMap> Capabilities::declarativeUiContextMenu() const
 QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
 {
     const auto contextMenu = declarativeUiContextMenu();
-    qDebug() << "fileMimeType:" << fileMimeType.name();
-    qDebug() << "parentMimeTypes:" << fileMimeType.parentMimeTypes();
-    qDebug() << "allAncestors:" << fileMimeType.allAncestors();
+    const auto fileMimeTypeName = fileMimeType.name();
+    const auto fileMimeTypeAliases = fileMimeType.aliases();
     QList<QVariantMap> contextMenuByMimeType;
     for (const auto &contextMenuMap : contextMenu) {
         const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
         const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
         for (const auto mimeType : filesMimeTypeFilterList) {
-            const auto mimeTypeName = mimeType.trimmed();
-            qDebug() << "API mimeType:" << mimeTypeName;
-            if (fileMimeType.inherits(mimeTypeName) || fileMimeType.parentMimeTypes().contains(mimeTypeName)) {
+            auto capabilitiesMimeTypeName = mimeType.trimmed();
+            if (fileMimeTypeName.startsWith(capabilitiesMimeTypeName) || fileMimeTypeAliases.contains(capabilitiesMimeTypeName)) {
                 contextMenuByMimeType.append(contextMenuMap);
                 break;
             }
