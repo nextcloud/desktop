@@ -22,10 +22,13 @@ TextField {
 
     readonly property int iconInset: Style.smallSpacing
 
+    readonly property real leadingControlWidth: root.isSearchInProgress ? busyIndicator.width : searchIconImage.width
+    readonly property real trailingControlWidth: clearTextButton.visible ? clearTextButton.width : 0
+
     topPadding: topInset
     bottomPadding: bottomInset
-    leftPadding: searchIconImage.width + searchIconImage.x + Style.smallSpacing
-    rightPadding: (width - clearTextButton.x) + Style.smallSpacing
+    leftPadding: iconInset + leadingControlWidth + Style.smallSpacing
+    rightPadding: iconInset + trailingControlWidth + Style.smallSpacing
     verticalAlignment: Qt.AlignVCenter
 
     placeholderText: qsTr("Search files, messages, events …")
