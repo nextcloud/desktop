@@ -27,12 +27,10 @@ public:
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     enum DataRole {
-        EndpointTypeRole = Qt::UserRole + 1,
-        EndpointIconRole,
+        EndpointIconRole = Qt::UserRole + 1,
         EndpointNameRole,
         EndpointUrlRole,
         EndpointMethodRole,
-        EndpointMimetypeFiltersRole,
         EndpointParamsRole
     };
     Q_ENUM(DataRole)
@@ -50,6 +48,9 @@ public:
 
     [[nodiscard]] QByteArray fileId() const;
     void setFileId();
+
+    [[nodiscard]] QMimeType mimeType() const;
+    void setMimeType();
 
     [[nodiscard]] QString label() const;
     void setLabel(const QString &label);
@@ -76,18 +77,17 @@ private:
     Response _response;
 
     struct Endpoint {
-        QString type;
         QString icon;
         QString name;
         QString url;
         QString method;
-        QString mimetypeFilters;
         QString params;
     };
     QList<Endpoint> _endpoints;
     AccountState *_accountState;
     QString _localPath;
     QByteArray _fileId;
+    QMimeType _mimeType;
 };
 
 }

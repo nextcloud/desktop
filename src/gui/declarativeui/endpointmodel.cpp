@@ -20,8 +20,6 @@ QVariant EndpointModel::data(const QModelIndex &index, int role) const
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
     const auto row = index.row();
     switch (role) {
-    case EndpointTypeRole:
-        return _endpoints.at(row).type; //context-menu, create-new
     case EndpointIconRole:
         return _endpoints.at(row).icon; // deck.svg
     case EndpointNameRole:
@@ -30,8 +28,6 @@ QVariant EndpointModel::data(const QModelIndex &index, int role) const
         return _endpoints.at(row).url; // /ocs/v2.php/apps/declarativetest/newDeckBoard
     case EndpointMethodRole:
         return _endpoints.at(row).method; // GET
-    case EndpointMimetypeFiltersRole:
-        return _endpoints.at(row).mimetypeFilters; // image
     case EndpointParamsRole:
         return _endpoints.at(row).params; // filePath
     }
@@ -51,12 +47,10 @@ int EndpointModel::rowCount(const QModelIndex &parent) const
 QHash<int, QByteArray> EndpointModel::roleNames() const
 {
     auto roles = QAbstractListModel::roleNames();
-    roles[EndpointTypeRole] = "type";
     roles[EndpointIconRole] = "icon";
     roles[EndpointNameRole] = "name";
     roles[EndpointUrlRole] = "url";
     roles[EndpointMethodRole] = "method";
-    roles[EndpointMimetypeFiltersRole] = "mimeTypeFilters";
     roles[EndpointParamsRole] = "params";
 
     return roles;
@@ -78,7 +72,6 @@ void EndpointModel::setAccountState(AccountState *accountState)
     }
 
     _accountState = accountState;
-    parseEndpoints();
     Q_EMIT accountStateChanged();
 }
 
@@ -101,6 +94,8 @@ void EndpointModel::setLocalPath(const QString &localPath)
     _localPath = localPath;
 
     setFileId();
+    setMimeType();
+    parseEndpoints();
 
     Q_EMIT localPathChanged();
 }
@@ -121,6 +116,28 @@ void EndpointModel::setFileId()
     }
 
     _fileId = fileRecord._fileId;
+}
+
+QMimeType EndpointModel::mimeType() const
+{
+    return _mimeType;
+}
+
+void EndpointModel::setMimeType()
+{
+    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
+    const auto file = _localPath.mid(folderForPath->cleanPath().length() + 1);
+    SyncJournalFileRecord fileRecord;
+    if (!folderForPath->journalDb()->getFileRecord(file, &fileRecord)) {
+        qDebug() << "Invalid file record for path:" << _localPath;
+        return;
+    }
+
+    const auto mimeMatchMode = fileRecord.isVirtualFile() ? QMimeDatabase::MatchExtension
+                                                          : QMimeDatabase::MatchDefault;
+    QMimeDatabase mimeDb;
+    const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
+    _mimeType = mimeType;
 }
 
 QString EndpointModel::label() const
@@ -155,23 +172,14 @@ void EndpointModel::parseEndpoints()
         return;
     }
 
-    const auto declarativeUiMap = _accountState->account()->capabilities().declarativeUiEndpoints();
-    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
-        const auto contextMenuMap = declarativeUiApp.toMap();
-        for (const auto &contextMenuItem : contextMenuMap) {
-            const auto contextMenuList = contextMenuItem.toList();
-            for (const auto &contextMenuMap : contextMenuList) {
-                const auto contextMenu = contextMenuMap.toMap();
-                _endpoints.append({contextMenu.value("type").toString(),
-                                   _accountState->account()->url().toString()
-                                       + contextMenu.value("icon").toString(),
-                                   contextMenu.value("name").toString(),
-                                   contextMenu.value("url").toString(),
-                                   contextMenu.value("method").toString(),
-                                   contextMenu.value("mimetypeFilters").toString(),
-                                   contextMenu.value("params").toString()});
-            }
-        }
+    const auto contextMenuList = _accountState->account()->capabilities().contextMenuByMimeType(_mimeType);
+    for (const auto &contextMenu : contextMenuList) {
+        _endpoints.append({_accountState->account()->url().toString()
+                               + contextMenu.value("icon").toString(),
+                           contextMenu.value("name").toString(),
+                           contextMenu.value("url").toString(),
+                           contextMenu.value("method").toString(),
+                           contextMenu.value("params").toString()});
     }
 
     Q_EMIT endpointModelChanged();
