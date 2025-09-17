@@ -12,6 +12,8 @@
 
 namespace OCC {
 
+Q_DECLARE_LOGGING_CATEGORY(lcFileActions)
+
 class FileActionsModel : public QAbstractListModel {
     Q_OBJECT
 
