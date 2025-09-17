@@ -71,7 +71,7 @@ signals:
 
 public slots:
     void createRequest(const int row);
-    void processRequest(const QJsonDocument &json);
+    void processRequest(const QJsonDocument &json, int statusCode);
 
 private:
     Response _response;
