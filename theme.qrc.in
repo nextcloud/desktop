@@ -291,5 +291,6 @@
 		<file>theme/chevron-double-up.svg</file>
 		<file>theme/call-notification.wav</file>
   		<file>theme/info.svg</file>
+		<file>theme/file-open.svg</file>
     </qresource>
 </RCC>
