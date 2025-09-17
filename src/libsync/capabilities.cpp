@@ -442,12 +442,6 @@ bool Capabilities::serverHasDeclarativeUi() const
     return _capabilities[QStringLiteral("declarativeui")].toMap().isEmpty();
 }
 
-QVariantMap Capabilities::declarativeUiEndpoints() const
-{
-    const auto declarativeUi = _capabilities.value("declarativeui").toMap();
-    return declarativeUi;
-}
-
 QList<QVariantMap> Capabilities::declarativeUiContextMenu() const
 {
     const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
