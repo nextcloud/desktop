@@ -10,6 +10,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcFileActions, "nextcloud.gui.fileactions", QtInfoMsg)
+
 FileActionsModel::FileActionsModel(QObject *parent)
     : QAbstractListModel(parent)
 {
@@ -110,7 +112,7 @@ void FileActionsModel::setupFileProperties()
     _filePath = _localPath.mid(folderForPath->cleanPath().length() + 1);
     SyncJournalFileRecord fileRecord;
     if (!folderForPath->journalDb()->getFileRecord(_filePath, &fileRecord)) {
-        qDebug() << "Invalid file record for path:" << _localPath;
+        qCWarning(lcFileActions) << "Invalid file record for path:" << _localPath;
         return;
     }
 
@@ -157,14 +159,17 @@ void FileActionsModel::setResponse(const Response &response)
 void FileActionsModel::parseEndpoints()
 {
     if (!_accountState->isConnected()) {
+        qCWarning(lcFileActions) << "Account is not connected.";
         return;
     }
 
     if (_fileId.isEmpty()) {
+        qCWarning(lcFileActions) << "File id is empty for" << _localPath;
         return;
     }
 
     if (!_mimeType.isValid()) {
+        qCWarning(lcFileActions) << "Mime type is not valid for" << _localPath;
         return;
     }
 
@@ -178,6 +183,7 @@ void FileActionsModel::parseEndpoints()
                            contextMenu.value("params").toStringList()});
     }
 
+    qCDebug(lcFileActions) << "File" << _localPath << "has" << _fileActions.size() << "actions available.";
     Q_EMIT fileActionModelChanged();
 }
 
@@ -191,6 +197,7 @@ QString FileActionsModel::parseUrl(const QString &url) const
 void FileActionsModel::createRequest(const int row)
 {
     if (!_accountState) {
+        qCWarning(lcFileActions) << "No account state for" << _localPath;
         return;
     }
 
@@ -210,7 +217,9 @@ void FileActionsModel::createRequest(const int row)
             params.addQueryItem(param, _filePath);
         }
     }
-    job->addQueryParams(params);
+    if (!params.isEmpty()) {
+        job->addQueryParams(params);
+    }
     const auto verb = job->stringToVerb(_fileActions.at(row).method);
     job->setVerb(verb);
     job->start();
@@ -221,8 +230,7 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
     Q_UNUSED(json)
     auto message = tr("File action succeded, access your instance for the result.");
     if (statusCode != 200) {
-        message = tr("File action did not succeed, access your instance for details.");
-        return;
+        qCWarning(lcFileActions) << "File action did not succeed for" << _localPath;
     }
 
     _response.label = message;
