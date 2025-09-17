@@ -99,7 +99,7 @@ void FileActionsModel::setLocalPath(const QString &localPath)
     setupFileProperties();
     parseEndpoints();
 
-    Q_EMIT localPathChanged();
+    Q_EMIT fileChanged();
 }
 
 QByteArray FileActionsModel::fileId() const
@@ -124,11 +124,19 @@ void FileActionsModel::setupFileProperties()
     QMimeDatabase mimeDb;
     const auto mimeType = mimeDb.mimeTypeForFile(_localPath, mimeMatchMode);
     _mimeType = mimeType;
+
+    // TODO: display an icon for each mimeType
+    _fileIcon = "";
 }
 
 QMimeType FileActionsModel::mimeType() const
 {
     return _mimeType;
+}
+
+QString FileActionsModel::fileIcon() const
+{
+    return _fileIcon;
 }
 
 QString FileActionsModel::responseLabel() const

@@ -49,7 +49,7 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 Image {
-                    source: "image://svgimage-custom-color/files.svg/" + palette.windowText
+                    source: "image://svgimage-custom-color/file-open.svg/" + palette.windowText
                     width: Style.minimumActivityItemHeight
                     height: Style.minimumActivityItemHeight
                 }
