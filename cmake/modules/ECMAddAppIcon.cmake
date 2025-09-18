@@ -412,7 +412,7 @@ macro(_ecm_add_app_icon_categorize_icons icons type known_sizes)
 
                     if (offset GREATER -1)
                         list(APPEND ${type}_at_${size}px "${icon_full}")
-                    elseif()
+                    else()
                         message(STATUS "not found ${type}_at_${size}px ${icon_full}")
                     endif()
                 endif()
