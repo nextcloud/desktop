@@ -11,6 +11,7 @@
 
 #include "account.h"
 #include "common/result.h"
+#include "common/vfs.h"
 #include "creds/abstractcredentials.h"
 #include "logger.h"
 #include "filesystem.h"
@@ -579,7 +580,11 @@ class FakeFolder
     QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
-    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
+#if defined Q_OS_WINDOWS
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {}, OCC::Vfs::Mode vfsMode = OCC::Vfs::Mode::WindowsCfApi);
+#else
+    FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {}, OCC::Vfs::Mode vfsMode = OCC::Vfs::Mode::Off);
+#endif
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
@@ -633,6 +638,8 @@ public:
         scheduleSync();
         return execUntilFinished();
     }
+
+    QSharedPointer<OCC::Vfs> setupVfs(OCC::Vfs::Mode vfsMode);
 
 private:
     static void toDisk(QDir &dir, const FileInfo &templateFi);

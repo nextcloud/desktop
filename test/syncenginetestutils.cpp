@@ -14,6 +14,10 @@
 #include "gui/sharepermissions.h"
 #include "httplogger.h"
 
+#if defined Q_OS_WINDOWS
+#include "vfs/cfapi/cfapiwrapper.h"
+#endif
+
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -1217,7 +1221,7 @@ void FakeQNAM::setServerVersion(const QString &version)
     _serverVersion = version;
 }
 
-FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
+FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath, OCC::Vfs::Mode vfsMode)
     : _localModifier(_tempDir.path())
 {
     // Needs to be done once
@@ -1253,8 +1257,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
         });
     });
 
-    // Ensure we have a valid VfsOff instance "running"
-    switchToVfs(_syncEngine->syncOptions()._vfs);
+    setupVfs(vfsMode);
 
     // A new folder will update the local file state database on first sync.
     // To have a state matching what users will encounter, we have to a sync
@@ -1417,6 +1420,22 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
     QVERIFY(false);
 }
 
+QSharedPointer<OCC::Vfs> FakeFolder::setupVfs(OCC::Vfs::Mode vfsMode)
+{
+    auto vfsPlugin = QSharedPointer<OCC::Vfs>(createVfsFromPlugin(vfsMode).release());
+    QObject::connect(&syncEngine().syncFileStatusTracker(), &OCC::SyncFileStatusTracker::fileStatusChanged,
+                     vfsPlugin.data(), &OCC::Vfs::fileStatusChanged);
+    switchToVfs(vfsPlugin);
+
+#if defined Q_OS_WINDOWS
+    if (vfsMode == OCC::Vfs::Mode::WindowsCfApi) {
+        OCC::CfApiWrapper::setPinState(localPath(), OCC::PinState::Unspecified, OCC::CfApiWrapper::NoRecurse);
+    }
+#endif
+
+    return vfsPlugin;
+}
+
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 {
     for(const auto &child : templateFi.children) {
@@ -1447,11 +1466,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             QFile f { diskChild.filePath() };
             f.open(QFile::ReadOnly);
             auto content = f.read(1);
-            if (content.size() == 0) {
-                qWarning() << "Empty file at:" << diskChild.filePath();
-                continue;
+            auto contentChar = char{};
+            if (content.size() > 0) {
+                contentChar = content.at(0);
             }
-            char contentChar = content.at(0);
             templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar, diskChild.lastModified()});
         }
     }
