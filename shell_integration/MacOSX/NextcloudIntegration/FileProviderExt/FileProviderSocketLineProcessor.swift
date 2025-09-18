@@ -10,35 +10,35 @@ import OSLog
 
 class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     var delegate: FileProviderExtension
+    let logger: FileProviderLogger
 
-    required init(delegate: FileProviderExtension) {
+    required init(delegate: FileProviderExtension, log: any FileProviderLogging) {
         self.delegate = delegate
+        self.logger = FileProviderLogger(category: "FileProviderSocketLineProcessor", log: log)
     }
 
     func process(_ line: String) {
         if line.contains("~") {  // We use this as the separator specifically in ACCOUNT_DETAILS
-            Logger.desktopClientConnection.debug(
-                "Processing file provider line with potentially sensitive user data")
+            logger.debug("Processing file provider line with potentially sensitive user data")
         } else {
-            Logger.desktopClientConnection.debug(
-                "Processing file provider line: \(line, privacy: .public)")
+            logger.debug("Processing file provider line: \(line)")
         }
 
         let splitLine = line.split(separator: ":", maxSplits: 1)
         guard let commandSubsequence = splitLine.first else {
-            Logger.desktopClientConnection.error("Input line did not have a first element")
+            logger.error("Input line did not have a first element")
             return
         }
         let command = String(commandSubsequence)
 
-        Logger.desktopClientConnection.debug("Received command: \(command, privacy: .public)")
+        logger.debug("Received command: \(command)")
         if command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER" {
             delegate.sendFileProviderDomainIdentifier()
         } else if command == "ACCOUNT_NOT_AUTHENTICATED" {
             delegate.removeAccountConfig()
         } else if command == "ACCOUNT_DETAILS" {
             guard let accountDetailsSubsequence = splitLine.last else {
-                Logger.desktopClientConnection.error("Account details did not have a first element")
+                logger.error("Account details did not have a first element")
                 return
             }
             let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 4)
@@ -58,13 +58,11 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
             )
         } else if command == "IGNORE_LIST" {
             guard let ignoreListSubsequence = splitLine.last else {
-                Logger.desktopClientConnection.error("Ignore list missing contents!")
+                logger.error("Ignore list missing contents!")
                 return
             }
             let ignoreList = ignoreListSubsequence.components(separatedBy: "_~IL$~_")
-            Logger.desktopClientConnection.debug(
-                "Applying \(ignoreList.count, privacy: .public) ignore file patterns"
-            )
+            logger.debug("Applying \(ignoreList.count) ignore file patterns")
             delegate.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
         }
     }

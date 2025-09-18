@@ -17,6 +17,8 @@ import QuickLookThumbnailing
 class LockViewController: NSViewController {
     let itemIdentifiers: [NSFileProviderItemIdentifier]
     let locking: Bool
+    let log: any FileProviderLogging
+    let logger: FileProviderLogger
 
     @IBOutlet weak var fileNameIcon: NSImageView!
     @IBOutlet weak var fileNameLabel: NSTextField!
@@ -33,9 +35,11 @@ class LockViewController: NSViewController {
         return parent as? DocumentActionViewController
     }
 
-    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool) {
+    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool, log: any FileProviderLogging) {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
+        self.log = log
+        self.logger = FileProviderLogger(category: "LockViewController", log: log)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -45,17 +49,12 @@ class LockViewController: NSViewController {
 
     override func viewDidLoad() {
         guard let firstItem = itemIdentifiers.first else {
-            Logger.shareViewController.error("called without items")
+            logger.error("called without items")
             closeAction(self)
             return
         }
 
-        Logger.lockViewController.info(
-            """
-            Locking \(self.locking ? "enabled" : "disabled", privacy: .public) for items:
-            \(firstItem.rawValue, privacy: .public)
-            """
-        )
+        logger.info("Locking \(self.locking ? "enabled" : "disabled") for items: \(firstItem.rawValue)")
 
         Task {
             await processItemIdentifier(firstItem)
@@ -75,20 +74,21 @@ class LockViewController: NSViewController {
     }
 
     private func presentError(_ error: String) {
-        Logger.lockViewController.error("Error: \(error, privacy: .public)")
+        logger.error("Error: \(error)")
         descriptionLabel.stringValue = "Error: \(error)"
         stopIndicatingLoading()
     }
 
     private func fetchCapabilities(account: Account, kit: NextcloudKit) async -> Capabilities? {
         return await withCheckedContinuation { continuation in
-            kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
+            kit.getCapabilities(account: account.ncKitAccount) { account, _, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
                     self.presentError("Error getting server caps: \(error.errorDescription)")
                     continuation.resume(returning: nil)
                     return
                 }
-                Logger.lockViewController.info("Successfully retrieved server share capabilities")
+
+                self.logger.info("Successfully retrieved server share capabilities")
                 continuation.resume(returning: Capabilities(data: capabilitiesJson))
             }
         }
@@ -102,7 +102,7 @@ class LockViewController: NSViewController {
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
             guard itemUrl.startAccessingSecurityScopedResource() else {
-                Logger.lockViewController.error("Could not access scoped resource for item url!")
+                logger.error("Could not access scoped resource for item url!")
                 return
             }
             await updateFileDetailsDisplay(itemUrl: itemUrl)
@@ -110,7 +110,7 @@ class LockViewController: NSViewController {
             await lockOrUnlockFile(localItemUrl: itemUrl)
         } catch let error {
             let errorString = "Error processing item: \(error)"
-            Logger.lockViewController.error("\(errorString, privacy: .public)")
+            logger.error("\(errorString)")
             fileNameLabel.stringValue = String(localized: "Could not lock unknown item…")
             descriptionLabel.stringValue = error.localizedDescription
         }
@@ -129,9 +129,7 @@ class LockViewController: NSViewController {
         let fileThumbnail = await withCheckedContinuation { continuation in
             generator.generateRepresentations(for: request) { thumbnail, type, error in
                 if thumbnail == nil || error != nil {
-                    Logger.lockViewController.error(
-                        "Could not get thumbnail: \(error, privacy: .public)"
-                    )
+                    self.logger.error("Could not get thumbnail.", [.error: error])
                 }
                 continuation.resume(returning: thumbnail)
             }
@@ -161,7 +159,7 @@ class LockViewController: NSViewController {
 
         do {
             let connection = try await serviceConnection(url: localItemUrl, interruptionHandler: {
-                Logger.lockViewController.error("Service connection interrupted")
+                self.logger.error("Service connection interrupted")
             })
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
@@ -180,7 +178,6 @@ class LockViewController: NSViewController {
                 userId: account.id,
                 password: account.password,
                 userAgent: "Nextcloud-macOS/FileProviderUIExt",
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
             guard let capabilities = await fetchCapabilities(account: account, kit: kit),
@@ -213,12 +210,7 @@ class LockViewController: NSViewController {
 
             let serverUrlFileName = itemMetadata.serverUrl + "/" + itemMetadata.fileName
             
-            Logger.lockViewController.info(
-                """
-                Locking file: \(serverUrlFileName, privacy: .public)
-                \(self.locking ? "locking" : "unlocking", privacy: .public)
-                """
-            )
+            logger.info("Locking file: \(serverUrlFileName) \(self.locking ? "locking" : "unlocking")")
 
             let error = await withCheckedContinuation { continuation in
                 kit.lockUnlockFile(
