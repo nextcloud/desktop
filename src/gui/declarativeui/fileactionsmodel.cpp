@@ -194,12 +194,11 @@ void FileActionsModel::parseEndpoints()
     }
 
     for (const auto &contextMenu : contextMenuList) {
-        _fileActions.append({_accountState->account()->url().toString()
-                               + contextMenu.value("icon").toString(),
-                           contextMenu.value("name").toString(),
-                           contextMenu.value("url").toString(),
-                           contextMenu.value("method").toString(),
-                           contextMenu.value("params").toStringList()});
+        _fileActions.append({ parseIcon(contextMenu.value("icon").toString()),
+                             contextMenu.value("name").toString(),
+                             contextMenu.value("url").toString(),
+                             contextMenu.value("method").toString(),
+                             contextMenu.value("params").toStringList() });
     }
 
     qCDebug(lcFileActions) << "File" << _localPath << "has" << _fileActions.size() << "actions available.";
@@ -211,6 +210,15 @@ QString FileActionsModel::parseUrl(const QString &url) const
     auto unparsedUrl = url;
     const auto parsedUrl = unparsedUrl.replace(QRegularExpression(fileIdUrlC), _fileId);
     return parsedUrl;
+}
+
+QString FileActionsModel::parseIcon(const QString &icon) const
+{
+    if (icon.isEmpty()) {
+        return QStringLiteral("image://svgimage-custom-color/convert_to_text.svg/");
+    }
+
+    return _accountUrl + icon;
 }
 
 void FileActionsModel::createRequest(const int row)
@@ -251,7 +259,7 @@ void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
     if (statusCode != 200) {
         qCWarning(lcFileActions) << "File action did not succeed for" << _localPath;
     }
-
+    const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
     setResponse({ message, _accountState->account()->url().toString() });
 }
 

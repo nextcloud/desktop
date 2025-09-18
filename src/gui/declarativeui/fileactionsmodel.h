@@ -64,6 +64,7 @@ public:
 
     void parseEndpoints();
     QString parseUrl(const QString &url) const;
+    QString parseIcon(const QString &icon) const;
 
 signals:
     void accountStateChanged();
