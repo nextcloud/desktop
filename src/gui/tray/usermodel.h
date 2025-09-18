@@ -164,7 +164,7 @@ private slots:
     void slotGroupFoldersFetched(QNetworkReply *reply);
     void slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
     void checkNotifiedNotifications();
-    void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
+    void showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
     void showDesktopNotification(const OCC::ActivityList &activityList);
     void showDesktopTalkNotification(const OCC::Activity &activity);
@@ -178,8 +178,8 @@ private:
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
 
-    bool notificationAlreadyShown(const long notificationId);
-    bool canShowNotification(const long notificationId);
+    bool notificationAlreadyShown(const qint64 notificationId);
+    bool canShowNotification(const qint64 notificationId);
 
     void checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived);
 
@@ -197,7 +197,7 @@ private:
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
     QElapsedTimer _guiLogTimer;
-    QSet<long> _notifiedNotifications;
+    QSet<qint64> _notifiedNotifications;
     QMimeDatabase _mimeDb;
 
     // number of currently running notification requests. If non zero,
