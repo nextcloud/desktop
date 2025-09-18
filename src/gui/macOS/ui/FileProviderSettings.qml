@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick 2.15
@@ -82,39 +73,6 @@ Page {
                     onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                 }
 
-                FileProviderFastEnumerationSettings {
-                    id: fastEnumerationSettings
-
-                    Layout.fillWidth: true
-
-                    fastEnumerationSet: root.controller.fastEnumerationSetForAccount(root.accountUserIdAtHost)
-                    fastEnumerationEnabled: root.controller.fastEnumerationEnabledForAccount(root.accountUserIdAtHost)
-                    onFastEnumerationEnabledToggled: root.controller.setFastEnumerationEnabledForAccount(root.accountUserIdAtHost, enabled)
-
-                    padding: 0
-
-                    Connections {
-                        target: root.controller
-
-                        function updateFastEnumerationValues() {
-                            fastEnumerationSettings.fastEnumerationEnabled = root.controller.fastEnumerationEnabledForAccount(root.accountUserIdAtHost);
-                            fastEnumerationSettings.fastEnumerationSet = root.controller.fastEnumerationSetForAccount(root.accountUserIdAtHost);
-                        }
-
-                        function onFastEnumerationEnabledForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost === accountUserIdAtHost) {
-                                updateFastEnumerationValues();
-                            }
-                        }
-
-                        function onFastEnumerationSetForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost === accountUserIdAtHost) {
-                                updateFastEnumerationValues();
-                            }
-                        }
-                    }
-                }
-
                 FileProviderStorageInfo {
                     id: storageInfo
                     localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)
@@ -139,6 +97,17 @@ Page {
                             storageInfo.remoteUsedStorage = root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost);
                         }
                     }
+                }
+
+                CheckBox {
+                    text: qsTr("Allow deletion of items in Trash")
+                    checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
+                    onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
+                }
+
+                Button {
+                    text: qsTr("Reset virtual files environment")
+                    onPressed: root.controller.resetVfsForAccount(root.accountUserIdAtHost);
                 }
             }
         }

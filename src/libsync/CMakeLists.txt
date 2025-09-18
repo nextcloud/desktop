@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 project(libsync)
 find_package(KF6Archive REQUIRED)
 include(DefinePlatformDefaults)
@@ -87,6 +90,8 @@ set(libsync_SRCS
     propagateuploadng.cpp
     bulkpropagatorjob.h
     bulkpropagatorjob.cpp
+    bulkpropagatordownloadjob.h
+    bulkpropagatordownloadjob.cpp
     putmultifilejob.h
     putmultifilejob.cpp
     propagateremotedelete.h

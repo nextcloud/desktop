@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "owncloudgui.h"
@@ -264,7 +256,7 @@ void ownCloudGui::slotOpenPath(const QString &path)
     showInFileManager(path);
 }
 
-void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
+void ownCloudGui::slotTrayMessageIfServerUnsupported(const AccountPtr &account)
 {
     if (account->serverVersionUnsupported()) {
         slotShowTrayMessage(
@@ -276,8 +268,8 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
     }
 }
 
-void ownCloudGui::slotNeedToAcceptTermsOfService(OCC::AccountPtr account,
-                                                 AccountState::State state)
+void ownCloudGui::slotNeedToAcceptTermsOfService(const OCC::AccountPtr &account,
+                                                 const OCC::AccountState::State state)
 {
     if (state == AccountState::NeedToSignTermsOfService) {
         slotShowTrayMessage(
@@ -317,17 +309,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (Mac::FileProvider::fileProviderAvailable()) {
         for (const auto &accountState : AccountManager::instance()->accounts()) {
-            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
+            const auto account = accountState->account();
+            const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
                 continue;
             }
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
+            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
 
-            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
+            if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
             } else {
-                switch (const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+                switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
                     idleFileProviderAccounts.append(accountFpId);

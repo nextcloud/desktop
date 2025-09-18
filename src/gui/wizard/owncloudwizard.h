@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef MIRALL_OWNCLOUD_WIZARD_H
@@ -24,6 +15,7 @@
 #include "libsync/configfile.h"
 #include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
+#include "wizard/wizardproxysettingsdialog.h"
 #include "accountfwd.h"
 
 namespace OCC {
@@ -70,6 +62,7 @@ public:
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
     [[nodiscard]] bool needsToAcceptTermsOfService() const;
+    [[nodiscard]] bool useVirtualFileSyncByDefault() const;
 
     void displayError(const QString &, bool retryHTTPonly);
     [[nodiscard]] AbstractCredentials *getCredentials() const;
@@ -103,7 +96,7 @@ public slots:
 
 signals:
     void clearPendingRequests();
-    void determineAuthType(const QString &);
+    void determineAuthType(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
     void connectToOCUrl(const QString &);
     void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
@@ -123,6 +116,8 @@ private:
     void customizeStyle();
     [[nodiscard]] QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
     [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
+
+    void ensureWelcomePageCorrectLayout();
 
     AccountPtr _account;
     WelcomePage *_welcomePage = nullptr;

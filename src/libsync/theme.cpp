@@ -1,19 +1,10 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2016 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2012 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "theme.h"
-#include "config.h"
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
@@ -170,6 +161,11 @@ QUrl Theme::statusDoNotDisturbImageSource() const
 QUrl Theme::statusAwayImageSource() const
 {
     return imagePathToUrl(themeImagePath("user-status-away", 16));
+}
+
+QUrl Theme::statusBusyImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-busy", 16));
 }
 
 QUrl Theme::statusInvisibleImageSource() const
@@ -513,14 +509,7 @@ bool Theme::forbidBadSSL() const
 #endif
 }
 
-bool Theme::doNotUseProxy() const
-{
-#ifdef DO_NOT_USE_PROXY
-    return true;
-#else
-    return false;
-#endif
-}
+
 
 QString Theme::forceConfigAuthType() const
 {
@@ -1032,10 +1021,11 @@ bool Theme::darkMode() const
 
 #ifdef Q_OS_WIN
     static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-    if (!isWindows11OrGreater() &&
-        Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
-        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
-        return true;
+    if (!isWindows11OrGreater() && Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey)) {
+        if (const auto keyVariant = Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme"));
+            keyVariant.isValid() && !keyVariant.toBool()) {
+            return true;
+        }
     }
 #endif
     return isDarkFromStyle();

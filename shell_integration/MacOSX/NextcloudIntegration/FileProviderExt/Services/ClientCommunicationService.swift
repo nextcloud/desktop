@@ -1,19 +1,11 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import Foundation
 import FileProvider
+import NextcloudFileProviderKit
 import OSLog
 
 class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, ClientCommunicationProtocol {
@@ -42,21 +34,27 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - Client Communication Protocol methods
 
-    func getExtensionAccountId(completionHandler: @escaping (String?, Error?) -> Void) {
-        let accountUserId = self.fpExtension.domain.identifier.rawValue
-        Logger.desktopClientConnection.info("Sending extension account ID \(accountUserId, privacy: .public)")
-        completionHandler(accountUserId, nil)
+    func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
+        let identifier = self.fpExtension.domain.identifier.rawValue
+        Logger.desktopClientConnection.info("Returning file provider domain identifier \(identifier, privacy: .public)")
+        completionHandler(identifier, nil)
     }
 
-    func configureAccount(withUser user: String,
-                          userId: String,
-                          serverUrl: String,
-                          password: String) {
+    func configureAccount(
+        withUser user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String
+    ) {
         Logger.desktopClientConnection.info("Received configure account information over client communication service")
-        self.fpExtension.setupDomainAccount(user: user,
-                                            userId: userId,
-                                            serverUrl: serverUrl,
-                                            password: password)
+        self.fpExtension.setupDomainAccount(
+            user: user,
+            userId: userId,
+            serverUrl: serverUrl,
+            password: password,
+            userAgent: userAgent
+        )
     }
 
     func removeAccountConfig() {
@@ -80,28 +78,21 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         }
     }
 
-    func getFastEnumerationState(completionHandler: @escaping (Bool, Bool) -> Void) {
-        let enabled = fpExtension.config.fastEnumerationEnabled
-        let set = fpExtension.config.fastEnumerationSet
+    func getTrashDeletionEnabledState(completionHandler: @escaping (Bool, Bool) -> Void) {
+        let enabled = fpExtension.config.trashDeletionEnabled
+        let set = fpExtension.config.trashDeletionSet
         completionHandler(enabled, set)
     }
 
-    func setFastEnumerationEnabled(_ enabled: Bool) {
-        fpExtension.config.fastEnumerationEnabled = enabled
-        Logger.fileProviderExtension.info("Fast enumeration setting changed to: \(enabled, privacy: .public)")
+    func setTrashDeletionEnabled(_ enabled: Bool) {
+        fpExtension.config.trashDeletionEnabled = enabled
+        Logger.fileProviderExtension.info(
+            "Trash deletion setting changed to: \(enabled, privacy: .public)"
+        )
+    }
 
-        guard enabled else { return }
-        // If enabled, start full enumeration
-        guard let fpManager = NSFileProviderManager(for: fpExtension.domain) else {
-            let domainName = self.fpExtension.domain.displayName
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(domainName, privacy: .public), cannot run enumeration after fast enumeration setting change")
-            return
-        }
-
-        fpManager.signalEnumerator(for: .workingSet) { error in
-            if error != nil {
-                Logger.fileProviderExtension.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription, privacy: .public)")
-            }
-        }
+    func setIgnoreList(_ ignoreList: [String]) {
+        self.fpExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
+        Logger.fileProviderExtension.info("Ignore list updated.")
     }
 }

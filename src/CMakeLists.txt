@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2011 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 include(ECMEnableSanitizers)
 
 set(REQUIRED_QT_VERSION "6.5.0")
@@ -97,10 +100,5 @@ if (NOT BUILD_LIBRARIES_ONLY)
     add_subdirectory(cmd)
     if (BUILD_GUI)
         add_subdirectory(gui)
-    endif()
-
-    if (WITH_CRASHREPORTER)
-        add_subdirectory(3rdparty/libcrashreporter-qt)
-        add_subdirectory(crashreporter)
     endif()
 endif(NOT BUILD_LIBRARIES_ONLY)

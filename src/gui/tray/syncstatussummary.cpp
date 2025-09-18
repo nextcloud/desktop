@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "syncstatussummary.h"
@@ -24,6 +15,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovidersocketserver.h"
+#include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
 #include <theme.h>
@@ -442,11 +434,14 @@ void SyncStatusSummary::initSyncState()
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto accounts = AccountManager::instance()->accounts();
-    for (const auto &accountState : accounts) {
-        const auto account = accountState->account();
-        onFileProviderDomainSyncStateChanged(account, Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account));
-        syncStateFallbackNeeded = false;
+    if (Mac::FileProvider::fileProviderAvailable() && _accountState) {
+        const auto account = _accountState->account();
+        const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+        if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
+            onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
+            syncStateFallbackNeeded = false;
+        }
     }
 #endif
 

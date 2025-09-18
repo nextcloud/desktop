@@ -58,6 +58,13 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="quotaWarningNotificationsCheckBox">
+        <property name="text">
+         <string>Show &amp;Quota Warning Notifications</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -209,23 +216,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="QCheckBox" name="crashreporterCheckBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>S&amp;how crash reporter</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="QWidget" name="horizontalLayoutWidget_remotePollInterval">
         <layout class="QHBoxLayout" name="horizontalLayout_remotePollInterval">
          <item>
@@ -238,7 +228,7 @@
          <item>
           <widget class="QSpinBox" name="remotePollIntervalSpinBox">
            <property name="minimum">
-            <number>30</number>
+            <number>5</number>
            </property>
            <property name="maximum">
             <number>999999</number>
@@ -464,6 +454,16 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="restoreUpdateChannelButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Restore &amp;Default</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
@@ -502,7 +502,6 @@
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
-  <tabstop>crashreporterCheckBox</tabstop>
   <tabstop>restartButton</tabstop>
  </tabstops>
  <resources/>

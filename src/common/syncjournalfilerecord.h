@@ -1,19 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #ifndef SYNCJOURNALFILERECORD_H
@@ -84,13 +72,17 @@ public:
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
     EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted;
-    QByteArray _e2eCertificateFingerprint;
     SyncJournalFileLockInfo _lockstate;
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;
     bool _sharedByMe = false;
     bool _isLivePhoto = false;
     QString _livePhotoFile;
+    struct FolderQuota {
+        qint64 bytesUsed = -1;
+        qint64 bytesAvailable = -1;
+    };
+    FolderQuota _folderQuota;
 };
 
 QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);

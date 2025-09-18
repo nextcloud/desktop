@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Kevin Ottens <kevin.ottens@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "vfs_cfapi.h"
@@ -112,7 +103,7 @@ class VfsCfApiPrivate
 {
 public:
     QList<HydrationJob *> hydrationJobs;
-    cfapi::ConnectionKey connectionKey;
+    CF_CONNECTION_KEY connectionKey = {};
 };
 
 VfsCfApi::VfsCfApi(QObject *parent)
@@ -155,9 +146,11 @@ void VfsCfApi::startImpl(const VfsSetupParams &params)
 
 void VfsCfApi::stop()
 {
-    const auto result = cfapi::disconnectSyncRoot(std::move(d->connectionKey));
-    if (!result) {
-        qCCritical(lcCfApi) << "Disconnect failed for" << QDir::toNativeSeparators(params().filesystemPath) << ":" << result.error();
+    if (d->connectionKey.Internal != 0) {
+        const auto result = cfapi::disconnectSyncRoot(std::move(d->connectionKey));
+        if (!result) {
+            qCCritical(lcCfApi) << "Disconnect failed for" << QDir::toNativeSeparators(params().filesystemPath) << ":" << result.error();
+        }
     }
 }
 
@@ -184,19 +177,19 @@ bool VfsCfApi::isHydrating() const
     return !d->hydrationJobs.isEmpty();
 }
 
-Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile)
 {
     const auto localPath = QDir::toNativeSeparators(filePath);
-    if (cfapi::handleForPath(localPath)) {
-        auto result = cfapi::updatePlaceholderInfo(localPath, modtime, size, fileId);
-        if (result) {
-            return {};
-        } else {
-            return result.error();
-        }
+    const auto replacesPath = QDir::toNativeSeparators(replacesFile);
+
+    if (syncItem._type == ItemTypeVirtualFileDehydration) {
+        return cfapi::dehydratePlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId);
     } else {
-        qCWarning(lcCfApi) << "Couldn't update metadata for non existing file" << localPath;
-        return {QStringLiteral("Couldn't update metadata")};
+        if (cfapi::findPlaceholderInfo(localPath)) {
+            return cfapi::updatePlaceholderInfo(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+        } else {
+            return cfapi::convertToPlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+        }
     }
 }
 
@@ -215,6 +208,22 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
     Q_ASSERT(params().filesystemPath.endsWith('/'));
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + item._file);
     const auto result = cfapi::createPlaceholderInfo(localPath, item._modtime, item._size, item._fileId);
+    return result;
+}
+
+Result<void, QString> VfsCfApi::createPlaceholders(const QList<SyncFileItemPtr> &items)
+{
+    const auto fileInfo = QFileInfo(_setupParams.filesystemPath + items[0]->_file);
+    const auto localPath = QDir::toNativeSeparators(fileInfo.absolutePath());
+
+    auto allPlaceholdersInfo = QList<cfapi::PlaceholdersInfo>{};
+    for (const auto &oneItem : items) {
+        auto fileInfo = QFileInfo(_setupParams.filesystemPath + oneItem->_file);
+        allPlaceholdersInfo.emplace_back(std::move(fileInfo), fileInfo.fileName(), QDir::toNativeSeparators(fileInfo.fileName()).toStdWString(), oneItem->_fileId, oneItem->_modtime, oneItem->_size);
+    }
+
+    const auto result = cfapi::createPlaceholdersInfo(localPath, {allPlaceholdersInfo});
+
     return result;
 }
 
@@ -541,7 +550,7 @@ VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinState
         const auto dir = QDir(info.absoluteFilePath());
         Q_ASSERT(dir.exists());
         const auto children = dir.entryList();
-        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=](const HydratationAndPinStates &currentState, const QString &name) {
+        return std::accumulate(std::cbegin(children), std::cend(children), dirState, [=, this](const HydratationAndPinStates &currentState, const QString &name) {
             if (name == QStringLiteral("..") || name == QStringLiteral(".")) {
                 return currentState;
             }

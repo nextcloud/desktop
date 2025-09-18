@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "syncfileitem.h"
@@ -118,7 +110,6 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
     rec._e2eEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(_e2eEncryptionStatus);
-    rec._e2eCertificateFingerprint = _e2eCertificateFingerprint;
     rec._lockstate._locked = _locked == LockStatus::LockedItem;
     rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
     rec._lockstate._lockOwnerId = _lockOwnerId;
@@ -129,6 +120,8 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._lockstate._lockToken = _lockToken;
     rec._isLivePhoto = _isLivePhoto;
     rec._livePhotoFile = _livePhotoFile;
+    rec._folderQuota.bytesUsed = _folderQuota.bytesUsed;
+    rec._folderQuota.bytesAvailable = _folderQuota.bytesAvailable;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -159,7 +152,6 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_encryptedFileName = rec.e2eMangledName();
     item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);
     item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
-    item->_e2eCertificateFingerprint = rec._e2eCertificateFingerprint;
     item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
     item->_lockOwnerId = rec._lockstate._lockOwnerId;
@@ -173,6 +165,8 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
     item->_isLivePhoto = rec._isLivePhoto;
     item->_livePhotoFile = rec._livePhotoFile;
+    item->_folderQuota.bytesUsed = rec._folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = rec._folderQuota.bytesAvailable;
     return item;
 }
 
@@ -199,7 +193,7 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_isShared = item->_remotePerm.hasPermission(RemotePermissions::IsShared);
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
-    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::Encrypted : SyncFileItem::EncryptionStatus::NotEncrypted);
+    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0 : SyncFileItem::EncryptionStatus::NotEncrypted);
     if (item->isEncrypted()) {
         item->_e2eEncryptionServerCapability = item->_e2eEncryptionStatus;
     }
@@ -246,6 +240,11 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     if (properties.contains(QStringLiteral("metadata-files-live-photo"))) {
         item->_isLivePhoto = true;
         item->_livePhotoFile = properties.value(QStringLiteral("metadata-files-live-photo"));
+    }
+
+    if (isDirectory && properties.contains(FolderQuota::usedBytesC) && properties.contains(FolderQuota::availableBytesC)) {
+        item->_folderQuota.bytesUsed = properties.value(FolderQuota::usedBytesC).toLongLong();
+        item->_folderQuota.bytesAvailable = properties.value(FolderQuota::availableBytesC).toLongLong();
     }
 
     // direction and instruction are decided later

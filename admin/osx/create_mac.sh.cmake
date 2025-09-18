@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2018 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # Script to create the Mac installer using the packages tool from
 # http://s.sudre.free.fr/Software/Packages/about.html
 #

@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "propagateremotemkdir.h"
@@ -218,7 +210,7 @@ void PropagateRemoteMkdir::slotMkdir()
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
       this, &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-      []{ qCDebug(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
+      []{ qCWarning(lcPropagateRemoteMkdir) << "Error setting up encryption."; });
     _uploadEncryptedHelper->start();
 }
 
@@ -262,7 +254,6 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished(int status, EncryptionStatu
     qCDebug(lcPropagateRemoteMkdir) << "Success making the new folder encrypted";
     propagator()->_activeJobList.removeOne(this);
     _item->_e2eEncryptionStatus = encryptionStatus;
-    _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
     _item->_e2eEncryptionStatusRemote = encryptionStatus;
     if (_item->isEncrypted()) {
         _item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(propagator()->account()->capabilities().clientSideEncryptionVersion());

@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "activitylistmodeltestutils.h"
@@ -41,7 +32,6 @@ public:
     OCC::Activity testNotificationActivity;
     OCC::Activity testSyncResultErrorActivity;
     OCC::Activity testSyncFileItemActivity;
-    OCC::Activity testFileIgnoredActivity;
 
     static constexpr int searchResultsReplyDelay = 100;
 
@@ -119,7 +109,6 @@ private slots:
         testNotificationActivity = exampleNotificationActivity(accName);
         testSyncResultErrorActivity = exampleSyncResultErrorActivity(accName);
         testSyncFileItemActivity = exampleSyncFileItemActivity(accName, accUrl);
-        testFileIgnoredActivity = exampleFileIgnoredActivity(accName, accUrl);
     };
 
     // Test receiving activity from server
@@ -145,10 +134,6 @@ private slots:
 
     void testAddError() {
         testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
-    };
-
-    void testAddIgnoredFile() {
-        testActivityAdd(&TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     };
 
     // Test removing activity from list
@@ -207,11 +192,8 @@ private slots:
         model->addErrorToActivityList(testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
         QCOMPARE(model->rowCount(), 52);
 
-        model->addIgnoredFileToList(testFileIgnoredActivity);
-        QCOMPARE(model->rowCount(), 53);
-
         model->addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model->rowCount(), 54);
+        QCOMPARE(model->rowCount(), 53);
 
         // Test all rows for things in common
         for (int i = 0; i < model->rowCount(); i++) {

@@ -1,24 +1,13 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #include "asserts.h"
 #include "utility.h"
 #include "gui/configgui.h"
+#include "config.h"
 
 #include <comdef.h>
 #include <Lmcons.h>
@@ -111,52 +100,125 @@ QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileO
     return results;
 }
 
-void Utility::setupFavLink(const QString &folder)
+QString Utility::systemPathToLinks()
+{
+    static const QString pathToLinks = [] {
+        PWSTR path = nullptr;
+        if (SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) != S_OK) {
+            qCWarning(lcUtility) << "SHGetKnownFolderPath failed.";
+            CoTaskMemFree(path);
+            return QString();
+        }
+
+        const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
+        CoTaskMemFree(path);
+        return links;
+    }();
+
+    return pathToLinks;
+}
+
+void Utility::setupDesktopIni(const QString &folder, const QString localizedResourceName)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
-    if (desktopIni.exists()) {
+    const auto migration = !localizedResourceName.isEmpty();
+    if (!migration && desktopIni.exists()) {
         qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
-    } else {
-        qCInfo(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
-        desktopIni.open(QFile::WriteOnly);
-        desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
-        desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
-#ifdef APPLICATION_FOLDER_ICON_INDEX
-        const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
-#else
-        const auto iconIndex = "0";
-#endif
-        desktopIni.write(",");
-        desktopIni.write(iconIndex);
-        desktopIni.write("\r\n");
-        desktopIni.close();
-
-        // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
-        // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
-        DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
-        SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
-        SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+        return;
     }
 
-    /* Use new WINAPI functions */
-    PWSTR path;
-    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+    qCDebug(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+    desktopIni.open(QFile::WriteOnly);
+    desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
+    desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
+#ifdef APPLICATION_FOLDER_ICON_INDEX
+    const auto iconIndex = APPLICATION_FOLDER_ICON_INDEX;
+#else
+    const auto iconIndex = "0";
+#endif
+    desktopIni.write(",");
+    desktopIni.write(iconIndex);
+    if (migration) {
+        desktopIni.write("\r\nLocalizedResourceName=");
+        desktopIni.write(localizedResourceName.toUtf8());
+    }
+    desktopIni.write("\r\n");
+    desktopIni.close();
+
+    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
+    DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+    SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+}
+
+void Utility::setupFavLink(const QString &folder)
+{
+    // create Desktop.ini
+    setupDesktopIni(folder);
+
+    const auto pathToLinks = systemPathToLinks();
+    if (pathToLinks.isEmpty()) {
         qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
         return;
     }
 
-    // Windows Explorer: Place under "Favorites" (Links)
-    const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
-    CoTaskMemFree(path);
-
     const QDir folderDir(QDir::fromNativeSeparators(folder));
     const QString filePath = folderDir.dirName() + QLatin1String(".lnk");
-    const auto linkName = QDir(links).filePath(filePath);
+    const auto linkName = QDir().filePath(filePath);
 
-    qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
+    qCDebug(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
     if (!QFile::link(folder, linkName)) {
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
+    }
+}
+
+QString Utility::syncFolderDisplayName(const QString &currentDisplayName, const QString &newName)
+{
+    const auto nextcloud = QStringLiteral("Nextcloud");
+    if (!currentDisplayName.startsWith(nextcloud)) {
+        qCWarning(lcUtility) << "Nothings needs to be rename for" << currentDisplayName;
+        return currentDisplayName;
+    }
+
+    QString digits;
+    for (auto letter = std::crbegin(currentDisplayName); letter != std::crend(currentDisplayName); ++letter) {
+        if (!letter->isDigit()) {
+            break;
+        }
+        digits.prepend(*letter);
+    }
+
+    return newName + digits;
+}
+
+void Utility::migrateFavLink(const QString &folder)
+{
+    const QDir folderDir(QDir::fromNativeSeparators(folder));
+    const auto oldDirName = folderDir.dirName();
+    const auto folderDisplayName = syncFolderDisplayName(oldDirName, QStringLiteral(APPLICATION_NAME));
+    // overwrite Desktop.ini, update icon, update folder display name
+    setupDesktopIni(folder, folderDisplayName);
+
+    const auto pathToLinks = systemPathToLinks();
+    if (pathToLinks.isEmpty()) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for links has failed.";
+        return;
+    }
+
+    const QDir dirPathToLinks(pathToLinks);
+    const auto oldLnkFilename = dirPathToLinks.filePath(oldDirName + QLatin1String(".lnk"));
+    const auto newLnkFilename = dirPathToLinks.filePath(folderDisplayName + QLatin1String(".lnk"));
+
+    if (QFile::exists(newLnkFilename)) {
+        qCWarning(lcUtility) << "New lnk file already exists" << newLnkFilename;
+        return;
+    }
+
+    qCDebug(lcUtility) << "Renaming favorite link from" << oldLnkFilename << "to" << newLnkFilename;
+    if (QFile::rename(oldLnkFilename, newLnkFilename)  && !QFile::rename(oldLnkFilename, newLnkFilename)) {
+        qCWarning(lcUtility) << "renaming" << oldLnkFilename << "to" << newLnkFilename << "failed!";
     }
 }
 
@@ -186,9 +248,10 @@ void Utility::removeFavLink(const QString &folder)
     const QDir links(QString::fromWCharArray(path));
     CoTaskMemFree(path);
 
-    const auto linkName = QDir(links).absoluteFilePath(folderDir.dirName() + QLatin1String(".lnk"));
+    const auto folderDisplayName = syncFolderDisplayName(folderDir.dirName(), QStringLiteral(APPLICATION_NAME));
+    const auto linkName = QDir(links).absoluteFilePath(folderDisplayName + QLatin1String(".lnk"));
 
-    qCInfo(lcUtility) << "Removing favorite link from" << folder << "to" << linkName;
+    qCDebug(lcUtility) << "Removing favorite link from" << folder << "to" << linkName;
     if (!QFile::remove(linkName)) {
         qCWarning(lcUtility) << "Removing a favorite link from" << folder << "to" << linkName << "failed.";
     }
@@ -483,24 +546,9 @@ DWORD Utility::convertSizeToDWORD(size_t &convertVar)
     return static_cast<DWORD>(convertVar);
 }
 
-void Utility::UnixTimeToFiletime(time_t t, FILETIME *filetime)
-{
-    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
-    filetime->dwLowDateTime = (DWORD) ll;
-    filetime->dwHighDateTime = ll >>32;
-}
-
-void Utility::FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs)
-{
-    hundredNSecs->LowPart = filetime->dwLowDateTime;
-    hundredNSecs->HighPart = filetime->dwHighDateTime;
-}
-
 void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs)
 {
-    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
-    hundredNSecs->LowPart = (DWORD) ll;
-    hundredNSecs->HighPart = ll >>32;
+    hundredNSecs->QuadPart = (t * 10000000LL) + 116444736000000000LL;
 }
 
 bool Utility::canCreateFileInPath(const QString &path)

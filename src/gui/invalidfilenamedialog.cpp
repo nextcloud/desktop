@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "invalidfilenamedialog.h"
@@ -83,7 +74,9 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
     const auto filePathFileInfo = QFileInfo(_filePath);
     _relativeFilePath = filePathFileInfo.path() + QStringLiteral("/");
     _relativeFilePath = _relativeFilePath.replace(folder->path(), QStringLiteral(""));
-    _relativeFilePath = _relativeFilePath.isEmpty() ? QStringLiteral("") : _relativeFilePath + QStringLiteral("/");
+    if (!(_relativeFilePath.isEmpty() || _relativeFilePath.endsWith(QStringLiteral("/")))) {
+        _relativeFilePath += QStringLiteral("/");
+    }
 
     _originalFileName = _relativeFilePath + filePathFileInfo.fileName();
 
@@ -97,7 +90,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
     switch (invalidMode) {
     case InvalidMode::SystemInvalid:
         _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because the name contains characters which are not allowed on this system.").arg(_originalFileName));
-        _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: * \" | & ? , ; : \\ / ~ < > leading/trailing spaces"));
+        _ui->explanationLabel->setText(tr("The following characters are not allowed on the system: \\ / : ? * \"  < > | leading/trailing spaces"));
         break;
     case InvalidMode::ServerInvalid:
         _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because the name contains characters which are not allowed on the server.").arg(_originalFileName));
@@ -140,7 +133,6 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
 
     if (_fileLocation == FileLocation::NewLocalFile) {
         allowRenaming();
-        _ui->errorLabel->setText({});
     } else {
         checkIfAllowedToRename();
     }
@@ -223,6 +215,7 @@ void InvalidFilenameDialog::allowRenaming()
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     _ui->filenameLineEdit->setEnabled(true);
     _ui->filenameLineEdit->selectAll();
+    _ui->errorLabel->setText({});
 
     const auto filePathFileInfo = QFileInfo(_filePath);
     const auto fileName = filePathFileInfo.fileName();

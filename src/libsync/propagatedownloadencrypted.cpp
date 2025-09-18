@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #include "propagatedownloadencrypted.h"
 #include "clientsideencryptionjobs.h"
 #include "encryptedfoldermetadatahandler.h"
@@ -98,7 +102,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
 
     // we decripted the temporary into another temporary, so good bye old one
     if (!tmpFile.remove()) {
-        qCDebug(lcPropagateDownloadEncrypted) << "Failed to remove temporary file" << tmpFile.errorString();
+        qCWarning(lcPropagateDownloadEncrypted) << "Failed to remove temporary file" << tmpFile.errorString();
         _errorString = tmpFile.errorString();
         return false;
     }

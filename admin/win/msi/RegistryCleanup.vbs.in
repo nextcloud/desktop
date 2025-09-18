@@ -1,3 +1,5 @@
+' SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+' SPDX-License-Identifier: GPL-2.0-or-later
 On Error goto 0
 
 Const HKEY_LOCAL_MACHINE = &H80000002

@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "fileprovideritemmetadata.h"
@@ -81,8 +72,10 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
     metadata._capabilities = bridgedNsFileProviderItem.capabilities;
     metadata._fileSystemFlags = bridgedNsFileProviderItem.fileSystemFlags;
     metadata._childItemCount = bridgedNsFileProviderItem.childItemCount.unsignedIntegerValue;
-    metadata._typeOsCode = bridgedNsFileProviderItem.typeAndCreator.type;
-    metadata._creatorOsCode = bridgedNsFileProviderItem.typeAndCreator.creator;
+    if (@available(macOS 12.0, *)) {
+        metadata._typeOsCode = bridgedNsFileProviderItem.typeAndCreator.type;
+        metadata._creatorOsCode = bridgedNsFileProviderItem.typeAndCreator.creator;
+    }
     metadata._documentSize = bridgedNsFileProviderItem.documentSize.unsignedLongLongValue;
     metadata._mostRecentVersionDownloaded = bridgedNsFileProviderItem.mostRecentVersionDownloaded;
     metadata._uploading = bridgedNsFileProviderItem.uploading;

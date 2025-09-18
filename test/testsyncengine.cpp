@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
- *
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2016 ownCloud, Inc.
+ * SPDX-License-Identifier: CC0-1.0
+ * 
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <QtTest>
@@ -150,6 +153,8 @@ private slots:
     }
 
     void testDirUploadWithDelayedAlgorithm() {
+        QSKIP("bulk upload is disabled");
+
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
 
@@ -180,8 +185,57 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    void testLocalDelete() {
+    void testDirUploadWithDelayedAlgorithmWithNewChecksum() {
+        QSKIP("bulk upload is disabled");
+
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.setServerVersion(QStringLiteral("32.0.0"));
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.localModifier().mkdir("Y");
+        fakeFolder.localModifier().insert("Y/d0");
+        fakeFolder.localModifier().mkdir("Z");
+        fakeFolder.localModifier().insert("Z/d0");
+        fakeFolder.localModifier().insert("A/a0");
+        fakeFolder.localModifier().insert("B/b0");
+        fakeFolder.localModifier().insert("r0");
+        fakeFolder.localModifier().insert("r1");
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Y", 0));
+        QVERIFY(itemDidCompleteSuccessfullyWithExpectedRank(completeSpy, "Z", 1));
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Y/d0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "Y/d0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "Z/d0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "Z/d0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "A/a0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "B/b0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "B/b0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r0"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r0") > 1);
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "r1"));
+        QVERIFY(itemSuccessfullyCompletedGetRank(completeSpy, "r1") > 1);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+
+    void testLocalDelete_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
+    void testLocalDelete() {
+        QFETCH(bool, moveToTrashEnabled);
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
         ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
@@ -198,9 +252,22 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testLocalDeleteWithReuploadForNewLocalFiles_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testLocalDeleteWithReuploadForNewLocalFiles()
     {
+        QFETCH(bool, moveToTrashEnabled);
+
         FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // create folders hierarchy with some nested dirs and files
         fakeFolder.localModifier().mkdir("A");
@@ -977,6 +1044,8 @@ private slots:
      */
     void testErrorsWithBulkUpload()
     {
+        QSKIP("bulk upload is disabled");
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
 
@@ -1072,6 +1141,8 @@ private slots:
      */
     void testNetworkErrorsWithBulkUpload()
     {
+        QSKIP("bulk upload is disabled");
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
 
@@ -1120,6 +1191,8 @@ private slots:
 
     void testNetworkErrorsWithSmallerBatchSizes()
     {
+        QSKIP("bulk upload is disabled");
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
 
@@ -1176,7 +1249,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nPUT, 0);
-        QCOMPARE(nPOST, 2);
+        QCOMPARE(nPOST, 1);
         nPUT = 0;
         nPOST = 0;
 
@@ -1187,7 +1260,7 @@ private slots:
 
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nPUT, 120);
-        QCOMPARE(nPOST, 2);
+        QCOMPARE(nPOST, 1);
         nPUT = 0;
         nPOST = 0;
 
@@ -1411,6 +1484,73 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 
+    void testLocalInvalidMtimeCorrection()
+    {
+        const auto INVALID_MTIME = QDateTime::fromSecsSinceEpoch(0);
+        const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().insert(QStringLiteral("invalid"));
+        fakeFolder.localModifier().setModTime("invalid", INVALID_MTIME);
+        fakeFolder.localModifier().insert(QStringLiteral("recent"));
+        fakeFolder.localModifier().setModTime("recent", RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // "invalid" file had a mtime of 0, so it's been updated to the current time during testing
+        const auto currentMtime = fakeFolder.currentLocalState().find("invalid")->lastModified;
+        QCOMPARE_GT(currentMtime, RECENT_MTIME);
+        QCOMPARE_GT(fakeFolder.currentRemoteState().find("invalid")->lastModified, RECENT_MTIME);
+
+        // "recent" file had a mtime of RECENT_MTIME, so it shouldn't have been changed
+        QCOMPARE(fakeFolder.currentLocalState().find("recent")->lastModified, RECENT_MTIME);
+        QCOMPARE(fakeFolder.currentRemoteState().find("recent")->lastModified, RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
+        QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testLocalInvalidMtimeCorrectionBulkUpload()
+    {
+        QSKIP("bulk upload is disabled");
+
+        const auto INVALID_MTIME = QDateTime::fromSecsSinceEpoch(0);
+        const auto RECENT_MTIME = QDateTime::fromSecsSinceEpoch(1743004783); // 2025-03-26T16:59:43+0100
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        fakeFolder.localModifier().insert(QStringLiteral("invalid"));
+        fakeFolder.localModifier().setModTime("invalid", INVALID_MTIME);
+        fakeFolder.localModifier().insert(QStringLiteral("recent"));
+        fakeFolder.localModifier().setModTime("recent", RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce()); // this will use the BulkPropagatorJob
+
+        // "invalid" file had a mtime of 0, so it's been updated to the current time during testing
+        const auto currentMtime = fakeFolder.currentLocalState().find("invalid")->lastModified;
+        QCOMPARE_GT(currentMtime, RECENT_MTIME);
+        QCOMPARE_GT(fakeFolder.currentRemoteState().find("invalid")->lastModified, RECENT_MTIME);
+
+        // "recent" file had a mtime of RECENT_MTIME, so it shouldn't have been changed
+        QCOMPARE(fakeFolder.currentLocalState().find("recent")->lastModified, RECENT_MTIME);
+        QCOMPARE(fakeFolder.currentRemoteState().find("recent")->lastModified, RECENT_MTIME);
+
+        QVERIFY(fakeFolder.syncOnce()); // this will not propagate anything
+
+        // verify that the mtime of "invalid" hasn't changed since the last sync that fixed it
+        QCOMPARE(fakeFolder.currentLocalState().find("invalid")->lastModified, currentMtime);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     void testServerUpdatingMTimeShouldNotCreateConflicts()
     {
         constexpr auto testFile = "test.txt";
@@ -1454,9 +1594,23 @@ private slots:
         QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
     }
 
+    void testFolderRemovalWithCaseClash_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testFolderRemovalWithCaseClash()
     {
-        FakeFolder fakeFolder{ FileInfo{} };
+        QFETCH(bool, moveToTrashEnabled);
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().mkdir("toDelete");
         fakeFolder.remoteModifier().insert("A/file");
@@ -1739,8 +1893,17 @@ private slots:
         }
     }
 
+    void testServer_caseClash_createConflict_thenRemoveOneRemoteFile_data()
+    {
+        QTest::addColumn<bool>("moveToTrashEnabled");
+        QTest::newRow("move to trash") << true;
+        QTest::newRow("delete") << false;
+    }
+
     void testServer_caseClash_createConflict_thenRemoveOneRemoteFile()
     {
+        QFETCH(bool, moveToTrashEnabled);
+
         constexpr auto testLowerCaseFile = "test";
         constexpr auto testUpperCaseFile = "TEST";
 
@@ -1751,6 +1914,10 @@ private slots:
 #endif
 
         FakeFolder fakeFolder{FileInfo{}};
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = moveToTrashEnabled;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         fakeFolder.remoteModifier().insert("otherFile.txt");
         fakeFolder.remoteModifier().insert(testLowerCaseFile);
@@ -1927,12 +2094,6 @@ private slots:
             QVERIFY(conflictSolverCaseClashForFolderDone.wait());
             QVERIFY(fakeFolder.syncOnce());
 
-            // verify no case clash conflicts folder items are found
-            caseClashConflictFolderItemLower = completeSpy.findItem(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
-            caseClashConflictFolderItemUpper = completeSpy.findItem(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
-            QVERIFY((!caseClashConflictFolderItemLower || caseClashConflictFolderItemLower->_file.isEmpty())
-                    && (!caseClashConflictFolderItemUpper || caseClashConflictFolderItemUpper->_file.isEmpty()));
-
             // veriy invalid filename conflict folder item is still present
             invalidFilenameConflictFolderItem = completeSpy.findItem(diverseConflictsFolderPath + "/" + testInvalidCharFolder);
             completeSpy.clear();
@@ -2096,20 +2257,89 @@ private slots:
         fakeFolder.remoteModifier().insert("file2");
         fakeFolder.remoteModifier().insert("file3");
 
-        fakeFolder.remoteModifier().find("folder")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("folder/file1.lnk")->permissions = RemotePermissions::fromServerString("S");
-        fakeFolder.remoteModifier().find("folder/file2.lnk")->permissions = RemotePermissions::fromServerString("S");
-        fakeFolder.remoteModifier().find("folder/file3.lnk")->permissions = RemotePermissions::fromServerString("S");
+        fakeFolder.remoteModifier().find("folder")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("folder/file1.lnk")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("folder/file2.lnk")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("folder/file3.lnk")->permissions = RemotePermissions::fromServerString("SG");
 
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd")->permissions = RemotePermissions::fromServerString("DNVS");
-        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.lnk")->permissions = RemotePermissions::fromServerString("S");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.lnk")->permissions = RemotePermissions::fromServerString("SG");
+
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void testSyncLongPaths()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto nextcloudCmdSyncOptions = fakeFolder.syncEngine().syncOptions();
+
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc");
+        fakeFolder.remoteModifier().mkdir("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd");
+        fakeFolder.remoteModifier().insert("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md");
+
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().insert("folder/file1.lnk");
+        fakeFolder.remoteModifier().insert("folder/file2.lnk");
+        fakeFolder.remoteModifier().insert("folder/file3.lnk");
+        fakeFolder.remoteModifier().mkdir("folder2");
+        fakeFolder.remoteModifier().insert("file1");
+        fakeFolder.remoteModifier().insert("file2");
+        fakeFolder.remoteModifier().insert("file3");
+
+        fakeFolder.remoteModifier().find("folder")->permissions = RemotePermissions::fromServerString("DNVSG");
+        fakeFolder.remoteModifier().find("folder/file1.lnk")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("folder/file2.lnk")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("folder/file3.lnk")->permissions = RemotePermissions::fromServerString("SG");
+
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd")->permissions = RemotePermissions::fromServerString("DNVSG");
+
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd")->permissions = RemotePermissions::fromServerString("SG");
+        fakeFolder.remoteModifier().find("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md")->permissions = RemotePermissions::fromServerString("GS");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().rename("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md",
+                                           "abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long hello.docx - Sh.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().rename("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long hello.docx - Sh.md",
+                                           "abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/this is a long long long long long long long long long long hello.docx - Sh.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().appendByte("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/this is a long long long long long long long long long long hello.docx - Sh.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("abcdefabcdefabcdefabcdefabcdefabcd/abcdef abcdef abcdef a/abcdef abcdef/abcdef acbdef abcd/123abcdefabcdef1/123123abcdef123 abcdef1/12abcabc/12abcabd/this is a long long long long long long long long long long long long long long long long l.docx - Sh.md");
 
         QVERIFY(fakeFolder.syncOnce());
     }
@@ -2130,13 +2360,13 @@ private slots:
         const QString fileWithSpaces5("A/ bar ");
         const QString fileWithSpaces6("A/bla ");
         const auto extraFileNameWithSpaces = QStringLiteral(" with spaces ");
-        const QString fileWithoutSpaces1("foo");
-        const QString fileWithoutSpaces2("bar");
+        const QString fileWithoutSpaces1(" foo");
+        const QString fileWithoutSpaces2(" bar");
         const QString fileWithoutSpaces3("bla");
-        const QString fileWithoutSpaces4("A/foo");
-        const QString fileWithoutSpaces5("A/bar");
+        const QString fileWithoutSpaces4("A/ foo");
+        const QString fileWithoutSpaces5("A/ bar");
         const QString fileWithoutSpaces6("A/bla");
-        const auto extraFileNameWithoutSpaces = QStringLiteral("with spaces");
+        const auto extraFileNameWithoutSpaces = QStringLiteral(" with spaces");
 
         fakeFolder.localModifier().insert(fileWithSpaces1);
         fakeFolder.localModifier().insert(fileWithSpaces2);
@@ -2152,17 +2382,17 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpaces1)->_status, SyncFileItem::Status::NoStatus);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces1)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces2)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces3)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpaces4)->_status, SyncFileItem::Status::NoStatus);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces5)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces6)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(extraFileNameWithoutSpaces)->_status, SyncFileItem::Status::NoStatus);
@@ -2179,13 +2409,85 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpaces1)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces1)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces2)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces3)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpaces4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces4)->_status, SyncFileItem::Status::NoStatus);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithoutSpaces6)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(extraFileNameWithoutSpaces)->_status, SyncFileItem::Status::Success);
+    }
+
+    void testTouchedFilesWhenChangingFolderPermissionsDuringSync()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir("directory");
+        fakeFolder.localModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+
+        // perform an initial sync to ensure local and remote have the same state
+        QVERIFY(fakeFolder.syncOnce());
+
+        QStringList touchedFiles;
+
+        // syncEngine->_propagator is only set during a sync, which doesn't work with QSignalSpy :(
+        connect(&fakeFolder.syncEngine(), &SyncEngine::started, this, [&]() {
+            // at this point we have a propagator to connect signals to
+            connect(fakeFolder.syncEngine().getPropagator().get(), &OwncloudPropagator::touchedFile, this, [&touchedFiles](const QString& fileName) {
+                touchedFiles.append(fileName);
+            });
+        });
+
+        const auto syncAndExpectNoTouchedFiles = [&]() {
+            touchedFiles.clear();
+            QVERIFY(fakeFolder.syncOnce());
+            QCOMPARE(touchedFiles.size(), 0);
+        };
+
+        // when nothing changed expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // when the remote etag of a subsubdir changes expect the parent+subdirs to be touched
+        fakeFolder.remoteModifier().findInvalidatingEtags("directory/subdir");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 2);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory/subdir").fileName()));
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // nothing changed again, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // when subdir folder permissions change, expect the parent to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().find("directory")->permissions = RemotePermissions::fromServerString("SG");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // another sync without changes, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // remote etag of the subdir changed, expect the parent to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().findInvalidatingEtags("directory");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("directory").fileName()));
+
+        // same as usual, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
+
+        // remote rename of the subdir folder, expect the new name to be touched
+        touchedFiles.clear();
+        fakeFolder.remoteModifier().rename("directory", "renamedDirectory");
+        QVERIFY(fakeFolder.syncOnce());
+        qDebug() << touchedFiles;
+        QCOMPARE_GT(touchedFiles.size(), 1);
+        QVERIFY(touchedFiles.contains(fakeFolder.localModifier().find("renamedDirectory").fileName()));
+
+        // last sync without changes, expect no files to be touched
+        syncAndExpectNoTouchedFiles();
     }
 };
 

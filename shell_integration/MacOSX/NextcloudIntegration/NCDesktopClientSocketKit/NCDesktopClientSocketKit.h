@@ -2,7 +2,8 @@
 //  NCDesktopClientSocketKit.h
 //  NCDesktopClientSocketKit
 //
-//  Created by Claudio Cambra on 23/12/22.
+//  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 #import <Foundation/Foundation.h>

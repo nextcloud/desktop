@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "config.h"
@@ -41,7 +33,7 @@
 #include <QStandardPaths>
 #include <QOperatingSystemVersion>
 
-#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_REMOTE_POLL_INTERVAL 30000
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace {
@@ -53,13 +45,7 @@ static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
 static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static constexpr char monoIconsC[] = "monoIcons";
-static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
-static constexpr char crashReporterC[] = "crashReporter";
-static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
-static constexpr char showCallNotificationsC[] = "showCallNotifications";
-static constexpr char showChatNotificationsC[] = "showChatNotifications";
-static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
@@ -67,7 +53,6 @@ static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
-static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -81,7 +66,6 @@ static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientVersionC[] = "clientVersion";
-static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -89,11 +73,6 @@ static constexpr char proxyPortC[] = "Proxy/port";
 static constexpr char proxyUserC[] = "Proxy/user";
 static constexpr char proxyPassC[] = "Proxy/pass";
 static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
-
-static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
-static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
-static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
-static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
@@ -114,6 +93,8 @@ static const QStringList defaultUpdateChannelsList { QStringLiteral("stable"), Q
 static const QString defaultUpdateChannelName = "stable";
 static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("enterprise") };
 static const QString defaultEnterpriseChannel = "enterprise";
+
+static constexpr char languageC[] = "language";
 
 static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
@@ -206,32 +187,45 @@ bool ConfigFile::setConfDir(const QString &value)
 bool ConfigFile::optionalServerNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalServerNotificationsC), true).toBool();
+    return settings.value(optionalServerNotificationsC, true).toBool();
 }
 
 bool ConfigFile::showChatNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showChatNotificationsC), true).toBool() && optionalServerNotifications();
+    return settings.value(showChatNotificationsC, true).toBool() && optionalServerNotifications();
 }
 
 void ConfigFile::setShowChatNotifications(const bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showChatNotificationsC), show);
+    settings.setValue(showChatNotificationsC, show);
     settings.sync();
 }
 
 bool ConfigFile::showCallNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showCallNotificationsC), true).toBool() && optionalServerNotifications();
+    return settings.value(showCallNotificationsC, true).toBool() && optionalServerNotifications();
 }
 
 void ConfigFile::setShowCallNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showCallNotificationsC), show);
+    settings.setValue(showCallNotificationsC, show);
+    settings.sync();
+}
+
+bool ConfigFile::showQuotaWarningNotifications() const
+{
+    const QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(showQuotaWarningNotificationsC, true).toBool() && optionalServerNotifications();
+}
+
+void ConfigFile::setShowQuotaWarningNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(showQuotaWarningNotificationsC, show);
     settings.sync();
 }
 
@@ -245,13 +239,13 @@ bool ConfigFile::showInExplorerNavigationPane() const
 #endif
         ;
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
+    return settings.value(showInExplorerNavigationPaneC, defaultValue).toBool();
 }
 
 void ConfigFile::setShowInExplorerNavigationPane(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(showInExplorerNavigationPaneC), show);
+    settings.setValue(showInExplorerNavigationPaneC, show);
     settings.sync();
 }
 
@@ -270,13 +264,13 @@ qint64 ConfigFile::chunkSize() const
 qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxChunkSizeC), 5LL * 1000LL * 1000LL * 1000LL).toLongLong(); // default to 5000 MB
+    return settings.value(QLatin1String(maxChunkSizeC), 100LL * 1024LL * 1024LL).toLongLong(); // default to 100 MiB
 }
 
 qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1000LL * 1000LL).toLongLong(); // default to 5 MB
+    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1024LL * 1024LL).toLongLong(); // default to 5 MiB
 }
 
 chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
@@ -288,7 +282,7 @@ chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
 void ConfigFile::setOptionalServerNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalServerNotificationsC), show);
+    settings.setValue(optionalServerNotificationsC, show);
     settings.sync();
 }
 
@@ -464,6 +458,16 @@ void OCC::ConfigFile::cleanUpdaterConfiguration()
     settings.remove("updateTargetVersion");
     settings.remove("updateTargetVersionString");
     settings.remove("updateAvailable");
+    settings.sync();
+}
+
+void OCC::ConfigFile::cleanupGlobalNetworkConfiguration()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.remove(useUploadLimitC);
+    settings.remove(useDownloadLimitC);
+    settings.remove(uploadLimitC);
+    settings.remove(downloadLimitC);
     settings.sync();
 }
 
@@ -1062,13 +1066,13 @@ bool ConfigFile::showMainDialogAsNormalWindow() const {
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(promptDeleteC), false).toBool();
+    return settings.value(promptDeleteC, false).toBool();
 }
 
 void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
+    settings.setValue(promptDeleteC, promptDeleteFiles);
 }
 
 int ConfigFile::deleteFilesThreshold() const
@@ -1098,19 +1102,6 @@ void ConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
-}
-
-bool ConfigFile::crashReporter() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    const auto fallback = settings.value(QLatin1String(crashReporterC), true);
-    return getPolicySetting(QLatin1String(crashReporterC), fallback).toBool();
-}
-
-void ConfigFile::setCrashReporter(bool enabled)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(crashReporterC), enabled);
 }
 
 bool ConfigFile::automaticLogDir() const
@@ -1219,13 +1210,13 @@ void ConfigFile::setClientVersionString(const QString &version)
 bool ConfigFile::launchOnSystemStartup() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(launchOnSystemStartupC), true).toBool();
+    return settings.value(launchOnSystemStartupC, true).toBool();
 }
 
 void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
+    settings.setValue(launchOnSystemStartupC, autostart);
 }
 
 bool ConfigFile::serverHasValidSubscription() const
@@ -1252,6 +1243,17 @@ void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
     settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
 }
 
+QString ConfigFile::language() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(languageC), QLatin1String("")).toString();
+}
+
+void ConfigFile::setLanguage(const QString& language)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(languageC), language);
+}
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
 
@@ -1313,6 +1315,43 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     }
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
+QString ConfigFile::fileProviderDomainUuidFromAccountId(const QString &accountId) const
+{
+    if (accountId.isEmpty()) {
+        return {};
+    }
+    return retrieveData(QStringLiteral("FileProviderDomainUuids"), accountId).toString();
+}
+
+void ConfigFile::setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid)
+{
+    if (accountId.isEmpty() || domainUuid.isEmpty()) {
+        return;
+    }
+    storeData(QStringLiteral("FileProviderDomainUuids"), accountId, domainUuid);
+    storeData(QStringLiteral("FileProviderAccountIds"), domainUuid, accountId);
+}
+
+QString ConfigFile::accountIdFromFileProviderDomainUuid(const QString &domainUuid) const
+{
+    if (domainUuid.isEmpty()) {
+        return {};
+    }
+    return retrieveData(QStringLiteral("FileProviderAccountIds"), domainUuid).toString();
+}
+
+void ConfigFile::removeFileProviderDomainUuidMapping(const QString &accountId)
+{
+    if (accountId.isEmpty()) {
+        return;
+    }
+    const QString domainUuid = fileProviderDomainUuidFromAccountId(accountId);
+    if (!domainUuid.isEmpty()) {
+        removeData(QStringLiteral("FileProviderAccountIds"), domainUuid);
+    }
+    removeData(QStringLiteral("FileProviderDomainUuids"), accountId);
 }
 
 }

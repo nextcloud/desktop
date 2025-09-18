@@ -1,17 +1,7 @@
 /*
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef MIRALL_FOLDER_H
@@ -138,6 +128,13 @@ public:
     [[nodiscard]] QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
+     * Returns the display name used for the sidebar entry.
+     * If more than one account is configured the returned string includes
+     * account details as well.
+     */
+    [[nodiscard]] QString sidebarDisplayName() const;
+
+    /**
      * short local path to display on the GUI  (native separators)
      */
     [[nodiscard]] QString shortGuiLocalPath() const;
@@ -164,6 +161,14 @@ public:
      * remote folder path, always with a trailing /
      */
     [[nodiscard]] QString remotePathTrailingSlash() const;
+
+    /**
+     * Returns the path name of a file in the local canonical path.
+     *
+     * Similar to `QDir(path()).filePath(...)`, except file names like "Z:test"
+     * are treated as relative paths on Windows.
+     */
+    [[nodiscard]] QString filePath(const QString& fileName);
 
     [[nodiscard]] QString fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const;
 
@@ -335,10 +340,6 @@ public slots:
 
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(OCC::SyncFileItem::Direction, std::function<void(bool)> callback);
-
-    void slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
-                                                 const QString &localPath,
-                                                 std::function<void(bool)> callback);
 
     /**
       * Starts a sync operation

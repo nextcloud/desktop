@@ -1,21 +1,21 @@
-/*
- * Copyright (C) 2024 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- */
+// SPDX-FileCopyrightText: Nextcloud GmbH
+// SPDX-FileCopyrightText: 2024 Claudio Cambra
+// SPDX-FileCopyrightText: 2025 Iva Horn
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
 
-weak var globalTaskRef: Process?
-
+///
+/// Run a shell command.
+///
+/// - Parameters:
+///     - launchPath: The command to run.
+///     - args: Arguments to pass.
+///     - env: Environment variables to pass for this specific command.
+///     - quiet: Whether the standard and error output of the command should be printed or omitted.
+///
+/// - Returns: Exit code of the command.
+///
 @discardableResult
 func run(
     _ launchPath: String,
@@ -23,11 +23,14 @@ func run(
     env: [String: String]? = nil,
     quiet: Bool = false,
     task: Process = Process()
-) -> Int32 {
-    globalTaskRef = task
+) async -> Int32 {
+    await State.shared.register(task)
+
     signal(SIGINT) { _ in
-        globalTaskRef?.terminate()  // Send terminate signal to the task
-        exit(0)           // Exit the script after cleanup
+        Task {
+            await State.shared.terminate()
+            exit(0)
+        }
     }
 
     task.launchPath = launchPath
@@ -46,23 +49,48 @@ func run(
 
     task.launch()
     task.waitUntilExit()
+
     return task.terminationStatus
 }
 
+///
+/// Run a shell command.
+///
+/// - Parameters:
+///     - launchPath: The command to run.
+///     - args: Arguments to pass.
+///     - env: Environment variables to pass for this specific command.
+///     - quiet: Whether the standard and error output of the command should be printed or omitted.
+///
+/// - Returns: Exit code of the command.
+///
 func run(
     _ launchPath: String,
     _ args: String...,
     env: [String: String]? = nil,
     quiet: Bool = false
-) -> Int32 {
-    return run(launchPath, args, env: env, quiet: quiet)
+) async -> Int32 {
+    return await run(launchPath, args, env: env, quiet: quiet)
 }
 
+///
+/// Run multiple shell commands.
+///
+/// - Returns: Exit code of the command.
+///
 @discardableResult
-func shell(_ commands: String..., env: [String: String]? = nil, quiet: Bool = false) -> Int32 {
-    return run("/bin/zsh", ["-c"] + commands, env: env, quiet: quiet)
+func shell(_ commands: String..., env: [String: String]? = nil, quiet: Bool = false) async -> Int32 {
+    return await run("/bin/zsh", ["-c"] + commands, env: env, quiet: quiet)
 }
 
-func commandExists(_ command: String) -> Bool {
-    return run("/usr/bin/type", command, quiet: true) == 0
+///
+/// Check whether the given shell command is available in the shell.
+///
+/// - Parameters:
+///     - command: The command to check for availability.
+///
+/// - Returns: `true` in case of availability, otherwise `false`.
+///
+func commandExists(_ command: String) async -> Bool {
+    return await run("/usr/bin/type", command, quiet: true) == 0
 }

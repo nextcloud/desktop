@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
- *
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2016 ownCloud, Inc.
+ * SPDX-License-Identifier: CC0-1.0
+ * 
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <QtTest>
@@ -447,7 +450,7 @@ private slots:
         fakeFolder.remoteModifier().insert("B/b3");
         fakeFolder.remoteModifier().find("B/b3")->extraDavProperties = "<oc:share-types><oc:share-type>0</oc:share-type></oc:share-types>";
         fakeFolder.remoteModifier().find("A/a1")->isShared = true; // becomes shared
-        fakeFolder.remoteModifier().find("A", true); // change the etags of the parent
+        fakeFolder.remoteModifier().find("A", FileInfo::Invalidate); // change the etags of the parent
 
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 

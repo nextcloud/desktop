@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #include "ignorelisttablewidget.h"
 #include "ui_ignorelisttablewidget.h"
 
@@ -7,6 +12,11 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QMessageBox>
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#include "macOS/fileproviderxpc.h"
+#endif
 
 namespace OCC {
 
@@ -108,6 +118,10 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString &file)
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    Mac::FileProvider::instance()->xpc()->setIgnoreList();
+#endif
 }
 
 void IgnoreListTableWidget::slotAddPattern()

@@ -1,17 +1,9 @@
 /*
- *
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2011 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
+
 #include <QtGlobal>
 
 #include <cmath>
@@ -84,12 +76,17 @@ int main(int argc, char **argv)
 #if defined Q_OS_MAC
     qmlStyle = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
-    if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
+    if (const auto osVersion = QOperatingSystemVersion::current().version(); osVersion < QOperatingSystemVersion::Windows11.version()) {
         qmlStyle = QStringLiteral("Universal");
         widgetsStyle = QStringLiteral("Fusion");
         if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_UNIVERSAL_THEME")) {
             // initialise theme with the light/dark mode setting from the OS
             qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "System");
+        }
+
+        if (osVersion < QOperatingSystemVersion::Windows10_1809.version() && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
+            // for Windows Server 2016 to display text as expected, see #8064
+            qputenv("QT_QPA_PLATFORM", "windows:nodirectwrite");
         }
     } else {
         qmlStyle = QStringLiteral("FluentWinUI3");

@@ -1,15 +1,6 @@
 /*
- * Copyright 2021 (c) Matthieu Gallien <matthieu.gallien@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "putmultifilejob.h"
@@ -32,8 +23,6 @@ PutMultiFileJob::PutMultiFileJob(AccountPtr account,
 
     for(const auto &singleDevice : _devices) {
         singleDevice._device->setParent(this);
-        connect(this, &PutMultiFileJob::uploadProgress,
-                singleDevice._device.get(), &UploadDevice::slotJobUploadProgress);
     }
 }
 
@@ -56,7 +45,12 @@ void PutMultiFileJob::start()
         if (oneDevice._device->size() == 0) {
             onePart.setBody({});
         } else {
-            onePart.setBodyDevice(oneDevice._device.get());
+            const auto allData = oneDevice._device->readAll();
+            onePart.setBody(allData);
+        }
+
+        if (oneDevice._device->isOpen()) {
+            oneDevice._device->close();
         }
 
         for (auto it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
@@ -68,13 +62,17 @@ void PutMultiFileJob::start()
         _body.append(onePart);
     }
 
-    sendRequest("POST", _url, req, &_body);
+    const auto newReply = sendRequest("POST", _url, req, &_body);
+    const auto &requestID = newReply->request().rawHeader("X-Request-ID");
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcPutMultiFileJob) << " Network error: " << reply()->errorString();
     }
 
     connect(reply(), &QNetworkReply::uploadProgress, this, &PutMultiFileJob::uploadProgress);
+    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (qint64 bytesSent, qint64 bytesTotal) {
+        qCDebug(lcPutMultiFileJob()) << requestID << "upload progress" << bytesSent << bytesTotal;
+    });
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
     AbstractNetworkJob::start();
@@ -90,15 +88,12 @@ bool PutMultiFileJob::finished()
     for(const auto &oneDevice : _devices) {
         Q_ASSERT(oneDevice._device);
 
-        if (!oneDevice._device->errorString().isEmpty()) {
-            qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
-        }
-
         if (oneDevice._device->isOpen()) {
+            if (!oneDevice._device->errorString().isEmpty()) {
+                qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
+            }
+
             oneDevice._device->close();
-        } else {
-            qCWarning(lcPutMultiFileJob) << "Did not close device" << oneDevice._device.get()
-                                         << "as it was not open";
         }
     }
 

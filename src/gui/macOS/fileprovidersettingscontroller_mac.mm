@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "fileprovidersettingscontroller.h"
@@ -75,9 +66,14 @@ public:
     {
         QStringList qEnabledAccounts;
         NSArray<NSString *> *const enabledAccounts = nsEnabledAccounts();
+
         for (NSString *const userIdAtHostString in enabledAccounts) {
+            qCDebug(lcFileProviderSettingsController) << "Found VFS-enabled account in user defaults:"
+                                                      << userIdAtHostString;
+
             qEnabledAccounts.append(QString::fromNSString(userIdAtHostString));
         }
+
         return qEnabledAccounts;
     }
 
@@ -240,13 +236,15 @@ public slots:
 private slots:
     void updateDomainSyncStatuses()
     {
-        qCInfo(lcFileProviderSettingsController) << "Updating domain sync statuses";
+        qCInfo(lcFileProviderSettingsController) << "Updating file provider domain sync statuses.";
         _fileProviderDomainSyncStatuses.clear();
         const auto enabledAccounts = nsEnabledAccounts();
-        for (NSString *const domainIdentifier in enabledAccounts) {
-            const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
-            const auto syncStatus = new FileProviderDomainSyncStatus(qDomainIdentifier, q);
-            _fileProviderDomainSyncStatuses.insert(qDomainIdentifier, syncStatus);
+
+        for (NSString *const accountIdentifier in enabledAccounts) {
+            const auto qAccountIdentifier = QString::fromNSString(accountIdentifier);
+            const auto domainIdentifier = FileProviderUtils::domainIdentifierForAccountIdentifier(accountIdentifier);
+            const auto syncStatus = new FileProviderDomainSyncStatus(domainIdentifier, q);
+            _fileProviderDomainSyncStatuses.insert(qAccountIdentifier, syncStatus);
         }
     }
 
@@ -258,7 +256,7 @@ private:
 
     void fetchMaterialisedFilesStorageUsage()
     {
-        qCInfo(lcFileProviderSettingsController) << "Fetching materialised files storage usage";
+        qCInfo(lcFileProviderSettingsController) << "Fetching used storage space of materialized items.";
 
         [NSFileProviderManager getDomainsWithCompletionHandler: ^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
             if (error != nil) {
@@ -298,8 +296,8 @@ private:
     void initialCheck()
     {
         qCInfo(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
-
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+
         if (vfsEnabledAccounts != nil) {
             updateDomainSyncStatuses();
             connect(q, &FileProviderSettingsController::vfsEnabledAccountsChanged, this, &MacImplementation::updateDomainSyncStatuses);
@@ -367,50 +365,73 @@ bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdA
     return d->vfsEnabledForAccount(userIdAtHost);
 }
 
-void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog)
 {
     const auto enabledAccountsAction = d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
     if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
         emit vfsEnabledAccountsChanged();
+
+        if (setEnabled && showInformationDialog) {
+            QMessageBox::information(nullptr,
+                                     tr("macOS virtual files enabled"),
+                                     tr("Virtual files have been enabled for this account.\n"
+                                        "Files are accessible in Finder via an entry under the \"Locations\" section.\n"
+                                        "Please note that on macOS, virtual and classic sync folders are separate.\n"));
+        }
     }
 }
 
-bool FileProviderSettingsController::fastEnumerationSetForAccount(const QString &userIdAtHost) const
+bool FileProviderSettingsController::trashDeletionEnabledForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();
-    if (!xpc) {
-        return false;
-    }
-    if (const auto state = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
-        return state->second;
-    }
-    return false;
-}
 
-bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QString &userIdAtHost) const
-{
-    const auto xpc = FileProvider::instance()->xpc();
     if (!xpc) {
         return true;
     }
-    if (const auto fastEnumerationState = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
-        return fastEnumerationState->first;
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    if (const auto trashDeletionState = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
+        return trashDeletionState->first;
     }
+
     return true;
 }
 
-void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+bool FileProviderSettingsController::trashDeletionSetForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();
+
+    if (!xpc) {
+        return false;
+    }
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    if (const auto state = xpc->trashDeletionEnabledStateForFileProviderDomain(domainId)) {
+        return state->second;
+    }
+
+    return false;
+}
+
+void FileProviderSettingsController::setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    const auto xpc = FileProvider::instance()->xpc();
+
     if (!xpc) {
         // Reset state of UI elements
-        emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
-        emit fastEnumerationSetForAccountChanged(userIdAtHost);
+        emit trashDeletionEnabledForAccountChanged(userIdAtHost);
+        emit trashDeletionSetForAccountChanged(userIdAtHost);
         return;
     }
-    xpc->setFastEnumerationEnabledForExtension(userIdAtHost, setEnabled);
-    emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
-    emit fastEnumerationSetForAccountChanged(userIdAtHost);
+
+    const auto domainId = FileProviderUtils::domainIdentifierForAccountIdentifier(userIdAtHost);
+
+    xpc->setTrashDeletionEnabledForFileProviderDomain(domainId, setEnabled);
+
+    emit trashDeletionEnabledForAccountChanged(userIdAtHost);
+    emit trashDeletionSetForAccountChanged(userIdAtHost);
 }
 
 unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
@@ -503,12 +524,66 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
         qCWarning(lcFileProviderSettingsController) << "Could not create debug archive, FileProviderXPC is not available.";
         return;
     }
-    xpc->createDebugArchiveForExtension(userIdAtHost, filename);
+    xpc->createDebugArchiveForFileProviderDomain(userIdAtHost, filename);
 }
 
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
 {
     return d->domainSyncStatusForAccount(userIdAtHost);
+}
+
+void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtHost)
+{
+    qCInfo(lcFileProviderSettingsController) << "Resetting virtual files environment for account" << userIdAtHost;
+    setVfsEnabledForAccount(userIdAtHost, false);
+
+    const auto accountState = AccountManager::instance()->accountFromUserId(userIdAtHost);
+    if (!accountState) {
+        qCWarning(lcFileProviderSettingsController) << "Could not find account for userIdAtHost" << userIdAtHost
+                                                    << "to reset VFS environment.";
+        return;
+    }
+    const auto splitUserId = userIdAtHost.split('@');
+    if (splitUserId.size() != 2) {
+        qCWarning(lcFileProviderSettingsController) << "Invalid userIdAtHost format" << userIdAtHost
+                                                    << "Expected format: userId@host";
+        return;
+    }
+    const auto accUserId = splitUserId.at(0);
+    const auto accHost = splitUserId.at(1);
+
+    // Delete the database in the group container
+    const auto groupContainerPath = FileProviderUtils::groupContainerPath();
+    if (groupContainerPath.isEmpty()) {
+        qCWarning(lcFileProviderSettingsController) << "Could not determine group container path, cannot reset VFS.";
+        return;
+    }
+    const auto dbsPath = QDir::cleanPath(groupContainerPath + "/FileProviderExt/Database");
+    qCInfo(lcFileProviderSettingsController) << "Resetting VFS for account" << userIdAtHost
+                                             << "by deleting database files in" << dbsPath;
+    const auto databases = QDir(dbsPath).entryList(QDir::Files);
+    for (const auto &dbFile : databases) {
+        // Format of db file names is "userId_cloud_nc_com-fileproviderextdatabase.realm"
+        const auto splitDbName = dbFile.split('-');
+        const auto address = splitDbName.at(0).split('_').mid(1).join('.');
+        const auto userId = splitDbName.at(0).split('_').first();
+
+        if (userId != accUserId || address != accHost) {
+            qCInfo(lcFileProviderSettingsController) << "Skipping database file" << dbFile
+                                                     << "for userId" << userId
+                                                     << "and host" << address
+                                                     << "as it does not match the account we are resetting.";
+            continue; // Not the database we are looking for
+        }
+        
+        const auto dbPath = QDir(dbsPath).filePath(dbFile);
+        qCInfo(lcFileProviderSettingsController) << "Deleting database file" << dbPath;
+        if (QFile::exists(dbPath)) {
+            QFile::remove(dbPath);
+        }
+    }
+
+    setVfsEnabledForAccount(userIdAtHost, true);
 }
 
 } // namespace Mac

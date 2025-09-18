@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 #include "clientstatusreportingdatabase.h"
 
@@ -37,7 +28,7 @@ ClientStatusReportingDatabase::ClientStatusReportingDatabase(const Account *acco
     _database.setDatabaseName(dbPath);
 
     if (!_database.open()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not setup client reporting, database connection error.";
+        qCWarning(lcClientStatusReportingDatabase) << "Could not setup client reporting, database connection error.";
         return;
     }
 
@@ -49,12 +40,12 @@ ClientStatusReportingDatabase::ClientStatusReportingDatabase(const Account *acco
                                      "count INTEGER,"
                                      "lastOccurrence INTEGER(8))"));
     if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not setup client clientstatusreporting table:" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could not setup client clientstatusreporting table:" << query.lastError().text();
         return;
     }
 
     if (!query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS keyvalue(key VARCHAR(4096), value VARCHAR(4096), PRIMARY KEY(key))")) || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not setup client keyvalue table:" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could not setup client keyvalue table:" << query.lastError().text();
         return;
     }
 
@@ -80,7 +71,7 @@ QVector<ClientStatusReportingRecord> ClientStatusReportingDatabase::getClientSta
 
     QSqlQuery query;
     if (!query.prepare(QStringLiteral("SELECT * FROM clientstatusreporting")) || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not get records from clientstatusreporting:" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could not get records from clientstatusreporting:" << query.lastError().text();
         return records;
     }
 
@@ -100,7 +91,7 @@ Result<void, QString> ClientStatusReportingDatabase::deleteClientStatusReporting
     QSqlQuery query;
     if (!query.prepare(QStringLiteral("DELETE FROM clientstatusreporting")) || !query.exec()) {
         const auto errorMessage = query.lastError().text();
-        qCDebug(lcClientStatusReportingDatabase) << "Could not delete records from clientstatusreporting:" << errorMessage;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not delete records from clientstatusreporting:" << errorMessage;
         return errorMessage;
     }
     return {};
@@ -110,7 +101,7 @@ Result<void, QString> ClientStatusReportingDatabase::setClientStatusReportingRec
 {
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Failed to set ClientStatusReportingRecord";
+        qCWarning(lcClientStatusReportingDatabase) << "Failed to set ClientStatusReportingRecord";
         return {QStringLiteral("Invalid parameter")};
     }
 
@@ -130,7 +121,7 @@ Result<void, QString> ClientStatusReportingDatabase::setClientStatusReportingRec
 
     if (!prepareResult || !query.exec()) {
         const auto errorMessage = query.lastError().text();
-        qCDebug(lcClientStatusReportingDatabase) << "Could not report client status:" << errorMessage;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not report client status:" << errorMessage;
         return errorMessage;
     }
 
@@ -178,7 +169,7 @@ QVector<QByteArray> ClientStatusReportingDatabase::getTableColumns(const QString
     QSqlQuery query;
     const auto prepareResult = query.prepare(QStringLiteral("PRAGMA table_info('%1');").arg(table));
     if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could get table columns" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could get table columns" << query.lastError().text();
         return columns;
     }
     while (query.next()) {
@@ -195,14 +186,14 @@ bool ClientStatusReportingDatabase::addColumn(const QString &tableName, const QS
         QSqlQuery query;
         const auto prepareResult = query.prepare(QStringLiteral("ALTER TABLE %1 ADD COLUMN %2 %3;").arg(tableName, columnName, dataType));
         if (!prepareResult || !query.exec()) {
-            qCDebug(lcClientStatusReportingDatabase) << QStringLiteral("Failed to update table %1 structure: add %2 column").arg(tableName, columnName) << query.lastError().text();
+            qCWarning(lcClientStatusReportingDatabase) << QStringLiteral("Failed to update table %1 structure: add %2 column").arg(tableName, columnName) << query.lastError().text();
             return false;
         }
 
         if (withIndex) {
             const auto prepareResult = query.prepare(QStringLiteral("CREATE INDEX %1_%2 ON %1(%2);").arg(tableName, columnName));
             if (!prepareResult || !query.exec()) {
-                qCDebug(lcClientStatusReportingDatabase) << QStringLiteral("Failed to update table %1 structure: create index %2 column").arg(tableName, columnName) << query.lastError().text();
+                qCWarning(lcClientStatusReportingDatabase) << QStringLiteral("Failed to update table %1 structure: create index %2 column").arg(tableName, columnName) << query.lastError().text();
                 return false;
             }
         }
@@ -217,11 +208,11 @@ quint64 ClientStatusReportingDatabase::getLastSentReportTimestamp() const
     const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
     query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
         return 0;
     }
     if (!query.next()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
         return 0;
     }
     return query.value(query.record().indexOf(QStringLiteral("value"))).toULongLong();
@@ -236,7 +227,7 @@ Result<void, QString> ClientStatusReportingDatabase::setStatusNamesHash(const QB
     query.bindValue(QStringLiteral(":value"), hash);
     if (!prepareResult || !query.exec()) {
         const auto errorMessage = query.lastError().text();
-        qCDebug(lcClientStatusReportingDatabase) << "Could not set status names hash." << errorMessage;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not set status names hash." << errorMessage;
         return errorMessage;
     }
     return {};
@@ -249,11 +240,11 @@ QByteArray ClientStatusReportingDatabase::getStatusNamesHash() const
     const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
     query.bindValue(QStringLiteral(":key"), statusNamesHash);
     if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not get status names hash. No such record:" << statusNamesHash;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not get status names hash. No such record:" << statusNamesHash;
         return {};
     }
     if (!query.next()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not get status names hash:" << query.lastError().text();
+        qCWarning(lcClientStatusReportingDatabase) << "Could not get status names hash:" << query.lastError().text();
         return {};
     }
     return query.value(query.record().indexOf(QStringLiteral("value"))).toByteArray();
@@ -272,7 +263,7 @@ void ClientStatusReportingDatabase::setLastSentReportTimestamp(const quint64 tim
     query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     query.bindValue(QStringLiteral(":value"), timestamp);
     if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReportingDatabase) << "Could not set last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
+        qCWarning(lcClientStatusReportingDatabase) << "Could not set last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
         return;
     }
 }

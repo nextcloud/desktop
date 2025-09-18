@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "folderwizard.h"
@@ -151,7 +143,8 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 
     QString dir = QFileDialog::getExistingDirectory(this,
         tr("Select the source folder"),
-        sf);
+        sf,
+        QFileDialog::ShowDirsOnly);
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
@@ -507,7 +500,9 @@ bool FolderWizardRemotePath::isComplete() const
         }
 
         if (targetPath.startsWith(remoteDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
+            _ui.warnFrame->show();
+            _ui.warnLabel->hide();
+            _ui.infoLabel->setText(tr("You are already syncing the subfolder %1 at %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
             break;
         }
 
@@ -538,6 +533,7 @@ void FolderWizardRemotePath::showWarn(const QString &msg) const
 
     } else {
         _ui.warnFrame->show();
+        _ui.infoLabel->hide();
         _ui.warnLabel->setText(msg);
     }
 }

@@ -1,21 +1,13 @@
 /*
- * Copyright (C) by Matthieu Gallien <matthieu.gallien@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "lockfilejobs.h"
 
 #include "account.h"
 #include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
 
 #include <QLoggingCategory>
@@ -49,7 +41,16 @@ LockFileJob::LockFileJob(const AccountPtr account,
 
 void LockFileJob::start()
 {
-    qCInfo(lcLockFileJob()) << "start with path:" << path()
+    auto remotePath = path();
+
+    SyncJournalFileRecord record;
+    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
+    if (_journal->getFileRecord(relativePathInDb, &record) && record.isValid() && record.isE2eEncrypted()) {
+        remotePath = _remoteSyncPathWithTrailingSlash + record.e2eMangledName();
+        qCDebug(lcLockFileJob).nospace() << "will (un)lock e2ee file path=" << path() << " remotePath=" << remotePath;
+    }
+
+    qCInfo(lcLockFileJob()) << "start with path:" << remotePath
                             << "lock state:" <<  _requestedLockState
                             << "lock owner type:" << _requestedLockOwnerType;
 
@@ -77,7 +78,7 @@ void LockFileJob::start()
         verb = "UNLOCK";
         break;
     }
-    sendRequest(verb, makeDavUrl(path()), request);
+    sendRequest(verb, makeDavUrl(remotePath), request);
 
     AbstractNetworkJob::start();
 }

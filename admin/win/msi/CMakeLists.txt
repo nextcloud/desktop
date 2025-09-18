@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
 if(CMAKE_SIZEOF_VOID_P MATCHES 4)
     set(MSI_BUILD_ARCH x86)
 else()
@@ -25,6 +27,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/OEM.wxi
         ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
+        EnsureACL.js
         Platform.wxi
         Nextcloud.wxs
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs

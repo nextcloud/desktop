@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Christian Kamm <mail@ckamm.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2018 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 #pragma once
 
@@ -22,6 +14,7 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
+#include <deque>
 #include <memory>
 
 using csync_file_stat_t = struct csync_file_stat_s;
@@ -33,6 +26,7 @@ using AccountPtr = QSharedPointer<Account>;
 class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
+using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
@@ -187,28 +181,31 @@ public:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    [[nodiscard]] virtual Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+    [[nodiscard]] virtual OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile) = 0;
 
     [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) = 0;
 
     [[nodiscard]] virtual bool isPlaceHolderInSync(const QString &filePath) const = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    Q_REQUIRED_RESULT virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
+    [[nodiscard]] virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
+
+    /// Create a new dehydrated list of placeholders
+    [[nodiscard]] virtual Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &items) = 0;
 
     /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
      *
      * This is different from delete+create because preserving some file metadata
      * (like pin states) may be essential for some vfs plugins.
      */
-    Q_REQUIRED_RESULT virtual Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
+    [[nodiscard]] virtual Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
 
     /** Discovery hook: even unchanged files may need UPDATE_METADATA.
      *
      * For instance cfapi vfs wants local hydrated non-placeholder files to
      * become hydrated placeholder files.
      */
-    Q_REQUIRED_RESULT virtual bool needsMetadataUpdate(const SyncFileItem &item) = 0;
+    [[nodiscard]] virtual bool needsMetadataUpdate(const SyncFileItem &item) = 0;
 
     /** Convert a new file to a hydrated placeholder.
      *
@@ -223,13 +220,13 @@ public:
      * new placeholder shall supersede, for rename-replace actions with new downloads,
      * for example.
      */
-    Q_REQUIRED_RESULT virtual Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename,
+    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename,
                                                                                                     const SyncFileItem &item,
                                                                                                     const QString &replacesFile = {},
                                                                                                     UpdateMetadataTypes updateType = AllMetadata) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
-    Q_REQUIRED_RESULT virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
+    [[nodiscard]] virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
 
     /** Similar to isDehydratedPlaceholder() but used from sync discovery.
      *
@@ -238,7 +235,7 @@ public:
      *
      * Returning true means that type was fully determined.
      */
-    Q_REQUIRED_RESULT virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
+    [[nodiscard]] virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
 
     /** Sets the pin state for the item at a path.
      *
@@ -249,7 +246,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    Q_REQUIRED_RESULT virtual bool setPinState(const QString &folderPath, PinState state) = 0;
+    [[nodiscard]] virtual bool setPinState(const QString &folderPath, PinState state) = 0;
 
     /** Returns the pin state of an item at a path.
      *
@@ -260,7 +257,7 @@ public:
      *
      * Returns none on retrieval error.
      */
-    Q_REQUIRED_RESULT virtual Optional<PinState> pinState(const QString &folderPath) = 0;
+    [[nodiscard]] virtual Optional<PinState> pinState(const QString &folderPath) = 0;
 
     /** Returns availability status of an item at a path.
      *
@@ -269,7 +266,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    Q_REQUIRED_RESULT virtual AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) = 0;
+    [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
@@ -328,10 +325,13 @@ public:
     [[nodiscard]] bool socketApiPinStateActionsShown() const override { return false; }
     [[nodiscard]] bool isHydrating() const override { return false; }
 
-    Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
+    OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return {OCC::Vfs::ConvertToPlaceholderResult::Ok}; }
     Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
+
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
+    Result<void, QString> createPlaceholders(const QList<SyncFileItemPtr> &) override { return {}; }
+
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
     Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, const UpdateMetadataTypes) override { return ConvertToPlaceholderResult::Ok; }
 

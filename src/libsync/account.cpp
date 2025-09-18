@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "account.h"
@@ -146,8 +138,13 @@ void Account::setDavUser(const QString &newDavUser)
 
     _davUser = newDavUser;
 
-    emit wantsAccountSaved(this);
+    emit wantsAccountSaved(sharedFromThis());
     emit prettyNameChanged();
+}
+
+QString Account::userFromCredentials() const
+{
+    return _credentials ? _credentials->user() : QString{};
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -177,6 +174,21 @@ QString Account::displayName() const
     }
 
     return displayName;
+}
+
+QString Account::shortcutName() const
+{
+    auto url_part = _url.host();
+    const auto port = url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        url_part.append(QLatin1Char(':'));
+        url_part.append(QString::number(port));
+    }
+
+    auto shortcutName = QStringLiteral("%1 - %2").arg(url_part, prettyName());
+
+
+    return shortcutName;
 }
 
 QString Account::userIdAtHostWithPort() const
@@ -332,7 +344,7 @@ void Account::trySetupPushNotifications()
 
             connect(_pushNotifications, &PushNotifications::ready, this, [this]() {
                 _pushNotificationsReconnectTimer.stop();
-                emit pushNotificationsReady(this);
+                emit pushNotificationsReady(sharedFromThis());
             });
 
             const auto disablePushNotifications = [this]() {
@@ -341,7 +353,7 @@ void Account::trySetupPushNotifications()
                     return;
                 }
                 if (!_pushNotifications->isReady()) {
-                    emit pushNotificationsDisabled(this);
+                    emit pushNotificationsDisabled(sharedFromThis());
                 }
                 if (!_pushNotificationsReconnectTimer.isActive()) {
                     _pushNotificationsReconnectTimer.start();
@@ -625,7 +637,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
         if (!approvedCerts.isEmpty()) {
             QSslConfiguration::defaultConfiguration().addCaCertificates(approvedCerts);
             addApprovedCerts(approvedCerts);
-            emit wantsAccountSaved(this);
+            emit wantsAccountSaved(sharedFromThis());
 
             // all ssl certs are known and accepted. We can ignore the problems right away.
             qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
@@ -753,7 +765,7 @@ bool Account::shouldSkipE2eeMetadataChecksumValidation() const
 void Account::resetShouldSkipE2eeMetadataChecksumValidation()
 {
     _skipE2eeMetadataChecksumValidation = false;
-    emit wantsAccountSaved(this);
+    emit wantsAccountSaved(sharedFromThis());
 }
 
 int Account::serverVersionInt() const
@@ -812,6 +824,11 @@ int Account::checksumRecalculateServerVersionMinSupportedMajor() const
     return checksumRecalculateRequestServerVersionMinSupportedMajor;
 }
 
+bool Account::bulkUploadNeedsLegacyChecksumHeader() const
+{
+    return serverVersionInt() < makeServerVersion(32, 0, 0);
+}
+
 void Account::setServerVersion(const QString &version)
 {
     if (version == _serverVersion) {
@@ -820,7 +837,7 @@ void Account::setServerVersion(const QString &version)
 
     auto oldServerVersion = _serverVersion;
     _serverVersion = version;
-    emit serverVersionChanged(this, oldServerVersion, version);
+    emit serverVersionChanged(sharedFromThis(), oldServerVersion, version);
 }
 
 void Account::writeAppPasswordOnce(QString appPassword){
@@ -1055,19 +1072,19 @@ bool Account::fileCanBeUnlocked(SyncJournalDb * const journal,
     SyncJournalFileRecord record;
     if (journal->getFileRecord(folderRelativePath, &record)) {
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::AppLock)) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: app lock";
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: app lock";
             return false;
         }
 
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::UserLock) &&
             record._lockstate._lockOwnerId != sharedFromThis()->davUser()) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: user lock from" << record._lockstate._lockOwnerId;
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: user lock from" << record._lockstate._lockOwnerId;
             return false;
         }
 
         if (record._lockstate._lockOwnerType == static_cast<int>(SyncFileItem::LockOwnerType::TokenLock) &&
             record._lockstate._lockToken.isEmpty()) {
-            qCDebug(lcAccount()) << folderRelativePath << "cannot be unlocked: token lock without known token";
+            qCWarning(lcAccount()) << folderRelativePath << "cannot be unlocked: token lock without known token";
             return false;
         }
 
@@ -1133,7 +1150,7 @@ void Account::setEncryptionCertificateFingerprint(const QByteArray &fingerprint)
     _encryptionCertificateFingerprint = fingerprint;
     _e2e.usbTokenInformation()->setSha256Fingerprint(fingerprint);
     Q_EMIT encryptionCertificateFingerprintChanged();
-    Q_EMIT wantsAccountSaved(this);
+    Q_EMIT wantsAccountSaved(sharedFromThis());
 }
 
 void Account::setAskUserForMnemonic(const bool ask)
@@ -1173,38 +1190,6 @@ void Account::updateDesktopEnterpriseChannel()
     }
 }
 
-Account::AccountNetworkProxySetting Account::networkProxySetting() const
-{
-    return _networkProxySetting;
-}
-
-void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
-{
-    if (setting == _networkProxySetting) {
-        return;
-    }
-
-    _networkProxySetting = setting;
-    if (setting == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setType(proxyType());
-        proxy.setHostName(proxyHostName());
-        proxy.setPort(proxyPort());
-        proxy.setUser(proxyUser());
-        proxy.setPassword(proxyPassword());
-        _networkAccessManager->setProxy(proxy);
-    } else {
-        const auto proxy = QNetworkProxy::applicationProxy();
-        _networkAccessManager->setProxy(proxy);
-        setProxyType(proxy.type());
-        setProxyHostName(proxy.hostName());
-        setProxyPort(proxy.port());
-        setProxyUser(proxy.user());
-        setProxyPassword(proxy.password());
-    }
-    emit networkProxySettingChanged();
-}
-
 QNetworkProxy::ProxyType Account::proxyType() const
 {
     return _proxyType;
@@ -1218,11 +1203,13 @@ void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
 
     _proxyType = proxyType;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setType(proxyType);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setType(proxyType);
+    proxy.setHostName(proxyHostName());
+    proxy.setPort(proxyPort());
+    proxy.setUser(proxyUser());
+    proxy.setPassword(proxyPassword());
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyTypeChanged();
 }
@@ -1240,11 +1227,9 @@ void Account::setProxyHostName(const QString &hostName)
 
     _proxyHostName = hostName;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setHostName(hostName);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setHostName(hostName);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyHostNameChanged();
 }
@@ -1262,11 +1247,9 @@ void Account::setProxyPort(const int port)
 
     _proxyPort = port;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setPort(port);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setPort(port);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyPortChanged();
 }
@@ -1299,11 +1282,9 @@ void Account::setProxyUser(const QString &user)
 
     _proxyUser = user;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setUser(user);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setUser(user);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyUserChanged();
 }
@@ -1321,35 +1302,26 @@ void Account::setProxyPassword(const QString &password)
 
     _proxyPassword = password;
 
-    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
-        auto proxy = _networkAccessManager->proxy();
-        proxy.setPassword(password);
-        _networkAccessManager->setProxy(proxy);
-    }
+    auto proxy = _networkAccessManager->proxy();
+    proxy.setPassword(password);
+    _networkAccessManager->setProxy(proxy);
 
     emit proxyPasswordChanged();
 }
 
-void Account::setProxySettings(const AccountNetworkProxySetting networkProxySetting,
-                               const QNetworkProxy::ProxyType proxyType,
+void Account::setProxySettings(const QNetworkProxy::ProxyType proxyType,
                                const QString &hostName,
                                const int port,
                                const bool needsAuth,
                                const QString &user,
                                const QString &password)
 {
-    if (networkProxySetting == AccountNetworkProxySetting::GlobalProxy) {
-        setNetworkProxySetting(networkProxySetting);
-        return;
-    }
-
     setProxyType(proxyType);
     setProxyHostName(hostName);
     setProxyPort(port);
     setProxyNeedsAuth(needsAuth);
     setProxyUser(user);
     setProxyPassword(password);
-    setNetworkProxySetting(networkProxySetting);
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const

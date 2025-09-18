@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -54,6 +46,26 @@ class ProcessDirectoryJob;
 enum class ErrorCategory;
 
 /**
+ * Represent the quota for each folder retrieved from the server
+ * bytesUsed: space used in bytes
+ * bytesAvailale: free space available in bytes or
+ *                -1: Uncomputed free space - new folder (externally created) not yet scanned by the server
+ *                -2: Unknown free space
+ *                -3: Unlimited free space.
+ */
+struct FolderQuota
+{
+    int64_t bytesUsed = -1;
+    int64_t bytesAvailable = -1;
+    enum ServerEntry {
+        Invalid = 0,
+        Valid
+    };
+    static constexpr char availableBytesC[] = "quota-available-bytes";
+    static constexpr char usedBytesC[] = "quota-used-bytes";
+};
+
+/**
  * Represent all the meta-data about a file in the server
  */
 struct RemoteInfo
@@ -71,7 +83,6 @@ struct RemoteInfo
     bool _isE2eEncrypted = false;
     bool isFileDropDetected = false;
     QString e2eMangledName;
-    QByteArray e2eCertificateFingerprint;
     bool sharedByMe = false;
 
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
@@ -91,6 +102,8 @@ struct RemoteInfo
 
     bool isLivePhoto = false;
     QString livePhotoFile;
+
+    FolderQuota folderQuota;
 };
 
 struct LocalInfo
@@ -156,6 +169,7 @@ public:
         sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
         inside*/
                                          const QSet<QString> &topLevelE2eeFolderPaths,
+                                         SyncFileItem::EncryptionStatus parentEncryptionStatus,
                                          QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
@@ -163,7 +177,6 @@ public:
     void abort();
     [[nodiscard]] bool isFileDropDetected() const;
     [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
-    [[nodiscard]] QByteArray certificateSha256Fingerprint() const;
     [[nodiscard]] SyncFileItem::EncryptionStatus currentEncryptionStatus() const;
     [[nodiscard]] SyncFileItem::EncryptionStatus requiredEncryptionStatus() const;
 
@@ -172,11 +185,12 @@ signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
+    void setfolderQuota(const FolderQuota &folderQuota);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
-    void lsJobFinishedWithErrorSlot(QNetworkReply *);
+    void lsJobFinishedWithErrorSlot(QNetworkReply *reply);
     void fetchE2eMetadata();
     void metadataReceived(const QJsonDocument &json, int statusCode);
     void metadataError(const QByteArray& fileId, int httpReturnCode);
@@ -204,7 +218,6 @@ private:
     bool _isFileDropDetected = false;
     bool _encryptedMetadataNeedUpdate = false;
     SyncFileItem::EncryptionStatus _encryptionStatusRequired = SyncFileItem::EncryptionStatus::NotEncrypted;
-    QByteArray _e2eCertificateFingerprint;
 
     // If set, the discovery will finish with an error
     int64_t _size = 0;
@@ -216,6 +229,7 @@ private:
 
 public:
     QByteArray _dataFingerprint;
+    FolderQuota _folderQuota;
 };
 
 class DiscoveryPhase : public QObject

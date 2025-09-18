@@ -1,20 +1,13 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2018 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
 
 #include <QObject>
+#include <cstdint>
 #include "csync_exclude.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
@@ -304,9 +297,17 @@ private:
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
     bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
 
+    FolderQuota _folderQuota;
+
+    int64_t folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const;
+
 signals:
     void finished();
     // The root etag of this directory was fetched
     void etag(const QByteArray &, const QDateTime &time);
+    void updatedRootFolderQuota(const int64_t &bytesUsed, const int64_t &bytesAvailable);
+
+private slots:
+    void setFolderQuota(const FolderQuota &folderQuota);
 };
 }

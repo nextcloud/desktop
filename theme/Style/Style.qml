@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+// SPDX-License-Identifier: GPL-2.0-or-later
 pragma Singleton
 
 import QtQuick
@@ -59,6 +61,7 @@ QtObject {
     property int standardSpacing: trayHorizontalMargin
     property int smallSpacing: 5
     property int extraSmallSpacing: 2
+    property int extraExtraSmallSpacing: 1
 
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40
@@ -67,6 +70,8 @@ QtObject {
 
     property int minActivityHeight: variableSize(32)
 
+    property int minimumScrollBarWidth: 12
+    property real minimumScrollBarThumbSize: 0
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
     property int currentAccountLabelWidth: 128
@@ -121,7 +126,8 @@ QtObject {
     property int userLineSpacing: smallSpacing
     property int accountServerAnchorsMargin: 10
     property int accountLabelsSpacing: 4
-    property int accountLabelsAnchorsMargin: 7
+    property int accountsServerMargin: 6
+    property int accountLabelsAnchorsMargin: 5
     property int accountLabelsLayoutMargin: 12
     property int accountLabelsLayoutTopMargin: 10
 

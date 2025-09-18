@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
 macro(dbus_add_activation_service _sources)
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.28.0") 
     pkg_get_variable(_install_dir dbus-1 session_bus_services_dir DEFINE_VARIABLES datadir=${CMAKE_INSTALL_DATADIR})

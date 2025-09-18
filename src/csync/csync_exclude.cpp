@@ -1,21 +1,10 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2012 ownCloud GmbH
+ * SPDX-FileCopyrightText: 2008-2013 Andreas Schneider <asn@cryptomilk.org>
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #include "config_csync.h"
@@ -268,6 +257,11 @@ void ExcludedFiles::addManualExclude(const QString &expr, const QString &basePat
 {
     Q_ASSERT(basePath.endsWith(QLatin1Char('/')));
 
+    const auto trimmedExpr = QStringView{expr}.trimmed();
+    if (trimmedExpr == QLatin1String("*")) {
+        return;
+    }
+
     auto key = basePath;
     _manualExcludes[key].append(expr);
     _allExcludes[key].append(expr);
@@ -302,6 +296,10 @@ void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file
         }
         if (line.isEmpty() || line.startsWith('#'))
             continue;
+        const auto patternStr = QString::fromUtf8(line);
+        if (QStringView{patternStr}.trimmed() == QLatin1StringView("*")) {
+            continue;
+        }
         csync_exclude_expand_escapes(line);
         patterns.append(QString::fromUtf8(line));
     }
@@ -871,4 +869,16 @@ void ExcludedFiles::prepare(const BasePathString & basePath)
     _fullRegexFile[basePath].optimize();
     _fullRegexDir[basePath].setPatternOptions(patternOptions);
     _fullRegexDir[basePath].optimize();
+}
+
+QStringList ExcludedFiles::activeExcludePatterns() const
+{
+    QSet<QString> patternSet;
+    const auto pathWiseExcludes = _allExcludes.values();
+    for (const auto &excludes : pathWiseExcludes) {
+        for (const auto &exclude : excludes) {
+            patternSet.insert(exclude);
+        }
+    }
+    return patternSet.values();
 }

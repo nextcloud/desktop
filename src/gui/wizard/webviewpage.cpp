@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #include "webviewpage.h"
 
 #include <QWebEngineUrlRequestJob>
@@ -89,16 +94,6 @@ void WebViewPage::cleanupPage()
 {
     _ocWizard->resize(_originalWizardSize);
     _ocWizard->centerWindow();
-}
-
-int WebViewPage::nextId() const {
-    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
-    if (ocWizard->needsToAcceptTermsOfService()) {
-        return WizardCommon::Page_TermsOfService;
-    }
-
-    return WizardCommon::Page_AdvancedSetup;
 }
 
 bool WebViewPage::isComplete() const {

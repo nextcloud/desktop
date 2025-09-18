@@ -1,4 +1,7 @@
-# (c) 2014 Copyright ownCloud GmbH
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-FileCopyrightText: 2004-2006 Jan Woetzel  <www.mip.informatik.uni-kiel.de/~jw>
+# SPDX-License-Identifier: BSD-3-Clause
+#
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 

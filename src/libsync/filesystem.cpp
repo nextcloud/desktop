@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "filesystem.h"
@@ -196,10 +188,7 @@ time_t FileSystem::getModTime(const QString &filename)
 
 bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
-    struct timeval times[2];
-    times[0].tv_sec = times[1].tv_sec = modTime;
-    times[0].tv_usec = times[1].tv_usec = 0;
-    int rc = c_utimes(filename, times);
+    int rc = c_utimes(filename, modTime);
     if (rc != 0) {
         qCWarning(lcFileSystem) << "Error setting mtime for" << filename
                                 << "failed: rc" << rc << ", errno:" << errno;
@@ -257,8 +246,14 @@ qint64 FileSystem::getSize(const QString &filename)
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
-bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
+bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors, const std::function<void(const QString &path, bool isDir)> &onError)
 {
+    if (!FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite)) {
+        if (onError) {
+            onError(path, true);
+        }
+    }
+
     bool allRemoved = true;
     QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
 
@@ -270,16 +265,15 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         // we never want to go into this branch for .lnk files
         bool isDir = FileSystem::isDir(fi.absoluteFilePath()) && !FileSystem::isSymLink(fi.absoluteFilePath()) && !FileSystem::isJunction(fi.absoluteFilePath());
         if (isDir) {
-            removeOk = removeRecursively(path + QLatin1Char('/') + di.fileName(), onDeleted, errors); // recursive
+            removeOk = removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError); // recursive
         } else {
             QString removeError;
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             const auto fileInfo = QFileInfo{di.filePath()};
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-#endif
             removeOk = FileSystem::remove(di.filePath(), &removeError);
+            qCInfo(lcFileSystem()) << "delete" << di.filePath();
             if (removeOk) {
                 if (onDeleted)
                     onDeleted(di.filePath(), false);
@@ -288,6 +282,9 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
                     errors->append(QCoreApplication::translate("FileSystem", "Error removing \"%1\": %2")
                                        .arg(QDir::toNativeSeparators(di.filePath()), removeError));
                 }
+                if (onError) {
+                    onError(di.filePath(), false);
+                }
                 qCWarning(lcFileSystem) << "Error removing " << di.filePath() << ':' << removeError;
             }
         }
@@ -295,13 +292,31 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
             allRemoved = false;
     }
     if (allRemoved) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         const auto fileInfo = QFileInfo{path};
         const auto parentFolderPath = fileInfo.dir().absolutePath();
         const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
         FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite);
-#endif
-        allRemoved = QDir().rmdir(path);
+        auto folderDeleteError = QString{};
+
+        try {
+            if (!std::filesystem::remove(std::filesystem::path{fileInfo.filePath().toStdWString()})) {
+                qCWarning(lcFileSystem()) << "File is already deleted" << fileInfo.filePath();
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            folderDeleteError = QString::fromLatin1(e.what());
+            qCWarning(lcFileSystem()) << e.what() << fileInfo.filePath();
+            allRemoved = false;
+        }
+        catch (...)
+        {
+            folderDeleteError = QObject::tr("Error deleting the file");
+            qCWarning(lcFileSystem()) << "Error deleting the file" << fileInfo.filePath();
+            allRemoved = false;
+        }
+
+        qCInfo(lcFileSystem()) << "delete" << path;
         if (allRemoved) {
             if (onDeleted)
                 onDeleted(path, true);
@@ -310,7 +325,10 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
                 errors->append(QCoreApplication::translate("FileSystem", "Could not remove folder \"%1\"")
                                    .arg(QDir::toNativeSeparators(path)));
             }
-            qCWarning(lcFileSystem) << "Error removing folder" << path;
+            if (onError) {
+                onError(di.filePath(), false);
+            }
+            qCWarning(lcFileSystem) << "Error removing folder" << path << folderDeleteError;
         }
     }
     return allRemoved;
@@ -326,20 +344,62 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
     return false;
 }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 bool FileSystem::setFolderPermissions(const QString &path,
-                                      FileSystem::FolderPermissions permissions) noexcept
+                                      FileSystem::FolderPermissions permissions,
+                                      bool * const permissionsChanged) noexcept
 {
-    static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+    bool permissionsDidChange = false;
+
+    if (permissionsChanged) {
+        *permissionsChanged = false;
+    }
+
+#ifdef Q_OS_WIN
+    // current read-only folder ACL needs to be removed from files also when making a folder read-write
+    // we currently have a too limited set of authorization for files when applying the restrictive ACL for folders on the child files
+    setFileReadOnly(path, permissions == FileSystem::FolderPermissions::ReadOnly);
+    setAclPermission(path, permissions, permissions == FileSystem::FolderPermissions::ReadWrite ? true : false);
+
+    permissionsDidChange = true;
+#else
     const auto stdStrPath = path.toStdWString();
+
     try
     {
+        static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+
+        const auto currentPermissions = std::filesystem::status(stdStrPath).permissions();
+        qCDebug(lcFileSystem()).nospace() << "current permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(currentPermissions);
+
         switch (permissions) {
-        case OCC::FileSystem::FolderPermissions::ReadOnly:
-            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
+        case OCC::FileSystem::FolderPermissions::ReadOnly: {
+            qCDebug(lcFileSystem()).nospace() << "ensuring folder is read only path=" << path;
+
+            if ((currentPermissions & writePerms) != std::filesystem::perms::none) {
+                qCDebug(lcFileSystem()).nospace() << "removing owner/group/others write permissions path=" << path;
+                std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
+                permissionsDidChange = true;
+            }
+
             break;
-        case OCC::FileSystem::FolderPermissions::ReadWrite:
+        }
+        case OCC::FileSystem::FolderPermissions::ReadWrite: {
+            qCDebug(lcFileSystem()).nospace() << "ensuring folder is read/writable path=" << path;
+
+            if ((currentPermissions & std::filesystem::perms::others_write) != std::filesystem::perms::none) {
+                qCDebug(lcFileSystem()).nospace() << "removing others write permissions path=" << path;
+                std::filesystem::permissions(stdStrPath, std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
+                permissionsDidChange = true;
+            }
+
+            if ((currentPermissions & std::filesystem::perms::owner_write) == std::filesystem::perms::none) {
+                qCDebug(lcFileSystem()).nospace() << "adding owner write permissions path=" << path;
+                std::filesystem::permissions(stdStrPath, std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                permissionsDidChange = true;
+            }
+
             break;
+        }
         }
     }
     catch (const std::filesystem::filesystem_error &e)
@@ -358,12 +418,46 @@ bool FileSystem::setFolderPermissions(const QString &path,
         return false;
     }
 
+    if (permissionsDidChange) {
+        try {
+            const auto newPermissions = std::filesystem::status(stdStrPath).permissions();
+            qCDebug(lcFileSystem()).nospace() << "updated permissions path=" << path << " perms=" << Qt::showbase << Qt::oct << static_cast<int>(newPermissions);
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
+            return false;
+        }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions" << e.what() << "- path:" << stdStrPath;
+            return false;
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << "exception when querying folder permissions -  path:" << stdStrPath;
+            return false;
+        }
+    }
+#endif
+
+    if (permissionsChanged) {
+        *permissionsChanged = permissionsDidChange;
+    }
+
+    return true;
+}
+
+bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
+{
 #ifdef Q_OS_WIN
+    qCInfo(lcFileSystem()) << "is it read-only folder:" << QString::fromStdWString(path.wstring());
+
     SECURITY_INFORMATION info = DACL_SECURITY_INFORMATION;
     std::unique_ptr<char[]> securityDescriptor;
     auto neededLength = 0ul;
 
-    if (!GetFileSecurityW(path.toStdWString().c_str(), info, nullptr, 0, &neededLength)) {
+    if (!GetFileSecurityW(path.wstring().c_str(), info, nullptr, 0, &neededLength)) {
         const auto lastError = GetLastError();
         if (lastError != ERROR_INSUFFICIENT_BUFFER) {
             qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << lastError;
@@ -372,7 +466,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
         securityDescriptor.reset(new char[neededLength]);
 
-        if (!GetFileSecurityW(path.toStdWString().c_str(), info, securityDescriptor.get(), neededLength, &neededLength)) {
+        if (!GetFileSecurityW(path.wstring().c_str(), info, securityDescriptor.get(), neededLength, &neededLength)) {
             qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << GetLastError();
             return false;
         }
@@ -402,29 +496,6 @@ bool FileSystem::setFolderPermissions(const QString &path,
         return false;
     }
 
-    const auto newAclSize = aclSize.AclBytesInUse + sizeof(ACCESS_DENIED_ACE) + GetLengthSid(sid);
-    qCDebug(lcFileSystem) << "allocated a new DACL object of size" << newAclSize;
-
-    std::unique_ptr<ACL> newDacl{reinterpret_cast<PACL>(new char[newAclSize])};
-    if (!InitializeAcl(newDacl.get(), newAclSize, ACL_REVISION)) {
-        const auto lastError = GetLastError();
-        if (lastError != ERROR_INSUFFICIENT_BUFFER) {
-            qCWarning(lcFileSystem) << "insufficient memory error when calling InitializeAcl" << path;
-            return false;
-        }
-
-        qCWarning(lcFileSystem) << "error when calling InitializeAcl" << path << lastError;
-        return false;
-    }
-
-    if (permissions == FileSystem::FolderPermissions::ReadOnly) {
-        qCInfo(lcFileSystem) << path << "will be read only";
-        if (!AddAccessDeniedAce(newDacl.get(), ACL_REVISION, FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA | FILE_DELETE_CHILD, sid)) {
-            qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce << path" << GetLastError();
-            return false;
-        }
-    }
-
     for (int i = 0; i < aclSize.AceCount; ++i) {
         void *currentAce = nullptr;
         if (!GetAce(resultDacl, i, &currentAce)) {
@@ -434,80 +505,14 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
         const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
 
-        if (permissions == FileSystem::FolderPermissions::ReadWrite) {
-            qCInfo(lcFileSystem) << path << "will be read write";
-        }
-        if (permissions == FileSystem::FolderPermissions::ReadWrite && (ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
-            qCWarning(lcFileSystem) << "AceHeader" << path << currentAceHeader->AceFlags << currentAceHeader->AceSize << currentAceHeader->AceType;
-            continue;
-        }
-
-        if (!AddAce(newDacl.get(), ACL_REVISION, i + 1, currentAce, currentAceHeader->AceSize)) {
-            const auto lastError = GetLastError();
-            if (lastError != ERROR_INSUFFICIENT_BUFFER) {
-                qCWarning(lcFileSystem) << "insufficient memory error when calling AddAce" << path;
-                return false;
-            }
-
-            if (lastError != ERROR_INVALID_PARAMETER) {
-                qCWarning(lcFileSystem) << "invalid parameter error when calling AddAce" << path << "ACL size" << newAclSize;
-                return false;
-            }
-
-            qCWarning(lcFileSystem) << "error when calling AddAce" << path << lastError << "acl index" << (i + 1);
-            return false;
+        if ((ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
+            qCInfo(lcFileSystem()) << "detected access denied ACL: assuming read-only folder:" << QString::fromStdWString(path.wstring());
+            return true;
         }
     }
 
-    SECURITY_DESCRIPTOR newSecurityDescriptor;
-    if (!InitializeSecurityDescriptor(&newSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION)) {
-        qCWarning(lcFileSystem) << "error when calling InitializeSecurityDescriptor" << path << GetLastError();
-        return false;
-    }
-
-    if (!SetSecurityDescriptorDacl(&newSecurityDescriptor, true, newDacl.get(), false)) {
-        qCWarning(lcFileSystem) << "error when calling SetSecurityDescriptorDacl" << path << GetLastError();
-        return false;
-    }
-
-    if (!SetFileSecurityW(path.toStdWString().c_str(), info, &newSecurityDescriptor)) {
-        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << path << GetLastError();
-        return false;
-    }
-#endif
-
-    try
-    {
-        switch (permissions) {
-        case OCC::FileSystem::FolderPermissions::ReadOnly:
-            break;
-        case OCC::FileSystem::FolderPermissions::ReadWrite:
-            std::filesystem::permissions(stdStrPath, std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
-            std::filesystem::permissions(stdStrPath, std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
-            break;
-        }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
-        return false;
-    }
-    catch (const std::system_error &e)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
-        return false;
-    }
-    catch (...)
-    {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
-        return false;
-    }
-
-    return true;
-}
-
-bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
-{
+    return false;
+#else
     try
     {
         const auto folderStatus = std::filesystem::status(path);
@@ -529,6 +534,7 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path;
         return false;
     }
+#endif
 }
 
 FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, FolderPermissions temporaryPermissions)
@@ -536,11 +542,12 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, 
 {
     try
     {
-        const auto stdStrPath = _path.toStdWString();
-        _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
-        if (_initialPermissions != temporaryPermissions) {
-            _rollbackNeeded = true;
+        const auto &stdStrPath = _path.toStdWString();
+        const auto fsPath = std::filesystem::path{stdStrPath};
+        if ((temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadOnly && !FileSystem::isFolderReadOnly(fsPath)) ||
+            (temporaryPermissions == OCC::FileSystem::FolderPermissions::ReadWrite && FileSystem::isFolderReadOnly(fsPath))) {
             FileSystem::setFolderPermissions(_path, temporaryPermissions);
+            _rollbackNeeded = true;
         }
     }
     catch (const std::filesystem::filesystem_error &e)
@@ -564,6 +571,52 @@ FileSystem::FilePermissionsRestore::~FilePermissionsRestore()
     }
 }
 
+bool FileSystem::uncheckedRenameReplace(const QString &originFileName, const QString &destinationFileName, QString *errorString)
+{
+#ifndef Q_OS_WIN
+    bool success = false;
+    QFile orig(originFileName);
+    // We want a rename that also overwrites.  QFile::rename does not overwrite.
+    // Qt 5.1 has QSaveFile::renameOverwrite we could use.
+    // ### FIXME
+    success = true;
+    bool destExists = fileExists(destinationFileName);
+    if (destExists && !QFile::remove(destinationFileName)) {
+        *errorString = orig.errorString();
+        qCWarning(lcFileSystem) << "Target file could not be removed.";
+        success = false;
+    }
+    if (success) {
+        success = orig.rename(destinationFileName);
+    }
+    if (!success) {
+        *errorString = orig.errorString();
+        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
+        return false;
+    }
+#else //Q_OS_WIN
+    const auto originFileInfo = QFileInfo{originFileName};
+    const auto originParentFolderPath = originFileInfo.dir().absolutePath();
+    FilePermissionsRestore renameEnabler{originParentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+    // You can not overwrite a read-only file on windows.
+    if (!isWritable(destinationFileName)) {
+        setFileReadOnly(destinationFileName, false);
+    }
+
+    BOOL ok = 0;
+    QString orig = longWinPath(originFileName);
+    QString dest = longWinPath(destinationFileName);
+
+    ok = MoveFileEx((wchar_t *)orig.utf16(),
+                    (wchar_t *)dest.utf16(),
+                    MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
+    if (!ok) {
+        *errorString = Utility::formatWinError(GetLastError());
+        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
+        return false;
+    }
 #endif
+    return true;
+}
 
 } // namespace OCC

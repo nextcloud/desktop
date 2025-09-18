@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "account.h"
@@ -32,9 +23,7 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
-#endif
 #include <ctime>
 
 
@@ -60,21 +49,15 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
 bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
-    QStringList errors;
     QList<QPair<QString, bool>> deleted;
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     const auto fileInfo = QFileInfo{absolute};
     const auto parentFolderPath = fileInfo.dir().absolutePath();
     const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-    FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
-#endif
-    bool success = FileSystem::removeRecursively(
-        absolute,
-        [&deleted](const QString &path, bool isDir) {
-            // by prepending, a folder deletion may be followed by content deletions
-            deleted.prepend(qMakePair(path, isDir));
-        },
-        &errors);
+    const auto success = FileSystem::removeRecursively(absolute,
+                                                       [&deleted](const QString &path, bool isDir) {
+                                                           // by prepending, a folder deletion may be followed by content deletions
+                                                           deleted.prepend(qMakePair(path, isDir));
+                                                       });
 
     if (!success) {
         // We need to delete the entries from the database now from the deleted vector.
@@ -92,8 +75,6 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
                 qCWarning(lcPropagateLocalRemove) << "Failed to delete file record from local DB" << it.first.mid(propagator()->localPath().size());
             }
         }
-
-        _error = errors.join(", ");
     }
     return success;
 }
@@ -117,30 +98,61 @@ void PropagateLocalRemove::start()
     }
 
     QString removeError;
-    const auto availability = propagator()->syncOptions()._vfs->availability(_item->_file, Vfs::AvailabilityRecursivity::RecursiveAvailability);
-    if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
-        if ((QDir(filename).exists() || FileSystem::fileExists(filename))
-            && !FileSystem::moveToTrash(filename, &removeError)) {
-            done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
-            return;
+    auto moveToTrashIsFeasible = true;
+    if (propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
+        moveToTrashIsFeasible = false;
+    }
+    const auto fileInfo = QFileInfo{filename};
+    if (fileInfo.isDir()) {
+        try {
+            if (FileSystem::isFolderReadOnly(fileInfo.filesystemAbsolutePath())) {
+                moveToTrashIsFeasible = false;
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status" << e.what() << e.path1().c_str() << e.path2().c_str();
+        }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status" << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateLocalRemove) << "exception when checking parent folder read only status";
         }
     } else {
-        if (_item->isDirectory()) {
-            if (QDir(filename).exists() && !removeRecursively(QString())) {
-                done(SyncFileItem::NormalError, _error, ErrorCategory::GenericError);
+        if (!FileSystem::isWritable(filename, fileInfo)) {
+            moveToTrashIsFeasible = false;
+        }
+    }
+    if (_moveToTrash && moveToTrashIsFeasible) {
+        if (FileSystem::fileExists(filename, fileInfo)) {
+            const auto parentFolderPath = fileInfo.dir().absolutePath();
+            const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+
+            if (!FileSystem::moveToTrash(filename, &removeError)) {
+                qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
+                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename)) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-                const auto fileInfo = QFileInfo{filename};
+            qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << "was already deleted";
+        }
+    } else {
+        if (_item->isDirectory()) {
+            if (FileSystem::fileExists(filename, fileInfo) && !removeRecursively(QString())) {
+                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
+                return;
+            }
+        } else {
+            if (FileSystem::fileExists(filename, fileInfo)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
-
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-#endif
 
                 if (!FileSystem::remove(filename, &removeError)) {
-                    done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
+                    qCWarning(lcPropagateLocalRemove()) << "remove failed" << filename << removeError;
+                    done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                     return;
                 }
             }
@@ -200,7 +212,6 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     auto parentFolderPath = std::filesystem::path{};
     auto parentNeedRollbackPermissions = false;
     try {
@@ -225,7 +236,6 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
-#endif
 
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
@@ -234,7 +244,6 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (!_item->_remotePerm.isNull() &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
@@ -279,7 +288,6 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
-#endif
 
     // Insert the directory into the database. The correct etag will be set later,
     // once all contents have been propagated, because should_update_metadata is true.
@@ -319,8 +327,9 @@ void PropagateLocalRename::start()
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
     const auto existingFile = propagator()->fullLocalPath(previousNameInDb);
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
+    const auto originalFile = propagator()->fullLocalPath(_item->_originalFile);
 
-    const auto fileAlreadyMoved = !FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) && FileSystem::fileExists(existingFile);
+    const auto fileAlreadyMoved = (!FileSystem::fileExists(originalFile) || !FileSystem::fileExists(existingFile))&& FileSystem::fileExists(targetFile);
     auto pinState = OCC::PinState::Unspecified;
     if (!fileAlreadyMoved) {
         auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
@@ -332,6 +341,8 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
+    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(originalFile) ? "original file exists" : "orignal file is missing") << originalFile << _item->_originalFile;
+    qCDebug(lcPropagateLocalRename()) << (FileSystem::fileExists(existingFile) ? "existing file exists" : "existing file is missing") << existingFile << previousNameInDb;
     Q_ASSERT(FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) || FileSystem::fileExists(existingFile));
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
@@ -360,7 +371,6 @@ void PropagateLocalRename::start()
             return;
         }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         auto targetParentFolderPath = std::filesystem::path{};
         auto targetParentFolderWasReadOnly = false;
         try {
@@ -431,31 +441,26 @@ void PropagateLocalRename::start()
         };
 
         const auto folderPermissionsHandler = FileSystem::FilePermissionsRestore{existingFile, FileSystem::FolderPermissions::ReadWrite};
-#endif
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (targetParentFolderWasReadOnly) {
                 restoreTargetPermissions(targetParentFolderPath);
             }
             if (originParentFolderWasReadOnly) {
                 restoreTargetPermissions(originParentFolderPath);
             }
-#endif
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         if (targetParentFolderWasReadOnly) {
             restoreTargetPermissions(targetParentFolderPath);
         }
         if (originParentFolderWasReadOnly) {
             restoreTargetPermissions(originParentFolderPath);
         }
-#endif
     }
 
     SyncJournalFileRecord oldRecord;
@@ -467,7 +472,7 @@ void PropagateLocalRename::start()
 
     if (fileAlreadyMoved && !deleteOldDbRecord(previousNameInDb)) {
         return;
-    } else if (!deleteOldDbRecord(_item->_originalFile)) {
+    } else if (!deleteOldDbRecord(previousNameInDb)) {
         qCWarning(lcPropagateLocalRename) << "Could not delete file from local DB" << _item->_originalFile;
         return;
     }
@@ -493,26 +498,27 @@ void PropagateLocalRename::start()
             done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
             return;
         }
-    } else {
-        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(oldFile.toUtf8(), [oldFile, this] (const SyncJournalFileRecord &record) -> void {
-            const auto oldFileName = record._path;
-            const auto oldFileNameString = QString::fromUtf8(oldFileName);
+    } else if (!fileAlreadyMoved) {
+        qCDebug(lcPropagateLocalRename) << "propagate child items after move from" << existingFile << "to" << targetFile;
+        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(previousNameInDb.toUtf8(), [previousNameInDb, this] (const SyncJournalFileRecord &record) -> void {
+            const auto oldFileNameString = propagator()->adjustRenamedPath(QString::fromUtf8(record._path));
             auto newFileNameString = oldFileNameString;
-            newFileNameString.replace(0, oldFile.length(), _item->_renameTarget);
+            newFileNameString.replace(0, previousNameInDb.length(), _item->_renameTarget);
+
+            qCDebug(lcPropagateLocalRename) << "child rename from" << oldFileNameString << "to" << newFileNameString;
 
             if (oldFileNameString == newFileNameString) {
+                Q_ASSERT(false);
                 return;
             }
 
             SyncJournalFileRecord oldRecord;
-            if (!propagator()->_journal->getFileRecord(oldFileName, &oldRecord)) {
-                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileName;
-                done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
+            if (!propagator()->_journal->getFileRecord(oldFileNameString, &oldRecord)) {
+                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileNameString;
                 return;
             }
-            if (!propagator()->_journal->deleteFileRecord(oldFileName)) {
-                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileName;
-                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
+            if (!propagator()->_journal->deleteFileRecord(oldFileNameString)) {
+                qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileNameString;
                 return;
             }
 
@@ -520,7 +526,6 @@ void PropagateLocalRename::start()
             newItem->_file = newFileNameString;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
-                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), OCC::ErrorCategory::GenericError);
                 return;
             }
         });

@@ -1,16 +1,7 @@
 #pragma once
 /*
- * Copyright (C) 2024 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "accountfwd.h"
@@ -122,8 +113,6 @@ public:
 
     [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
-    [[nodiscard]] QByteArray certificateSha256Fingerprint() const;
-
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     // adds a user to have access to this folder (always generates new metadata key)
@@ -160,7 +149,7 @@ private:
 
     [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
                                                       const CertificateInformation &shareUserCertificate) const;
-    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data, const QByteArray &certificateFingerprint) const;
+    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
@@ -240,8 +229,6 @@ private:
     QByteArray _metadataSignature;
     // signature from server-side metadata
     QByteArray _initialSignature;
-
-    QByteArray _e2eCertificateFingerprint;
 
     // both files and folders info
     QVector<EncryptedFile> _files;

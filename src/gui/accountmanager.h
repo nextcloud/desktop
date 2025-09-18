@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2015 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -92,7 +84,7 @@ public:
 
 public slots:
     /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
-    void saveAccount(OCC::Account *newAccountData);
+    void saveAccount(const OCC::AccountPtr &newAccountData);
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);
@@ -118,8 +110,9 @@ signals:
 
 private:
     // saving and loading Account to settings
-    void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
+    void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
+    void moveNetworkSettingsFromGlobalToAccount(const AccountPtr &account);
 
     bool restoreFromLegacySettings();
 

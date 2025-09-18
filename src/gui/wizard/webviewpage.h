@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #ifndef WEBVIEWPAGE_H
 #define WEBVIEWPAGE_H
 
@@ -18,7 +23,6 @@ public:
 
     void initializePage() override;
     void cleanupPage() override;
-    [[nodiscard]] int nextId() const override;
     [[nodiscard]] bool isComplete() const override;
 
     [[nodiscard]] AbstractCredentials* getCredentials() const override;

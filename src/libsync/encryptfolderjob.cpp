@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Kevin Ottens <kevin.ottens@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "encryptfolderjob.h"
@@ -73,7 +64,6 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
         if (_propagator && _item) {
             qCWarning(lcEncryptFolderJob) << "No valid record found in local DB for fileId" << fileId << "going to create it now...";
             _item->_e2eEncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus::EncryptedMigratedV2_0;
-            _item->_e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
             const auto updateResult = _propagator->updateMetadata(*_item.data());
             if (updateResult) {
                 [[maybe_unused]] const auto result = _journal->getFileRecord(currentPath, &rec);
@@ -84,8 +74,7 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
     }
 
     if (rec.isValid() && !rec.isE2eEncrypted()) {
-        rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::Encrypted;
-        rec._e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
+        rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0;
         const auto result = _journal->setFileRecord(rec);
         if (!result) {
             qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
@@ -143,7 +132,7 @@ void EncryptFolderJob::uploadMetadata()
 void EncryptFolderJob::slotUploadMetadataFinished(int statusCode, const QString &message)
 {
     if (statusCode != 200) {
-        qCDebug(lcEncryptFolderJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error"
+        qCWarning(lcEncryptFolderJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error"
                                             << message;
         qCDebug(lcEncryptFolderJob()) << "Unlocking the folder.";
         _errorString = message;

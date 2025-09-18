@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -39,6 +30,8 @@ public:
 
     [[nodiscard]] UserStatus userStatus() const override;
 
+    [[nodiscard]] bool supportsBusyStatus() const override;
+
 private:
     void onUserStatusFetched(const QJsonDocument &json, int statusCode);
     void onPredefinedStatusesFetched(const QJsonDocument &json, int statusCode);
@@ -58,6 +51,7 @@ private:
 
     bool _userStatusSupported = false;
     bool _userStatusEmojisSupported = false;
+    bool _userStatusBusySupported = false;
 
     QPointer<JsonApiJob> _clearMessageJob {};
     QPointer<JsonApiJob> _setMessageJob {};

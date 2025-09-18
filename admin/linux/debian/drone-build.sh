@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 set -xe
 shopt -s extglob
 
@@ -18,13 +21,13 @@ if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
     UBUNTU_DISTRIBUTIONS="bionic focal jammy kinetic"
     DEBIAN_DISTRIBUTIONS="buster stretch testing"
 else
-    UBUNTU_DISTRIBUTIONS="jammy noble oracular plucky"
-    DEBIAN_DISTRIBUTIONS="bullseye bookworm testing"
+    UBUNTU_DISTRIBUTIONS="jammy noble plucky questing"
+    DEBIAN_DISTRIBUTIONS="bookworm trixie testing"
 fi
 
 declare -A DIST_TO_OBS=(
-    ["bullseye"]="Debian_11"
     ["bookworm"]="Debian_12"
+    ["trixie"]="Debian_13"
     ["testing"]="Debian_Testing"
 )
 

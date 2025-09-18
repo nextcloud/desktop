@@ -2,7 +2,8 @@
 //  DocumentActionViewController.swift
 //  FileProviderUIExt
 //
-//  Created by Claudio Cambra on 20/2/24.
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 import FileProviderUI
@@ -45,20 +46,22 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
             prepare(childViewController: LockViewController(itemIdentifiers, locking: false))
         case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
             evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
-            dismiss(self);
+            extensionContext.completeRequest();
         default:
             return
         }
     }
-    
+
     override func prepare(forError error: Error) {
-        Logger.actionViewController.info(
-            "Preparing for error: \(error.localizedDescription, privacy: .public)"
-        )
+        Logger.actionViewController.info("Preparing for error: \(error.localizedDescription, privacy: .public)")
+
+        let storyboard = NSStoryboard(name: "Authentication", bundle: Bundle(for: type(of: self)))
+        let viewController = storyboard.instantiateInitialController() as! NSViewController
+
+        prepare(childViewController: viewController)
     }
 
     override public func loadView() {
         self.view = NSView()
     }
 }
-

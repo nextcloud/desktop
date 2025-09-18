@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2019 by Dominique Fuchs <32204802+DominiqueFuchs@users.noreply.github.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick
@@ -48,7 +39,7 @@ AbstractButton {
             Rectangle {
                 id: accountStatusIndicatorBackground
                 visible: model.isConnected && model.serverHasUserStatus
-                width: accountStatusIndicator.sourceSize.width + 2
+                width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
                 color: "white"
                 anchors.bottom: accountAvatar.bottom
@@ -61,8 +52,8 @@ AbstractButton {
                 visible: model.isConnected && model.serverHasUserStatus
                 source: model.statusIcon
                 cache: false
-                x: accountStatusIndicatorBackground.x + 1
-                y: accountStatusIndicatorBackground.y + 1
+                x: accountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
+                y: accountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
@@ -73,9 +64,9 @@ AbstractButton {
 
         ColumnLayout {
             id: accountLabels
-            Layout.leftMargin: Style.accountLabelsSpacing
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: Style.extraExtraSmallSpacing
 
             EnforcedPlainTextLabel {
                 id: accountUser
@@ -100,7 +91,6 @@ AbstractButton {
                     id: emoji
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
-                    topPadding: -Style.accountLabelsSpacing
                 }
 
                 EnforcedPlainTextLabel {
@@ -110,7 +100,6 @@ AbstractButton {
                     text: statusMessage
                     elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
-                    leftPadding: Style.accountLabelsSpacing
                 }
             }
 
@@ -192,3 +181,4 @@ AbstractButton {
         }
     }
 }   // MenuItem userLine
+

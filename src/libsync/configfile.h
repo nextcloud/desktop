@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef CONFIGFILE_H
@@ -49,6 +41,7 @@ public:
     static QString excludeFileFromSystem(); // doesn't access config dir
 
     void cleanUpdaterConfiguration();
+    void cleanupGlobalNetworkConfiguration();
 
     /**
      * Creates a backup of any given fileName in the config folder
@@ -97,9 +90,6 @@ public:
 
     [[nodiscard]] int deleteFilesThreshold() const;
     void setDeleteFilesThreshold(int thresholdValue);
-
-    [[nodiscard]] bool crashReporter() const;
-    void setCrashReporter(bool enabled);
 
     [[nodiscard]] bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
@@ -175,6 +165,9 @@ public:
     [[nodiscard]] bool showCallNotifications() const;
     void setShowCallNotifications(bool show);
 
+    [[nodiscard]] bool showQuotaWarningNotifications() const;
+    void setShowQuotaWarningNotifications(bool show);
+
     [[nodiscard]] bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
@@ -241,6 +234,10 @@ public:
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
 
+    /// Enforce a specific language used for the UI
+    [[nodiscard]] QString language() const;
+    void setLanguage(const QString &language);
+
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);
@@ -251,6 +248,26 @@ public:
     /// Set during first time migration of legacy accounts in AccountManager
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
+
+    /// File Provider Domain UUID to Account ID mapping
+    [[nodiscard]] QString fileProviderDomainUuidFromAccountId(const QString &accountId) const;
+    void setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid);
+    [[nodiscard]] QString accountIdFromFileProviderDomainUuid(const QString &domainUuid) const;
+    void removeFileProviderDomainUuidMapping(const QString &accountId);
+
+    static constexpr char isVfsEnabledC[] = "isVfsEnabled";
+    static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
+    static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
+    static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
+    static constexpr char showCallNotificationsC[] = "showCallNotifications";
+    static constexpr char showQuotaWarningNotificationsC[] = "showQuotaWarningNotifications";
+    static constexpr char showChatNotificationsC[] = "showChatNotifications";
+    static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
+
+    static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
+    static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
+    static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
+    static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;

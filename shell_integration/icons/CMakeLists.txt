@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 if( UNIX AND NOT APPLE )
 
     SET(ICON_DIR ${CMAKE_INSTALL_DATADIR}/icons/hicolor)

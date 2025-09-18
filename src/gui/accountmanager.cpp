@@ -1,19 +1,12 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2015 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "accountmanager.h"
 
+#include "config.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "creds/credentialsfactory.h"
@@ -23,6 +16,10 @@
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
 #include "libsync/theme.h"
+#include "libsync/clientproxy.h"
+#if !DISABLE_ACCOUNT_MIGRATION
+#include "legacyaccountselectiondialog.h"
+#endif
 
 #include <QSettings>
 #include <QDir>
@@ -49,7 +46,6 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
-constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -60,7 +56,6 @@ constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
 constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
-constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
 constexpr auto httpAuthTypeC = "http";
@@ -82,6 +77,8 @@ constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
+
+constexpr auto generalC = "General";
 }
 
 
@@ -114,33 +111,38 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     }
 
     // If there are no accounts, check the old format.
+#if !DISABLE_ACCOUNT_MIGRATION
     if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
         return AccountsRestoreSuccessFromLegacyVersion;
     }
+#endif
 
     auto result = AccountsRestoreSuccess;
     const auto settingsChildGroups = settings->childGroups();
     for (const auto &accountId : settingsChildGroups) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
-            if (const auto acc = loadAccountHelper(*settings)) {
-                acc->_id = accountId;
-                const auto accState = new AccountState(acc);
-                const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
-                Q_ASSERT(jar);
-                if (jar) {
-                    acc->tryMigrateCookieJar();
-                    jar->restore(acc->cookieJarPath());
-                }
-                addAccountState(accState);
+            const auto acc = loadAccountHelper(*settings);
+            if (!acc) {
+                continue;
             }
+            acc->_id = accountId;
+            const auto accState = new AccountState(acc);
+            const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
+            Q_ASSERT(jar);
+            if (jar) {
+                acc->tryMigrateCookieJar();
+                jar->restore(acc->cookieJarPath());
+            }
+            addAccountState(accState);
+            settings->endGroup();
+            moveNetworkSettingsFromGlobalToAccount(acc);
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
             _additionalBlockedAccountIds.insert(accountId);
             result = AccountsRestoreSuccessWithSkipped;
         }
-        settings->endGroup();
     }
 
     return result;
@@ -170,7 +172,7 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
         deleteKeys->append(settings->group());
     }
 }
-
+#if !DISABLE_ACCOUNT_MIGRATION
 bool AccountManager::restoreFromLegacySettings()
 {
     qCInfo(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
@@ -181,6 +183,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     auto wasLegacyImportDialogDisplayed = false;
     const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
+    QStringList selectedAccountIds;
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -220,25 +223,51 @@ bool AccountManager::restoreFromLegacySettings()
             }
 
             oCSettings->beginGroup(QLatin1String(accountsC));
-            const auto accountsListSize = oCSettings->childGroups().size();
-            oCSettings->endGroup();
+            const auto childGroups = oCSettings->childGroups();
+            const auto accountsListSize = childGroups.size();
+            oCSettings->endGroup(); //accountsC
             if (const QFileInfo configFileInfo(configFile);
                 configFileInfo.exists() && configFileInfo.isReadable()) {
+
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
                 if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
                     wasLegacyImportDialogDisplayed = true;
-                    const auto importQuestion = accountsListSize > 1
-                        ? tr("%1 accounts were detected from a legacy desktop client.\n"
-                             "Should the accounts be imported?").arg(QString::number(accountsListSize))
-                        : tr("1 account was detected from a legacy desktop client.\n"
-                             "Should the account be imported?");
-                    const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
-                    importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
-                    const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
-                    importMessageBox->exec();
-                    if (importMessageBox->clickedButton() == skipButton) {
-                        return false;
+                    if (accountsListSize == 1) {
+                        const auto importQuestion =
+                            tr("An account was detected from a legacy desktop client.\n"
+                               "Should the account be imported?");
+                        QMessageBox importMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
+                        importMessageBox.addButton(tr("Import"), QMessageBox::AcceptRole);
+                        const auto skipButton = importMessageBox.addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                        importMessageBox.exec();
+                        if (importMessageBox.clickedButton() == skipButton) {
+                            return false;
+                        }
+                        selectedAccountIds = childGroups;
+                    } else {
+                        QVector<LegacyAccountSelectionDialog::AccountItem> accountsToDisplay;
+                        oCSettings->beginGroup(QLatin1String(accountsC));
+                        for (const auto &accId : childGroups) {
+                            oCSettings->beginGroup(accId);
+                            const auto displayName = oCSettings->value(QLatin1String(displayNameC)).toString();
+                            const auto urlStr = oCSettings->value(QLatin1String(urlC)).toString();
+                            oCSettings->endGroup(); //accId
+                            const auto label = QString("%1 - %2").arg(displayName, urlStr);
+                            accountsToDisplay.push_back({accId, label});
+                        }
+                        oCSettings->endGroup(); //accountsC
+
+                        LegacyAccountSelectionDialog accountSelectionDialog(accountsToDisplay);
+                        if (accountSelectionDialog.exec() != QDialog::Accepted) {
+                            return false;
+                        }
+                        selectedAccountIds = accountSelectionDialog.selectedAccountIds();
+                        if (selectedAccountIds.isEmpty()) {
+                            return false;
+                        }
                     }
+                } else {
+                    selectedAccountIds = childGroups;
                 }
 
                 qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
@@ -252,16 +281,34 @@ bool AccountManager::restoreFromLegacySettings()
         }
     }
 
+    ConfigFile configFile;
+    configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC, configFile.launchOnSystemStartup()).toBool());
+    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC, configFile.optionalServerNotifications()).toBool());
+    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC, configFile.promptDeleteFiles()).toBool());
+    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC, configFile.showCallNotifications()).toBool());
+    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC, configFile.showChatNotifications()).toBool());
+    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC, configFile.showQuotaWarningNotifications()).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC, configFile.showInExplorerNavigationPane()).toBool());
+    ClientProxy().saveProxyConfigurationFromSettings(*settings);
+    configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
+    configFile.setUploadLimit(settings->value(ConfigFile::uploadLimitC, configFile.uploadLimit()).toInt());
+    configFile.setUseDownloadLimit(settings->value(ConfigFile::useDownloadLimitC, configFile.useDownloadLimit()).toInt());
+    configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
+
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
-        const auto childGroups = settings->childGroups();
+        const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
-            if (const auto acc = loadAccountHelper(*settings)) {
-                addAccount(acc);
+            const auto acc = loadAccountHelper(*settings);
+            if (!acc) {
+                continue;
             }
+            addAccount(acc);
             settings->endGroup();
+            moveNetworkSettingsFromGlobalToAccount(acc);
         }
         return true;
     }
@@ -274,6 +321,12 @@ bool AccountManager::restoreFromLegacySettings()
 
     return false;
 }
+#else
+bool AccountManager::restoreFromLegacySettings()
+{
+    return false;
+}
+#endif
 
 void AccountManager::save(bool saveCredentials)
 {
@@ -281,7 +334,7 @@ void AccountManager::save(bool saveCredentials)
     settings->setValue(QLatin1String(versionC), maxAccountsVersion);
     for (const auto &acc : std::as_const(_accounts)) {
         settings->beginGroup(acc->account()->id());
-        saveAccountHelper(acc->account().data(), *settings, saveCredentials);
+        saveAccountHelper(acc->account(), *settings, saveCredentials);
         settings->endGroup();
     }
 
@@ -289,7 +342,7 @@ void AccountManager::save(bool saveCredentials)
     qCInfo(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccount(Account *newAccountData)
+void AccountManager::saveAccount(const AccountPtr &newAccountData)
 {
     qCDebug(lcAccountManager) << "Saving account" << newAccountData->url().toString();
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
@@ -312,7 +365,7 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials)
+void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials)
 {
     qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
@@ -329,7 +382,7 @@ void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bo
     } else {
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), account->_skipE2eeMetadataChecksumValidation);
     }
-    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(account->networkProxySetting()));
+
     settings.setValue(networkProxyTypeC, account->proxyType());
     settings.setValue(networkProxyHostNameC, account->proxyHostName());
     settings.setValue(networkProxyPortC, account->proxyPort());
@@ -420,6 +473,34 @@ void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bo
     }
 }
 
+void AccountManager::moveNetworkSettingsFromGlobalToAccount(const AccountPtr &account)
+{
+    ConfigFile configFile;
+    const auto hostname = configFile.proxyHostName();
+
+    if (!hostname.isEmpty()) {
+        account->setProxySettings(static_cast<QNetworkProxy::ProxyType>(configFile.proxyType()),
+                                  hostname,
+                                  configFile.proxyPort(),
+                                  configFile.proxyNeedsAuth(),
+                                  configFile.proxyUser(),
+                                  configFile.proxyPassword());
+        ClientProxy().cleanupGlobalNetworkConfiguration();
+    }
+
+    const auto useUploadLimit = configFile.useUploadLimit();
+    const auto useDownloadLimit = configFile.useDownloadLimit();
+    if (useUploadLimit == 0 && useDownloadLimit == 0) {
+        return;
+    }
+
+    account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
+    account->setUploadLimit(configFile.uploadLimit());
+    account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
+    account->setDownloadLimit(configFile.downloadLimit());
+    configFile.cleanupGlobalNetworkConfiguration();
+}
+
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 {
     const auto urlConfig = settings.value(QLatin1String(urlC));
@@ -493,8 +574,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
-
-    acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
     acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
     acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
     acc->setProxyPort(settings.value(networkProxyPortC).toInt());
@@ -503,13 +582,14 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setUploadLimitSetting(
         settings.value(
             networkUploadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
+            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
         ).value<Account::AccountNetworkTransferLimitSetting>());
     acc->setDownloadLimitSetting(
         settings.value(
             networkDownloadLimitSettingC,
-            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
+            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
         ).value<Account::AccountNetworkTransferLimitSetting>());
+
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
@@ -552,6 +632,7 @@ AccountStatePtr AccountManager::account(const QString &name)
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
     const auto accountsList = accounts();
+
     for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
         const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
@@ -562,6 +643,7 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
             return account;
         }
     }
+
     return {};
 }
 

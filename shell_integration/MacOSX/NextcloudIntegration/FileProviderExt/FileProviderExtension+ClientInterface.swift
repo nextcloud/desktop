@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import FileProvider
@@ -104,11 +95,58 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         }
     }
 
+    ///
+    /// - Parameters:
+    ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
+    ///
     @objc func setupDomainAccount(
-        user: String, userId: String, serverUrl: String, password: String
+        user: String,
+        userId: String,
+        serverUrl: String,
+        password: String,
+        userAgent: String = "Nextcloud-macOS/FileProviderExt",
+        completionHandler: ((NSError?) -> Void)? = nil
     ) {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
-        guard account != ncAccount else { return }
+
+        Logger.fileProviderExtension.info("Setting up domain account for user: \(user, privacy: .public), userId: \(userId, privacy: .public), serverUrl: \(serverUrl, privacy: .public), password: \(password.isEmpty ? "<empty>" : "<not-empty>", privacy: .public), ncKitAccount: \(account.ncKitAccount, privacy: .public)")
+
+        guard account != ncAccount else {
+            Logger.fileProviderExtension.warning("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            completionHandler?(NSError(.invalidCredentials))
+            return
+        }
+
+        guard password.isEmpty == false else {
+            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"password\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard serverUrl.isEmpty == false else {
+            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"serverUrl\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard user.isEmpty == false else {
+            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"user\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        guard userId.isEmpty == false else {
+            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"userId\" is an empty string!")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
+        // Store account information independently from the main app for later access.
+        config.serverUrl = serverUrl
+        config.user = user
+        config.userId = userId
+        Keychain.savePassword(password, for: user, on: serverUrl)
+        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
 
         Task {
             ncKit.appendSession(
@@ -117,54 +155,64 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 user: user,
                 userId: userId,
                 password: password,
-                userAgent: "Nextcloud-macOS/FileProviderExt",
+                userAgent: userAgent,
                 nextcloudVersion: 25,
                 groupIdentifier: ""
             )
+
             var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
             // Retry a few times if we have a connection issue
-            for authTimeout in AuthenticationTimeouts {
-                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account)
-                guard authAttemptState == .connectionError else { break }
+            let options = NKRequestOptions(checkInterceptor: false)
 
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication try timed out. Trying again soon."
-                )
+            for authTimeout in AuthenticationTimeouts {
+                authAttemptState = await ncKit.tryAuthenticationAttempt(account: account, options: options)
+
+                guard authAttemptState == .connectionError else {
+                    break
+                }
+
+                Logger.fileProviderExtension.info("\(user, privacy: .public) authentication try timed out. Trying again soon.")
                 try? await Task.sleep(nanoseconds: authTimeout)
             }
 
             switch (authAttemptState) {
-            case .authenticationError:
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication failed due to bad creds, stopping"
-                )
-                return
-            case .connectionError:
-                // Despite multiple connection attempts we are still getting connection issues.
-                // Connection error should be provided
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication try failed, no connection."
-                )
-                return
-            case .success:
-                Logger.fileProviderExtension.info(
-                """
-                Authenticated! Nextcloud account set up in File Provider extension.
-                User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)
-                """
-                )
+                case .authenticationError:
+                    Logger.fileProviderExtension.error("Authentication of \"\(user, privacy: .public)\" failed due to bad credentials, cancelling domain account setup!")
+                    completionHandler?(NSError(.invalidCredentials))
+                    return
+                case .connectionError:
+                    // Despite multiple connection attempts we are still getting connection issues.
+                    // Connection error should be provided
+                    Logger.fileProviderExtension.error("Authentication of \"\(user, privacy: .public)\" try failed, no connection.")
+                    completionHandler?(NSError(.connection))
+                    return
+                case .success:
+                    Logger.fileProviderExtension.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)")
             }
 
             Task { @MainActor in
                 ncAccount = account
-                changeObserver = RemoteChangeObserver(
-                    account: account,
-                    remoteInterface: ncKit,
-                    changeNotificationInterface: self,
-                    domain: domain
-                )
-                ncKit.setup(delegate: changeObserver)
+                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier)
+
+                if let changeObserver {
+                    changeObserver.invalidate()
+                }
+
+                if let dbManager {
+                    changeObserver = RemoteChangeObserver(
+                        account: account,
+                        remoteInterface: ncKit,
+                        changeNotificationInterface: self,
+                        domain: domain,
+                        dbManager: dbManager
+                    )
+                } else {
+                    Logger.fileProviderExtension.error("Invalid db manager, cannot start RCO")
+                }
+
+                ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!, delegate: changeObserver)
+                completionHandler?(nil)
                 signalEnumeratorAfterAccountSetup()
             }
         }
@@ -175,6 +223,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )
         ncAccount = nil
+        dbManager = nil
     }
 
     func updatedSyncStateReporting(oldActions: Set<UUID>) {

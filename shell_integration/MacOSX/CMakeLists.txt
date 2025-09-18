@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 if(APPLE)
     set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/${APPLICATION_ICON_NAME}.icns")
 
@@ -69,9 +72,17 @@ if(APPLE)
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
                 USE_SOURCE_PERMISSIONS)
 
+            install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/PackageFrameworks/RealmSwift.framework
+                DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FileProviderExt.appex/Contents/Frameworks
+                USE_SOURCE_PERMISSIONS)
+
             install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderUIExt.appex
-                    DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
-                    USE_SOURCE_PERMISSIONS)
+                DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
+                USE_SOURCE_PERMISSIONS)
+
+            install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/PackageFrameworks/RealmSwift.framework
+                DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FileProviderUIExt.appex/Contents/Frameworks
+                USE_SOURCE_PERMISSIONS)
         endif()
     endif()
 endif()

@@ -1,16 +1,6 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- * Copyright (C) by Michael Schuster <michael@schuster.ms>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <QDesktopServices>
@@ -18,6 +8,7 @@
 #include <QClipboard>
 #include <QTimer>
 #include <QBuffer>
+#include "abstractnetworkjob.h"
 #include "account.h"
 #include "flow2auth.h"
 #include <QJsonObject>
@@ -67,8 +58,9 @@ void Flow2Auth::copyLinkToClipboard()
 
 void Flow2Auth::fetchNewToken(const TokenAction action)
 {
-    if(_isBusy)
+    if (_isBusy) {
         return;
+    }
 
     _isBusy = true;
     _hasToken = false;
@@ -76,89 +68,64 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
     emit statusChanged(PollStatus::statusFetchToken, 0);
 
     // Step 1: Initiate a login, do an anonymous POST request
-    QUrl url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
-    _enforceHttps = url.scheme() == QStringLiteral("https");
+    const auto loginV2url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
+    _enforceHttps = loginV2url.scheme() == QStringLiteral("https");
 
     // add 'Content-Length: 0' header (see https://github.com/nextcloud/desktop/issues/1473)
-    QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentLengthHeader, "0");
-    req.setHeader(QNetworkRequest::UserAgentHeader, Utility::friendlyUserAgentString());
+    QNetworkRequest request;
+    request.setHeader(QNetworkRequest::ContentLengthHeader, "0");
+    request.setHeader(QNetworkRequest::UserAgentHeader, Utility::friendlyUserAgentString());
 
-    auto job = _account->sendRequest("POST", url, req);
+    auto job = _account->sendRequest("POST", loginV2url, request);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const auto json = handleResponse(reply);
         QString pollToken, pollEndpoint, loginUrl;
 
-        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
-            && !json.isEmpty()) {
+        if (!json.isEmpty()) {
             pollToken = json.value("poll").toObject().value("token").toString();
             pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
-            if (_enforceHttps && QUrl(pollEndpoint).scheme() != QStringLiteral("https")) {
-                qCWarning(lcFlow2auth) << "Can not poll endpoint because the returned url" << pollEndpoint << "does not start with https";
-                emit result(Error, tr("The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
-                return;
-            }
             loginUrl = json["login"].toString();
         }
 
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-            || json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
-            QString errorReason;
-            QString errorFromJson = json["error"].toString();
-            if (!errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
-            } else if (reply->error() != QNetworkReply::NoError) {
-                errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
-                                  .arg(reply->errorString().toHtmlEscaped());
-            } else if (jsonParseError.error != QJsonParseError::NoError) {
-                errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                                  .arg(jsonParseError.errorString());
-            } else {
-                errorReason = tr("The reply from the server did not contain all expected fields");
-            }
-            qCWarning(lcFlow2auth) << "Error when getting the loginUrl" << json << errorReason;
-            emit result(Error, errorReason);
+        if (json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
             _pollTimer.stop();
             _isBusy = false;
             return;
         }
 
-
         _loginUrl = loginUrl;
 
         if (_account->isUsernamePrefillSupported()) {
-            const auto userName = Utility::getCurrentUserName();
-            if (!userName.isEmpty()) {
-                auto query = QUrlQuery(_loginUrl);
+            constexpr auto setUserNameForLogin = [] (const auto &userName, auto &loginUrl) -> void {
+                auto query = QUrlQuery(loginUrl);
                 query.addQueryItem(QStringLiteral("user"), userName);
-                _loginUrl.setQuery(query);
+                loginUrl.setQuery(query);
+            };
+
+            if (const auto userName = _account->userFromCredentials(); !userName.isEmpty()) {
+                setUserNameForLogin(userName, _loginUrl);
+            } else if (const auto userName = Utility::getCurrentUserName(); !userName.isEmpty()) {
+                setUserNameForLogin(userName, _loginUrl);
             }
         }
 
         _pollToken = pollToken;
         _pollEndpoint = pollEndpoint;
 
-
         // Start polling
-        ConfigFile cfg;
-        std::chrono::milliseconds polltime = cfg.remotePollInterval();
+        std::chrono::milliseconds polltime = ConfigFile().remotePollInterval();
         qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
         _secondsInterval = (polltime.count() / 1000);
         _secondsLeft = _secondsInterval;
         emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
-        if(!_pollTimer.isActive()) {
+        if (!_pollTimer.isActive()) {
             _pollTimer.start();
         }
 
-
-        switch(action)
-        {
+        switch (action) {
         case actionOpenBrowser:
             // Try to open Browser
             if (!Utility::openBrowser(authorisationLink())) {
@@ -180,8 +147,9 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-    if(_isBusy || !_hasToken)
+    if (_isBusy || !_hasToken) {
         return;
+    }
 
     _isBusy = true;
 
@@ -194,57 +162,28 @@ void Flow2Auth::slotPollTimerTimeout()
     emit statusChanged(PollStatus::statusPollNow, 0);
 
     // Step 2: Poll
-    QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QNetworkRequest request;
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QStringLiteral("token=%1").arg(_pollToken));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
 
-    auto job = _account->sendRequest("POST", _pollEndpoint, req, requestBody);
+    auto job = _account->sendRequest("POST", _pollEndpoint, request, requestBody);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const QJsonObject json = handleResponse(reply);
         QUrl serverUrl;
         QString loginName, appPassword;
 
-        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
-            && !json.isEmpty()) {
+        if (!json.isEmpty()) {
             serverUrl = json["server"].toString();
-            if (_enforceHttps && serverUrl.scheme() != QStringLiteral("https")) {
-                qCWarning(lcFlow2auth) << "Returned server url" << serverUrl << "does not start with https";
-                emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator."));
-                return;
-            }
             loginName = json["loginName"].toString();
             appPassword = json["appPassword"].toString();
         }
 
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-            || json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
-            QString errorReason;
-            QString errorFromJson = json["error"].toString();
-            if (!errorFromJson.isEmpty()) {
-                errorReason = tr("Error returned from the server: <em>%1</em>")
-                                  .arg(errorFromJson.toHtmlEscaped());
-            } else if (reply->error() != QNetworkReply::NoError) {
-                errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
-                                  .arg(reply->errorString().toHtmlEscaped());
-            } else if (jsonParseError.error != QJsonParseError::NoError) {
-                errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                                  .arg(jsonParseError.errorString());
-            } else {
-                errorReason = tr("The reply from the server did not contain all expected fields");
-            }
-            qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
-
-            // We get a 404 until authentication is done, so don't show this error in the GUI.
-            if(reply->error() != QNetworkReply::ContentNotFoundError)
-                emit result(Error, errorReason);
-
+        if (json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
             // Forget sensitive data
             appPassword.clear();
             loginName.clear();
@@ -277,11 +216,78 @@ void Flow2Auth::slotPollTimerTimeout()
     });
 }
 
+QJsonObject Flow2Auth::handleResponse(QNetworkReply *reply)
+{
+    const auto jsonData = reply->readAll();
+    QJsonParseError jsonParseError{};
+    const auto json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+    if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
+        && !json.isEmpty()) {
+        const auto isHttps = [&]() {
+            const auto endpoint = json["server"].toString().isEmpty()
+                ? json.value("poll").toObject().value("endpoint").toString() //from login/v2 endpoint
+                : json["server"].toString(); //from login/v2/poll endpoint
+
+            if (endpoint.isEmpty()) {
+                return false;
+            }
+
+            qCDebug(lcFlow2auth) << "Server url returned is" << endpoint;
+            if (QUrl(endpoint).scheme() != QStringLiteral("https")) {
+                return false;
+            }
+
+            return true;
+        };
+
+        if (_enforceHttps && !isHttps()) {
+            qCWarning(lcFlow2auth) << "Returned server url | poll endpoint does not start with https";
+            emit result(Error, tr("The returned server URL does not start with HTTPS despite the login URL started with HTTPS. "
+                                  "Login will not be possible because this might be a security issue. Please contact your administrator."));
+            return {};
+        }
+    }
+
+    if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
+        QString errorReason;
+        if (const QString errorFromJson = json["error"].toString();
+            !errorFromJson.isEmpty()) {
+            errorReason = tr("Error returned from the server: <em>%1</em>")
+            .arg(errorFromJson.toHtmlEscaped());
+        } else if (reply->error() != QNetworkReply::NoError) {
+            auto errorStringFromReply = reply->errorString();
+            if (const auto hstsError = AbstractNetworkJob::hstsErrorStringFromReply(reply)) {
+                errorStringFromReply = *hstsError;
+            }
+            errorReason = tr("There was an error accessing the \"token\" endpoint: <br><em>%1</em>")
+            .arg(errorStringFromReply.toHtmlEscaped());
+        } else if (jsonParseError.error != QJsonParseError::NoError) {
+            errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
+            .arg(jsonParseError.errorString());
+        } else if (json.isEmpty()) {
+            errorReason = tr("The reply from the server did not contain all expected fields: <br><em>%1</em>")
+            .arg(jsonParseError.errorString());
+        }
+
+        qCWarning(lcFlow2auth) << "Error when requesting:" << reply->url() << "- json returned:" << json << "- error:" << errorReason;
+
+        // We get a 404 until authentication is done, so don't show this error in the GUI.
+        if (reply->error() != QNetworkReply::ContentNotFoundError) {
+            emit result(Error, errorReason);
+        }
+
+        return {};
+    }
+
+    return json;
+}
+
 void Flow2Auth::slotPollNow()
 {
     // poll now if we're not already doing so
-    if(_isBusy || !_hasToken)
+    if (_isBusy || !_hasToken) {
         return;
+    }
 
     _secondsLeft = 1;
     slotPollTimerTimeout();

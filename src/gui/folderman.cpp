@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "folderman.h"
@@ -62,7 +54,9 @@ FolderMan *FolderMan::_instance = nullptr;
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
     , _lockWatcher(new LockWatcher)
+#ifdef Q_OS_WIN
     , _navigationPaneHelper(this)
+#endif
 {
     ASSERT(!_instance);
     _instance = this;
@@ -542,6 +536,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             const auto journalPath = settings.value(QLatin1String("journalPath")).toString();
             const auto paused = settings.value(QLatin1String("paused"), false).toBool();
             const auto ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), false).toBool();
+            const auto virtualFilesMode = settings.value(QLatin1String("virtualFilesMode"), false).toString();
 
             if (path.isEmpty()) {
                 qCDebug(lcFolderMan) << "localPath is empty";
@@ -571,7 +566,21 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
-            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
+            if (const auto vfsMode = Vfs::modeFromString(virtualFilesMode)) {
+                folderDefinition.virtualFilesMode = *vfsMode;
+            } else {
+                qCWarning(lcFolderMan) << "Unknown virtualFilesMode:" << virtualFilesMode << "assuming 'off'";
+            }
+
+            qCDebug(lcFolderMan) << "folderDefinition.alias" << folderDefinition.alias;
+            qCDebug(lcFolderMan) << "folderDefinition.virtualFilesMode" << folderDefinition.virtualFilesMode;
+
+            auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
+            if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+                qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
+            }
+
+            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::move(vfs))) {
                 auto ok = true;
                 auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                                  &ok);
@@ -599,6 +608,10 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
                 scheduleFolder(folder);
                 emit folderSyncStateChange(folder);
+
+#ifdef Q_OS_WIN
+                Utility::migrateFavLink(folder->cleanPath());
+#endif
             }
             settings.endGroup(); // folder alias
         }
@@ -610,6 +623,9 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
 
     settings.beginGroup(settingsFoldersWithPlaceholdersC);
     migrateFoldersGroup(settingsFoldersWithPlaceholdersC);
+#ifdef Q_OS_WIN
+    _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     settings.endGroup();
 
     settings.beginGroup(settingsFoldersC);
@@ -980,7 +996,7 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 }
 
-bool FolderMan::pushNotificationsFilesReady(Account *account)
+bool FolderMan::pushNotificationsFilesReady(const AccountPtr &account)
 {
     const auto pushNotifications = account->pushNotifications();
     const auto pushFilesAvailable = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
@@ -1015,7 +1031,7 @@ void FolderMan::slotEtagPollTimerTimeout()
     // Some folders need not to be checked because they use the push notifications
     std::copy_if(folderMapValues.begin(), folderMapValues.end(), std::back_inserter(foldersToRun), [this](Folder *folder) -> bool {
         const auto account = folder->accountState()->account();
-        return !pushNotificationsFilesReady(account.data());
+        return !pushNotificationsFilesReady(account);
     });
 
     qCInfo(lcFolderMan) << "Number of folders that don't use push notifications:" << foldersToRun.size();
@@ -1057,7 +1073,7 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
         return;
     }
     // When not using push notifications, make sure polltime is reached
-    if (!pushNotificationsFilesReady(folder->accountState()->account().data())) {
+    if (!pushNotificationsFilesReady(folder->accountState()->account())) {
         if (folder->msecSinceLastSync() < polltime) {
             qCInfo(lcFolderMan) << "Can not run etag job: Polltime not reached";
             return;
@@ -1105,7 +1121,7 @@ void FolderMan::slotForwardFolderSyncStateChange()
     }
 }
 
-void FolderMan::slotServerVersionChanged(Account *account)
+void FolderMan::slotServerVersionChanged(const OCC::AccountPtr &account)
 {
     // Pause folders if the server version is unsupported
     if (account->serverVersionUnsupported()) {
@@ -1257,7 +1273,9 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
         emit folderListChanged(_folderMap);
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     return folder;
 }
 
@@ -1277,10 +1295,12 @@ Folder *FolderMan::addFolderInternal(
 
     auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
 
+#ifdef Q_OS_WIN
     if (_navigationPaneHelper.showInExplorerNavigationPane() && folderDefinition.navigationPaneClsid.isNull()) {
         folder->setNavigationPaneClsid(QUuid::createUuid());
         folder->saveToSettings();
     }
+#endif
 
     qCInfo(lcFolderMan) << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
@@ -1414,7 +1434,9 @@ void FolderMan::removeFolder(Folder *folderToRemove)
         delete folderToRemove;
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
 
     emit folderListChanged(_folderMap);
 }
@@ -1528,7 +1550,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
         // wipe data
         QDir userFolder(f->path());
         if (userFolder.exists()) {
-            success = userFolder.removeRecursively();
+            success = FileSystem::removeRecursively(f->path());
             if (!success) {
                 qCWarning(lcFolderMan) << "Failed to remove existing folder " << f->path();
             } else {
@@ -1551,7 +1573,9 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
             delete f;
         }
 
+#ifdef Q_OS_WIN
         _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     }
 
     emit folderListChanged(_folderMap);
@@ -1565,11 +1589,10 @@ void FolderMan::setDirtyProxy()
         if (folder 
             && folder->accountState() 
             && folder->accountState()->account()
-            && folder->accountState()->account()->networkAccessManager()
-            && folder->accountState()->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
+            && folder->accountState()->account()->networkAccessManager()) {
             // Need to do this so we do not use the old determined system proxy
             const auto proxy = QNetworkProxy(QNetworkProxy::DefaultProxy);
-            folder->accountState()->account()->networkAccessManager()->setProxy(proxy);
+            folder->accountState()->account()->setProxyType(proxy.type());
         }
     }
 }
@@ -1620,7 +1643,7 @@ void FolderMan::leaveShare(const QString &localFile)
             _removeE2eeShareJob->start(true);
             connect(_removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [localFileNoTrailingSlash, this](int code, const QString &message) {   
                 if (code != 200) {
-                    qCDebug(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
+                    qCWarning(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
                     return;
                 }
                 slotLeaveShare(localFileNoTrailingSlash, _removeE2eeShareJob->folderToken());
@@ -2049,7 +2072,7 @@ void FolderMan::slotSetupPushNotifications(const Folder::Map &folderMap)
         // See if the account already provides the PushNotifications object and if yes connect to it.
         // If we can't connect at this point, the signals will be connected in slotPushNotificationsReady()
         // after the PushNotification object emitted the ready signal
-        slotConnectToPushNotifications(account.data());
+        slotConnectToPushNotifications(account);
         connect(account.data(), &Account::pushNotificationsReady, this, &FolderMan::slotConnectToPushNotifications, Qt::UniqueConnection);
     }
 }
@@ -2069,7 +2092,7 @@ void FolderMan::slotProcessFilesPushNotification(Account *account)
     }
 }
 
-void FolderMan::slotConnectToPushNotifications(Account *account)
+void FolderMan::slotConnectToPushNotifications(const AccountPtr &account)
 {
     const auto pushNotifications = account->pushNotifications();
 

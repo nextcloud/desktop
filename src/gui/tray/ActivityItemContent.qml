@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -8,6 +13,8 @@ import com.nextcloud.desktopclient
 
 RowLayout {
     id: root
+
+    required property color adaptiveTextColor
 
     property variant activityData: {{}}
 
@@ -136,6 +143,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Item {
@@ -152,6 +160,7 @@ RowLayout {
                 text: root.activityData.dateTime
                 font.pixelSize: Style.subLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Row {
@@ -223,6 +232,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             Item {
@@ -243,6 +253,7 @@ RowLayout {
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
                 visible: text !== ""
+                color: root.adaptiveTextColor
             }
 
             ActivityItemActions {

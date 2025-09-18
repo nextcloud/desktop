@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick
@@ -77,6 +68,21 @@ ColumnLayout {
 
             }
             UserStatusSelectorButton {
+                visible: userStatusSelectorModel.busyStatusSupported
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Busy
+                checkable: true
+                icon.source: userStatusSelectorModel.busyIcon
+                icon.color: "transparent"
+                text: qsTr("Busy")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Busy
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+                Layout.preferredHeight: topButtonsLayout.maxButtonHeight
+                onImplicitHeightChanged: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+                Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+            }
+            UserStatusSelectorButton {
                 checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
                 checkable: true
                 icon.source: userStatusSelectorModel.dndIcon
@@ -138,7 +144,7 @@ ColumnLayout {
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
-                text: userStatusSelectorModel.userStatusEmoji
+                text: "😀"
                 padding: 0
                 z: showBorder ? 2 : 0 // Make sure highlight is seen on top of text field
                 hoverEnabled: true
@@ -154,12 +160,21 @@ ColumnLayout {
 
                 contentItem: Label {
                     text: fieldButton.text
+                    opacity: 0.7
                     textFormat: Text.PlainText
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
 
                 onClicked: emojiDialog.open()
+            }
+
+            Binding {
+                when: userStatusSelectorModel.userStatusEmoji.length > 0
+                fieldButton {
+                    text: userStatusSelectorModel.userStatusEmoji
+                    contentItem.opacity: 1.0
+                }
             }
 
             Popup {

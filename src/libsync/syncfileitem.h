@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef SYNCFILEITEM_H
@@ -286,7 +278,6 @@ public:
     EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted; // The file is E2EE or the content of the directory should be E2EE
     EncryptionStatus _e2eEncryptionServerCapability = EncryptionStatus::NotEncrypted;
     EncryptionStatus _e2eEncryptionStatusRemote = EncryptionStatus::NotEncrypted;
-    QByteArray _e2eCertificateFingerprint;
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
@@ -351,6 +342,14 @@ public:
     /// if true, requests the file to be permanently deleted instead of moved to the trashbin
     /// only relevant for when `_instruction` is set to `CSYNC_INSTRUCTION_REMOVE`
     bool _wantsPermanentDeletion = false;
+
+    struct FolderQuota {
+        int64_t bytesUsed = -1;
+        int64_t bytesAvailable = -1;
+        static constexpr char availableBytesC[] = "quota-available-bytes";
+        static constexpr char usedBytesC[] = "quota-used-bytes";
+    };
+    FolderQuota _folderQuota;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

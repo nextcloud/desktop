@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Kevin Ottens <kevin.ottens@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "conflictsolver.h"
@@ -38,6 +29,16 @@ QString ConflictSolver::localVersionFilename() const
 QString ConflictSolver::remoteVersionFilename() const
 {
     return _remoteVersionFilename;
+}
+
+bool ConflictSolver::isBulkSolution() const
+{
+    return _isBulkSolution;
+}
+
+bool ConflictSolver::yesToAllRequested() const
+{
+    return _yesToAllRequested;
 }
 
 bool ConflictSolver::exec(ConflictSolver::Solution solution)
@@ -74,6 +75,26 @@ void ConflictSolver::setRemoteVersionFilename(const QString &remoteVersionFilena
     emit remoteVersionFilenameChanged();
 }
 
+void ConflictSolver::setIsBulkSolution(bool isBulkSolution)
+{
+    if (_isBulkSolution == isBulkSolution) {
+        return;
+    }
+
+    _isBulkSolution = isBulkSolution;
+    emit isBulkSolutionChanged();
+}
+
+void ConflictSolver::setYesToAllRequested(bool yesToAllRequested)
+{
+    if (_yesToAllRequested == yesToAllRequested) {
+        return;
+    }
+
+    _yesToAllRequested = yesToAllRequested;
+    emit yesToAllRequestedChanged();
+}
+
 bool ConflictSolver::deleteLocalVersion()
 {
     if (_localVersionFilename.isEmpty()) {
@@ -84,18 +105,14 @@ bool ConflictSolver::deleteLocalVersion()
         return false;
     }
 
-    QFileInfo info(_localVersionFilename);
-    const auto message = FileSystem::isDir(_localVersionFilename)
-        ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
-                                      : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
-    const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, QMessageBox::Yes, QMessageBox::No);
-    if (result != QMessageBox::Yes)
+    if (!confirmDeletion()) {
         return false;
+    }
 
     if (FileSystem::isDir(_localVersionFilename)) {
         return FileSystem::removeRecursively(_localVersionFilename);
     } else {
-        return QFile(_localVersionFilename).remove();
+        return FileSystem::remove(_localVersionFilename);
     }
 }
 
@@ -159,6 +176,36 @@ bool ConflictSolver::overwriteRemoteVersion()
         QMessageBox::warning(_parentWidget, tr("Error"), tr("Moving file failed:\n\n%1").arg(error));
         return false;
     }
+}
+
+bool ConflictSolver::confirmDeletion()
+{
+    if (_yesToAllRequested) {
+        return true;
+    }
+
+    QMessageBox::StandardButtons buttons = QMessageBox::Yes | QMessageBox::No;
+    if (_isBulkSolution) {
+        buttons |= QMessageBox::YesToAll;
+    }
+
+    QFileInfo info(_localVersionFilename);
+    const auto message = FileSystem::isDir(_localVersionFilename)
+        ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
+                                    : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName());
+    const auto result = QMessageBox::question(_parentWidget, tr("Confirm deletion"), message, buttons);
+    switch (result)
+    {
+        case QMessageBox::YesToAll:
+            setYesToAllRequested(true);
+            return true;
+        case QMessageBox::Yes:
+            return true;
+        default:
+            // any other button pressed
+            return false;
+    }
+    return false;
 }
 
 } // namespace OCC

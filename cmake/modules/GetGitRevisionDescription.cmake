@@ -20,6 +20,9 @@
 #
 # Requires CMake 2.6 or newer (uses the 'function' command)
 #
+# SPDX-FileCopyrightText: 2009-2010 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
+# SPDX-License-Identifier: BSL-1.0
+#
 # Original Author:
 # 2009-2010 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
 # http://academic.cleardefinition.com

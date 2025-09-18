@@ -1,4 +1,7 @@
 /*
+ * SPDX-FileCopyrightText: 1996 Bob Jenkins
+ * SPDX-License-Identifier: CC0-1.0
+ *
  * Tests are taken form lookup2.c and lookup8.c
  * by Bob Jenkins, December 1996, Public Domain.
  *

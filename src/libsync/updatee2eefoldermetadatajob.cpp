@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "updatee2eefoldermetadatajob.h"
@@ -77,7 +68,7 @@ PropagatorJob::JobParallelism UpdateE2eeFolderMetadataJob::parallelism() const
 void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCode, const QString &message)
 {
     if (httpReturnCode != 200) {
-        qCDebug(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata.";
+        qCWarning(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata.";
         _item->_status = SyncFileItem::FatalError;
         _item->_errorString = message;
         emit finished(SyncFileItem::FatalError);
@@ -108,7 +99,7 @@ void UpdateE2eeFolderMetadataJob::slotUpdateMetadataFinished(int httpReturnCode,
     const auto itemStatus = httpReturnCode != 200 ? SyncFileItem::FatalError : SyncFileItem::Success;
     if (httpReturnCode != 200) {
         _item->_errorString = message;
-        qCDebug(lcUpdateFileDropMetadataJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << httpReturnCode << message;
+        qCWarning(lcUpdateFileDropMetadataJob) << "Update metadata error for folder" << _encryptedFolderMetadataHandler->folderId() << "with error" << httpReturnCode << message;
     } else {
         qCDebug(lcUpdateFileDropMetadataJob) << "Uploading of the metadata success, Encrypting the file";
     }

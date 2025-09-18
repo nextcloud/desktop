@@ -1,4 +1,7 @@
-
+/*
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #include "wordlist.h"
 #include <openssl/rand.h>
 

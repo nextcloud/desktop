@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2017 ownCloud GmbH
+ * SPDX-License-Identifier: CC0-1.0
  *
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <QtTest>
@@ -76,7 +79,7 @@ private slots:
                 fakeFolder.syncEngine().journal()->clearFileTable(); // That's what Folder is doing
             });
 
-        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
+        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : static_cast<FileModifier&>(fakeFolder.localModifier());
         const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
         for (const auto &key : childrenKeys) {
             modifier.remove(key);
@@ -118,7 +121,7 @@ private slots:
                 callback(false);
             });
 
-        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
+        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : static_cast<FileModifier&>(fakeFolder.localModifier());
         const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
         for (const auto &key : childrenKeys) {
             modifier.remove(key);

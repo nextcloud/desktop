@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <QDir>
@@ -158,11 +149,14 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (Theme::instance()->disableVirtualFilesSyncFolder() || !Theme::instance()->showVirtualFilesOption()
-#ifndef BUILD_FILE_PROVIDER_MODULE
-        || bestAvailableVfsMode() == Vfs::Off
+    if (Theme::instance()->disableVirtualFilesSyncFolder()
+            || !(Theme::instance()->showVirtualFilesOption()
+#ifdef BUILD_FILE_PROVIDER_MODULE
+                 || Mac::FileProvider::fileProviderAvailable()
+#else
+                 && bestAvailableVfsMode() != Vfs::Off
 #endif
-    ) {
+    )) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.

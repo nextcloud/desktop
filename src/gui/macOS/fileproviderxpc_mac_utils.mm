@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "fileproviderxpc_mac_utils.h"
@@ -35,15 +26,16 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     dispatch_group_enter(group);
 
     // Set up connections for each domain
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error){
+    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
         if (error != nil) {
-            qCWarning(lcFileProviderXPCUtils) << "Error getting domains" << error;
+            qCWarning(lcFileProviderXPCUtils) << "Error getting file provider domains" << error;
             dispatch_group_leave(group);
             return;
         }
 
         for (NSFileProviderDomain *const domain in domains) {
-            qCInfo(lcFileProviderXPCUtils) << "Got domain" << domain.identifier;
+            qCInfo(lcFileProviderXPCUtils) << "Found file provider domain" << domain.identifier;
+
             NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
             if (manager) {
                 [managers addObject:manager];
@@ -58,7 +50,7 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 
     if (managers.count == 0) {
-        qCWarning(lcFileProviderXPCUtils) << "No domains found";
+        qCWarning(lcFileProviderXPCUtils) << "No file provider domains found!";
     }
 
     return managers.copy;
@@ -232,23 +224,28 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
     return remoteServiceObject;
 }
 
-NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *const clientCommService)
+NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> *const clientCommService)
 {
     Q_ASSERT(clientCommService != nil);
-    __block NSString *extensionNcAccount;
+    __block NSString *domainIdentifier;
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
-    [clientCommService getExtensionAccountIdWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
+
+    [clientCommService getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
         if (error != nil) {
-            qCWarning(lcFileProviderXPCUtils) << "Error getting extension account id" << error;
+            qCWarning(lcFileProviderXPCUtils) << "Error getting domain id from file provider service" << error;
             dispatch_group_leave(group);
+
             return;
         }
-        extensionNcAccount = [[NSString alloc] initWithString:extensionAccountId];
+
+        domainIdentifier = [[NSString alloc] initWithString:extensionAccountId];
         dispatch_group_leave(group);
     }];
+
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    return extensionNcAccount;
+
+    return domainIdentifier;
 }
 
 QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections)
@@ -261,19 +258,26 @@ QHash<QString, void*> processClientCommunicationConnections(NSArray<NSXPCConnect
         configureFileProviderConnection(connection);
 
         const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)getRemoteServiceObject(connection, remoteObjectInterfaceProtocol);
+
         if (clientCommService == nil) {
             qCWarning(lcFileProviderXPCUtils) << "Client communication service is nil";
             continue;
         }
+
         [clientCommService retain];
 
-        const auto extensionNcAccount = getExtensionAccountId(clientCommService);
-        if (extensionNcAccount == nil) {
-            qCWarning(lcFileProviderXPCUtils) << "Extension account id is nil";
+        const auto domainIdentifier = getFileProviderDomainIdentifier(clientCommService);
+
+        if (domainIdentifier == nil) {
+            qCWarning(lcFileProviderXPCUtils) << "Could not retrieve domain id from file provider service";
             continue;
         }
-        qCInfo(lcFileProviderXPCUtils) << "Got extension account id" << extensionNcAccount.UTF8String;
-        clientCommServices.insert(QString::fromNSString(extensionNcAccount), clientCommService);
+
+        qCInfo(lcFileProviderXPCUtils) << "Got domain id"
+                                       << domainIdentifier.UTF8String
+                                       << "from file provider service";
+
+        clientCommServices.insert(QString::fromNSString(domainIdentifier), clientCommService);
     }
 
     return clientCommServices;

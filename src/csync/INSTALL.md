@@ -1,3 +1,7 @@
+<!--
+  - SPDX-FileCopyrightText: 2014 ownCloud GmbH
+  - SPDX-License-Identifier: LGPL-2.1-or-later
+-->
 # How to build from source
 
 ## Requirements

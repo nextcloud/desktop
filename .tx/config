@@ -13,4 +13,3 @@ file_filter = nextcloud.client-desktop/<lang>_translation.desktop
 source_file = mirall.desktop.in
 source_lang = en
 type        = DESKTOP
-

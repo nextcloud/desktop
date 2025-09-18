@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -60,6 +51,7 @@ public:
         Online,
         DoNotDisturb,
         Away,
+        Busy,
         Offline,
         Invisible
     };
@@ -70,11 +62,11 @@ public:
     UserStatus(const QString &id, const QString &message, const QString &icon,
         OnlineStatus state, bool messagePredefined, const Optional<ClearAt> &clearAt = {});
 
-    Q_REQUIRED_RESULT QString id() const;
-    Q_REQUIRED_RESULT QString message() const;
-    Q_REQUIRED_RESULT QString icon() const;
-    Q_REQUIRED_RESULT OnlineStatus state() const;
-    Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
+    [[nodiscard]] QString id() const;
+    [[nodiscard]] QString message() const;
+    [[nodiscard]] QString icon() const;
+    [[nodiscard]] OnlineStatus state() const;
+    [[nodiscard]] Optional<ClearAt> clearAt() const;
 
     [[nodiscard]] QString clearAtDisplayString() const;
 
@@ -85,9 +77,9 @@ public:
     void setMessagePredefined(bool value);
     void setClearAt(const Optional<ClearAt> &dateTime);
 
-    Q_REQUIRED_RESULT bool messagePredefined() const;
+    [[nodiscard]] bool messagePredefined() const;
 
-    Q_REQUIRED_RESULT QUrl stateIcon() const;
+    [[nodiscard]] QUrl stateIcon() const;
 
 private:
     QString _id;
@@ -126,6 +118,8 @@ public:
     virtual void clearMessage() = 0;
 
     [[nodiscard]] virtual UserStatus userStatus() const = 0;
+
+    [[nodiscard]] virtual bool supportsBusyStatus() const = 0;
 
 signals:
     void userStatusFetched(const OCC::UserStatus &userStatus);

@@ -69,6 +69,13 @@
 
 
 #=============================================================================
+# SPDX-FileCopyrightText: 2014 Alex Merry <alex.merry@kde.org>
+# SPDX-FileCopyrightText: 2014 Ralf Habacker <ralf.habacker@freenet.de>
+# SPDX-FileCopyrightText: 2006-2009 Alexander Neundorf, <neundorf@kde.org>
+# SPDX-FileCopyrightText: 2006, 2007, Laurent Montel, <montel@kde.org>
+# SPDX-FileCopyrightText: 2007 Matthias Kretz <kretz@kde.org>
+# SPDX-License-Identifier: BSD-3-Clause
+#
 # Copyright 2014 Alex Merry <alex.merry@kde.org>
 # Copyright 2014 Ralf Habacker <ralf.habacker@freenet.de>
 # Copyright 2006-2009 Alexander Neundorf, <neundorf@kde.org>
@@ -405,7 +412,7 @@ macro(_ecm_add_app_icon_categorize_icons icons type known_sizes)
 
                     if (offset GREATER -1)
                         list(APPEND ${type}_at_${size}px "${icon_full}")
-                    elseif()
+                    else()
                         message(STATUS "not found ${type}_at_${size}px ${icon_full}")
                     endif()
                 endif()

@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2020 ownCloud GmbH
+ * SPDX-License-Identifier: CC0-1.0
  *
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include "syncenginetestutils.h"
@@ -15,11 +18,10 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QCryptographicHash>
 
 #include <memory>
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
-#endif
 
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
@@ -52,11 +54,12 @@ void DiskFileModifier::remove(const QString &relativePath)
     if (fi.isFile()) {
         QVERIFY(_rootDir.remove(relativePath));
     } else {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-        const auto pathToDelete = fi.filePath().toStdWString();
-        std::filesystem::permissions(pathToDelete, std::filesystem::perms::owner_exec, std::filesystem::perm_options::add);
-        QVERIFY(std::filesystem::remove_all(pathToDelete));
-#endif
+        const auto pathToDelete = fi.filePath();
+        const auto result = OCC::FileSystem::removeRecursively(pathToDelete);
+        if (!result) {
+            qDebug() << "delete failed for:" << pathToDelete;
+            QVERIFY(result);
+        }
     }
 }
 
@@ -73,7 +76,9 @@ void DiskFileModifier::insert(const QString &relativePath, qint64 size, char con
     file.close();
     // Set the mtime 30 seconds in the past, for some tests that need to make sure that the mtime differs.
     OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc().addSecs(-30)));
-    QCOMPARE(file.size(), size);
+    if (file.size() != size) {
+        QCOMPARE(file.size(), size);
+    }
 }
 
 void DiskFileModifier::setContents(const QString &relativePath, char contentChar)
@@ -103,7 +108,11 @@ void DiskFileModifier::mkdir(const QString &relativePath)
 void DiskFileModifier::rename(const QString &from, const QString &to)
 {
     QVERIFY(_rootDir.exists(from));
-    QVERIFY(_rootDir.rename(from, to));
+    const auto result = _rootDir.rename(from, to);
+    if (!result) {
+        qDebug() << "failed to rename from:" << from << "to:" << to;
+        QVERIFY(result);
+    }
 }
 
 void DiskFileModifier::setModTime(const QString &relativePath, const QDateTime &modTime)
@@ -250,10 +259,17 @@ void FileInfo::setE2EE(const QString &relativePath, const bool enable)
     file->isEncrypted = enable;
 }
 
-FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
+void FileInfo::setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const EtagsAction invalidateEtags)
+{
+    const auto file = find(relativePath, invalidateEtags);
+    Q_ASSERT(file);
+    file->folderQuota = newQuota;
+}
+
+FileInfo *FileInfo::find(PathComponents pathComponents, const EtagsAction invalidateEtags)
 {
     if (pathComponents.isEmpty()) {
-        if (invalidateEtags) {
+        if (invalidateEtags == EtagsAction::Invalidate) {
             etag = generateEtag();
         }
         return this;
@@ -271,7 +287,7 @@ FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEta
     return nullptr;
 }
 
-FileInfo FileInfo::findRecursive(PathComponents pathComponents, const bool invalidateEtags)
+FileInfo FileInfo::findRecursive(PathComponents pathComponents, const EtagsAction invalidateEtags)
 {
     auto result = find({pathComponents.takeFirst()}, invalidateEtags);
     if (!result) {
@@ -341,7 +357,7 @@ void FileInfo::fixupParentPathRecursively()
 
 FileInfo *FileInfo::findInvalidatingEtags(PathComponents pathComponents)
 {
-    return find(std::move(pathComponents), true);
+    return find(std::move(pathComponents), EtagsAction::Invalidate);
 }
 
 FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -400,7 +416,16 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
-        xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.folderQuota.bytesAvailable));
+        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.folderQuota.bytesUsed));
+        xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
+        if (fileInfo.isShared) {
+            if (fileInfo.downloadForbidden) {
+                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"value\":false}]"));
+            } else {
+                xml.writeTextElement(ocUri, QStringLiteral("share-attributes"), QStringLiteral("[{\"scope\":\"permissions\",\"key\":\"download\",\"value\":true}]"));
+            }
+        }
         xml.writeTextElement(ocUri, QStringLiteral("share-permissions"), QString::number(static_cast<int>(OCC::SharePermissions(OCC::SharePermissionRead |
                                                                                                                                 OCC::SharePermissionUpdate |
                                                                                                                                 OCC::SharePermissionCreate |
@@ -504,7 +529,7 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.isEmpty() ? ' ' : putPayload.at(0));
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
     return fileInfo;
 }
 
@@ -526,19 +551,21 @@ void FakePutReply::abort()
     emit finished();
 }
 
-FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, QObject *parent)
+FakePutMultiFileReply::FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, const QString &serverVersion, QObject *parent)
     : FakeReply { parent }
+    , _serverVersion(serverVersion)
 {
     setRequest(request);
     setUrl(request.url());
     setOperation(op);
     open(QIODevice::ReadOnly);
-    _allFileInfo = performMultiPart(remoteRootFileInfo, request, putPayload, contentType);
+    _allFileInfo = performMultiPart(remoteRootFileInfo, request, putPayload, contentType, _serverVersion);
     QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 }
 
-QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType)
+QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType, const QString &serverVersion)
 {
+    Q_UNUSED(request)
     QVector<FileInfo *> result;
 
     auto stringPutPayload = QString::fromUtf8(putPayload);
@@ -558,8 +585,55 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
         }
         const auto fileName = allHeaders[QStringLiteral("x-file-path")];
         const auto modtime = allHeaders[QByteArrayLiteral("x-file-mtime")].toLongLong();
+        const auto expectedMd5Checksum = allHeaders[QStringLiteral("x-file-md5")];
+        const auto standardChecksum = allHeaders[QStringLiteral("oc-checksum")];
         Q_ASSERT(!fileName.isEmpty());
         Q_ASSERT(modtime > 0);
+
+        auto components = serverVersion.split('.');
+        const auto serverIntVersion = OCC::Account::makeServerVersion(components.value(0).toInt(),
+                                                                      components.value(1).toInt(),
+                                                                      components.value(2).toInt());
+
+        const auto md5ChecksumMandatory = serverIntVersion < OCC::Account::makeServerVersion(32, 0, 0);
+
+        if (md5ChecksumMandatory) {
+            Q_ASSERT(!expectedMd5Checksum.isEmpty());
+        } else {
+            Q_ASSERT(expectedMd5Checksum.isEmpty());
+        }
+        Q_ASSERT(!standardChecksum.isEmpty());
+
+        const auto standardChecksumComponents = standardChecksum.split(':');
+        Q_ASSERT(standardChecksumComponents.size() == 2);
+        auto standardHashAlgorithm = QCryptographicHash::Algorithm::Sha1;
+        const auto standardHashAlgorithmString = standardChecksumComponents.at(0);
+        if (standardHashAlgorithmString == QStringLiteral("MD5")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Md5;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA1")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha1;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA256")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha256;
+        } else if (standardHashAlgorithmString == QStringLiteral("SHA3_256")) {
+            standardHashAlgorithm = QCryptographicHash::Algorithm::Sha3_256;
+        } else if (standardHashAlgorithmString == QStringLiteral("Adler32")) {
+            Q_ASSERT(false);
+        }
+
+        if (md5ChecksumMandatory) {
+            QCryptographicHash md5SumAlgorithm{QCryptographicHash::Algorithm::Md5};
+
+            md5SumAlgorithm.addData(onePartBody.toLatin1());
+            const auto computedMd5Checksum = md5SumAlgorithm.result().toHex();
+            Q_ASSERT(expectedMd5Checksum == computedMd5Checksum);
+        }
+
+        QCryptographicHash standardSumAlgorithm{standardHashAlgorithm};
+
+        standardSumAlgorithm.addData(onePartBody.toLatin1());
+        const auto computedStandardChecksum = standardSumAlgorithm.result().toHex();
+        Q_ASSERT(standardChecksumComponents.at(1) == computedStandardChecksum);
+
         FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
         if (fileInfo) {
             fileInfo->size = onePartBody.size();
@@ -568,8 +642,8 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
             // Assume that the file is filled with the same character
             fileInfo = remoteRootFileInfo.create(fileName, onePartBody.size(), onePartBody.at(0).toLatin1());
         }
-        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("x-oc-mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
+        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(modtime);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
         result.push_back(fileInfo);
     }
     return result;
@@ -896,7 +970,7 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         fileInfo = remoteRootFileInfo.create(fileName, size, payload);
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/FileInfo::EtagsAction::Invalidate);
 
     return fileInfo;
 }
@@ -1113,7 +1187,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
             reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
         } else if (verb == QLatin1String("POST") || op == QNetworkAccessManager::PostOperation) {
             if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
-                reply = new FakePutMultiFileReply { info, op, newRequest, contentType, outgoingData->readAll(), this };
+                reply = new FakePutMultiFileReply { info, op, newRequest, contentType, outgoingData->readAll(), _serverVersion, this };
             }
         } else if (verb == QLatin1String("LOCK") || verb == QLatin1String("UNLOCK")) {
             reply = new FakeFileLockReply{info, op, newRequest, this};
@@ -1138,6 +1212,11 @@ QNetworkReply * FakeQNAM::overrideReplyWithError(QString fileName, QNetworkAcces
     return reply;
 }
 
+void FakeQNAM::setServerVersion(const QString &version)
+{
+    _serverVersion = version;
+}
+
 FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
     : _localModifier(_tempDir.path())
 {
@@ -1159,7 +1238,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
     _account->setCredentials(new FakeCredentials { _fakeQnam });
     _account->setDavDisplayName(QStringLiteral("fakename"));
-    _account->setServerVersion(QStringLiteral("10.0.0"));
+    _account->setServerVersion(_serverVersion);
+    _fakeQnam->setServerVersion(_serverVersion);
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
     _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
@@ -1280,6 +1360,17 @@ void FakeFolder::enableEnforceWindowsFileNameCompatibility()
             }
         }
     });
+}
+
+void FakeFolder::setServerVersion(const QString &version)
+{
+    if (_serverVersion == version) {
+        return;
+    }
+
+    _serverVersion = version;
+    _account->setServerVersion(_serverVersion);
+    _fakeQnam->setServerVersion(_serverVersion);
 }
 
 FileInfo FakeFolder::currentLocalState()

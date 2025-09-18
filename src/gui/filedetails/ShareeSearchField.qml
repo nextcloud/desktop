@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick
@@ -161,7 +152,6 @@ TextField {
         id: suggestionsPopup
 
         width: root.width
-        height: 100
         y: root.height
 
         contentItem: ScrollView {
@@ -169,6 +159,11 @@ TextField {
 
             clip: true
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: shareeListView.contentHeight > shareeListView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+            // need to take the popup's padding in account for the max height
+            // remove bottomPadding twice to leave some space between the window border
+            implicitHeight: Math.min(Window.height - parent.y - parent.topPadding - parent.bottomPadding * 2, contentHeight)
 
             ListView {
                 id: shareeListView

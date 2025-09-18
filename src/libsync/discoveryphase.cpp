@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "discoveryphase.h"
@@ -180,11 +172,10 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
             result = true;
             oldEtag = (*it)->_etag;
         } else {
-            if (!(instruction == CSYNC_INSTRUCTION_REMOVE
-                    // re-creation of virtual files count as a delete
-                    || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                    || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)))
-            {
+            if (!(instruction == CSYNC_INSTRUCTION_REMOVE ||
+                  instruction == CSYNC_INSTRUCTION_IGNORE ||
+                  ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW) ||// re-creation of virtual files count as a delete
+                  ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW))) {
                 qCWarning(lcDiscovery) << "ENFORCE(FAILING)" << originalPath;
                 qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
                 qCWarning(lcDiscovery) << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
@@ -249,10 +240,10 @@ void DiscoveryPhase::markPermanentDeletionRequests()
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
-    ENFORCE(!_currentRootJob);
+    Q_ASSERT(!_currentRootJob);
     connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
-        ENFORCE(_currentRootJob == sender());
+        Q_ASSERT(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);
@@ -397,11 +388,13 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
                                                          const QString &path,
                                                          const QString &remoteRootFolderPath,
                                                          const QSet<QString> &topLevelE2eeFolderPaths,
+                                                         SyncFileItem::EncryptionStatus parentEncryptionStatus,
                                                          QObject *parent)
     : QObject(parent)
     , _subPath(remoteRootFolderPath + path)
     , _remoteRootFolderPath(remoteRootFolderPath)
     , _account(account)
+    , _encryptionStatusCurrent{parentEncryptionStatus}
     , _topLevelE2eeFolderPaths(topLevelE2eeFolderPaths)
 {
     Q_ASSERT(!_remoteRootFolderPath.isEmpty());
@@ -417,6 +410,8 @@ void DiscoverySingleDirectoryJob::start()
           << "getlastmodified"
           << "getcontentlength"
           << "getetag"
+          << "quota-available-bytes"
+          << "quota-used-bytes"
           << "http://owncloud.org/ns:size"
           << "http://owncloud.org/ns:id"
           << "http://owncloud.org/ns:fileid"
@@ -425,7 +420,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums"
           << "http://nextcloud.org/ns:is-encrypted"
-          << "http://nextcloud.org/ns:metadata-files-live-photo";
+          << "http://nextcloud.org/ns:metadata-files-live-photo"
+          << "http://nextcloud.org/ns:share-attributes";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
@@ -481,11 +477,6 @@ SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::currentEncryptionSta
 SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::requiredEncryptionStatus() const
 {
     return _encryptionStatusRequired;
-}
-
-QByteArray DiscoverySingleDirectoryJob::certificateSha256Fingerprint() const
-{
-    return _e2eCertificateFingerprint;
 }
 
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
@@ -589,6 +580,14 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
     if (result.isDirectory && map.contains("size")) {
         result.sizeOfFolder = map.value("size").toInt();
     }
+
+    if (result.isDirectory && map.contains(FolderQuota::usedBytesC)) {
+        result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
+    }
+
+    if (result.isDirectory && map.contains(FolderQuota::availableBytesC)) {
+        result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
+    }
 }
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
@@ -597,7 +596,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            auto perm = RemotePermissions::fromServerString(map.value("permissions"),
+            const auto perm = RemotePermissions::fromServerString(map.value("permissions"),
                                                             _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                                             map);
             emit firstDirectoryPermissions(perm);
@@ -617,17 +616,30 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _fileId = map.value("id").toUtf8();
         }
         if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
-            _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::Encrypted;
+            _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
             Q_ASSERT(!_fileId.isEmpty());
         }
         if (map.contains("size")) {
             _size = map.value("size").toInt();
+        }
+
+        // all folders will contain both
+        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
+            _folderQuota = {map.value(FolderQuota::usedBytesC).toLongLong(),
+                            map.value(FolderQuota::availableBytesC).toLongLong()};
+            emit setfolderQuota(_folderQuota);
         }
     } else {
         RemoteInfo result;
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
+        if (map.contains(FolderQuota::usedBytesC)) {
+            result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
+        }
+        if (map.contains(FolderQuota::availableBytesC))     {
+            result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
+        }
         propertyMapToRemoteInfo(map,
                                 _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                 result);
@@ -661,36 +673,34 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
-    } else if (isE2eEncrypted() && !_account->capabilities().clientSideEncryptionAvailable()) {
-        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
-        emit finished(_results);
     }
     emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);
     deleteLater();
 }
 
-void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
+void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *reply)
 {
-    const auto contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
     const auto invalidContentType = !contentType.contains("application/xml; charset=utf-8") &&
                                     !contentType.contains("application/xml; charset=\"utf-8\"") &&
                                     !contentType.contains("text/xml; charset=utf-8") &&
                                     !contentType.contains("text/xml; charset=\"utf-8\"");
-    const auto httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    auto msg = r->errorString();
+    const auto httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    auto errorString = _lsColJob->errorString();
 
-    qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
+    qCWarning(lcDiscovery) << "LSCOL job error" << reply->errorString() << httpCode << reply->error();
 
-    if (r->error() == QNetworkReply::NoError && invalidContentType) {
-        msg = tr("Server error: PROPFIND reply is not XML formatted!");
+    if (reply->error() == QNetworkReply::NoError && invalidContentType) {
+        errorString = tr("The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”");
+        qCWarning(lcDiscovery) << "Server error: PROPFIND reply is not XML formatted!";
     }
 
-    if (r->error() == QNetworkReply::ContentAccessDenied) {
+    if (reply->error() == QNetworkReply::ContentAccessDenied) {
         emit _account->termsOfServiceNeedToBeChecked();
     }
 
-    emit finished(HttpError{ httpCode, msg });
+    emit finished(HttpError{ httpCode, errorString });
     deleteLater();
 }
 
@@ -756,9 +766,11 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
         _isFileDropDetected = e2EeFolderMetadata->isFileDropPresent();
         _encryptedMetadataNeedUpdate = e2EeFolderMetadata->encryptedMetadataNeedUpdate();
-        _e2eCertificateFingerprint = e2EeFolderMetadata->certificateSha256Fingerprint();
         _encryptionStatusRequired = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion());
         _encryptionStatusCurrent = e2EeFolderMetadata->existingMetadataEncryptionStatus();
+
+        Q_ASSERT(_encryptionStatusCurrent != SyncFileItem::EncryptionStatus::Encrypted);
+        Q_ASSERT(_encryptionStatusCurrent != SyncFileItem::EncryptionStatus::NotEncrypted);
 
         const auto encryptedFiles = e2EeFolderMetadata->files();
 

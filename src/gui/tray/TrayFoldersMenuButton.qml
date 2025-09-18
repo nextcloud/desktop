@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 pragma NativeMethodBehavior: AcceptThisObject
 import QtQuick
@@ -78,33 +69,6 @@ HeaderButton {
 
             implicitWidth: openLocalFolderButtonCaretIconLoader.active ? openLocalFolderButtonIcon.width + openLocalFolderButtonCaretIconLoader.width : openLocalFolderButtonIcon.width
             implicitHeight: openLocalFolderButtonIcon.height
-
-            Image {
-                id: folderStateIndicator
-                visible: root.currentUser.hasLocalFolder
-                source: root.currentUser.isConnected ? Style.stateOnlineImageSource : Style.stateOfflineImageSource
-                cache: false
-
-                anchors.bottom: openLocalFolderButtonIcon.bottom
-                anchors.bottomMargin: Style.trayFoldersMenuButtonStateIndicatorBottomOffset
-                anchors.right: openLocalFolderButtonIcon.right
-                sourceSize.width: Style.folderStateIndicatorSize
-                sourceSize.height: Style.folderStateIndicatorSize
-
-                Accessible.role: Accessible.Indicator
-                Accessible.name: root.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
-                z: 1
-
-                Rectangle {
-                    id: folderStateIndicatorBackground
-                    width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
-                    height: width
-                    color: root.parentBackgroundColor
-                    anchors.centerIn: parent
-                    radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                    z: -1
-                }
-            }
 
             Image {
                 id: openLocalFolderButtonIcon

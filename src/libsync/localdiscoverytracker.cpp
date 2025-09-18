@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Christian Kamm <mail@ckamm.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2018 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "localdiscoverytracker.h"
@@ -75,7 +67,7 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_renameTarget;
     } else {
         _localDiscoveryPaths.insert(item->_file.toUtf8());
-        qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
+        qCWarning(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
     }
 }
 
@@ -89,7 +81,7 @@ void LocalDiscoveryTracker::slotSyncFinished(bool success)
         // C++17: Could use std::set::merge().
         _localDiscoveryPaths.insert(
             _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
-        qCDebug(lcLocalDiscoveryTracker) << "sync failed, keeping last sync's local discovery path list";
+        qCWarning(lcLocalDiscoveryTracker) << "sync failed, keeping last sync's local discovery path list";
     }
     _previousLocalDiscoveryPaths.clear();
 }

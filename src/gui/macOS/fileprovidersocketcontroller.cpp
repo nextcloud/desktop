@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "fileprovidersocketcontroller.h"
@@ -17,7 +8,11 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+#include "csync/csync_exclude.h"
+#include "libsync/configfile.h"
+
 #include "accountmanager.h"
+#include "common/utility.h"
 #include "fileproviderdomainmanager.h"
 
 namespace OCC {
@@ -99,8 +94,9 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         }
 
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
+        sendIgnoreList();
         sendAccountDetails();
-        reportSyncState("SYNC_PREPARING");
+        reportSyncState("SYNC_FINISHED");
         return;
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
         reportSyncState(argument);
@@ -197,7 +193,7 @@ void FileProviderSocketController::sendNotAuthenticated() const
     const auto account = _accountState->account();
     Q_ASSERT(account);
 
-    qCDebug(lcFileProviderSocketController) << "About to send not authenticated message to file provider extension"
+    qCWarning(lcFileProviderSocketController) << "About to send not authenticated message to file provider extension"
                                             << account->displayName();
 
     const auto message = QString(QStringLiteral("ACCOUNT_NOT_AUTHENTICATED"));
@@ -237,10 +233,31 @@ void FileProviderSocketController::sendAccountDetails() const
 
     // We cannot use colons as separators here due to "https://" in the url
     const auto message = QString(QStringLiteral("ACCOUNT_DETAILS:") +
+                                 Utility::userAgentString() + "~" +
                                  accountUser + "~" +
                                  accountUserId + "~" +
                                  accountUrl + "~" +
                                  accountPassword);
+    sendMessage(message);
+}
+
+void FileProviderSocketController::sendIgnoreList() const
+{
+    if (!_accountState) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to send ignore list, stopping";
+        return;
+    }
+
+    ExcludedFiles ignoreList;
+    ConfigFile::setupDefaultExcludeFilePaths(ignoreList);
+    ignoreList.reloadExcludeFiles();
+    const auto patterns = ignoreList.activeExcludePatterns();
+    if (patterns.isEmpty()) {
+        qCWarning(lcFileProviderSocketController) << "No active ignore list patterns, not sending.";
+        return;
+    }
+    // Try to come up with a separator that won't clash. I am hoping this is it
+    const auto message = QString(QStringLiteral("IGNORE_LIST:") + patterns.join("_~IL$~_"));
     sendMessage(message);
 }
 

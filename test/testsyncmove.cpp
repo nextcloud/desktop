@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
- *
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2017 ownCloud, Inc.
+ * SPDX-License-Identifier: CC0-1.0
+ * 
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <QtTest>
@@ -326,7 +329,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("external-storage");
         auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
         externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRMG"));
         QVERIFY(fakeFolder.syncOnce());
 
         OperationCounter operationCounter;
@@ -812,7 +815,7 @@ private slots:
     {
         QFETCH(bool, local);
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
-        auto &modifier = local ? fakeFolder.localModifier() : fakeFolder.remoteModifier();
+        auto &modifier = local ? static_cast<FileModifier&>(fakeFolder.localModifier()) : fakeFolder.remoteModifier();
 
         modifier.mkdir("FolA");
         modifier.mkdir("FolA/FolB");
@@ -1159,7 +1162,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("FolA");
         auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
         groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
         fakeFolder.remoteModifier().mkdir("FolA/FolB");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
@@ -1196,7 +1199,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("FolA");
         auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
         groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
         fakeFolder.remoteModifier().mkdir("FolA/FolB");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
         fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
@@ -1316,6 +1319,109 @@ private slots:
         QCOMPARE(counter.nMOVE, 2);
         QCOMPARE(counter.nMKCOL, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRenameComplexScenarioNoRecordLeak()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().mkdir("0");
+        fakeFolder.remoteModifier().mkdir("0/00 without file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a without file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/aa with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/00 with file");
+        fakeFolder.remoteModifier().mkdir("0/00 without file/project/new without file");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/00 with file/test.md");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/a/a with file/test.md");
+        fakeFolder.remoteModifier().insert("0/00 without file/project/a/aa with file/test.md");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto itemsCounter = 0;
+        auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+        QVERIFY(dbResult);
+        QCOMPARE(itemsCounter, 12);
+
+        fakeFolder.remoteModifier().rename("0/00 without file/project", "project tests");
+        fakeFolder.remoteModifier().rename("project tests/a", "project tests/a empty");
+        fakeFolder.remoteModifier().rename("project tests/a empty/a with file", "project tests/a with file");
+        fakeFolder.remoteModifier().rename("project tests/a empty/a without file", "project tests/a without file");
+        fakeFolder.remoteModifier().rename("project tests/a empty/aa with file", "project tests/aa with file");
+        fakeFolder.remoteModifier().rename("project tests/new without file", "project tests/new without file");
+        fakeFolder.remoteModifier().rename("0/00 without file", "project tests/00 without file");
+        fakeFolder.remoteModifier().rename("0", "project tests/z 0 empty");
+
+        connect(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted, this, [&fakeFolder] () {
+            auto itemsCounter = 0;
+            auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+            QVERIFY(dbResult);
+            if (itemsCounter > 12) {
+                QVERIFY(itemsCounter <= 12);
+            }
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        itemsCounter = 0;
+        dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
+
+        QVERIFY(dbResult);
+        QCOMPARE(itemsCounter, 12);
+    }
+
+    void testRenameFileThatExistsInMultiplePaths()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QObject parent;
+
+        fakeFolder.setServerOverride([&parent](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::CustomOperation
+                && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
+                return new FakeErrorReply(op, request, &parent, 507);
+            }
+            return nullptr;
+        });
+
+        fakeFolder.remoteModifier().mkdir("FolderA");
+        fakeFolder.remoteModifier().mkdir("FolderA/folderParent");
+        fakeFolder.remoteModifier().insert("FolderA/folderParent/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderB");
+        fakeFolder.remoteModifier().mkdir("FolderB/folderChild");
+        fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderC");
+
+        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+        const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
+        const auto fileAInFolderAEtag = fileAFileInfo->etag;
+        const auto duplicatedFileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+
+        duplicatedFileAFileInfo->fileId = fileAInFolderAFolderFileId;
+        duplicatedFileAFileInfo->etag = fileAInFolderAEtag;
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().rename("FolderA/folderParent/FileA.txt", "FolderC/FileA.txt");
+
+        qDebug() << fakeFolder.currentLocalState();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(!fakeFolder.syncOnce());
+
+        qDebug() << fakeFolder.currentLocalState();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        qDebug() << fakeFolder.currentLocalState();
     }
 };
 

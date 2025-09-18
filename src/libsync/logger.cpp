@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2012 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "logger.h"
@@ -38,6 +30,8 @@ namespace {
 constexpr int CrashLogSize = 20;
 constexpr auto MaxLogLinesCount = 50000;
 constexpr auto MaxLogLinesBeforeFlush = 10;
+
+static QtMessageHandler s_originalMessageHandler = nullptr;
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
@@ -84,7 +78,7 @@ Logger::Logger(QObject *parent)
                                       "]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
-    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
+    s_originalMessageHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
         Logger::instance()->doLog(type, ctx, message);
     });
 #endif
@@ -127,6 +121,11 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         const auto msgW = QStringLiteral("%1\n").arg(msg).toStdWString();
         OutputDebugString(msgW.c_str());
     }
+#elif defined Q_OS_MAC && defined QT_DEBUG
+    // write logs to Xcode console (stderr)
+    {
+        std::cerr << msg.toStdString() << std::endl;
+    }
 #endif
     {
         QMutexLocker lock(&_mutex);
@@ -162,11 +161,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             }
         }
         if (type == QtFatalMsg) {
+            dumpCrashLog();
             closeNoLock();
-#if defined(Q_OS_WIN)
-            // Make application terminate in a way that can be caught by the crash reporter
-            Utility::crash();
-#endif
+            s_originalMessageHandler(type, ctx, message);
         }
     }
     emit logWindowLog(msg);
@@ -174,7 +171,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
 void Logger::closeNoLock()
 {
-    dumpCrashLog();
     if (_logstream)
     {
         _logstream->flush();
@@ -243,6 +239,14 @@ void Logger::setupTemporaryFolderLogDir()
     if (!QDir().mkpath(dir)) {
         return;
     }
+
+    // Since we're using the temp folder, lock down permissions to owner only
+    QFile::Permissions perm = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
+    QFile file(dir);
+    file.setPermissions(perm);
+    
+    setLogDebug(true);
+    setLogExpire(4 /*hours*/);
     setLogDir(dir);
     _temporaryFolderLogDir = true;
 }

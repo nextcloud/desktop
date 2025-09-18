@@ -1,16 +1,6 @@
 /*
- * Copyright © 2017, Tomaz Canabrava <tcanabrava@kde.org>
- * Copyright © 2020, Andreas Jellinghaus <andreas@ionisiert.de>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "clientsideencryption.h"
@@ -616,7 +606,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     }
 
     if (encryptedBase64Result->isEmpty()) {
-        qCDebug(lcCseEncryption()) << "ERROR. Could not encrypt data";
+        qCWarning(lcCseEncryption()) << "ERROR. Could not encrypt data";
         return {};
     }
 
@@ -651,7 +641,7 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     }
 
     if (decryptBase64Result->isEmpty()) {
-        qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
+        qCWarning(lcCseDecryption()) << "ERROR. Could not decrypt data";
         return {};
     }
     return decryptBase64Result;
@@ -879,12 +869,15 @@ void ClientSideEncryption::setPrivateKey(const QByteArray &privateKey)
 
 const CertificateInformation &ClientSideEncryption::getCertificateInformation() const
 {
+    Q_ASSERT( _encryptionCertificate.canDecrypt() &&  _encryptionCertificate.canDecrypt());
     return _encryptionCertificate;
 }
 
 CertificateInformation ClientSideEncryption::getCertificateInformationByFingerprint(const QByteArray &certificateFingerprint) const
 {
     CertificateInformation result;
+
+    Q_ASSERT(!certificateFingerprint.isEmpty());
 
     if (_encryptionCertificate.sha256Fingerprint() == certificateFingerprint) {
         result = _encryptionCertificate;
@@ -896,6 +889,8 @@ CertificateInformation ClientSideEncryption::getCertificateInformationByFingerpr
             }
         }
     }
+
+    Q_ASSERT(result.canDecrypt() && result.canDecrypt());
 
     return result;
 }
@@ -1604,7 +1599,7 @@ void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(getPrivateKey());
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
     });
@@ -1623,7 +1618,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_encryptionCertificate.getCertificate().toPem());
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
     });
@@ -1638,7 +1633,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account, const QSt
     job->setInsecureFallback(false);
     job->setKey(keyChainKey);
     job->setBinaryData(certificate.toPem());
-    connect(job, &WritePasswordJob::finished, [this, certificate](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, job, [this, certificate](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Certificate stored in keychain";
         emit certificateWriteComplete(certificate);
@@ -1761,11 +1756,15 @@ void ClientSideEncryption::getUsersPublicKeyFromServer(const AccountPtr &account
 {
     qCInfo(lcCse()) << "Retrieving public keys from server, for users:" << userIds;
     const auto job = new JsonApiJob(account, e2eeBaseUrl(account) + QStringLiteral("public-key"), this);
-    connect(job, &JsonApiJob::jsonReceived, [this, account, userIds](const QJsonDocument &doc, int retCode) {
+    connect(job, &JsonApiJob::jsonReceived, job, [this, account, userIds](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
             QHash<QString, NextcloudSslCertificate> results;
-            const auto publicKeys = doc.object()[QStringLiteral("ocs")].toObject()[QStringLiteral("data")].toObject()[QStringLiteral("public-keys")].toObject();
-            for (const auto &userId : publicKeys.keys()) {
+            const auto &docObj = doc.object();
+            const auto &ocsObj = docObj[QStringLiteral("ocs")].toObject();
+            const auto &dataObj = ocsObj[QStringLiteral("data")].toObject();
+            const auto &publicKeys = dataObj[QStringLiteral("public-keys")].toObject();
+            const auto &allKeys = publicKeys.keys();
+            for (const auto &userId : allKeys) {
                 if (userIds.contains(userId)) {
                     results.insert(userId, QSslCertificate(publicKeys.value(userId).toString().toLocal8Bit(), QSsl::Pem));
                 }
@@ -1865,7 +1864,7 @@ void ClientSideEncryption::saveCertificateIdentification(const AccountPtr &accou
 void ClientSideEncryption::cacheTokenPin(const QString pin)
 {
     _cachedPin = pin;
-    QTimer::singleShot(86400000, [this] () {
+    QTimer::singleShot(86400000, this, [this] () {
         _cachedPin.clear();
     });
 }
@@ -1957,7 +1956,7 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(const AccountPtr &
     };
 
     int ret = 0;
-    int nVersion = 1;
+    int nVersion = 0; // X.509 certificate requests only support version 1
 
     // 2. set version of x509 req
     auto x509_req = X509_REQ_new();
@@ -1966,6 +1965,11 @@ std::pair<QByteArray, PKey> ClientSideEncryption::generateCSR(const AccountPtr &
     });
 
     ret = X509_REQ_set_version(x509_req, nVersion);
+    if (ret != 1) {
+        const auto errorCode = ERR_get_error();
+        qCWarning(lcCse()) << "Error setting the version on the certificate signing request" << nVersion << ret << ERR_lib_error_string(errorCode) << ERR_reason_error_string(errorCode);
+        return {result, std::move(keyPair)};
+    }
 
     // 3. set subject of x509 req
     auto x509_name = X509_REQ_get_subject_name(x509_req);
@@ -2049,7 +2053,7 @@ void ClientSideEncryption::sendPublicKey(const AccountPtr &account)
     // Send public key to the server
     auto job = new StorePublicKeyApiJob(account, e2eeBaseUrl(account) + "public-key", this);
     job->setPublicKey(_encryptionCertificate.getCertificate().toPem());
-    connect(job, &StorePublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+    connect(job, &StorePublicKeyApiJob::jsonReceived, job, [this, account](const QJsonDocument& doc, int retCode) {
         Q_UNUSED(doc);
         switch(retCode) {
         case 200:
@@ -2094,7 +2098,7 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
     privateKeyJob->setInsecureFallback(false);
     privateKeyJob->setKey(privateKeyKeychainId);
     privateKeyJob->setBinaryData(bytearrayPrivateKey);
-    connect(privateKeyJob, &WritePasswordJob::finished, [keyPair = std::move(keyPair), publicKeyKeychainId, account, csrContent, this] (Job *incoming) mutable {
+    connect(privateKeyJob, &WritePasswordJob::finished, privateKeyJob, [keyPair = std::move(keyPair), publicKeyKeychainId, account, csrContent, this] (Job *incoming) mutable {
         if (incoming->error() != Error::NoError) {
             failedToInitialize(account);
             return;
@@ -2113,7 +2117,7 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
         publicKeyJob->setInsecureFallback(false);
         publicKeyJob->setKey(publicKeyKeychainId);
         publicKeyJob->setBinaryData(bytearrayPublicKey);
-        connect(publicKeyJob, &WritePasswordJob::finished, [account, keyPair = std::move(keyPair), csrContent, this](Job *incoming) mutable {
+        connect(publicKeyJob, &WritePasswordJob::finished, publicKeyJob, [account, keyPair = std::move(keyPair), csrContent, this](Job *incoming) mutable {
             if (incoming->error() != Error::NoError) {
                 failedToInitialize(account);
                 return;
@@ -2356,10 +2360,10 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
 {
     if (!input->open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
+        qCWarning(lcCse) << "Could not open input file for reading" << input->errorString();
     }
     if (!output->open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output file for writing" << output->errorString();
+        qCWarning(lcCse) << "Could not oppen output file for writing" << output->errorString();
     }
 
     // Init
@@ -2517,19 +2521,19 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output, QByteArray &returnTag)
 {
     if (input.isEmpty()) {
-        qCDebug(lcCse) << "Could not use empty input data";
+        qCWarning(lcCse) << "Could not use empty input data";
     }
 
     QByteArray inputCopy = input;
 
     QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+        qCWarning(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }
 
     QBuffer outputBuffer(&output);
     if (!outputBuffer.open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+        qCWarning(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
     }
 
     // Init
@@ -2607,19 +2611,19 @@ bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &i
 bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output)
 {
     if (input.isEmpty()) {
-        qCDebug(lcCse) << "Could not use empty input data";
+        qCWarning(lcCse) << "Could not use empty input data";
     }
 
     QByteArray inputCopy = input;
 
     QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
-        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+        qCWarning(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }
 
     QBuffer outputBuffer(&output);
     if (!outputBuffer.open(QIODevice::WriteOnly)) {
-        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+        qCWarning(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
     }
 
     // Init
@@ -2725,7 +2729,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const 
 {
     QByteArray decryptedAndUnGzipped;
     if (!EncryptionHelper::dataDecryption(key, iv, inputData, decryptedAndUnGzipped)) {
-        qCDebug(lcCse()) << "Could not decrypt";
+        qCWarning(lcCse()) << "Could not decrypt";
         return {};
     }
 
@@ -3076,7 +3080,7 @@ PKey CertificateInformation::getEvpPublicKey() const
     const auto publicKey = _certificate.publicKey();
     Q_ASSERT(!publicKey.isNull());
     if (publicKey.isNull()) {
-        qCDebug(lcCse) << "Public key is null. Could not encrypt.";
+        qCWarning(lcCse) << "Public key is null. Could not encrypt.";
     }
     Bio publicKeyBio;
     const auto publicKeyPem = publicKey.toPem();
@@ -3097,7 +3101,7 @@ PKey CertificateInformation::getEvpPrivateKey() const
         const auto privateKeyPem = _privateKeyData;
         Q_ASSERT(!privateKeyPem.isEmpty());
         if (privateKeyPem.isEmpty()) {
-            qCDebug(lcCse) << "Private key is empty. Could not encrypt.";
+            qCWarning(lcCse) << "Private key is empty. Could not encrypt.";
         }
 
         Bio privateKeyBio;
@@ -3146,7 +3150,7 @@ void CertificateInformation::checkEncryptionCertificate()
 
     const auto sslErrors = QSslCertificate::verify({_certificate});
     for (const auto &sslError : sslErrors) {
-        qCDebug(lcCse()) << "certificate validation error" << sslError;
+        qCWarning(lcCse()) << "certificate validation error" << sslError;
         switch (sslError.error())
         {
         case QSslError::CertificateExpired:

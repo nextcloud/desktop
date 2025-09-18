@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 import QtQuick
 import QtQuick.Controls
 
@@ -24,10 +29,17 @@ ScrollView {
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
-    padding: 0
+    leftPadding: 0
+    topPadding: 0
+    bottomPadding: 0
+    rightPadding: ScrollBar.vertical.width
+    
     focus: false
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+    ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
+    ScrollBar.vertical.minimumSize: Style.minimumScrollBarThumbSize
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem

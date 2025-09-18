@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #ifndef TESTHELPER_H
 #define TESTHELPER_H
 
@@ -29,6 +34,11 @@ public:
     {
         _account = account;
         _state = Connected;
+    }
+
+    static OCC::RemoteWipe *remoteWipe(OCC::AccountState *accountState)
+    {
+        return accountState->_remoteWipe;
     }
 
 public slots:

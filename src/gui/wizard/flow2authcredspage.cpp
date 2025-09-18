@@ -1,16 +1,6 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- * Copyright (C) by Michael Schuster <michael@schuster.ms>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <QVariant>
@@ -100,17 +90,6 @@ void Flow2AuthCredsPage::slotFlow2AuthResult(Flow2Auth::Result r, const QString 
         break;
     }
     }
-}
-
-int Flow2AuthCredsPage::nextId() const
-{
-    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
-    if (ocWizard->needsToAcceptTermsOfService()) {
-        return WizardCommon::Page_TermsOfService;
-    }
-
-    return WizardCommon::Page_AdvancedSetup;
 }
 
 void Flow2AuthCredsPage::setConnected()

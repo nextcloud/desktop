@@ -1,17 +1,8 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
-
 
 #ifndef SERVERCONNECTION_H
 #define SERVERCONNECTION_H
@@ -91,7 +82,6 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
-    Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
     Q_PROPERTY(QNetworkProxy::ProxyType proxyType READ proxyType WRITE setProxyType NOTIFY proxyTypeChanged)
     Q_PROPERTY(QString proxyHostName READ proxyHostName WRITE setProxyHostName NOTIFY proxyHostNameChanged)
     Q_PROPERTY(int proxyPort READ proxyPort WRITE setProxyPort NOTIFY proxyPortChanged)
@@ -107,17 +97,8 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
 
 public:
-    // We need to decide whether to use the client's global proxy settings or whether to use
-    // a specific setting for each account. Hence this enum
-    enum class AccountNetworkProxySetting {
-        GlobalProxy = 0,
-        AccountSpecificProxy,
-    };
-    Q_ENUM(AccountNetworkProxySetting)
-
     enum class AccountNetworkTransferLimitSetting {
-        GlobalLimit = -2,
-        AutoLimit, // Value under 0 is interpreted as auto in general
+        AutoLimit = -1, // Value under 0 is interpreted as auto in general
         NoLimit,
         ManualLimit,
     };
@@ -139,6 +120,8 @@ public:
     [[nodiscard]] QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
+    [[nodiscard]] QString userFromCredentials() const;
+
     [[nodiscard]] QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
@@ -149,6 +132,9 @@ public:
 
     /// The name of the account as shown in the toolbar
     [[nodiscard]] QString displayName() const;
+
+    /// The name of the account as shown in the windows shortcut explorer
+    [[nodiscard]] QString shortcutName() const;
 
     /// User id in a form 'user@example.de, optionally port is added (if it is not 80 or 443)
     [[nodiscard]] QString userIdAtHostWithPort() const;
@@ -307,6 +293,8 @@ public:
 
     [[nodiscard]] int checksumRecalculateServerVersionMinSupportedMajor() const;
 
+    [[nodiscard]] bool bulkUploadNeedsLegacyChecksumHeader() const;
+
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
     void setHttp2Supported(bool value) { _http2Supported = value; }
@@ -371,9 +359,6 @@ public:
     void updateDesktopEnterpriseChannel();
 
     // Network-related settings
-    [[nodiscard]] AccountNetworkProxySetting networkProxySetting() const;
-    void setNetworkProxySetting(AccountNetworkProxySetting networkProxySetting);
-
     [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
     void setProxyType(QNetworkProxy::ProxyType proxyType);
 
@@ -392,8 +377,7 @@ public:
     [[nodiscard]] QString proxyPassword() const;
     void setProxyPassword(const QString &password);
 
-    void setProxySettings(const AccountNetworkProxySetting networkProxySetting,
-                          const QNetworkProxy::ProxyType proxyType,
+    void setProxySettings(const QNetworkProxy::ProxyType proxyType,
                           const QString &proxyHostName,
                           const int proxyPort,
                           const bool proxyNeedsAuth,
@@ -443,11 +427,11 @@ signals:
     void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(OCC::Account *acc);
+    void wantsAccountSaved(const OCC::AccountPtr &acc);
 
     void wantsFoldersSynced();
 
-    void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(const AccountPtr &account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
@@ -459,8 +443,8 @@ signals:
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
 
-    void pushNotificationsReady(OCC::Account *account);
-    void pushNotificationsDisabled(OCC::Account *account);
+    void pushNotificationsReady(const OCC::AccountPtr &account);
+    void pushNotificationsDisabled(const OCC::AccountPtr &account);
 
     void userStatusChanged();
 
@@ -487,6 +471,7 @@ signals:
     void encryptionCertificateFingerprintChanged();
     void userCertificateNeedsMigrationChanged();
 
+    void rootFolderQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
@@ -563,15 +548,14 @@ private:
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
-    AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
     QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
     QString _proxyHostName;
     int _proxyPort = 0;
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
-    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
-    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
+    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
+    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::NoLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
     bool _serverHasValidSubscription = false;

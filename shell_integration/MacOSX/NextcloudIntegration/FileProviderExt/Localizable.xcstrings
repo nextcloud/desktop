@@ -1,0 +1,12 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Allow automatic freeing up space": {
+      "extractionState": "manual"
+    },
+    "Always keep downloaded": {
+      "extractionState": "manual"
+    }
+  },
+  "version": "1.0"
+}

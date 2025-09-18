@@ -1,15 +1,6 @@
 /*
- * Copyright 2021 (c) Matthieu Gallien <matthieu.gallien@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -73,11 +64,17 @@ private slots:
     void slotComputeTransmissionChecksum(OCC::SyncFileItemPtr item,
                                          OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
+    void slotComputeMd5Checksum(SyncFileItemPtr item,
+                                UploadFileInfo fileToUpload,
+                                const QByteArray &transmissionChecksumType,
+                                const QByteArray &transmissionChecksum);
+
     // transmission checksum computed, prepare the upload
     void slotStartUpload(OCC::SyncFileItemPtr item,
                          OCC::BulkPropagatorJob::UploadFileInfo fileToUpload,
                          const QByteArray &transmissionChecksumType,
-                         const QByteArray &transmissionChecksum);
+                         const QByteArray &transmissionChecksum,
+                         const QByteArray &md5Checksum);
 
     // invoked on internal error to unlock a folder and failed
     void slotOnErrorStartFolderUnlock(OCC::SyncFileItemPtr item,
@@ -94,7 +91,8 @@ private slots:
 private:
     void doStartUpload(SyncFileItemPtr item,
                        UploadFileInfo fileToUpload,
-                       QByteArray transmissionChecksumHeader);
+                       QByteArray transmissionChecksumHeader,
+                       QByteArray md5ChecksumHeader);
 
     void adjustLastJobTimeout(AbstractNetworkJob *job,
                               qint64 fileSize) const;

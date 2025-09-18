@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #pragma once
@@ -44,15 +35,16 @@ public:
     [[nodiscard]] Q_INVOKABLE float localStorageUsageGbForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool fastEnumerationEnabledForAccount(const QString &userIdAtHost) const;
-    [[nodiscard]] Q_INVOKABLE bool fastEnumerationSetForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
 
     [[nodiscard]] Q_INVOKABLE QAbstractListModel *materialisedItemsModelForAccount(const QString &userIdAtHost);
     [[nodiscard]] Q_INVOKABLE FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const;
 
 public slots:
-    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
-    void setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);
+    void setTrashDeletionEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void resetVfsForAccount(const QString &userIdAtHost);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
     void refreshMaterialisedItemsForAccount(const QString &userIdAtHost);
@@ -64,8 +56,8 @@ signals:
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
     void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
     void materialisedItemsForAccountChanged(const QString &userIdAtHost);
-    void fastEnumerationEnabledForAccountChanged(const QString &userIdAtHost);
-    void fastEnumerationSetForAccountChanged(const QString &userIdAtHost);
+    void trashDeletionEnabledForAccountChanged(const QString &userIdAtHost);
+    void trashDeletionSetForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

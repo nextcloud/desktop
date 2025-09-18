@@ -2,7 +2,8 @@
 //  ShareTableViewDataSource.swift
 //  FileProviderUIExt
 //
-//  Created by Claudio Cambra on 27/2/24.
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 import AppKit
@@ -36,6 +37,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private(set) var shares: [NKShare] = [] {
         didSet { Task { @MainActor in sharesTableView?.reloadData() } }
     }
+    private(set) var userAgent: String = "Nextcloud-macOS/FileProviderUIExt"
     private(set) var account: Account? {
         didSet {
             guard let account = account else { return }
@@ -45,7 +47,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 user: account.username,
                 userId: account.username,
                 password: account.password,
-                userAgent: "Nextcloud-macOS/FileProviderUIExt",
+                userAgent: userAgent,
                 nextcloudVersion: 25,
                 groupIdentifier: ""
             )
@@ -70,7 +72,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     func reload() async {
         guard let itemURL else {
-            presentError("No item URL, cannot reload data!")
+            presentError(String(localized: "No item URL, cannot reload data!"))
             return
         }
         guard let itemIdentifier = await withCheckedContinuation({
@@ -85,7 +87,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 }
             }
         }) else {
-            presentError("Could not get identifier for item, no shares can be acquired.")
+            presentError(String(localized: "Could not get identifier for item, no shares can be acquired."))
             return
         }
 
@@ -93,12 +95,15 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
                 Logger.sharesDataSource.error("Service connection interrupted")
             })
+            if let acquiredUserAgent = await connection.userAgent() {
+                userAgent = acquiredUserAgent as String
+            }
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = Account(dictionary: credentials),
                   !convertedAccount.password.isEmpty
             else {
-                presentError("Failed to get details from File Provider Extension. Retrying.")
+                presentError(String(localized: "Failed to get details from File Provider Extension. Retrying."))
                 reattempt()
                 return
             }
@@ -109,21 +114,21 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             capabilities = await fetchCapabilities()
             guard capabilities != nil else { return }
             guard capabilities?.filesSharing?.apiEnabled == true else {
-                presentError("Server does not support shares.")
+                presentError(String(localized: "Server does not support shares."))
                 return
             }
             guard let account else {
-                presentError("Account data is unavailable, cannot reload data!")
+                presentError(String(localized: "Account data is unavailable, cannot reload data!"))
                 return
             }
             guard let itemMetadata = await fetchItemMetadata(
                 itemRelativePath: serverPathString, account: account, kit: kit
             ) else {
-                presentError("Unable to retrieve file metadata...")
+                presentError(String(localized: "Unable to retrieve file metadata…"))
                 return
             }
             guard itemMetadata.permissions.contains("R") == true else {
-                presentError("This file cannot be shared.")
+                presentError(String(localized: "This file cannot be shared."))
                 return
             }
             shares = await fetch(
@@ -131,7 +136,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             )
             shares.append(Self.generateInternalShare(for: itemMetadata))
         } catch let error {
-            presentError("Could not reload data: \(error), will try again.")
+            presentError(String(format: String(localized: "Could not reload data: %@, will try again."), error.localizedDescription))
             reattempt()
         }
     }
@@ -146,7 +151,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         Logger.sharesDataSource.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
 
         guard let account else {
-            self.presentError("NextcloudKit instance or account is unavailable, cannot fetch shares!")
+            self.presentError(String(localized: "NextcloudKit instance or account is unavailable, cannot fetch shares!"))
             return []
         }
 
@@ -160,7 +165,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 Logger.sharesDataSource.info("Received \(shareCount, privacy: .public) shares")
                 defer { continuation.resume(returning: shares ?? []) }
                 guard error == .success else {
-                    self.presentError("Error fetching shares: \(error.errorDescription)")
+                    self.presentError(String(localized: "Error fetching shares: \(error.errorDescription)"))
                     return
                 }
             }
@@ -180,14 +185,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     private func fetchCapabilities() async -> Capabilities? {
         guard let account else {
-            self.presentError("Could not fetch capabilities as account is invalid.")
+            self.presentError(String(localized: "Could not fetch capabilities as account is invalid."))
             return nil
         }
 
         return await withCheckedContinuation { continuation in
             kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
-                    self.presentError("Error getting server caps: \(error.errorDescription)")
+                    self.presentError(String(localized: "Error getting server caps: \(error.errorDescription)"))
                     continuation.resume(returning: nil)
                     return
                 }

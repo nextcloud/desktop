@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "generalsettings.h"
@@ -161,7 +153,7 @@ bool createDebugArchive(const QString &filename)
             const auto account = accountState->account();
             const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
             const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
-            xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
+            xpc->createDebugArchiveForFileProviderDomain(accountUserIdAtHost, vfsLogPath);
             zip.addLocalFile(vfsLogPath, vfsLogFilename);
         }
     }
@@ -203,6 +195,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleCallNotifications);
     _ui->callNotificationsCheckBox->setToolTip(tr("Show call notification dialogs."));
 
+    connect(_ui->quotaWarningNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleQuotaWarningNotifications);
+    _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Show notification when quota usage exceeds 80%."));
+
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     // Rename 'Explorer' appropriately on non-Windows
@@ -237,7 +232,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->existingFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -246,10 +240,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
     
-#ifndef WITH_CRASHREPORTER
-    _ui->crashreporterCheckBox->setVisible(false);
-#endif
-
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
@@ -311,8 +301,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->chatNotificationsCheckBox->setChecked(cfgFile.showChatNotifications());
     _ui->callNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
+    _ui->quotaWarningNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
+    _ui->quotaWarningNotificationsCheckBox->setChecked(cfgFile.showQuotaWarningNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
-    _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->moveFilesToTrashCheckBox->setChecked(cfgFile.moveToTrash());
@@ -338,18 +329,25 @@ void GeneralSettings::loadUpdateChannelsList() {
     if (cfgFile.serverHasValidSubscription()) {
         _ui->updateChannel->hide();
         _ui->updateChannelLabel->hide();
+        _ui->restoreUpdateChannelButton->hide();
         return;
     }
 
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
+    const auto currentUpdateChannel = cfgFile.currentUpdateChannel();
     if (_currentUpdateChannelList.isEmpty() || _currentUpdateChannelList != validUpdateChannels){
         _currentUpdateChannelList = validUpdateChannels;
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
-        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
+        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(currentUpdateChannel);
         _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1 ? currentUpdateChannelIndex : 0);
         connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
     }
+
+    const auto defaultUpdateChannel = cfgFile.defaultUpdateChannel();
+    _ui->restoreUpdateChannelButton->setText(tr("Restore to &%1").arg(updateChannelToLocalized(defaultUpdateChannel)));
+    _ui->restoreUpdateChannelButton->setEnabled(currentUpdateChannel != defaultUpdateChannel);
+    connect(_ui->restoreUpdateChannelButton, &QPushButton::clicked, this, &GeneralSettings::slotRestoreUpdateChannel);
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -406,28 +404,43 @@ void GeneralSettings::slotUpdateInfo()
 #endif
 }
 
+void GeneralSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
+    ConfigFile().setUpdateChannel(newChannel);
+    if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#endif
+}
+
+QString GeneralSettings::updateChannelToLocalized(const QString &channel) const
+{
+    if (channel == QStringLiteral("stable")) {
+        return tr("stable");
+    }
+
+    if (channel == QStringLiteral("beta")) {
+        return tr("beta");
+    }
+
+    if (channel == QStringLiteral("daily")) {
+        return tr("daily");
+    }
+
+    if (channel == QStringLiteral("enterprise")) {
+        return tr("enterprise");
+    }
+
+    return QString{};
+}
+
 void GeneralSettings::slotUpdateChannelChanged()
 {
-    const auto updateChannelToLocalized = [](const QString &channel) {
-        if (channel == QStringLiteral("stable")) {
-            return tr("stable");
-        }
-
-        if (channel == QStringLiteral("beta")) {
-            return tr("beta");
-        }
-
-        if (channel == QStringLiteral("daily")) {
-            return tr("daily");
-        }
-
-        if (channel == QStringLiteral("enterprise")) {
-            return tr("enterprise");
-        }
-
-        return QString{};
-    };
-
     const auto updateChannelFromLocalized = [](const int index) {
         switch(index) {
         case 1:
@@ -445,10 +458,18 @@ void GeneralSettings::slotUpdateChannelChanged()
     };
 
     ConfigFile configFile;
-    const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == configFile.currentUpdateChannel()) {
+    const auto newChannel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
+    const auto currentUpdateChannel = configFile.currentUpdateChannel();
+    if (newChannel == currentUpdateChannel) {
         return;
     }
+
+    if (newChannel == configFile.defaultUpdateChannel()) {
+        restoreUpdateChannel();
+        return;
+    }
+
+    _ui->restoreUpdateChannelButton->setEnabled(true);
 
     const auto nonEnterpriseOptions = tr("- beta: contains versions with new features that may not be tested thoroughly\n"
                                     "- daily: contains versions created daily only for testing and development\n"
@@ -471,22 +492,12 @@ void GeneralSettings::slotUpdateChannelChanged()
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, newChannel, currentUpdateChannel, msgBox, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
-            ConfigFile().setUpdateChannel(channel);
-            if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-            else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#endif
+            setAndCheckNewUpdateChannel(newChannel);
         } else {
-            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().currentUpdateChannel()));
+            _ui->updateChannel->setCurrentText(updateChannelToLocalized(currentUpdateChannel));
         }
     });
     msgBox->open();
@@ -516,6 +527,19 @@ void GeneralSettings::slotToggleAutoUpdateCheck()
     bool isChecked = _ui->autoCheckForUpdatesCheckBox->isChecked();
     cfgFile.setAutoUpdateCheck(isChecked, QString());
 }
+
+void GeneralSettings::restoreUpdateChannel()
+{
+    const auto defaultUpdateChannel = ConfigFile().defaultUpdateChannel();
+    _ui->restoreUpdateChannelButton->setEnabled(false);
+    _ui->updateChannel->setCurrentText(updateChannelToLocalized(defaultUpdateChannel));
+    setAndCheckNewUpdateChannel(defaultUpdateChannel);
+}
+
+void GeneralSettings::slotRestoreUpdateChannel()
+{
+    restoreUpdateChannel();
+}
 #endif // defined(BUILD_UPDATER)
 
 void GeneralSettings::saveMiscSettings()
@@ -533,7 +557,6 @@ void GeneralSettings::saveMiscSettings()
     Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
 
     cfgFile.setMonoIcons(useMonoIcons);
-    cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
     cfgFile.setMoveToTrash(_ui->moveFilesToTrashCheckBox->isChecked());
     cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
@@ -576,12 +599,21 @@ void GeneralSettings::slotToggleCallNotifications(bool enable)
     cfgFile.setShowCallNotifications(enable);
 }
 
+void GeneralSettings::slotToggleQuotaWarningNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setShowQuotaWarningNotifications(enable);
+}
+
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {
     ConfigFile cfgFile;
     cfgFile.setShowInExplorerNavigationPane(checked);
+
+#ifdef Q_OS_WIN
     // Now update the registry with the change.
     FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
+#endif
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()
@@ -613,7 +645,7 @@ void GeneralSettings::slotCreateDebugArchive()
         QMessageBox::information(
             this,
             tr("Debug Archive Created"),
-            tr("Debug archive is created at %1").arg(filename)
+            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(filename)
         );
     }
 }

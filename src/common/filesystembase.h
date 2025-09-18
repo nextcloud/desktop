@@ -1,19 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2017 ownCloud GmbH
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #pragma once
@@ -133,14 +121,6 @@ namespace FileSystem {
         QString *errorString = nullptr);
 
     /**
-     * Rename the file \a originFileName to \a destinationFileName, and
-     * overwrite the destination if it already exists - without extra checks.
-     */
-    bool OCSYNC_EXPORT uncheckedRenameReplace(const QString &originFileName,
-        const QString &destinationFileName,
-        QString *errorString);
-
-    /**
      * Removes a file.
      *
      * Equivalent to QFile::remove(), except on Windows, where it will also
@@ -162,6 +142,16 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile *file, QString *error, qint64 seek);
 
+    /**
+     * Returns `path + "/" + file` with native directory separators.
+     * 
+     * If `path` ends in a directory separator this method will not insert another one in-between.
+     *
+     * In the case one of the parameters is empty, the other parameter will be returned with native
+     * directory separators and a warning is logged.
+     */
+    QString OCSYNC_EXPORT joinPath(const QString &path, const QString &file);
+
 #ifdef Q_OS_WIN
     /**
      * Returns the file system used at the given path.
@@ -181,8 +171,11 @@ namespace FileSystem {
      */
     QString OCSYNC_EXPORT pathtoUNC(const QString &str);
 
+    std::filesystem::perms OCSYNC_EXPORT filePermissionsWinSymlinkSafe(const QString &filename);
     std::filesystem::perms OCSYNC_EXPORT filePermissionsWin(const QString &filename);
     void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
+
+    bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions, bool applyAlsoToFiles);
 #endif
 
     /**

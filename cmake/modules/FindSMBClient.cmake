@@ -6,7 +6,8 @@
 #  SMBCLIENT_LIBRARIES - Link these to use SMBClient
 #  SMBCLIENT_DEFINITIONS - Compiler switches required for using SMBClient
 #
-#  Copyright (c) 2013 Andreas Schneider <asn@cryptomilk.org>
+#  SPDX-FileCopyrightText: 2013 Andreas Schneider <asn@cryptomilk.org>
+#  SPDX-License-Identifier: BSD-3-Clause
 #
 #  Redistribution and use is allowed according to the terms of the New
 #  BSD license.

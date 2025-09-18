@@ -1,17 +1,8 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
-
 
 #ifndef FOLDERMAN_H
 #define FOLDERMAN_H
@@ -23,7 +14,9 @@
 
 #include "folder.h"
 #include "folderwatcher.h"
+#ifdef Q_OS_WIN
 #include "navigationpanehelper.h"
+#endif
 #include "syncfileitem.h"
 
 class TestFolderMan;
@@ -33,6 +26,7 @@ class TestFolderStatusModel;
 class ShareTestHelper;
 class EndToEndTestHelper;
 class TestSyncConflictsModel;
+class TestRemoteWipe;
 
 namespace OCC {
 
@@ -149,7 +143,10 @@ public:
     static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
+
+#ifdef Q_OS_WIN
     NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
+#endif
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
@@ -312,7 +309,7 @@ private slots:
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(OCC::Account *account);
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -332,7 +329,7 @@ private slots:
 
     void slotSetupPushNotifications(const OCC::Folder::Map &);
     void slotProcessFilesPushNotification(OCC::Account *account);
-    void slotConnectToPushNotifications(OCC::Account *account);
+    void slotConnectToPushNotifications(const OCC::AccountPtr &account);
 
     void slotLeaveShare(const QString &localFile, const QByteArray &folderToken = {});
 
@@ -364,7 +361,7 @@ private:
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
 
-    bool pushNotificationsFilesReady(Account *account);
+    bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 
@@ -400,7 +397,9 @@ private:
     bool _nextSyncShouldStartImmediately = false;
 
     QScopedPointer<SocketApi> _socketApi;
+#ifdef Q_OS_WIN
     NavigationPaneHelper _navigationPaneHelper;
+#endif
 
     QPointer<UpdateE2eeFolderUsersMetadataJob> _removeE2eeShareJob;
 
@@ -415,6 +414,7 @@ private:
     friend class ::ShareTestHelper;
     friend class ::EndToEndTestHelper;
     friend class ::TestFolderStatusModel;
+    friend class ::TestRemoteWipe;
 };
 
 } // namespace OCC

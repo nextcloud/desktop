@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "updatemigratede2eemetadatajob.h"
@@ -56,7 +47,6 @@ void UpdateMigratedE2eeMetadataJob::start()
         if (code == 200) {
             _item->_e2eEncryptionStatus = updateMedatadaAndSubfoldersJob->encryptionStatus();
             _item->_e2eEncryptionStatusRemote = updateMedatadaAndSubfoldersJob->encryptionStatus();
-            _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
             propagator()->updateMetadata(*_item, Vfs::UpdateMetadataType::DatabaseMetadata);
             emit finished(SyncFileItem::Status::Success);
         } else {

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #include "webflowcredentials.h"
 
 #include "creds/httpcredentials.h"
@@ -218,7 +223,7 @@ void WebFlowCredentials::persist() {
     }
 
     _account->setCredentialSetting(userC, _user);
-    emit _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account->sharedFromThis());
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {
@@ -358,7 +363,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     const auto kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
-        qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
+        qCWarning(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 
@@ -403,7 +408,7 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
 }
 
 void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
-    qCInfo(lcWebFlowCredentials()) << "request finished";
+    qCInfo(lcWebFlowCredentials()) << "request finished" << reply->request().url() << "with request id" << reply->request().rawHeader("X-Request-ID");
 
     if (reply->error() == QNetworkReply::NoError) {
         _credentialsValid = true;

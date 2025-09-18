@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
+ * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2016 ownCloud GmbH
+ * SPDX-License-Identifier: CC0-1.0
  *
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <qglobal.h>
@@ -178,6 +181,7 @@ private slots:
         fakeFolder.remoteModifier().insert(firstSharePath, 100);
         const auto firstShare = fakeFolder.remoteModifier().find(firstSharePath);
         QVERIFY(firstShare);
+        firstShare->permissions.setPermission(OCC::RemotePermissions::CanRead);
         firstShare->permissions.setPermission(OCC::RemotePermissions::IsShared);
 
         fakeFolder.remoteModifier().mkdir("A/B");
@@ -185,6 +189,7 @@ private slots:
         fakeFolder.remoteModifier().insert(secondSharePath, 100);
         const auto secondShare = fakeFolder.remoteModifier().find(secondSharePath);
         QVERIFY(secondShare);
+        secondShare->permissions.setPermission(OCC::RemotePermissions::CanRead);
         secondShare->permissions.setPermission(OCC::RemotePermissions::IsShared);
 
         FolderMan *folderman = FolderMan::instance();

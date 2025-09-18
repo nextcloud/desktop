@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "account.h"
@@ -44,7 +35,7 @@ UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const Account
     Q_ASSERT(_syncFolderRemotePath == QStringLiteral("/") || _fullRemotePath.startsWith(_syncFolderRemotePath));
     SyncJournalFileRecord rec;
     if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_fullRemotePath, _syncFolderRemotePath), &rec) || !rec.isValid()) {
-        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not get root E2ee folder recort for path" << _fullRemotePath;
+        qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Could not get root E2ee folder recort for path" << _fullRemotePath;
         return;
     }
     _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, _fullRemotePath, _syncFolderRemotePath, _journalDb, rec.path()));
@@ -124,7 +115,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
 void UpdateE2eeFolderUsersMetadataJob::startUpdate()
 {
     if (_operation == Operation::Invalid) {
-        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Invalid operation";
+        qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Invalid operation";
         emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
@@ -144,7 +135,7 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
             : _encryptedFolderMetadataHandler->folderMetadata()->removeUser(_folderUserId);
 
         if (!result) {
-            qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not perform operation" << _operation << "on metadata";
+            qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Could not perform operation" << _operation << "on metadata";
             emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
             return;
         }
@@ -233,7 +224,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFolderUnlocked(const QByteArray &fold
         return;
     }
     if (httpStatus != 200) {
-        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Failed to unlock a folder" << folderId << httpStatus;
+        qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "Failed to unlock a folder" << folderId << httpStatus;
     }
     const auto message = httpStatus != 200 ? tr("Failed to unlock a folder.") : QString{};
     emit finished(httpStatus, message);
@@ -249,7 +240,7 @@ void UpdateE2eeFolderUsersMetadataJob::subJobsFinished(bool success)
 void UpdateE2eeFolderUsersMetadataJob::slotSubJobFinished(int code, const QString &message)
 {
     if (code != 200) {
-        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "sub job finished with error" << message;
+        qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "sub job finished with error" << message;
         subJobsFinished(false);
         return;
     }

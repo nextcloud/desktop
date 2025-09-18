@@ -1,19 +1,10 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- * Copyright (C) by Daniel Heule <daniel.heule@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <cstdlib>
 #include <iostream>
 #include <qcoreapplication.h>
 #include <QStringList>
@@ -184,7 +175,7 @@ void help()
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
-    std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --non-interactive      Do not block execution with interaction and tries to read $NC_USER and $NC_PASSWORD if not set by other means" << std::endl;
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
@@ -361,6 +352,7 @@ int main(int argc, char **argv)
     // 2. From options
     // 3. From netrc (if enabled)
     // 4. From prompt (if interactive)
+    // 5. From environment (if non-interactive)
 
     QString user = hostUrl.userName();
     QString password = hostUrl.password();
@@ -392,7 +384,15 @@ int main(int argc, char **argv)
         if (password.isEmpty()) {
             password = queryPassword(user);
         }
+    } else {
+        if (user.isEmpty()) {
+            user = QString::fromUtf8(qgetenv("NC_USER"));
+        }
+        if (password.isEmpty()) {
+            password = QString::fromUtf8(qgetenv("NC_PASSWORD"));
+        }
     }
+   
 
     // Find the folder and the original owncloud url
 

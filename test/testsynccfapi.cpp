@@ -1,8 +1,10 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
- *
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: CC0-1.0
+ * 
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 
 #include <QtTest>
@@ -1448,6 +1450,93 @@ private slots:
         fakeFolder.remoteModifier().insert("a/TESTDIR");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testDetectSpuriousNotification() {
+#if !defined Q_OS_WIN
+        QSKIP("not applicable");
+#endif
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const QString odpFile("odp/presentation.odp");
+        const QString odtFile("odt/document.odt");
+        fakeFolder.localModifier().mkdir("odp");
+        fakeFolder.localModifier().insert(odpFile);
+        fakeFolder.localModifier().mkdir("odt");
+        fakeFolder.localModifier().insert(odtFile);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        QFile odp(fakeFolder.localPath() + odpFile);
+        QVERIFY(odp.open(QIODevice::ReadWrite));
+        odp.write(odpFile.toLatin1(), qstrlen(odpFile.toLatin1()));
+        odp.close();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, odpFile, CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(*vfs->pinState(odpFile), PinState::Unspecified);
+
+        QFile odt(fakeFolder.localPath() + odtFile);
+        QVERIFY(odt.open(QIODevice::ReadWrite));
+        odt.close();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, odtFile, CSYNC_INSTRUCTION_UPDATE_METADATA));
+        QCOMPARE(*vfs->pinState(odtFile), PinState::Unspecified);
+    }
+
+    void renameOnBothSides()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        auto vfs = setupVfs(fakeFolder);
+
+        // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
+
+        // 1) move the folder alphabetically before
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
+        fakeFolder.localModifier().rename("A", "_A");
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        fakeFolder.remoteModifier().rename("B", "_B");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("_A/a1m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("_B/b1m"));
+
+        // 2) move alphabetically after
+        fakeFolder.remoteModifier().rename("_A/a2", "_A/a2m");
+        fakeFolder.localModifier().rename("_B/b2", "_B/b2m");
+        fakeFolder.localModifier().rename("_A", "S/A");
+        fakeFolder.remoteModifier().rename("_B", "S/B");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
+    }
+
+    void createFolderAndFiles()
+    {
+        FakeFolder fakeFolder {FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("first folder");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert("first folder/file1");
+        fakeFolder.remoteModifier().insert("first folder/file2");
+        fakeFolder.remoteModifier().insert("first folder/file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
     }
 };
 

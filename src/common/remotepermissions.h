@@ -1,19 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2017 ownCloud GmbH
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #pragma once
@@ -41,18 +29,19 @@ private:
 
 public:
     enum Permissions {
-        CanWrite = 1,             // W
-        CanDelete = 2,            // D
-        CanRename = 3,            // N
-        CanMove = 4,              // V
-        CanAddFile = 5,           // C
-        CanAddSubDirectories = 6, // K
-        CanReshare = 7,           // R
+        CanRead = 1,              // G
+        CanWrite,                 // W
+        CanDelete,                // D
+        CanRename,                // N
+        CanMove,                  // V
+        CanAddFile,               // C
+        CanAddSubDirectories,     // K
+        CanReshare,               // R
         // Note: on the server, this means SharedWithMe, but in discoveryphase.cpp we also set
         // this permission when the server reports the any "share-types"
-        IsShared = 8,             // S
-        IsMounted = 9,            // M
-        IsMountedSub = 10,        // m (internal: set if the parent dir has IsMounted)
+        IsShared,                 // S
+        IsMounted,                // M
+        IsMountedSub,             // m (internal: set if the parent dir has IsMounted)
 
         // Note: when adding support for more permissions, we need to invalid the cache in the database.
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)

@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 #ifndef PROPAGATEDOWNLOADENCRYPTED_H
 #define PROPAGATEDOWNLOADENCRYPTED_H
 

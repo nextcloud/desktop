@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2016 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "activitylistmodel.h"
@@ -166,7 +158,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             // If this is an E2EE file or folder, pretend we got no path, hiding the share button which is what we want
             if (folder) {
                 SyncJournalFileRecord rec;
-                if (!folder->journalDb()->getFileRecord(fileName.mid(1), &rec)) {
+                if (!folder->journalDb()->getFileRecord(relPath.mid(1), &rec)) {
                     qCWarning(lcActivity) << "could not get file from local DB" << fileName.mid(1);
                 }
                 if (rec.isValid() && (rec.isE2eEncrypted() || !rec._e2eMangledName.isEmpty())) {
@@ -229,13 +221,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
-            return colorIconPath.arg("state-error.svg");
+            return colorIconPath.arg("error.svg");
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._syncFileItemStatus == SyncFileItem::NormalError
                 || a._syncFileItemStatus == SyncFileItem::FatalError
                 || a._syncFileItemStatus == SyncFileItem::DetailError
                 || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
-                return colorIconPath.arg("state-error.svg");
+                return colorIconPath.arg("error.svg");
             } else if (a._syncFileItemStatus == SyncFileItem::SoftError
                 || a._syncFileItemStatus == SyncFileItem::Conflict
                 || a._syncFileItemStatus == SyncFileItem::Restoration
@@ -243,9 +235,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                return colorIconPath.arg("state-warning.svg");
+                return colorIconPath.arg("warning.svg");
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
-                return colorIconPath.arg("state-info.svg");
+                return colorIconPath.arg("info.svg");
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
@@ -540,15 +532,13 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     beginInsertRows({}, startRow, startRow + activityList.count() - 1);
     for(const auto &activity : activityList) {
         _finalList.append(activity);
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            _conflictsList.push_back(activity);
+        }
     }
     endInsertRows();
 
-    const auto deselectedConflictIt = std::find_if(_finalList.constBegin(), _finalList.constEnd(), [] (const auto activity) {
-        return activity._syncFileItemStatus == SyncFileItem::Conflict;
-    });
-    const auto conflictsFound = (deselectedConflictIt != _finalList.constEnd());
-
-    setHasSyncConflicts(conflictsFound);
+    setHasSyncConflicts(!_conflictsList.isEmpty());
 }
 
 void ActivityListModel::accountStateHasChanged()
@@ -587,38 +577,13 @@ void ActivityListModel::addErrorToActivityList(const Activity &activity, const E
     }
 
     if (shouldAddError) {
-        qCDebug(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
+        qCWarning(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
         auto modifiedActivity = activity;
         if (type == ErrorType::NetworkError) {
             modifiedActivity._subject = tr("Network error occurred: client will retry syncing.");
         }
         addEntriesToActivityList({modifiedActivity});
         _notificationErrorsLists.prepend(modifiedActivity);
-    }
-}
-
-void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
-{
-    qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: " << newActivity._file;
-
-    bool duplicate = false;
-    if (_listOfIgnoredFiles.size() == 0) {
-        _notificationIgnoredFiles = newActivity;
-        _notificationIgnoredFiles._subject = tr("Files from the ignore list as well as symbolic links are not synced.");
-        addEntriesToActivityList({_notificationIgnoredFiles});
-        _listOfIgnoredFiles.append(newActivity);
-        return;
-    }
-
-    for (const auto &activity : _listOfIgnoredFiles) {
-        if (activity._file == newActivity._file) {
-            duplicate = true;
-            break;
-        }
-    }
-
-    if (!duplicate) {
-        _notificationIgnoredFiles._message.append(", " + newActivity._file);
     }
 }
 
@@ -656,6 +621,10 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         beginRemoveRows({}, index, index);
         _finalList.removeAt(index);
         endRemoveRows();
+    }
+
+    if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+        _conflictsList.removeOne(activity);
     }
 
     if (activity._type != Activity::ActivityType &&
@@ -711,7 +680,6 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         }
 
         auto folder = FolderMan::instance()->folder(activity._folder);
-        const auto folderDir = QDir(folder->path());
         const auto fileLocation = activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
             ? InvalidFilenameDialog::FileLocation::NewLocalFile
             : InvalidFilenameDialog::FileLocation::Default;
@@ -720,7 +688,7 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
             : InvalidFilenameDialog::InvalidMode::SystemInvalid;
 
         _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
-            folderDir.filePath(activity._file), fileLocation, invalidMode);
+            folder->filePath(activity._file), fileLocation, invalidMode);
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
@@ -959,6 +927,7 @@ void ActivityListModel::slotRefreshActivityInitial()
 void ActivityListModel::slotRemoveAccount()
 {
     _finalList.clear();
+    _conflictsList.clear();
     _activityLists.clear();
     _presentedActivities.clear();
     setAndRefreshCurrentlyFetching(false);
@@ -991,15 +960,7 @@ bool ActivityListModel::hasSyncConflicts() const
 
 ActivityList ActivityListModel::allConflicts() const
 {
-    auto result = ActivityList{};
-
-    for(const auto &activity : _finalList) {
-        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-            result.push_back(activity);
-        }
-    }
-
-    return result;
+    return _conflictsList;
 }
 
 }

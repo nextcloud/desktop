@@ -2,7 +2,8 @@
 //  ShareTableItemView.swift
 //  FileProviderUIExt
 //
-//  Created by Claudio Cambra on 28/2/24.
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 import AppKit
@@ -48,7 +49,7 @@ class ShareTableItemView: NSTableCellView {
         originalCopyImage = copyLinkButton.image
         copiedButtonImage = NSImage(
             systemSymbolName: "checkmark.circle.fill",
-            accessibilityDescription: "Public link has been copied icon"
+            accessibilityDescription: String(localized: "Public link has been copied icon")
         )
         var config = NSImage.SymbolConfiguration(scale: .medium)
         if #available(macOS 12.0, *) {

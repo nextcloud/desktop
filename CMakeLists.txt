@@ -1,10 +1,13 @@
+# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2011 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
 cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
 project(client)
 
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OSX deployment version")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OSX deployment version")
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -17,7 +20,11 @@ if (CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
 endif()
 
-set(CMAKE_XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME NO)
+else()
+    set(CMAKE_XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
+endif()
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
@@ -56,6 +63,7 @@ else()
 endif()
 
 option( APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG "Display legacy import dialog" ON )
+option( DISABLE_ACCOUNT_MIGRATION "Exclude legacy account migration and import" OFF )
 
 # For usage in XML files we preprocess
 string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")
@@ -230,8 +238,6 @@ if(BUILD_CLIENT)
     if(UNIX AND NOT APPLE)
         find_package(Inotify REQUIRED)
     endif()
-    find_package(Sphinx)
-    find_package(PdfLatex)
     find_package(OpenSSL 1.1 REQUIRED )
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(OPENSC-LIBP11 libp11 REQUIRED IMPORTED_TARGET)
@@ -327,9 +333,6 @@ set(TRANSLATIONS ${TRANS_FILES})
 if(BUILD_CLIENT)
     add_subdirectory(src)
     if(NOT BUILD_LIBRARIES_ONLY)
-        add_subdirectory(man)
-        add_subdirectory(doc)
-        add_subdirectory(doc/dev)
         if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
             add_subdirectory(admin)
         endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
@@ -357,15 +360,24 @@ elseif(BUILD_CLIENT)
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_CLIENT)
+if(LINUX AND BUILD_CLIENT)
+    set(bindir ${CMAKE_INSTALL_FULL_BINDIR})
+    configure_file(systemd/nextcloud-desktop.service.in "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service")
+
+    pkg_check_modules(SYSTEMD systemd IMPORTED_TARGET)
+    set_package_properties(systemd PROPERTIES
+        DESCRIPTION "Systemd development files needed to install user service"
+        TYPE OPTIONAL
+    )
     pkg_get_variable(SYSTEMD_USER_UNIT_DIR systemd "systemd_user_unit_dir")
     if (SYSTEMD_USER_UNIT_DIR)
+        message(STATUS "Systemd development files found. Enable installing systemd user service.")
         option(INSTALL_SYSTEMD "Install systemd user service" ON)
         if(INSTALL_SYSTEMD)
-            set(bindir ${CMAKE_INSTALL_FULL_BINDIR})
-            configure_file(systemd/nextcloud-desktop.service.in "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service")
             install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service" DESTINATION "${SYSTEMD_USER_UNIT_DIR}")
         endif()
+    else()
+        message(STATUS "Systemd development files not found. Not installing systemd user service.")
     endif()
 endif()
 

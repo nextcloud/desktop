@@ -1,8 +1,12 @@
 /*
-   This software is in the public domain, furnished "as is", without technical
-   support, and with no warranty, express or implied, as to its usefulness for
-   any purpose.
-*/
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud, Inc.
+ * SPDX-License-Identifier: CC0-1.0
+ * 
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
+ */
 
 #include <QtTest>
 #include <QTemporaryDir>
@@ -160,7 +164,7 @@ private slots:
 
         earlyTS = earlyTS.addSecs(-6);
         s = timeAgoInWords(earlyTS, laterTS );
-        QCOMPARE(s, QLatin1String("1m"));
+        QCOMPARE(s, QLatin1String("1min"));
     }
 
     void testFsCasePreserving()

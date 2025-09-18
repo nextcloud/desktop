@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Roeland Jago Douma <roeland@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2015 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef SHAREE_H
@@ -44,7 +36,7 @@ class Sharee
 
 public:
     // Keep in sync with Share::ShareType
-    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Circle = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
+    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Team = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
     Q_ENUM(Type);
     explicit Sharee() = default;
     explicit Sharee(const QString &shareWith, const QString &displayName, const Type type, const QString &iconUrl = {});

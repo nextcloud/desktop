@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "propagateremotemove.h"
@@ -209,7 +201,9 @@ void PropagateRemoteMove::slotMoveJobFinished()
             &propagator()->_anotherSyncNeeded);
         const auto filePath = propagator()->fullLocalPath(_item->_renameTarget);
         const auto filePathOriginal = propagator()->fullLocalPath(_item->_originalFile);
+        const auto oldFile = QFileInfo{filePathOriginal};
         QFile file(filePath);
+        auto permissionsHandler = FileSystem::FilePermissionsRestore{oldFile.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
         if (!file.rename(filePathOriginal)) {
             qCWarning(lcPropagateRemoteMove) << "Could not MOVE file" << filePathOriginal << " to" << filePath
                                              << " with error:" << _job->errorString() << " and failed to restore it !";

@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "ocsuserstatusconnector.h"
@@ -42,6 +33,7 @@ OCC::UserStatus::OnlineStatus stringToUserOnlineStatus(const QString &status)
         { "online", OCC::UserStatus::OnlineStatus::Online },
         { "dnd", OCC::UserStatus::OnlineStatus::DoNotDisturb },
         { "away", OCC::UserStatus::OnlineStatus::Away },
+        { "busy", OCC::UserStatus::OnlineStatus::Busy },
         { "offline", OCC::UserStatus::OnlineStatus::Offline },
         { "invisible", OCC::UserStatus::OnlineStatus::Invisible }
     };
@@ -60,6 +52,8 @@ QString onlineStatusToString(OCC::UserStatus::OnlineStatus status)
         return QStringLiteral("dnd");
     case OCC::UserStatus::OnlineStatus::Away:
         return QStringLiteral("away");
+    case OCC::UserStatus::OnlineStatus::Busy:
+        return QStringLiteral("busy");
     case OCC::UserStatus::OnlineStatus::Offline:
         return QStringLiteral("offline");
     case OCC::UserStatus::OnlineStatus::Invisible:
@@ -219,6 +213,7 @@ OcsUserStatusConnector::OcsUserStatusConnector(AccountPtr account, QObject *pare
     Q_ASSERT(_account);
     _userStatusSupported = _account->capabilities().userStatus();
     _userStatusEmojisSupported = _account->capabilities().userStatusSupportsEmoji();
+    _userStatusBusySupported = _account->capabilities().userStatusSupportsBusy();
 }
 
 void OcsUserStatusConnector::fetchUserStatus()
@@ -366,7 +361,11 @@ void OcsUserStatusConnector::setUserStatusMessageCustom(const UserStatus &userSt
     _setMessageJob->setVerb(JsonApiJob::Verb::Put);
     // Set body
     QJsonObject dataObject;
-    dataObject.insert("statusIcon", userStatus.icon());
+    QJsonValue statusIcon;
+    if (!userStatus.icon().isEmpty()) {
+        statusIcon = userStatus.icon();
+    }
+    dataObject.insert("statusIcon", statusIcon);
     dataObject.insert("message", userStatus.message());
     const auto clearAt = userStatus.clearAt();
     if (clearAt) {
@@ -455,6 +454,11 @@ void OcsUserStatusConnector::clearMessage()
 UserStatus OcsUserStatusConnector::userStatus() const
 {
     return _userStatus;
+}
+
+bool OcsUserStatusConnector::supportsBusyStatus() const
+{
+    return _userStatusBusySupported;
 }
 
 void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int statusCode)

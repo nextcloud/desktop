@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "userstatusselectormodel.h"
@@ -33,16 +24,14 @@ UserStatusSelectorModel::UserStatusSelectorModel(QObject *parent)
     : QObject(parent)
     , _dateTimeProvider(new DateTimeProvider)
 {
-    _userStatus.setIcon("😀");
 }
 
 UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector, QObject *parent)
     : QObject(parent)
     , _userStatusConnector(userStatusConnector)
-    , _userStatus("no-id", "", "😀", UserStatus::OnlineStatus::Online, false, {})
+    , _userStatus("no-id", "", "", UserStatus::OnlineStatus::Online, false, {})
     , _dateTimeProvider(new DateTimeProvider)
 {
-    _userStatus.setIcon("😀");
     init();
 }
 
@@ -53,7 +42,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(std::shared_ptr<UserStatusConne
     , _userStatusConnector(userStatusConnector)
     , _dateTimeProvider(std::move(dateTimeProvider))
 {
-    _userStatus.setIcon("😀");
     init();
 }
 
@@ -63,7 +51,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     , _userStatus(userStatus)
     , _dateTimeProvider(std::move(dateTimeProvider))
 {
-    _userStatus.setIcon("😀");
 }
 
 UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
@@ -71,7 +58,6 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     : QObject(parent)
     , _userStatus(userStatus)
 {
-    _userStatus.setIcon("😀");
 }
 
 int UserStatusSelectorModel::userIndex() const
@@ -134,6 +120,8 @@ void UserStatusSelectorModel::init()
 
     _userStatusConnector->fetchUserStatus();
     _userStatusConnector->fetchPredefinedStatuses();
+    
+    emit busyStatusSupportedChanged();
 }
 
 void UserStatusSelectorModel::onUserStatusSet()
@@ -210,6 +198,10 @@ QUrl UserStatusSelectorModel::awayIcon() const
 {
     return Theme::instance()->statusAwayImageSource();
 }
+QUrl UserStatusSelectorModel::busyIcon() const
+{
+    return Theme::instance()->statusBusyImageSource();
+}
 QUrl UserStatusSelectorModel::dndIcon() const
 {
     return Theme::instance()->statusDoNotDisturbImageSource();
@@ -256,9 +248,7 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
     _userStatus.setId(userStatus.id());
     _userStatus.setClearAt(userStatus.clearAt());
 
-    if (!userStatus.icon().isEmpty()) {
-        _userStatus.setIcon(userStatus.icon());
-    }
+    _userStatus.setIcon(userStatus.icon());
 
     emit userStatusChanged();
     emit clearAtDisplayStringChanged();
@@ -404,31 +394,27 @@ QString UserStatusSelectorModel::errorMessage() const
     return _errorMessage;
 }
 
+bool UserStatusSelectorModel::busyStatusSupported() const
+{
+    if (!_userStatusConnector) {
+        return false;
+    }
+    return _userStatusConnector->supportsBusyStatus();
+}
+
 QString UserStatusSelectorModel::timeDifferenceToString(int differenceSecs) const
 {
     if (differenceSecs < 60) {
         return tr("Less than a minute");
     } else if (differenceSecs < 60 * 60) {
         const auto minutesLeft = static_cast<int>(std::ceil(differenceSecs / 60.0));
-        if (minutesLeft == 1) {
-            return tr("1 minute");
-        } else {
-            return tr("%1 minutes", "", minutesLeft).arg(minutesLeft);
-        }
+        return tr("%n minute(s)", "", minutesLeft);
     } else if (differenceSecs < 60 * 60 * 24) {
         const auto hoursLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0));
-        if (hoursLeft == 1) {
-            return tr("1 hour");
-        } else {
-            return tr("%1 hours", "", hoursLeft).arg(hoursLeft);
-        }
+        return tr("%n hour(s)", "", hoursLeft);
     } else {
         const auto daysLeft = static_cast<int>(std::ceil(differenceSecs / 60.0 / 60.0 / 24.0));
-        if (daysLeft == 1) {
-            return tr("1 day");
-        } else {
-            return tr("%1 days", "", daysLeft).arg(daysLeft);
-        }
+        return tr("%n day(s)", "", daysLeft);
     }
 }
 

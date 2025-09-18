@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "config.h"
@@ -64,18 +56,27 @@ void PUTFileJob::start()
 
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
+    auto requestID = QByteArray{};
+
     if (_url.isValid()) {
-        sendRequest("PUT", _url, req, _device);
+        const auto reply = sendRequest("PUT", _url, req, _device);
+        requestID = reply->request().rawHeader("X-Request-ID");
     } else {
-        sendRequest("PUT", makeDavUrl(path()), req, _device);
+        const auto reply = sendRequest("PUT", makeDavUrl(path()), req, _device);
+        requestID = reply->request().rawHeader("X-Request-ID");
     }
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
+    connect(reply(), &QNetworkReply::uploadProgress, this, [requestID] (qint64 bytesSent, qint64 bytesTotal) {
+        qCDebug(lcPutJob()) << requestID << "upload progress" << bytesSent << bytesTotal;
+    });
+
     connect(reply(), &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
+
     _requestTimer.start();
     AbstractNetworkJob::start();
 }
@@ -239,7 +240,7 @@ void PropagateUploadFileCommon::start()
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error, [this] {
-        qCDebug(lcPropagateUpload) << "Error setting up encryption.";
+        qCWarning(lcPropagateUpload) << "Error setting up encryption.";
         done(SyncFileItem::FatalError, tr("Failed to upload encrypted file."));
     });
     _uploadEncryptedHelper->start();
@@ -324,8 +325,15 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
     if (_item->_modtime <= 0) {
-        slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
-        return;
+        const auto now = QDateTime::currentSecsSinceEpoch();
+        qCInfo(lcPropagateUpload) << "File" << _item->_file << "has invalid modification time of" << _item->_modtime << "-- trying to update it to" << now;
+        if (FileSystem::setModTime(filePath, now)) {
+            _item->_modtime = now;
+        } else {
+            qCWarning(lcPropagateUpload) << "Could not update modification time for" << _item->_file;
+            slotOnErrorStartFolderUnlock(SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(_item->_file)));
+            return;
+        }
     }
 
     const QByteArray checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
@@ -677,7 +685,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 {
     QByteArray replyContent;
     QString errorString = job->errorStringParsingBody(&replyContent);
-    qCDebug(lcPropagateUpload) << replyContent; // display the XML error in the debug
+    qCWarning(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
     if (_item->_httpErrorCode == 412) {
         // Precondition Failed: Either an etag or a checksum mismatch.
@@ -745,8 +753,9 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 // This function is used whenever there is an error occurring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
-    if (_aborting)
+    if (_aborting) {
         return;
+    }
     abort(AbortType::Synchronous);
     done(status, error);
 }
@@ -810,10 +819,6 @@ void PropagateUploadFileCommon::finalize()
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())
         quotaIt.value() -= _fileToUpload._size;
-
-    if (_item->isEncrypted() && _uploadingEncrypted) {
-        _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
-    }
 
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item, Vfs::DatabaseMetadata);

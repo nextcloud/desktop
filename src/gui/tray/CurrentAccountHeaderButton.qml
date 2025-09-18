@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2024 by Claudio Cambra <claudio.cambra@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick
@@ -77,7 +68,7 @@ Button {
             id: userLineInstantiator
             model: UserModel
             delegate: MenuItem {
-                implicitHeight: instantiatedUserLine.height
+                implicitHeight: instantiatedUserLine.height + Style.standardSpacing
                 UserLine {
                     id: instantiatedUserLine
                     width: parent.width
@@ -88,8 +79,12 @@ Button {
                     onClicked: UserModel.currentUserId = model.index;
                 }
             }
-            onObjectAdded: accountMenu.insertItem(index, object)
-            onObjectRemoved: accountMenu.removeItem(object)
+            onObjectAdded: function(index, object) {
+                accountMenu.insertItem(index, object)
+            }
+            onObjectRemoved: function(index, object) {
+                accountMenu.removeItem(object)
+            }
         }
 
         MenuItem {
@@ -171,9 +166,9 @@ Button {
                          && UserModel.currentUser.serverHasUserStatus
                          && UserModel.currentUser.status !== UserStatus.Invisible
                          && UserModel.currentUser.status !== UserStatus.Offline
-                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
+                width: Style.accountAvatarStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: root.parentBackgroundColor
+                color: "white"
                 anchors.bottom: currentAccountAvatar.bottom
                 anchors.right: currentAccountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -187,8 +182,8 @@ Button {
                          && UserModel.currentUser.status !== UserStatus.Offline
                 source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                 cache: false
-                x: currentAccountStatusIndicatorBackground.x + 1
-                y: currentAccountStatusIndicatorBackground.y + 1
+                x: currentAccountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
+                y: currentAccountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
@@ -199,7 +194,7 @@ Button {
 
         Column {
             id: accountLabels
-            spacing: 0
+            spacing: Style.extraExtraSmallSpacing
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: Style.userStatusSpacing
             Layout.fillWidth: true
@@ -219,10 +214,11 @@ Button {
 
             EnforcedPlainTextLabel {
                 id: currentAccountServer
-                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 width: Style.currentAccountLabelWidth
                 color: Style.currentUserHeaderTextColor
                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
+                font.pixelSize: Style.subLinePixelSize
                 elide: Text.ElideRight
                 visible: UserModel.numUsers() > 1
             }
@@ -231,28 +227,27 @@ Button {
                 id: currentUserStatus
                 visible: UserModel.currentUser && UserModel.currentUser.isConnected &&
                          UserModel.currentUser.serverHasUserStatus
-                spacing: Style.accountLabelsSpacing
                 width: parent.width
 
                 EnforcedPlainTextLabel {
                     id: emoji
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
-                    width: Style.userStatusEmojiSize
                     color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
+                    font.pixelSize: Style.subLinePixelSize
                 }
                 EnforcedPlainTextLabel {
                     id: message
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     Layout.fillWidth: true
                     visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
-                    width: Style.currentAccountLabelWidth
                     color: Style.currentUserHeaderTextColor
                     text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                           ? UserModel.currentUser.statusMessage
                           : UserModel.currentUser ? UserModel.currentUser.server : ""
-                    elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
+                    elide: Text.ElideRight
                 }
             }
         }

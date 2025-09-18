@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <QJsonDocument>
@@ -51,7 +43,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No Nextcloud account configured");
+        _errors << tr("No %1 account configured", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
         reportResult(NotConfigured);
         return;
     }
@@ -60,8 +52,7 @@ void ConnectionValidator::checkServerAndAuth()
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if ((ClientProxy::isUsingSystemDefault() && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy)
-        || _account->proxyType() == QNetworkProxy::DefaultProxy) {
+    if (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
@@ -138,7 +129,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        emit _account->wantsAccountSaved(_account.data());
+        emit _account->wantsAccountSaved(_account);
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
@@ -162,6 +153,9 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     auto job = qobject_cast<CheckServerJob *>(sender());
     qCWarning(lcConnectionValidator) << reply->error() << reply->errorString() << job->errorString() << reply->peek(1024);
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+        if (const auto hstsError = AbstractNetworkJob::hstsErrorStringFromReply(reply)) {
+            _errors.append(*hstsError);
+        }
         reportResult(SslError);
         return;
     }

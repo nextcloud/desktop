@@ -2,7 +2,8 @@
 //  Logger+Extensions.swift
 //  FileProviderUIExt
 //
-//  Created by Claudio Cambra on 21/2/24.
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 import OSLog
@@ -11,6 +12,7 @@ extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!
 
     static let actionViewController = Logger(subsystem: subsystem, category: "actionViewController")
+    static let authenticationViewController = Logger(subsystem: subsystem, category: "authenticationViewController")
     static let eviction = Logger(subsystem: subsystem, category: "eviction")
     static let lockViewController = Logger(subsystem: subsystem, category: "lockViewController")
     static let metadataProvider = Logger(subsystem: subsystem, category: "metadataProvider")

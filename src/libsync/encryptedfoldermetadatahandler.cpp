@@ -1,15 +1,6 @@
 /*
- * Copyright (C) 2023 by Oleksandr Zolotov <alex@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "rootencryptedfolderinfo.h"
@@ -128,20 +119,20 @@ bool EncryptedFolderMetadataHandler::validateBeforeLock()
 {
     //Q_ASSERT(!_isFolderLocked && folderMetadata() && folderMetadata()->isValid() && folderMetadata()->isRootEncryptedFolder());
     if (_isFolderLocked) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "already locked";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "already locked";
         emit uploadFinished(-1, tr("Error locking folder."));
         return false;
     }
 
     if (!folderMetadata() || !folderMetadata()->isValid()) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "invalid or null metadata";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "invalid or null metadata";
         emit uploadFinished(-1, tr("Error locking folder."));
         return false;
     }
 
     // normally, we should allow locking any nested folder to update its metadata, yet, with the new V2 architecture, this is something we might want to disallow
     /*if (!folderMetadata()->isRootEncryptedFolder()) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "as it is not a top level folder";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << _folderId << "as it is not a top level folder";
         emit uploadFinished(-1, tr("Error locking folder."));
         return false;
     }*/
@@ -160,7 +151,7 @@ void EncryptedFolderMetadataHandler::slotFolderEncryptedIdReceived(const QString
 void EncryptedFolderMetadataHandler::slotFolderEncryptedIdError(QNetworkReply *reply)
 {
     Q_ASSERT(reply);
-    qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error retrieving the Id of the encrypted folder.";
+    qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error retrieving the Id of the encrypted folder.";
     if (!reply) {
         emit fetchFinished(-1, tr("Error fetching encrypted folder ID."));
         return;
@@ -185,7 +176,7 @@ void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &j
 
     if (statusCode != 200 && statusCode != 404) {
         // neither successfully fetched, nor a folder without a metadata, fail further logic
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for folder" << _folderFullRemotePath;
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for folder" << _folderFullRemotePath;
         emit fetchFinished(statusCode, tr("Error fetching metadata."));
         return;
     }
@@ -195,7 +186,7 @@ void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &j
     const auto metadata(QSharedPointer<FolderMetadata>::create(_account, _remoteFolderRoot, rawMetadata, _rootEncryptedFolderInfo, job->signature()));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isValid()) {
-            qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderFullRemotePath;
+            qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderFullRemotePath;
             emit fetchFinished(-1, tr("Error parsing or decrypting metadata."));
             return;
         }
@@ -208,12 +199,12 @@ void EncryptedFolderMetadataHandler::slotMetadataReceivedError(const QByteArray 
 {
     Q_UNUSED(folderId);
     if (_fetchMode == FetchMode::AllowEmptyMetadata) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error Getting the encrypted metadata. Pretend we got empty metadata. In case when posting it for the first time.";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error Getting the encrypted metadata. Pretend we got empty metadata. In case when posting it for the first time.";
         _isNewMetadataCreated = true;
         slotMetadataReceived({}, httpReturnCode);
         return;
     }
-    qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error Getting the encrypted metadata.";
+    qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error Getting the encrypted metadata.";
     emit fetchFinished(httpReturnCode, tr("Error fetching metadata."));
 }
 
@@ -227,7 +218,7 @@ void EncryptedFolderMetadataHandler::slotFolderLockedSuccessfully(const QByteArr
 
 void EncryptedFolderMetadataHandler::slotFolderLockedError(const QByteArray &folderId, int httpErrorCode)
 {
-    qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << folderId;
+    qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error locking folder" << folderId;
     emit fetchFinished(httpErrorCode, tr("Error locking folder."));
 }
 
@@ -318,7 +309,7 @@ void EncryptedFolderMetadataHandler::slotUploadMetadataSuccess(const QByteArray 
 
 void EncryptedFolderMetadataHandler::slotUploadMetadataError(const QByteArray &folderId, int httpReturnCode)
 {
-    qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Update metadata error for folder" << folderId << "with error" << httpReturnCode;
+    qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Update metadata error for folder" << folderId << "with error" << httpReturnCode;
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Unlocking the folder.";
     _uploadErrorCode = httpReturnCode;
     if (_isFolderLocked && _uploadMode == UploadMode::DoNotKeepLock) {
@@ -352,12 +343,12 @@ void EncryptedFolderMetadataHandler::setPrefetchedMetadataAndId(const QSharedPoi
     Q_ASSERT(!id.isEmpty());
 
     if (!metadata || !metadata->isValid()) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "invalid metadata argument";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "invalid metadata argument";
         return;
     }
 
     if (id.isEmpty()) {
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "invalid id argument";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "invalid id argument";
         return;
     }
 

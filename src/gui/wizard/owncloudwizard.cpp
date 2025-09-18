@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "account.h"
@@ -42,6 +33,10 @@
 #include <owncloudgui.h>
 
 #include <cstdlib>
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "gui/macOS/fileprovider.h"
+#endif
 
 namespace OCC {
 
@@ -107,6 +102,10 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::NoCancelButton);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
     setButtonText(QWizard::CustomButton2, tr("Cancel"));
+    setButtonText(QWizard::CustomButton3, tr("Proxy Settings", "Proxy Settings button text in new account wizard"));
+
+    setButtonText(QWizard::NextButton, tr("Next", "Next button text in new account wizard"));
+    setButtonText(QWizard::BackButton, tr("Back", "Next button text in new account wizard"));
 
     // Change the next buttons size policy since we hide it on the
     // welcome page but want it to fill it's space that we don't get
@@ -172,6 +171,12 @@ QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
     return pageSizes;
 }
 
+void OwncloudWizard::ensureWelcomePageCorrectLayout()
+{
+    setButtonLayout({QWizard::NextButton});
+    button(QWizard::NextButton)->setHidden(true);
+}
+
 QSize OwncloudWizard::calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const
 {
     QSize largestSize;
@@ -223,6 +228,15 @@ bool OwncloudWizard::isConfirmBigFolderChecked() const
 bool OwncloudWizard::needsToAcceptTermsOfService() const
 {
     return _needsToAcceptTermsOfService;
+}
+
+bool OwncloudWizard::useVirtualFileSyncByDefault() const
+{
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    return Mac::FileProvider::fileProviderAvailable();
+#else
+    return false;
+#endif
 }
 
 QString OwncloudWizard::ocUrl() const
@@ -339,8 +353,8 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     };
 
     if (id == WizardCommon::Page_Welcome) {
-        // Set next button to just hidden so it retains it's layout
-        button(QWizard::NextButton)->setHidden(true);
+        ensureWelcomePageCorrectLayout();
+
         // Need to set it from here, otherwise it has no effect
         _welcomePage->setLoginButtonDefault();
     } else if (
@@ -349,12 +363,19 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 #endif // WITH_WEBENGINE
         id == WizardCommon::Page_Flow2AuthCreds ||
         id == WizardCommon::Page_TermsOfService) {
-        setButtonLayout({ QWizard::BackButton, QWizard::Stretch });
+        setButtonLayout({QWizard::BackButton, QWizard::Stretch});
     } else if (id == WizardCommon::Page_AdvancedSetup) {
-        setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton });
+        setButtonLayout({QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton});
+        setNextButtonAsDefault();
+    } else if (id == WizardCommon::Page_ServerSetup) {
+        if constexpr (Theme::doNotUseProxy()) {
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
+        } else {
+            setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::CustomButton3, QWizard::NextButton});
+        }
         setNextButtonAsDefault();
     } else {
-        setButtonLayout({ QWizard::BackButton, QWizard::Stretch, QWizard::NextButton });
+        setButtonLayout({QWizard::BackButton, QWizard::Stretch, QWizard::NextButton});
         setNextButtonAsDefault();
     }
 

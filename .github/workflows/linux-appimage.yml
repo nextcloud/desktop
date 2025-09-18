@@ -1,14 +1,17 @@
+# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
 name: Linux Appimage Package
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.8.2-1
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.8.3-1
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 1
 
@@ -27,48 +30,3 @@ jobs:
           path: ${{ steps.build-appimage.outputs.APPIMAGE_NAME }}
           overwrite: true
           compression-level: 0 # squashfs is already compressed
-
-      - name: Comment AppImage
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: |
-            const comment_identifier_string = "<!-- automated comment for an appimage build -->";
-
-            const comment_body = `
-              ${comment_identifier_string}
-
-              Artifact containing the AppImage: [nextcloud-appimage-pr-${{ github.event.number }}.zip](${{ steps.upload-appimage.outputs.artifact-url }})
-
-              SHA256 checksum: \`${{ steps.upload-appimage.outputs.artifact-digest }}\`
-
-              To test this change/fix you can download the above artifact file, unzip it, and run it.
-
-              Please make sure to quit your existing Nextcloud app and backup your data.
-            `;
-
-            console.log("fetching old comments")
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            comments
-              .data
-              .filter(comment => comment.body?.includes(comment_identifier_string))
-              .forEach(comment => {
-                console.log(`deleting previous AppImage comment with ID ${comment.id}`)
-                github.rest.issues.deleteComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: comment.id,
-                })
-              });
-
-            console.log("creating new comment")
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: comment_body,
-            });

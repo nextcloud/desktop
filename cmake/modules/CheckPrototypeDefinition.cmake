@@ -20,6 +20,10 @@
 #  CMAKE_REQUIRED_LIBRARIES = list of libraries to link
 
 #=============================================================================
+# SPDX-FileCopyrightText: 2005-2009 Kitware, Inc.
+# SPDX-FileCopyrightText: 2010-2011 Andreas Schneider <asn@cryptomilk.org>
+# SPDX-License-Identifier: BSD-3-Clause
+#
 # Copyright 2005-2009 Kitware, Inc.
 # Copyright 2010-2011 Andreas Schneider <asn@cryptomilk.org>
 #

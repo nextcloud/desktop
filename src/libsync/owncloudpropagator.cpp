@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2013 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "owncloudpropagator.h"
@@ -22,6 +13,7 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "bulkpropagatorjob.h"
+#include "bulkpropagatordownloadjob.h"
 #include "updatee2eefoldermetadatajob.h"
 #include "updatemigratede2eemetadatajob.h"
 #include "propagatorjobs.h"
@@ -226,7 +218,7 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString &errorString, const ErrorCategory category)
 {
     // Duplicate calls to done() are a logic error
-    ENFORCE(_state != Finished);
+    Q_ASSERT(_state != Finished);
     _state = Finished;
 
     _item->_status = statusArg;
@@ -284,10 +276,11 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
         break;
     }
 
-    if (_item->hasErrorStatus())
+    if (_item->hasErrorStatus()) {
         qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
-    else
+    } else {
         qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
+    }
     emit propagator()->itemCompleted(_item, category);
     emit finished(_item->_status);
 
@@ -693,7 +686,18 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
         }
         removedDirectory = item->_file + "/";
     } else {
-        directories.top().second->appendTask(item);
+        const auto isVfsCfApi = syncOptions()._vfs && syncOptions()._vfs->mode() == Vfs::WindowsCfApi;
+        const auto isDownload = item->_direction == SyncFileItem::Down &&
+            (item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC);
+        const auto isVirtualFile = item->_type == ItemTypeVirtualFile;
+        const auto isEncrypted = item->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted;
+        const auto shouldAddBulkPropagateDownloadItem = isDownload && isVirtualFile && isVfsCfApi && !isEncrypted;
+
+        if (shouldAddBulkPropagateDownloadItem) {
+            addBulkPropagateDownloadItem(item, directories);
+        } else {
+            directories.top().second->appendTask(item);
+        }
     }
 
     if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
@@ -701,6 +705,27 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
         // directory we want to skip processing items inside it.
         maybeConflictDirectory = item->_file + "/";
     }
+}
+
+void OwncloudPropagator::addBulkPropagateDownloadItem(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
+{
+    auto bulkPropagatorDownloadJob = static_cast<BulkPropagatorDownloadJob*>(nullptr);
+    const auto foundBulkPrpagatorDownloadJobIt = std::find_if(std::cbegin(directories.top().second->_subJobs._jobsToDo),
+                                                              std::cend(directories.top().second->_subJobs._jobsToDo),
+                                                              [](PropagatorJob *job)
+                                                              {
+                                                                  const auto bulkDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(job);
+                                                                  return bulkDownloadJob != nullptr;
+                                                              }
+                                                              );
+
+    if (foundBulkPrpagatorDownloadJobIt == std::cend(directories.top().second->_subJobs._jobsToDo)) {
+        bulkPropagatorDownloadJob = new BulkPropagatorDownloadJob(this, directories.top().second);
+        directories.top().second->appendJob(bulkPropagatorDownloadJob);
+    } else {
+        bulkPropagatorDownloadJob = qobject_cast<BulkPropagatorDownloadJob *>(*foundBulkPrpagatorDownloadJobIt);
+    }
+    bulkPropagatorDownloadJob->addDownloadItem(item);
 }
 
 void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories)
@@ -1091,29 +1116,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
 
 bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 {
-    const auto checkFileShouldBeEncrypted = [this] (const SyncFileItemPtr &item) -> bool {
-        const auto path = item->_file;
-        const auto slashPosition = path.lastIndexOf('/');
-        const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+    Q_UNUSED(item)
 
-        SyncJournalFileRecord parentRec;
-        bool ok = _journal->getFileRecord(parentPath, &parentRec);
-        if (!ok) {
-            return false;
-        }
-
-        const auto accountPtr = account();
-
-        if (!parentRec.isValid() ||
-            !parentRec.isE2eEncrypted()) {
-            return false;
-        }
-
-        return true;
-    };
-
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->isEncrypted() && _syncOptions.minChunkSize() > item->_size
-        && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
+    return false;
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
@@ -1267,7 +1272,9 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
         _tasksToDo.remove(0);
         PropagatorJob *job = propagator()->createJob(nextTask);
         if (!job) {
-            qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
+            if (!propagator()->isDelayedUploadItem(nextTask)) {
+                qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
+            }
             continue;
         }
         appendJob(job);
@@ -1311,9 +1318,11 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
-    int i = _runningJobs.indexOf(subJob);
-    ENFORCE(i >= 0); // should only happen if this function is called more than once
-    _runningJobs.remove(i);
+    const auto i = _runningJobs.indexOf(subJob);
+    Q_ASSERT(i >= 0 && i < _runningJobs.size()); // should only happen if this function is called more than once
+    if (i >= 0 && i < _runningJobs.size()) {
+        _runningJobs.remove(i);
+    }
 
     // Any sub job error will cause the whole composite to fail. This is important
     // for knowing whether to update the etag in PropagateDirectory, for example.
@@ -1384,6 +1393,7 @@ PropagatorJob::JobParallelism PropagateDirectory::parallelism() const
 bool PropagateDirectory::scheduleSelfOrChild()
 {
     if (_state == Finished) {
+        qCDebug(lcDirectory) << "folder job finished";
         return false;
     }
 
@@ -1392,15 +1402,32 @@ bool PropagateDirectory::scheduleSelfOrChild()
     }
 
     if (_firstJob && _firstJob->_state == NotYetStarted) {
-        return _firstJob->scheduleSelfOrChild();
+        const auto result = _firstJob->scheduleSelfOrChild();
+
+        if (result) {
+            qCDebug(lcDirectory) << "folder first job has more work to do";
+        } else {
+            qCDebug(lcDirectory) << "folder first job is done";
+        }
+
+        return result;
     }
 
     if (_firstJob && _firstJob->_state == Running) {
         // Don't schedule any more job until this is done.
+        qCDebug(lcDirectory) << "first job is running";
         return false;
     }
 
-    return _subJobs.scheduleSelfOrChild();
+    const auto result = _subJobs.scheduleSelfOrChild();
+
+    if (result) {
+        qCDebug(lcDirectory) << "folder child jobs have more work to do";
+    } else {
+        qCDebug(lcDirectory) << "folder child jobs are done";
+    }
+
+    return result;
 }
 
 void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
@@ -1464,16 +1491,18 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 try {
-                    if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
-                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadOnly);
+                    if (const auto fileName = propagator()->fullLocalPath(_item->_file); FileSystem::fileExists(fileName)) {
+                        FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);
+                        Q_EMIT propagator()->touchedFile(fileName);
                     }
                     if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
-                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadOnly);
+                        const auto fileName = propagator()->fullLocalPath(_item->_renameTarget);
+                        FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadOnly);
+                        Q_EMIT propagator()->touchedFile(fileName);
                     }
                 }
                 catch (const std::filesystem::filesystem_error &e)
@@ -1496,10 +1525,11 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             } else {
                 try {
-                    const auto permissionsChangeHelper = [] (const auto fileName)
+                    const auto permissionsChangeHelper = [this] (const auto fileName)
                     {
                         qCDebug(lcDirectory) << fileName << "permissions changed: old permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
                         FileSystem::setFolderPermissions(fileName, FileSystem::FolderPermissions::ReadWrite);
+                        Q_EMIT propagator()->touchedFile(fileName);
                         qCDebug(lcDirectory) << fileName << "applied new permissions" << static_cast<int>(std::filesystem::status(fileName.toStdWString()).permissions());
                     };
 
@@ -1529,11 +1559,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg("", tr("unknown exception"));
                 }
             }
-#endif
             if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
-                if (_item->isEncrypted()) {
-                    _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
-                }
                 const auto result = propagator()->updateMetadata(*_item);
                 if (!result) {
                     status = _item->_status = SyncFileItem::FatalError;
@@ -1547,6 +1573,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         }
     }
     _state = Finished;
+    qCDebug(lcDirectory()) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
 }
 
@@ -1599,28 +1626,36 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 void PropagateRootDirectory::appendDirDeletionJob(PropagatorJob *job)
 {
+    if (auto directoryJob = qobject_cast<PropagateDirectory*>(job)) {
+        qCDebug(lcRootDirectory) << "new folder deletion job" << directoryJob->_item->_file;
+    }
     _dirDeletionJobs.appendJob(job);
 }
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
     if (_state == Finished) {
+        qCDebug(lcRootDirectory) << "root folder fully propagated";
         return false;
     }
 
     if (PropagateDirectory::scheduleSelfOrChild() && propagator()->delayedTasks().empty()) {
+        qCDebug(lcRootDirectory) << "root folder has more jobs to do";
         return true;
     }
 
     // Important: Finish _subJobs before scheduling any deletes.
     if (_subJobs._state != Finished) {
+        qCDebug(lcRootDirectory) << "root folder has running jobs to do";
         return false;
     }
 
     if (!propagator()->delayedTasks().empty()) {
+        qCDebug(lcRootDirectory) << "root folder has more delayed jobs to do";
         return scheduleDelayedJobs();
     }
 
+    qCDebug(lcRootDirectory) << "schedule folder deletions step";
     return _dirDeletionJobs.scheduleSelfOrChild();
 }
 
@@ -1631,15 +1666,12 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         return;
     }
 
-    if (status != SyncFileItem::Success
-        && status != SyncFileItem::Restoration
-        && status != SyncFileItem::BlacklistedError
-        && status != SyncFileItem::FileNameClash
-        && status != SyncFileItem::Conflict) {
+    if (status == SyncFileItem::FatalError) {
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
             _state = Finished;
+            qCInfo(lcRootDirectory()) << "PropagateRootDirectory::slotSubJobsFinished" << "emit finished" << status;
             emit finished(status);
         }
         return;
@@ -1648,18 +1680,18 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     if (_errorStatus == SyncFileItem::NoStatus) {
         switch (status) {
         case SyncFileItem::NoStatus:
-        case SyncFileItem::FatalError:
-        case SyncFileItem::NormalError:
-        case SyncFileItem::SoftError:
-        case SyncFileItem::Conflict:
         case SyncFileItem::FileIgnored:
-        case SyncFileItem::FileLocked:
         case SyncFileItem::Restoration:
-        case SyncFileItem::FileNameInvalid:
-        case SyncFileItem::FileNameInvalidOnServer:
-        case SyncFileItem::DetailError:
         case SyncFileItem::Success:
             break;
+        case SyncFileItem::FileLocked:
+        case SyncFileItem::DetailError:
+        case SyncFileItem::SoftError:
+        case SyncFileItem::Conflict:
+        case SyncFileItem::FatalError:
+        case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::FileNameInvalidOnServer:
+        case SyncFileItem::NormalError:
         case SyncFileItem::FileNameClash:
         case SyncFileItem::BlacklistedError:
             _errorStatus = status;

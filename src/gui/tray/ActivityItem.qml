@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -35,6 +40,8 @@ ItemDelegate {
 
         ActivityItemContent {
             id: activityContent
+
+            adaptiveTextColor: root.activeFocus ? palette.highlightedText : palette.text
 
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight

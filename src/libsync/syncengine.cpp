@@ -1,16 +1,7 @@
 /*
- * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "syncengine.h"
@@ -228,7 +219,6 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
     for (const SyncJournalDb::DownloadInfo &deleted_info : deleted_infos) {
         const QString tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
-        qCInfo(lcEngine) << "Deleting stale temporary file: " << tmppath;
         FileSystem::remove(tmppath);
     }
 }
@@ -406,7 +396,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Update on-disk virtual file metadata
             if (modificationHappened && item->_type == ItemTypeVirtualFile) {
-                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
+                auto r = _syncOptions._vfs->updateMetadata(*item, filePath, {});
                 if (!r) {
                     item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -421,10 +411,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
-            }
-
-            if (rec.isE2eEncrypted()) {
-                rec._e2eCertificateFingerprint = _account->encryptionCertificateFingerprint();
             }
 
             // Updating the db happens on success
@@ -774,6 +760,7 @@ void SyncEngine::startSync()
     
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
+    connect(discoveryJob, &ProcessDirectoryJob::updatedRootFolderQuota, account().data(), &Account::rootFolderQuotaChanged);
     connect(_discoveryPhase.get(), &DiscoveryPhase::addErrorToGui, this, &SyncEngine::addErrorToGui);
 }
 
@@ -841,7 +828,6 @@ void SyncEngine::slotDiscoveryFinished()
 
     if (!_remnantReadOnlyFolders.isEmpty()) {
         handleRemnantReadOnlyFolders();
-        return;
     }
 
     finishSync();
@@ -1170,9 +1156,29 @@ bool SyncEngine::handleMassDeletion()
 
 void SyncEngine::handleRemnantReadOnlyFolders()
 {
-    promptUserBeforePropagation([this](auto &&callback) {
-                                    emit aboutToRemoveRemnantsReadOnlyFolders(_remnantReadOnlyFolders, _localPath, callback);
-                                });
+    auto listOfFolders = QStringList{};
+    for (const auto &oneFolder : std::as_const(_remnantReadOnlyFolders)) {
+        listOfFolders.push_back(oneFolder->_file);
+    }
+
+    qCInfo(lcEngine()) << "will delete invalid read-only folders:" << listOfFolders.join(", ");
+
+    for(const auto &oneFolder : std::as_const(_remnantReadOnlyFolders)) {
+        const auto fileInfo = QFileInfo{_localPath + oneFolder->_file};
+        const auto parentFolderPath = fileInfo.dir().absolutePath();
+        slotAddTouchedFile(parentFolderPath);
+        const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+        slotAddTouchedFile(_localPath + oneFolder->_file);
+
+        if (oneFolder->_type == ItemType::ItemTypeDirectory) {
+            const auto deletionCallback = [this] (const QString &deleteItem, bool) {
+                slotAddTouchedFile(deleteItem);
+            };
+            FileSystem::removeRecursively(_localPath + oneFolder->_file, deletionCallback, nullptr, deletionCallback);
+        } else {
+            FileSystem::remove(_localPath + oneFolder->_file);
+        }
+    }
 }
 
 template <typename T>
@@ -1433,8 +1439,9 @@ void SyncEngine::slotInsufficientLocalStorage()
 void SyncEngine::slotInsufficientRemoteStorage()
 {
     auto msg = tr("There is insufficient space available on the server for some uploads.");
-    if (_uniqueErrors.contains(msg))
+    if (_uniqueErrors.contains(msg)) {
         return;
+    }
 
     _uniqueErrors.insert(msg);
     emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);

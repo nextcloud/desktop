@@ -1,8 +1,11 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2016 ownCloud GmbH
+ * SPDX-License-Identifier: CC0-1.0
  *
+ * This software is in the public domain, furnished "as is", without technical
+ * support, and with no warranty, express or implied, as to its usefulness for
+ * any purpose.
  */
 #pragma once
 
@@ -124,6 +127,15 @@ public:
     FileInfo(const QString &name, qint64 size, char contentChar, QDateTime mtime) : name{name}, isDir{false}, lastModified(mtime), size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
+    enum EtagsAction {
+        Keep = 0,
+        Invalidate,
+    };
+    struct FolderQuota {
+        int64_t bytesUsed = 0;
+        int64_t bytesAvailable = 5000000000;
+    };
+
     void addChild(const FileInfo &info);
 
     void remove(const QString &relativePath) override;
@@ -147,9 +159,10 @@ public:
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     void setE2EE(const QString &relativepath, const bool enabled) override;
+    void setFolderQuota(const QString &relativePath, const FolderQuota newQuota, const EtagsAction invalidateEtags = EtagsAction::Keep);
 
-    FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
-    FileInfo findRecursive(PathComponents pathComponents, const bool invalidateEtags = false);
+    FileInfo *find(PathComponents pathComponents, const EtagsAction invalidateEtags = EtagsAction::Keep);
+    FileInfo findRecursive(PathComponents pathComponents, const EtagsAction invalidateEtags = EtagsAction::Keep);
 
     FileInfo *createDir(const QString &relativePath);
 
@@ -174,6 +187,7 @@ public:
     int operationStatus = 200;
     bool isDir = true;
     bool isShared = false;
+    bool downloadForbidden = false;
     OCC::RemotePermissions permissions; // When uset, defaults to everything
     QDateTime lastModified = QDateTime::currentDateTimeUtc().addDays(-7);
     QByteArray etag = generateEtag();
@@ -191,6 +205,7 @@ public:
     quint64 lockTimeout = 0;
     bool isEncrypted = false;
     bool isLivePhoto = false;
+    FolderQuota folderQuota;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
@@ -275,9 +290,9 @@ class FakePutMultiFileReply : public FakeReply
 {
     Q_OBJECT
 public:
-    FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, QObject *parent);
+    FakePutMultiFileReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QString &contentType, const QByteArray &putPayload, const QString &serverVersion, QObject *parent);
 
-    static QVector<FileInfo *> performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType);
+    static QVector<FileInfo *> performMultiPart(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload, const QString &contentType, const QString &serverVersion);
 
     Q_INVOKABLE virtual void respond();
 
@@ -290,6 +305,8 @@ private:
     QVector<FileInfo *> _allFileInfo;
 
     QByteArray _payload;
+
+    QString _serverVersion;
 };
 
 class FakeMkcolReply : public FakeReply
@@ -501,6 +518,8 @@ private:
     // monitor requests and optionally provide custom replies
     Override _override;
 
+    QString _serverVersion = QStringLiteral("10.0.0");
+
 public:
     FakeQNAM(FileInfo initialRoot);
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
@@ -515,6 +534,8 @@ public:
                                  std::function<QJsonObject(const QMap<QString, QByteArray> &)> replyFunction);
 
     QNetworkReply *overrideReplyWithError(QString fileName, Operation op, QNetworkRequest newRequest);
+
+    void setServerVersion(const QString &version);
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
@@ -534,7 +555,9 @@ public:
     [[nodiscard]] bool ready() const override { return true; }
     void fetchFromKeychain() override { }
     void askFromUser() override { }
-    bool stillValid(QNetworkReply *) override { return true; }
+    bool stillValid(QNetworkReply *reply) override {
+        return reply->error() != QNetworkReply::AuthenticationRequiredError;
+    }
     void persist() override { }
     void invalidateToken() override { }
     void forgetSensitiveData() override { }
@@ -553,6 +576,7 @@ class FakeFolder
     OCC::AccountPtr _account;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
+    QString _serverVersion = QStringLiteral("10.0.0");
 
 public:
     FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo = {}, const QString &remotePath = {});
@@ -561,12 +585,14 @@ public:
 
     void enableEnforceWindowsFileNameCompatibility();
 
+    void setServerVersion(const QString &version);
+
     [[nodiscard]] OCC::AccountPtr account() const { return _account; }
     [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
     [[nodiscard]] FakeQNAM* networkAccessManager() const { return _fakeQnam; }
 
-    FileModifier &localModifier() { return _localModifier; }
+    DiskFileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
     FileInfo currentLocalState();
 

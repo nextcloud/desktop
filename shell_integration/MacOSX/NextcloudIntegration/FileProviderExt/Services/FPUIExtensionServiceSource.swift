@@ -2,7 +2,8 @@
 //  FPUIExtensionCommunicationService.swift
 //  FileProviderExt
 //
-//  Created by Claudio Cambra on 21/2/24.
+//  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
 //
 
 import FileProvider
@@ -40,6 +41,30 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - FPUIExtensionService protocol methods
 
+    func authenticate() async -> NSError? {
+        Logger.fpUiExtensionService.info("Authenticating...")
+
+        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = Keychain.getPassword(for: user, on: serverUrl) else {
+            Logger.fpUiExtensionService.error("Missing account information, cannot authenticate!")
+            return NSError(.missingAccountInformation)
+        }
+
+        return await withCheckedContinuation { continuation in
+            fpExtension.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password) { error in
+                continuation.resume(returning: error)
+            }
+        }
+    }
+
+    func userAgent() async -> NSString? {
+        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+            return nil
+        }
+
+        let nkSession = fpExtension.ncKit.getSession(account: account)
+        return nkSession?.userAgent as NSString?
+    }
+
     func credentials() async -> NSDictionary {
         return (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
     }
@@ -53,7 +78,14 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return nil
         }
 
-        let dbManager = FilesDatabaseManager.shared
+        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+            Logger.shares.error("Could not fetch ncKitAccount on parent extension")
+            return nil
+        }
+        guard let dbManager = fpExtension.dbManager else {
+            Logger.shares.error("Could not get db manager for \(account, privacy: .public)")
+            return nil
+        }
         guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
             Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
             return nil

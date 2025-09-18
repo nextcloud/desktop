@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "theme.h"
@@ -172,8 +164,15 @@ QString OCUpdater::statusString(UpdateStatusStringFormat format) const
         return tr("Update status is unknown: Did not check for new updates.");
     case UpToDate:
     // fall through
-    default:
-        return tr("No updates available. Your installation is at the latest version.");
+    default: {
+        ConfigFile configFile;
+        if (configFile.serverHasValidSubscription()) {
+            return tr("You are using the %1 update channel. Your installation is the latest version.")
+                .arg(configFile.currentUpdateChannel());
+        }
+
+        return tr("No updates available. Your installation is the latest version.");
+    }
     }
 }
 

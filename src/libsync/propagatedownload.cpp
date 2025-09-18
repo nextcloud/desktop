@@ -1,15 +1,7 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "config.h"
@@ -36,6 +28,8 @@
 #include <cmath>
 
 namespace OCC {
+
+static constexpr auto CustomDecompressedSafetyCheckThreshold = 20 * 1024 * 1024;
 
 Q_LOGGING_CATEGORY(lcGetJob, "nextcloud.sync.networkjob.get", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateDownload, "nextcloud.sync.propagator.download", QtInfoMsg)
@@ -122,6 +116,7 @@ void GETFileJob::start()
     }
 
     req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
+    req.setDecompressedSafetyCheckThreshold(CustomDecompressedSafetyCheckThreshold);
 
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
@@ -538,11 +533,6 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         const auto fsPath = propagator()->fullLocalPath(_item->_file);
         makeParentFolderModifiable(fsPath);
 
-        // do a klaas' case clash check.
-        if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
-            return;
-        }
         auto r = vfs->createPlaceholder(*_item);
         if (!r) {
             done(SyncFileItem::NormalError, r.error(), ErrorCategory::GenericError);
@@ -769,19 +759,16 @@ void PropagateDownloadFile::setDeleteExistingFolder(bool enabled)
 
 void PropagateDownloadFile::done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category)
 {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
-#endif
     PropagateItemJob::done(status, errorString, category);
 }
 
 void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
 {
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         const auto newDirPath = std::filesystem::path{fileName.toStdWString()};
         Q_ASSERT(newDirPath.has_parent_path());
@@ -805,7 +792,6 @@ void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = true;
     }
-#endif
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
@@ -1194,7 +1180,6 @@ void PropagateDownloadFile::finalizeDownload()
 {
     if (isEncrypted()) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
-            _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
             downloadFinished();
         } else {
             done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString(), ErrorCategory::GenericError);
@@ -1349,13 +1334,11 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
-#endif
 
     FileSystem::setFileHidden(filename, false);
 

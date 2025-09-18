@@ -1,20 +1,7 @@
 /*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2014 ownCloud GmbH
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 #ifndef UTILITY_H
@@ -67,17 +54,41 @@ namespace Utility {
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
     /**
-     * @brief Creates the Desktop.ini file which contains the folder IconResource shown as a favorite link
+     * @brief Create favorite link for sync folder with application name and icon
      *
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
+    /**
+     * @brief Migrate favorite link for sync folder with new application name and icon
+     *
+     * @param folder absolute file path to folder
+     */
+    OCSYNC_EXPORT void migrateFavLink(const QString &folder);
+    /**
+     * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
+     *
+     * @param folder absolute file path to folder
+     * @param localizedResourceName new folder name to be used as display name (migration)
+     */
+    OCSYNC_EXPORT void setupDesktopIni(const QString &folder, const QString localizedResourceName = {});
     /**
      * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
      *
      * @param folder absolute file path to folder
      */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
+    /**
+     * @brief Return the display name of a folder - to be used in fav links and sync root name (VFS).x
+     * e.g. Nextcloud1 will become NewAppName1, NewAppName2 or FolderName will be kept as is.
+     *
+     * @param currentDisplayName current folder display name string
+     * @param newName new name to be used for the folder
+     */
+    OCSYNC_EXPORT QString syncFolderDisplayName(const QString &currentDisplayName, const QString &newName);
+
+    // convenience system path to links folder
+    OCSYNC_EXPORT QString systemPathToLinks();
 
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(const qint64 octets);
@@ -294,9 +305,6 @@ namespace Utility {
     OCSYNC_EXPORT bool registryWalkValues(HKEY hRootKey, const QString &subKey, const std::function<void(const QString &, bool *)> &callback);
     OCSYNC_EXPORT QRect getTaskbarDimensions();
 
-    // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c
-    OCSYNC_EXPORT void UnixTimeToFiletime(time_t t, FILETIME *filetime);
-    OCSYNC_EXPORT void FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs);
     OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
 
     OCSYNC_EXPORT QString formatWinError(long error);
@@ -366,6 +374,5 @@ inline constexpr bool Utility::isBSD()
     return false;
 #endif
 }
-
 }
 #endif // UTILITY_H

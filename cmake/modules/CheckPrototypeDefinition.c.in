@@ -1,5 +1,8 @@
 @CHECK_PROTOTYPE_DEFINITION_HEADER@
 
+# SPDX-FileCopyrightText: 2014 ownCloud GmbH
+# SPDX-License-Identifier: BSD-3-Clause
+
 static void cmakeRequireSymbol(int dummy, ...) {
   (void) dummy;
 }

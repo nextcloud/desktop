@@ -1,15 +1,6 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "userstatusconnector.h"
@@ -74,6 +65,11 @@ public:
     [[nodiscard]] OCC::UserStatus userStatus() const override
     {
         return {}; // Not implemented
+    }
+
+    [[nodiscard]] bool supportsBusyStatus() const override
+    {
+        return true;
     }
 
     void setFakeUserStatus(const OCC::UserStatus &userStatus)
@@ -228,7 +224,7 @@ private slots:
         QCOMPARE(model.userStatusMessage(), userStatusMessage);
         QCOMPARE(model.userStatusEmoji(), userStatusIcon);
         QCOMPARE(model.onlineStatus(), userStatusState);
-        QCOMPARE(model.clearAtDisplayString(), tr("1 day"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 day(s)"));
 
         // Were predefined statuses fetched correctly?
         const auto predefinedStatusesCount = model.predefinedStatuses().count();
@@ -251,8 +247,8 @@ private slots:
         OCC::UserStatusSelectorModel model(nullptr, nullptr);
 
         QCOMPARE(model.userStatusMessage(), "");
-        QCOMPARE(model.userStatusEmoji(), "😀");
-        QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
+        QCOMPARE(model.userStatusEmoji(), "");
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
     }
 
     void testCtor_fetchStatusButNoStatusSet_showSensibleDefaults()
@@ -264,8 +260,8 @@ private slots:
 
         QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
-        QCOMPARE(model.userStatusEmoji(), "😀");
-        QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
+        QCOMPARE(model.userStatusEmoji(), "");
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
     }
 
     void testSetOnlineStatus_emiUserStatusChanged()
@@ -393,7 +389,7 @@ private slots:
         QCOMPARE(model.userStatusMessage(), fakePredefinedUserStatus.message());
         QCOMPARE(model.userStatusEmoji(), fakePredefinedUserStatus.icon());
         QCOMPARE(model.onlineStatus(), fakePredefinedUserStatus.state());
-        QCOMPARE(model.clearAtDisplayString(), tr("1 hour"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 hour(s)"));
     }
 
     void testSetClear_setClearAtStage0_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -406,7 +402,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
     }
 
     void testSetClear_setClearAtStage1_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -419,7 +415,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("30 minutes"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("30 minute(s)"));
     }
 
     void testSetClear_setClearAtStage2_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -432,7 +428,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("1 hour"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 hour(s)"));
     }
 
     void testSetClear_setClearAtStage3_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -445,7 +441,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("4 hours"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("4 hour(s)"));
     }
 
     void testSetClear_setClearAtStage4_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -458,7 +454,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("Today"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Today"));
     }
 
     void testSetClear_setClearAtStage5_emitclearAtDisplayStringChangedAndClearAtSet()
@@ -471,7 +467,7 @@ private slots:
         model.setClearAt(clearAtToSet);
 
         QCOMPARE(clearAtDisplayStringChangedSpy.count(), 1);
-        QCOMPARE(model.clearAtDisplayString(), tr("This week"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("This week"));
     }
 
     void testClearAtStages()
@@ -479,16 +475,16 @@ private slots:
         auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
-        QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
+        QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Don't clear"));
         const auto clearStageTypes = model.clearStageTypes();
         QCOMPARE(clearStageTypes.count(), 6);
 
-        QCOMPARE(clearStageTypes[0].value<QVariantMap>()[QStringLiteral("display")], tr("Don't clear"));
-        QCOMPARE(clearStageTypes[1].value<QVariantMap>()[QStringLiteral("display")], tr("30 minutes"));
-        QCOMPARE(clearStageTypes[2].value<QVariantMap>()[QStringLiteral("display")], tr("1 hour"));
-        QCOMPARE(clearStageTypes[3].value<QVariantMap>()[QStringLiteral("display")], tr("4 hours"));
-        QCOMPARE(clearStageTypes[4].value<QVariantMap>()[QStringLiteral("display")], tr("Today"));
-        QCOMPARE(clearStageTypes[5].value<QVariantMap>()[QStringLiteral("display")], tr("This week"));
+        QCOMPARE(clearStageTypes[0].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("Don't clear"));
+        QCOMPARE(clearStageTypes[1].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("30 minutes"));
+        QCOMPARE(clearStageTypes[2].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("1 hour"));
+        QCOMPARE(clearStageTypes[3].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("4 hours"));
+        QCOMPARE(clearStageTypes[4].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("Today"));
+        QCOMPARE(clearStageTypes[5].value<QVariantMap>()[QStringLiteral("display")], QStringLiteral("This week"));
     }
 
     void testClearAt_clearAtTimestamp()
@@ -506,7 +502,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("Less than a minute"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Less than a minute"));
         }
 
         {
@@ -521,7 +517,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("1 minute"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 minute(s)"));
         }
 
         {
@@ -536,7 +532,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("30 minutes"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("30 minute(s)"));
         }
 
         {
@@ -551,7 +547,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("1 hour"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 hour(s)"));
         }
 
         {
@@ -566,7 +562,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("4 hours"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("4 hour(s)"));
         }
 
         {
@@ -581,7 +577,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("1 day"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 day(s)"));
         }
 
         {
@@ -596,7 +592,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus, std::move(fakeDateTimeProvider));
 
-            QCOMPARE(model.clearAtDisplayString(), tr("7 days"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("7 day(s)"));
         }
     }
 
@@ -611,7 +607,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus);
 
-            QCOMPARE(model.clearAtDisplayString(), tr("Today"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("Today"));
         }
 
         {
@@ -623,7 +619,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus);
 
-            QCOMPARE(model.clearAtDisplayString(), tr("This week"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("This week"));
         }
     }
 
@@ -638,7 +634,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus);
 
-            QCOMPARE(model.clearAtDisplayString(), tr("30 minutes"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("30 minute(s)"));
         }
 
         {
@@ -650,7 +646,7 @@ private slots:
 
             OCC::UserStatusSelectorModel model(userStatus);
 
-            QCOMPARE(model.clearAtDisplayString(), tr("1 hour"));
+            QCOMPARE(model.clearAtDisplayString(), QStringLiteral("1 hour(s)"));
         }
     }
 
@@ -671,7 +667,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
         QCOMPARE(model.errorMessage(),
-            tr("Could not fetch predefined statuses. Make sure you are connected to the server."));
+            QStringLiteral("Could not fetch predefined statuses. Make sure you are connected to the server."));
     }
 
     void testError_couldNotFetchUserStatus_emitError()
@@ -681,7 +677,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
         QCOMPARE(model.errorMessage(),
-            tr("Could not fetch status. Make sure you are connected to the server."));
+            QStringLiteral("Could not fetch status. Make sure you are connected to the server."));
     }
 
     void testError_userStatusNotSupported_emitError()
@@ -691,7 +687,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
         QCOMPARE(model.errorMessage(),
-            tr("Status feature is not supported. You will not be able to set your status."));
+            QStringLiteral("Status feature is not supported. You will not be able to set your status."));
     }
 
     void testError_couldSetUserStatus_emitError()
@@ -702,7 +698,7 @@ private slots:
         model.setUserStatus();
 
         QCOMPARE(model.errorMessage(),
-            tr("Could not set status. Make sure you are connected to the server."));
+            QStringLiteral("Could not set status. Make sure you are connected to the server."));
     }
 
     void testError_emojisNotSupported_emitError()
@@ -712,7 +708,7 @@ private slots:
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
         QCOMPARE(model.errorMessage(),
-            tr("Emojis are not supported. Some status functionality may not work."));
+            QStringLiteral("Emojis are not supported. Some status functionality may not work."));
     }
 
     void testError_couldNotClearMessage_emitError()
@@ -723,7 +719,7 @@ private slots:
         model.clearUserStatus();
 
         QCOMPARE(model.errorMessage(),
-            tr("Could not clear status message. Make sure you are connected to the server."));
+            QStringLiteral("Could not clear status message. Make sure you are connected to the server."));
     }
 
     void testError_setUserStatus_clearErrorMessage()

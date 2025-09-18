@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2011 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 include(DefinePlatformDefaults)
 
 include(nextcloud_add_test.cmake)
@@ -96,6 +100,8 @@ nextcloud_add_test(DateFieldBackend)
 nextcloud_add_test(ClientStatusReporting)
 nextcloud_add_test(CookieJarMigration)
 
+nextcloud_add_test(FileSystem)
+
 nextcloud_add_test(FolderStatusModel)
 
 target_link_libraries(SecureFileDropTest PRIVATE Nextcloud::sync)
@@ -135,6 +141,7 @@ nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
 
 nextcloud_add_test(Account)
+nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
 

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
-** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
+** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
+** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.

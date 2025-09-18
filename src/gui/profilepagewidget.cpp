@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2021Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #include "profilepagewidget.h"
 #include "guiutility.h"
 #include "ocsprofileconnector.h"

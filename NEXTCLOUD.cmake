@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2012 ownCloud GmbH
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # keep the application name and short name the same or different for dev and prod build
 # or some migration logic will behave differently for each build
 if(NEXTCLOUD_DEV)
@@ -41,10 +45,6 @@ set( MAC_INSTALLER_BACKGROUND_FILE "${CMAKE_SOURCE_DIR}/admin/osx/installer-back
 
 # set( THEME_INCLUDE          "${OEM_THEME_DIR}/mytheme.h" )
 # set( APPLICATION_LICENSE    "${OEM_THEME_DIR}/license.txt )
-
-option( WITH_CRASHREPORTER "Build crashreporter" OFF )
-#set( CRASHREPORTER_SUBMIT_URL "https://crash-reports.owncloud.com/submit" CACHE STRING "URL for crash reporter" )
-#set( CRASHREPORTER_ICON ":/owncloud-icon.png" )
 
 ## Updater options
 option( BUILD_UPDATER "Build updater" ON )

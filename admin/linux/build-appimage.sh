@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 set -xe
 
 export APPNAME=${APPNAME:-Nextcloud}
@@ -49,9 +52,9 @@ cd /app
 
 [ -d usr/lib/x86_64-linux-gnu ] && mv usr/lib/x86_64-linux-gnu/* usr/lib/
 
-mkdir usr/plugins
-mv usr/lib64/*sync_vfs_suffix.so usr/plugins || mv usr/lib/*sync_vfs_suffix.so usr/plugins
-mv usr/lib64/*sync_vfs_xattr.so usr/plugins  || mv usr/lib/*sync_vfs_xattr.so usr/plugins
+mkdir -p AppDir/usr/plugins
+mv usr/lib64/*sync_vfs_suffix.so AppDir/usr/plugins || mv usr/lib/*sync_vfs_suffix.so AppDir/usr/plugins
+mv usr/lib64/*sync_vfs_xattr.so  AppDir/usr/plugins || mv usr/lib/*sync_vfs_xattr.so  AppDir/usr/plugins
 
 rm -rf usr/lib/cmake
 rm -rf usr/include
@@ -62,6 +65,10 @@ rm -rf usr/lib/x86_64-linux-gnu/
 rm -rf usr/share/caja-python/
 rm -rf usr/share/nautilus-python/
 rm -rf usr/share/nemo-python/
+
+# The client-specific data dir also contains the translations, we want to have those in the AppImage.
+mkdir -p AppDir/usr/share
+mv usr/share/${EXECUTABLE_NAME} AppDir/usr/share/${EXECUTABLE_NAME}
 
 # Move sync exclude to right location
 mv /app/etc/*/sync-exclude.lst usr/bin/
@@ -97,7 +104,7 @@ export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 
 # Workaround issue #103 and #7231
 export APPIMAGETOOL=appimagetool-x86_64.AppImage
-wget -O ${APPIMAGETOOL} --ca-directory=/etc/ssl/certs -c https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+wget -O ${APPIMAGETOOL} --ca-directory=/etc/ssl/certs -c https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 chmod a+x ${APPIMAGETOOL}
 rm -rf ./squashfs-root
 ./${APPIMAGETOOL} --appimage-extract

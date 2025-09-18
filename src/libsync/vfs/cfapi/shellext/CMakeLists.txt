@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
 include(GenerateIconsUtils)
 
 unset(CMAKE_CXX_CLANG_TIDY)
@@ -153,6 +155,8 @@ set(cppWinRtExe "${WindowsSDKBinPathForTools}\\cppwinrt.exe")
 message("cppWinRtExe: ${cppWinRtExe}")
 message("midlExe: ${midlExe}")
 
+configure_file(CfApiShellIntegrationVersion.h.in ${CMAKE_CURRENT_BINARY_DIR}/CfApiShellIntegrationVersion.h)
+
 # use midl.exe and cppwinrt.exe to generate files for CustomStateProvider (WinRT class)
 add_custom_command(OUTPUT ${MidlOutputPathHeader}
    COMMAND ${midlExe} /winrt /h nul /tlb ${MidlOutputPathTlb} /winmd ${MidlOutputPathWinmd} /metadata_dir "${WindowsSDKReferencesPath}\\Windows.Foundation.FoundationContract\\${WindowsFoundationContractVersion}" /nomidl /reference "${WindowsSDKReferencesPath}\\Windows.Foundation.FoundationContract\\${WindowsFoundationContractVersion}\\Windows.Foundation.FoundationContract.winmd" /reference "${WindowsSDKReferencesPath}\\Windows.Storage.Provider.CloudFilesContract\\${WindowsStorageProviderCloudFilesContractVersion}\\Windows.Storage.Provider.CloudFilesContract.winmd" /I ${MidleFileFolder} customstateprovider.idl
@@ -170,6 +174,7 @@ add_library(CfApiShellExtensions MODULE
     ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp
     customstateprovider.cpp
     CfApiShellIntegration.def
+    CfApiShellIntegration.rc
 )
 
 message("CUSTOM_STATE_ICON_LOCKED_OUT: ${CUSTOM_STATE_ICON_LOCKED_OUT}")
