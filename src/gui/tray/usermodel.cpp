@@ -132,13 +132,13 @@ void User::checkNotifiedNotifications()
     }
 }
 
-bool User::notificationAlreadyShown(const long notificationId)
+bool User::notificationAlreadyShown(const qint64 notificationId)
 {
     checkNotifiedNotifications();
     return _notifiedNotifications.contains(notificationId);
 }
 
-bool User::canShowNotification(const long notificationId)
+bool User::canShowNotification(const qint64 notificationId)
 {
     ConfigFile cfg;
     return cfg.optionalServerNotifications() &&
@@ -154,7 +154,7 @@ void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numT
     _lastTalkNotificationsReceivedCount = numTalkNotificationsReceived;
 }
 
-void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
+void User::showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId)
 {
     if (!canShowNotification(notificationId)) {
         return;

@@ -77,7 +77,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     activity._objectType = json.value(QStringLiteral("object_type")).toString();
     activity._objectId = json.value(QStringLiteral("object_id")).toInt();
     activity._objectName = json.value(QStringLiteral("object_name")).toString();
-    activity._id = json.value(QStringLiteral("activity_id")).toInt();
+    activity._id = json.value(QStringLiteral("activity_id")).toInteger();
     activity._fileAction = json.value(QStringLiteral("type")).toString();
     activity._accName = account->displayName();
     activity._subject = json.value(QStringLiteral("subject")).toString();

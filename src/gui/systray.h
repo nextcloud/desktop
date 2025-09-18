@@ -187,7 +187,7 @@ private:
 
     AccessManagerFactory _accessManagerFactory;
 
-    QSet<qlonglong> _callsAlreadyNotified;
+    QSet<qint64> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
     QPointer<QObject> _encryptionTokenDiscoveryDialog;
     QVector<QQuickWindow*> _fileDetailDialogs;
