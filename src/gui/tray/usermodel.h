@@ -189,7 +189,6 @@ private:
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
-    ActivityList _blacklistedNotifications;
     
     QVariantList _trayFolderInfos;
 

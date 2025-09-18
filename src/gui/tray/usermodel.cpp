@@ -156,7 +156,7 @@ void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numT
 
 void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
 {
-    if(!canShowNotification(notificationId)) {
+    if (!canShowNotification(notificationId)) {
         return;
     }
 
@@ -200,7 +200,7 @@ void User::showDesktopNotification(const ActivityList &activityList)
 
     Logger::instance()->postGuiLog(subject, message);
 
-    for(const auto &activity : activityList) {
+    for (const auto &activity : activityList) {
         _notifiedNotifications.insert(activity._id);
         _activityModel->addNotificationToActivityList(activity);
     }
@@ -241,34 +241,36 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
     ActivityList toNotifyList;
 
     std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
-
-        if (_blacklistedNotifications.contains(activity)) {
-            qCInfo(lcActivity) << "Activity in blacklist, skip";
-            return false;
-        } else if(_notifiedNotifications.contains(activity._id)) {
-            qCInfo(lcActivity) << "Activity already notified, skip";
+        if (!activity._shouldNotify) {
+            qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id << " objectType=" << activity._objectType;
             return false;
         }
-        if (!activity._shouldNotify) {
-            qCDebug(lcActivity) << "Activity should not be notified";
+
+        if (_notifiedNotifications.contains(activity._id)) {
+            qCInfo(lcActivity).nospace() << "Ignoring already notified activity with id=" << activity._id << " objectType=" << activity._objectType;
             return false;
         }
 
         return true;
     });
 
-    if(toNotifyList.count() > 2) {
-        showDesktopNotification(toNotifyList);
+    if (toNotifyList.isEmpty()) {
         return;
     }
 
-    for (const auto &activity : std::as_const(toNotifyList)) {
+    if (toNotifyList.size() == 1) {
+        const auto &activity = toNotifyList.constFirst();
         if (activity._objectType == QStringLiteral("chat")) {
+            // Talk's "call" type is handled in slotBuildIncomingCallDialogs
             showDesktopTalkNotification(activity);
-        } else {
-            showDesktopNotification(activity);
+            return;
         }
+
+        showDesktopNotification(activity);
+        return;
     }
+
+    showDesktopNotification(toNotifyList);
 }
 
 void User::slotNotificationFetchFinished()
@@ -288,16 +290,18 @@ void User::slotBuildIncomingCallDialogs(const ActivityList &list)
     }
 
     const auto systray = Systray::instance();
+    if (!systray) {
+        qCWarning(lcActivity) << "No systray instance available, can not notify about new calls";
+        return;
+    }
 
-    if(systray) {
-        for(const auto &activity : list) {
-            if (!activity._shouldNotify) {
-                qCDebug(lcActivity) << "Activity should not be notified";
-                continue;
-            }
-
-            systray->createCallDialog(activity, _account);
+    for (const auto &activity : list) {
+        if (!activity._shouldNotify) {
+            qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id << " objectType=" << activity._objectType;
+            continue;
         }
+
+        systray->createCallDialog(activity, _account);
     }
 }
 
