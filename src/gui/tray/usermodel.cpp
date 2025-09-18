@@ -24,12 +24,14 @@
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 
+#include <QtCore>
 #include <QDesktopServices>
 #include <QIcon>
 #include <QMessageBox>
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPushButton>
+#include <QDateTime>
 
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
@@ -83,6 +85,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
+    connect(_account->account().data(), &Account::rootFolderQuotaChanged, this, &User::slotQuotaChanged);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
 
@@ -1190,6 +1193,44 @@ void User::slotFetchGroupFolders()
 
     const auto groupFolderListJob = _account->account()->sendRequest(QByteArrayLiteral("GET"), groupFolderListUrl, req);
     connect(groupFolderListJob, &SimpleNetworkJob::finishedSignal, this, &User::slotGroupFoldersFetched);
+}
+
+void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes)
+{
+    int64_t total = usedBytes + availableBytes;
+    if (total <= 0 || !ConfigFile().showQuotaWarningNotifications()) {
+        return;
+    }
+
+    const auto percent = (double)usedBytes / (double)total * 100.0;
+    const auto percentInt = qMin(qRound(percent), 100);
+    qCDebug(lcActivity) << tr("Quota is updated; %1 percent of the total space is used.").arg(QString::number(percentInt));
+
+    int thresholdPassed = 0;
+    if (_lastQuotaPercent < 80 && percentInt >= 80) {
+        thresholdPassed = 80;
+    }
+
+    if (_lastQuotaPercent < 90 && percentInt >= 90) {
+        thresholdPassed = 90;
+    }
+
+    if (_lastQuotaPercent < 95 && percentInt >= 95) {
+        thresholdPassed = 95;
+    }
+
+    if (thresholdPassed > 0) {
+        _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
+
+        _lastQuotaActivity._type = Activity::OpenSettingsNotificationType;
+        _lastQuotaActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        _lastQuotaActivity._subject = tr("Quota Warning - %1 percent or more storage in use").arg(QString::number(thresholdPassed));
+        _lastQuotaActivity._accName = account()->displayName();
+        _lastQuotaActivity._id = qHash(QDateTime::currentMSecsSinceEpoch());
+        showDesktopNotification(_lastQuotaActivity);
+        _activityModel->addNotificationToActivityList(_lastQuotaActivity);
+    }
+    _lastQuotaPercent = percentInt;
 }
 
 void User::slotGroupFoldersFetched(QNetworkReply *reply)
