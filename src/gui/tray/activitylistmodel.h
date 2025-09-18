@@ -190,7 +190,7 @@ private:
 
     bool _displayActions = true;
 
-    int _currentItem = 0;
+    qint64 _currentItem = 0;
     static constexpr int _maxActivities = 100;
     static constexpr int _maxActivitiesDays = 30;
     bool _showMoreActivitiesAvailableEntry = false;

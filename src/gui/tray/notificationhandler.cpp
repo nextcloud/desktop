@@ -106,7 +106,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         auto a = Activity::fromActivityJson(json, ai->account());
 
         a._type = Activity::NotificationType;
-        a._id = json.value("notification_id").toInt();
+        a._id = json.value("notification_id").toInteger();
 
         if(json.contains("subjectRichParameters")) {
             const auto richParams = json.value("subjectRichParameters").toObject();
