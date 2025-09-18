@@ -7,16 +7,15 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 import com.nextcloud.desktopclient
 import Style
 
 ApplicationWindow {
     id: root
-    width: 400
-    height: 300
-    minimumWidth: 300
-    minimumHeight: 200
-    flags: Qt.Dialog
+    height: Style.trayWindowWidth
+    width: Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
+    flags: Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
     visible: true
 
     property var accountState: ({})
@@ -32,120 +31,146 @@ ApplicationWindow {
         localPath: root.localPath
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: Style.infoBoxBackgroundColor
-        //radius: Style.trayWindowRadius
-        border.color: Style.accentColor
+    background: Rectangle {
+        //radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+        border.width: Style.trayWindowBorderWidth
+        border.color: palette.dark
+        color: palette.window
+    }
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins:  Style.standardSpacing
+    // TO FIX: OpacityMask {
+    //     anchors.fill: parent
+    //     anchors.margins: Style.trayWindowBorderWidth
+    //     source: ShaderEffectSource {
+    //         sourceItem: windowContent
+    //         hideSource: true
+    //     }
+    //     maskSource: Rectangle {
+    //         width: root.width
+    //         height: root.height
+    //         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+    //     }
+    // }
+
+    ColumnLayout {
+        id: windowContent
+        anchors.fill: parent
+        anchors.margins:  Style.standardSpacing
+
+        RowLayout {
+            id: windowHeader
+            Layout.fillWidth: true
             spacing: Style.standardSpacing
 
-            RowLayout {
-                id: windowHeader
-                Layout.fillWidth: true
-                spacing: Style.standardSpacing
-
-                Image {
-                    source: "image://svgimage-custom-color/file-open.svg/" + palette.windowText
-                    width: Style.minimumActivityItemHeight
-                    height: Style.minimumActivityItemHeight
-                }
-
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    spacing: Style.extraSmallSpacing
-
-                    Label {
-                        text: root.shortLocalPath
-                        font.bold: true
-                        font.pixelSize: Style.pixelSize
-                        color: Style.ncHeaderTextColor
-                    }
-                }
+            Image {
+                source: "image://svgimage-custom-color/file-open.svg/" + palette.windowText
+                width: Style.minimumActivityItemHeight
+                height: Style.minimumActivityItemHeight
+                Layout.alignment: Qt.AlignVCenter
+                Layout.margins: Style.extraSmallSpacing
             }
 
-            Rectangle {
-                id: lineTop
+            Label {
+                id: headerLocalPath
+                text: root.shortLocalPath
+                elide: Text.ElideRight
+                font.bold: true
+                font.pixelSize: Style.pixelSize
+                color: palette.text
                 Layout.fillWidth: true
-                height: Style.extraExtraSmallSpacing
-                color: Style.accentColor
-            }
-
-            ListView {
-                id: fileActionsView
-                model: fileActionModel
-                clip: true
-                spacing: Style.trayHorizontalMargin
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                delegate: fileActionsDelegate
-            }
-
-            Rectangle {
-                id: lineBottom
-                Layout.fillWidth: true
-                height: Style.extraExtraSmallSpacing
-                color: Style.accentColor
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
             }
 
             Button {
-                id: responseButton
-                visible: responseText.text !== ""
+                id: closeButton
                 flat: true
-                Layout.fillWidth: true
-                implicitHeight: Style.activityListButtonHeight
-
                 padding: 0
-                leftPadding: Style.standardSpacing
-                rightPadding: Style.standardSpacing
-                spacing: Style.standardSpacing
-
-                contentItem: Row {
-                    id: responseContent
+                spacing: 0
+                icon.source: "image://svgimage-custom-color/close.svg/" + palette.windowText
+                icon.width: Style.extraSmallIconSize
+                icon.height: Style.extraSmallIconSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.rightMargin: Style.extraSmallSpacing
+                Layout.topMargin: Style.extraSmallSpacing
+                onClicked: root.close()
+                background: Rectangle {
+                    color: "transparent"
+                    radius: 0
+                    border.width: closeButton.hovered ? Style.trayWindowBorderWidth : 0
+                    border.color: palette.dark
                     anchors.fill: parent
-                    anchors.margins: Style.smallSpacing
-                    spacing: Style.standardSpacing
+                    Layout.margins: Style.extraSmallSpacing
+                }
+            }
+        }
 
-                    Image {
-                        source: "image://svgimage-custom-color/public.svg/" + palette.windowText
-                        width: Style.minimumActivityItemHeight
-                        height: Style.minimumActivityItemHeight
-                        fillMode: Image.PreserveAspectFit
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
+        Rectangle {
+            id: lineTop
+            Layout.fillWidth: true
+            height: Style.extraExtraSmallSpacing
+            color: palette.dark
+        }
 
-                    Text {
-                        id: responseText
-                        text: fileActionModel.responseLabel
-                        textFormat: Text.RichText
-                        color: Style.ncHeaderTextColor
-                        font.pointSize: Style.pixelSize
-                        font.underline: true
-                        anchors.verticalCenter: parent.verticalCenter
-                        MouseArea {
-                            id: responseArea
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
-                        }
-                    }
+        ListView {
+            id: fileActionsView
+            model: fileActionModel
+            clip: true
+            spacing: Style.trayHorizontalMargin
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            delegate: fileActionsDelegate
+        }
+
+        Button {
+            id: responseButton
+            visible: responseText.text !== ""
+            flat: true
+            Layout.fillWidth: true
+            implicitHeight: Style.activityListButtonHeight
+
+            padding: 0
+            leftPadding: Style.smallSpacing
+            rightPadding: Style.smallSpacing
+            spacing: Style.standardSpacing
+
+            background: Rectangle {
+                //radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+                border.width: Style.trayWindowBorderWidth
+                border.color: palette.dark
+                color: palette.window
+            }
+
+            contentItem: Row {
+                id: responseContent
+                anchors.fill: parent
+                anchors.margins: Style.smallSpacing
+                spacing: Style.halfTrayWindowRadius
+                Layout.fillWidth: true
+
+                Image {
+                    source: "image://svgimage-custom-color/backup.svg/" + palette.windowText
+                    width: Style.accountAvatarStateIndicatorSize
+                    height: Style.accountAvatarStateIndicatorSize
+                    fillMode: Image.PreserveAspectFit
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
-                ToolTip {
-                    visible: responseButton.hovered
+                Text {
+                    id: responseText
                     text: fileActionModel.responseLabel
+                    textFormat: Text.RichText
+                    color: palette.text
+                    font.pointSize: Style.pixelSize
+                    font.underline: true
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
 
-            Rectangle {
-                id: repsonseLineBottom
-                visible: response.text != ""
-                Layout.fillWidth: true
-                height: Style.extraExtraSmallSpacing
-                color: Style.accentColor
+            MouseArea {
+                id: responseArea
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(fileActionModel.responseUrl)
             }
         }
     }
@@ -155,8 +180,10 @@ ApplicationWindow {
 
         RowLayout {
             Layout.fillWidth: true
+            Layout.margins: Style.extraSmallSpacing
             spacing: Style.standardSpacing
             height: implicitHeight
+            width: implicitWidth
 
             required property string name
             required property int index
@@ -169,8 +196,8 @@ ApplicationWindow {
                 implicitHeight: Style.activityListButtonHeight
 
                 padding: 0
-                leftPadding: Style.standardSpacing
-                rightPadding: Style.standardSpacing
+                leftPadding: Style.smallSpacing
+                rightPadding: Style.smallSpacing
                 spacing: Style.standardSpacing
 
                 contentItem: Row {
@@ -178,30 +205,31 @@ ApplicationWindow {
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
+                    Layout.fillWidth: true
 
                     Image {
-                        source: icon
-                        width: Style.minimumActivityItemHeight
-                        height: Style.minimumActivityItemHeight
+                        source: icon + palette.windowText
+                        width: Style.activityListButtonHeight
+                        height: Style.activityListButtonHeight
                         fillMode: Image.PreserveAspectFit
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Label {
                         text: name
-                        color: Style.ncHeaderTextColor
-                        font.pixelSize: Style.pixelSize
+                        color: palette.text
+                        font.pixelSize: Style.defaultFontPtSize
                         verticalAlignment: Text.AlignVCenter
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
 
-                ToolTip {
-                    visible: fileActionButton.hovered
-                    text: name
+                MouseArea {
+                    id: fileActionMouseArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: fileActionModel.createRequest(index)
                 }
-
-                onClicked: fileActionModel.createRequest(index)
             }
         }
     }
