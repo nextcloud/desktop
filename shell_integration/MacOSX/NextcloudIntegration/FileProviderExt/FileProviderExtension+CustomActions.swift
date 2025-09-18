@@ -27,7 +27,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 completionHandler: completionHandler
             )
         default:
-            Logger.fileProviderExtension.error("Unsupported action: \(actionIdentifier.rawValue)")
+            logger.error("Unsupported action: \(actionIdentifier.rawValue)")
             completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
             return Progress()
         }
@@ -39,16 +39,12 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         completionHandler: @escaping ((any Error)?) -> Void
     ) -> Progress {
         guard let ncAccount else {
-            Logger.fileProviderExtension.error(
-                "Not setting keep offline for items, account not set up yet."
-            )
+            logger.error("Not setting keep offline for items, account not set up yet.")
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
         guard let dbManager else {
-            Logger.fileProviderExtension.error(
-                "Not setting keep offline for items as database is unreachable."
-            )
+            logger.error("Not setting keep offline for items as database is unreachable.")
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -57,7 +53,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
 
         // If there are no items, complete successfully immediately.
         if itemIdentifiers.isEmpty {
-            Logger.fileProviderExtension.info("No items to process for keepDownloaded action.")
+            logger.info("No items to process for keepDownloaded action.")
             completionHandler(nil)
             return progress
         }
@@ -78,7 +74,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                                 identifier: identifier,
                                 account: ncAccount,
                                 remoteInterface: localNcKit,
-                                dbManager: dbManager
+                                dbManager: dbManager,
+                                log: self.log
                             ) else {
                                 throw NSError.fileProviderErrorForNonExistentItem(
                                     withIdentifier: identifier
@@ -92,20 +89,10 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                         progress.completedUnitCount = 1
                     }
                 }
-                Logger.fileProviderExtension.info(
-                    """
-                    All items successfully processed for
-                        keepDownloaded=\(keepDownloaded, privacy: .public)
-                    """
-                )
+                logger.info("All items successfully processed for keepDownloaded=\(keepDownloaded)")
                 completionHandler(nil)
             } catch let error {
-                Logger.fileProviderExtension.error(
-                    """
-                    Error during keepDownloaded=\(keepDownloaded, privacy: .public)
-                        action: \(error.localizedDescription, privacy: .public)
-                    """
-                )
+                logger.error("Error during keepDownloaded=\(keepDownloaded) action: \(error.localizedDescription)")
                 completionHandler(error)
             }
         }

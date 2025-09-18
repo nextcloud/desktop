@@ -19,6 +19,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private let reattemptInterval: TimeInterval = 3.0
 
     let kit = NextcloudKit.shared
+    let logger: FileProviderLogger
 
     var uiDelegate: ShareViewDataSourceUIDelegate?
     var sharesTableView: NSTableView? {
@@ -48,10 +49,13 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 userId: account.username,
                 password: account.password,
                 userAgent: userAgent,
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
         }
+    }
+
+    init(log: any FileProviderLogging) {
+        self.logger = FileProviderLogger(category: "ShareTableViewDataSource", log: log)
     }
 
     func loadItem(url: URL) {
@@ -93,7 +97,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
         do {
             let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
-                Logger.sharesDataSource.error("Service connection interrupted")
+                self.logger.error("Service connection interrupted")
             })
             if let acquiredUserAgent = await connection.userAgent() {
                 userAgent = acquiredUserAgent as String
@@ -148,7 +152,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         defer { Task { @MainActor in uiDelegate?.fetchFinished() } }
 
         let rawIdentifier = itemIdentifier.rawValue
-        Logger.sharesDataSource.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
+        logger.info("Fetching shares for item \(rawIdentifier)")
 
         guard let account else {
             self.presentError(String(localized: "NextcloudKit instance or account is unavailable, cannot fetch shares!"))
@@ -162,7 +166,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 parameters: parameter, account: account.ncKitAccount
             ) { account, shares, data, error in
                 let shareCount = shares?.count ?? 0
-                Logger.sharesDataSource.info("Received \(shareCount, privacy: .public) shares")
+                self.logger.info("Received \(shareCount) shares")
                 defer { continuation.resume(returning: shares ?? []) }
                 guard error == .success else {
                     self.presentError(String(localized: "Error fetching shares: \(error.errorDescription)"))
@@ -190,20 +194,21 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
 
         return await withCheckedContinuation { continuation in
-            kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
+            kit.getCapabilities(account: account.ncKitAccount) { account, _, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
                     self.presentError(String(localized: "Error getting server caps: \(error.errorDescription)"))
                     continuation.resume(returning: nil)
                     return
                 }
-                Logger.sharesDataSource.info("Successfully retrieved server share capabilities")
+
+                self.logger.info("Successfully retrieved server share capabilities")
                 continuation.resume(returning: Capabilities(data: capabilitiesJson))
             }
         }
     }
 
     private func presentError(_ errorString: String) {
-        Logger.sharesDataSource.error("\(errorString, privacy: .public)")
+        logger.error("\(errorString)")
         Task { @MainActor in self.uiDelegate?.showError(errorString) }
     }
 
@@ -222,7 +227,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         guard let view = tableView.makeView(
             withIdentifier: shareItemViewIdentifier, owner: self
         ) as? ShareTableItemView else {
-            Logger.sharesDataSource.error("Acquired item view from table is not a share item view!")
+            logger.error("Acquired item view from table is not a share item view!")
             return nil
         }
         view.share = share

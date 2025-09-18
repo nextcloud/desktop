@@ -1330,6 +1330,7 @@ void ConfigFile::setFileProviderDomainUuidForAccountId(const QString &accountId,
     if (accountId.isEmpty() || domainUuid.isEmpty()) {
         return;
     }
+
     storeData(QStringLiteral("FileProviderDomainUuids"), accountId, domainUuid);
     storeData(QStringLiteral("FileProviderAccountIds"), domainUuid, accountId);
 }
@@ -1339,6 +1340,7 @@ QString ConfigFile::accountIdFromFileProviderDomainUuid(const QString &domainUui
     if (domainUuid.isEmpty()) {
         return {};
     }
+
     return retrieveData(QStringLiteral("FileProviderAccountIds"), domainUuid).toString();
 }
 
@@ -1347,11 +1349,29 @@ void ConfigFile::removeFileProviderDomainUuidMapping(const QString &accountId)
     if (accountId.isEmpty()) {
         return;
     }
+
     const QString domainUuid = fileProviderDomainUuidFromAccountId(accountId);
+
     if (!domainUuid.isEmpty()) {
         removeData(QStringLiteral("FileProviderAccountIds"), domainUuid);
     }
+
     removeData(QStringLiteral("FileProviderDomainUuids"), accountId);
+}
+
+void ConfigFile::removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier)
+{
+    if (domainIdentifier.isEmpty()) {
+        return;
+    }
+
+    removeData(QStringLiteral("FileProviderAccountIds"), domainIdentifier);
+
+    const QString accountIdentifier = accountIdFromFileProviderDomainUuid(domainIdentifier);
+
+    if (!accountIdentifier.isEmpty()) {
+        removeData(QStringLiteral("FileProviderDomainUuids"), accountIdentifier);
+    }
 }
 
 }

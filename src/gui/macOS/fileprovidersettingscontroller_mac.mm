@@ -509,24 +509,6 @@ void FileProviderSettingsController::signalFileProviderDomain(const QString &use
     d->signalFileProviderDomain(userIdAtHost);
 }
 
-void FileProviderSettingsController::createDebugArchive(const QString &userIdAtHost)
-{
-    const auto filename = QFileDialog::getSaveFileName(nullptr,
-                                                       tr("Create Debug Archive"),
-                                                       QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation),
-                                                       tr("Text files") + " (*.txt)");
-    if (filename.isEmpty()) {
-        return;
-    }
-
-    const auto xpc = FileProvider::instance()->xpc();
-    if (!xpc) {
-        qCWarning(lcFileProviderSettingsController) << "Could not create debug archive, FileProviderXPC is not available.";
-        return;
-    }
-    xpc->createDebugArchiveForFileProviderDomain(userIdAtHost, filename);
-}
-
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
 {
     return d->domainSyncStatusForAccount(userIdAtHost);

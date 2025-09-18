@@ -7,6 +7,8 @@
 #include "fileproviderutils.h"
 #include "account.h"
 
+#include <QCoreApplication>
+#include <QDir>
 #include <QLoggingCategory>
 #include <QRegularExpression>
 #include <QString>
@@ -132,6 +134,49 @@ QString domainIdentifierForAccount(const OCC::Account * const account)
 QString domainIdentifierForAccount(const OCC::AccountPtr account)
 {
     return domainIdentifierForAccount(account.get());
+}
+
+QDir fileProviderExtensionContainer()
+{
+    const auto baseBundleId = QCoreApplication::organizationDomain();
+    const auto extensionBundleId = baseBundleId + QStringLiteral(".FileProviderExt");
+
+    auto dir = QDir::home();
+    dir.cd("Library");
+    dir.cd("Containers");
+    dir.cd(extensionBundleId);
+
+    return dir;
+}
+
+QDir fileProviderExtensionLogDirectory()
+{
+    auto dir = fileProviderExtensionContainer();
+    dir.cd("Data");
+    dir.cd("Library");
+    dir.cd("Logs");
+
+    return dir;
+}
+
+QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
+{
+    auto dir = fileProviderExtensionLogDirectory();
+    dir.cd(domainIdentifier);
+
+    return dir;
+}
+
+QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
+{
+    auto dir = fileProviderExtensionContainer();
+    dir.cd("Data");
+    dir.cd("Library");
+    dir.cd("Application Support");
+    dir.cd("File Provider Domains");
+    dir.cd(domainIdentifier);
+
+    return dir;
 }
 
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier)

@@ -13,12 +13,16 @@ import NextcloudFileProviderKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {
+    let keychain: Keychain
     let listener = NSXPCListener.anonymous()
+    let logger: FileProviderLogger
     let serviceName = fpUiExtensionServiceName
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {
-        Logger.fpUiExtensionService.debug("Instantiating FPUIExtensionService service")
+        keychain = Keychain(log: fpExtension.log)
+        logger = FileProviderLogger(category: "FPUIExtensionServiceSource", log: fpExtension.log)
+        logger.debug("Instantiating FPUIExtensionService service")
         self.fpExtension = fpExtension
         super.init()
     }
@@ -42,10 +46,10 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     //MARK: - FPUIExtensionService protocol methods
 
     func authenticate() async -> NSError? {
-        Logger.fpUiExtensionService.info("Authenticating...")
+        logger.info("Authenticating...")
 
-        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = Keychain.getPassword(for: user, on: serverUrl) else {
-            Logger.fpUiExtensionService.error("Missing account information, cannot authenticate!")
+        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = keychain.getPassword(for: user, on: serverUrl) else {
+            logger.error("Missing account information, cannot authenticate!")
             return NSError(.missingAccountInformation)
         }
 
@@ -61,7 +65,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return nil
         }
 
-        let nkSession = fpExtension.ncKit.getSession(account: account)
+        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: account)
         return nkSession?.userAgent as NSString?
     }
 
@@ -71,23 +75,23 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
         let rawIdentifier = identifier.rawValue
-        Logger.shares.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
+        logger.info("Fetching shares for item \(rawIdentifier)")
 
         guard let baseUrl = fpExtension.ncAccount?.davFilesUrl else {
-            Logger.shares.error("Could not fetch shares as ncAccount on parent extension is nil")
+            logger.error("Could not fetch shares as ncAccount on parent extension is nil")
             return nil
         }
 
         guard let account = fpExtension.ncAccount?.ncKitAccount else {
-            Logger.shares.error("Could not fetch ncKitAccount on parent extension")
+            logger.error("Could not fetch ncKitAccount on parent extension")
             return nil
         }
         guard let dbManager = fpExtension.dbManager else {
-            Logger.shares.error("Could not get db manager for \(account, privacy: .public)")
+            logger.error("Could not get db manager for \(account)")
             return nil
         }
         guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
-            Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
+            logger.error("No item \(rawIdentifier) in db, no shares.")
             return nil
         }
 

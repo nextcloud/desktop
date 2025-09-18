@@ -33,25 +33,25 @@ QString uuidDomainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
     const auto accountId = account->userIdAtHostWithPort();
-    
+
     if (accountId.isEmpty()) {
         qCWarning(OCC::lcMacFileProviderDomainManager) << "Cannot generate UUID for account with empty userIdAtHostWithPort";
         return {};
     }
-    
+
     // Try to get existing UUID mapping first
     OCC::ConfigFile cfg;
     const QString existingUuid = cfg.fileProviderDomainUuidFromAccountId(accountId);
 
     if (!existingUuid.isEmpty()) {
-        qCDebug(OCC::lcMacFileProviderDomainManager) << "Using existing UUID for account:" 
+        qCDebug(OCC::lcMacFileProviderDomainManager) << "Using existing UUID for account:"
                                                      << accountId
                                                      << "UUID:"
                                                      << existingUuid;
 
         return existingUuid;
     }
-    
+
     // Generate new UUID for this account
     const QString newUuid = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
@@ -85,7 +85,7 @@ inline QString accountIdFromDomainId(const QString &domainId)
     if (domainId.isEmpty()) {
         return {};
     }
-    
+
     // Check if this is a UUID-based domain identifier
     if (QUuid::fromString(domainId).isNull() == false) {
         // This is a UUID, look up the account ID from the mapping
@@ -107,7 +107,7 @@ inline QString accountIdFromDomainId(const QString &domainId)
 
         return {};
     }
-    
+
     // This is a legacy account-based domain identifier
     qCDebug(OCC::lcMacFileProviderDomainManager) << "Using legacy account-based domain ID:"
                                                  << domainId;
@@ -120,13 +120,13 @@ QString accountIdFromDomainId(NSString * const domainId)
     if (!domainId) {
         return {};
     }
-    
+
     auto qDomainId = QString::fromNSString(domainId);
 
     if (qDomainId.isEmpty()) {
         return {};
     }
-    
+
     // Check if this is a UUID-based domain identifier
     if (QUuid::fromString(qDomainId).isNull() == false) {
         // This is a UUID, look up the account ID from the mapping
@@ -143,7 +143,7 @@ QString accountIdFromDomainId(NSString * const domainId)
 
         return {};
     }
-    
+
     // This is a legacy account-based domain identifier - handle the old logic
     qCDebug(OCC::lcMacFileProviderDomainManager) << "Processing legacy account-based domain ID from NSString:" << qDomainId;
 
@@ -231,21 +231,24 @@ public:
                                                                       << "and display name:"
                                                                       << domain.displayName
                                                                       << "removing and recreating";
+
                             [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                                 if (error) {
                                     qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain with illegal domain identifier: "
                                                                               << error.code
                                                                               << error.localizedDescription;
-                                    
                                 } else {
                                     qCInfo(lcMacFileProviderDomainManager) << "Successfully removed file provider domain with illegal domain identifier: "
                                                                            << domain.identifier;
                                 }
+
+                                removeFileProviderDomainData(domain.identifier);
                                 [domain release];
                             }];
+
                             return;
                         }
-                        
+
                         _registeredDomains.insert(accountId, domain);
 
                         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
@@ -276,6 +279,8 @@ public:
                                                                           << error.code
                                                                           << error.localizedDescription;
                             }
+
+                            removeFileProviderDomainData(domain.identifier);
                         }];
                     }
                 }
@@ -341,6 +346,38 @@ public:
         }
     }
 
+    void removeFileProviderDomainData(NSString * const domainIdentifier)
+    {
+        const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+
+        // Remove logs.
+
+        auto logDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainLogDirectory(qDomainIdentifier);
+
+        if (logDirectory.exists()) {
+            qCInfo(lcMacFileProviderDomainManager) << "Removing log directory at" << logDirectory.path();
+            logDirectory.removeRecursively();
+        } else {
+            qCInfo(lcMacFileProviderDomainManager) << "Due to lack of existence, not removing log directory at" << logDirectory.path();
+        }
+
+        // Remove support data.
+
+        auto supportDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainSupportDirectory(qDomainIdentifier);
+
+        if (supportDirectory.exists()) {
+            qCInfo(lcMacFileProviderDomainManager) << "Removing support directory at" << supportDirectory.path();
+            supportDirectory.removeRecursively();
+        } else {
+            qCInfo(lcMacFileProviderDomainManager) << "Due to lack of existence, not removing support directory at" << supportDirectory.path();
+        }
+
+        // Remove configuration leftovers.
+
+        OCC::ConfigFile cfg;
+        cfg.removeFileProviderDomainMappingByDomainIdentifier(qDomainIdentifier);
+    }
+
     void removeFileProviderDomain(const AccountState * const accountState)
     {
         if (@available(macOS 11.0, *)) {
@@ -367,6 +404,7 @@ public:
                                                               << error.localizedDescription;
                 }
 
+                removeFileProviderDomainData(fileProviderDomain.identifier);
                 NSFileProviderDomain * const domain = _registeredDomains.take(accountId);
                 [domain release];
 
@@ -392,16 +430,15 @@ public:
 
                 const auto registeredDomainPtrs = _registeredDomains.values();
                 const auto accountIds = _registeredDomains.keys();
+
                 for (NSFileProviderDomain * const domain : registeredDomainPtrs) {
+                    removeFileProviderDomainData(domain.identifier);
+
                     if (domain != nil) {
                         [domain release];
                     }
                 }
-                // Clean up UUID mappings for all accounts
-                OCC::ConfigFile cfg;
-                for (const QString &accountId : accountIds) {
-                    cfg.removeFileProviderDomainUuidMapping(accountId);
-                }
+
                 _registeredDomains.clear();
             }];
         }
@@ -432,15 +469,13 @@ public:
                             return;
                         }
 
+                        removeFileProviderDomainData(domain.identifier);
+
                         const QString accountId = accountIdFromDomainId(domain.identifier);
                         NSFileProviderDomain * const registeredDomainPtr = _registeredDomains.take(accountId);
+
                         if (registeredDomainPtr != nil) {
                             [domain release];
-                            // Clean up UUID mapping when wiping domain
-                            if (!accountId.isEmpty()) {
-                                OCC::ConfigFile cfg;
-                                cfg.removeFileProviderDomainUuidMapping(accountId);
-                            }
                         }
                     }];
                 }
@@ -510,6 +545,7 @@ public:
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+
             [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
                 if (error) {
                     qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
@@ -587,6 +623,7 @@ void FileProviderDomainManager::start()
     // shutdowns.
     connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
+
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
             this, [this](const AccountState * const accountState) {
         const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);

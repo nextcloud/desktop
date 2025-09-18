@@ -36,6 +36,7 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
             usingRemoteInterface: self.ncKit,
             andDatabase: dbManager,
             perThumbnailCompletionHandler: perThumbnailCompletionHandler,
+            log: log,
             completionHandler: completionHandler
         )
     }

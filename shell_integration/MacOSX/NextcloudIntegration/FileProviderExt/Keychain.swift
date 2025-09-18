@@ -2,19 +2,26 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
+import NextcloudFileProviderKit
 import os
 
 ///
 /// macOS keychain abstraction to fetch account passwords.
 ///
 struct Keychain {
+    let logger: FileProviderLogger
+
+    init(log: any FileProviderLogging) {
+        self.logger = FileProviderLogger(category: "Keychain", log: log)
+    }
+
     ///
     /// Lookup a generic password for the given account on the given server.
     ///
     /// - Returns: `nil` in case of any error or the password not being found.
     ///
-    static func getPassword(for account: String, on server: String) -> String? {
-        Logger.keychain.debug("Looking for password of \"\(account)\" on \"\(server)\" in keychain...")
+    func getPassword(for account: String, on server: String) -> String? {
+        logger.debug("Looking for password of \"\(account)\" on \"\(server)\" in keychain...")
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -29,32 +36,32 @@ struct Keychain {
         let status = SecItemCopyMatching(query as CFDictionary, &item)
 
         guard status != errSecItemNotFound else {
-            Logger.keychain.error("Item not found!")
+            logger.error("Item not found!")
             return nil
         }
 
         guard status == errSecSuccess else {
-            Logger.keychain.error("Keychain status: \(status)")
+            logger.error("Keychain status: \(status)")
             return nil
         }
 
         guard let existingItem = item as? [String : Any], let passwordData = existingItem[kSecValueData as String] as? Data, let password = String(data: passwordData, encoding: String.Encoding.utf8) else {
-            Logger.keychain.error("Unexpected password data!")
+            logger.error("Unexpected password data!")
             return nil
         }
 
-        Logger.keychain.debug("Found \(password.isEmpty ? "empty" : "non-empty") password for \"\(account)\" on \"\(server)\" in keychain.")
+        logger.debug("Found \(password.isEmpty ? "empty" : "non-empty") password for \"\(account)\" on \"\(server)\" in keychain.")
 
         return password
     }
 
-    static func savePassword(_ password: String, for account: String, on server: String) {
+    func savePassword(_ password: String, for account: String, on server: String) {
         guard password.isEmpty == false else {
-            Logger.keychain.error("Not saving password password for \"\(account)\" on \"\(server)\" because it is empty!")
+            logger.error("Not saving password password for \"\(account)\" on \"\(server)\" because it is empty!")
             return
         }
 
-        Logger.keychain.debug("Saving password for \"\(account)\" on \"\(server)\"...")
+        logger.debug("Saving password for \"\(account)\" on \"\(server)\"...")
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -74,9 +81,9 @@ struct Keychain {
             let updateStatus = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
 
             if updateStatus == errSecSuccess {
-                Logger.keychain.debug("Succeeded to update password for \"\(account)\" on \"\(server)\" in keychain.")
+                logger.debug("Succeeded to update password for \"\(account)\" on \"\(server)\" in keychain.")
             } else {
-                Logger.keychain.error("Failed to update password for \"\(account)\" on \"\(server)\" in keychain. Status: \(updateStatus)")
+                logger.error("Failed to update password for \"\(account)\" on \"\(server)\" in keychain. Status: \(updateStatus)")
             }
         } else if status == errSecItemNotFound {
             // Item doesn't exist, add a new one
@@ -90,12 +97,12 @@ struct Keychain {
             let addStatus = SecItemAdd(addQuery as CFDictionary, nil)
 
             if addStatus == errSecSuccess {
-                Logger.keychain.debug("Succeeded to add password for \"\(account)\" on \"\(server)\" in keychain.")
+                logger.debug("Succeeded to add password for \"\(account)\" on \"\(server)\" in keychain.")
             } else {
-                Logger.keychain.error("Failed to add password for \"\(account)\" on \"\(server)\" in keychain. Status: \(addStatus)")
+                logger.error("Failed to add password for \"\(account)\" on \"\(server)\" in keychain. Status: \(addStatus)")
             }
         } else {
-            Logger.keychain.error("Failed to check for existing password for \"\(account)\" on \"\(server)\" in keychain. Status: \(status)")
+            logger.error("Failed to check for existing password for \"\(account)\" on \"\(server)\" in keychain. Status: \(status)")
         }
     }
 }

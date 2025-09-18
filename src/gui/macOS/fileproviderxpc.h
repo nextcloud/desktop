@@ -35,7 +35,6 @@ public slots:
     void authenticateFileProviderDomains();
     void authenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const;
     void unauthenticateFileProviderDomain(const QString &fileProviderDomainIdentifier) const;
-    void createDebugArchiveForFileProviderDomain(const QString &fileProviderDomainIdentifier, const QString &filename);
 
     void setIgnoreList() const;
     void setTrashDeletionEnabledForFileProviderDomain(const QString &fileProviderDomainIdentifier, bool enabled) const;

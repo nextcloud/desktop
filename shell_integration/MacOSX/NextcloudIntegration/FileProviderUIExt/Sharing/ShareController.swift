@@ -16,6 +16,8 @@ class ShareController: ObservableObject {
     @Published private(set) var share: NKShare
     private let kit: NextcloudKit
     private let account: Account
+    let log: any FileProviderLogging
+    let logger: FileProviderLogger
 
     static func create(
         account: Account,
@@ -33,33 +35,24 @@ class ShareController: ObservableObject {
         attributes: String? = nil,
         options: NKRequestOptions = NKRequestOptions()
     ) async -> NKError? {
-        Logger.shareController.info("Creating share: \(itemServerRelativePath)")
         return await withCheckedContinuation { continuation in
             if shareType == .publicLink {
-                kit.createShareLink(
+                kit.createShare(
                     path: itemServerRelativePath,
-                    hideDownload: hideDownload,
+                    shareType: ShareType.publicLink.rawValue,
+                    shareWith: nil,
                     publicUpload: publicUpload,
+                    hideDownload: hideDownload,
                     password: password,
                     permissions: permissions,
                     account: account.ncKitAccount,
                     options: options
                 ) { account, share, data, error in
-                    defer { continuation.resume(returning: error) }
-                    guard error == .success else {
-                        Logger.shareController.error(
-                            """
-                            Error creating link share: \(error.errorDescription, privacy: .public)
-                            """
-                        )
-                        return
-                    }
+                    continuation.resume(returning: error)
                 }
             } else {
                 guard let shareWith = shareWith else {
-                    let errorString = "No recipient for share!"
-                    Logger.shareController.error("\(errorString, privacy: .public)")
-                    let error = NKError(statusCode: 0, fallbackDescription: errorString)
+                    let error = NKError(statusCode: 0, fallbackDescription: "No recipient for share!")
                     continuation.resume(returning: error)
                     return
                 }
@@ -73,24 +66,18 @@ class ShareController: ObservableObject {
                     attributes: attributes,
                     account: account.ncKitAccount
                 ) { account, share, data, error in
-                    defer { continuation.resume(returning: error) }
-                    guard error == .success else {
-                        Logger.shareController.error(
-                            """
-                            Error creating share: \(error.errorDescription, privacy: .public)
-                            """
-                        )
-                        return
-                    }
+                    continuation.resume(returning: error)
                 }
             }
         }
     }
 
-    init(share: NKShare, account: Account, kit: NextcloudKit) {
+    init(share: NKShare, account: Account, kit: NextcloudKit, log: any FileProviderLogging) {
         self.account = account
         self.share = share
         self.kit = kit
+        self.log = log
+        self.logger = FileProviderLogger(category: "ShareController", log: log)
     }
 
     func save(
@@ -104,7 +91,8 @@ class ShareController: ObservableObject {
         attributes: String? = nil,
         options: NKRequestOptions = NKRequestOptions()
     ) async -> NKError? {
-        Logger.shareController.info("Saving share: \(self.share.url, privacy: .public)")
+        logger.info("Saving share.", [.url: self.share.url])
+
         return await withCheckedContinuation { continuation in
             kit.updateShare(
                 idShare: share.idShare,
@@ -119,43 +107,36 @@ class ShareController: ObservableObject {
                 account: account.ncKitAccount,
                 options: options
             ) { account, share, data, error in
-                Logger.shareController.info(
-                    """
-                    Received update response: \(share?.url ?? "", privacy: .public)
-                    """
-                )
-                defer { continuation.resume(returning: error) }
+                self.logger.info("Received update response: \(share?.url ?? "")")
+
+                defer {
+                    continuation.resume(returning: error)
+                }
+
                 guard error == .success, let share = share else {
-                    Logger.shareController.error(
-                        """
-                        Error updating save: \(error.errorDescription, privacy: .public)
-                        """
-                    )
+                    self.logger.error("Error updating save.", [.error: error])
                     return
                 }
+
                 self.share = share
             }
         }
     }
 
     func delete() async -> NKError? {
-        Logger.shareController.info("Deleting share: \(self.share.url, privacy: .public)")
+        logger.info("Deleting share: \(self.share.url)")
+
         return await withCheckedContinuation { continuation in
-            kit.deleteShare(
-                idShare: share.idShare, account: account.ncKitAccount
-            ) { account, _, error in
-                Logger.shareController.info(
-                    """
-                    Received delete response: \(self.share.url, privacy: .public)
-                    """
-                )
-                defer { continuation.resume(returning: error) }
+            kit.deleteShare(idShare: share.idShare, account: account.ncKitAccount) { account, _, error in
+                self.logger.info("Received delete response: \(self.share.url)")
+
+                defer {
+                    continuation.resume(returning: error)
+                }
+
                 guard error == .success else {
-                    Logger.shareController.error(
-                        """
-                        Error deleting save: \(error.errorDescription, privacy: .public)
-                        """
-                    )
+                    self.logger.error("Error deleting save: \(error.errorDescription)")
+
                     return
                 }
             }
