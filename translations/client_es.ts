@@ -120,6 +120,17 @@
         <translation>Abrir página web</translation>
     </message>
     <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
+        <source>Open %1 Desktop</source>
+        <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
+        <source>Open in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
         <source>Recently changed</source>
         <translation>Cambiado recientemente</translation>
@@ -473,7 +484,7 @@ macOS podría ignorar o demorar esta solicitud.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Contenido principal</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
@@ -1685,7 +1696,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>No hay cuenta %1 configurada</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -5344,76 +5355,76 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>OCC::SyncStatusSummary</name>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="125"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="406"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="126"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="407"/>
         <source>Offline</source>
         <translation>No conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="128"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="129"/>
         <source>You need to accept the terms of service</source>
         <translation>Debe aceptar los términos de servicio</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="178"/>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="409"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="179"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="410"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="93"/>
         <source>All synced!</source>
         <translation>¡Todo está sincronizado!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="187"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="188"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>¡Algunos archivos no han podido ser sincronizados!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="188"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="189"/>
         <source>See below for errors</source>
         <translation>Comprueba abajo los errores</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="195"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="196"/>
         <source>Checking folder changes</source>
         <translation>Comprobando cambios en la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="197"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="198"/>
         <source>Syncing changes</source>
         <translation>Sincronizando cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="206"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="207"/>
         <source>Sync paused</source>
         <translation>Sincronización pausada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="214"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="215"/>
         <source>Some files could not be synced!</source>
         <translation>¡Algunos archivos no pueden ser sincronizados!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="215"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="216"/>
         <source>See below for warnings</source>
         <translation>Comprueba abajo los avisos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="284"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="285"/>
         <source>Syncing</source>
         <translation>Sincronizando</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="297"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="298"/>
         <source>%1 of %2 · %3 left</source>
         <translation>%1 de %2 · quedan %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="301"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="302"/>
         <source>%1 of %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="306"/>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="307"/>
         <source>Syncing file %1 of %2</source>
         <translation>Sincronizando archivo %1 de %2</translation>
     </message>
@@ -5429,6 +5440,12 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Add account</source>
         <translation>Agregar cuenta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="179"/>
+        <source>Open %1 Desktop</source>
+        <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5644,13 +5661,13 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Abrir Asistente %1 en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Abrir Conversación de Talk %1 en el navegador</translation>
     </message>
 </context>
 <context>
