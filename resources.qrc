@@ -6,7 +6,6 @@
         <file>src/gui/UserStatusSelectorButton.qml</file>
         <file>src/gui/PredefinedStatusButton.qml</file>
         <file>src/gui/ErrorBox.qml</file>
-        <file>src/gui/EncryptionTokenSelectionWindow.qml</file>
         <file>src/gui/filedetails/FileActivityView.qml</file>
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
         <file>src/gui/filedetails/FileDetailsView.qml</file>

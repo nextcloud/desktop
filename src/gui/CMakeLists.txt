@@ -149,7 +149,6 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.h
     systray.cpp
-    EncryptionTokenSelectionWindow.qml
     userinfo.h
     userinfo.cpp
     vfsdownloaderrordialog.h
