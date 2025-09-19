@@ -71,7 +71,7 @@ public:
     [[nodiscard]] QString errorString() const;
     [[nodiscard]] bool waitingForSearchTermEditEnd() const;
 
-    Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
+    Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl, const QString &subline, const QString &title) const;
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
