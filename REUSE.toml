@@ -24,7 +24,7 @@ SPDX-FileCopyrightText = "2022 Nextcloud GmbH and Nextcloud translators"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["shell_integration/windows/NCOverlays/resource.h", "shell_integration/windows/NCOverlays/NCOverlays.def", "shell_integration/icons/SVG/Error.svg", "shell_integration/icons/SVG/Error_Shared.svg", "shell_integration/icons/SVG/OK.svg", "shell_integration/icons/SVG/OK_Shared.svg", "shell_integration/icons/SVG/Sync.svg", "shell_integration/icons/SVG/Sync_Shared.svg", "shell_integration/icons/SVG/Warning.svg", "shell_integration/icons/SVG/Warning_Shared.svg", "shell_integration/icons/Sidebar/sidebar_icon_*_18.png", "shell_integration/icons/icns/*.icns", "shell_integration/icons/*x*/oC_*.png"]
+path = ["shell_integration/windows/NCOverlays/resource.h", "shell_integration/windows/NCOverlays/NCOverlays.def", "shell_integration/icons/SVG/*.svg", "shell_integration/icons/Sidebar/sidebar_icon_*_18.png", "shell_integration/icons/icns/*.icns", "shell_integration/icons/*x*/oC_*.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2014 ownCloud GmbH"
 SPDX-License-Identifier = "GPL-2.0-or-later"
