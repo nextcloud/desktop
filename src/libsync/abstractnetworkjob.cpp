@@ -4,6 +4,15 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "common/asserts.h"
+#include "networkjobs.h"
+#include "account.h"
+#include "owncloudpropagator.h"
+#include "httplogger.h"
+#include "accessmanager.h"
+
+#include "creds/abstractcredentials.h"
+
 #include <QLoggingCategory>
 #include <QHstsPolicy>
 #include <QNetworkAccessManager>
@@ -20,14 +29,6 @@
 #include <QAuthenticator>
 #include <QMetaEnum>
 #include <QRegularExpression>
-
-#include "common/asserts.h"
-#include "networkjobs.h"
-#include "account.h"
-#include "owncloudpropagator.h"
-#include "httplogger.h"
-
-#include "creds/abstractcredentials.h"
 
 Q_DECLARE_METATYPE(QTimer *)
 
@@ -117,8 +118,10 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
     return reply;
 }
 
-QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, QIODevice *requestBody)
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
+                                               const QUrl &url,
+                                               QNetworkRequest req,
+                                               QIODevice *requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
@@ -129,8 +132,10 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUr
     return reply;
 }
 
-QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, const QByteArray &requestBody)
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
+                                               const QUrl &url,
+                                               QNetworkRequest req,
+                                               const QByteArray &requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
