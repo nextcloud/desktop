@@ -143,6 +143,9 @@ class ShareOptionsView: NSView {
         expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
         expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
         expirationDatePicker.dateValue = share.expirationDate as? Date ?? Date()
+        // Configure date picker to show as calendar
+        expirationDatePicker.datePickerStyle = .clockAndCalendar
+        expirationDatePicker.datePickerElements = [.yearMonth, .yearMonthDay]
         noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
         noteTextField.isHidden = noteForRecipientCheckbox.state == .off
         noteForRecipientCheckbox.stringValue = share.note
@@ -161,6 +164,9 @@ class ShareOptionsView: NSView {
         expirationDatePicker.dateValue = NSDate.now
         expirationDatePicker.minDate = NSDate.now
         expirationDatePicker.maxDate = nil
+        // Configure date picker to show as calendar
+        expirationDatePicker.datePickerStyle = .clockAndCalendar
+        expirationDatePicker.datePickerElements = [.yearMonth, .yearMonthDay]
         noteForRecipientCheckbox.state = .off
         noteTextField.isHidden = true
         noteTextField.stringValue = ""
@@ -190,6 +196,9 @@ class ShareOptionsView: NSView {
                     timeIntervalSinceNow: 
                         TimeInterval((caps.publicLink?.expireDateDays ?? 1) * 24 * 60 * 60)
                 )
+                // Configure date picker to show as calendar
+                expirationDatePicker.datePickerStyle = .clockAndCalendar
+                expirationDatePicker.datePickerElements = [.yearMonth, .yearMonthDay]
                 if caps.publicLink?.expireDateEnforced == true {
                     expirationDatePicker.maxDate = expirationDatePicker.dateValue
                 }
