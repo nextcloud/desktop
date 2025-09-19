@@ -127,6 +127,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
 void FileProviderXPC::createDebugArchiveForFileProviderDomain(const QString &fileProviderDomainIdentifier, const QString &filename)
 {
     qCInfo(lcFileProviderXPC) << "Creating debug archive for extension" << fileProviderDomainIdentifier << "at" << filename;
+    // TODO
 }
 
 bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, const bool retry, const bool reconfigureOnFail)

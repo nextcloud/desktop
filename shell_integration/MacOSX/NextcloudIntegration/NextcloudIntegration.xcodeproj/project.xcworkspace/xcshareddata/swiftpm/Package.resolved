@@ -1,5 +1,5 @@
 {
-  "originHash" : "b1fcfe4980e7dccc02e64ff6b1167e865e1b0fd2839c1f05e315987946e210b5",
+  "originHash" : "d67374c009a6eb55de280873062ebb5291f046d0b6888058869d275d0af1e103",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -20,21 +20,12 @@
       }
     },
     {
-      "identity" : "nextcloudfileproviderkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "628d78e08a72a9927775d50c71f6af0e8c0f8df3"
-      }
-    },
-    {
       "identity" : "nextcloudkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudKit.git",
       "state" : {
-        "revision" : "8ac6704234f529d09b0651e4d94fdc14f8820333",
-        "version" : "6.0.9"
+        "revision" : "3353eacfb44fb981ae2e14236f0bcd7e11ea2707",
+        "version" : "7.1.4"
       }
     },
     {
@@ -62,6 +53,42 @@
       "state" : {
         "revision" : "b8e267d98a2a6e0c915d6284fddb3f265dc33c25",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "revision" : "b601256eab081c0f92f059e12818ac1d4f178ff7",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "8c0c0a8b49e080e54e5e328cc552821ff07cd341",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio.git",
+      "state" : {
+        "revision" : "1c30f0f2053b654e3d1302492124aa6d242cdba7",
+        "version" : "2.86.0"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "revision" : "395a77f0aa927f0ff73941d7ac35f2b46d47c9db",
+        "version" : "1.6.3"
       }
     },
     {
