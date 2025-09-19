@@ -259,29 +259,6 @@
     </message>
 </context>
 <context>
-    <name>EncryptionTokenSelectionWindow</name>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="32"/>
-        <source>Token Encryption Key Chooser</source>
-        <translation>トークン暗号化キーの選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="69"/>
-        <source>Available Keys for end-to-end Encryption:</source>
-        <translation>エンドツーエンドの暗号化に使用可能な鍵:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="112"/>
-        <source>Choose</source>
-        <translation>選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="116"/>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
-    </message>
-</context>
-<context>
     <name>ErrorBox</name>
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="54"/>
@@ -2010,13 +1987,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1ヶ月前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1年前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
@@ -2870,6 +2847,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>モノクロアイコンを使用(&amp;M)</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>指定された容量を以上の新しいフォルダを同期する前に確認する。</translation>
@@ -2974,6 +2956,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
         <translation>トークの通知ダイアログを表示する</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <source>Show notification when quota usage exceeds 80%.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5656,15 +5643,25 @@ Server replied with error: %2</source>
         <translation>Nextcloud Talkをブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
 </context>

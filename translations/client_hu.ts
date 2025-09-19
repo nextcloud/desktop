@@ -259,29 +259,6 @@
     </message>
 </context>
 <context>
-    <name>EncryptionTokenSelectionWindow</name>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="32"/>
-        <source>Token Encryption Key Chooser</source>
-        <translation>Kulcsválasztó a tokentitkosításhoz</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="69"/>
-        <source>Available Keys for end-to-end Encryption:</source>
-        <translation>Elérhető kulcsok a végpontok közti titkosításhoz:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="112"/>
-        <source>Choose</source>
-        <translation>Válasszon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="116"/>
-        <source>Cancel</source>
-        <translation>Mégse</translation>
-    </message>
-</context>
-<context>
     <name>ErrorBox</name>
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="54"/>
@@ -2870,6 +2847,11 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>&amp;Monokróm ikonok használata</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Megerősítés kérése az ennél nagyobb új mappák szinkronizálása előtt:</translation>
@@ -2974,6 +2956,11 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
         <translation>Hívásértesítési párbeszédablakok megjelenítése.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <source>Show notification when quota usage exceeds 80%.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5658,15 +5645,25 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Nextcloud Beszélgetés megnyitása böngészőben</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
 </context>

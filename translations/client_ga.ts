@@ -259,29 +259,6 @@
     </message>
 </context>
 <context>
-    <name>EncryptionTokenSelectionWindow</name>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="32"/>
-        <source>Token Encryption Key Chooser</source>
-        <translation>Roghnóir Eochracha Criptithe Comhartha</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="69"/>
-        <source>Available Keys for end-to-end Encryption:</source>
-        <translation>Eochracha atá ar fáil le haghaidh Criptithe ó cheann go ceann:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="112"/>
-        <source>Choose</source>
-        <translation>Roghnaigh</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="116"/>
-        <source>Cancel</source>
-        <translation>Cealaigh</translation>
-    </message>
-</context>
-<context>
     <name>ErrorBox</name>
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="54"/>
@@ -2870,6 +2847,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Úsáid &amp;Deilbhíní Monacrómacha</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Iarr deimhniú sula ndéantar fillteáin nua atá níos mó ná a shioncronú</translation>
@@ -2974,6 +2956,11 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
         <translation>Taispeáin dialóga fógra glaonna.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <source>Show notification when quota usage exceeds 80%.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5658,15 +5645,25 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Oscail Nextcloud Talk sa bhrabhsálaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
 </context>

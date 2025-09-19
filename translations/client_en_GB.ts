@@ -123,12 +123,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Open %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Open in browser</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
@@ -256,29 +256,6 @@
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Discovering the certificates stored on your USB token</translation>
-    </message>
-</context>
-<context>
-    <name>EncryptionTokenSelectionWindow</name>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="32"/>
-        <source>Token Encryption Key Chooser</source>
-        <translation>Token Encryption Key Chooser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="69"/>
-        <source>Available Keys for end-to-end Encryption:</source>
-        <translation>Available Keys for end-to-end Encryption:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="112"/>
-        <source>Choose</source>
-        <translation>Choose</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="116"/>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -484,7 +461,7 @@ macOS may ignore or delay this request.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Main content</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
@@ -517,7 +494,7 @@ macOS may ignore or delay this request.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>The server enforces strict transport security and does not accept untrusted certificates.</translation>
     </message>
 </context>
 <context>
@@ -1696,7 +1673,7 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>No %1 account configured</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -2870,6 +2847,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Use &amp;Monochrome Icons</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Ask for confirmation before synchronizing new folders larger than</translation>
@@ -2974,6 +2956,11 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
         <translation>Show call notification dialogues.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <source>Show notification when quota usage exceeds 80%.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5445,7 +5432,7 @@ Server replied with error: %2</translation>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Open %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5658,15 +5645,25 @@ Server replied with error: %2</translation>
         <translation>Open Nextcloud Talk in browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Open %1 Assistant in browser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Open %1 Talk in browser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
 </context>

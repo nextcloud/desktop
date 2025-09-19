@@ -123,12 +123,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Ava %1i Töölauarakendus</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ava veebibrauseris</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
@@ -256,29 +256,6 @@
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
         <source>Discovering the certificates stored on your USB token</source>
         <translation>Tuvastan sinu USB-pääsmikus leiduvaid sertifikaate</translation>
-    </message>
-</context>
-<context>
-    <name>EncryptionTokenSelectionWindow</name>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="32"/>
-        <source>Token Encryption Key Chooser</source>
-        <translation>USB-pääsmiku võtmevalija</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="69"/>
-        <source>Available Keys for end-to-end Encryption:</source>
-        <translation>Saadavalolevad võtmed läbiva krüptimise jaoks</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="112"/>
-        <source>Choose</source>
-        <translation>Vali</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="116"/>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -484,7 +461,7 @@ macOS võib seda eirata või alustamisega viivitada.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Põhisisu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
@@ -1696,7 +1673,7 @@ Samuti katkevad kõik hetkel toimivad sünkroniseerimised.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>%1i teenuse kasutajakonto on seadistamata</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -2870,6 +2847,11 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <translation>Kasuta ühevärvilisi ikoone</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="64"/>
+        <source>Show &amp;Quota Warning Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
         <translation>Küsi kinnitust enne kaustade sünkroniseerimist, mis on suuremad, kui</translation>
@@ -2974,6 +2956,11 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <location filename="../src/gui/generalsettings.cpp" line="196"/>
         <source>Show call notification dialogs.</source>
         <translation>Näita kõneteavituste vaateid</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <source>Show notification when quota usage exceeds 80%.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5444,7 +5431,7 @@ Veateade serveri päringuvastuses: %2</translation>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Ava %1i Töölauarakendus</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5657,15 +5644,25 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Ava Nextcloud Talk veebibrauseris</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1088"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Ava %1i Abiline veebibrauseris</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Ava %1i Kõnerakendus veebibrauseris</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1089"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
 </context>
