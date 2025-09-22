@@ -136,6 +136,55 @@ private slots:
         testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
     };
 
+    void testRemoveOutdatedNotifications() {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        const auto removeAndAddNotifications = [&model](const OCC::ActivityList &activities) -> void {
+            // this is pretty much the core logic of dealing with the retrieved notifications from User::slotBuildNotificationDisplay
+            model->removeOutdatedNotifications(activities);
+
+            for (const auto &activity : activities) {
+                model->addNotificationToActivityList(activity);
+            }
+        };
+
+        const auto accName = accountState->account()->displayName();
+        const auto notificationOne = exampleNotificationActivity(accName, 1);
+        const auto notificationTwo = exampleNotificationActivity(accName, 2);
+        const auto notificationThree = exampleNotificationActivity(accName, 3);
+
+        removeAndAddNotifications({notificationOne});
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->activityList().count(notificationOne), 1);
+        QCOMPARE(model->activityList().count(notificationTwo), 0);
+        QCOMPARE(model->activityList().count(notificationThree), 0);
+
+        removeAndAddNotifications({notificationOne, notificationTwo});
+        QCOMPARE(model->rowCount(), 2);
+        QCOMPARE(model->activityList().count(notificationOne), 1);
+        QCOMPARE(model->activityList().count(notificationTwo), 1);
+        QCOMPARE(model->activityList().count(notificationThree), 0);
+
+        removeAndAddNotifications({notificationOne, notificationThree});
+        QCOMPARE(model->rowCount(), 2);
+        QCOMPARE(model->activityList().count(notificationOne), 1);
+        QCOMPARE(model->activityList().count(notificationTwo), 0);
+        QCOMPARE(model->activityList().count(notificationThree), 1);
+
+        removeAndAddNotifications({notificationThree});
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->activityList().count(notificationOne), 0);
+        QCOMPARE(model->activityList().count(notificationTwo), 0);
+        QCOMPARE(model->activityList().count(notificationThree), 1);
+
+        removeAndAddNotifications({});
+        QCOMPARE(model->rowCount(), 0);
+        QCOMPARE(model->activityList().count(notificationOne), 0);
+        QCOMPARE(model->activityList().count(notificationTwo), 0);
+        QCOMPARE(model->activityList().count(notificationThree), 0);
+    }
+
     // Test removing activity from list
     void testRemoveActivityWithRow() {
         const auto model = testingALM();
