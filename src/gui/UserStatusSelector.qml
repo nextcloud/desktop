@@ -43,7 +43,7 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: Style.smallSpacing
         visible: rootLayout.showOnlineStatusSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -58,6 +58,12 @@ ColumnLayout {
 
             Layout.fillWidth: true
             spacing: statusButtonsLayout.spacing
+
+            function updateMaxButtonHeight(newHeight) {
+                // Legacy no-op to avoid runtime warnings while older cached QML is in use.
+                // The buttons now size themselves naturally in a vertical layout.
+            }
+
 
             UserStatusSelectorButton {
                 checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
@@ -86,14 +92,12 @@ ColumnLayout {
                 checkable: true
                 icon.source: userStatusSelectorModel.busyIcon
                 icon.color: "transparent"
-                text: qsTr("Busy")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Busy
+                text: qsTr("Do not disturb")
+                secondaryText: qsTr("Mute all notifications")
+                onClicked: handleOnlineStatusSelection(NC.UserStatus.DoNotDisturb)
+
 
                 Layout.fillWidth: true
-                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
-                Layout.preferredHeight: topButtonsLayout.maxButtonHeight
-                onImplicitHeightChanged: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
-                Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
             }
             UserStatusSelectorButton {
                 checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
@@ -136,7 +140,7 @@ ColumnLayout {
         Layout.fillHeight: true
         spacing: Style.smallSpacing
         visible: rootLayout.showStatusMessageSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -297,7 +301,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBottom
         visible: rootLayout.showStatusMessageSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         Button {
             text: qsTr("Cancel")

@@ -124,8 +124,6 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        implicitHeight: Math.min(parent.height - Style.trayDrawerMargin,
-                                  userStatusContents.implicitHeight || 0)
         padding: 0
         edge: Qt.BottomEdge
         modal: true
@@ -138,6 +136,8 @@ ApplicationWindow {
             color: Style.colorWithoutTransparency(palette.base)
         }
 
+        readonly property int maxDrawerHeight: parent.height - Style.trayDrawerMargin
+
         property int userIndex: 0
         property bool showOnlineStatusSection: true
         property bool showStatusMessageSection: true
@@ -146,8 +146,13 @@ ApplicationWindow {
         function openUserStatusDrawer(index, onlineStatusSection, statusMessageSection) {
             console.log(`About to show dialog for user with index ${index}`);
             userIndex = index;
-            showOnlineStatusSection = onlineStatusSection;
-            showStatusMessageSection = statusMessageSection;
+
+            const hasOnlineSectionArg = arguments.length >= 2 && onlineStatusSection !== undefined;
+            const hasStatusMessageArg = arguments.length >= 3 && statusMessageSection !== undefined;
+
+            showOnlineStatusSection = hasOnlineSectionArg ? onlineStatusSection : true;
+            showStatusMessageSection = hasStatusMessageArg ? statusMessageSection : true;
+
             open();
         }
 
@@ -160,24 +165,35 @@ ApplicationWindow {
             if (reopenWithStatusMessage) {
                 reopenWithStatusMessage = false;
                 openUserStatusDrawer(userIndex, false, true);
+            } else {
+                showOnlineStatusSection = true;
+                showStatusMessageSection = true;
             }
         }
 
-        Loader {
-            id: userStatusContents
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            width: parent.width
-            implicitHeight: item ? item.implicitHeight : 0
-            active: userStatusDrawer.visible
-            sourceComponent: UserStatusSelectorPage {
+        contentItem: Item {
+            id: userStatusContentWrapper
+            width: userStatusDrawer.width
+            implicitWidth: width
+            implicitHeight: Math.min(userStatusDrawer.maxDrawerHeight,
+                                     userStatusContents.implicitHeight || 0)
+
+            Loader {
+                id: userStatusContents
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
                 width: parent.width
-                userIndex: userStatusDrawer.userIndex
-                showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
-                showStatusMessageSection: userStatusDrawer.showStatusMessageSection
-                onFinished: userStatusDrawer.close()
-                onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
+                implicitHeight: item && item.implicitHeight ? item.implicitHeight : 0
+                active: userStatusDrawer.visible
+                sourceComponent: UserStatusSelectorPage {
+                    width: parent.width
+                    userIndex: userStatusDrawer.userIndex
+                    showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
+                    showStatusMessageSection: userStatusDrawer.showStatusMessageSection
+                    onFinished: userStatusDrawer.close()
+                    onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
+                }
             }
         }
     }
