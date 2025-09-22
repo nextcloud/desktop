@@ -591,7 +591,6 @@ void ActivityListModel::addNotificationToActivityList(const Activity &activity)
 {
     qCDebug(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
     addEntriesToActivityList({activity});
-    _notificationLists.prepend(activity);
     for (const auto &link : activity._links) {
         if (link._verb == QByteArrayLiteral("POST")
             || link._verb == QByteArrayLiteral("REPLY")
@@ -605,7 +604,6 @@ void ActivityListModel::addSyncFileItemToActivityList(const Activity &activity)
 {
     qCDebug(lcActivity) << "Successfully added to the activity list: " << activity._subject;
     addEntriesToActivityList({activity});
-    _syncFileItemLists.prepend(activity);
 }
 
 void ActivityListModel::removeActivityFromActivityList(int row)
@@ -634,8 +632,9 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         activity._type != Activity::OpenSettingsNotificationType) {
 
         const auto notificationErrorsListIndex = _notificationErrorsLists.indexOf(activity);
-        if (notificationErrorsListIndex != -1)
+        if (notificationErrorsListIndex != -1) {
             _notificationErrorsLists.removeAt(notificationErrorsListIndex);
+        }
     }
 }
 
@@ -643,9 +642,9 @@ void ActivityListModel::checkAndRemoveSeenActivities(const OCC::ActivityList &ne
 {
     ActivityList activitiesToRemove;
     for (const auto &activity : _finalList) {
-        const auto isTalkActiity = activity._objectType == QStringLiteral("chat") ||
+        const auto isTalkActivity = activity._objectType == QStringLiteral("chat") ||
             activity._objectType == QStringLiteral("call");
-        if (isTalkActiity && !newActivities.contains(activity)) {
+        if (isTalkActivity && !newActivities.contains(activity)) {
             activitiesToRemove.push_back(activity);
         }
     }

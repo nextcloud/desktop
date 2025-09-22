@@ -179,9 +179,6 @@ private:
     Activity _dummyFetchingActivities;
 
     ActivityList _activityLists;
-    ActivityList _syncFileItemLists;
-    ActivityList _notificationLists;
-    ActivityList _listOfIgnoredFiles;
     ActivityList _notificationErrorsLists;
     ActivityList _conflictsList;
     ActivityList _finalList;
