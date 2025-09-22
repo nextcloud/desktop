@@ -124,7 +124,8 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        height: parent.height - Style.trayDrawerMargin
+        implicitHeight: Math.min(parent.height - Style.trayDrawerMargin,
+                                  userStatusContents.implicitHeight || 0)
         padding: 0
         edge: Qt.BottomEdge
         modal: true
@@ -140,6 +141,7 @@ ApplicationWindow {
         property int userIndex: 0
         property bool showOnlineStatusSection: true
         property bool showStatusMessageSection: true
+        property bool reopenWithStatusMessage: false
 
         function openUserStatusDrawer(index, onlineStatusSection, statusMessageSection) {
             console.log(`About to show dialog for user with index ${index}`);
@@ -149,16 +151,33 @@ ApplicationWindow {
             open();
         }
 
+        function openStatusMessageShortcut() {
+            reopenWithStatusMessage = true;
+            close();
+        }
+
+        onClosed: {
+            if (reopenWithStatusMessage) {
+                reopenWithStatusMessage = false;
+                openUserStatusDrawer(userIndex, false, true);
+            }
+        }
+
         Loader {
             id: userStatusContents
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            width: parent.width
+            implicitHeight: item ? item.implicitHeight : 0
             active: userStatusDrawer.visible
             sourceComponent: UserStatusSelectorPage {
-                anchors.fill: parent
+                width: parent.width
                 userIndex: userStatusDrawer.userIndex
                 showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
                 showStatusMessageSection: userStatusDrawer.showStatusMessageSection
                 onFinished: userStatusDrawer.close()
+                onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
             }
         }
     }
