@@ -124,7 +124,6 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        height: parent.height - Style.trayDrawerMargin
         padding: 0
         edge: Qt.BottomEdge
         modal: true
@@ -137,22 +136,70 @@ ApplicationWindow {
             color: Style.colorWithoutTransparency(palette.base)
         }
 
-        property int userIndex: 0
+        readonly property int maxDrawerHeight: parent.height - Style.trayDrawerMargin
 
-        function openUserStatusDrawer(index) {
+        property int userIndex: 0
+        property bool showOnlineStatusSection: true
+        property bool showStatusMessageSection: true
+        property bool reopenWithStatusMessage: false
+
+        function openUserStatusDrawer(index, onlineStatusSection, statusMessageSection) {
             console.log(`About to show dialog for user with index ${index}`);
             userIndex = index;
+
+            const hasOnlineSectionArg = arguments.length >= 2 && onlineStatusSection !== undefined;
+            const hasStatusMessageArg = arguments.length >= 3 && statusMessageSection !== undefined;
+
+            showOnlineStatusSection = hasOnlineSectionArg ? onlineStatusSection : true;
+            showStatusMessageSection = hasStatusMessageArg ? statusMessageSection : true;
+
             open();
         }
 
-        Loader {
-            id: userStatusContents
-            anchors.fill: parent
-            active: userStatusDrawer.visible
-            sourceComponent: UserStatusSelectorPage {
-                anchors.fill: parent
-                userIndex: userStatusDrawer.userIndex
-                onFinished: userStatusDrawer.close()
+        function openStatusMessageShortcut() {
+            reopenWithStatusMessage = true;
+            close();
+        }
+
+        onClosed: {
+            if (reopenWithStatusMessage) {
+                reopenWithStatusMessage = false;
+                openUserStatusDrawer(userIndex, false, true);
+            } else {
+                showOnlineStatusSection = true;
+                showStatusMessageSection = true;
+            }
+        }
+
+        contentItem: Item {
+            id: userStatusContentWrapper
+            width: userStatusDrawer.width
+            implicitWidth: width
+
+            readonly property real selectorImplicitHeight: userStatusContents.item
+                                                           ? (userStatusContents.item.implicitHeight
+                                                              || userStatusContents.item.height
+                                                              || 0)
+                                                           : 0
+
+            implicitHeight: Math.min(userStatusDrawer.maxDrawerHeight,
+                                     selectorImplicitHeight)
+
+            Loader {
+                id: userStatusContents
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                width: parent.width
+                active: userStatusDrawer.visible
+                sourceComponent: UserStatusSelectorPage {
+                    width: parent.width
+                    userIndex: userStatusDrawer.userIndex
+                    showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
+                    showStatusMessageSection: userStatusDrawer.showStatusMessageSection
+                    onFinished: userStatusDrawer.close()
+                    onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
+                }
             }
         }
     }
