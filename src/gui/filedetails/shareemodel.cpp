@@ -220,6 +220,10 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
     QVector<ShareePtr> newSharees;
 
     const QStringList shareeTypes{"users", "groups", "emails", "remotes", "circles", "rooms", "lookup"};
+    /* 
+    * this needs to remain as 'circles' because the server api is still promoting this
+    * parseShare is mapping each share by its share type later
+    */
 
     const auto appendSharees = [this, &shareeTypes, &newSharees](const QJsonObject &data) {
         for (const auto &shareeType : shareeTypes) {

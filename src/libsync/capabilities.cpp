@@ -281,6 +281,15 @@ bool Capabilities::userStatusSupportsEmoji() const
     return userStatusMap.value("supports_emoji", false).toBool();
 }
 
+bool Capabilities::userStatusSupportsBusy() const
+{
+    if (!userStatus()) {
+        return false;
+    }
+    const auto userStatusMap = _capabilities["user_status"].toMap();
+    return userStatusMap.value("supports_busy", false).toBool();
+}
+
 bool Capabilities::ncAssistantEnabled() const
 {
     if (_capabilities.contains("assistant")

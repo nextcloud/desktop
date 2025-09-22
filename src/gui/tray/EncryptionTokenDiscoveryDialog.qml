@@ -16,7 +16,7 @@ ApplicationWindow {
 
     color: "transparent"
 
-    width: 320
+    width: contentLayout.implicitWidth + 50
     height: contentLayout.implicitHeight
     modality: Qt.ApplicationModal
 

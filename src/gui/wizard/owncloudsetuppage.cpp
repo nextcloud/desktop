@@ -18,13 +18,14 @@
 #include <QBuffer>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMetaObject>
 
 #include "QProgressIndicator.h"
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "wizard/slideshow.h"
+#include "wizard/wizardproxysettingsdialog.h"
 #include "theme.h"
 #include "account.h"
 #include "config.h"
@@ -80,6 +81,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
+
 }
 
 void OwncloudSetupPage::setLogo()
@@ -91,6 +93,41 @@ void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 {
     const auto appName = Theme::instance()->appNameGUI();
     _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.", "%1 will be replaced with the application name").arg(appName));
+}
+
+void OwncloudSetupPage::setProxySettingsButtonEnabled(bool enable)
+{
+    const auto proxySettingsButton = getProxySettingsButton();
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    proxySettingsButton->setEnabled(enable);
+}
+
+void OwncloudSetupPage::setProxySettingsButtonVisible(bool visible)
+{
+    const auto proxySettingsButton = getProxySettingsButton();
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    proxySettingsButton->setVisible(visible);
+}
+
+QAbstractButton *OwncloudSetupPage::getProxySettingsButton() const
+{
+    auto result = static_cast<QAbstractButton *>(nullptr);
+
+    if (!wizard()) {
+        return result;
+    }
+
+    result = wizard()->button(QWizard::CustomButton3);
+
+    return result;
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -158,6 +195,7 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
+    setProxySettingsButtonEnabled(!_ui.leUrl->fullText().isEmpty());
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
@@ -168,6 +206,20 @@ void OwncloudSetupPage::slotUrlEditFinished()
         url.prepend("https://");
         _ui.leUrl->setFullText(url);
     }
+}
+
+void OwncloudSetupPage::slotSetProxySettings()
+{
+    if (!_proxySettingsDialog) {
+        _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->fullText()), _proxySettings, this};
+
+        connect(_proxySettingsDialog, &WizardProxySettingsDialog::proxySettingsAccepted, this, [this] (const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings) { _proxySettings = proxySettings;});
+    } else {
+        _proxySettingsDialog->setServerUrl(QUrl::fromUserInput(_ui.leUrl->fullText()));
+        _proxySettingsDialog->setProxySettings(_proxySettings);
+    }
+
+    _proxySettingsDialog->open();
 }
 
 bool OwncloudSetupPage::isComplete() const
@@ -209,6 +261,23 @@ void OwncloudSetupPage::initializePage()
         validatePage();
         setVisible(false);
     }
+
+    setProxySettingsButtonEnabled(false);
+    ensureProxySettingsButtonIsConnected();
+}
+
+void OwncloudSetupPage::ensureProxySettingsButtonIsConnected()
+{
+    const auto proxySettingsButton = getProxySettingsButton();
+
+    if (!proxySettingsButton) {
+        return;
+    }
+
+    disconnect(_proxyButtonIsConnected);
+
+    _proxyButtonIsConnected = connect(proxySettingsButton, &QPushButton::clicked,
+                                      this, &OwncloudSetupPage::slotSetProxySettings);
 }
 
 int OwncloudSetupPage::nextId() const
@@ -245,8 +314,8 @@ bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
         slotUrlEditFinished();
-        QString u = url();
-        QUrl qurl(u);
+        const auto urlString = url();
+        const auto qurl = QUrl::fromUserInput(urlString);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
             setErrorString(tr("Server address does not seem to be valid"), false);
             return false;
@@ -257,7 +326,7 @@ bool OwncloudSetupPage::validatePage()
         startSpinner();
         emit completeChanged();
 
-        emit determineAuthType(u);
+        Q_EMIT determineAuthType(qurl, _proxySettings);
         return false;
     } else {
         // connecting is running
@@ -282,7 +351,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
     } else {
         if (retryHTTPonly) {
             const auto urlString = url();
-            QUrl url(urlString);
+            auto url = QUrl::fromUserInput(urlString);
             if (url.scheme() == "https") {
                 // Ask the user how to proceed when connecting to a https:// URL fails.
                 // It is possible that the server is secured with client-side TLS certificates,

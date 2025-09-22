@@ -309,14 +309,16 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (Mac::FileProvider::fileProviderAvailable()) {
         for (const auto &accountState : AccountManager::instance()->accounts()) {
-            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
-            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
+            const auto account = accountState->account();
+            const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
                 continue;
             }
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
+            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
 
-            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
+            if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
             } else {
                 switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {

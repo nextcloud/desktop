@@ -52,7 +52,7 @@ public:
         TypeLink = 3,
         TypeEmail = Sharee::Email,
         TypeRemote = Sharee::Federated,
-        TypeCircle = Sharee::Circle,
+        TypeTeam = Sharee::Team,
         TypeRoom = Sharee::Room,
     };
     Q_ENUM(ShareType);
@@ -120,7 +120,7 @@ public:
     /*
      * Get whether the share has a password set
      */
-    [[nodiscard]] Q_REQUIRED_RESULT bool isPasswordSet() const;
+    [[nodiscard]] bool isPasswordSet() const;
 
      /*
      * Is it a share with a user or group (local or remote)

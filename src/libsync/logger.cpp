@@ -31,6 +31,8 @@ constexpr int CrashLogSize = 20;
 constexpr auto MaxLogLinesCount = 50000;
 constexpr auto MaxLogLinesBeforeFlush = 10;
 
+static QtMessageHandler s_originalMessageHandler = nullptr;
+
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
 #ifdef ZLIB_FOUND
@@ -76,7 +78,7 @@ Logger::Logger(QObject *parent)
                                       "]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
-    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
+    s_originalMessageHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
         Logger::instance()->doLog(type, ctx, message);
     });
 #endif
@@ -159,11 +161,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             }
         }
         if (type == QtFatalMsg) {
+            dumpCrashLog();
             closeNoLock();
-#if defined(Q_OS_WIN)
-            // Make application terminate in a way that can be caught by the crash reporter
-            Utility::crash();
-#endif
+            s_originalMessageHandler(type, ctx, message);
         }
     }
     emit logWindowLog(msg);
@@ -171,7 +171,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
 void Logger::closeNoLock()
 {
-    dumpCrashLog();
     if (_logstream)
     {
         _logstream->flush();

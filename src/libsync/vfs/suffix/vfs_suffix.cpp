@@ -108,6 +108,21 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     return {};
 }
 
+Result<void, QString> VfsSuffix::createPlaceholders(const QList<SyncFileItemPtr> &items)
+{
+    auto result = Result<void, QString>{};
+
+    for (const auto &oneItem : items) {
+        const auto itemResult = createPlaceholder(*oneItem);
+        if (!itemResult) {
+            result = itemResult;
+            break;
+        }
+    }
+
+    return result;
+}
+
 Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
 {
     SyncFileItem virtualItem(item);

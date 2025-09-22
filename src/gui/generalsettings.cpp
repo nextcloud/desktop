@@ -153,7 +153,7 @@ bool createDebugArchive(const QString &filename)
             const auto account = accountState->account();
             const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
             const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
-            xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
+            xpc->createDebugArchiveForFileProviderDomain(accountUserIdAtHost, vfsLogPath);
             zip.addLocalFile(vfsLogPath, vfsLogFilename);
         }
     }
@@ -194,6 +194,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->callNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleCallNotifications);
     _ui->callNotificationsCheckBox->setToolTip(tr("Show call notification dialogs."));
+
+    connect(_ui->quotaWarningNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleQuotaWarningNotifications);
+    _ui->quotaWarningNotificationsCheckBox->setToolTip(tr("Show notification when quota usage exceeds 80%."));
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
@@ -298,6 +301,8 @@ void GeneralSettings::loadMiscSettings()
     _ui->chatNotificationsCheckBox->setChecked(cfgFile.showChatNotifications());
     _ui->callNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
+    _ui->quotaWarningNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
+    _ui->quotaWarningNotificationsCheckBox->setChecked(cfgFile.showQuotaWarningNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
@@ -592,6 +597,12 @@ void GeneralSettings::slotToggleCallNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setShowCallNotifications(enable);
+}
+
+void GeneralSettings::slotToggleQuotaWarningNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setShowQuotaWarningNotifications(enable);
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)

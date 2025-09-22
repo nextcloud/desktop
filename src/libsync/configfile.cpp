@@ -33,7 +33,7 @@
 #include <QStandardPaths>
 #include <QOperatingSystemVersion>
 
-#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_REMOTE_POLL_INTERVAL 30000
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace {
@@ -213,6 +213,19 @@ void ConfigFile::setShowCallNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(showCallNotificationsC, show);
+    settings.sync();
+}
+
+bool ConfigFile::showQuotaWarningNotifications() const
+{
+    const QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(showQuotaWarningNotificationsC, true).toBool() && optionalServerNotifications();
+}
+
+void ConfigFile::setShowQuotaWarningNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(showQuotaWarningNotificationsC, show);
     settings.sync();
 }
 
@@ -1302,6 +1315,43 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     }
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
+QString ConfigFile::fileProviderDomainUuidFromAccountId(const QString &accountId) const
+{
+    if (accountId.isEmpty()) {
+        return {};
+    }
+    return retrieveData(QStringLiteral("FileProviderDomainUuids"), accountId).toString();
+}
+
+void ConfigFile::setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid)
+{
+    if (accountId.isEmpty() || domainUuid.isEmpty()) {
+        return;
+    }
+    storeData(QStringLiteral("FileProviderDomainUuids"), accountId, domainUuid);
+    storeData(QStringLiteral("FileProviderAccountIds"), domainUuid, accountId);
+}
+
+QString ConfigFile::accountIdFromFileProviderDomainUuid(const QString &domainUuid) const
+{
+    if (domainUuid.isEmpty()) {
+        return {};
+    }
+    return retrieveData(QStringLiteral("FileProviderAccountIds"), domainUuid).toString();
+}
+
+void ConfigFile::removeFileProviderDomainUuidMapping(const QString &accountId)
+{
+    if (accountId.isEmpty()) {
+        return;
+    }
+    const QString domainUuid = fileProviderDomainUuidFromAccountId(accountId);
+    if (!domainUuid.isEmpty()) {
+        removeData(QStringLiteral("FileProviderAccountIds"), domainUuid);
+    }
+    removeData(QStringLiteral("FileProviderDomainUuids"), accountId);
 }
 
 }

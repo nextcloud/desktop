@@ -120,6 +120,8 @@ public:
     [[nodiscard]] QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
+    [[nodiscard]] QString userFromCredentials() const;
+
     [[nodiscard]] QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
@@ -468,6 +470,7 @@ signals:
     void encryptionCertificateFingerprintChanged();
     void userCertificateNeedsMigrationChanged();
 
+    void rootFolderQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes);
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();

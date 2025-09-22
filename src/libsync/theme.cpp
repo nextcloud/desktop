@@ -5,7 +5,6 @@
  */
 
 #include "theme.h"
-#include "config.h"
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
@@ -162,6 +161,11 @@ QUrl Theme::statusDoNotDisturbImageSource() const
 QUrl Theme::statusAwayImageSource() const
 {
     return imagePathToUrl(themeImagePath("user-status-away", 16));
+}
+
+QUrl Theme::statusBusyImageSource() const
+{
+    return imagePathToUrl(themeImagePath("user-status-busy", 16));
 }
 
 QUrl Theme::statusInvisibleImageSource() const
@@ -505,14 +509,7 @@ bool Theme::forbidBadSSL() const
 #endif
 }
 
-bool Theme::doNotUseProxy() const
-{
-#ifdef DO_NOT_USE_PROXY
-    return true;
-#else
-    return false;
-#endif
-}
+
 
 QString Theme::forceConfigAuthType() const
 {
