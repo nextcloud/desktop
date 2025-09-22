@@ -146,8 +146,13 @@ ApplicationWindow {
         function openUserStatusDrawer(index, onlineStatusSection, statusMessageSection) {
             console.log(`About to show dialog for user with index ${index}`);
             userIndex = index;
-            showOnlineStatusSection = onlineStatusSection;
-            showStatusMessageSection = statusMessageSection;
+
+            const hasOnlineSectionArg = arguments.length >= 2 && onlineStatusSection !== undefined;
+            const hasStatusMessageArg = arguments.length >= 3 && statusMessageSection !== undefined;
+
+            showOnlineStatusSection = hasOnlineSectionArg ? onlineStatusSection : true;
+            showStatusMessageSection = hasStatusMessageArg ? statusMessageSection : true;
+
             open();
         }
 
@@ -160,6 +165,9 @@ ApplicationWindow {
             if (reopenWithStatusMessage) {
                 reopenWithStatusMessage = false;
                 openUserStatusDrawer(userIndex, false, true);
+            } else {
+                showOnlineStatusSection = true;
+                showStatusMessageSection = true;
             }
         }
 
