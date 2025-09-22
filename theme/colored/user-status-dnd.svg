@@ -2,9 +2,6 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g transform="matrix(0.025,0,0,0.025,0,24)">
-        <g transform="matrix(40,0,0,40,0,-960)">
-            <ellipse cx="12.399" cy="12.302" rx="6.446" ry="5.727" style="fill:white;"/>
-        </g>
         <path d="M280,-440L680,-440L680,-520L280,-520L280,-440ZM480,-80C424.667,-80 372.667,-90.5 324,-111.5C275.333,-132.5 233,-161 197,-197C161,-233 132.5,-275.333 111.5,-324C90.5,-372.667 80,-424.667 80,-480C80,-535.333 90.5,-587.333 111.5,-636C132.5,-684.667 161,-727 197,-763C233,-799 275.333,-827.5 324,-848.5C372.667,-869.5 424.667,-880 480,-880C535.333,-880 587.333,-869.5 636,-848.5C684.667,-827.5 727,-799 763,-763C799,-727 827.5,-684.667 848.5,-636C869.5,-587.333 880,-535.333 880,-480C880,-424.667 869.5,-372.667 848.5,-324C827.5,-275.333 799,-233 763,-197C727,-161 684.667,-132.5 636,-111.5C587.333,-90.5 535.333,-80 480,-80Z" style="fill:rgb(219,6,6);fill-rule:nonzero;"/>
     </g>
 </svg>
