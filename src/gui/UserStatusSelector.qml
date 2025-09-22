@@ -20,6 +20,23 @@ ColumnLayout {
     property bool showOnlineStatusSection: true
     property bool showStatusMessageSection: true
 
+    signal closeRequested()
+    signal showStatusMessageRequested()
+
+    function handleOnlineStatusSelection(status) {
+        const currentStatus = userStatusSelectorModel.onlineStatus;
+        const alreadySelected = currentStatus === status
+                || (status === NC.UserStatus.Invisible
+                    && currentStatus === NC.UserStatus.Offline);
+
+        if (alreadySelected) {
+            closeRequested();
+            return;
+        }
+
+        userStatusSelectorModel.onlineStatus = status;
+    }
+
     ColumnLayout {
         id: statusButtonsLayout
 
@@ -48,7 +65,7 @@ ColumnLayout {
                 icon.source: userStatusSelectorModel.onlineIcon
                 icon.color: "transparent"
                 text: qsTr("Online")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
+                onClicked: handleOnlineStatusSelection(NC.UserStatus.Online)
 
                 Layout.fillWidth: true
             }
@@ -58,7 +75,7 @@ ColumnLayout {
                 icon.source: userStatusSelectorModel.awayIcon
                 icon.color: "transparent"
                 text: qsTr("Away")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
+                onClicked: handleOnlineStatusSelection(NC.UserStatus.Away)
 
                 Layout.fillWidth: true
 
@@ -85,7 +102,7 @@ ColumnLayout {
                 icon.color: "transparent"
                 text: qsTr("Do not disturb")
                 secondaryText: qsTr("Mute all notifications")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
+                onClicked: handleOnlineStatusSelection(NC.UserStatus.DoNotDisturb)
 
                 Layout.fillWidth: true
             }
@@ -97,10 +114,18 @@ ColumnLayout {
                 icon.color: "transparent"
                 text: qsTr("Invisible")
                 secondaryText: qsTr("Appear offline")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
+                onClicked: handleOnlineStatusSelection(NC.UserStatus.Invisible)
 
                 Layout.fillWidth: true
             }
+        }
+
+        UserStatusSelectorButton {
+            Layout.fillWidth: true
+            visible: rootLayout.showOnlineStatusSection && !rootLayout.showStatusMessageSection
+            text: qsTr("Status message")
+            primary: true
+            onClicked: showStatusMessageRequested()
         }
     }
 
@@ -276,7 +301,7 @@ ColumnLayout {
 
         Button {
             text: qsTr("Cancel")
-            onClicked: finished()
+            onClicked: closeRequested()
         }
         Item { // Spacing
             Layout.fillWidth: true
