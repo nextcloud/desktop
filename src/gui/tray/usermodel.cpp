@@ -125,7 +125,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
 void User::checkNotifiedNotifications()
 {
-    // after one hour, clear the gui log notification store
+    // clear the gui log notification store after one hour has passed since the last received notification
     constexpr qint64 clearGuiLogInterval = 60 * 60 * 1000;
     if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
         _notifiedNotifications.clear();
@@ -144,14 +144,6 @@ bool User::canShowNotification(const qint64 notificationId)
     return cfg.optionalServerNotifications() &&
             isDesktopNotificationsAllowed() &&
             !notificationAlreadyShown(notificationId);
-}
-
-void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived)
-{
-    if (numTalkNotificationsReceived < _lastTalkNotificationsReceivedCount) {
-        _activityModel->checkAndRemoveSeenActivities(list);
-    }
-    _lastTalkNotificationsReceivedCount = numTalkNotificationsReceived;
 }
 
 void User::showDesktopNotification(const QString &title, const QString &message, const qint64 notificationId)
@@ -232,15 +224,11 @@ void User::showDesktopTalkNotification(const Activity &activity)
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    const auto talkNotificationsReceivedCount = std::count_if(std::cbegin(list), std::cend(list), [](const auto &activity) {
-        return activity._objectType == QStringLiteral("chat") ||
-            activity._objectType == QStringLiteral("call");
-    });
-    checkAndRemoveSeenActivities(list, talkNotificationsReceivedCount);
-
     ActivityList toNotifyList;
 
-    std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
+    _activityModel->removeOutdatedNotifications(list);
+
+    std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) -> bool {
         if (!activity._shouldNotify) {
             qCDebug(lcActivity).nospace() << "No notification should be sent for activity with id=" << activity._id << " objectType=" << activity._objectType;
             return false;

@@ -523,17 +523,36 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
 
 void ActivityListModel::addEntriesToActivityList(const ActivityList &activityList)
 {
-    if(activityList.isEmpty()) {
+    if (activityList.isEmpty()) {
+        return;
+    }
+
+    // filter activities that do not need to be added again
+    ActivityList filteredList;
+    std::copy_if(activityList.constBegin(), activityList.constEnd(), std::back_inserter(filteredList), [this](const auto &activity) -> bool {
+        if (activity._type == Activity::NotificationType && _activeNotificationIds.contains(activity._id)) {
+            return false;
+        }
+        return true;
+    });
+
+    if (filteredList.isEmpty()) {
         return;
     }
 
     const auto startRow = _finalList.count();
 
-    beginInsertRows({}, startRow, startRow + activityList.count() - 1);
-    for(const auto &activity : activityList) {
+    beginInsertRows({}, startRow, startRow + filteredList.count() - 1);
+    for(const auto &activity : std::as_const(filteredList)) {
         _finalList.append(activity);
+
         if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
             _conflictsList.push_back(activity);
+        }
+
+        if (activity._type == Activity::NotificationType) {
+            // new unseen notification, to avoid duplicate activities to appear add its id to the filter list
+            _activeNotificationIds.insert(activity._id);
         }
     }
     endInsertRows();
@@ -625,6 +644,10 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
         _conflictsList.removeOne(activity);
     }
 
+    if (activity._type == Activity::NotificationType) {
+        _activeNotificationIds.remove(activity._id);
+    }
+
     if (activity._type != Activity::ActivityType &&
         activity._type != Activity::DummyFetchingActivityType &&
         activity._type != Activity::DummyMoreActivitiesAvailableType &&
@@ -638,15 +661,20 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     }
 }
 
-void ActivityListModel::checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities)
+void ActivityListModel::removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications)
 {
     ActivityList activitiesToRemove;
     for (const auto &activity : _finalList) {
-        const auto isTalkActivity = activity._objectType == QStringLiteral("chat") ||
-            activity._objectType == QStringLiteral("call");
-        if (isTalkActivity && !newActivities.contains(activity)) {
-            activitiesToRemove.push_back(activity);
+        if (activity._type != Activity::NotificationType || receivedNotifications.contains(activity)) {
+            continue;
         }
+
+        qCDebug(lcActivity).nospace() << "marking notification activity for removal"
+            << " activity.type=" << activity._type
+            << " activity.id=" << activity._id
+            << " activity.objectType=" << activity._objectType
+            << " activity.accName=" << activity._accName;
+        activitiesToRemove.push_back(activity);
     }
 
     for (const auto &toRemove : activitiesToRemove) {
@@ -929,6 +957,7 @@ void ActivityListModel::slotRemoveAccount()
     _conflictsList.clear();
     _activityLists.clear();
     _presentedActivities.clear();
+    _activeNotificationIds.clear();
     setAndRefreshCurrentlyFetching(false);
     _doneFetching = false;
     _currentItem = 0;

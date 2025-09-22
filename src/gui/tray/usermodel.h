@@ -181,8 +181,6 @@ private:
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
 
-    void checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived);
-
     [[nodiscard]] bool serverHasTalk() const;
 
     AccountStatePtr _account;
@@ -198,6 +196,7 @@ private:
 
     QElapsedTimer _guiLogTimer;
     QSet<qint64> _notifiedNotifications;
+    QSet<qint64> _activeNotifications;
     QMimeDatabase _mimeDb;
 
     // number of currently running notification requests. If non zero,

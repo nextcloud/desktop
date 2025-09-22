@@ -127,7 +127,7 @@ public slots:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(const OCC::Activity &activity);
 
-    void checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities);
+    void removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications);
 
     void setAccountState(OCC::AccountState *state);
     void setReplyMessageSent(const int activityIndex, const QString &message);
@@ -184,6 +184,7 @@ private:
     ActivityList _finalList;
 
     QSet<qint64> _presentedActivities;
+    QSet<qint64> _activeNotificationIds;
 
     bool _displayActions = true;
 
