@@ -49,6 +49,9 @@ public class Item: NSObject, NSFileProviderItem {
                     capabilities.insert(.allowsAddingSubItems)
                 }
             }
+            if permissions.contains("CK"), metadata.directory { // Folder not changeable but adding sub-files & -folders
+                capabilities.insert(.allowsWriting)
+            }
         }
         // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
         if #unavailable(macOS 13.0), !metadata.keepDownloaded {
