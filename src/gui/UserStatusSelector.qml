@@ -43,7 +43,7 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: Style.smallSpacing
         visible: rootLayout.showOnlineStatusSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -58,6 +58,11 @@ ColumnLayout {
 
             Layout.fillWidth: true
             spacing: statusButtonsLayout.spacing
+
+            function updateMaxButtonHeight(newHeight) {
+                // Legacy no-op to avoid runtime warnings while older cached QML is in use.
+                // The buttons now size themselves naturally in a vertical layout.
+            }
 
             UserStatusSelectorButton {
                 checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
@@ -121,7 +126,7 @@ ColumnLayout {
         Layout.fillHeight: true
         spacing: Style.smallSpacing
         visible: rootLayout.showStatusMessageSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
@@ -273,7 +278,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBottom
         visible: rootLayout.showStatusMessageSection
-        Layout.preferredHeight: visible ? implicitHeight : 0
+        Layout.preferredHeight: visible ? (implicitHeight || 0) : 0
 
         Button {
             text: qsTr("Cancel")

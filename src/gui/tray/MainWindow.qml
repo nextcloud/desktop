@@ -124,8 +124,6 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        implicitHeight: Math.min(parent.height - Style.trayDrawerMargin,
-                                  userStatusContents.implicitHeight || 0)
         padding: 0
         edge: Qt.BottomEdge
         modal: true
@@ -137,6 +135,8 @@ ApplicationWindow {
             border.color: palette.dark
             color: Style.colorWithoutTransparency(palette.base)
         }
+
+        readonly property int maxDrawerHeight: parent.height - Style.trayDrawerMargin
 
         property int userIndex: 0
         property bool showOnlineStatusSection: true
@@ -171,21 +171,29 @@ ApplicationWindow {
             }
         }
 
-        Loader {
-            id: userStatusContents
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            width: parent.width
-            implicitHeight: item ? item.implicitHeight : 0
-            active: userStatusDrawer.visible
-            sourceComponent: UserStatusSelectorPage {
+        contentItem: Item {
+            id: userStatusContentWrapper
+            width: userStatusDrawer.width
+            implicitWidth: width
+            implicitHeight: Math.min(userStatusDrawer.maxDrawerHeight,
+                                     userStatusContents.implicitHeight || 0)
+
+            Loader {
+                id: userStatusContents
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
                 width: parent.width
-                userIndex: userStatusDrawer.userIndex
-                showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
-                showStatusMessageSection: userStatusDrawer.showStatusMessageSection
-                onFinished: userStatusDrawer.close()
-                onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
+                implicitHeight: item && item.implicitHeight ? item.implicitHeight : 0
+                active: userStatusDrawer.visible
+                sourceComponent: UserStatusSelectorPage {
+                    width: parent.width
+                    userIndex: userStatusDrawer.userIndex
+                    showOnlineStatusSection: userStatusDrawer.showOnlineStatusSection
+                    showStatusMessageSection: userStatusDrawer.showStatusMessageSection
+                    onFinished: userStatusDrawer.close()
+                    onShowStatusMessageRequested: userStatusDrawer.openStatusMessageShortcut()
+                }
             }
         }
     }
