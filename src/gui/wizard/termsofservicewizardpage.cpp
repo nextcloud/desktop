@@ -54,6 +54,13 @@ void OCC::TermsOfServiceWizardPage::cleanupPage()
 
 int OCC::TermsOfServiceWizardPage::nextId() const
 {
+    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    Q_ASSERT(ocWizard);
+
+    if (ocWizard->useVirtualFileSyncByDefault()) {
+        return -1;
+    }
+
     return WizardCommon::Page_AdvancedSetup;
 }
 

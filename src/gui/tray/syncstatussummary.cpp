@@ -15,6 +15,7 @@
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovidersocketserver.h"
+#include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
 #include <theme.h>
@@ -433,11 +434,14 @@ void SyncStatusSummary::initSyncState()
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto accounts = AccountManager::instance()->accounts();
-    for (const auto &accountState : accounts) {
-        const auto account = accountState->account();
-        onFileProviderDomainSyncStateChanged(account, Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account));
-        syncStateFallbackNeeded = false;
+    if (Mac::FileProvider::fileProviderAvailable() && _accountState) {
+        const auto account = _accountState->account();
+        const auto userIdAtHostWithPort = account->userIdAtHostWithPort();
+        if (Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(userIdAtHostWithPort)) {
+            const auto lastKnownSyncState = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(account);
+            onFileProviderDomainSyncStateChanged(account, lastKnownSyncState);
+            syncStateFallbackNeeded = false;
+        }
     }
 #endif
 

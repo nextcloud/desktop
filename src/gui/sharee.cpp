@@ -41,7 +41,7 @@ QString Sharee::format() const
         formatted += QLatin1String(" (email)");
     } else if (_type == Type::Federated) {
         formatted += QLatin1String(" (remote)");
-    } else if (_type == Type::Circle) {
+    } else if (_type == Type::Team) {
         formatted += QLatin1String(" (team)");
     } else if (_type == Type::Room) {
         formatted += QLatin1String(" (conversation)");

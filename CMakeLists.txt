@@ -63,6 +63,7 @@ else()
 endif()
 
 option( APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG "Display legacy import dialog" ON )
+option( DISABLE_ACCOUNT_MIGRATION "Exclude legacy account migration and import" OFF )
 
 # For usage in XML files we preprocess
 string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")
@@ -359,15 +360,24 @@ elseif(BUILD_CLIENT)
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_CLIENT)
+if(LINUX AND BUILD_CLIENT)
+    set(bindir ${CMAKE_INSTALL_FULL_BINDIR})
+    configure_file(systemd/nextcloud-desktop.service.in "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service")
+
+    pkg_check_modules(SYSTEMD systemd IMPORTED_TARGET)
+    set_package_properties(systemd PROPERTIES
+        DESCRIPTION "Systemd development files needed to install user service"
+        TYPE OPTIONAL
+    )
     pkg_get_variable(SYSTEMD_USER_UNIT_DIR systemd "systemd_user_unit_dir")
     if (SYSTEMD_USER_UNIT_DIR)
+        message(STATUS "Systemd development files found. Enable installing systemd user service.")
         option(INSTALL_SYSTEMD "Install systemd user service" ON)
         if(INSTALL_SYSTEMD)
-            set(bindir ${CMAKE_INSTALL_FULL_BINDIR})
-            configure_file(systemd/nextcloud-desktop.service.in "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service")
             install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.service" DESTINATION "${SYSTEMD_USER_UNIT_DIR}")
         endif()
+    else()
+        message(STATUS "Systemd development files not found. Not installing systemd user service.")
     endif()
 endif()
 

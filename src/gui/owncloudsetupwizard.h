@@ -17,7 +17,7 @@
 #include "theme.h"
 #include "networkjobs.h"
 
-#include "wizard/owncloudwizardcommon.h"
+#include "wizard/wizardproxysettingsdialog.h"
 
 namespace OCC {
 
@@ -43,7 +43,7 @@ signals:
     void ownCloudWizardDone(int);
 
 private slots:
-    void slotCheckServer(const QString &);
+    void slotCheckServer(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
     void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
 
     void slotFindServer();

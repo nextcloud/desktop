@@ -1517,6 +1517,27 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
         QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
     }
+
+    void createFolderAndFiles()
+    {
+        FakeFolder fakeFolder {FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("first folder");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert("first folder/file1");
+        fakeFolder.remoteModifier().insert("first folder/file2");
+        fakeFolder.remoteModifier().insert("first folder/file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)

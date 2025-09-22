@@ -419,23 +419,23 @@ class SyncStateExtension_Nextcloud(GObject.GObject, Nautilus.InfoProvider):
             self.invalidate_items_underneath(args[0])
 
     def set_emblem(self, item, state):
-        Emblems = { 'OK'        : appname +'_ok',
-                    'SYNC'      : appname +'_sync',
-                    'NEW'       : appname +'_sync',
-                    'IGNORE'    : appname +'_warn',
-                    'ERROR'     : appname +'_error',
-                    'OK+SWM'    : appname +'_ok_shared',
-                    'SYNC+SWM'  : appname +'_sync_shared',
-                    'NEW+SWM'   : appname +'_sync_shared',
-                    'IGNORE+SWM': appname +'_warn_shared',
-                    'ERROR+SWM' : appname +'_error_shared',
+        Emblems = { 'OK'        : [appname + '_ok'],
+                    'SYNC'      : [appname + '_sync'],
+                    'NEW'       : [appname + '_sync'],
+                    'IGNORE'    : [appname + '_warn'],
+                    'ERROR'     : [appname + '_error'],
+                    'OK+SWM'    : [appname + '_a_shared', appname + '_ok'],
+                    'SYNC+SWM'  : [appname + '_a_shared', appname + '_sync'],
+                    'NEW+SWM'   : [appname + '_a_shared', appname + '_sync'],
+                    'IGNORE+SWM': [appname + '_a_shared', appname + '_warn'],
+                    'ERROR+SWM' : [appname + '_a_shared', appname + '_error'],
                     'NOP'       : ''
                   }
 
         emblem = 'NOP' # Show nothing if no emblem is defined.
         if state in Emblems:
-            emblem = Emblems[state]
-        item.add_emblem(emblem)
+            for emblem in Emblems[state]:
+                item.add_emblem(emblem)
 
     def update_file_info(self, item):
         if item.get_uri_scheme() != 'file':

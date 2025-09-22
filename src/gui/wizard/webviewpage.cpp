@@ -96,16 +96,6 @@ void WebViewPage::cleanupPage()
     _ocWizard->centerWindow();
 }
 
-int WebViewPage::nextId() const {
-    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
-    if (ocWizard->needsToAcceptTermsOfService()) {
-        return WizardCommon::Page_TermsOfService;
-    }
-
-    return WizardCommon::Page_AdvancedSetup;
-}
-
 bool WebViewPage::isComplete() const {
     return false;
 }

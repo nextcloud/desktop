@@ -847,8 +847,8 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *reply)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
-        qCWarning(lcFolderStatus) << reply->errorString();
-        parentInfo->_lastErrorString = reply->errorString();
+        qCWarning(lcFolderStatus) << reply->errorString() << job->errorString();
+        parentInfo->_lastErrorString = job->errorString();
 
         parentInfo->resetSubs(this, idx);
 
@@ -1017,10 +1017,10 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     // find the single item to display:  This is going to be the bigger item, or the last completed
     // item if no items are in progress.
     auto curItem = progress._lastCompletedItem;
-    auto curItemProgress = -1; // -1 means finished
-    auto biggerItemSize = 0;
-    auto estimatedUpBw = 0;
-    auto estimatedDownBw = 0;
+    qint64 curItemProgress = -1; // -1 means finished
+    qint64 biggerItemSize = 0;
+    qint64 estimatedUpBw = 0;
+    qint64 estimatedDownBw = 0;
     QStringList filenamesList;
     for (const auto &syncFile : progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(syncFile._item)

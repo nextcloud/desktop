@@ -5,10 +5,10 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Basic as BasicControls
 import Style
 
-// TODO: the current style does not support customization of this control
-ProgressBar {
+BasicControls.ProgressBar {
     id: control
 
     property color fillColor: Style.ncBlue

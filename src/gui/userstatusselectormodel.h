@@ -33,9 +33,11 @@ class UserStatusSelectorModel : public QObject
     Q_PROPERTY(QVariantList clearStageTypes READ clearStageTypes CONSTANT)
     Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
+    Q_PROPERTY(bool busyStatusSupported READ busyStatusSupported NOTIFY busyStatusSupportedChanged)
     Q_PROPERTY(QUrl onlineIcon READ onlineIcon CONSTANT)
     Q_PROPERTY(QUrl awayIcon READ awayIcon CONSTANT)
     Q_PROPERTY(QUrl dndIcon READ dndIcon CONSTANT)
+    Q_PROPERTY(QUrl busyIcon READ busyIcon CONSTANT)
     Q_PROPERTY(QUrl invisibleIcon READ invisibleIcon CONSTANT)
 
 public:
@@ -65,28 +67,30 @@ public:
     explicit UserStatusSelectorModel(const UserStatus &userStatus,
         QObject *parent = nullptr);
 
-    Q_REQUIRED_RESULT int userIndex() const;
+    [[nodiscard]] int userIndex() const;
 
-    Q_REQUIRED_RESULT UserStatus::OnlineStatus onlineStatus() const;
+    [[nodiscard]] UserStatus::OnlineStatus onlineStatus() const;
     void setOnlineStatus(UserStatus::OnlineStatus status);
 
-    Q_REQUIRED_RESULT QUrl onlineIcon() const;
-    Q_REQUIRED_RESULT QUrl awayIcon() const;
-    Q_REQUIRED_RESULT QUrl dndIcon() const;
-    Q_REQUIRED_RESULT QUrl invisibleIcon() const;
+    [[nodiscard]] QUrl onlineIcon() const;
+    [[nodiscard]] QUrl awayIcon() const;
+    [[nodiscard]] QUrl dndIcon() const;
+    [[nodiscard]] QUrl busyIcon() const;
+    [[nodiscard]] QUrl invisibleIcon() const;
 
-    Q_REQUIRED_RESULT QString userStatusMessage() const;
+    [[nodiscard]] QString userStatusMessage() const;
     void setUserStatusMessage(const QString &message);
-    Q_REQUIRED_RESULT QString userStatusEmoji() const;
+    [[nodiscard]] QString userStatusEmoji() const;
     void setUserStatusEmoji(const QString &emoji);
 
     [[nodiscard]] QVector<UserStatus> predefinedStatuses() const;
 
-    Q_REQUIRED_RESULT QVariantList clearStageTypes() const;
-    Q_REQUIRED_RESULT QString clearAtDisplayString() const;
+    [[nodiscard]] QVariantList clearStageTypes() const;
+    [[nodiscard]] QString clearAtDisplayString() const;
     [[nodiscard]] Q_INVOKABLE QString clearAtReadable(const OCC::UserStatus &status) const;
 
-    Q_REQUIRED_RESULT QString errorMessage() const;
+    [[nodiscard]] QString errorMessage() const;
+    [[nodiscard]] bool busyStatusSupported() const;
 
 public slots:
     void setUserIndex(const int userIndex);
@@ -98,6 +102,7 @@ public slots:
 signals:
     void userIndexChanged();
     void errorMessageChanged();
+    void busyStatusSupportedChanged();
     void userStatusChanged();
     void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
@@ -112,10 +117,10 @@ private:
     void onMessageCleared();
     void onError(UserStatusConnector::Error error);
 
-    Q_REQUIRED_RESULT QString clearAtReadable(const Optional<ClearAt> &clearAt) const;
-    Q_REQUIRED_RESULT QString clearAtStageToString(ClearStageType stage) const;
-    Q_REQUIRED_RESULT QString timeDifferenceToString(int differenceSecs) const;
-    Q_REQUIRED_RESULT Optional<ClearAt> clearStageTypeToDateTime(ClearStageType type) const;
+    [[nodiscard]] QString clearAtReadable(const Optional<ClearAt> &clearAt) const;
+    [[nodiscard]] QString clearAtStageToString(ClearStageType stage) const;
+    [[nodiscard]] QString timeDifferenceToString(int differenceSecs) const;
+    [[nodiscard]] Optional<ClearAt> clearStageTypeToDateTime(ClearStageType type) const;
     void setError(const QString &reason);
     void clearError();
 

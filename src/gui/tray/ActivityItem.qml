@@ -41,6 +41,8 @@ ItemDelegate {
         ActivityItemContent {
             id: activityContent
 
+            adaptiveTextColor: root.activeFocus ? palette.highlightedText : palette.text
+
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight
             Layout.preferredWidth: parent.width

@@ -142,17 +142,6 @@ bool OwncloudHttpCredsPage::validatePage()
     return true;
 }
 
-int OwncloudHttpCredsPage::nextId() const
-{
-    const auto ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-    Q_ASSERT(ocWizard);
-    if (ocWizard->needsToAcceptTermsOfService()) {
-        return WizardCommon::Page_TermsOfService;
-    }
-
-    return WizardCommon::Page_AdvancedSetup;
-}
-
 void OwncloudHttpCredsPage::setConnected()
 {
     _connected = true;

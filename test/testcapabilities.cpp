@@ -230,6 +230,61 @@ private slots:
 
         QVERIFY(!capabilities.userStatusSupportsEmoji());
     }
+
+    void testUserStatusSupportsBusy_supportsBusyAvailable_returnTrue()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_busy"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(capabilities.userStatusSupportsBusy());
+    }
+
+    void testUserStatusSupportsBusy_supportsBusyNotAvailable_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+        userStatusMap["supports_busy"] = false;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsBusy());
+    }
+
+    void testUserStatusSupportsBusy_supportsBusyNotInCapabilities_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsBusy());
+    }
+
+    void testUserStatusSupportsBusy_userStatusNotEnabled_returnFalse()
+    {
+        QVariantMap userStatusMap;
+        userStatusMap["enabled"] = false;
+        userStatusMap["supports_busy"] = true;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["user_status"] = userStatusMap;
+
+        const OCC::Capabilities capabilities(capabilitiesMap);
+
+        QVERIFY(!capabilities.userStatusSupportsBusy());
+    }
     
     void testShareDefaultPermissions_defaultSharePermissionsNotInCapabilities_returnZero()
     {

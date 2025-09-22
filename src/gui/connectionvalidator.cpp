@@ -43,7 +43,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No Nextcloud account configured");
+        _errors << tr("No %1 account configured", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
         reportResult(NotConfigured);
         return;
     }
@@ -153,6 +153,9 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     auto job = qobject_cast<CheckServerJob *>(sender());
     qCWarning(lcConnectionValidator) << reply->error() << reply->errorString() << job->errorString() << reply->peek(1024);
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+        if (const auto hstsError = AbstractNetworkJob::hstsErrorStringFromReply(reply)) {
+            _errors.append(*hstsError);
+        }
         reportResult(SslError);
         return;
     }

@@ -7,11 +7,14 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include "config.h"
+
+#include "syncresult.h"
+
 #include <QIcon>
 #include <QObject>
 #include <QPalette>
 #include <QGuiApplication>
-#include "syncresult.h"
 
 class QString;
 class QObject;
@@ -38,6 +41,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QUrl statusOnlineImageSource READ statusOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl statusDoNotDisturbImageSource READ statusDoNotDisturbImageSource CONSTANT)
     Q_PROPERTY(QUrl statusAwayImageSource READ statusAwayImageSource CONSTANT)
+    Q_PROPERTY(QUrl statusBusyImageSource READ statusBusyImageSource CONSTANT)
     Q_PROPERTY(QUrl statusInvisibleImageSource READ statusInvisibleImageSource CONSTANT)
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QIcon folderDisabledIcon READ folderDisabledIcon CONSTANT)
@@ -144,6 +148,12 @@ public:
      * @return QUrl full path to an icon
      */
     [[nodiscard]] QUrl statusAwayImageSource() const;
+    
+    /**
+     * @brief Returns full path to a busy user status icon
+     * @return QUrl full path to an icon
+     */
+    [[nodiscard]] QUrl statusBusyImageSource() const;
     
     /**
      * @brief Returns full path to an invisible user status icon
@@ -275,7 +285,10 @@ public:
      *
      * When true, the app always connects to the server directly
      */
-    [[nodiscard]] bool doNotUseProxy() const;
+    [[nodiscard]] constexpr static bool doNotUseProxy()
+    {
+        return DO_NOT_USE_PROXY;
+    }
 
     /**
      * This is only useful when previous version had a different overrideServerUrl
