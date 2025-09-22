@@ -5064,7 +5064,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="83"/>
         <source>Common Name (CN):</source>
-        <translation>Nome común (NC):</translation>
+        <translation>Nome común (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="84"/>
