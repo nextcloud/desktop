@@ -181,8 +181,7 @@ GridLayout {
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
 
-            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
-                                           "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+            icon.source: "image://svgimage-custom-color/copy.svg/" + palette.buttonText
             icon.width: Style.activityListButtonIconSize
             icon.height: Style.activityListButtonIconSize
             display: shareLinkCopied ? AbstractButton.TextOnly : AbstractButton.IconOnly
