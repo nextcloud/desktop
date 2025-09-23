@@ -194,7 +194,7 @@ public:
 
     [[nodiscard]] bool isDirectory() const
     {
-        return _type == ItemTypeDirectory;
+        return _type == ItemTypeDirectory || _type == ItemTypeVirtualDirectory;
     }
 
     /**

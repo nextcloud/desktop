@@ -288,7 +288,6 @@ class DiscoveryPhase : public QObject
     // both must contain a sorted list
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    QStringList _selectiveSyncVfsFoldersList;
 
     void scheduleMoreJobs();
 
@@ -354,8 +353,6 @@ public:
 
     void setSelectiveSyncBlackList(const QStringList &list);
     void setSelectiveSyncWhiteList(const QStringList &list);
-
-    bool shouldDiscoverChildFolder(const QString &path) const;
 
     // output
     QByteArray _dataFingerprint;
