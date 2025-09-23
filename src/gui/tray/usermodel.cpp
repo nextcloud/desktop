@@ -1197,6 +1197,14 @@ void User::slotFetchGroupFolders()
 
 void User::slotQuotaChanged(const int64_t &usedBytes, const int64_t &availableBytes)
 {
+    if (availableBytes < 0) {
+        // values less than 0 -> quota is not set or determinable
+        // just reset the status
+        _lastQuotaPercent = 0;
+        _activityModel->removeActivityFromActivityList(_lastQuotaActivity);
+        return;
+    }
+
     int64_t total = usedBytes + availableBytes;
     if (total <= 0 || !ConfigFile().showQuotaWarningNotifications()) {
         return;
