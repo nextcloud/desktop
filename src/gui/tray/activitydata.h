@@ -136,7 +136,7 @@ class Activity
     Q_PROPERTY(QVariantMap subjectRichParameters MEMBER _subjectRichParameters)
 
 public:
-    using Identifier = QPair<qlonglong, QString>;
+    using Identifier = QPair<qint64, QString>;
 
     // Note that these are in the order we want to present them in the model!
     enum Type {
@@ -160,7 +160,7 @@ public:
     using TalkNotificationData = OCC::TalkNotificationData;
 
     Type _type;
-    qlonglong _id = 0LL;
+    qint64 _id = 0LL;
     QString _fileAction;
     int _objectId = 0;
     TalkNotificationData _talkNotificationData;
