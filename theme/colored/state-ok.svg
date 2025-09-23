@@ -1,1 +1,8 @@
-<svg width="16" height="16" version="1.1" viewBox="0 0 4.2333 4.2333" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(.87499 0 0 .87499 .26458 -255.9)"><circle cx="2.1167" cy="294.88" r="2.1167" fill="#5eb220" stroke-width=".25066"/><path d="m0.79642 295.01 0.93278 0.93284 1.7265-1.7267" fill="none" stroke="#faffff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".52916"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16" height="16" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g transform="matrix(3.30707,0,0,3.30707,0.999995,-967.189)">
+        <circle cx="2.117" cy="294.88" r="2.117" style="fill:rgb(45,123,65);"/>
+        <path d="M0.796,295.01L1.729,295.943L3.456,294.216" style="fill:none;fill-rule:nonzero;stroke:rgb(250,255,255);stroke-width:0.53px;"/>
+    </g>
+</svg>
