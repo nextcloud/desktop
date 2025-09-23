@@ -96,7 +96,7 @@ SPDX-FileCopyrightText = "2017 ownCloud GmbH, 2018 Nextcloud GmbH and Nextcloud 
 SPDX-License-Identifier = "CC-BY-3.0"
 
 [[annotations]]
-path = [".tx/nextcloud.client-desktop/*_translation", "theme/*/state-error.svg", "theme/*/state-info.svg", "theme/*/state-offline.svg", "theme/*/state-ok.svg", "theme/*/state-pause.svg", "theme/*/state-sync.svg", "theme/*/state-warning.svg"]
+path = [".tx/nextcloud.client-desktop/*_translation", "theme/*/state-error.svg", "theme/*/state-info.svg", "theme/*/state-offline.svg", "theme/*/state-ok.svg", "theme/*/state-pause.svg", "theme/*/state-sync.svg", "theme/*/state-warning.svg", "theme/colored/error.svg", "theme/colored/info.svg", "theme/colored/offline.svg", "theme/colored/ok.svg", "theme/colored/pause.svg", "theme/colored/sync.svg", "theme/colored/warning.svg"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2018 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
