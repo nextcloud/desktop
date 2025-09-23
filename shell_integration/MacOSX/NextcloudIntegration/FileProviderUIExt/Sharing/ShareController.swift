@@ -36,10 +36,12 @@ class ShareController: ObservableObject {
         Logger.shareController.info("Creating share: \(itemServerRelativePath)")
         return await withCheckedContinuation { continuation in
             if shareType == .publicLink {
-                kit.createShareLink(
+                kit.createShare(
                     path: itemServerRelativePath,
-                    hideDownload: hideDownload,
+                    shareType: 3, // public link
+                    shareWith: nil,
                     publicUpload: publicUpload,
+                    hideDownload: hideDownload,
                     password: password,
                     permissions: permissions,
                     account: account.ncKitAccount,

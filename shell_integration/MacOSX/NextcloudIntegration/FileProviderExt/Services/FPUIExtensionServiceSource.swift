@@ -61,7 +61,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return nil
         }
 
-        let nkSession = fpExtension.ncKit.getSession(account: account)
+        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: account)
         return nkSession?.userAgent as NSString?
     }
 

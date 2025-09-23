@@ -25,7 +25,7 @@ func fetchItemMetadata(
         return strCopy
     }
 
-    guard let nksession = kit.getSession(account: account.ncKitAccount) else {
+    guard let nksession = kit.nkCommonInstance.nksessions.session(forAccount: account.ncKitAccount) else {
         Logger.metadataProvider.error("Could not get nksession for \(account.ncKitAccount)")
         return nil
     }

@@ -48,7 +48,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 userId: account.username,
                 password: account.password,
                 userAgent: userAgent,
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
         }
@@ -190,7 +189,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
 
         return await withCheckedContinuation { continuation in
-            kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
+            kit.getCapabilities(account: account.ncKitAccount) { account, capabilities, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
                     self.presentError(String(localized: "Error getting server caps: \(error.errorDescription)"))
                     continuation.resume(returning: nil)

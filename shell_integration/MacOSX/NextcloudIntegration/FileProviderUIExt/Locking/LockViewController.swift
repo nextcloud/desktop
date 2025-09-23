@@ -82,7 +82,7 @@ class LockViewController: NSViewController {
 
     private func fetchCapabilities(account: Account, kit: NextcloudKit) async -> Capabilities? {
         return await withCheckedContinuation { continuation in
-            kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
+            kit.getCapabilities(account: account.ncKitAccount) { accountString, capabilities, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
                     self.presentError("Error getting server caps: \(error.errorDescription)")
                     continuation.resume(returning: nil)
@@ -180,7 +180,6 @@ class LockViewController: NSViewController {
                 userId: account.id,
                 password: account.password,
                 userAgent: "Nextcloud-macOS/FileProviderUIExt",
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
             guard let capabilities = await fetchCapabilities(account: account, kit: kit),
