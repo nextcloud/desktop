@@ -56,6 +56,9 @@ public:
 
     int finalizeHydrationJob(const QString &requestId);
 
+    int finalizeNewPlaceholders(const QList<OCC::PlaceholderCreateInfo> &newEntries,
+                                const QString &pathString);
+
 public slots:
     void requestHydration(const QString &requestId, const QString &path);
     void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
