@@ -1216,7 +1216,6 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
     QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, path, journalForFolder] () {
         qCInfo(lcAccount()) << "ls col job" << path << "finished";
-        journalForFolder->removeSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
         promise->finish();
     });
 

@@ -228,9 +228,9 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 
     for (const auto &item : std::as_const(items)) {
         if (item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_RENAME) {
-            qCInfo(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction << item->_file << item->_originalFile << item->_renameTarget;
+            qCInfo(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction << item->_type << item->_file << item->_originalFile << item->_renameTarget;
         } else {
-            qCInfo(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction;
+            qCInfo(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction << item->_type;
         }
         _dirtyPaths.remove(item->destination());
 

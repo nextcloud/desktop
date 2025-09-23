@@ -228,9 +228,6 @@ void ProcessDirectoryJob::process()
             checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
         }
 
-        if (_discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && e.serverEntry.isDirectory && !e.localEntry.isValid() && !e.dbEntry.isValid()) {
-            checkAndAddSelectiveSyncListsForVfsOnDemandFolders(path._server + "/");
-        }
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
         const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
@@ -554,16 +551,6 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
 }
 
-void ProcessDirectoryJob::checkAndAddSelectiveSyncListsForVfsOnDemandFolders(const QString &path)
-{
-    _discoveryData->_selectiveSyncVfsFoldersList = _discoveryData->_statedb->addSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
-}
-
-void ProcessDirectoryJob::removeSelectiveSyncListsForVfsOnDemandFolders(const QString &path)
-{
-    _discoveryData->_selectiveSyncVfsFoldersList = _discoveryData->_statedb->removeSelectiveSyncLists(SyncJournalDb::SelectiveSyncVfsFoldersOnDemandList, path);
-}
-
 void ProcessDirectoryJob::processFile(PathTuple path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
@@ -681,7 +668,17 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
                                                const RemoteInfo &serverEntry,
                                                const SyncJournalFileRecord &dbEntry)
 {
+    const auto opts = _discoveryData->_syncOptions;
+
     if (item->isDirectory()) {
+        // Turn new remote folders into virtual folders if the option is enabled.
+        if (!localEntry.isValid() &&
+            opts._vfs->mode() != Vfs::Off &&
+            _pinState != PinState::AlwaysLocal &&
+            !FileSystem::isExcludeFile(item->_file)) {
+            item->_type = ItemTypeVirtualDirectory;
+        }
+
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
@@ -696,14 +693,14 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     }
 
     // Turn new remote files into virtual files if the option is enabled.
-    const auto opts = _discoveryData->_syncOptions;
     if (!localEntry.isValid() &&
-        item->_type == ItemTypeFile &&
         opts._vfs->mode() != Vfs::Off &&
         _pinState != PinState::AlwaysLocal &&
         !FileSystem::isExcludeFile(item->_file)) {
 
-        item->_type = ItemTypeVirtualFile;
+        if (item->_type == ItemTypeFile) {
+            item->_type = ItemTypeVirtualFile;
+        }
         if (isVfsWithSuffix()) {
             addVirtualFileSuffix(path._original);
         }
@@ -1135,7 +1132,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
-                     << "noServerEntry:" << noServerEntry;
+                     << "noServerEntry:" << noServerEntry
+                     << "type:" << item->_type;
 
     if (serverEntry.isValid()) {
         item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
@@ -1433,7 +1431,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1888,7 +1886,7 @@ void ProcessDirectoryJob::processFileFinalize(
         Q_ASSERT(false);
     }
 
-    if (recurse && _discoveryData->shouldDiscoverChildFolder(path._server)) {
+    if (recurse && item->_type == ItemTypeDirectory) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
