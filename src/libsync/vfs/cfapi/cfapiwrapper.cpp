@@ -552,7 +552,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
         sendTransferError();
         return;
     }
-    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length())};
+    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length() + 1)};
 
     qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
 
@@ -592,6 +592,20 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     qCInfo(lcCfApiWrapper()) << "ls prop finished" << path << serverPath;
 
     sendTransferInfo(newEntries);
+
+    auto newPlaceholdersResult = 0;
+    const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
+                                                                [&newPlaceholdersResult, vfs, &newEntries, &serverPath] { return vfs->finalizeNewPlaceholders(newEntries, serverPath); },
+                                                                Qt::BlockingQueuedConnection,
+                                                                &newPlaceholdersResult);
+    if (!invokeFinalizeResult) {
+        qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
+        sendTransferError();
+    }
+
+    if (!newPlaceholdersResult) {
+        sendTransferError();
+    }
 }
 
 void CALLBACK cfApiNotifyFileCloseCompletion(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
