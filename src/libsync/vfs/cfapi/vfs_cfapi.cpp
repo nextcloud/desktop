@@ -529,6 +529,26 @@ int VfsCfApi::finalizeHydrationJob(const QString &requestId)
     return HydrationJob::Status::Error;
 }
 
+int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEntries,
+                                      const QString &pathString)
+{
+    const auto &journal = params().journal;
+
+    auto folderRecord = SyncJournalFileRecord{};
+    const auto fetchRecordDbResult = journal->getFileRecord(pathString, &folderRecord);
+    if (!fetchRecordDbResult || !folderRecord.isValid()) {
+        return 0;
+    }
+
+    folderRecord._type = ItemTypeDirectory;
+    const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
+    if (!updateRecordDbResult) {
+        return 0;
+    }
+
+    return 1;
+}
+
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)
 {
     Q_ASSERT(!folderPath.endsWith('/'));
