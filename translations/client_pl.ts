@@ -2849,7 +2849,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż powiadomienia o ostrzeżeniach dotyczących limitu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
@@ -2960,7 +2960,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż powiadomienie, gdy użycie limitu przekroczy 80%.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5659,12 +5659,12 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>Limit zaktualizowany; użyto %1 całkowitej przestrzeni.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Ostrzeżenie o limicie – %1 procent lub więcej używanej przestrzeni.</translation>
     </message>
 </context>
 <context>

@@ -123,12 +123,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna i webbläsare</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
@@ -461,7 +461,7 @@ macOS kan ignorera eller fördröja denna begäran.</translation>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Huvudinnehåll</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
@@ -494,7 +494,7 @@ macOS kan ignorera eller fördröja denna begäran.</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="590"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Servern tillämpar strikt transport­skydd och accepterar inte opålitliga certifikat.</translation>
     </message>
 </context>
 <context>
@@ -1673,7 +1673,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Inget %1 konto konfigurerat</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -2849,7 +2849,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Visa &amp;kvotvarningar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
@@ -2960,7 +2960,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Visa avisering när kvotanvändningen överstiger 80%.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5432,7 +5432,7 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5648,23 +5648,23 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 Assistant i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 Talk i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
 </context>
 <context>
