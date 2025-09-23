@@ -2849,7 +2849,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar Notificaciones sobre Advertencias de &amp;Cuota</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
@@ -2960,7 +2960,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar notificación cuando el uso de la cuota supere el 80%</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5659,12 +5659,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>La cuota ha sido actualizada; El porcentaje de uso del espacio total es %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia de Cuota - Se está utilizando un porcentaje de almacenamiento del %1 o mayor</translation>
     </message>
 </context>
 <context>

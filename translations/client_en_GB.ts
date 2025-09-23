@@ -2849,7 +2849,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Show &amp;Quota Warning Notifications</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
@@ -2960,7 +2960,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Show notification when quota usage exceeds 80%.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5659,12 +5659,12 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>Quota is updated; %1 percent of the total space is used.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Quota Warning - %1 percent or more storage in use</translation>
     </message>
 </context>
 <context>
