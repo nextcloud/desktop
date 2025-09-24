@@ -280,7 +280,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
         }
     }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // This defines the icon as a template and enables automatic macOS color handling
     // See https://bugreports.qt.io/browse/QTBUG-42109
     cached.setIsMask(_mono && sysTray);

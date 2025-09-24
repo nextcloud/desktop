@@ -18,7 +18,7 @@
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 // FIXME We should unify those, but Sparkle does everything behind the scene transparently
 #include "updater/sparkleupdater.h"
 #endif
@@ -207,7 +207,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     // Rename 'Explorer' appropriately on non-Windows
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     QString txt = _ui->showInExplorerNavigationPaneCheckBox->text();
     txt.replace(QString::fromLatin1("Explorer"), QString::fromLatin1("Finder"));
     _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
@@ -396,7 +396,7 @@ void GeneralSettings::slotUpdateInfo()
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
     }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     else if (const auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
         connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
@@ -416,7 +416,7 @@ void GeneralSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
@@ -511,7 +511,7 @@ void GeneralSettings::slotUpdateChannelChanged()
 
 void GeneralSettings::slotUpdateCheckNow()
 {
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     auto *updater = qobject_cast<SparkleUpdater *>(Updater::instance());
 #else
     auto *updater = qobject_cast<OCUpdater *>(Updater::instance());

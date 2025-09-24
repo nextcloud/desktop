@@ -441,7 +441,7 @@ QString ConfigFile::excludeFileFromSystem()
         }
     }
 #endif
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // exec path is inside the bundle
     fi.setFile(QCoreApplication::applicationDirPath(),
         QLatin1String("../Resources/") + syncExclFile);
@@ -1091,7 +1091,7 @@ bool ConfigFile::monoIcons() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     bool monoDefault = false; // On Mac we want bw by default
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // OEM themes are not obliged to ship mono icons
     monoDefault = QByteArrayLiteral("Nextcloud") == QByteArrayLiteral(APPLICATION_NAME);
 #endif

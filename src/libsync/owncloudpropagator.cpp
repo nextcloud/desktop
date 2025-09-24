@@ -800,7 +800,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
     Q_ASSERT(!file.isEmpty());
 
     if (!file.isEmpty() && Utility::fsCasePreserving()) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
         const QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
             return false;

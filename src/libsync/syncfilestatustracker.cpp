@@ -21,7 +21,7 @@ static int pathCompare( const QString& lhs, const QString& rhs )
 {
     // Should match Utility::fsCasePreserving, we want don't want to pay for the runtime check on every comparison.
     return lhs.compare(rhs,
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
         Qt::CaseInsensitive
 #else
         Qt::CaseSensitive
@@ -32,7 +32,7 @@ static int pathCompare( const QString& lhs, const QString& rhs )
 static bool pathStartsWith( const QString& lhs, const QString& rhs )
 {
     return lhs.startsWith(rhs,
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
         Qt::CaseInsensitive
 #else
         Qt::CaseSensitive

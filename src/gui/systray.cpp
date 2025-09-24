@@ -656,7 +656,7 @@ void Systray::forceWindowInit(QQuickWindow *window) const
     window->show();
     window->hide();
     
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // On macOS we need to designate the tray window as visible on all spaces and
     // at the menu bar level, otherwise showing it can cause the current spaces to
     // change, or the window could be obscured by another window that shouldn't

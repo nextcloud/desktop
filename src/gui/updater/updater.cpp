@@ -48,7 +48,7 @@ QUrl Updater::updateUrl()
 
     auto urlQuery = getQueryParams();
 
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
     if (SparkleUpdater::autoUpdaterAllowed()) {
         urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
     }

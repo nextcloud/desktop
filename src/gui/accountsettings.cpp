@@ -185,7 +185,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->header()->hide();
     _ui->_folderList->setItemDelegate(delegate);
     _ui->_folderList->setModel(_model);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS)
     _ui->_folderList->setMinimumWidth(400);
 #else
     _ui->_folderList->setMinimumWidth(300);
@@ -524,7 +524,7 @@ void AccountSettings::slotOpenMakeFolderDialog()
         folderCreationDialog->setAttribute(Qt::WA_DeleteOnClose);
         folderCreationDialog->open();
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
         // The macOS FolderWatcher cannot detect file and folder changes made by the watching process -- us.
         // So we need to manually invoke the slot that is called by watched folder changes.
         connect(folderCreationDialog, &FolderCreationDialog::folderCreated, this, [folder, fileName](const QString &fullFolderPath) {

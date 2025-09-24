@@ -395,7 +395,7 @@ private slots:
     }
 };
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     QTEST_MAIN(TestFolderWatcher)
 #else
     QTEST_GUILESS_MAIN(TestFolderWatcher)

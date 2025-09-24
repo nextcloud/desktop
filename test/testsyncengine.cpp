@@ -891,7 +891,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
-#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
+#if !defined(Q_OS_MACOS) && !defined(Q_OS_WIN)
         try {
             // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
             QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));

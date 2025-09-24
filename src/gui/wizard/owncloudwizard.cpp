@@ -10,7 +10,7 @@
 #include "theme.h"
 #include "owncloudgui.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
 #endif
 
@@ -57,7 +57,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _webViewPage(nullptr)
 #endif // WITH_WEBENGINE
 {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground();
     this->installEventFilter(fgbg);
 #endif

@@ -21,7 +21,7 @@
 #include <syncengine.h>
 #include "updatee2eefolderusersmetadatajob.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include <CoreServices/CoreServices.h>
 #endif
 

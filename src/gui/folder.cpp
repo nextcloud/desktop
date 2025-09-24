@@ -169,7 +169,7 @@ bool Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // Workaround QTBUG-55896  (Should be fixed in Qt 5.8)
     _canonicalLocalPath = _canonicalLocalPath.normalized(QString::NormalizationForm_C);
 #endif
@@ -632,7 +632,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
 // a sync operation, both for actual user files and the database
 // and log. Therefore we check notifications against operations
 // the sync is doing to filter out our own changes.
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 // On OSX the folder watcher does not report changes done by our
 // own process. Therefore nothing needs to be done here!
 #else
