@@ -5635,6 +5635,18 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Badilisha jina la faili</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1083"/>
+        <source>Open %1 Assistant in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Fungua Mratibu %1 kwenye kivinjari</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Fungua %1 Talk katika kivinjari </translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Fungua Msaidizi wa Nextcloud kwenye kivinjari</translation>
@@ -5643,18 +5655,6 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Fungua Nextcloud Talk katika kivinjari</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
-        <source>Open %1 Assistant in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Fungua Mratibu %1 kwenye kivinjari</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Fungua %1 Talk katika kivinjari </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
