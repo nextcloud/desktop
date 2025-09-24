@@ -156,7 +156,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 userId: userId,
                 password: password,
                 userAgent: userAgent,
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
 

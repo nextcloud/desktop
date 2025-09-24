@@ -73,7 +73,8 @@ import OSLog
             #endif
 
             Logger.fileProviderExtension.info("NextcloudKit log level: \(nextcloudKitLogLevel)")
-            ncKit.setupLog(pathLog: logDirectory.path, levelLog: nextcloudKitLogLevel, copyLogToDocumentDirectory: true)
+            //TODO - find equivalent ncKit.setupLog(pathLog: logDirectory.path, levelLog: nextcloudKitLogLevel, copyLogToDocumentDirectory: true)
+            nkLog(debug: logDirectory.path)
         }
 
         super.init()
