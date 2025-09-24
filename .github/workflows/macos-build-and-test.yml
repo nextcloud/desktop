@@ -1,25 +1,32 @@
-# SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 # SPDX-License-Identifier: GPL-2.0-or-later
+
 name: macOS Build and Test
+
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_call:
+    inputs:
+      CRAFT_TARGET:
+        type: string
+        required: true
+      CRAFT_MASTER_LOCATION:
+        type: string
+        required: true
+      CRAFT_MASTER_CONFIG:
+        type: string
+        required: true
+      PYTHON_VERSION:
+        type: string
+        required: true
+      buildFileProviderModule:
+        type: string
+        required: true
+
 jobs:
   build:
-    name: macOS Build and Test
+    name: Build nextcloud-client
     timeout-minutes: 60
     runs-on: macos-15
-    strategy:
-        matrix:
-          craft_options: [
-            '--options nextcloud-client.buildFileProviderModule=False',
-            '--options nextcloud-client.buildFileProviderModule=True'
-          ]
-    env:
-      CRAFT_TARGET: macos-clang-arm64
-      CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
-      CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
-      CRAFT_BLUEPRINT_OPTIONS: ${{ matrix.craft_options }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -27,48 +34,58 @@ jobs:
 
       - name: List Xcode installations
         run: sudo ls -1 /Applications | grep "Xcode"
-        
+
       - name: Select Xcode 16.2
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
-      - name: Restore cache
-        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
-        with:
-          path: ~/cache
-          key: macos-latest-${{ env.CRAFT_TARGET }}
-
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ inputs.PYTHON_VERSION }}
         uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
         with:
-          python-version: 3.12
+          python-version: ${{ inputs.PYTHON_VERSION }}
 
       - name: Install Homebrew dependencies
         run: |
           brew install homebrew/cask/inkscape
 
-      - name: Download Craft
-        run: |
-          git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }}
+      - name: Restore cached Craft directories
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: |
+            ${{ inputs.CRAFT_MASTER_LOCATION }}
+            ${{ github.workspace }}/craft-clone
+            ${{ github.workspace }}/${{ inputs.CRAFT_TARGET }}
+          key: ${{ runner.os }}-craft-${{ hashFiles(inputs.CRAFT_MASTER_CONFIG) }}
 
-      - name: Add required blueprint repositories
+      - name: Build nextcloud-client
         run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|next|"
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|next|"
+          python "${{ inputs.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ inputs.CRAFT_MASTER_CONFIG }}" --target ${{ inputs.CRAFT_TARGET }} -c --options nextcloud-client.srcDir=${{ github.workspace }} --options nextcloud-client.buildFileProviderModule=${{ inputs.buildFileProviderModule }} nextcloud-client
 
-      - name: Setup Craft
-        run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c craft
+      - name: Cache Craft directories containing the built client
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: |
+            ${{ inputs.CRAFT_MASTER_LOCATION }}
+            ${{ github.workspace }}/craft-clone
+            ${{ github.workspace }}/${{ inputs.CRAFT_TARGET }}
+          key: ${{ runner.os }}-craft-build-${{ github.sha }}-${{ inputs.buildFileProviderModule }}
 
-      - name: Install Craft Nextcloud client dependencies
-        run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --install-deps nextcloud-client
 
-      - name: Build client
-        run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --options nextcloud-client.srcDir=${{ github.workspace }} ${{ env.CRAFT_BLUEPRINT_OPTIONS }} nextcloud-client
+  test:
+    name: Run tests
+    needs: build
+    timeout-minutes: 60
+    runs-on: macos-15
+    steps:
+      - name: Restore cached Craft directories containing the built client
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: |
+            ${{ inputs.CRAFT_MASTER_LOCATION }}
+            ${{ github.workspace }}/craft-clone
+            ${{ github.workspace }}/${{ inputs.CRAFT_TARGET }}
+          key: ${{ runner.os }}-craft-build-${{ github.sha }}-${{ inputs.buildFileProviderModule }}
 
       - name: Run tests
         run: |
-          cd ${{ github.workspace }}/${{ env.CRAFT_TARGET }}/build/nextcloud-client/work/build
+          cd ${{ github.workspace }}/${{ inputs.CRAFT_TARGET }}/build/nextcloud-client/work/build
           ctest --output-on-failure --output-junit testResult.xml
-
