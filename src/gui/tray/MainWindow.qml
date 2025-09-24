@@ -124,11 +124,23 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        height: parent.height - Style.trayDrawerMargin
         padding: 0
         edge: Qt.BottomEdge
         modal: true
         visible: false
+        clip: true
+
+        readonly property real maximumHeight: Math.max(parent.height - Style.trayDrawerMargin, 0)
+        property int userIndex: -1
+        property string currentView: "status"
+        property NC.UserStatusSelectorModel userStatusModel: NC.UserStatusSelectorModel {
+            onFinished: userStatusDrawer.close()
+        }
+
+        height: {
+            const effectiveMax = maximumHeight > 0 ? maximumHeight : userStatusContents.implicitHeight;
+            return Math.min(userStatusContents.implicitHeight, effectiveMax);
+        }
 
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
@@ -137,23 +149,48 @@ ApplicationWindow {
             color: Style.colorWithoutTransparency(palette.base)
         }
 
-        property int userIndex: 0
-
-        function openUserStatusDrawer(index) {
-            console.log(`About to show dialog for user with index ${index}`);
+        function openUserStatusDrawer(index, view) {
+            const targetView = view || "status";
+            console.log(`About to show ${targetView} dialog for user with index ${index}`);
             userIndex = index;
+            currentView = targetView;
+            userStatusModel.userIndex = index;
             open();
+        }
+
+        function showStatusMessagePage() {
+            currentView = "message";
+        }
+
+        onClosed: currentView = "status"
+
+        Component {
+            id: statusSelectorComponent
+            UserStatusSelectorPage {
+                pageType: "status"
+                userStatusSelectorModel: userStatusDrawer.userStatusModel
+                onFinished: userStatusDrawer.close()
+                onOpenStatusMessageRequested: userStatusDrawer.showStatusMessagePage()
+            }
+        }
+
+        Component {
+            id: statusMessageComponent
+            UserStatusSelectorPage {
+                pageType: "message"
+                userStatusSelectorModel: userStatusDrawer.userStatusModel
+                onFinished: userStatusDrawer.close()
+            }
         }
 
         Loader {
             id: userStatusContents
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
             active: userStatusDrawer.visible
-            sourceComponent: UserStatusSelectorPage {
-                anchors.fill: parent
-                userIndex: userStatusDrawer.userIndex
-                onFinished: userStatusDrawer.close()
-            }
+            sourceComponent: userStatusDrawer.currentView === "status" ? statusSelectorComponent
+                                                                         : statusMessageComponent
         }
     }
 

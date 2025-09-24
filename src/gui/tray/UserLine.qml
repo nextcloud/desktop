@@ -15,7 +15,7 @@ import com.nextcloud.desktopclient
 AbstractButton {
     id: userLine
 
-    signal showUserStatusSelector(int id)
+    signal showUserStatusSelector(int id, string view)
 
 
     Accessible.role: Accessible.MenuItem
@@ -138,7 +138,16 @@ AbstractButton {
                     text: qsTr("Set status")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
-                    onClicked: showUserStatusSelector(index)
+                    onClicked: showUserStatusSelector(index, "status")
+               }
+
+                MenuItem {
+                    visible: model.isConnected && model.serverHasUserStatus
+                    height: visible ? implicitHeight : 0
+                    text: qsTr("Status Message")
+                    font.pixelSize: Style.topLinePixelSize
+                    hoverEnabled: true
+                    onClicked: showUserStatusSelector(index, "message")
                }
 
                 MenuItem {
