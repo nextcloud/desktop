@@ -203,6 +203,40 @@ QUrl Theme::folderOffline() const
     return imagePathToUrl(themeImagePath("state-offline"));
 }
 
+/*
+ * neutral icons for in-app status
+ */
+
+QUrl Theme::offline() const
+{
+    return imagePathToUrl(themeImagePath("offline"));
+}
+
+QUrl Theme::ok() const
+{
+    return imagePathToUrl(themeImagePath("ok"));
+}
+
+QUrl Theme::error() const
+{
+    return imagePathToUrl(themeImagePath("error"));
+}
+
+QUrl Theme::sync() const
+{
+    return imagePathToUrl(themeImagePath("sync"));
+}
+
+QUrl Theme::pause() const
+{
+    return imagePathToUrl(themeImagePath("pause"));
+}
+
+QUrl Theme::warning() const
+{
+    return imagePathToUrl(themeImagePath("warning"));
+}
+
 QString Theme::version() const
 {
     return MIRALL_VERSION_STRING;
