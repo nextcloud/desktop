@@ -5634,6 +5634,18 @@ Server replied with error: %2</source>
         <translation>ファイル名の変更</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1083"/>
+        <source>Open %1 Assistant in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>ブラウザで%1 Assistantを開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>%1 のTalkをブラウザーで開く</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>ブラウザでNextcloud Assistantを開く</translation>
@@ -5642,18 +5654,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Nextcloud Talkをブラウザーで開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1091"/>
-        <source>Open %1 Assistant in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>ブラウザで%1 Assistantを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1092"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>%1 のTalkをブラウザーで開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
