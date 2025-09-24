@@ -10,11 +10,13 @@ import OSLog
 
 class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, ClientCommunicationProtocol {
     let listener = NSXPCListener.anonymous()
+    let logger: FileProviderLogger
     let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {
-        Logger.desktopClientConnection.debug("Instantiating client communication service")
+        self.logger = FileProviderLogger(category: "ClientCommunicationService", log: fpExtension.log)
+        logger.debug("Instantiating client communication service")
         self.fpExtension = fpExtension
         super.init()
     }
@@ -36,7 +38,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
         let identifier = self.fpExtension.domain.identifier.rawValue
-        Logger.desktopClientConnection.info("Returning file provider domain identifier \(identifier, privacy: .public)")
+        logger.info("Returning file provider domain identifier \(identifier)")
         completionHandler(identifier, nil)
     }
 
@@ -47,7 +49,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         password: String,
         userAgent: String
     ) {
-        Logger.desktopClientConnection.info("Received configure account information over client communication service")
+        logger.info("Received configure account information over client communication service")
         self.fpExtension.setupDomainAccount(
             user: user,
             userId: userId,
@@ -61,23 +63,6 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         self.fpExtension.removeAccountConfig()
     }
 
-    func createDebugLogString(completionHandler: ((String?, Error?) -> Void)!) {
-        if #available(macOSApplicationExtension 12.0, *) {
-            let (logs, error) = Logger.logEntries()
-            guard error == nil else {
-                Logger.logger.error("Cannot create debug archive, received error: \(error, privacy: .public)")
-                completionHandler(nil, error)
-                return
-            }
-            guard let logs = logs else {
-                Logger.logger.error("Canot create debug archive with nil logs.")
-                completionHandler(nil, nil)
-                return
-            }
-            completionHandler(logs.joined(separator: "\n"), nil)
-        }
-    }
-
     func getTrashDeletionEnabledState(completionHandler: @escaping (Bool, Bool) -> Void) {
         let enabled = fpExtension.config.trashDeletionEnabled
         let set = fpExtension.config.trashDeletionSet
@@ -86,13 +71,11 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func setTrashDeletionEnabled(_ enabled: Bool) {
         fpExtension.config.trashDeletionEnabled = enabled
-        Logger.fileProviderExtension.info(
-            "Trash deletion setting changed to: \(enabled, privacy: .public)"
-        )
+        logger.info("Trash deletion setting changed to: \(enabled)")
     }
 
     func setIgnoreList(_ ignoreList: [String]) {
         self.fpExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: ignoreList)
-        Logger.fileProviderExtension.info("Ignore list updated.")
+        logger.info("Ignore list updated.")
     }
 }

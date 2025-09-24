@@ -14,6 +14,8 @@ import OSLog
 import SuggestionsTextFieldKit
 
 class ShareOptionsView: NSView {
+    var logger: FileProviderLogger?
+
     @IBOutlet private weak var optionsTitleTextField: NSTextField!
     @IBOutlet private weak var shareRecipientTextField: NSTextField!  // Hide if public link share
     @IBOutlet private weak var labelTextField: NSTextField!
@@ -41,20 +43,28 @@ class ShareOptionsView: NSView {
     let kit = NextcloudKit.shared
     var account: Account? {
         didSet {
-            Logger.shareOptionsView.info("Setting up account.")
+            logger?.info("Setting up account.")
+
             guard let account else {
-                Logger.shareOptionsView.error("Could not configure suggestions data source.")
+                logger?.error("Could not configure suggestions data source.")
                 return
             }
 
-            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(
-                account: account, kit: kit
-            )
-            suggestionsTextFieldDelegate.confirmationHandler = { suggestion in
-                guard let sharee = suggestion?.data as? NKSharee else { return }
-                self.shareRecipientTextField.stringValue = sharee.shareWith
-                Logger.shareOptionsView.debug("Chose sharee \(sharee.shareWith, privacy: .public)")
+            guard let controller else {
+                return
             }
+
+            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: controller.log)
+
+            suggestionsTextFieldDelegate.confirmationHandler = { suggestion in
+                guard let sharee = suggestion?.data as? NKSharee else {
+                    return
+                }
+
+                self.shareRecipientTextField.stringValue = sharee.shareWith
+                self.logger?.debug("Chose sharee \(sharee.shareWith)")
+            }
+
             suggestionsTextFieldDelegate.targetTextField = shareRecipientTextField
         }
     }
@@ -74,7 +84,7 @@ class ShareOptionsView: NSView {
     }
     var createMode = false {
         didSet {
-            Logger.shareOptionsView.info("Create mode set: \(self.createMode, privacy: .public)")
+            logger?.info("Create mode set: \(self.createMode)")
             shareTypePicker.isHidden = !createMode
             shareRecipientTextField.isHidden = !createMode
             labelTextField.isHidden = createMode  // Cannot set label on create API call
@@ -97,13 +107,16 @@ class ShareOptionsView: NSView {
     private var suggestionsTextFieldDelegate = SuggestionsTextFieldDelegate()
 
     private func update() {
-        guard let share = controller?.share else {
+        guard let controller else {
             reset()
             setAllFields(enabled: false)
             saveButton.isEnabled = false
             deleteButton.isEnabled = false
             return
         }
+
+        logger = FileProviderLogger(category: "ShareOptionsView", log: controller.log)
+        let share = controller.share
 
         // Programmatically update localizable texts.
         publicLinkShareMenuItem.title = String(localized: "Public link share")
@@ -278,18 +291,13 @@ class ShareOptionsView: NSView {
             let uploadAndEdit = uploadEditPermissionCheckbox.state == .on
 
             guard !createMode else {
-                Logger.shareOptionsView.info("Creating new share!")
+                logger?.info("Creating new share!")
 
                 guard let dataSource,
                       let account,
                       let itemServerRelativePath = dataSource.itemServerRelativePath
                 else {
-                    Logger.shareOptionsView.error("Cannot create new share due to missing data.")
-                    Logger.shareOptionsView.error("dataSource: \(self.dataSource, privacy: .public)")
-                    Logger.shareOptionsView.error("account: \(self.account != nil, privacy: .public)")
-                    Logger.shareOptionsView.error(
-                        "path: \(self.dataSource?.itemServerRelativePath ?? "", privacy: .public)"
-                    )
+                    logger?.error("Cannot create new share due to missing data. dataSource: \(String(describing: self.dataSource)) account: \(self.account != nil) path: \(self.dataSource?.itemServerRelativePath ?? "")")
                     return
                 }
 
@@ -327,10 +335,10 @@ class ShareOptionsView: NSView {
                 return
             }
 
-            Logger.shareOptionsView.info("Editing existing share!")
+            logger?.info("Editing existing share!")
 
             guard let controller = controller else {
-                Logger.shareOptionsView.error("No valid share controller, cannot edit share.")
+                logger?.error("No valid share controller, cannot edit share.")
                 return
             }
             let share = controller.share
@@ -378,3 +386,4 @@ class ShareOptionsView: NSView {
         }
     }
 }
+

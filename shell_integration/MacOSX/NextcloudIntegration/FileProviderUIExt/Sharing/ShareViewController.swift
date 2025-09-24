@@ -1,20 +1,18 @@
-//
-//  ShareViewController.swift
-//  FileProviderUIExt
-//
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
-//
 
 import AppKit
 import FileProvider
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 import QuickLookThumbnailing
 
 class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
-    let shareDataSource = ShareTableViewDataSource()
+    let shareDataSource: ShareTableViewDataSource
     let itemIdentifiers: [NSFileProviderItemIdentifier]
+    let log: any FileProviderLogging
+    let logger: FileProviderLogger
 
     @IBOutlet weak var fileNameIcon: NSImageView!
     @IBOutlet weak var fileNameLabel: NSTextField!
@@ -39,22 +37,20 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         return parent as? DocumentActionViewController
     }
 
-    init(_ itemIdentifiers: [NSFileProviderItemIdentifier]) {
+    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], log: any FileProviderLogging) {
         self.itemIdentifiers = itemIdentifiers
+        self.log = log
+        self.logger = FileProviderLogger(category: "ShareViewController", log: log)
+        self.shareDataSource = ShareTableViewDataSource(log: log)
         super.init(nibName: nil, bundle: nil)
 
         guard let firstItem = itemIdentifiers.first else {
-            Logger.shareViewController.error("called without items")
+            logger.error("called without items")
             closeAction(self)
             return
         }
 
-        Logger.shareViewController.info(
-            """
-            Instantiated with itemIdentifiers: 
-            \(itemIdentifiers.map { $0.rawValue }, privacy: .public)
-            """
-        )
+        logger.info("Instantiated with itemIdentifiers:  \(itemIdentifiers.map { $0.rawValue })")
 
         Task {
             await processItemIdentifier(firstItem)
@@ -83,9 +79,10 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
             guard itemUrl.startAccessingSecurityScopedResource() else {
-                Logger.shareViewController.error("Could not access scoped resource for item url!")
+                logger.error("Could not access scoped resource for item url!")
                 return
             }
+
             await updateDisplay(itemUrl: itemUrl)
             shareDataSource.uiDelegate = self
             shareDataSource.sharesTableView = tableView
@@ -94,7 +91,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             itemUrl.stopAccessingSecurityScopedResource()
         } catch let error {
             let errorString = "Error processing item: \(error)"
-            Logger.shareViewController.error("\(errorString, privacy: .public)")
+            logger.error("\(errorString)")
             fileNameLabel.stringValue = String(localized: "Unknown item")
             descriptionLabel.stringValue = errorString
         }
@@ -114,12 +111,9 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         let fileThumbnail = await withCheckedContinuation { continuation in
             generator.generateRepresentations(for: request) { thumbnail, type, error in
                 if thumbnail == nil || error != nil {
-                    Logger.shareViewController.error(
-                        """
-                        Could not get thumbnail: \(error, privacy: .public)
-                        """
-                    )
+                    self.logger.error("Could not get thumbnail.", [.error: error])
                 }
+                
                 continuation.resume(returning: thumbnail)
             }
         }
@@ -183,9 +177,8 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     func showOptions(share: NKShare) {
         guard let account = shareDataSource.account, share.canEdit || share.canDelete else { return }
         optionsView.account = account
-        optionsView.controller = ShareController(
-            share: share, account: account, kit: shareDataSource.kit
-        )
+        optionsView.controller = ShareController(share: share, account: account, kit: shareDataSource.kit, log: log)
+
         if !splitView.arrangedSubviews.contains(optionsView) {
             splitView.addArrangedSubview(optionsView)
             optionsView.isHidden = false

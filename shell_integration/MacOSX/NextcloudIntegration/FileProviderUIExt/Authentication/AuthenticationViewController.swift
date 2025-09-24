@@ -3,6 +3,7 @@
 
 import AppKit
 import FileProviderUI
+import NextcloudFileProviderKit
 import os
 
 ///
@@ -10,6 +11,17 @@ import os
 ///
 class AuthenticationViewController: NSViewController {
     private var authenticationError: Error?
+    private var logger: FileProviderLogger!
+
+    var log: (any FileProviderLogging)? {
+        didSet {
+            guard let log else {
+                return
+            }
+
+            logger = FileProviderLogger(category: "AuthenticationViewController", log: log)
+        }
+    }
 
     @IBOutlet var activityDescription: NSTextField!
     @IBOutlet var cancellationButton: NSButton!
@@ -17,6 +29,11 @@ class AuthenticationViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        guard let domainIdentifier = extensionContext.domainIdentifier else {
+            fatalError("Domain identifier is not provided by the extension context!")
+            return
+        }
 
         activityDescription.stringValue = String(localized: "Authenticating…")
         cancellationButton.title = String(localized: "Cancel")
@@ -80,16 +97,16 @@ class AuthenticationViewController: NSViewController {
         let url = try await manager.getUserVisibleURL(for: .rootContainer)
 
         let connection = try await serviceConnection(url: url, interruptionHandler: {
-            Logger.authenticationViewController.error("Service connection interrupted")
+            self.logger.error("Service connection interrupted")
         })
 
         if let error = await connection.authenticate() {
-            Logger.authenticationViewController.error("An error was returned from the authentication call: \(error.localizedDescription, privacy: .public)")
+            logger.error("An error was returned from the authentication call: \(error.localizedDescription)")
             updateViewsWithError(error)
             return
         }
 
-        Logger.authenticationViewController.info("Apparently, the authentication was successful.")
+        logger.info("Apparently, the authentication was successful.")
         extensionContext.completeRequest()
     }
 

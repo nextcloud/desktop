@@ -25,6 +25,7 @@
 #endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileproviderutils.h"
 #include "macOS/fileprovider.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
@@ -39,6 +40,7 @@
 #include <QMessageBox>
 #include <QNetworkProxy>
 #include <QDir>
+#include <QDirIterator>
 #include <QScopedValueRollback>
 #include <QMessageBox>
 
@@ -139,23 +141,27 @@ bool createDebugArchive(const QString &filename)
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    const auto fileProvider = OCC::Mac::FileProvider::instance();
-    if (fileProvider && fileProvider->fileProviderAvailable()) {
-        const auto tempDir = QTemporaryDir();
-        const auto xpc = fileProvider->xpc();
-        const auto vfsAccounts = OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledAccounts();
-        for (const auto &accountUserIdAtHost : vfsAccounts) {
-            const auto accountState = OCC::AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
-            if (!accountState) {
-                qWarning() << "Could not find account for" << accountUserIdAtHost;
-                continue;
-            }
-            const auto account = accountState->account();
-            const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
-            const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
-            xpc->createDebugArchiveForFileProviderDomain(accountUserIdAtHost, vfsLogPath);
-            zip.addLocalFile(vfsLogPath, vfsLogFilename);
+    qDebug() << "Trying to add file provider domain log files...";
+    const auto fileProviderExtensionLogDirectory = OCC::Mac::FileProviderUtils::fileProviderExtensionLogDirectory();
+
+    if (fileProviderExtensionLogDirectory.exists()) {
+        // Recursively add all files from the container log directory
+        QDirIterator it(fileProviderExtensionLogDirectory.path(), QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+
+        while (it.hasNext()) {
+            const auto logFilePath = it.next();
+            const auto logFileInfo = QFileInfo(logFilePath);
+
+            // Calculate relative path from the base container log directory
+            const auto relativePath = fileProviderExtensionLogDirectory.relativeFilePath(logFilePath);
+            const auto zipPath = QStringLiteral("File Provider Domains/%1").arg(relativePath);
+
+            zip.addLocalFile(logFilePath, zipPath);
         }
+
+        qDebug() << "Added file provider domain log files from" << fileProviderExtensionLogDirectory.path();
+    } else {
+        qWarning() << "file provider domain container log directory not found at" << fileProviderExtensionLogDirectory.path();
     }
 #endif
 
@@ -182,7 +188,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->setupUi(this);
 
     updatePollIntervalVisibility();
-    
+
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
@@ -211,7 +217,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->autostartCheckBox->setChecked(hasSystemAutoStart);
         _ui->autostartCheckBox->setDisabled(hasSystemAutoStart);
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
-    } else {       
+    } else {
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
         _ui->autostartCheckBox->setChecked(ConfigFile().launchOnSystemStartup());
     }
@@ -239,7 +245,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->remotePollIntervalSpinBox, &QSpinBox::valueChanged, this, &GeneralSettings::slotRemotePollIntervalChanged);
-    
+
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
@@ -318,9 +324,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
-    const auto interval = cfgFile.remotePollInterval(); 
+    const auto interval = cfgFile.remotePollInterval();
     _ui->remotePollIntervalSpinBox->setValue(static_cast<int>(interval.count() / 1000));
-    updatePollIntervalVisibility(); 
+    updatePollIntervalVisibility();
 }
 
 #if defined(BUILD_UPDATER)
@@ -680,7 +686,7 @@ void GeneralSettings::customizeStyle()
 #endif
 }
 
-void GeneralSettings::slotRemotePollIntervalChanged(int seconds) 
+void GeneralSettings::slotRemotePollIntervalChanged(int seconds)
 {
     if (_currentlyLoading) {
         return;
@@ -691,7 +697,7 @@ void GeneralSettings::slotRemotePollIntervalChanged(int seconds)
     cfgFile.setRemotePollInterval(interval);
 }
 
-void GeneralSettings::updatePollIntervalVisibility() 
+void GeneralSettings::updatePollIntervalVisibility()
 {
     const auto accounts = AccountManager::instance()->accounts();
     const auto pushAvailable = std::any_of(accounts.cbegin(), accounts.cend(), [](const AccountStatePtr &accountState) -> bool {

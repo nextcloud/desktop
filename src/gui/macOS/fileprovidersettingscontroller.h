@@ -49,7 +49,6 @@ public slots:
     void createEvictionWindowForAccount(const QString &userIdAtHost);
     void refreshMaterialisedItemsForAccount(const QString &userIdAtHost);
     void signalFileProviderDomain(const QString &userIdAtHost);
-    void createDebugArchive(const QString &userIdAtHost);
 
 signals:
     void vfsEnabledAccountsChanged();

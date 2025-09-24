@@ -254,6 +254,7 @@ public:
     void setFileProviderDomainUuidForAccountId(const QString &accountId, const QString &domainUuid);
     [[nodiscard]] QString accountIdFromFileProviderDomainUuid(const QString &domainUuid) const;
     void removeFileProviderDomainUuidMapping(const QString &accountId);
+    void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
 
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";

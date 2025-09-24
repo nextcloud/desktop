@@ -3,6 +3,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudFileProviderKit
 import os
 
 ///
@@ -24,8 +25,11 @@ struct FileProviderDomainDefaults {
     ///
     let identifier: NSFileProviderDomainIdentifier
 
-    init(identifier: NSFileProviderDomainIdentifier) {
+    let logger: FileProviderLogger
+
+    init(identifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
         self.identifier = identifier
+        self.logger = FileProviderLogger(category: "FileProviderDomainDefaults", log: log)
     }
 
     ///
@@ -58,10 +62,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if let value = internalConfig[ConfigKey.serverUrl.rawValue] as? String {
-                Logger.fileProviderDomainDefaults.debug("Returning existing value \"\(value)\" for \"serverUrl\" for file provider domain \"\(identifier)\".")
+                logger.debug("Returning existing value \"\(value)\" for \"serverUrl\" for file provider domain \"\(identifier)\".")
                 return value
             } else {
-                Logger.fileProviderDomainDefaults.debug("No existing value for \"serverUrl\" for file provider domain \"\(identifier)\" found.")
+                logger.debug("No existing value for \"serverUrl\" for file provider domain \"\(identifier)\" found.")
                 return nil
             }
         }
@@ -70,10 +74,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if newValue == nil {
-                Logger.fileProviderDomainDefaults.debug("Removing key \"serverUrl\" for file provider domain \"\(identifier)\" because the new value is nil.")
+                logger.debug("Removing key \"serverUrl\" for file provider domain \"\(identifier)\" because the new value is nil.")
                 internalConfig.removeValue(forKey: ConfigKey.serverUrl.rawValue)
             } else if newValue == "" {
-                Logger.fileProviderDomainDefaults.error("Ignoring new value for \"serverUrl\" because it is an empty string for file provider domain \"\(identifier)\"!")
+                logger.error("Ignoring new value for \"serverUrl\" because it is an empty string for file provider domain \"\(identifier)\"!")
             } else {
                 internalConfig[ConfigKey.serverUrl.rawValue] = newValue
             }
@@ -88,7 +92,7 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if let value = internalConfig[ConfigKey.trashDeletionEnabled.rawValue] as? Bool {
-                Logger.fileProviderDomainDefaults.debug("Returning existing value \"\(value)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
+                logger.debug("Returning existing value \"\(value)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
                 return value
             } else {
                 return false
@@ -98,7 +102,7 @@ struct FileProviderDomainDefaults {
         set {
             let identifier = self.identifier.rawValue
 
-            Logger.fileProviderDomainDefaults.error("Setting value \"\(newValue)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
+            logger.error("Setting value \"\(newValue)\" for \"trashDeletionEnabled\" for file provider domain \"\(identifier)\".")
             internalConfig[ConfigKey.trashDeletionEnabled.rawValue] = newValue
         }
     }
@@ -111,10 +115,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if let value = internalConfig[ConfigKey.user.rawValue] as? String {
-                Logger.fileProviderDomainDefaults.debug("Returning existing value \"\(value)\" for \"user\" for file provider domain \"\(identifier)\".")
+                logger.debug("Returning existing value \"\(value)\" for \"user\" for file provider domain \"\(identifier)\".")
                 return value
             } else {
-                Logger.fileProviderDomainDefaults.debug("No existing value for \"user\" for file provider domain \"\(identifier)\" found.")
+                logger.debug("No existing value for \"user\" for file provider domain \"\(identifier)\" found.")
                 return nil
             }
         }
@@ -123,10 +127,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if newValue == nil {
-                Logger.fileProviderDomainDefaults.debug("Removing key \"user\" for file provider domain \"\(identifier)\" because the new value is nil.")
+                logger.debug("Removing key \"user\" for file provider domain \"\(identifier)\" because the new value is nil.")
                 internalConfig.removeValue(forKey: ConfigKey.user.rawValue)
             } else if newValue == "" {
-                Logger.fileProviderDomainDefaults.error("Ignoring new value for \"user\" because it is an empty string for file provider domain \"\(identifier)\"!")
+                logger.error("Ignoring new value for \"user\" because it is an empty string for file provider domain \"\(identifier)\"!")
             } else {
                 internalConfig[ConfigKey.user.rawValue] = newValue
             }
@@ -141,10 +145,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if let value = internalConfig[ConfigKey.userId.rawValue] as? String {
-                Logger.fileProviderDomainDefaults.debug("Returning existing value \"\(value)\" for \"userId\" for file provider domain \"\(identifier)\".")
+                logger.debug("Returning existing value \"\(value)\" for \"userId\" for file provider domain \"\(identifier)\".")
                 return value
             } else {
-                Logger.fileProviderDomainDefaults.debug("No existing value for \"userId\" for file provider domain \"\(identifier)\" found.")
+                logger.debug("No existing value for \"userId\" for file provider domain \"\(identifier)\" found.")
                 return nil
             }
         }
@@ -153,10 +157,10 @@ struct FileProviderDomainDefaults {
             let identifier = self.identifier.rawValue
 
             if newValue == nil {
-                Logger.fileProviderDomainDefaults.debug("Removing key \"userId\" for file provider domain \"\(identifier)\" because the new value is nil.")
+                logger.debug("Removing key \"userId\" for file provider domain \"\(identifier)\" because the new value is nil.")
                 internalConfig.removeValue(forKey: ConfigKey.userId.rawValue)
             } else if newValue == "" {
-                Logger.fileProviderDomainDefaults.error("Ignoring new value for \"userId\" because it is an empty string for file provider domain \"\(identifier)\"!")
+                logger.error("Ignoring new value for \"userId\" because it is an empty string for file provider domain \"\(identifier)\"!")
             } else {
                 internalConfig[ConfigKey.userId.rawValue] = newValue
             }

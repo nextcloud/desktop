@@ -124,48 +124,6 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
         break;
     }
 }
-void FileProviderXPC::createDebugArchiveForFileProviderDomain(const QString &fileProviderDomainIdentifier, const QString &filename)
-{
-    qCInfo(lcFileProviderXPC) << "Creating debug archive for extension" << fileProviderDomainIdentifier << "at" << filename;
-
-    if (!fileProviderDomainReachable(fileProviderDomainIdentifier)) {
-        qCWarning(lcFileProviderXPC) << "Extension is not reachable. Cannot create debug archive";
-        return;
-    }
-
-    // You need to fetch the contents from the extension and then create the archive from the client side.
-    // The extension is not allowed to ask for permission to write into the file system as it is not a user facing process.
-    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(fileProviderDomainIdentifier);
-    const auto group = dispatch_group_create();
-    __block NSString *rcvdDebugLogString;
-    dispatch_group_enter(group);
-    [clientCommService createDebugLogStringWithCompletionHandler:^(NSString *const debugLogString, NSError *const error) {
-        if (error != nil) {
-            qCWarning(lcFileProviderXPC) << "Error getting debug log string" << error.localizedDescription;
-            dispatch_group_leave(group);
-            return;
-        } else if (debugLogString == nil) {
-            qCWarning(lcFileProviderXPC) << "Debug log string is nil";
-            dispatch_group_leave(group);
-            return;
-        }
-        rcvdDebugLogString = [NSString stringWithString:debugLogString];
-        [rcvdDebugLogString retain];
-        dispatch_group_leave(group);
-    }];
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-
-    QFile debugLogFile(filename);
-    if (debugLogFile.open(QIODevice::WriteOnly)) {
-        debugLogFile.write(rcvdDebugLogString.UTF8String);
-        debugLogFile.close();
-        qCInfo(lcFileProviderXPC) << "Debug log file written to" << filename;
-    } else {
-        qCWarning(lcFileProviderXPC) << "Could not open debug log file" << filename;
-    }
-
-    [rcvdDebugLogString release];
-}
 
 bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, const bool retry, const bool reconfigureOnFail)
 {

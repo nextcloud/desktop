@@ -1,5 +1,5 @@
 {
-  "originHash" : "b1fcfe4980e7dccc02e64ff6b1167e865e1b0fd2839c1f05e315987946e210b5",
+  "originHash" : "af7b30e0399513f38616bd75821c834208fc3c22e3f5ec7d1765b1dbb03a46cd",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -25,16 +25,16 @@
       "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
       "state" : {
         "branch" : "main",
-        "revision" : "628d78e08a72a9927775d50c71f6af0e8c0f8df3"
+        "revision" : "8add813aceb22a11309496e3249b36bd80c5db3d"
       }
     },
     {
       "identity" : "nextcloudkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nextcloud/NextcloudKit.git",
+      "location" : "https://github.com/nextcloud/NextcloudKit",
       "state" : {
-        "revision" : "8ac6704234f529d09b0651e4d94fdc14f8820333",
-        "version" : "6.0.9"
+        "revision" : "3353eacfb44fb981ae2e14236f0bcd7e11ea2707",
+        "version" : "7.1.4"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift.git",
       "state" : {
-        "revision" : "bae6c4be7df169fdb047d0ad63f902c1e2665e83",
-        "version" : "20.0.1"
+        "revision" : "6260534683132eb981338c7c39fd5e69205876e6",
+        "version" : "20.0.3"
       }
     },
     {

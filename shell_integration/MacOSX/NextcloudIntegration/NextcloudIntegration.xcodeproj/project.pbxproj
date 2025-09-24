@@ -8,19 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */; };
-		5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E52965C6FA001E0C6A /* NextcloudKit */; };
-		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
-		531EDE572D897B4F00FD91F9 /* Eviction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531EDE562D897B4F00FD91F9 /* Eviction.swift */; };
 		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
 		5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */; };
-		535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */; };
 		53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */; };
 		53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */; };
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5374FD432B95EE1400C78D54 /* ShareController.swift */; };
-		5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */; };
 		537630912B85F4980026BFAB /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537630902B85F4980026BFAB /* ShareViewController.xib */; };
 		537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630922B85F4B00026BFAB /* ShareViewController.swift */; };
 		537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */; };
@@ -50,7 +45,6 @@
 		53D666612B70C9A70042C03D /* FileProviderDomainDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderDomainDefaults.swift */; };
 		53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */; };
 		53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */; };
-		53FE14542B8E1219006C4193 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53FE14532B8E1219006C4193 /* NextcloudKit */; };
 		53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */; };
 		53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */; };
 		53FE14652B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */; };
@@ -162,16 +156,13 @@
 /* Begin PBXFileReference section */
 		530429972DD44226004BB598 /* FileProviderExtension+CustomActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+CustomActions.swift"; sourceTree = "<group>"; };
 		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
-		531EDE562D897B4F00FD91F9 /* Eviction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eviction.swift; sourceTree = "<group>"; };
 		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
 		5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCommunicationService.swift; sourceTree = "<group>"; };
 		5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileProviderExt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+Thumbnailing.swift"; sourceTree = "<group>"; };
-		535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareeSuggestionsDataSource.swift; sourceTree = "<group>"; };
 		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		5374FD432B95EE1400C78D54 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
-		5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		537630902B85F4980026BFAB /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionServiceSource.swift; sourceTree = "<group>"; };
@@ -231,7 +222,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */,
 				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
 				53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 				53C331B22BCD28C30093D38B /* NextcloudFileProviderKit in Frameworks */,
@@ -252,7 +242,6 @@
 				5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */,
 				53C331B62BCD3AFF0093D38B /* NextcloudFileProviderKit in Frameworks */,
 				53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */,
-				53FE14542B8E1219006C4193 /* NextcloudKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +249,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */,
 				53903D212956164F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,14 +264,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		531EDE542D88569400FD91F9 /* Evicting */ = {
-			isa = PBXGroup;
-			children = (
-				531EDE562D897B4F00FD91F9 /* Eviction.swift */,
-			);
-			path = Evicting;
-			sourceTree = "<group>";
-		};
 		5350E4C72B0C368B00F276CB /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,7 +279,6 @@
 			isa = PBXGroup;
 			children = (
 				AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */,
-				535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */,
 				AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */,
 			);
 			path = Extensions;
@@ -308,7 +287,6 @@
 		5376307B2B85E2E00026BFAB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */,
 				53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */,
 			);
 			path = Extensions;
@@ -382,7 +360,6 @@
 			isa = PBXGroup;
 			children = (
 				AA7F17DF2E70171A0000E928 /* Authentication */,
-				531EDE542D88569400FD91F9 /* Evicting */,
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				537BD6782C58D0FC00446ED0 /* Locking */,
 				537BD6772C58D0C400446ED0 /* Sharing */,
@@ -506,7 +483,6 @@
 			);
 			name = FileProviderExt;
 			packageProductDependencies = (
-				5307A6E72965DAD8001E0C6A /* NextcloudKit */,
 				53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderExt;
@@ -542,11 +518,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				53FE14522B8E1213006C4193 /* PBXTargetDependency */,
 			);
 			name = FileProviderUIExt;
 			packageProductDependencies = (
-				53FE14532B8E1219006C4193 /* NextcloudKit */,
 				5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */,
 				53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */,
 				53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */,
@@ -574,7 +548,6 @@
 			);
 			name = desktopclient;
 			packageProductDependencies = (
-				5307A6E52965C6FA001E0C6A /* NextcloudKit */,
 			);
 			productName = desktopclient;
 			productReference = C2B573B11B1CD91E00303B36 /* desktopclient.app */;
@@ -753,7 +726,6 @@
 			);
 			mainGroup = C2B573941B1CD88000303B36;
 			packageReferences = (
-				5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */,
 				5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */,
 				53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */,
 				53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */,
@@ -851,7 +823,6 @@
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				AA02B2AB2E7048C800C72B34 /* Keychain.swift in Sources */,
 				537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */,
-				535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */,
 				537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */,
 				530429982DD44235004BB598 /* FileProviderExtension+CustomActions.swift in Sources */,
 				5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */,
@@ -872,7 +843,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */,
-				531EDE572D897B4F00FD91F9 /* Eviction.swift in Sources */,
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
 				53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */,
@@ -882,7 +852,6 @@
 				5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */,
 				53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */,
 				53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */,
-				5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */,
 				AA7F17E32E70173E0000E928 /* AuthenticationViewController.swift in Sources */,
 				53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */,
 				537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */,
@@ -929,10 +898,6 @@
 			isa = PBXTargetDependency;
 			target = 53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */;
 			targetProxy = 53903D322956173F00D0B308 /* PBXContainerItemProxy */;
-		};
-		53FE14522B8E1213006C4193 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 53FE14512B8E1213006C4193 /* NextcloudKit */;
 		};
 		C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1649,14 +1614,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nextcloud/NextcloudKit.git";
-			requirement = {
-				kind = exactVersion;
-				version = 6.0.9;
-			};
-		};
 		5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/NextcloudCapabilitiesKit.git";
@@ -1684,16 +1641,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5307A6E52965C6FA001E0C6A /* NextcloudKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
-			productName = NextcloudKit;
-		};
-		5307A6E72965DAD8001E0C6A /* NextcloudKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
-			productName = NextcloudKit;
-		};
 		5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */;
@@ -1713,16 +1660,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */;
 			productName = NextcloudFileProviderKit;
-		};
-		53FE14512B8E1213006C4193 /* NextcloudKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
-			productName = NextcloudKit;
-		};
-		53FE14532B8E1219006C4193 /* NextcloudKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
-			productName = NextcloudKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

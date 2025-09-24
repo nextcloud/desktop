@@ -33,7 +33,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         for itemIdentifier: NSFileProviderItemIdentifier,
         completionHandler: @escaping ([NSFileProviderServiceSource]?, Error?) -> Void
     ) -> Progress {
-        Logger.desktopClientConnection.debug("Serving supported service sources")
+        logger.debug("Serving supported service sources")
         let clientCommService = ClientCommunicationService(fpExtension: self)
         let fpuiExtService = FPUIExtensionServiceSource(fpExtension: self)
         let services: [NSFileProviderServiceSource] = [clientCommService, fpuiExtService]
@@ -55,9 +55,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
 
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error(
-                "Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify after account setup"
-            )
+            logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
             return
         }
 
@@ -65,32 +63,24 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
 
         fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
-                Logger.fileProviderExtension.error(
-                    "Error resolving not authenticated, received error: \(error!.localizedDescription)"
-                )
+                self.logger.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
             }
         }
 
-        Logger.fileProviderExtension.debug(
-            "Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)"
-        )
+        logger.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
 
         notifyChange()
     }
 
     func notifyChange() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error(
-                "Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify changes"
-            )
+            logger.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify changes")
             return
         }
 
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
-                Logger.fileProviderExtension.error(
-                    "Error signalling enumerator for working set, received error: \(error!.localizedDescription, privacy: .public)"
-                )
+                self.logger.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription)")
             }
         }
     }
@@ -109,34 +99,34 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     ) {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
 
-        Logger.fileProviderExtension.info("Setting up domain account for user: \(user, privacy: .public), userId: \(userId, privacy: .public), serverUrl: \(serverUrl, privacy: .public), password: \(password.isEmpty ? "<empty>" : "<not-empty>", privacy: .public), ncKitAccount: \(account.ncKitAccount, privacy: .public)")
+        logger.info("Setting up domain account for user: \(user), userId: \(userId), serverUrl: \(serverUrl), password: \(password.isEmpty ? "<empty>" : "<not-empty>"), ncKitAccount: \(account.ncKitAccount)")
 
         guard account != ncAccount else {
-            Logger.fileProviderExtension.warning("Cancelling domain account setup because of receiving the same account information repeatedly!")
+            logger.info("Cancelling domain account setup because of receiving the same account information repeatedly!")
             completionHandler?(NSError(.invalidCredentials))
             return
         }
 
         guard password.isEmpty == false else {
-            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"password\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"password\" is an empty string!")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard serverUrl.isEmpty == false else {
-            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"serverUrl\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"serverUrl\" is an empty string!")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard user.isEmpty == false else {
-            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"user\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"user\" is an empty string!")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
         guard userId.isEmpty == false else {
-            Logger.fileProviderExtension.warning("Cancelling domain account setup because \"userId\" is an empty string!")
+            logger.info("Cancelling domain account setup because \"userId\" is an empty string!")
             completionHandler?(NSError(.missingAccountInformation))
             return
         }
@@ -145,7 +135,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         config.serverUrl = serverUrl
         config.user = user
         config.userId = userId
-        Keychain.savePassword(password, for: user, on: serverUrl)
+        keychain.savePassword(password, for: user, on: serverUrl)
         NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
 
         Task {
@@ -156,7 +146,6 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 userId: userId,
                 password: password,
                 userAgent: userAgent,
-                nextcloudVersion: 25,
                 groupIdentifier: ""
             )
 
@@ -172,28 +161,28 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                     break
                 }
 
-                Logger.fileProviderExtension.info("\(user, privacy: .public) authentication try timed out. Trying again soon.")
+                logger.info("\(user) authentication try timed out. Trying again soon.")
                 try? await Task.sleep(nanoseconds: authTimeout)
             }
 
             switch (authAttemptState) {
                 case .authenticationError:
-                    Logger.fileProviderExtension.error("Authentication of \"\(user, privacy: .public)\" failed due to bad credentials, cancelling domain account setup!")
+                    logger.error("Authentication of \"\(user)\" failed due to bad credentials, cancelling domain account setup!")
                     completionHandler?(NSError(.invalidCredentials))
                     return
                 case .connectionError:
                     // Despite multiple connection attempts we are still getting connection issues.
                     // Connection error should be provided
-                    Logger.fileProviderExtension.error("Authentication of \"\(user, privacy: .public)\" try failed, no connection.")
+                    logger.error("Authentication of \"\(user)\" try failed, no connection.")
                     completionHandler?(NSError(.connection))
                     return
                 case .success:
-                    Logger.fileProviderExtension.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)")
+                    logger.info("Successfully authenticated! Nextcloud account set up in file provider extension. User: \(user) at server: \(serverUrl)")
             }
 
             Task { @MainActor in
                 ncAccount = account
-                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier)
+                dbManager = FilesDatabaseManager(account: account, fileProviderDomainIdentifier: domain.identifier, log: log)
 
                 if let changeObserver {
                     changeObserver.invalidate()
@@ -205,10 +194,11 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                         remoteInterface: ncKit,
                         changeNotificationInterface: self,
                         domain: domain,
-                        dbManager: dbManager
+                        dbManager: dbManager,
+                        log: log
                     )
                 } else {
-                    Logger.fileProviderExtension.error("Invalid db manager, cannot start RCO")
+                    logger.error("Invalid db manager, cannot start RCO")
                 }
 
                 ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!, delegate: changeObserver)
@@ -219,9 +209,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     }
 
     @objc func removeAccountConfig() {
-        Logger.fileProviderExtension.info(
-            "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
-        )
+        logger.info("Received instruction to remove account data for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
         ncAccount = nil
         dbManager = nil
     }
@@ -246,7 +234,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         actionsLock.unlock()
 
         guard let argument else { return }
-        Logger.fileProviderExtension.debug("Reporting sync \(argument)")
+        logger.debug("Reporting sync \(argument)")
         let message = command + ":" + argument + "\n"
         socketClient?.sendMessage(message)
     }

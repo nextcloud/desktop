@@ -14,26 +14,33 @@ import SuggestionsTextFieldKit
 
 class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let kit: NextcloudKit
+    let logger: FileProviderLogger
     let account: Account
     var suggestions: [Suggestion] = []
     var inputString: String = "" {
-        didSet { Task { await updateSuggestions() } }
+        didSet {
+            Task {
+                await updateSuggestions()
+            }
+        }
     }
 
-    init(account: Account, kit: NextcloudKit) {
+    init(account: Account, kit: NextcloudKit, log: any FileProviderLogging) {
         self.account = account
         self.kit = kit
+        self.logger = FileProviderLogger(category: "ShareeSuggestionsDataSource", log: log)
     }
 
     private func updateSuggestions() async {
         let sharees = await fetchSharees(search: inputString)
-        Logger.shareeDataSource.info("Fetched \(sharees.count, privacy: .public) sharees.")
+        logger.info("Fetched \(sharees.count) sharees.")
         suggestions = suggestionsFromSharees(sharees)
         NotificationCenter.default.post(name: SuggestionsChangedNotificationName, object: self)
     }
 
     private func fetchSharees(search: String) async -> [NKSharee] {
-        Logger.shareeDataSource.debug("Searching sharees with: \(search, privacy: .public)")
+        logger.debug("Searching sharees with: \(search)")
+
         return await withCheckedContinuation { continuation in
             kit.searchSharees(
                 search: inputString,
@@ -41,11 +48,12 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
                 perPage: 20,
                 account: account.ncKitAccount,
                 completion: { account, sharees, data, error in
-                    defer { continuation.resume(returning: sharees ?? []) }
+                    defer {
+                        continuation.resume(returning: sharees ?? [])
+                    }
+
                     guard error == .success else {
-                        Logger.shareeDataSource.error(
-                            "Error fetching sharees: \(error.errorDescription, privacy: .public)"
-                        )
+                        self.logger.error("Error fetching sharees: \(error.errorDescription)")
                         return
                     }
                 }

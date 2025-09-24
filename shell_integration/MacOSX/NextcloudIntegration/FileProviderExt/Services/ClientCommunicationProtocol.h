@@ -21,7 +21,6 @@
                         password:(NSString *)password
                        userAgent:(NSString *)userAgent;
 - (void)removeAccountConfig;
-- (void)createDebugLogStringWithCompletionHandler:(void(^)(NSString *debugLogString, NSError *error))completionHandler;
 - (void)getTrashDeletionEnabledStateWithCompletionHandler:(void(^)(BOOL enabled, BOOL set))completionHandler;
 - (void)setTrashDeletionEnabled:(BOOL)enabled;
 - (void)setIgnoreList:(NSArray<NSString *> *)ignoreList;

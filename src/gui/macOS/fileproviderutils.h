@@ -9,8 +9,17 @@
 
 class QString;
 
+// Forward declarations for Objective-C types using conditional compilation
+#ifdef __OBJC__
 @class NSFileProviderDomain;
 @class NSFileProviderManager;
+@class NSString;
+#else
+// In C++ context, use opaque pointers
+struct NSFileProviderDomain;
+struct NSFileProviderManager;
+struct NSString;
+#endif
 
 /**
  * This file contains the FileProviderUtils namespace, which contains
@@ -93,6 +102,21 @@ QString domainIdentifierForAccountIdentifier(const NSString *accountId);
  * @brief Whether the given domain identifier contains illegal characters or a known bundle extension.
  */
 bool illegalDomainIdentifier(const QString &domainId);
+
+/**
+ * @brief Find the logs directory of the file provider extension for all the domains.
+ */
+QDir fileProviderExtensionLogDirectory();
+
+/**
+ * @brief Find the logs directory of the file provider domain with the given identifier.
+ */
+QDir fileProviderDomainLogDirectory(const QString domainIdentifier);
+
+/**
+ * @brief Find the application support directory of the file provider domain with the given identifier.
+ */
+QDir fileProviderDomainSupportDirectory(const QString domainIdentifier);
 
 /**
  * @brief Synchronously retrieves an NSFileProviderManager for the given domain identifier.
