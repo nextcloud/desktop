@@ -361,7 +361,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.modtime = dirent->modtime;
         i.size = dirent->size;
         i.inode = dirent->inode;
-        i.isDirectory = dirent->type == ItemTypeDirectory;
+        i.isDirectory = dirent->type == ItemTypeDirectory || dirent->type == ItemTypeVirtualDirectory;
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
