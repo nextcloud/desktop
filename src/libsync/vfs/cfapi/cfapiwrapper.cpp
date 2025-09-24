@@ -552,7 +552,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
         sendTransferError();
         return;
     }
-    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length() + 1)};
+    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length() + 1)}.mid(1);
 
     qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
 
