@@ -72,8 +72,8 @@ Button {
                 UserLine {
                     id: instantiatedUserLine
                     width: parent.width
-                    onShowUserStatusSelector: {
-                        userStatusDrawer.openUserStatusDrawer(model.index);
+                    onShowUserStatusSelector: function(accountIndex, view) {
+                        userStatusDrawer.openUserStatusDrawer(accountIndex, view);
                         accountMenu.close();
                     }
                     onClicked: UserModel.currentUserId = model.index;

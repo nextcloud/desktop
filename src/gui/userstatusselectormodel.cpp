@@ -180,7 +180,12 @@ void UserStatusSelectorModel::clearError()
 
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
-    if (!_userStatusConnector || status == _userStatus.state()) {
+    if (!_userStatusConnector) {
+        return;
+    }
+
+    if (status == _userStatus.state()) {
+        emit finished();
         return;
     }
 
