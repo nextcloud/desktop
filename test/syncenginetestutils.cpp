@@ -1385,7 +1385,7 @@ FileInfo FakeFolder::currentLocalState()
 QString FakeFolder::localPath() const
 {
     // SyncEngine wants a trailing slash
-    return OCC::Utility::trailingSlashPath(_tempDir.path());
+    return OCC::Utility::trailingSlashPath(QFileInfo(_tempDir.path()).canonicalFilePath());
 }
 
 void FakeFolder::scheduleSync()
