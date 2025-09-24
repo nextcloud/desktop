@@ -173,6 +173,22 @@ public:
     [[nodiscard]] QUrl folderOffline() const;
 
     /**
+     * @brief nneutral icons for in-app status
+     * @return QUrl full path to an icon
+     */
+    [[nodiscard]] QUrl offline() const;
+
+    [[nodiscard]] QUrl ok() const;
+
+    [[nodiscard]] QUrl error() const;
+
+    [[nodiscard]] QUrl sync() const;
+
+    [[nodiscard]] QUrl pause() const;
+
+    [[nodiscard]] QUrl warning() const;
+
+    /**
      * @brief configFileName
      * @return the name of the config file.
      */
