@@ -684,12 +684,45 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray) const
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
-    // FIXME: Use state-problem once we have an icon.
     default:
         statusIcon = QLatin1String("state-error");
     }
 
     return themeIcon(statusIcon, sysTray);
+}
+
+QIcon Theme::folderStateIcon(SyncResult::Status status) const
+{
+    // FIXME: Mind the size!
+    QString statusIcon;
+
+    switch (status) {
+    case SyncResult::Undefined:
+        // this can happen if no sync connections are configured.
+        statusIcon = QLatin1String("warning");
+        break;
+    case SyncResult::NotYetStarted:
+    case SyncResult::SyncRunning:
+        statusIcon = QLatin1String("sync");
+        break;
+    case SyncResult::SyncAbortRequested:
+    case SyncResult::Paused:
+        statusIcon = QLatin1String("pause");
+        break;
+    case SyncResult::SyncPrepare:
+    case SyncResult::Success:
+        statusIcon = QLatin1String("ok");
+        break;
+    case SyncResult::Problem:
+        statusIcon = QLatin1String("warning");
+        break;
+    case SyncResult::Error:
+    case SyncResult::SetupError:
+    default:
+        statusIcon = QLatin1String("error");
+    }
+
+    return themeIcon(statusIcon, false);
 }
 
 QIcon Theme::folderDisabledIcon() const
