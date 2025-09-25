@@ -537,12 +537,14 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
     auto folderRecord = SyncJournalFileRecord{};
     const auto fetchRecordDbResult = journal->getFileRecord(pathString, &folderRecord);
     if (!fetchRecordDbResult || !folderRecord.isValid()) {
+        qCWarning(lcCfApi) << "failed: no valid db record for" << pathString;
         return 0;
     }
 
     folderRecord._type = ItemTypeDirectory;
     const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
     if (!updateRecordDbResult) {
+        qCWarning(lcCfApi) << "failed: failed to update db record for" << pathString;
         return 0;
     }
 
