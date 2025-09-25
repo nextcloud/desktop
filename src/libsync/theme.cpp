@@ -691,6 +691,8 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray) const
     return themeIcon(statusIcon, sysTray);
 }
 
+// Neutral icons for the classic sync folder list
+
 QIcon Theme::folderStateIcon(SyncResult::Status status) const
 {
     // FIXME: Mind the size!
@@ -716,18 +718,15 @@ QIcon Theme::folderStateIcon(SyncResult::Status status) const
     case SyncResult::Problem:
         statusIcon = QLatin1String("warning");
         break;
-    case SyncResult::Error:
     case SyncResult::SetupError:
+        statusIcon = QLatin1String("offline");
+        break;
+    case SyncResult::Error:
     default:
         statusIcon = QLatin1String("error");
     }
 
     return themeIcon(statusIcon, false);
-}
-
-QIcon Theme::folderDisabledIcon() const
-{
-    return themeIcon(QLatin1String("state-pause"));
 }
 
 QIcon Theme::folderOfflineIcon(bool sysTray) const
