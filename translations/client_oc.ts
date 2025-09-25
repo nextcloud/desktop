@@ -2931,7 +2931,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>Mostrar las notificacions de sonadas</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation type="unfinished"/>
     </message>

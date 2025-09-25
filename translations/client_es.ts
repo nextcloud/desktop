@@ -2958,7 +2958,7 @@ Para usuarios avanzados: Este problema puede estar relacionado a múltiples arch
         <translation>Mostrar diálogos de notificación de llamadas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Mostrar notificación cuando el uso de la cuota supere el 80%</translation>
     </message>

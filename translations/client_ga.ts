@@ -2958,7 +2958,7 @@ D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bain
         <translation>Taispeáin dialóga fógra glaonna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Taispeáin fógra nuair a sháraíonn úsáid an chuóta 80%.</translation>
     </message>

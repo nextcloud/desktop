@@ -2960,7 +2960,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
         <translation>Mostra finestre di notifica chiamata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Mostra una notifica quando l&apos;utilizzo della quota supera l&apos;80%.</translation>
     </message>

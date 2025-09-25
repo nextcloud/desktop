@@ -2958,7 +2958,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Hívásértesítési párbeszédablakok megjelenítése.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation type="unfinished"/>
     </message>

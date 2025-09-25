@@ -2958,7 +2958,7 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
         <translation>Visa dialogrutor för samtalsmeddelanden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Visa avisering när kvotanvändningen överstiger 80%.</translation>
     </message>

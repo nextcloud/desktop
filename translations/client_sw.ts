@@ -2958,7 +2958,7 @@ Kwa watumiaji wa hali ya juu: suala hili linaweza kuhusishwa na faili nyingi za 
         <translation>Onyesha vidadisi vya arifa za simu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Onyesha arifa wakati matumizi ya kiwango yanapozidi 80%.</translation>
     </message>

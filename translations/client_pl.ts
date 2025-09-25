@@ -2958,7 +2958,7 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
         <translation>Pokaż dialogi w powiadomieniu połączenia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Pokaż powiadomienie, gdy użycie limitu przekroczy 80%.</translation>
     </message>
