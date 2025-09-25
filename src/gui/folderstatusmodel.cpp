@@ -254,10 +254,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return folder->virtualFilesEnabled() && folder->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
             : QStringList();
-    case FolderStatusDelegate::SyncRunning:
-        return folder->syncResult().status() == SyncResult::SyncRunning;
-    case FolderStatusDelegate::SyncDate:
-        return folder->syncResult().syncTime();
     case FolderStatusDelegate::HeaderRole:
         return folder->shortGuiRemotePathOrAppName();
     case FolderStatusDelegate::FolderAliasRole:
@@ -306,8 +302,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::SyncProgressItemString:
         // e.g. Syncing fileName1, filename2
         return progress._progressString;
-    case FolderStatusDelegate::WarningCount:
-        return progress._warningCount;
     case FolderStatusDelegate::SyncProgressOverallPercent:
         return progress._overallPercent;
     case FolderStatusDelegate::SyncProgressOverallString:
@@ -985,8 +979,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         _isSyncRunningForAwhile = false;
     }
 
-    const QVector<int> roles{ FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount,
-                             Qt::ToolTipRole };
+    const QVector<int> roles{ FolderStatusDelegate::SyncProgressItemString, Qt::ToolTipRole };
 
     if (progress.status() == ProgressInfo::Discovery) {
         if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
