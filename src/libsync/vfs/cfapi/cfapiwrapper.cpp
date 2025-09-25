@@ -207,6 +207,8 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
     if (cfExecuteresult != S_OK) {
         qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << cfExecuteresult << QString::fromWCharArray(_com_error(cfExecuteresult).ErrorMessage());
     }
+
+    qCInfo(lcCfApiWrapper()) << "number of processes entries:" << opParams.TransferPlaceholders.EntriesProcessed;
 }
 
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
@@ -589,7 +591,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     localEventLoop.exec();
 
-    qCInfo(lcCfApiWrapper()) << "ls prop finished" << path << serverPath;
+    qCInfo(lcCfApiWrapper()) << "ls prop finished" << path << serverPath << "discovered new entries:" << newEntries.size();
 
     sendTransferInfo(newEntries);
 
