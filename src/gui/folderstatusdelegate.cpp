@@ -190,12 +190,14 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     localPathRect.setLeft(nextToIcon);
     remotePathRect.setLeft(nextToIcon);
 
-    const auto iconSize = iconRect.width();
-
     auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
 
-    const auto statusPixmap = statusIcon.pixmap(iconSize, iconSize, syncEnabled ? QIcon::Normal : QIcon::Disabled);
-    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect).left(), iconRect.top(), statusPixmap);
+    statusIcon.paint(
+        painter,
+        QStyle::visualRect(option.direction, option.rect, iconRect),
+        Qt::AlignCenter,
+        syncEnabled ? QIcon::Normal : QIcon::Disabled
+    );
 
     // only show the warning icon if the sync is running. Otherwise its
     // encoded in the status icon.
