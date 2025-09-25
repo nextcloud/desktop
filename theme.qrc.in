@@ -174,7 +174,14 @@
 		<file>theme/colored/user-status-away.svg</file>
 		<file>theme/colored/user-status-busy.svg</file>
 		<file>theme/colored/user-status-dnd.svg</file>
-
+		<file>theme/colored/ok.svg</file>
+		<file>theme/colored/error.svg</file>
+		<file>theme/colored/info.svg</file>
+		<file>theme/colored/offline.svg</file>		
+		<file>theme/colored/pause.svg</file>		
+		<file>theme/colored/warning.svg</file>		
+		<file>theme/colored/sync.svg</file>
+		
 		<!-- black icons -->
 		<file>theme/black/account-group.svg</file>
 		<file>theme/black/activity.svg</file>
