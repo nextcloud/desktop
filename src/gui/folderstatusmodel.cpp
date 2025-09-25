@@ -278,7 +278,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         toolTip += folderInfo._folder->path();
         return toolTip;
     }
-    case FolderStatusDelegate::FolderStatusIconRole:
+    case FolderStatusDelegate::FolderStatusIconRole: {
         if (!accountConnected) {
             return Theme::instance()->folderStateIcon(SyncResult::SetupError);
         }
@@ -302,6 +302,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
 
         return theme->folderStateIcon(status);
+    }
     case FolderStatusDelegate::SyncProgressItemString:
         // e.g. Syncing fileName1, filename2
         return progress._progressString;
