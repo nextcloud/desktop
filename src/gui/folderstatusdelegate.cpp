@@ -156,8 +156,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
     auto overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
     auto itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
-    auto warningCount = qvariant_cast<int>(index.data(WarningCount));
-    auto syncOngoing = qvariant_cast<bool>(index.data(SyncRunning));
     auto syncEnabled = qvariant_cast<bool>(index.data(FolderAccountConnected));
     auto syncText = qvariant_cast<QString>(index.data(FolderSyncText));
 
@@ -198,21 +196,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         Qt::AlignCenter,
         syncEnabled ? QIcon::Normal : QIcon::Disabled
     );
-
-    // only show the warning icon if the sync is running. Otherwise its
-    // encoded in the status icon.
-    if (warningCount > 0 && syncOngoing) {
-        QRect warnRect;
-        warnRect.setLeft(iconRect.left());
-        warnRect.setTop(iconRect.bottom() - 17);
-        warnRect.setWidth(16);
-        warnRect.setHeight(16);
-
-        QIcon warnIcon(":/client/theme/warning");
-        const auto warnPixmap = warnIcon.pixmap(16, 16, syncEnabled ? QIcon::Normal : QIcon::Disabled);
-        warnRect = QStyle::visualRect(option.direction, option.rect, warnRect);
-        painter->drawPixmap(QPoint(warnRect.left(), warnRect.top()), warnPixmap);
-    }
 
     auto palette = option.palette;
 
