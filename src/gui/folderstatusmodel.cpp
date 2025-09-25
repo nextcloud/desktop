@@ -279,32 +279,29 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return toolTip;
     }
     case FolderStatusDelegate::FolderStatusIconRole:
-        if (accountConnected) {
-            const auto theme = Theme::instance();
-            const auto status = folder->syncResult().status();
-            if (folder->syncPaused()) {
-                return theme->folderDisabledIcon();
-            } else {
-                if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
-                    return theme->folderStateIcon(SyncResult::SyncRunning);
-                } else {
-                    // The "Problem" *result* just means some files weren't
-                    // synced, so we show "Success" in these cases. But we
-                    // do use the "Problem" *icon* for unresolved conflicts.
-                    if (status == SyncResult::Success || status == SyncResult::Problem) {
-                        if (folder->syncResult().hasUnresolvedConflicts()) {
-                            return theme->folderStateIcon(SyncResult::Problem);
-                        } else {
-                            return theme->folderStateIcon(SyncResult::Success);
-                        }
-                    } else {
-                        return theme->folderStateIcon(status);
-                    }
-                }
-            }
-        } else {
-            return Theme::instance()->folderOfflineIcon();
+        if (!accountConnected) {
+            return Theme::instance()->folderStateIcon(SyncResult::SetupError);
         }
+
+        const auto theme   = Theme::instance();
+        const auto result  = folder->syncResult();
+        const auto status  = result.status();
+
+        if (folder->syncPaused()) {
+            return theme->folderStateIcon(SyncResult::Paused);
+        }
+
+        if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
+            return theme->folderStateIcon(SyncResult::SyncRunning);
+        }
+
+        if (status == SyncResult::Success || status == SyncResult::Problem) {
+            return theme->folderStateIcon(result.hasUnresolvedConflicts()
+                ? SyncResult::Problem
+                : SyncResult::Success);
+        }
+
+        return theme->folderStateIcon(status);
     case FolderStatusDelegate::SyncProgressItemString:
         // e.g. Syncing fileName1, filename2
         return progress._progressString;
