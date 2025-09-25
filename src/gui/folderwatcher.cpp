@@ -13,7 +13,7 @@
 
 #if defined(Q_OS_WIN)
 #include "folderwatcher_win.h"
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
 #include "folderwatcher_mac.h"
 #elif defined(Q_OS_UNIX)
 #include "folderwatcher_linux.h"
@@ -85,7 +85,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
 
 void FolderWatcher::startNotificatonTest(const QString &path)
 {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     // Testing the folder watcher on OSX is harder because the watcher
     // automatically discards changes that were performed by our process.
     // It would still be useful to test but the OSX implementation

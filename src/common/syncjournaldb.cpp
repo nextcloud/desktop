@@ -87,7 +87,7 @@ static QByteArray defaultJournalMode(const QString &dbPath)
         qCInfo(lcDb) << "Filesystem contains FAT - using DELETE journal mode";
         return "DELETE";
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
     if (dbPath.startsWith(QLatin1String("/Volumes/"))) {
         qCInfo(lcDb) << "Mounted sync dir, do not use WAL for" << dbPath;
         return "DELETE";
@@ -999,7 +999,7 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
     QByteArray bytes = file;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     bytes = QString::fromUtf8(file).normalized(QString::NormalizationForm_C).toUtf8();
 #endif
 

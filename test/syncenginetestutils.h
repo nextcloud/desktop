@@ -570,6 +570,7 @@ public:
 class FakeFolder
 {
     QTemporaryDir _tempDir;
+    QString _tempDirLocalPath;
     DiskFileModifier _localModifier;
     // FIXME: Clarify ownership, double delete
     FakeQNAM *_fakeQnam;

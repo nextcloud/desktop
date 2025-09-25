@@ -341,7 +341,7 @@ inline constexpr bool Utility::isWindows()
 
 inline constexpr bool Utility::isMac()
 {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
     return true;
 #else
     return false;

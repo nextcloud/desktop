@@ -56,7 +56,7 @@
 #include <QQuickItem>
 #include <QQmlContext>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include "foregroundbackground_interface.h"
 #endif
 
@@ -610,7 +610,7 @@ void ownCloudGui::slotShowSettings()
         _settingsDialog = new SettingsDialog(this);
         _settingsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
         auto *fgbg = new ForegroundBackground();
         _settingsDialog->installEventFilter(fgbg);
 #endif

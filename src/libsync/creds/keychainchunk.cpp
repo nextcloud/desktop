@@ -325,7 +325,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
         }
 #endif
     } else {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
         if (!readJob->insecureFallback()) { // If insecureFallback is set, the next test would be pointless
             if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
                     || readJob->error() == QKeychain::OtherError)) {

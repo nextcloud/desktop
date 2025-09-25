@@ -1218,14 +1218,15 @@ void FakeQNAM::setServerVersion(const QString &version)
 }
 
 FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInfo> &localFileInfo, const QString &remotePath)
-    : _localModifier(_tempDir.path())
+    : _tempDirLocalPath(QFileInfo(_tempDir.path()).canonicalFilePath())
+    , _localModifier(_tempDirLocalPath)
 {
     // Needs to be done once
     OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
     OCC::Logger::instance()->setLogFile(QStringLiteral("-"));
     OCC::Logger::instance()->addLogRule({ QStringLiteral("sync.httplogger=true") });
 
-    QDir rootDir { _tempDir.path() };
+    QDir rootDir { _tempDirLocalPath };
     qDebug() << "FakeFolder operating on" << rootDir;
     if (localFileInfo) {
         toDisk(rootDir, *localFileInfo);
@@ -1375,7 +1376,7 @@ void FakeFolder::setServerVersion(const QString &version)
 
 FileInfo FakeFolder::currentLocalState()
 {
-    QDir rootDir { _tempDir.path() };
+    QDir rootDir { _tempDirLocalPath };
     FileInfo rootTemplate;
     fromDisk(rootDir, rootTemplate);
     rootTemplate.fixupParentPathRecursively();
@@ -1385,7 +1386,7 @@ FileInfo FakeFolder::currentLocalState()
 QString FakeFolder::localPath() const
 {
     // SyncEngine wants a trailing slash
-    return OCC::Utility::trailingSlashPath(_tempDir.path());
+    return OCC::Utility::trailingSlashPath(_tempDirLocalPath);
 }
 
 void FakeFolder::scheduleSync()

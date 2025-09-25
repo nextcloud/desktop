@@ -103,7 +103,7 @@ namespace {
         }
 #if defined(Q_OS_WIN)
         return QApplication::applicationDirPath() + QLatin1String("/i18n/");
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
         return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
         if (qEnvironmentVariableIsSet("APPIMAGE")) {

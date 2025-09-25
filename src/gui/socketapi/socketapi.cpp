@@ -62,7 +62,7 @@
 #include <QProcess>
 #include <QStandardPaths>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 

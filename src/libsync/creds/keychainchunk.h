@@ -145,7 +145,7 @@ signals:
 private slots:
     void slotReadJobDone(QKeychain::Job *incomingJob);
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
 private:
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 #endif
