@@ -136,7 +136,8 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
                                        NTSTATUS status,
                                        const QList<OCC::PlaceholderCreateInfo> &newEntries,
                                        qint64 currentPlaceholdersCount,
-                                       qint64 totalPlaceholdersCount)
+                                       qint64 totalPlaceholdersCount,
+                                       const QString &serverPath)
 {
     CF_OPERATION_INFO opInfo = { 0 };
     CF_OPERATION_PARAMETERS opParams = { 0 };
@@ -147,6 +148,7 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
         const auto &entryInfo = newEntries[i];
         auto &newPlaceholder = newPlaceholders[i];
 
+        const auto entryFileName = entryInfo.name.mid(serverPath.length());
         const auto &fileId = entryInfo.properties[QStringLiteral("fileid")];
         const auto fileSize = entryInfo.properties[QStringLiteral("size")].toULongLong();
         auto fileMtimeString = entryInfo.properties[QStringLiteral("getlastmodified")];
@@ -156,7 +158,7 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
         const auto &fileResourceType = entryInfo.properties[QStringLiteral("resourcetype")];
         const auto isDir = QStringLiteral("<collection></collection>") == fileResourceType;
 
-        qCInfo(lcCfApiWrapper()) << entryInfo.name
+        qCInfo(lcCfApiWrapper()) << entryFileName
                                  << "fileId:" << fileId
                                  << "fileSize:" << fileSize
                                  << "fileMtime:" << fileMtime
@@ -523,16 +525,18 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
                                           STATUS_UNSUCCESSFUL,
                                           {},
                                           0,
-                                          0);
+                                          0,
+                                          {});
     };
 
-    const auto sendTransferInfo = [=](const QList<OCC::PlaceholderCreateInfo> &newEntries) {
+    const auto sendTransferInfo = [=](const QList<OCC::PlaceholderCreateInfo> &newEntries, const QString &serverPath) {
         cfApiSendPlaceholdersTransferInfo(callbackInfo->ConnectionKey,
                                           callbackInfo->TransferKey,
                                           STATUS_SUCCESS,
                                           newEntries,
                                           newEntries.size(),
-                                          newEntries.size());
+                                          newEntries.size(),
+                                          serverPath);
     };
 
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
@@ -593,21 +597,23 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     qCInfo(lcCfApiWrapper()) << "ls prop finished" << path << serverPath << "discovered new entries:" << newEntries.size();
 
-    sendTransferInfo(newEntries);
+    sendTransferInfo(newEntries, serverPath);
 
     auto newPlaceholdersResult = 0;
     const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
-                                                                [&newPlaceholdersResult, vfs, &newEntries, &serverPath] { return vfs->finalizeNewPlaceholders(newEntries, serverPath); },
+                                                                [&newPlaceholdersResult, vfs, &newEntries, &serverPath] () -> int { return vfs->finalizeNewPlaceholders(newEntries, serverPath); },
                                                                 Qt::BlockingQueuedConnection,
-                                                                &newPlaceholdersResult);
+                                                                qReturnArg(newPlaceholdersResult));
     if (!invokeFinalizeResult) {
         qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
         sendTransferError();
     }
+    qCInfo(lcCfApiWrapper) << "call for finalizeNewPlaceholders was done";
 
     if (!newPlaceholdersResult) {
         sendTransferError();
     }
+    qCInfo(lcCfApiWrapper) << "call for finalizeNewPlaceholders succeeded";
 }
 
 void CALLBACK cfApiNotifyFileCloseCompletion(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
