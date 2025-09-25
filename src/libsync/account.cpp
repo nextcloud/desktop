@@ -1220,9 +1220,19 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         promise->finish();
     });
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, path] (const QString &name, const QMap<QString, QString> &properties) {
+    auto ignoreFirst = true;
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [&ignoreFirst, promise, path] (const QString &name, const QMap<QString, QString> &properties) {
+        if (ignoreFirst) {
+            ignoreFirst = false;
+            return;
+        }
+
         qCInfo(lcAccount()) << "ls col job" << path << "new file" << name << properties.count();
-        promise->emplaceResult(name, name.toStdWString(), properties);
+
+        const auto slash = name.lastIndexOf('/');
+        const auto realEntryName = name.mid(slash + 1);
+
+        promise->emplaceResult(realEntryName, realEntryName.toStdWString(), properties);
     });
 
     promise->start();
