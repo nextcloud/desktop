@@ -2958,7 +2958,7 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
         <translation>Näita kõneteavituste vaateid</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Näita teavitusi kui lubatud kvoodist on kasutusel üle 80 protsendi.</translation>
     </message>

@@ -2958,7 +2958,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
         <translation>Dialog zu Anrufbenachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Benachrichtigung anzeigen, wenn die Kontingentauslastung 80% übersteigt.</translation>
     </message>

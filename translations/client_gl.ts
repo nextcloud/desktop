@@ -2958,7 +2958,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
         <translation>Amosar os diálogos de notificación de chamadas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Amosar unha notificación cando o uso da cota supere o 80%.</translation>
     </message>

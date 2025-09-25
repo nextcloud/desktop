@@ -2956,7 +2956,7 @@ Pre pokročilých užívateľov: tento problém môže súvisieť s viacerými s
         <translation>Zobraziť dialógové okná upozornení na hovory.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation type="unfinished"/>
     </message>

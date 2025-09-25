@@ -2959,7 +2959,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>トークの通知ダイアログを表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>クォータ使用量が80%を超えた場合に通知を表示する。</translation>
     </message>

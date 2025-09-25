@@ -2956,7 +2956,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
         <translation>Montre les fenêtres de notification d&apos;appel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation type="unfinished"/>
     </message>
