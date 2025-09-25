@@ -64,6 +64,7 @@ public protocol ItemMetadata: Equatable {
     var lockOwnerDisplayName: String? { get set }
     var lockTime: Date? { get set } // Time the file was locked
     var lockTimeOut: Date? { get set } // Time the file's lock will expire
+    var lockToken: String? { get set }
     var path: String { get set }
     var permissions: String { get set }
     var shareType: [Int] { get set }

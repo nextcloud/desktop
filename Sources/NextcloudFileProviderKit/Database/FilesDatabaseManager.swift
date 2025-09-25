@@ -5,9 +5,6 @@ import FileProvider
 import Foundation
 import RealmSwift
 
-internal let stable1_0SchemaVersion: UInt64 = 100
-internal let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
-
 ///
 /// Realm database abstraction and management.
 ///
@@ -43,7 +40,7 @@ public final class FilesDatabaseManager: Sendable {
         )
     }
 
-    private static let schemaVersion = stable2_0SchemaVersion
+    private static let schemaVersion = SchemaVersion.addedLockTokenPropertyToRealmItemMetadata
     let logger: FileProviderLogger
     let account: Account
 
@@ -115,9 +112,9 @@ public final class FilesDatabaseManager: Sendable {
 
         let configuration = customConfiguration ?? Realm.Configuration(
             fileURL: databaseLocation,
-            schemaVersion: Self.schemaVersion,
+            schemaVersion: Self.schemaVersion.rawValue,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion == stable1_0SchemaVersion {
+                if oldSchemaVersion == SchemaVersion.initial.rawValue {
                     var localFileMetadataOcIds = Set<String>()
 
                     migration.enumerateObjects(ofType: "LocalFileMetadata") { oldObject, _ in
@@ -171,7 +168,7 @@ public final class FilesDatabaseManager: Sendable {
 
         logger.info("Migrating shared legacy database to new database for \(account.ncKitAccount)")
 
-        let legacyConfiguration = Realm.Configuration(fileURL: sharedDatabaseURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
+        let legacyConfiguration = Realm.Configuration(fileURL: sharedDatabaseURL, schemaVersion: SchemaVersion.deletedLocalFileMetadata.rawValue, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
 
         do {
             let legacyRealm = try Realm(configuration: legacyConfiguration)

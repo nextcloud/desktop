@@ -125,13 +125,7 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
-    func setLockStateForFile(
-        remotePath: String,
-        lock: Bool,
-        account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
+    func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void) async throws -> NKLock?
 
     func trashedItems(
         account: Account,

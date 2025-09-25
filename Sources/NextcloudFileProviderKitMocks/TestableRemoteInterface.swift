@@ -119,14 +119,8 @@ public struct TestableRemoteInterface: RemoteInterface {
         ("", nil, .invalidResponseError)
     }
 
-    public func setLockStateForFile(
-        remotePath: String,
-        lock: Bool,
-        account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
-        ("", nil, .invalidResponseError)
+    public func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
+        throw NKError.invalidResponseError
     }
 
     public func trashedItems(

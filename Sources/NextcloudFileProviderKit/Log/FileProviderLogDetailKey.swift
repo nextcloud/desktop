@@ -32,6 +32,11 @@ public enum FileProviderLogDetailKey: String {
     case item
 
     ///
+    /// An `NKLock` as provided by NextcloudKit when a file system item is locked on the server.
+    ///
+    case lock
+
+    ///
     /// A ``SendableItemMetadata`` object.
     ///
     /// This will automatically encode all important properties as a dictionary in the log.

@@ -48,6 +48,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var lockOwnerDisplayName: String?
     @Persisted public var lockTime: Date? // Time the file was locked
     @Persisted public var lockTimeOut: Date? // Time the file's lock will expire
+    @Persisted public var lockToken: String? // Token identifier for token-based locks
     @Persisted public var path = ""
     @Persisted public var permissions = ""
     @Persisted public var quotaUsedBytes: Int64 = 0
@@ -147,6 +148,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
         self.lockOwnerDisplayName = value.lockOwnerDisplayName
         self.lockTime = value.lockTime
         self.lockTimeOut = value.lockTimeOut
+        self.lockToken = value.lockToken
         self.path = value.path
         self.permissions = value.permissions
         self.quotaUsedBytes = value.quotaUsedBytes

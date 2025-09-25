@@ -853,8 +853,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let oldRealmURL = temporaryDirectory.appendingPathComponent(FilesDatabaseManager.databaseFilename)
 
         // Create the old Realm configuration and insert test objects.
-        // Use stable2_0SchemaVersion and the appropriate object types.
-        let oldConfig = Realm.Configuration(fileURL: oldRealmURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
+        // Use most recent schema and the appropriate object types.
+        let oldConfig = Realm.Configuration(fileURL: oldRealmURL, schemaVersion: SchemaVersion.addedLockTokenPropertyToRealmItemMetadata.rawValue, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
         let oldRealm = try Realm(configuration: oldConfig)
 
         // Create test objects
@@ -880,7 +880,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         // Prepare a new Realm configuration for the target per‑account database.
         let newRealmURL = temporaryDirectory.appendingPathComponent("new.realm")
-        let newConfig = Realm.Configuration(fileURL: newRealmURL, schemaVersion: stable2_0SchemaVersion, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
+        let newConfig = Realm.Configuration(fileURL: newRealmURL, schemaVersion: SchemaVersion.addedLockTokenPropertyToRealmItemMetadata.rawValue, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
 
         // Call the initializer that performs the migration.
         // It will search for the old database at:
@@ -932,7 +932,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Insert initial objects into the old realm
         let oldConfig = Realm.Configuration(
             fileURL: oldRealmURL,
-            schemaVersion: stable2_0SchemaVersion,
+            schemaVersion: SchemaVersion.addedLockTokenPropertyToRealmItemMetadata.rawValue,
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
         let oldRealm = try Realm(configuration: oldConfig)
@@ -958,7 +958,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let newRealmURL = tempDir.appendingPathComponent("new.realm")
         let newConfig = Realm.Configuration(
             fileURL: newRealmURL,
-            schemaVersion: stable2_0SchemaVersion,
+            schemaVersion: SchemaVersion.addedLockTokenPropertyToRealmItemMetadata.rawValue,
             objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
 

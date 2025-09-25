@@ -304,20 +304,8 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
-    public func setLockStateForFile(
-        remotePath: String,
-        lock: Bool,
-        account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
-        return await withCheckedContinuation { continuation in
-            lockUnlockFile(
-                serverUrlFileName: remotePath, shouldLock: lock, account: account.ncKitAccount
-            ) { account, response, error in
-                continuation.resume(returning: (account, response?.response, error))
-            }
-        }
+    public func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
+        return try await lockUnlockFile(serverUrlFileName: serverUrlFileName, type: type, shouldLock: shouldLock, account: account.ncKitAccount, options: options, taskHandler: taskHandler)
     }
 
     public func trashedItems(

@@ -48,6 +48,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var lockOwnerDisplayName: String?
     public var lockTime: Date?
     public var lockTimeOut: Date?
+    public var lockToken: String?
     public var path: String
     public var permissions: String
     public var quotaUsedBytes: Int64
@@ -114,6 +115,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         lockOwnerDisplayName: String? = nil,
         lockTime: Date? = nil,
         lockTimeOut: Date? = nil,
+        lockToken: String? = nil,
         path: String,
         permissions: String = "RGDNVW",
         quotaUsedBytes: Int64 = 0,
@@ -179,6 +181,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.lockOwnerDisplayName = lockOwnerDisplayName
         self.lockTime = lockTime
         self.lockTimeOut = lockTimeOut
+        self.lockToken = lockToken
         self.path = path
         self.permissions = permissions
         self.quotaUsedBytes = quotaUsedBytes
@@ -246,6 +249,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.lockOwnerDisplayName = value.lockOwnerDisplayName
         self.lockTime = value.lockTime
         self.lockTimeOut = value.lockTimeOut
+        self.lockToken = value.lockToken
         self.path = value.path
         self.permissions = value.permissions
         self.quotaUsedBytes = value.quotaUsedBytes
