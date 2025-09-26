@@ -72,8 +72,8 @@ public:
     [[nodiscard]] PathComponents parentDirComponents() const;
     [[nodiscard]] PathComponents subComponents() const &;
     PathComponents subComponents() && { removeFirst(); return std::move(*this); }
-    [[nodiscard]] QString pathRoot() const { return first(); }
-    [[nodiscard]] QString fileName() const { return last(); }
+    [[nodiscard]] QString pathRoot() const { return isEmpty() ? QString{} : first(); }
+    [[nodiscard]] QString fileName() const { return isEmpty() ? QString{} : last(); }
 };
 
 class FileModifier
