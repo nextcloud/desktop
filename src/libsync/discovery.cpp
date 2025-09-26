@@ -1877,6 +1877,11 @@ void ProcessDirectoryJob::processFileFinalize(
         recurse = false;
     }
 
+    if (item->_type == ItemTypeVirtualDirectory) {
+        qCDebug(lcDisco()) << "do not recurse inside a virtual folder" << item->_file;
+        recurse = false;
+    }
+
     if (!(item->isDirectory() ||
           (!_discoveryData->_syncOptions._vfs || _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off) ||
           item->_type != CSyncEnums::ItemTypeVirtualFile ||
@@ -1886,7 +1891,7 @@ void ProcessDirectoryJob::processFileFinalize(
         Q_ASSERT(false);
     }
 
-    if (recurse && item->_type == ItemTypeDirectory) {
+    if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
