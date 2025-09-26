@@ -1,0 +1,106 @@
+# SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+name: macOS CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  setup_craft:
+    name: Set up Craft and install dependencies
+    timeout-minutes: 60
+    runs-on: macos-15
+    env:
+      CRAFT_TARGET: macos-clang-arm64
+      CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
+      CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
+      PYTHON_VERSION: 3.12
+    outputs:
+      # workaround for `env` not being usable from within `jobs.:id.with`: republish those variables as outputs
+      CRAFT_TARGET: ${{ env.CRAFT_TARGET }}
+      CRAFT_MASTER_LOCATION: ${{ env.CRAFT_MASTER_LOCATION }}
+      CRAFT_MASTER_CONFIG: ${{ env.CRAFT_MASTER_CONFIG }}
+      PYTHON_VERSION: ${{ env.PYTHON_VERSION }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Discover cached Craft directories
+        id: cache-craft-restore
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: |
+            ${{ env.CRAFT_MASTER_LOCATION }}
+            ${{ github.workspace }}/craft-clone
+            ${{ github.workspace }}/${{ env.CRAFT_TARGET }}
+          key: ${{ runner.os }}-craft-${{ hashFiles(env.CRAFT_MASTER_CONFIG) }}
+          lookup-only: true
+
+      - name: List Xcode installations
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: sudo ls -1 /Applications | grep "Xcode"
+
+      - name: Select Xcode 16.2
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Homebrew dependencies
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: |
+          brew install homebrew/cask/inkscape
+
+      - name: Download Craft
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: |
+          git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }}
+
+      - name: Add required blueprint repositories
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/craft-blueprints-kde.git|next|"
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository "https://github.com/nextcloud/desktop-client-blueprints.git|next|"
+
+      - name: Setup Craft
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c craft
+
+      - name: Install Craft Nextcloud client dependencies
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --install-deps nextcloud-client
+
+      - name: Cache Craft directories
+        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: |
+            ${{ env.CRAFT_MASTER_LOCATION }}
+            ${{ github.workspace }}/craft-clone
+            ${{ github.workspace }}/${{ env.CRAFT_TARGET }}
+          key: ${{ runner.os }}-craft-${{ hashFiles(env.CRAFT_MASTER_CONFIG) }}
+
+
+  build:
+    name: Build and test ${{ matrix.buildFileProviderModule == 'True' && 'File Provider' || 'classic' }} client
+    needs: setup_craft
+    strategy:
+      fail-fast: false
+      matrix:
+        buildFileProviderModule: ["True", "False"]
+    uses: ./.github/workflows/macos-build-and-test.yml
+    with:
+      CRAFT_TARGET: ${{ needs.setup_craft.outputs.CRAFT_TARGET }}
+      CRAFT_MASTER_CONFIG: ${{ needs.setup_craft.outputs.CRAFT_MASTER_CONFIG }}
+      CRAFT_MASTER_LOCATION: ${{ needs.setup_craft.outputs.CRAFT_MASTER_LOCATION }}
+      PYTHON_VERSION: ${{ needs.setup_craft.outputs.PYTHON_VERSION }}
+      buildFileProviderModule: ${{ matrix.buildFileProviderModule }}
