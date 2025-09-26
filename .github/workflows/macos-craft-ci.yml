@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Restore cached Craft directories
+      - name: Discover cached Craft directories
         id: cache-craft-restore
         uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -37,6 +37,7 @@ jobs:
             ${{ github.workspace }}/craft-clone
             ${{ github.workspace }}/${{ env.CRAFT_TARGET }}
           key: ${{ runner.os }}-craft-${{ hashFiles(env.CRAFT_MASTER_CONFIG) }}
+          lookup-only: true
 
       - name: List Xcode installations
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
