@@ -2834,7 +2834,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Preguntar se se queren sincronizar os cartafoles de almacenamento externo</translation>
+        <translation>Pedir confirmación antes de sincronizar os cartafoles de almacenamento externo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -2854,7 +2854,7 @@ Para usuarios avanzados: este problema pode estar relacionado con varios ficheir
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Preguntar se se queren sincronizar novos cartafoles de máis de</translation>
+        <translation>Pedir confirmación antes de sincronizar cartafoles de máis de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
