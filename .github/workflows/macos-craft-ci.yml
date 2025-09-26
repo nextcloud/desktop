@@ -93,8 +93,9 @@ jobs:
     name: Build and test ${{ matrix.buildFileProviderModule == 'True' && 'File Provider' || 'classic' }} client
     needs: setup_craft
     strategy:
-        matrix:
-          buildFileProviderModule: ["True", "False"]
+      fail-fast: false
+      matrix:
+        buildFileProviderModule: ["True", "False"]
     uses: ./.github/workflows/macos-build-and-test.yml
     with:
       CRAFT_TARGET: ${{ needs.setup_craft.outputs.CRAFT_TARGET }}
