@@ -1044,6 +1044,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "livePhotoFile" << record._livePhotoFile
                  << "folderQuota - bytesUsed:" << record._folderQuota.bytesUsed << "bytesAvailable:" << record._folderQuota.bytesAvailable;
 
+    Q_ASSERT(!record.path().isEmpty());
+
     const qint64 phash = getPHash(record._path);
     if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
