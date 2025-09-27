@@ -2203,7 +2203,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1471"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation>Un cartafol superou o límite de tamaño de cartafol establecido de %1MB: %2.
+        <translation>Un cartafol superou o límite de tamaño de cartafol estabelecido de %1MB: %2.
 %3</translation>
     </message>
     <message>

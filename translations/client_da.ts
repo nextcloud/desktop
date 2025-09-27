@@ -2026,7 +2026,7 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="260"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Kunne ikke analysere den modtaget JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Kunne ikke fortolke den modtaget JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
 </context>
 <context>
