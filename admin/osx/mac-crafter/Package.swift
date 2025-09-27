@@ -11,7 +11,7 @@ import PackageDescription
 let package = Package(
     name: "mac-crafter",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.4.0")
