@@ -107,15 +107,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/src
 )
 
-# disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
-if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
-    set( WITH_CRASHREPORTER OFF )
-endif()
-
-if(NOT WITH_CRASHREPORTER)
-    message(STATUS "Build of crashreporter disabled.")
-endif()
-
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
 include(GenerateExportHeader)
