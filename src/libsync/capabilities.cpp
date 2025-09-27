@@ -437,6 +437,57 @@ QStringList Capabilities::forbiddenFilenameExtensions() const
     return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
 }
 
+bool Capabilities::serverHasDeclarativeUi() const
+{
+    return _capabilities[QStringLiteral("declarativeui")].toMap().isEmpty();
+}
+
+QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeType) const
+{
+    const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
+    QVariantList contextMenuMapList;
+    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
+        const auto declarativeUiContextMenuMap = declarativeUiApp.toMap();
+        if (!declarativeUiContextMenuMap.contains("context-menu")) {
+            continue;
+        }
+
+        contextMenuMapList.append(declarativeUiContextMenuMap.value("context-menu").toList());
+    }
+
+    if (contextMenuMapList.empty()) {
+        qCDebug(lcServerCapabilities) << "There is no context menu available in the capabilities.";
+        return {};
+    }
+
+    const auto fileMimeTypeName = fileMimeType.name();
+    qCDebug(lcServerCapabilities) << "Filtering file actions by mimeType:" << fileMimeTypeName;
+    const auto fileMimeTypeAliases = fileMimeType.aliases();
+    qCDebug(lcServerCapabilities) << "File actions mimeType aliases:" << fileMimeTypeAliases;
+
+    QList<QVariantMap> contextMenuByMimeType;
+    for (const auto &contextMenu : contextMenuMapList) {
+        const auto contextMenuMap = contextMenu.toMap();
+        const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
+        const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
+
+        for (const auto mimeType : filesMimeTypeFilterList) {
+            auto capabilitiesMimeTypeName = mimeType.trimmed();
+            qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << capabilitiesMimeTypeName;
+
+            if (!fileMimeTypeName.startsWith(capabilitiesMimeTypeName) && !fileMimeTypeAliases.contains(capabilitiesMimeTypeName)) {
+                continue;
+            }
+
+            qCDebug(lcServerCapabilities) << "Found file action:" << contextMenuMap;
+            contextMenuByMimeType.append(contextMenuMap);
+            break;
+        }
+    }
+
+    return contextMenuByMimeType;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
@@ -465,6 +516,7 @@ DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &
 
     return nullptr;
 }
+
 
 /*-------------------------------------------------------------------------------------*/
 
