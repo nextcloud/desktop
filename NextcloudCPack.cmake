@@ -36,26 +36,6 @@ if(APPLE)
 endif()
 
 
-
-
-if(WIN32)
-    set( CPACK_PACKAGE_FILE_NAME  ${APPLICATION_SHORTNAME}-${CPACK_PACKAGE_VERSION}-setup )
-    # Package file name without extension. Also a directory of installer  cmake-2.5.0-Linux-i686
-    # CPACK_GENERATOR   CPack generator to be used  STGZ;TGZ;TZ
-    # CPACK_INCLUDE_TOPLEVEL_DIRECTORY    Controls whether CPack adds a top-level directory, usually of the form ProjectName-Version-OS, to the top of package tree.  0 to disable, 1 to enable
-    # CPACK_INSTALL_CMAKE_PROJECTS    List of four values: Build directory, Project Name, Project Component, Directory in the package     /home/andy/vtk/CMake-bin;CMake;ALL;/
-    set( CPACK_PACKAGE_DESCRIPTION_FILE  "${CMAKE_SOURCE_DIR}/README.md" ) # File used as a description of a project     /path/to/project/ReadMe.txt
-    set( CPACK_PACKAGE_DESCRIPTION_SUMMARY  "${APPLICATION_NAME} Syncing Client" ) #  Description summary of a project
-    # CPACK_PACKAGE_EXECUTABLES   List of pairs of executables and labels. Used by the NSIS generator to create Start Menu shortcuts.     ccmake;CMake
-    set( CPACK_PACKAGE_INSTALL_DIRECTORY  ${APPLICATION_SHORTNAME} )     # Installation directory on the target system -> C:\Program Files\${APPLICATION_SHORTNAME}
-    set( CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${APPLICATION_SHORTNAME} )  # Registry key used when installing this project  CMake 2.5.0
-    set( CPACK_PACKAGE_NAME  ${APPLICATION_NAME} ) # Package name, defaults to the project name
-    set( CPACK_PACKAGE_VENDOR  "http://${APPLICATION_DOMAIN}" )   # Package vendor name
-endif()
-
-# set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt" ) # License file for the project, used by the STGZ, NSIS, and PackageMaker generators.  /home/andy/vtk/CMake/Copyright.txt
-
-
 set( CPACK_TOPLEVEL_TAG "unused" ) # Directory for the installed files.  - needed to provide anything to avoid an error# CPACK_INSTALL_COMMANDS  Extra commands to install components.
 
 

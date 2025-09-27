@@ -12,12 +12,6 @@ SPDX-FileCopyrightText = "2012 ownCloud Inc. and ownCloud translators, 2018 Next
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["admin/win/nsi/l10n/*"]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "2013 ownCloud Inc. and ownCloud translators, 2020 Nextcloud GmbH and Nextcloud translators"
-SPDX-License-Identifier = "GPL-2.0-or-later"
-
-[[annotations]]
 path = ["nextcloud.client-desktop/*"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2022 Nextcloud GmbH and Nextcloud translators"
@@ -102,7 +96,7 @@ SPDX-FileCopyrightText = "2018 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["admin/osx/installer-background.png","admin/osx/installer-background.svg","admin/osx/installer-background_2x.png", "admin/win/msi/gui/banner.bmp","admin/win/msi/gui/banner.svg","admin/win/msi/gui/dialog.bmp", "admin/win/nsi/installer.ico", "admin/win/nsi/page_header.bmp", "admin/win/nsi/welcome.bmp", "doc/_shared_assets/themes/nextcloud_com/static/img/logo.svg", "doc/_shared_assets/static/logo-blue.pdf","doc/_shared_assets/static/logo-blue.png", "doc/logo-blue.pdf", "theme/talk-app.svg", "theme/*/deck.svg", "theme/*/talk-app.svg","theme/*/wizard-nextcloud.png","theme/*/wizard-nextcloud.svg","theme/*/wizard-nextcloud@2x.png","theme/*/wizard-talk.png","theme/*/wizard-talk.svg","theme/*/wizard-talk@2x.png", "theme/colored/talk-bordered.svg", "theme/colored/icons/Nextcloud-icon-win-folder.svg", "theme/colored/Nextcloud-icon-square.svg", "theme/colored/Nextcloud-icon.svg", "theme/colored/Nextcloud-macOS-icon.svg", "theme/colored/Nextcloud-macOS-sidebar.svg", "theme/colored/Nextcloud-w10startmenu.svg", "theme/colored/Nextcloud-w10starttile.png", "theme/colored/wizard_logo.png", "theme/colored/wizard_logo.svg", "theme/colored/wizard_logo@2x.png"]
+path = ["admin/osx/installer-background.png","admin/osx/installer-background.svg","admin/osx/installer-background_2x.png", "admin/win/msi/gui/banner.bmp","admin/win/msi/gui/banner.svg","admin/win/msi/gui/dialog.bmp", "doc/_shared_assets/themes/nextcloud_com/static/img/logo.svg", "doc/_shared_assets/static/logo-blue.pdf","doc/_shared_assets/static/logo-blue.png", "doc/logo-blue.pdf", "theme/talk-app.svg", "theme/*/deck.svg", "theme/*/talk-app.svg","theme/*/wizard-nextcloud.png","theme/*/wizard-nextcloud.svg","theme/*/wizard-nextcloud@2x.png","theme/*/wizard-talk.png","theme/*/wizard-talk.svg","theme/*/wizard-talk@2x.png", "theme/colored/talk-bordered.svg", "theme/colored/icons/Nextcloud-icon-win-folder.svg", "theme/colored/Nextcloud-icon-square.svg", "theme/colored/Nextcloud-icon.svg", "theme/colored/Nextcloud-macOS-icon.svg", "theme/colored/Nextcloud-macOS-sidebar.svg", "theme/colored/Nextcloud-w10startmenu.svg", "theme/colored/Nextcloud-w10starttile.png", "theme/colored/wizard_logo.png", "theme/colored/wizard_logo.svg", "theme/colored/wizard_logo@2x.png"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2016 Nextcloud GmbH"
 SPDX-License-Identifier = "LicenseRef-NextcloudTrademarks"
