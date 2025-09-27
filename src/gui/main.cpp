@@ -23,6 +23,10 @@
 #include "updater/updater.h"
 #endif
 
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+#include <KDBusService>
+#endif
+
 #include <QTimer>
 #include <QMessageBox>
 #include <QDebug>
@@ -159,6 +163,10 @@ int main(int argc, char **argv)
         }
         return 0;
     }
+
+#if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
+    auto dbusService = KDBusService{KDBusService::StartupOption::NoExitOnFailure | KDBusService::StartupOption::Unique};
+#endif
 
     // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
     // (issue #4693)
