@@ -138,11 +138,19 @@ ApplicationWindow {
         }
 
         property int userIndex: 0
+        property string modeSetStatus: "setStatus"
+        property string modeStatusMessage: "statusMessage"
+        property string initialMode: modeSetStatus
 
-        function openUserStatusDrawer(index) {
+        function openUserStatusDrawer(index, mode) {
             console.log(`About to show dialog for user with index ${index}`);
             userIndex = index;
+            initialMode = mode ? mode : modeSetStatus;
             open();
+        }
+
+        function openUserStatusMessageDrawer(index) {
+            openUserStatusDrawer(index, modeStatusMessage);
         }
 
         Loader {
@@ -152,6 +160,7 @@ ApplicationWindow {
             sourceComponent: UserStatusSelectorPage {
                 anchors.fill: parent
                 userIndex: userStatusDrawer.userIndex
+                mode: userStatusDrawer.initialMode
                 onFinished: userStatusDrawer.close()
             }
         }
