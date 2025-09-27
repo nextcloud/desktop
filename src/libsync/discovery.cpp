@@ -668,7 +668,17 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
                                                const RemoteInfo &serverEntry,
                                                const SyncJournalFileRecord &dbEntry)
 {
+    const auto opts = _discoveryData->_syncOptions;
+
     if (item->isDirectory()) {
+        // Turn new remote folders into virtual folders if the option is enabled.
+        if (!localEntry.isValid() &&
+            opts._vfs->mode() != Vfs::Off &&
+            _pinState != PinState::AlwaysLocal &&
+            !FileSystem::isExcludeFile(item->_file)) {
+            item->_type = ItemTypeVirtualDirectory;
+        }
+
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
                                                     serverEntry.remotePerm,
@@ -683,14 +693,14 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     }
 
     // Turn new remote files into virtual files if the option is enabled.
-    const auto opts = _discoveryData->_syncOptions;
     if (!localEntry.isValid() &&
-        item->_type == ItemTypeFile &&
         opts._vfs->mode() != Vfs::Off &&
         _pinState != PinState::AlwaysLocal &&
         !FileSystem::isExcludeFile(item->_file)) {
 
-        item->_type = ItemTypeVirtualFile;
+        if (item->_type == ItemTypeFile) {
+            item->_type = ItemTypeVirtualFile;
+        }
         if (isVfsWithSuffix()) {
             addVirtualFileSuffix(path._original);
         }
@@ -1122,7 +1132,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
-                     << "noServerEntry:" << noServerEntry;
+                     << "noServerEntry:" << noServerEntry
+                     << "type:" << item->_type;
 
     if (serverEntry.isValid()) {
         item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
@@ -1420,7 +1431,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1866,6 +1877,11 @@ void ProcessDirectoryJob::processFileFinalize(
         recurse = false;
     }
 
+    if (item->_type == ItemTypeVirtualDirectory) {
+        qCDebug(lcDisco()) << "do not recurse inside a virtual folder" << item->_file;
+        recurse = false;
+    }
+
     if (!(item->isDirectory() ||
           (!_discoveryData->_syncOptions._vfs || _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off) ||
           item->_type != CSyncEnums::ItemTypeVirtualFile ||
@@ -2211,10 +2227,15 @@ bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 
 void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 {
-    if (!isVfsWithSuffix())
+    if (!isVfsWithSuffix()) {
         return;
-    bool hasSuffix = hasVirtualFileSuffix(str);
-    ASSERT(hasSuffix);
+    }
+
+    const auto hasSuffix = hasVirtualFileSuffix(str);
+    if (!hasSuffix) {
+        qCDebug(lcDisco()) << "has no suffix" << str;
+        Q_ASSERT(hasSuffix);
+    }
     if (hasSuffix)
         str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
 }

@@ -109,6 +109,10 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         return callback(false);
     }
 
+    if (_syncOptions._vfs->mode() == Vfs::WindowsCfApi) {
+        return callback(true);
+    }
+
     checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
         if (bigFolder) {
             // we tell the UI there is a new folder
@@ -357,7 +361,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.modtime = dirent->modtime;
         i.size = dirent->size;
         i.inode = dirent->inode;
-        i.isDirectory = dirent->type == ItemTypeDirectory;
+        i.isDirectory = dirent->type == ItemTypeDirectory || dirent->type == ItemTypeVirtualDirectory;
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;

@@ -383,7 +383,6 @@ private slots:
     void slotDirDeletionJobsFinished(OCC::SyncFileItem::Status status);
 
 private:
-
     bool scheduleDelayedJobs();
 
     PropagatorCompositeJob _dirDeletionJobs;
