@@ -372,7 +372,7 @@ index 0855b028d..5c5ec1f6a 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index a9491e5be..b80e79fd7 100644
+index 01bbae79a..96b4848b0 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -383,7 +383,7 @@ index a9491e5be..b80e79fd7 100644
 +find_package(KF6Archive)
  find_package(KF6GuiAddons)
  
- if (NOT TARGET Qt::GuiPrivate)
+ if(CMAKE_BUILD_TYPE MATCHES Debug)
 @@ -581,9 +581,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
@@ -414,7 +414,7 @@ index a9491e5be..b80e79fd7 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 8303e4cd5..9ab09009a 100644
+index d2951a1f1..bb345934a 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -435,7 +435,7 @@ index 8303e4cd5..9ab09009a 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 8c1f1122a..3c025af55 100644
+index 3ea264172..999f139f8 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -468,10 +468,10 @@ index 29301107a..442a52a84 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index 34cfd0a66..70a608d25 100644
+index c0e833d02..b739e8821 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
-@@ -42,6 +42,7 @@
+@@ -44,6 +44,7 @@
  #include <QScopedValueRollback>
  #include <QMessageBox>
  
@@ -479,7 +479,7 @@ index 34cfd0a66..70a608d25 100644
  #include <KZip>
  #include <chrono>
  
-@@ -172,6 +173,7 @@ bool createDebugArchive(const QString &filename)
+@@ -178,6 +179,7 @@ bool createDebugArchive(const QString &filename)
  }
  
  }
@@ -487,7 +487,7 @@ index 34cfd0a66..70a608d25 100644
  
  namespace OCC {
  
-@@ -262,7 +264,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+@@ -271,7 +273,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
  
      connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
@@ -499,7 +499,7 @@ index 34cfd0a66..70a608d25 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -617,6 +623,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -634,6 +640,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -507,7 +507,7 @@ index 34cfd0a66..70a608d25 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -638,6 +645,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -655,6 +662,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -516,11 +516,11 @@ index 34cfd0a66..70a608d25 100644
  void GeneralSettings::slotShowLegalNotice()
  {
 diff --git a/src/gui/generalsettings.h b/src/gui/generalsettings.h
-index 2c52ff008..b03703e98 100644
+index b62a7b3c0..85de6f00a 100644
 --- a/src/gui/generalsettings.h
 +++ b/src/gui/generalsettings.h
-@@ -51,7 +51,9 @@ private slots:
-     void slotToggleCallNotifications(bool);
+@@ -52,7 +52,9 @@ private slots:
+     void slotToggleQuotaWarningNotifications(bool);
      void slotShowInExplorerNavigationPane(bool);
      void slotIgnoreFilesEditor();
 +#if defined(HAVE_KARCHIVE)
@@ -554,7 +554,7 @@ diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMe
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
 rename to src/gui/tray/TrayFoldersMenuButton.qml.in
-index be44601c7..e446ddae8 100644
+index 10421db5f..9c09a569a 100644
 --- a/src/gui/tray/TrayFoldersMenuButton.qml
 +++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
 @@ -2,7 +2,7 @@
@@ -674,7 +674,7 @@ index 370a1a30a..4ba1db6ee 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 1b314040d..0a2b0f3d3 100644
+index a5e53ce32..49d99a7c7 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -953,7 +953,7 @@ index c7c259ab0..e7ab6d6ad 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 8541f81ed..4924f2215 100644
+index 81342a629..c0507f205 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -9,6 +9,7 @@
@@ -964,7 +964,7 @@ index 8541f81ed..4924f2215 100644
  
  #include <QtCore>
  #ifndef TOKEN_AUTH_ONLY
-@@ -847,14 +848,12 @@ QString Theme::versionSwitchOutput() const
+@@ -913,14 +914,12 @@ QString Theme::versionSwitchOutput() const
  
  double Theme::getColorDarkness(const QColor &color)
  {
@@ -981,7 +981,7 @@ index 8541f81ed..4924f2215 100644
  }
  
  QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
-@@ -962,7 +961,7 @@ QColor Theme::defaultColor()
+@@ -1028,7 +1027,7 @@ QColor Theme::defaultColor()
  void Theme::connectToPaletteSignal() const
  {
      if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
@@ -990,7 +990,7 @@ index 8541f81ed..4924f2215 100644
      }
  }
  
-@@ -1005,19 +1004,6 @@ QVariantMap Theme::systemPalette() const
+@@ -1071,19 +1070,6 @@ QVariantMap Theme::systemPalette() const
  bool Theme::darkMode() const
  {
      connectToPaletteSignal();
@@ -1010,7 +1010,7 @@ index 8541f81ed..4924f2215 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1028,7 +1014,8 @@ bool Theme::darkMode() const
+@@ -1094,7 +1080,8 @@ bool Theme::darkMode() const
          }
      }
  #endif
@@ -1021,7 +1021,7 @@ index 8541f81ed..4924f2215 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index dc558288d..34f1e25dd 100644
+index 589e190bb..5fc8d24c5 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
 @@ -416,8 +416,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
@@ -1060,7 +1060,7 @@ index b45cf4911..060f9aca0 100644
  
  #include "account.h"
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index c585ac618..cb0a4f741 100644
+index c7be00218..59b832146 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
