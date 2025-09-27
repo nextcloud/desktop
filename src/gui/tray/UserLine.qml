@@ -16,6 +16,7 @@ AbstractButton {
     id: userLine
 
     signal showUserStatusSelector(int id)
+    signal showUserStatusMessageSelector(int id)
 
 
     Accessible.role: Accessible.MenuItem
@@ -139,6 +140,15 @@ AbstractButton {
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
+               }
+
+                MenuItem {
+                    visible: model.isConnected && model.serverHasUserStatus
+                    height: visible ? implicitHeight : 0
+                    text: qsTr("Status message")
+                    font.pixelSize: Style.topLinePixelSize
+                    hoverEnabled: true
+                    onClicked: showUserStatusMessageSelector(index)
                }
 
                 MenuItem {
