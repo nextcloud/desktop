@@ -146,11 +146,13 @@ void Utility::setupDesktopIni(const QString &folder, const QString localizedReso
     desktopIni.write("\r\n");
     desktopIni.close();
 
-    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // Set the folder as read only and Desktop.ini as hidden+system for explorer to pick it.
     // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
     DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
-    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_READONLY);
     SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+    // Remove system folder attribute set from older Nextcloud installations
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs & ~FILE_ATTRIBUTE_SYSTEM);
 }
 
 void Utility::setupFavLink(const QString &folder)
@@ -232,10 +234,14 @@ void Utility::removeFavLink(const QString &folder)
                              << " has failed. Make sure it exists and is not locked by another process.";
     }
 
-    // #2 Remove the system file attribute
+    // #2 Remove the read only file attribute
     const auto folderAttrs = GetFileAttributesW(folder.toStdWString().c_str());
-    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_SYSTEM)) {
-        qCWarning(lcUtility) << "Remove system file attribute failed for:" << folder;
+    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_READONLY)) {
+        qCWarning(lcUtility) << "Remove read only file attribute failed for:" << folder;
+    }
+    // Check if system file attribute (set from older Nextcloud installations) got properly removed at installation
+    if (folderAttrs & FILE_ATTRIBUTE_SYSTEM) {
+        qCWarning(lcUtility) << "System file attribute is set for:" << folder;
     }
 
     // #3 Remove the link to this folder
