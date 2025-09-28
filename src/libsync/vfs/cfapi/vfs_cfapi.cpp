@@ -535,22 +535,15 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
     const auto &journal = params().journal;
 
     for (const auto &entryInfo : newEntries) {
-        const auto &fileEtag = entryInfo.properties[QStringLiteral("getetag")];
-        const auto &fileId = entryInfo.properties[QStringLiteral("fileid")];
-        const auto fileSize = entryInfo.properties[QStringLiteral("size")].toULongLong();
-        auto fileMtimeString = entryInfo.properties[QStringLiteral("getlastmodified")];
-        fileMtimeString.replace("GMT", "+0000");
-        const auto fileMtime = QDateTime::fromString(fileMtimeString, Qt::RFC2822Date).currentSecsSinceEpoch();
-
-        const auto &fileResourceType = entryInfo.properties[QStringLiteral("resourcetype")];
-        const auto isDir = QStringLiteral("<collection></collection>") == fileResourceType;
 
         auto folderRecord = SyncJournalFileRecord{};
-        folderRecord._fileId = fileId.toUtf8();
-        folderRecord._fileSize = fileSize;
-        folderRecord._etag = fileEtag.toUtf8();
-        folderRecord._path = entryInfo.name.toUtf8();
-        folderRecord._type = (isDir ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
+        folderRecord._fileId = entryInfo.parsedProperties.fileId;
+        folderRecord._fileSize = entryInfo.parsedProperties.size;
+        folderRecord._etag = entryInfo.parsedProperties.etag;
+        folderRecord._path = entryInfo.fullPath.toUtf8();
+        folderRecord._type = (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
+        folderRecord._remotePerm = entryInfo.parsedProperties.remotePerm;
+        folderRecord._modtime = entryInfo.parsedProperties.modtime;
 
         const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
         if (!updateRecordDbResult) {
@@ -573,7 +566,7 @@ int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEnt
         return 0;
     }
 
-    qCInfo(lcCfApi) << "update folder on-demand DB record succeeded";
+    qCInfo(lcCfApi) << "update folder on-demand DB record succeeded" << pathString;
 
     return 1;
 }

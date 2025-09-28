@@ -148,37 +148,27 @@ void cfApiSendPlaceholdersTransferInfo(const CF_CONNECTION_KEY &connectionKey,
         const auto &entryInfo = newEntries[i];
         auto &newPlaceholder = newPlaceholders[i];
 
-        const auto entryFileName = entryInfo.name.mid(serverPath.length());
-        const auto &fileId = entryInfo.properties[QStringLiteral("fileid")];
-        const auto fileSize = entryInfo.properties[QStringLiteral("size")].toULongLong();
-        auto fileMtimeString = entryInfo.properties[QStringLiteral("getlastmodified")];
-        fileMtimeString.replace("GMT", "+0000");
-        const auto fileMtime = QDateTime::fromString(fileMtimeString, Qt::RFC2822Date).currentSecsSinceEpoch();
-
-        const auto &fileResourceType = entryInfo.properties[QStringLiteral("resourcetype")];
-        const auto isDir = QStringLiteral("<collection></collection>") == fileResourceType;
-
-        qCInfo(lcCfApiWrapper()) << entryFileName
-                                 << "fileId:" << fileId
-                                 << "fileSize:" << fileSize
-                                 << "fileMtime:" << fileMtime
-                                 << "fileResourceType:" << fileResourceType;
+        qCInfo(lcCfApiWrapper()) << entryInfo.name
+                                 << "fileId:" << entryInfo.parsedProperties.fileId
+                                 << "fileSize:" << entryInfo.parsedProperties.size
+                                 << "fileMtime:" << entryInfo.parsedProperties.modtime
+                                 << "fileResourceType:" << (entryInfo.parsedProperties.isDirectory ? "folder" : "file");
 
         newPlaceholder.RelativeFileName = entryInfo.stdWStringName.c_str();
-        const auto fileIdentity = entryInfo.properties[QStringLiteral("fileid")].toStdWString();
+        const auto fileIdentity = entryInfo.parsedProperties.fileId;
         newPlaceholder.FileIdentity = fileIdentity.data();
         newPlaceholder.FileIdentityLength = (fileIdentity.length() + 1) * sizeof(wchar_t);
         newPlaceholder.Flags = CF_PLACEHOLDER_CREATE_FLAG_MARK_IN_SYNC;
         auto &fsMetadata = newPlaceholder.FsMetadata;
 
-        fsMetadata.FileSize.QuadPart = fileSize;
+        fsMetadata.FileSize.QuadPart = entryInfo.parsedProperties.size;
         fsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_NORMAL;
-        OCC::Utility::UnixTimeToLargeIntegerFiletime(fileMtime, &fsMetadata.BasicInfo.CreationTime);
-        OCC::Utility::UnixTimeToLargeIntegerFiletime(fileMtime, &fsMetadata.BasicInfo.LastWriteTime);
-        OCC::Utility::UnixTimeToLargeIntegerFiletime(fileMtime, &fsMetadata.BasicInfo.LastAccessTime);
-        OCC::Utility::UnixTimeToLargeIntegerFiletime(fileMtime, &fsMetadata.BasicInfo.ChangeTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(entryInfo.parsedProperties.modtime, &fsMetadata.BasicInfo.CreationTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(entryInfo.parsedProperties.modtime, &fsMetadata.BasicInfo.LastWriteTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(entryInfo.parsedProperties.modtime, &fsMetadata.BasicInfo.LastAccessTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(entryInfo.parsedProperties.modtime, &fsMetadata.BasicInfo.ChangeTime);
 
-        if (isDir) {
+        if (entryInfo.parsedProperties.isDirectory) {
             fsMetadata.BasicInfo.FileAttributes = FILE_ATTRIBUTE_DIRECTORY;
             fsMetadata.FileSize.QuadPart = 0;
         }
@@ -514,10 +504,13 @@ void CALLBACK cfApiCancelFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo,
 
 void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
     qDebug(lcCfApiWrapper) << "Fetch placeholders callback called. File size:" << callbackInfo->FileSize.QuadPart;
     qDebug(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
+    qDebug(lcCfApiWrapper) << "Fetch placeholders requested for path" << path;
 
     const auto sendTransferError = [=] {
         cfApiSendPlaceholdersTransferInfo(callbackInfo->ConnectionKey,
@@ -541,7 +534,6 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
 
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
-    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
     if (QCoreApplication::applicationPid() == callbackInfo->ProcessInfo->ProcessId) {

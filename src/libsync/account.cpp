@@ -1221,8 +1221,9 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
     });
 
     auto ignoreFirst = true;
-    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [&ignoreFirst, promise, path] (const QString &name, const QMap<QString, QString> &properties) {
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [&ignoreFirst, promise, path, journalForFolder, this] (const QString &name, const QMap<QString, QString> &properties) {
         if (ignoreFirst) {
+            qCDebug(lcAccount()) << "skip first item";
             ignoreFirst = false;
             return;
         }
@@ -1230,9 +1231,22 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         qCInfo(lcAccount()) << "ls col job" << path << "new file" << name << properties.count();
 
         const auto slash = name.lastIndexOf('/');
-        const auto realEntryName = name.mid(slash + 1);
+        const auto itemFileName = name.mid(slash + 1);
+        const auto absoluteItemPathName = (path.isEmpty() ? itemFileName : path + "/" + itemFileName);
 
-        promise->emplaceResult(realEntryName, realEntryName.toStdWString(), properties);
+        auto currentItemDbRecord = SyncJournalFileRecord{};
+        if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()) {
+            qCWarning(lcAccount()) << "skip existing item" << absoluteItemPathName;
+            return;
+        }
+
+        auto newEntry = RemoteInfo{};
+
+        LsColJob::propertyMapToRemoteInfo(properties,
+                                          serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                          newEntry);
+
+        promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
     });
 
     promise->start();

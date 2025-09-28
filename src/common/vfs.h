@@ -10,6 +10,8 @@
 #include "syncfilestatus.h"
 #include "pinstate.h"
 
+#include "common/remoteinfo.h"
+
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
@@ -33,7 +35,8 @@ using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 struct OCSYNC_EXPORT PlaceholderCreateInfo {
     QString name;
     std::wstring stdWStringName;
-    QMap<QString, QString> properties;
+    QString fullPath;
+    RemoteInfo parsedProperties;
 };
 
 /** Collection of parameters for initializing a Vfs instance. */
