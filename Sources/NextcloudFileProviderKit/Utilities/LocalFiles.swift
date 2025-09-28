@@ -51,23 +51,49 @@ public func isLockFileName(_ filename: String) -> Bool {
 ///
 /// Example for Microsoft Office: `MyDoc.docx` is extracted from `~$MyDoc.docx`.
 /// Example for LibreOffice: `MyDoc.odt` is extracted from `.~lock.MyDoc.odt#`.
-/// 
+/// Filename with <8 characters: Test.docx → lock file: ~$Test.docx
+/// Filename with >8 characters: Document.docx → lock file: ~$cument.docx
+/// Filename sandbox-style temporary naming like: Welcome123456.doc.sb-d215eb53-IBAwfU
 /// - Returns: Either the original file name parsed from the given lock file name or `nil`, if it is not a recognized lock file format.
 ///
-public func originalFileName(fromLockFileName lockFilename: String) -> String? {
+public func originalFileName(fromLockFileName lockFilename: String, dbManager: FilesDatabaseManager) -> String? {
+    let logger = FileProviderLogger(category: "localfileutils", log: dbManager.logger.log)
+    logger.debug("Called originalFileName with lock filename: \(lockFilename)")
+
+    var targetFilePattern = lockFilename
     if lockFilename.hasPrefix("~$") {
-        // Remove the "~$" prefix
         let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
-        return String(lockFilename[index...])
+        targetFilePattern = String(lockFilename[index...])
     }
 
     if lockFilename.hasPrefix(".~lock.") && lockFilename.hasSuffix("#") {
-        // Strip the prefix and suffix
         let start = lockFilename.index(lockFilename.startIndex, offsetBy: 7)
         let end = lockFilename.index(before: lockFilename.endIndex)
-        return String(lockFilename[start..<end])
+        targetFilePattern = String(lockFilename[start..<end])
+    }
+    
+    if let sbRange = lockFilename.range(of: ".sb-") {
+        targetFilePattern = String(lockFilename[..<sbRange.lowerBound])
     }
 
-    // Not a recognized lock file
+    logger.debug("Target filename is: \(targetFilePattern)")
+
+    guard let itemsMatchingMetadata = dbManager.itemsMetadataFromPattern(pattern: targetFilePattern) else {
+        logger.debug("Could not find files in db matching pattern: \(targetFilePattern)")
+        return targetFilePattern
+    }
+    
+    for file in itemsMatchingMetadata {
+        let potentialOriginalFile = file.fileName
+        
+        if lockFilename == potentialOriginalFile {
+            logger.debug("Lock filename \(lockFilename) is the same as filename found in db \(potentialOriginalFile)")
+            continue;
+        }
+
+        logger.debug("Matched lock filename \(lockFilename) to original filename \(potentialOriginalFile)")
+        return potentialOriginalFile
+    }
+    
     return nil
 }

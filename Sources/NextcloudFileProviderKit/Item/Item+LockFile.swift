@@ -78,7 +78,7 @@ extension Item {
 
         logger.info("Item to create is a lock file. Will attempt to lock the associated file on the server.", [.name: itemTemplate.filename])
 
-        guard let targetFileName = originalFileName(fromLockFileName: itemTemplate.filename) else {
+        guard let targetFileName = originalFileName(fromLockFileName: itemTemplate.filename, dbManager: dbManager) else {
             logger.error("Will not lock the target file because it could not be determined based on the lock file name.", [.name: itemTemplate.filename])
             return (nil, nil)
         }
@@ -235,8 +235,9 @@ extension Item {
 
         dbManager.deleteItemMetadata(ocId: metadata.ocId)
 
-        guard let originalFileName = originalFileName(fromLockFileName: metadata.fileName) else {
+        guard let originalFileName = originalFileName(fromLockFileName: metadata.fileName, dbManager: dbManager) else {
             logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: self.metadata.fileName])
+
             return nil
         }
 
