@@ -146,10 +146,10 @@ void Utility::setupDesktopIni(const QString &folder, const QString localizedReso
     desktopIni.write("\r\n");
     desktopIni.close();
 
-    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // Set the folder as read only and Desktop.ini as hidden+system for explorer to pick it.
     // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
     DWORD folderAttrs = GetFileAttributesW((wchar_t *)folder.utf16());
-    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+    SetFileAttributesW((wchar_t *)folder.utf16(), folderAttrs | FILE_ATTRIBUTE_READONLY);
     SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
 }
 
@@ -234,8 +234,8 @@ void Utility::removeFavLink(const QString &folder)
 
     // #2 Remove the system file attribute
     const auto folderAttrs = GetFileAttributesW(folder.toStdWString().c_str());
-    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_SYSTEM)) {
-        qCWarning(lcUtility) << "Remove system file attribute failed for:" << folder;
+    if (!SetFileAttributesW(folder.toStdWString().c_str(), folderAttrs & ~FILE_ATTRIBUTE_READONLY)) {
+        qCWarning(lcUtility) << "Remove read only file attribute failed for:" << folder;
     }
 
     // #3 Remove the link to this folder
