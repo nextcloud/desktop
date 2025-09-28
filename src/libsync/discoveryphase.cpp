@@ -5,12 +5,12 @@
  */
 
 #include "discoveryphase.h"
+
 #include "common/utility.h"
 #include "configfile.h"
 #include "discovery.h"
 #include "helpers.h"
 #include "progressdispatcher.h"
-
 #include "account.h"
 #include "clientsideencryptionjobs.h"
 #include "foldermetadata.h"
