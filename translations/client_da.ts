@@ -7085,12 +7085,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Downloader</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Uploader</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
