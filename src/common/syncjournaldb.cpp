@@ -1015,6 +1015,11 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     SyncJournalFileRecord record = _record;
     QMutexLocker locker(&_mutex);
 
+    Q_ASSERT(record._modtime > 0);
+    if (record._modtime <= 0) {
+        qCCritical(lcDb) << "invalid modification time";
+    }
+
     if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";

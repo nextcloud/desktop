@@ -263,6 +263,7 @@ private slots:
         auto initialEtag = QByteArray("etag");
         auto makeEntry = [&](const QByteArray &path, ItemType type) {
             SyncJournalFileRecord record;
+            record._modtime = QDateTime::currentSecsSinceEpoch();
             record._path = path;
             record._type = type;
             record._etag = initialEtag;
@@ -329,6 +330,7 @@ private slots:
             SyncJournalFileRecord record;
             record._path = path;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
+            record._modtime = QDateTime::currentSecsSinceEpoch();
             QVERIFY(_db.setFileRecord(record));
         };
 
