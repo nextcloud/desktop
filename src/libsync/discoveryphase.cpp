@@ -483,117 +483,6 @@ SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::requiredEncryptionSt
     return _encryptionStatusRequired;
 }
 
-static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
-{
-    for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        QString property = it.key();
-        QString value = it.value();
-        if (property == QLatin1String("resourcetype")) {
-            result.isDirectory = value.contains(QLatin1String("collection"));
-        } else if (property == QLatin1String("getlastmodified")) {
-            value.replace("GMT", "+0000");
-            const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
-            Q_ASSERT(date.isValid());
-            result.modtime = 0;
-            if (date.toSecsSinceEpoch() > 0) {
-                result.modtime = date.toSecsSinceEpoch();
-            }
-        } else if (property == QLatin1String("getcontentlength")) {
-            // See #4573, sometimes negative size values are returned
-            bool ok = false;
-            qlonglong ll = value.toLongLong(&ok);
-            if (ok && ll >= 0) {
-                result.size = ll;
-            } else {
-                result.size = 0;
-            }
-        } else if (property == "getetag") {
-            result.etag = Utility::normalizeEtag(value.toUtf8());
-        } else if (property == "id") {
-            result.fileId = value.toUtf8();
-        } else if (property == "downloadURL") {
-            result.directDownloadUrl = value;
-        } else if (property == "dDC") {
-            result.directDownloadCookies = value;
-        } else if (property == "permissions") {
-            result.remotePerm = RemotePermissions::fromServerString(value, algorithm, map);
-        } else if (property == "checksums") {
-            result.checksumHeader = findBestChecksum(value.toUtf8());
-        } else if (property == "share-types" && !value.isEmpty()) {
-            // Since QMap is sorted, "share-types" is always after "permissions".
-            if (result.remotePerm.isNull()) {
-                qWarning() << "Server returned a share type, but no permissions?";
-            } else {
-                // S means shared with me.
-                // But for our purpose, we want to know if the file is shared. It does not matter
-                // if we are the owner or not.
-                // Piggy back on the permission field
-                result.remotePerm.setPermission(RemotePermissions::IsShared);
-                result.sharedByMe = true;
-            }
-        } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
-            result._isE2eEncrypted = true;
-        } else if (property == "lock") {
-            result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
-        }
-        if (property == "lock-owner-displayname") {
-            result.lockOwnerDisplayName = value;
-        }
-        if (property == "lock-owner") {
-            result.lockOwnerId = value;
-        }
-        if (property == "lock-owner-type") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockOwnerType = static_cast<SyncFileItem::LockOwnerType>(intConvertedValue);
-            } else {
-                result.lockOwnerType = SyncFileItem::LockOwnerType::UserLock;
-            }
-        }
-        if (property == "lock-owner-editor") {
-            result.lockEditorApp = value;
-        }
-        if (property == "lock-time") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockTime = intConvertedValue;
-            } else {
-                result.lockTime = 0;
-            }
-        }
-        if (property == "lock-timeout") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockTimeout = intConvertedValue;
-            } else {
-                result.lockTimeout = 0;
-            }
-        }
-        if (property == "lock-token") {
-            result.lockToken = value;
-        }
-        if (property == "metadata-files-live-photo") {
-            result.livePhotoFile = value;
-            result.isLivePhoto = true;
-        }
-    }
-
-    if (result.isDirectory && map.contains("size")) {
-        result.sizeOfFolder = map.value("size").toInt();
-    }
-
-    if (result.isDirectory && map.contains(FolderQuota::usedBytesC)) {
-        result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
-    }
-
-    if (result.isDirectory && map.contains(FolderQuota::availableBytesC)) {
-        result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
-    }
-}
-
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
 {
     if (!_ignoredFirst) {
@@ -644,9 +533,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (map.contains(FolderQuota::availableBytesC))     {
             result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
         }
-        propertyMapToRemoteInfo(map,
-                                _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
-                                result);
+        LsColJob::propertyMapToRemoteInfo(map,
+                                          _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                          result);
         if (result.isDirectory)
             result.size = 0;
 
