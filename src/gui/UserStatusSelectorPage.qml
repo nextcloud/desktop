@@ -33,7 +33,6 @@ Page {
     }
 
     contentItem: StackLayout {
-        spacing: Style.standardSpacing
         currentIndex: page.mode === page.statusMessageMode ? 1 : 0
 
         UserStatusSetStatusView {
