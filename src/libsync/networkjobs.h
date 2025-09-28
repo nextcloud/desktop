@@ -11,6 +11,8 @@
 
 #include "abstractnetworkjob.h"
 
+#include "common/remoteinfo.h"
+#include "common/remotepermissions.h"
 #include "common/result.h"
 
 #include <QBuffer>
@@ -148,6 +150,8 @@ public:
      */
     void setProperties(QList<QByteArray> properties);
     [[nodiscard]] QList<QByteArray> properties() const;
+
+    static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result);
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
