@@ -53,7 +53,11 @@ ColumnLayout {
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
-                text: "😀"
+                readonly property string fallbackEmoji: "😀"
+
+                text: userStatusSelectorModel && userStatusSelectorModel.userStatusEmoji.length > 0
+                      ? userStatusSelectorModel.userStatusEmoji
+                      : fallbackEmoji
                 padding: 0
                 z: showBorder ? 2 : 0
                 hoverEnabled: true
@@ -69,21 +73,13 @@ ColumnLayout {
 
                 contentItem: Label {
                     text: fieldButton.text
-                    opacity: 0.7
+                    opacity: userStatusSelectorModel && userStatusSelectorModel.userStatusEmoji.length > 0 ? 1.0 : 0.7
                     textFormat: Text.PlainText
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
 
                 onClicked: emojiDialog.open()
-            }
-
-            Binding {
-                when: userStatusSelectorModel && userStatusSelectorModel.userStatusEmoji.length > 0
-                fieldButton {
-                    text: userStatusSelectorModel.userStatusEmoji
-                    contentItem.opacity: 1.0
-                }
             }
 
             Popup {
