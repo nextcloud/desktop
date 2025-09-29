@@ -49,38 +49,40 @@ public func isLockFileName(_ filename: String) -> Bool {
 ///
 /// Parse the original file name contained in a lock filename.
 ///
-/// Example for Microsoft Office: `MyDoc.docx` is extracted from `~$MyDoc.docx`.
-/// Example for LibreOffice: `MyDoc.odt` is extracted from `.~lock.MyDoc.odt#`.
-/// Filename with <8 characters: Test.docx → lock file: ~$Test.docx
-/// Filename with >8 characters: Document.docx → lock file: ~$cument.docx
-/// Filename sandbox-style temporary naming like: Welcome123456.doc.sb-d215eb53-IBAwfU
+/// - Example for Microsoft Office: `MyDoc.docx` is extracted from `~$MyDoc.docx`.
+/// - Example for LibreOffice: `MyDoc.odt` is extracted from `.~lock.MyDoc.odt#`.
+/// - Filename with less than 8 characters like `Test.docx` will result in a lock file named `~$Test.docx`.
+/// - Filename with more than 8 characters like `Document.docx` will result in a lock file named `~$cument.docx`.
+/// - Filename sandbox-style temporary naming like `Welcome123456.doc.sb-d215eb53-IBAwfU`.
+///
 /// - Returns: Either the original file name parsed from the given lock file name or `nil`, if it is not a recognized lock file format.
 ///
 public func originalFileName(fromLockFileName lockFilename: String, dbManager: FilesDatabaseManager) -> String? {
     let logger = FileProviderLogger(category: "localfileutils", log: dbManager.logger.log)
     logger.debug("Called originalFileName with lock filename: \(lockFilename)")
 
-    var targetFilePattern = lockFilename
+    var targetFileSuffix = lockFilename
     if lockFilename.hasPrefix("~$") {
         let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
-        targetFilePattern = String(lockFilename[index...])
+        targetFileSuffix = String(lockFilename[index...])
     }
 
     if lockFilename.hasPrefix(".~lock.") && lockFilename.hasSuffix("#") {
         let start = lockFilename.index(lockFilename.startIndex, offsetBy: 7)
         let end = lockFilename.index(before: lockFilename.endIndex)
-        targetFilePattern = String(lockFilename[start..<end])
+        targetFileSuffix = String(lockFilename[start..<end])
     }
     
     if let sbRange = lockFilename.range(of: ".sb-") {
-        targetFilePattern = String(lockFilename[..<sbRange.lowerBound])
+        targetFileSuffix = String(lockFilename[..<sbRange.lowerBound])
     }
 
-    logger.debug("Target filename is: \(targetFilePattern)")
+    logger.debug("Target suffix is: \(targetFileSuffix)")
 
-    guard let itemsMatchingMetadata = dbManager.itemsMetadataFromPattern(pattern: targetFilePattern) else {
-        logger.debug("Could not find files in db matching pattern: \(targetFilePattern)")
-        return targetFilePattern
+    let itemsMatchingMetadata = dbManager.itemsMetadataByFileNameSuffix(suffix: targetFileSuffix)
+    if itemsMatchingMetadata.isEmpty {
+        logger.debug("Could not find files in db matching suffix: \(targetFileSuffix)")
+        return targetFileSuffix
     }
     
     for file in itemsMatchingMetadata {

@@ -662,18 +662,21 @@ public final class FilesDatabaseManager: Sendable {
         return (updated, deleted)
     }
     
-    public func itemsMetadataFromPattern(
-        pattern: String
-    ) -> [SendableItemMetadata]? {
-        logger.debug("Trying to find files matching pattern \(pattern)")
-        let results = itemMetadatas.where { $0.fileName.ends(with: pattern) && !$0.directory }
+    public func itemsMetadataByFileNameSuffix(suffix: String) -> [SendableItemMetadata] {
+        logger.debug("Trying to find files matching pattern \"\(suffix)\".")
+        
+        let results = itemMetadatas.where { 
+            $0.fileName.ends(with: suffix) && !$0.directory
+        }
+        
         guard !results.isEmpty else {
-            logger.debug("Could not find files matching pattern \(pattern)")
-            return nil
+            logger.debug("Could not find files matching pattern \"\(suffix)\".")
+            return []
         }
         
         let filesMetadata = results.toUnmanagedResults()
-        logger.debug("Found \(filesMetadata.count) file(s) that match \(pattern) metadata: \(filesMetadata)")
+        logger.debug("Found \(filesMetadata.count) file(s) that match \"\(suffix)\" metadata: \(filesMetadata)")
+
         return filesMetadata
     }
     
