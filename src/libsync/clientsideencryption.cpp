@@ -596,7 +596,12 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     }
 
     auto encryptedBase64Result = QByteArray{};
+    bool needHardwareTokenEncryptionInit = false;
     for (auto i = 0; i < 2; ++i) {
+        if (needHardwareTokenEncryptionInit) {
+            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
+        }
+
         const auto publicKey = selectedCertificate.getEvpPublicKey();
         Q_ASSERT(publicKey);
 
@@ -607,6 +612,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
             break;
         } else if (encryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
             qCInfo(lcCseDecryption()) << "retry encryption after error";
+            needHardwareTokenEncryptionInit = true;
             continue;
         } else {
             qCWarning(lcCseEncryption()) << "encrypt failed";
@@ -639,7 +645,12 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
     }
 
     auto decryptBase64Result = QByteArray{};
+    bool needHardwareTokenEncryptionInit = false;
     for (auto i = 0; i < 2; ++i) {
+        if (needHardwareTokenEncryptionInit) {
+            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
+        }
+
         const auto key = selectedCertificate.getEvpPrivateKey();
         if (!key) {
             qCWarning(lcCseDecryption()) << "invalid private key handle";
@@ -652,6 +663,7 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
             break;
         } else if (decryptionResult.error() == ClientSideEncryption::EncryptionErrorType::RetryOnError) {
             qCInfo(lcCseDecryption()) << "retry decryption after error";
+            needHardwareTokenEncryptionInit = true;
             continue;
         } else {
             qCWarning(lcCseDecryption()) << "decrypt failed";
@@ -790,7 +802,6 @@ OCC::Result<QByteArray, OCC::ClientSideEncryption::EncryptionErrorType> decryptS
     if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)binaryData.constData(), binaryData.size()) <= 0) {
         const auto error = handleErrors();
         if (ClientSideEncryption::checkEncryptionErrorForHardwareTokenResetState(error)) {
-            encryptionEngine.initializeHardwareTokenEncryption(nullptr);
             return {OCC::ClientSideEncryption::EncryptionErrorType::RetryOnError};
         }
         qCCritical(lcCseDecryption()) << "Could not decrypt the data." << error;
