@@ -195,12 +195,12 @@ class LockViewController: NSViewController {
 
             // Run lock state checks
             if locking {
-                guard !itemMetadata.lock else {
+                guard itemMetadata.lock == nil else {
                     presentError("File is already locked.")
                     return
                 }
             } else {
-                guard itemMetadata.lock else {
+                guard itemMetadata.lock != nil else {
                     presentError("File is already unlocked.")
                     return
                 }
