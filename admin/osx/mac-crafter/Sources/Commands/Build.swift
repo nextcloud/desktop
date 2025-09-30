@@ -34,13 +34,13 @@ struct Build: AsyncParsableCommand {
     var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
-    var kdeBlueprintsGitRef = "stable-3.17"
+    var kdeBlueprintsGitRef = "next"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
-    var clientBlueprintsGitRef = "stable-3.17"
+    var clientBlueprintsGitRef = "next"
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
@@ -253,7 +253,7 @@ struct Build: AsyncParsableCommand {
             }
         }
         
-        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
+        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "--compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
