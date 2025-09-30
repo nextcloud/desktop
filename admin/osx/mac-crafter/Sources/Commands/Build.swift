@@ -253,7 +253,7 @@ struct Build: AsyncParsableCommand {
             }
         }
         
-        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
+        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "--compile" : "--compile --install"
         let offlineMode = offline ? "--offline" : ""
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
