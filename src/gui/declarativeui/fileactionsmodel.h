@@ -97,6 +97,7 @@ private:
     static constexpr char fileIdUrlC[] = "{fileId}";
     static constexpr char fileIdC[] = "fileId";
     static constexpr char filePathC[] = "filePath";
+    static constexpr char rowC[] = "row";
 };
 
 }

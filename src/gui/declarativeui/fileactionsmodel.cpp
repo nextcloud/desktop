@@ -207,8 +207,8 @@ void FileActionsModel::parseEndpoints()
 
 QString FileActionsModel::parseUrl(const QString &url) const
 {
-    auto unparsedUrl = url;
-    const auto parsedUrl = unparsedUrl.replace(QRegularExpression(fileIdUrlC), _fileId);
+    auto parsedUrl = url;
+    parsedUrl.replace(fileIdUrlC, _fileId);
     return parsedUrl;
 }
 
@@ -249,18 +249,48 @@ void FileActionsModel::createRequest(const int row)
     }
     const auto verb = job->stringToVerb(_fileActions.at(row).method);
     job->setVerb(verb);
+    job->setProperty(rowC, row);
     job->start();
 }
 
 void FileActionsModel::processRequest(const QJsonDocument &json, int statusCode)
 {
-    Q_UNUSED(json)
-    auto message = tr("File action succeded, access your instance for the result.");
+    const auto row = sender()->property(rowC).toInt();
+    const auto fileAction = _fileActions.at(row).name;
+    const auto errorMessage = tr("%1 did not succeed, please try again later. "
+                                 "If you need help, contact your server administrator.",
+                                 "file action error message").arg(fileAction);
     if (statusCode != 200) {
         qCWarning(lcFileActions) << "File action did not succeed for" << _localPath;
+        setResponse({ errorMessage, _accountUrl });
+        return;
     }
+
+    const auto root = json.object().value(QStringLiteral("root")).toObject();
     const auto folderForPath = FolderMan::instance()->folderForPath(_localPath);
-    setResponse({ message, _accountState->account()->url().toString() });
+    const auto remoteFolderPath = _accountUrl + folderForPath->remotePath();
+    const auto successMessage = tr("%1 done.", "file action success message").arg(fileAction);
+    if (root.empty()) {
+        setResponse({ successMessage, remoteFolderPath });
+        return;
+    }
+
+    const auto orientation = root.value(QStringLiteral("orientation")).toString();
+    const auto rows = root.value(QStringLiteral("rows")).toArray();
+    if (rows.empty()) {
+        setResponse({ successMessage, remoteFolderPath });
+        return;
+    }
+
+    for (const auto &rowValue : rows) {
+        const auto row = rowValue.toObject();
+        const auto children = row.value("children").toArray();
+        for (const auto &childValue : children) {
+            const auto child = childValue.toObject();
+            setResponse({ child.value(QStringLiteral("element")).toString(),
+                         _accountUrl + child.value(QStringLiteral("url")).toString() });
+        }
+    }
 }
 
 } // namespace OCC
