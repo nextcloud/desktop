@@ -3,20 +3,23 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "flow2auth.h"
+
+#include "abstractnetworkjob.h"
+#include "account.h"
+#include "config.h"
+#include "configfile.h"
+#include "guiutility.h"
+#include "networkjobs.h"
+#include "theme.h"
+
 #include <QDesktopServices>
 #include <QApplication>
 #include <QClipboard>
 #include <QTimer>
 #include <QBuffer>
-#include "abstractnetworkjob.h"
-#include "account.h"
-#include "flow2auth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "theme.h"
-#include "networkjobs.h"
-#include "configfile.h"
-#include "guiutility.h"
 
 namespace OCC {
 
@@ -104,10 +107,10 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
                 loginUrl.setQuery(query);
             };
 
-            if (const auto userName = _account->userFromCredentials(); !userName.isEmpty()) {
-                setUserNameForLogin(userName, _loginUrl);
-            } else if (const auto userName = Utility::getCurrentUserName(); !userName.isEmpty()) {
-                setUserNameForLogin(userName, _loginUrl);
+            if (const auto userNameFromCredentials = _account->userFromCredentials(); !userNameFromCredentials.isEmpty()) {
+                setUserNameForLogin(userNameFromCredentials, _loginUrl);
+            } else if (const auto currentUserName = Utility::getCurrentUserName(); !WIN_DISABLE_USERNAME_PREFILL && !currentUserName.isEmpty()) {
+                setUserNameForLogin(currentUserName, _loginUrl);
             }
         }
 
