@@ -76,6 +76,10 @@ Button {
                         userStatusDrawer.openUserStatusDrawer(model.index);
                         accountMenu.close();
                     }
+                    onShowUserStatusMessageSelector: {
+                        userStatusDrawer.openUserStatusMessageDrawer(model.index);
+                        accountMenu.close();
+                    }
                     onClicked: UserModel.currentUserId = model.index;
                 }
             }
