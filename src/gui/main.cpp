@@ -95,7 +95,6 @@ int main(int argc, char **argv)
 #endif
 
     QQuickStyle::setStyle(qmlStyle);
-    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
 
     OCC::Application app(argc, argv);
 
