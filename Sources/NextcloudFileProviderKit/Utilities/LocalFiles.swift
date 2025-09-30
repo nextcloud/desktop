@@ -58,7 +58,7 @@ public func isLockFileName(_ filename: String) -> Bool {
 /// - Returns: Either the original file name parsed from the given lock file name or `nil`, if it is not a recognized lock file format.
 ///
 public func originalFileName(fromLockFileName lockFilename: String, dbManager: FilesDatabaseManager) -> String? {
-    let logger = FileProviderLogger(category: "localfileutils", log: dbManager.logger.log)
+    let logger = FileProviderLogger(category: "LocalFiles", log: dbManager.logger.log)
     logger.debug("Called originalFileName with lock filename: \(lockFilename)")
 
     var targetFileSuffix = lockFilename
