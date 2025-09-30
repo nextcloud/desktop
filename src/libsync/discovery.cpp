@@ -673,7 +673,7 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     if (item->isDirectory()) {
         // Turn new remote folders into virtual folders if the option is enabled.
         if (!localEntry.isValid() &&
-            opts._vfs->mode() != Vfs::Off &&
+            opts._vfs->mode() == Vfs::WindowsCfApi &&
             _pinState != PinState::AlwaysLocal &&
             !FileSystem::isExcludeFile(item->_file)) {
             item->_type = ItemTypeVirtualDirectory;
@@ -2227,12 +2227,19 @@ bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 
 void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 {
-    if (!isVfsWithSuffix())
+    if (!isVfsWithSuffix()) {
         return;
-    bool hasSuffix = hasVirtualFileSuffix(str);
-    ASSERT(hasSuffix);
-    if (hasSuffix)
+    }
+
+    const auto hasSuffix = hasVirtualFileSuffix(str);
+    if (!hasSuffix) {
+        qCDebug(lcDisco()) << "has no suffix" << str;
+        Q_ASSERT(hasSuffix);
+    }
+
+    if (hasSuffix) {
         str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
+    }
 }
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()

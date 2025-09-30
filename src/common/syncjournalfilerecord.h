@@ -55,7 +55,7 @@ public:
 
     [[nodiscard]] bool isDirectory() const { return _type == ItemTypeVirtualDirectory || _type == ItemTypeDirectory; }
     [[nodiscard]] bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
-    [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualDirectory || _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
+    [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
     [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
     [[nodiscard]] bool isE2eEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
