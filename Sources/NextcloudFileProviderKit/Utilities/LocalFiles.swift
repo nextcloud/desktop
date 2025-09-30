@@ -80,11 +80,6 @@ public func originalFileName(fromLockFileName lockFilename: String, dbManager: F
     logger.debug("Target suffix is: \(targetFileSuffix)")
 
     let itemsMatchingMetadata = dbManager.itemsMetadataByFileNameSuffix(suffix: targetFileSuffix)
-    if itemsMatchingMetadata.isEmpty {
-        logger.debug("Could not find files in db matching suffix: \(targetFileSuffix)")
-        return targetFileSuffix
-    }
-    
     for file in itemsMatchingMetadata {
         let potentialOriginalFile = file.fileName
         
