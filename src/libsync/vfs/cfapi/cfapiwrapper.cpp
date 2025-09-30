@@ -511,6 +511,9 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested for path" << path;
+    if (callbackParameters->FetchPlaceholders.Pattern) {
+        qDebug(lcCfApiWrapper) << "Fetch placeholders requested with pattern:" << QString(QString::fromWCharArray(callbackParameters->FetchPlaceholders.Pattern));
+    }
 
     const auto sendTransferError = [=] {
         cfApiSendPlaceholdersTransferInfo(callbackInfo->ConnectionKey,
