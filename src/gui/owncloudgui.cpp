@@ -317,27 +317,29 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
             const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
+            const auto displayName = account->displayName();
+            const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
 
             if (!fileProvider->xpc()->fileProviderDomainReachable(accountFpId)) {
-                problemFileProviderAccounts.append(accountFpId);
+                problemFileProviderAccounts.append(accountTooltipLabel);
             } else {
                 switch (fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                    idleFileProviderAccounts.append(accountFpId);
+                    idleFileProviderAccounts.append(accountTooltipLabel);
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
                 case SyncResult::SyncAbortRequested:
-                    syncingFileProviderAccounts.append(accountFpId);
+                    syncingFileProviderAccounts.append(accountTooltipLabel);
                     break;
                 case SyncResult::Success:
-                    successFileProviderAccounts.append(accountFpId);
+                    successFileProviderAccounts.append(accountTooltipLabel);
                     break;
                 case SyncResult::Problem:
                 case SyncResult::Error:
                 case SyncResult::SetupError:
-                    problemFileProviderAccounts.append(accountFpId);
+                    problemFileProviderAccounts.append(accountTooltipLabel);
                     break;
                 case SyncResult::Paused: // This is not technically possible with VFS
                     break;
