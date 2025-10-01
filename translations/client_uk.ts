@@ -123,12 +123,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 у настільному клієнті</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="236"/>
@@ -460,13 +460,13 @@ macOS може ігнорувати запит або він виконуват�
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
-        <source>Main content</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Діалогове вікно Nextcloud</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <source>Main content</source>
+        <translation>Основний вміст</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="373"/>
@@ -1672,7 +1672,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Для %1 не налаштовано обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -2848,7 +2848,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показувати застереження про &amp;вичерпання сховища</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
@@ -2959,7 +2959,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Показувати сповіщення, коли вичерпано 80% сховища</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -5429,7 +5429,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 у настільному клієнті</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5635,13 +5635,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="1083"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 у асистенті у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 Talk у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -5656,12 +5656,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation type="unfinished"/>
+        <translation>Оновлено квоту; %1% сховища використано. </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation type="unfinished"/>
+        <translation>Увага! Використано %1% сховища</translation>
     </message>
 </context>
 <context>
@@ -6812,6 +6812,11 @@ Server replied with error: %2</source>
         <translation>Встановити статус</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log out</source>
@@ -6830,76 +6835,84 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>UserStatusSelector</name>
+    <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="32"/>
-        <source>Online status</source>
-        <translation>Статус в мережі</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="52"/>
-        <source>Online</source>
-        <translation>У мережі</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
-        <source>Away</source>
-        <translation>Відійшов</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
-        <source>Busy</source>
-        <translation>Зайнятий(-а)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
-        <source>Do not disturb</source>
-        <translation>Не турбувати</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
-        <source>Mute all notifications</source>
-        <translation>Без сповіщень</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
-        <source>Invisible</source>
-        <translation>Невидимий</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
-        <source>Appear offline</source>
-        <translation>Схоже поза мережею</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
         <source>Status message</source>
-        <translation>Статусне повідомлення</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
         <source>What is your status?</source>
-        <translation>Який у вас статус?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
         <source>Clear status message after</source>
-        <translation>Очистити статусне повідомлення після</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
         <source>Cancel</source>
-        <translation>Скасувати</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Clear</source>
-        <translation>Очистити</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
         <source>Apply</source>
-        <translation>Застосувати</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusSetStatusView</name>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
+        <source>Online status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
+        <source>Online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
+        <source>Away</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
+        <source>Do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
+        <source>Mute all notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
+        <source>Invisible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
+        <source>Appear offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7228,6 +7241,74 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>Звільнити місце на пристрої</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatusSelector</name>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="32"/>
+        <source>Online status</source>
+        <translation>Статус в мережі</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="52"/>
+        <source>Online</source>
+        <translation>У мережі</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
+        <source>Away</source>
+        <translation>Відійшов</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
+        <source>Do not disturb</source>
+        <translation>Не турбувати</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Mute all notifications</source>
+        <translation>Без сповіщень</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
+        <source>Invisible</source>
+        <translation>Невидимий</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
+        <source>Appear offline</source>
+        <translation>Схоже поза мережею</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
+        <source>Status message</source>
+        <translation>Статусне повідомлення</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
+        <source>What is your status?</source>
+        <translation>Який у вас статус?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
+        <source>Clear status message after</source>
+        <translation>Очистити статусне повідомлення після</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
+        <source>Cancel</source>
+        <translation>Скасувати</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
+        <source>Clear</source>
+        <translation>Очистити</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <source>Apply</source>
+        <translation>Застосувати</translation>
     </message>
 </context>
 </TS>

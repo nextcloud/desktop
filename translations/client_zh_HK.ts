@@ -460,13 +460,13 @@ macOS 可能會不理會或延遲此請求。</translation>
     <name>MainWindow</name>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
-        <source>Main content</source>
-        <translation>主要內容</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="236"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 桌面版主對話框 </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
+        <source>Main content</source>
+        <translation>主要內容</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="373"/>
@@ -6817,6 +6817,11 @@ Server replied with error: %2</source>
         <translation>設置狀態</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log out</source>
@@ -6835,76 +6840,84 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>UserStatusSelector</name>
+    <name>UserStatusMessageView</name>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="32"/>
-        <source>Online status</source>
-        <translation>線上狀態</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="52"/>
-        <source>Online</source>
-        <translation>在線</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
-        <source>Away</source>
-        <translation>離開</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
-        <source>Busy</source>
-        <translation>忙碌</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
-        <source>Do not disturb</source>
-        <translation>請勿打擾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
-        <source>Mute all notifications</source>
-        <translation>靜音所有通知</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
-        <source>Invisible</source>
-        <translation>隱藏</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
-        <source>Appear offline</source>
-        <translation>顯示為離線</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
         <source>Status message</source>
-        <translation>狀態訊息</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
         <source>What is your status?</source>
-        <translation>您目前的狀態是什麼呢？</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
         <source>Clear status message after</source>
-        <translation>繼此之後清除狀態訊息</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Clear</source>
-        <translation>清除</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
         <source>Apply</source>
-        <translation>使用</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UserStatusSetStatusView</name>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
+        <source>Online status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
+        <source>Online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
+        <source>Away</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
+        <source>Busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
+        <source>Do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
+        <source>Mute all notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
+        <source>Invisible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
+        <source>Appear offline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7233,6 +7246,74 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>釋放近端存儲空間</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatusSelector</name>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="32"/>
+        <source>Online status</source>
+        <translation>線上狀態</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="52"/>
+        <source>Online</source>
+        <translation>在線</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="63"/>
+        <source>Away</source>
+        <translation>離開</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="75"/>
+        <source>Do not disturb</source>
+        <translation>請勿打擾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="76"/>
+        <source>Mute all notifications</source>
+        <translation>靜音所有通知</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="91"/>
+        <source>Invisible</source>
+        <translation>隱藏</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="92"/>
+        <source>Appear offline</source>
+        <translation>顯示為離線</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="116"/>
+        <source>Status message</source>
+        <translation>狀態訊息</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="194"/>
+        <source>What is your status?</source>
+        <translation>您目前的狀態是什麼呢？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="238"/>
+        <source>Clear status message after</source>
+        <translation>繼此之後清除狀態訊息</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="271"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
+        <source>Clear</source>
+        <translation>清除</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <source>Apply</source>
+        <translation>使用</translation>
     </message>
 </context>
 </TS>
