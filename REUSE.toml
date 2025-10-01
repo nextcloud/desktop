@@ -66,7 +66,7 @@ SPDX-FileCopyrightText = "2025 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Localizable.xcstrings", "shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Localizable.xcstrings"]
+path = ["shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Localizable.xcstrings", "shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Localizable.xcstrings", "shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Assets.xcassets/*", "shell_integration/MacOSX/NextcloudIntegration/FileProviderExt/Assets.xcassets/FileProviderDomainSymbol.symbolset/*", "shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Assets.xcassets/*", "shell_integration/MacOSX/NextcloudIntegration/FileProviderUIExt/Assets.xcassets/FileProviderDomainSymbol.symbolset/*"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2015 ownCloud GmbH, 2022 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
