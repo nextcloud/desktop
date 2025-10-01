@@ -330,6 +330,50 @@ QList<QByteArray> LsColJob::properties() const
     return _properties;
 }
 
+QList<QByteArray> LsColJob::defaultProperties(FolderType isRootPath, AccountPtr account)
+{
+    auto props = QList<QByteArray>{};
+
+    props << "resourcetype"
+          << "getlastmodified"
+          << "getcontentlength"
+          << "getetag"
+          << "quota-available-bytes"
+          << "quota-used-bytes"
+          << "http://owncloud.org/ns:size"
+          << "http://owncloud.org/ns:id"
+          << "http://owncloud.org/ns:fileid"
+          << "http://owncloud.org/ns:downloadURL"
+          << "http://owncloud.org/ns:dDC"
+          << "http://owncloud.org/ns:permissions"
+          << "http://owncloud.org/ns:checksums"
+          << "http://nextcloud.org/ns:is-encrypted"
+          << "http://nextcloud.org/ns:metadata-files-live-photo"
+          << "http://nextcloud.org/ns:share-attributes";
+
+    if (isRootPath == FolderType::RootFolder) {
+        props << "http://owncloud.org/ns:data-fingerprint";
+    }
+
+    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
+        // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
+        props << "http://owncloud.org/ns:share-types";
+    }
+    if (account->capabilities().filesLockAvailable()) {
+        props << "http://nextcloud.org/ns:lock"
+              << "http://nextcloud.org/ns:lock-owner-displayname"
+              << "http://nextcloud.org/ns:lock-owner"
+              << "http://nextcloud.org/ns:lock-owner-type"
+              << "http://nextcloud.org/ns:lock-owner-editor"
+              << "http://nextcloud.org/ns:lock-time"
+              << "http://nextcloud.org/ns:lock-timeout"
+              << "http://nextcloud.org/ns:lock-token";
+    }
+    props << "http://nextcloud.org/ns:is-mount-root";
+
+    return props;
+}
+
 void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {

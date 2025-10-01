@@ -1165,35 +1165,7 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
 
     auto listFolderJob = new OCC::LsColJob{sharedFromThis(), path};
 
-    QList<QByteArray> props;
-    props << "resourcetype"
-          << "getlastmodified"
-          << "getcontentlength"
-          << "getetag"
-          << "quota-available-bytes"
-          << "quota-used-bytes"
-          << "http://owncloud.org/ns:size"
-          << "http://owncloud.org/ns:id"
-          << "http://owncloud.org/ns:fileid"
-          << "http://owncloud.org/ns:downloadURL"
-          << "http://owncloud.org/ns:dDC"
-          << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums"
-          << "http://nextcloud.org/ns:is-encrypted"
-          << "http://nextcloud.org/ns:metadata-files-live-photo"
-          << "http://owncloud.org/ns:share-types";
-
-    if (capabilities().filesLockAvailable()) {
-        props << "http://nextcloud.org/ns:lock"
-              << "http://nextcloud.org/ns:lock-owner-displayname"
-              << "http://nextcloud.org/ns:lock-owner"
-              << "http://nextcloud.org/ns:lock-owner-type"
-              << "http://nextcloud.org/ns:lock-owner-editor"
-              << "http://nextcloud.org/ns:lock-time"
-              << "http://nextcloud.org/ns:lock-timeout"
-              << "http://nextcloud.org/ns:lock-token";
-    }
-    props << "http://nextcloud.org/ns:is-mount-root";
+    const auto props = LsColJob::defaultProperties(LsColJob::FolderType::ChildFolder, sharedFromThis());
 
     listFolderJob->setProperties(props);
 

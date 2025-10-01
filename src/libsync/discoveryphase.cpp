@@ -409,42 +409,8 @@ void DiscoverySingleDirectoryJob::start()
     // Start the actual HTTP job
     auto *lsColJob = new LsColJob(_account, _subPath);
 
-    QList<QByteArray> props;
-    props << "resourcetype"
-          << "getlastmodified"
-          << "getcontentlength"
-          << "getetag"
-          << "quota-available-bytes"
-          << "quota-used-bytes"
-          << "http://owncloud.org/ns:size"
-          << "http://owncloud.org/ns:id"
-          << "http://owncloud.org/ns:fileid"
-          << "http://owncloud.org/ns:downloadURL"
-          << "http://owncloud.org/ns:dDC"
-          << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums"
-          << "http://nextcloud.org/ns:is-encrypted"
-          << "http://nextcloud.org/ns:metadata-files-live-photo"
-          << "http://nextcloud.org/ns:share-attributes";
-
-    if (_isRootPath)
-        props << "http://owncloud.org/ns:data-fingerprint";
-    if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
-        props << "http://owncloud.org/ns:share-types";
-    }
-    if (_account->capabilities().filesLockAvailable()) {
-        props << "http://nextcloud.org/ns:lock"
-              << "http://nextcloud.org/ns:lock-owner-displayname"
-              << "http://nextcloud.org/ns:lock-owner"
-              << "http://nextcloud.org/ns:lock-owner-type"
-              << "http://nextcloud.org/ns:lock-owner-editor"
-              << "http://nextcloud.org/ns:lock-time"
-              << "http://nextcloud.org/ns:lock-timeout"
-              << "http://nextcloud.org/ns:lock-token";
-    }
-    props << "http://nextcloud.org/ns:is-mount-root";
-
+    const auto props = LsColJob::defaultProperties(_isRootPath ? LsColJob::FolderType::RootFolder : LsColJob::FolderType::ChildFolder,
+                                                   _account);
     lsColJob->setProperties(props);
 
     QObject::connect(lsColJob, &LsColJob::directoryListingIterated,
