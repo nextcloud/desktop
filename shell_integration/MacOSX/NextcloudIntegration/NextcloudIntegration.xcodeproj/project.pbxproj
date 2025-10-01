@@ -56,6 +56,8 @@
 		AA9987862E72B6EF00B2C428 /* NextcloudKit+clearAccountErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */; };
 		AAA69D932E3BB09900BBD44D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */; };
 		AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AAC00D292E37B29D006010FE /* Localizable.xcstrings */; };
+		AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */; };
+		AAF19A7A2E8D5B63005FE5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -206,6 +208,8 @@
 		AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudKit+clearAccountErrorState.swift"; sourceTree = "<group>"; };
 		AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -345,6 +349,7 @@
 				538E397227F4765000FA63D5 /* Info.plist */,
 				5350E4EA2B0C9CE100F276CB /* FileProviderExt-Bridging-Header.h */,
 				AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */,
+				AAF19A672E8D5B4E005FE5B0 /* Assets.xcassets */,
 			);
 			path = FileProviderExt;
 			sourceTree = "<group>";
@@ -373,6 +378,7 @@
 				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 				AAC00D292E37B29D006010FE /* Localizable.xcstrings */,
+				AAF19A792E8D5B63005FE5B0 /* Assets.xcassets */,
 			);
 			path = FileProviderUIExt;
 			sourceTree = "<group>";
@@ -787,6 +793,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAF19A682E8D5B4E005FE5B0 /* Assets.xcassets in Resources */,
 				AAA69D932E3BB09900BBD44D /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,6 +813,7 @@
 				AAC00D2A2E37B29D006010FE /* Localizable.xcstrings in Resources */,
 				531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */,
 				537630912B85F4980026BFAB /* ShareViewController.xib in Resources */,
+				AAF19A7A2E8D5B63005FE5B0 /* Assets.xcassets in Resources */,
 				AA7F17E12E7017230000E928 /* Authentication.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
