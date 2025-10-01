@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
@@ -13,8 +15,8 @@ import Style
 
 ApplicationWindow {
     id: root
-    height: Style.trayWindowWidth
-    width: Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
+    height: Style.filesActionsHeight
+    width: Style.filesActionsWidth
     flags: Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
     visible: true
     color: "transparent"
@@ -69,8 +71,8 @@ ApplicationWindow {
 
                 Image {
                     source: "image://svgimage-custom-color/file-open.svg/" + palette.windowText
-                    width: Style.minimumActivityItemHeight
-                    height: Style.minimumActivityItemHeight
+                    Layout.maximumWidth: Style.minimumActivityItemHeight
+                    Layout.maximumHeight: Style.minimumActivityItemHeight
                     Layout.alignment: Qt.AlignVCenter
                     Layout.margins: Style.extraSmallSpacing
                 }
@@ -112,7 +114,7 @@ ApplicationWindow {
             Rectangle {
                 id: lineTop
                 Layout.fillWidth: true
-                height: Style.extraExtraSmallSpacing
+                Layout.minimumHeight: Style.extraExtraSmallSpacing
                 color: palette.dark
             }
 
@@ -131,7 +133,7 @@ ApplicationWindow {
                 visible: responseText.text !== ""
                 flat: true
                 Layout.fillWidth: true
-                implicitHeight: Style.activityListButtonHeight
+                implicitHeight: responseContent.implicitHeight
 
                 padding: Style.standardSpacing
                 leftPadding: Style.standardSpacing
@@ -139,26 +141,31 @@ ApplicationWindow {
                 spacing: Style.standardSpacing
 
                 background: Rectangle {
+                    id: responseBorder
                     radius: root.windowRadius
                     border.width: Style.trayWindowBorderWidth
                     border.color: palette.dark
                     color: palette.window
+                    Layout.fillWidth: true
                 }
 
-                contentItem: Row {
+                contentItem: RowLayout {
                     id: responseContent
                     anchors.fill: parent
                     anchors.margins: Style.smallSpacing
                     spacing: Style.standardSpacing
-                    padding: Style.standardSpacing
                     Layout.fillWidth: true
+                    Layout.minimumHeight: Style.accountAvatarStateIndicatorSize
 
                     Image {
                         source: "image://svgimage-custom-color/backup.svg/" + palette.windowText
-                        width: Style.accountAvatarStateIndicatorSize
-                        height: Style.accountAvatarStateIndicatorSize
+                        // Layout.preferredWidth: Style.accountAvatarStateIndicatorSize
+                        // Layout.preferredHeight: Style.accountAvatarStateIndicatorSize
+                        Layout.minimumWidth: Style.accountAvatarStateIndicatorSize
+                        Layout.minimumHeight: Style.accountAvatarStateIndicatorSize
                         fillMode: Image.PreserveAspectFit
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                        Layout.leftMargin: Style.standardSpacing
                     }
 
                     Text {
@@ -168,7 +175,10 @@ ApplicationWindow {
                         color: palette.text
                         font.pointSize: Style.pixelSize
                         font.underline: true
-                        anchors.verticalCenter: parent.verticalCenter
+                        wrapMode: Text.WordWrap
+                        Layout.fillWidth: true
+                        bottomPadding: Style.standardSpacing
+                        Layout.alignment: Qt.AlignVCenter
                     }
                 }
 
@@ -186,9 +196,8 @@ ApplicationWindow {
         id: fileActionsDelegate
 
         RowLayout {
+            id: fileAction
             Layout.fillWidth: true
-            Layout.margins: Style.standardSpacing
-            spacing: Style.standardSpacing
             height: implicitHeight
             width: parent.width
 
@@ -203,25 +212,27 @@ ApplicationWindow {
                 implicitHeight: Style.activityListButtonHeight
 
                 padding: Style.standardSpacing
-                spacing: Style.standardSpacing
 
                 contentItem: Row {
                     id: fileActionsContent
                     anchors.fill: parent
-                    anchors.margins: Style.standardSpacing
+                    anchors.topMargin: Style.standardSpacing
+                    anchors.rightMargin: Style.standardSpacing
+                    anchors.bottomMargin: Style.standardSpacing
+                    anchors.leftMargin: Style.smallSpacing
                     spacing: Style.standardSpacing
                     Layout.fillWidth: true
 
                     Image {
-                        source: icon + palette.windowText
-                        width: Style.activityListButtonHeight
-                        height: Style.activityListButtonHeight
+                        source: fileAction.icon + palette.windowText
+                        width: Style.activityListButtonIconSize
+                        height: Style.activityListButtonIconSize
                         fillMode: Image.PreserveAspectFit
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Label {
-                        text: name
+                        text: fileAction.name
                         color: palette.text
                         font.pixelSize: Style.defaultFontPtSize
                         verticalAlignment: Text.AlignVCenter
@@ -232,7 +243,7 @@ ApplicationWindow {
                 background: Rectangle {
                     color: "transparent"
                     radius: root.windowRadius
-                    border.width: parent.hovered ? Style.trayWindowBorderWidth : 0
+                    border.width: fileActionButton.hovered ? Style.trayWindowBorderWidth : 0
                     border.color: palette.dark
                     anchors.margins: Style.standardSpacing
                     height: parent.height
@@ -244,7 +255,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     anchors.margins: Style.standardSpacing
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: fileActionModel.createRequest(index) 
+                    onClicked: fileActionModel.createRequest(fileAction.index)
                 }
             }
         }
