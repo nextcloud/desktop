@@ -86,8 +86,7 @@ import OSLog
     }
 
     func invalidate() {
-        // TODO: cleanup any resources
-        logger.debug("Extension for domain \(self.domain.displayName) is being torn down")
+        logger.debug("File provider extension process is being invalidated.")
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -128,6 +127,7 @@ import OSLog
             completionHandler(nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
+        
         guard let dbManager else {
             logger.error("Not fetching item because database is unavailable.", [.item: identifier])
             completionHandler(nil, NSFileProviderError(.cannotSynchronize))
@@ -233,14 +233,7 @@ import OSLog
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
-
-        let tempId = itemTemplate.itemIdentifier.rawValue
-        logger.debug(
-            """
-            Received create item request for item with identifier: \(tempId)
-            and filename: \(itemTemplate.filename)
-            """
-        )
+        logger.debug("Received request to create item.", [.item: itemTemplate, .name: itemTemplate.filename])
 
         guard let ncAccount else {
             logger.error(
@@ -291,6 +284,8 @@ import OSLog
                 removeSyncAction(actionId)
             }
 
+            logger.debug("Calling item creation completion handler.", [.item: item?.itemIdentifier, .name: item?.filename, .error: error])
+            
             completionHandler(
                 item ?? itemTemplate,
                 NSFileProviderItemFields(),
@@ -319,7 +314,7 @@ import OSLog
 
         let identifier = item.itemIdentifier
         let ocId = identifier.rawValue
-        logger.debug("Received modify item request for item with identifier: \(ocId) and filename: \(item.filename)")
+        logger.debug("Received request to modify item.", [.item: item])
 
         guard let ncAccount else {
             logger.error("Not modifying item: \(ocId) as account not set up yet.")
@@ -382,6 +377,7 @@ import OSLog
                 removeSyncAction(actionId)
             }
 
+            logger.debug("Calling item modification completion handler.", [.item: item.itemIdentifier, .name: item.filename, .error: error])
             completionHandler(modifiedItem ?? item, [], false, error)
         }
         return progress
@@ -397,7 +393,7 @@ import OSLog
         let actionId = UUID()
         insertSyncAction(actionId)
 
-        logger.debug("Received delete request for item: \(identifier.rawValue)")
+        logger.debug("Received request to delete item.", [.item: identifier])
 
         guard let ncAccount else {
             logger.error("Not deleting item \(identifier.rawValue), account not set up yet")
@@ -429,13 +425,13 @@ import OSLog
                 dbManager: dbManager,
                 log: log
             ) else {
-                logger.error("Not deleting item \(identifier.rawValue), item not found")
+                logger.error("Not deleting item because it was not found.", [.item: identifier])
                 insertErrorAction(actionId)
-                completionHandler(
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                )
+                completionHandler(NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier))
                 return
             }
+            
+            logger.debug("Found item for identifier.", [.item: identifier, .name: item.filename])
 
             guard config.trashDeletionEnabled || item.parentItemIdentifier != .trashContainer else {
                 logger.info("System requested deletion of item in trash, but deleting trash items is disabled. item: \(item.filename)")
@@ -443,16 +439,18 @@ import OSLog
                 completionHandler(NSError.fileProviderErrorForRejectedDeletion(of: item))
                 return
             }
-            let error = await item.delete(
-                domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager
-            )
+            
+            let error = await item.delete(domain: domain, ignoredFiles: ignoredFiles, dbManager: dbManager)
+            
             if error != nil {
                 insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
             } else {
                 removeSyncAction(actionId)
             }
+            
             progress.completedUnitCount = 1
+            logger.debug("Calling item deletion completion handler.", [.item: identifier, .name: item.filename, .error: error])
             completionHandler(error)
         }
         return progress
