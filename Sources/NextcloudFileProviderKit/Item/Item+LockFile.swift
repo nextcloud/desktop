@@ -73,18 +73,24 @@ extension Item {
         progress.totalUnitCount = 1
 
         guard await assertRequiredCapabilities(domain: domain, itemIdentifier: itemTemplate.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
-            return (nil, nil)
+            return (nil, NSFileProviderError(.cannotSynchronize))
         }
 
         logger.info("Item to create is a lock file. Will attempt to lock the associated file on the server.", [.name: itemTemplate.filename])
 
         guard let targetFileName = originalFileName(fromLockFileName: itemTemplate.filename, dbManager: dbManager) else {
             logger.error("Will not lock the target file because it could not be determined based on the lock file name.", [.name: itemTemplate.filename])
-            return (nil, nil)
+
+            if #available(macOS 13.0, *) {
+                return (nil, NSFileProviderError(.excludedFromSync))
+            } else {
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
         }
-
+        
+        logger.debug("Derived target file name for lock file.", [.name: targetFileName])
         let targetFileRemotePath = parentItemRemotePath + "/" + targetFileName
-
+        
         let metadata = SendableItemMetadata(
             ocId: itemTemplate.itemIdentifier.rawValue,
             account: account.ncKitAccount,
@@ -100,6 +106,7 @@ extension Item {
             fileNameView: itemTemplate.filename,
             hasPreview: false,
             iconName: "lockIcon", // Custom icon for locked items
+            isLockfileOfLocalOrigin: true,
             mountType: "",
             ownerId: account.id,
             ownerDisplayName: "",
@@ -132,10 +139,6 @@ extension Item {
                 logger.info("Locked file and received lock.", [.name: targetFileName, .lock: lock])
             } else {
                 logger.info("Locked file but did not receive lock information.", [.name: targetFileName])
-            }
-
-            if #available(macOS 13.0, *) {
-                errorToReturn = NSFileProviderError(.excludedFromSync)
             }
         } catch {
             logger.error("Failed to lock file \"\(targetFileName)\" which has lock file \"\(itemTemplate.filename)\".", [.error: error])
@@ -237,7 +240,6 @@ extension Item {
 
         guard let originalFileName = originalFileName(fromLockFileName: metadata.fileName, dbManager: dbManager) else {
             logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: self.metadata.fileName])
-
             return nil
         }
 

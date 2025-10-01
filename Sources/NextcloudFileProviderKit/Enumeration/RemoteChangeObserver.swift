@@ -444,7 +444,10 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
 
     private func checkWorkingSet() async {
         workingSetCheckOngoing = true
-        defer { workingSetCheckOngoing = false }
+        
+        defer {
+            workingSetCheckOngoing = false
+        }
 
         // Unlike when enumerating items we can't progressively enumerate items as we need to
         // wait to see which items are truly deleted and which have just been moved elsewhere.
@@ -462,12 +465,24 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         var allUpdatedMetadatas = [SendableItemMetadata]()
         var allDeletedMetadatas = [SendableItemMetadata]()
         var examinedItemIds = Set<String>()
+        
         for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
-            guard !invalidated else { return }
+            guard !invalidated else {
+                return
+            }
+            
+            guard isLockFileName(item.fileName) == false else {
+                // Skip server requests for locally created lock files.
+                // They are not synchronized to the server for real.
+                // Thus they can be expected not to be found there.
+                // That would also cause their local deletion due to synchronization logic.
+                logger.debug("Skipping materialized item in working set check because the name hints a lock file.", [.item: item, .name: item.name])
+                continue
+            }
+            
             let itemRemoteUrl = item.serverUrl + "/" + item.fileName
-            let (
-                metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
-            ) = await Enumerator.readServerUrl(
+            
+            let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(
                 itemRemoteUrl,
                 account: account,
                 remoteInterface: remoteInterface,
@@ -475,7 +490,11 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                 depth: item.directory ? .targetAndDirectChildren : .target,
                 log: logger.log
             )
-            guard !invalidated else { return }
+            
+            guard !invalidated else {
+                return
+            }
+            
             if readError?.errorCode == 404 {
                 allDeletedMetadatas.append(item)
                 examinedItemIds.insert(item.ocId)

@@ -8,4 +8,5 @@ enum SchemaVersion: UInt64 {
     case initial = 100
     case deletedLocalFileMetadata = 200
     case addedLockTokenPropertyToRealmItemMetadata = 201
+    case addedIsLockFileOfLocalOriginToRealmItemMetadata = 202
 }

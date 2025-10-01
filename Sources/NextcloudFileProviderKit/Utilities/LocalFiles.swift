@@ -59,9 +59,8 @@ public func isLockFileName(_ filename: String) -> Bool {
 ///
 public func originalFileName(fromLockFileName lockFilename: String, dbManager: FilesDatabaseManager) -> String? {
     let logger = FileProviderLogger(category: "LocalFiles", log: dbManager.logger.log)
-    logger.debug("Called originalFileName with lock filename: \(lockFilename)")
-
     var targetFileSuffix = lockFilename
+    
     if lockFilename.hasPrefix("~$") {
         let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
         targetFileSuffix = String(lockFilename[index...])
@@ -77,18 +76,18 @@ public func originalFileName(fromLockFileName lockFilename: String, dbManager: F
         targetFileSuffix = String(lockFilename[..<sbRange.lowerBound])
     }
 
-    logger.debug("Target suffix is: \(targetFileSuffix)")
-
+    logger.debug("Target suffix is \"\(targetFileSuffix)\".")
     let itemsMatchingMetadata = dbManager.itemsMetadataByFileNameSuffix(suffix: targetFileSuffix)
+    
     for file in itemsMatchingMetadata {
         let potentialOriginalFile = file.fileName
         
         if lockFilename == potentialOriginalFile {
-            logger.debug("Lock filename \(lockFilename) is the same as filename found in db \(potentialOriginalFile)")
+            logger.debug("Lock filename \"\(lockFilename)\" is the same as filename found in database: \"\(potentialOriginalFile)\".")
             continue;
         }
 
-        logger.debug("Matched lock filename \(lockFilename) to original filename \(potentialOriginalFile)")
+        logger.debug("Matched lock filename \"\(lockFilename)\" to original filename \"\(potentialOriginalFile)\".")
         return potentialOriginalFile
     }
     

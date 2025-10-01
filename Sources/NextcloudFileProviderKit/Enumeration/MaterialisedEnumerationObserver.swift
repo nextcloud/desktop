@@ -80,7 +80,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 newMaterialisedIds.insert(enumeratedId)
 
                 guard var metadata = dbManager.itemMetadata(ocId: enumeratedId) else {
-                    logger.error("No metadata for \(enumeratedId) found", [.ocId: enumeratedId])
+                    logger.error("No metadata for enumerated item found.", [.item: enumeratedId])
                     continue
                 }
 

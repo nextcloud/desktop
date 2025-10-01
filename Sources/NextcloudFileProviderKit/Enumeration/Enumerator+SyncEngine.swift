@@ -120,7 +120,6 @@ extension Enumerator {
         nextPage: EnumeratorPageResponse?,
         readError: NKError?
     ) {
-        let ncKitAccount = account.ncKitAccount
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])

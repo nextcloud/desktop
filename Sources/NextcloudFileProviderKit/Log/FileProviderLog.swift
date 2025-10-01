@@ -12,9 +12,11 @@ import os
 ///
 /// In general, there should be only one instance for every process.
 ///
-/// > To Do: Consider using macros for the calls so the calling functions and files can be recorded, too!
+/// Messages with debug level are written only for debug configuration builds.
 ///
-/// > To Do: Implement log rotation!
+/// Debug configuration builds also write to the unified logging system as an alternative to view logged messages.
+///
+/// > To Do: Consider using macros for the calls so the calling functions and files can be recorded, too!
 ///
 public actor FileProviderLog: FileProviderLogging {
     ///
@@ -38,10 +40,15 @@ public actor FileProviderLog: FileProviderLogging {
     let fileManager: FileManager
 
     ///
+    /// Used for the file name part of the log files.
+    ///
+    let fileDateFormatter: DateFormatter
+    
+    ///
     /// Used for for the date strings in encoded ``FileProviderLogMessage``.
     ///
-    let formatter: DateFormatter
-
+    let messageDateFormatter: DateFormatter
+    
     ///
     /// The handle used for writing to the file located by ``url``.
     ///
@@ -81,9 +88,13 @@ public actor FileProviderLog: FileProviderLogging {
         self.encoder.outputFormatting = [.sortedKeys]
         self.fileManager = FileManager.default
 
-        self.formatter = DateFormatter()
-        self.formatter.locale = Locale(identifier: "en_US_POSIX")
-        self.formatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+        self.fileDateFormatter = DateFormatter()
+        self.fileDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        self.fileDateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+        
+        self.messageDateFormatter = DateFormatter()
+        self.messageDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        self.messageDateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss.SSS"
 
         self.subsystem = Bundle.main.bundleIdentifier ?? ""
         self.logger = Logger(subsystem: self.subsystem, category: "FileProviderLog")
@@ -131,7 +142,7 @@ public actor FileProviderLog: FileProviderLogging {
         }
 
         let creationDate = Date()
-        let formattedDate = formatter.string(from: creationDate)
+        let formattedDate = fileDateFormatter.string(from: creationDate)
         let processIdentifier = ProcessInfo.processInfo.processIdentifier
         let name = "\(formattedDate) (\(processIdentifier)).jsonl"
         let newFile = logsDirectory.appendingPathComponent(name, isDirectory: false)
@@ -195,19 +206,49 @@ public actor FileProviderLog: FileProviderLogging {
             logger.error("Failed to enumerate log files for cleanup: \(error.localizedDescription, privacy: .public)")
         }
     }
+    
+    private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?]) {
+        if details.isEmpty {
+            logger.log(level: level, "\(message, privacy: .public)")
+            return
+        }
+        
+        let detailsDescription = details.map { key, value in
+            let valueDescription: String?
+            
+            switch value {
+                case let account as Account:
+                    valueDescription = account.ncKitAccount
+                case let item as NSFileProviderItem:
+                    valueDescription = item.itemIdentifier.rawValue
+                case let identifier as NSFileProviderItemIdentifier:
+                    valueDescription = identifier.rawValue
+                case let item as any ItemMetadata:
+                    valueDescription = item.ocId
+                case let text as String:
+                    valueDescription = text
+                default:
+                    valueDescription = String(describing: value)
+            }
+            
+            return "- \(key.rawValue): \(valueDescription ?? "nil")"
+        }.joined(separator: "\n")
+        
+        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailsDescription, privacy: .public)")
+    }
 
     public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?]) {
-        if handle == nil {
-            let detailsDescription = details.map { key, value in
-                "\(key.rawValue): \(value ?? "nil")\n"
-            }
-
-            if detailsDescription.isEmpty {
-                logger.log(level: level, "\(message, privacy: .public)")
-            } else {
-                logger.log(level: level, "\(message, privacy: .public)\n\n\(detailsDescription)")
-            }
+        #if DEBUG
+        
+        writeToUnifiedLoggingSystem(level: level, message: message, details: details)
+        
+        #else
+        
+        if level == .debug {
+            return // We want debug messages only in debug builds.
         }
+        
+        #endif
 
         rotateLogFileIfNeeded() // Check if log file needs rotation before writing anything.
 
@@ -234,8 +275,8 @@ public actor FileProviderLog: FileProviderLogging {
         }
 
         let date = Date()
-        let formattedDate = formatter.string(from: date)
-        let entry = FileProviderLogMessage(category: category, date: formattedDate, details: details, level: levelDescription, message: message, subsystem: subsystem)
+        let formattedDate = messageDateFormatter.string(from: date)
+        let entry = FileProviderLogMessage(category: category, date: formattedDate, details: details, level: levelDescription, message: message)
 
         do {
             let object = try encoder.encode(entry)

@@ -35,6 +35,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var hidden = false
     @Persisted public var iconName = ""
     @Persisted public var iconUrl = ""
+    @Persisted public var isLockFileOfLocalOrigin: Bool = false
     @Persisted public var livePhotoFile: String?
     @Persisted public var mountType = ""
     @Persisted public var name = ""  // for unifiedSearch is the provider.id
@@ -135,6 +136,7 @@ internal class RealmItemMetadata: Object, ItemMetadata {
         self.hidden = value.hidden
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
+        self.isLockFileOfLocalOrigin = value.isLockFileOfLocalOrigin
         self.livePhotoFile = value.livePhotoFile
         self.mountType = value.mountType
         self.name = value.name

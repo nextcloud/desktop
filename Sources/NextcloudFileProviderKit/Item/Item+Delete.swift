@@ -7,9 +7,9 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 
 public extension Item {
-    // NOTE: The trashing parameter does not affect whether the server will trash this or not.
-    // That's out of our hands. Instead, this is used internally to properly handle the metadata
-    // update automatically when we conduct a move of an item to the trash.
+    /// > Note: The trashing parameter does not affect whether the server will trash this or not.
+    /// That's out of our hands. Instead, this is used internally to properly handle the metadata
+    /// update automatically when we conduct a move of an item to the trash.
     func delete(
         trashing: Bool = false,
         options: NSFileProviderDeleteItemOptions = [.recursive],
@@ -18,27 +18,26 @@ public extension Item {
         dbManager: FilesDatabaseManager
     ) async -> Error? {
         let isEmptyDirOrIsFile = childItemCount == nil || childItemCount == 0
+        
         guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
             return NSFileProviderError(.directoryNotEmpty)
         }
 
         let ocId = itemIdentifier.rawValue
-        let relativePath = (
-            metadata.serverUrl + "/" + metadata.fileName
-        ).replacingOccurrences(of: metadata.urlBase, with: "")
+        let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: metadata.urlBase, with: "")
 
+        guard metadata.isLockFileOfLocalOrigin == false else {
+            return await deleteLockFile(domain: domain, dbManager: dbManager)
+        }
+        
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            logger.info(
-                """
-                File \(self.filename) is in the ignore list.
-                    Will delete locally with no remote effect.
-                """
-            )
+            logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: self.filename])
             dbManager.deleteItemMetadata(ocId: ocId)
             return nil
         }
 
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
+        
         guard serverFileNameUrl != "" else {
             return NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
         }
@@ -62,35 +61,23 @@ public extension Item {
         })
 
         guard error == .success else {
-            logger.error(
-                """
-                Could not delete item with ocId \(ocId)...
-                at \(serverFileNameUrl)...
-                received error: \(error.errorCode)
-                \(error.errorDescription)
-                """
-            )
-            return error.fileProviderError(
-                handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-            )
+            logger.error("Could not delete item.", [.item: ocId, .url: serverFileNameUrl, .error: error])
+            return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
         }
 
-        logger.info(
-            """
-            Successfully deleted item with identifier: \(ocId)...
-            at: \(serverFileNameUrl)
-            """
-        )
+        logger.info("Successfully deleted item.", [.item: ocId, .url: serverFileNameUrl])
 
         guard trashing else {
             handleMetadataDeletion()
             return nil
         }
+
         return handleMetadataTrashModification()
     }
 
     private func handleMetadataDeletion() {
         let ocId = metadata.ocId
+
         if self.metadata.directory {
             _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
         } else {
@@ -105,6 +92,7 @@ public extension Item {
     // the newly-trashed target item
     private func handleMetadataTrashModification() -> Error? {
         let ocId = metadata.ocId
+        
         if metadata.directory {
             _ = dbManager.renameDirectoryAndPropagateToChildren(
                 ocId: ocId,
@@ -112,29 +100,19 @@ public extension Item {
                 newFileName: filename
             )
         } else {
-            dbManager.renameItemMetadata(
-                ocId: ocId, newServerUrl: account.trashUrl, newFileName: filename
-            )
+            dbManager.renameItemMetadata(ocId: ocId, newServerUrl: account.trashUrl, newFileName: filename)
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.info(
-                """
-                Could not find item metadata for \(self.filename)
-                    \(self.itemIdentifier.rawValue)!
-                    Cannot finish trashing procedure.
-                """
-            )
+            logger.error("Could not find item metadata! Cannot finish trashing procedure!", [.item: self.itemIdentifier, .name: self.filename])
             return NSFileProviderError(.cannotSynchronize)
         }
+        
         metadata.trashbinFileName = filename
         metadata.trashbinDeletionTime = Date()
-        metadata.trashbinOriginalLocation =
-            String(self.metadata.serverUrl + "/" + filename).replacingOccurrences(
-                of: account.davFilesUrl + "/", with: ""
-            )
-
+        metadata.trashbinOriginalLocation = String(self.metadata.serverUrl + "/" + filename).replacingOccurrences(of: account.davFilesUrl + "/", with: "")
         dbManager.addItemMetadata(metadata)
+        
         return nil
     }
 }

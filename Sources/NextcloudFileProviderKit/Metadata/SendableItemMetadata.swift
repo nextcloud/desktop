@@ -35,6 +35,12 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var hidden: Bool
     public var iconName: String
     public var iconUrl: String
+    
+    ///
+    /// This is a lock file which was created on the local device and not introduced through synchronization with the server.
+    ///
+    public var isLockFileOfLocalOrigin: Bool
+
     public var mountType: String
     public var name: String
     public var note: String
@@ -102,6 +108,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         hidden: Bool = false,
         iconName: String = "",
         iconUrl: String = "",
+        isLockfileOfLocalOrigin: Bool = false,
         livePhotoFile: String? = nil,
         mountType: String = "",
         name: String = "",
@@ -168,6 +175,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.hidden = hidden
         self.iconName = iconName
         self.iconUrl = iconUrl
+        self.isLockFileOfLocalOrigin = isLockfileOfLocalOrigin
         self.livePhotoFile = livePhotoFile
         self.mountType = mountType
         self.name = name
@@ -236,6 +244,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.hidden = value.hidden
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
+        self.isLockFileOfLocalOrigin = value.isLockFileOfLocalOrigin
         self.livePhotoFile = value.livePhotoFile
         self.mountType = value.mountType
         self.name = value.name

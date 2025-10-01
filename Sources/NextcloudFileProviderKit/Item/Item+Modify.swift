@@ -679,6 +679,8 @@ public extension Item {
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
 
+        logger.debug("About to modify item.", [.ocId: ocId])
+        
         logger.debug(
             """
             About to modify item with identifier: \(ocId)

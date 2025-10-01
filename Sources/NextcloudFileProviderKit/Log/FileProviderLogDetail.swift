@@ -1,5 +1,6 @@
 import FileProvider
 import Foundation
+import NextcloudKit
 
 ///
 /// An enum that can represent any JSON value and is `Encodable`.
@@ -89,6 +90,8 @@ public enum FileProviderLogDetail: Encodable {
         if let someValue = anyOptional {
             if someValue.self is String {
                 self = .string(someValue as! String)
+            } else if let error = someValue as? NSFileProviderError {
+                self = .string("NSFileProviderError.Code: \(error.code)")
             } else if let error = someValue as? NSError {
                 self = .dictionary([
                     "code": .int(error.code),
@@ -99,11 +102,8 @@ public enum FileProviderLogDetail: Encodable {
                 self = .string(error.localizedDescription)
             } else if let fileProviderDomainIdentifier = someValue as? NSFileProviderDomainIdentifier {
                 self = .string(fileProviderDomainIdentifier.rawValue)
-            } else if let item = someValue as? Item {
-                self = .dictionary([
-                    "identifier": .string(item.itemIdentifier.rawValue),
-                    "name": .string(item.filename)
-                ])
+            } else if let item = someValue as? NSFileProviderItemProtocol {
+                self = .string(item.itemIdentifier.rawValue)
             } else if let fileProviderItemIdentifier = someValue as? NSFileProviderItemIdentifier {
                 self = .string(fileProviderItemIdentifier.rawValue)
             } else if let metadata = someValue as? SendableItemMetadata {
@@ -129,10 +129,20 @@ public enum FileProviderLogDetail: Encodable {
                     "trashbinFileName": .string(metadata.trashbinFileName),
                     "uploaded": .bool(metadata.uploaded),
                     "visitedDirectory": .bool(metadata.visitedDirectory)
-
+                    
+                ])
+            } else if let lock = someValue as? NKLock {
+                self = .dictionary([
+                    "owner": .string(lock.owner),
+                    "ownerDisplayName": .string(lock.ownerDisplayName),
+                    "ownerEditor": .string(lock.ownerEditor),
+                    "ownerType": .int(lock.ownerType.rawValue),
+                    "time": lock.time == nil ? .null : .date(lock.time!),
+                    "timeOut": lock.timeOut == nil ? .null : .date(lock.timeOut!),
+                    "token": lock.token == nil ? .null : .string(lock.token!)
                 ])
             } else {
-                self = .string("<unsupported log detail type>")
+                self = .string("Unsupported log detail type: \(String(describing: someValue.self))")
             }
         } else {
             self = .null

@@ -297,28 +297,13 @@ public extension Item {
         return (localPath, fpItem, nil)
     }
 
-    func fetchThumbnail(
-        size: CGSize, domain: NSFileProviderDomain? = nil
-    ) async -> (Data?, Error?) {
+    func fetchThumbnail(size: CGSize, domain: NSFileProviderDomain? = nil) async -> (Data?, Error?) {
         guard let thumbnailUrl = metadata.thumbnailUrl(size: size) else {
-            logger.debug(
-                """
-                Unknown thumbnail URL for: \(self.itemIdentifier.rawValue)
-                fileName: \(self.filename)
-                """
-            )
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
-            )
+            logger.debug("Unknown thumbnail URL.", [.item: self.itemIdentifier, .name: self.filename])
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
 
-        logger.debug(
-            """
-            Fetching thumbnail for: \(self.filename)
-            at (\(thumbnailUrl))
-            """
-        )
+        logger.debug("Fetching thumbnail.", [.name: self.filename, .url: thumbnailUrl])
 
         let (_, data, error) = await remoteInterface.downloadThumbnail(
             url: thumbnailUrl, account: account, options: .init(), taskHandler: { task in
@@ -333,16 +318,7 @@ public extension Item {
         )
 
         if error != .success {
-            logger.error(
-                """
-                Could not acquire thumbnail for item with identifier: 
-                \(self.itemIdentifier.rawValue)
-                and fileName: \(self.filename)
-                at \(thumbnailUrl)
-                error: \(error.errorCode)
-                \(error.errorDescription)
-                """
-            )
+            logger.error("Could not acquire thumbnail.", [.item: self.itemIdentifier, .name: self.filename, .url: thumbnailUrl, .error: error])
         }
 
         return (data, error.fileProviderError(

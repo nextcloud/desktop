@@ -33,14 +33,9 @@ public struct FileProviderLogMessage: Encodable {
     public let message: String
 
     ///
-    /// As used with `Logger` of the `os` framework.
-    ///
-    public let subsystem: String
-
-    ///
     /// Custom initializer to support arbitrary types as detail values.
     ///
-    init(category: String, date: String, details: [FileProviderLogDetailKey : Any?], level: String, message: String, subsystem: String) {
+    init(category: String, date: String, details: [FileProviderLogDetailKey : Any?], level: String, message: String) {
         self.category = category
         self.date = date
 
@@ -53,6 +48,5 @@ public struct FileProviderLogMessage: Encodable {
         self.details = transformedDetails
         self.level = level
         self.message = message
-        self.subsystem = subsystem
     }
 }
