@@ -146,11 +146,9 @@ public slots:
 
     void createShareDialog(const QString &localPath);
     void createFileActivityDialog(const QString &localPath);
-    void showDeclarativeUiDialog(const QString &localPath);
     void showFileActionsDialog(const QString &localPath);
 
     void presentShareViewInTray(const QString &localPath);
-    void presentDeclarativeUiViewInSystray(const QString &localPath);
     void presentFileActionsViewInSystray(const QString &localPath);
 
 private slots:
@@ -169,7 +167,6 @@ private:
 
     void setupContextMenu();
     void createFileDetailsDialog(const QString &localPath);
-    void createDeclarativeUiDialog(const QString &localPath);
     void createFileActionsDialog(const QString &localPath);
 
     [[nodiscard]] QScreen *currentScreen() const;
