@@ -135,6 +135,12 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
+    enum class FolderType {
+        ChildFolder,
+        RootFolder,
+    };
+    Q_ENUM(FolderType)
+
     explicit LsColJob(AccountPtr account, const QString &path);
     explicit LsColJob(AccountPtr account, const QUrl &url);
     void start() override;
@@ -151,6 +157,7 @@ public:
     void setProperties(QList<QByteArray> properties);
     [[nodiscard]] QList<QByteArray> properties() const;
 
+    static QList<QByteArray> defaultProperties(FolderType isRootPath, AccountPtr account);
     static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result);
 
 signals:
