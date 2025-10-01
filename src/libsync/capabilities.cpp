@@ -446,7 +446,7 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
 {
     const auto declarativeUiMap = _capabilities.value("declarativeui").toMap();
     QVariantList contextMenuMapList;
-    for (auto declarativeUiApp : std::as_const(declarativeUiMap)) {
+    for (const auto &declarativeUiApp : std::as_const(declarativeUiMap)) {
         const auto declarativeUiContextMenuMap = declarativeUiApp.toMap();
         if (!declarativeUiContextMenuMap.contains("context-menu")) {
             continue;
@@ -466,12 +466,12 @@ QList<QVariantMap> Capabilities::contextMenuByMimeType(const QMimeType fileMimeT
     qCDebug(lcServerCapabilities) << "File actions mimeType aliases:" << fileMimeTypeAliases;
 
     QList<QVariantMap> contextMenuByMimeType;
-    for (const auto &contextMenu : contextMenuMapList) {
+    for (const auto &contextMenu : std::as_const(contextMenuMapList)) {
         const auto contextMenuMap = contextMenu.toMap();
         const auto mimetypeFilters = contextMenuMap.value("mimetype_filters").toString();
         const auto filesMimeTypeFilterList = mimetypeFilters.split(",", Qt::SkipEmptyParts);
 
-        for (const auto mimeType : filesMimeTypeFilterList) {
+        for (const auto &mimeType : std::as_const(filesMimeTypeFilterList)) {
             auto capabilitiesMimeTypeName = mimeType.trimmed();
             qCDebug(lcServerCapabilities) << "Context menu for mimeType:" << capabilitiesMimeTypeName;
 
