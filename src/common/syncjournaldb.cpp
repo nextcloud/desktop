@@ -2388,11 +2388,11 @@ QStringList SyncJournalDb::addSelectiveSyncLists(SelectiveSyncListType type, con
 {
     bool ok = false;
 
-    const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
+    const auto pathWithTrailingSlash = Utility::trailingSlashPath(path);
 
     const auto blackListList = getSelectiveSyncList(type, &ok);
     auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
-    blackListSet.insert(pathWithTrailingSpace);
+    blackListSet.insert(pathWithTrailingSlash);
     auto blackList = blackListSet.values();
     blackList.sort();
     setSelectiveSyncList(type, blackList);
@@ -2406,11 +2406,11 @@ QStringList SyncJournalDb::removeSelectiveSyncLists(SelectiveSyncListType type, 
 {
     bool ok = false;
 
-    const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
+    const auto pathWithTrailingSlash = Utility::trailingSlashPath(path);
 
     const auto blackListList = getSelectiveSyncList(type, &ok);
     auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
-    blackListSet.remove(pathWithTrailingSpace);
+    blackListSet.remove(pathWithTrailingSlash);
     auto blackList = blackListSet.values();
     blackList.sort();
     setSelectiveSyncList(type, blackList);
