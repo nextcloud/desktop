@@ -74,8 +74,10 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
 {
-    qSetMessagePattern(QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} %{file}:%{line} "
-                                      "]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
+    qSetMessagePattern(
+        // The %{file} placeholder is deliberately not used here. See `doLog()` for details.
+        QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category}, <file-path-here>:%{line} "
+                       "]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     s_originalMessageHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
@@ -114,7 +116,25 @@ bool Logger::isLoggingToFile() const
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     static long long int linesCounter = 0;
-    const auto &msg = qFormatLogMessage(type, ctx, message);
+    QString msg = qFormatLogMessage(type, ctx, message);
+
+    // We want to change the full path of the source file to relative on, to
+    // reduce log size and also, to not leak paths into logs.
+    // To help with this, there is a placeholder in the message pattern
+    // for the file path ("<file-path-here>").
+    QString filePath;
+    if (ctx.file != nullptr) {
+        static const QString projectRoot = QStringLiteral(SOURCE_ROOT);
+
+        filePath = QFileInfo(QString::fromLocal8Bit(ctx.file)).absoluteFilePath();
+        if (filePath.startsWith(projectRoot)) {
+            filePath = filePath.mid(projectRoot.size() + 1);
+        }
+    }
+
+    static const QString filePathPlaceholder = "<file-path-here>";
+    msg.replace(filePathPlaceholder, filePath);
+
 #if defined Q_OS_WIN && ((defined NEXTCLOUD_DEV && NEXTCLOUD_DEV) || defined QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
