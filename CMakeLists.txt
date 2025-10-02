@@ -124,8 +124,6 @@ include(GetGitRevisionDescription)
 
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
-add_definitions(-DSOURCE_ROOT="${CMAKE_SOURCE_DIR}")
-
 add_definitions(
     -DQT_DISABLE_DEPRECATED_BEFORE=0x051200
     -DQT_DEPRECATED_WARNINGS
