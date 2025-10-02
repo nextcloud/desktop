@@ -274,7 +274,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
      _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
     // Connect E2E stuff
-    setupE2eEncryption();
+    if (_accountState->isConnected()) {
+        setupE2eEncryption();
+    } else {
+        _ui->encryptionMessage->setText(tr("End-to-end encryption has not been initialized on this account."));
+    }
     _ui->encryptionMessage->setCloseButtonVisible(false);
 
     _ui->connectLabel->setText(tr("No account configured."));
