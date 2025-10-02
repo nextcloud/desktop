@@ -71,6 +71,7 @@ class User : public QObject
     Q_PROPERTY(bool needsToSignTermsOfService READ needsToSignTermsOfService NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
     Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
+    Q_PROPERTY(bool canLogout READ canLogout CONSTANT)
 
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
@@ -113,6 +114,8 @@ public:
     [[nodiscard]] QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
     [[nodiscard]] const QVariantList &groupFolders() const;
+    [[nodiscard]] bool canLogout() const;
+    [[nodiscard]] bool isPublicShareLink() const;
 
 signals:
     void nameChanged();
@@ -256,7 +259,9 @@ public:
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,
-        IdRole
+        IdRole,
+        CanLogoutRole,
+        RemoveAccountTextRole,
     };
 
     [[nodiscard]] AccountAppList appList() const;
