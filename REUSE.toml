@@ -42,7 +42,15 @@ SPDX-FileCopyrightText = "2014 ownCloud GmbH, 2022 Nextcloud GmbH and Nextcloud 
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
-path = ["shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.pbxproj", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/contents.xcworkspacedata", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist", "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/xcshareddata/xcschemes/FinderSyncExt.xcscheme"]
+path = [
+    "shell_integration/MacOSX/NextcloudIntegration/.gitignore",
+    "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.pbxproj", 
+    "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/contents.xcworkspacedata", 
+    "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist", 
+    "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/xcshareddata/xcschemes/FinderSyncExt.xcscheme",
+    "shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/xcshareddata/xcschemes/NextcloudDev.xcscheme",
+    "shell_integration/MacOSX/NextcloudIntegration/README.md"
+]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 Nextcloud GmbH and Nextcloud contributors"
 SPDX-License-Identifier = "GPL-2.0-or-later"
