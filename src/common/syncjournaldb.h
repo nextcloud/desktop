@@ -173,6 +173,10 @@ public:
     /* Write the selective sync list (remove all other entries of that list */
     void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
 
+    QStringList addSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
+
+    QStringList removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
+
     /**
      * Make sure that on the next sync fileName and its parents are discovered from the server.
      *

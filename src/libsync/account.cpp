@@ -429,17 +429,20 @@ void Account::resetNetworkAccessManager()
         this, &Account::proxyAuthenticationRequired);
 }
 
-QNetworkAccessManager *Account::networkAccessManager()
+QNetworkAccessManager *Account::networkAccessManager() const
 {
     return _networkAccessManager.data();
 }
 
-QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
+QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager() const
 {
     return _networkAccessManager;
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       QIODevice *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -457,7 +460,10 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _networkAccessManager->sendCustomRequest(req, verb, data);
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, const QByteArray &data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       const QByteArray &data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -475,7 +481,10 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     return _networkAccessManager->sendCustomRequest(req, verb, data);
 }
 
-QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QHttpMultiPart *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb,
+                                       const QUrl &url,
+                                       QNetworkRequest req,
+                                       QHttpMultiPart *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -1142,6 +1151,79 @@ void Account::setAskUserForMnemonic(const bool ask)
 {
     _e2eAskUserForMnemonic = ask;
     emit askUserForMnemonicChanged();
+}
+
+void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &path, SyncJournalDb *journalForFolder)
+{
+    qCInfo(lcAccount()) << "ls col job requested for" << path;
+
+    if (!credentials()->ready()) {
+        qCWarning(lcAccount()) << "credentials are not ready" << path;
+        promise->finish();
+        return;
+    }
+
+    auto listFolderJob = new OCC::LsColJob{sharedFromThis(), path};
+
+    const auto props = LsColJob::defaultProperties(LsColJob::FolderType::ChildFolder, sharedFromThis());
+
+    listFolderJob->setProperties(props);
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::networkError, this, [promise, path] (QNetworkReply *reply) {
+        if (reply) {
+            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+        }
+
+        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        promise->finish();
+    });
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithError, this, [promise, path] (QNetworkReply *reply) {
+        if (reply) {
+            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+        }
+
+        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        promise->finish();
+    });
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, path] () {
+        qCInfo(lcAccount()) << "ls col job" << path << "finished";
+        promise->finish();
+    });
+
+    auto ignoreFirst = true;
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [&ignoreFirst, promise, path, journalForFolder, this] (const QString &name, const QMap<QString, QString> &properties) {
+        if (ignoreFirst) {
+            qCDebug(lcAccount()) << "skip first item";
+            ignoreFirst = false;
+            return;
+        }
+
+        qCInfo(lcAccount()) << "ls col job" << path << "new file" << name << properties.count();
+
+        const auto slash = name.lastIndexOf('/');
+        const auto itemFileName = name.mid(slash + 1);
+        const auto absoluteItemPathName = (path.isEmpty() ? itemFileName : path + "/" + itemFileName);
+
+        auto currentItemDbRecord = SyncJournalFileRecord{};
+        if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()) {
+            qCWarning(lcAccount()) << "skip existing item" << absoluteItemPathName;
+            return;
+        }
+
+        auto newEntry = RemoteInfo{};
+
+        LsColJob::propertyMapToRemoteInfo(properties,
+                                          serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                          newEntry);
+
+        promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
+    });
+
+    promise->start();
+    listFolderJob->start();
+    qCInfo(lcAccount()) << "ls col job started";
 }
 
 bool Account::serverHasValidSubscription() const

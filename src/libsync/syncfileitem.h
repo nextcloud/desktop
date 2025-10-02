@@ -15,7 +15,8 @@
 
 #include <csync.h>
 
-#include <owncloudlib.h>
+#include "owncloudlib.h"
+#include "common/syncitemenums.h"
 
 namespace OCC {
 
@@ -99,20 +100,9 @@ public:
     };
     Q_ENUM(Status)
 
-    enum class LockStatus {
-        UnlockedItem = 0,
-        LockedItem = 1,
-    };
+    using LockStatus = SyncFileItemEnums::LockStatus;
 
-    Q_ENUM(LockStatus)
-
-    enum class LockOwnerType : int{
-        UserLock = 0,
-        AppLock = 1,
-        TokenLock = 2,
-    };
-
-    Q_ENUM(LockOwnerType)
+    using LockOwnerType = SyncFileItemEnums::LockOwnerType;
 
     [[nodiscard]] SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
@@ -194,7 +184,7 @@ public:
 
     [[nodiscard]] bool isDirectory() const
     {
-        return _type == ItemTypeDirectory;
+        return _type == ItemTypeDirectory || _type == ItemTypeVirtualDirectory;
     }
 
     /**

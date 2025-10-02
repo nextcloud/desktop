@@ -1015,6 +1015,11 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     SyncJournalFileRecord record = _record;
     QMutexLocker locker(&_mutex);
 
+    Q_ASSERT(record._modtime > 0);
+    if (record._modtime <= 0) {
+        qCCritical(lcDb) << "invalid modification time";
+    }
+
     if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";
@@ -1043,6 +1048,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "isLivePhoto" << record._isLivePhoto
                  << "livePhotoFile" << record._livePhotoFile
                  << "folderQuota - bytesUsed:" << record._folderQuota.bytesUsed << "bytesAvailable:" << record._folderQuota.bytesAvailable;
+
+    Q_ASSERT(!record.path().isEmpty());
 
     const qint64 phash = getPHash(record._path);
     if (!checkConnect()) {
@@ -2375,6 +2382,42 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     commitInternal(QStringLiteral("setSelectiveSyncList"));
+}
+
+QStringList SyncJournalDb::addSelectiveSyncLists(SelectiveSyncListType type, const QString &path)
+{
+    bool ok = false;
+
+    const auto pathWithTrailingSlash = Utility::trailingSlashPath(path);
+
+    const auto blackListList = getSelectiveSyncList(type, &ok);
+    auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
+    blackListSet.insert(pathWithTrailingSlash);
+    auto blackList = blackListSet.values();
+    blackList.sort();
+    setSelectiveSyncList(type, blackList);
+
+    qCInfo(lcSql()) << "add" << path << "into" << type << blackList;
+
+    return blackList;
+}
+
+QStringList SyncJournalDb::removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path)
+{
+    bool ok = false;
+
+    const auto pathWithTrailingSlash = Utility::trailingSlashPath(path);
+
+    const auto blackListList = getSelectiveSyncList(type, &ok);
+    auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
+    blackListSet.remove(pathWithTrailingSlash);
+    auto blackList = blackListSet.values();
+    blackList.sort();
+    setSelectiveSyncList(type, blackList);
+
+    qCInfo(lcSql()) << "remove" << path << "into" << type << blackList;
+
+    return blackList;
 }
 
 void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)

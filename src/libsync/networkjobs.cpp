@@ -4,6 +4,17 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "networkjobs.h"
+#include "account.h"
+#include "helpers.h"
+#include "owncloudpropagator.h"
+#include "clientsideencryption.h"
+#include "common/checksums.h"
+
+#include "creds/abstractcredentials.h"
+#include "creds/httpcredentials.h"
+#include "configfile.h"
+
 #include <QJsonDocument>
 #include <QLoggingCategory>
 #include <QNetworkRequest>
@@ -26,16 +37,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #endif
-
-#include "networkjobs.h"
-#include "account.h"
-#include "helpers.h"
-#include "owncloudpropagator.h"
-#include "clientsideencryption.h"
-
-#include "creds/abstractcredentials.h"
-#include "creds/httpcredentials.h"
-#include "configfile.h"
 
 namespace OCC {
 
@@ -327,6 +328,161 @@ void LsColJob::setProperties(QList<QByteArray> properties)
 QList<QByteArray> LsColJob::properties() const
 {
     return _properties;
+}
+
+QList<QByteArray> LsColJob::defaultProperties(FolderType isRootPath, AccountPtr account)
+{
+    auto props = QList<QByteArray>{};
+
+    props << "resourcetype"
+          << "getlastmodified"
+          << "getcontentlength"
+          << "getetag"
+          << "quota-available-bytes"
+          << "quota-used-bytes"
+          << "http://owncloud.org/ns:size"
+          << "http://owncloud.org/ns:id"
+          << "http://owncloud.org/ns:fileid"
+          << "http://owncloud.org/ns:downloadURL"
+          << "http://owncloud.org/ns:dDC"
+          << "http://owncloud.org/ns:permissions"
+          << "http://owncloud.org/ns:checksums"
+          << "http://nextcloud.org/ns:is-encrypted"
+          << "http://nextcloud.org/ns:metadata-files-live-photo"
+          << "http://nextcloud.org/ns:share-attributes";
+
+    if (isRootPath == FolderType::RootFolder) {
+        props << "http://owncloud.org/ns:data-fingerprint";
+    }
+
+    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
+        // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
+        props << "http://owncloud.org/ns:share-types";
+    }
+    if (account->capabilities().filesLockAvailable()) {
+        props << "http://nextcloud.org/ns:lock"
+              << "http://nextcloud.org/ns:lock-owner-displayname"
+              << "http://nextcloud.org/ns:lock-owner"
+              << "http://nextcloud.org/ns:lock-owner-type"
+              << "http://nextcloud.org/ns:lock-owner-editor"
+              << "http://nextcloud.org/ns:lock-time"
+              << "http://nextcloud.org/ns:lock-timeout"
+              << "http://nextcloud.org/ns:lock-token";
+    }
+    props << "http://nextcloud.org/ns:is-mount-root";
+
+    return props;
+}
+
+void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
+{
+    for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
+        QString property = it.key();
+        QString value = it.value();
+        if (property == QLatin1String("resourcetype")) {
+            result.isDirectory = value.contains(QLatin1String("collection"));
+        } else if (property == QLatin1String("getlastmodified")) {
+            value.replace("GMT", "+0000");
+            const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
+            Q_ASSERT(date.isValid());
+            result.modtime = 0;
+            if (date.toSecsSinceEpoch() > 0) {
+                result.modtime = date.toSecsSinceEpoch();
+            }
+        } else if (property == QLatin1String("getcontentlength")) {
+            // See #4573, sometimes negative size values are returned
+            bool ok = false;
+            qlonglong ll = value.toLongLong(&ok);
+            if (ok && ll >= 0) {
+                result.size = ll;
+            } else {
+                result.size = 0;
+            }
+        } else if (property == "getetag") {
+            result.etag = Utility::normalizeEtag(value.toUtf8());
+        } else if (property == "id") {
+            result.fileId = value.toUtf8();
+        } else if (property == "downloadURL") {
+            result.directDownloadUrl = value;
+        } else if (property == "dDC") {
+            result.directDownloadCookies = value;
+        } else if (property == "permissions") {
+            result.remotePerm = RemotePermissions::fromServerString(value, algorithm, map);
+        } else if (property == "checksums") {
+            result.checksumHeader = findBestChecksum(value.toUtf8());
+        } else if (property == "share-types" && !value.isEmpty()) {
+            // Since QMap is sorted, "share-types" is always after "permissions".
+            if (result.remotePerm.isNull()) {
+                qWarning() << "Server returned a share type, but no permissions?";
+            } else {
+                // S means shared with me.
+                // But for our purpose, we want to know if the file is shared. It does not matter
+                // if we are the owner or not.
+                // Piggy back on the permission field
+                result.remotePerm.setPermission(RemotePermissions::IsShared);
+                result.sharedByMe = true;
+            }
+        } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
+            result._isE2eEncrypted = true;
+        } else if (property == "lock") {
+            result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
+        }
+        if (property == "lock-owner-displayname") {
+            result.lockOwnerDisplayName = value;
+        }
+        if (property == "lock-owner") {
+            result.lockOwnerId = value;
+        }
+        if (property == "lock-owner-type") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockOwnerType = static_cast<SyncFileItem::LockOwnerType>(intConvertedValue);
+            } else {
+                result.lockOwnerType = SyncFileItem::LockOwnerType::UserLock;
+            }
+        }
+        if (property == "lock-owner-editor") {
+            result.lockEditorApp = value;
+        }
+        if (property == "lock-time") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockTime = intConvertedValue;
+            } else {
+                result.lockTime = 0;
+            }
+        }
+        if (property == "lock-timeout") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockTimeout = intConvertedValue;
+            } else {
+                result.lockTimeout = 0;
+            }
+        }
+        if (property == "lock-token") {
+            result.lockToken = value;
+        }
+        if (property == "metadata-files-live-photo") {
+            result.livePhotoFile = value;
+            result.isLivePhoto = true;
+        }
+    }
+
+    if (result.isDirectory && map.contains("size")) {
+        result.sizeOfFolder = map.value("size").toInt();
+    }
+
+    if (result.isDirectory && map.contains(FolderQuota::usedBytesC)) {
+        result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
+    }
+
+    if (result.isDirectory && map.contains(FolderQuota::availableBytesC)) {
+        result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
+    }
 }
 
 void LsColJob::start()

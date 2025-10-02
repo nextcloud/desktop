@@ -54,7 +54,7 @@ bool registerShellExtension()
         return false;
     }
 
-    for (const auto extension : listExtensions) {
+    for (const auto &extension : listExtensions) {
         const QString clsidPath = QString() % clsIdRegKey % extension.second;
         const QString clsidServerPath = clsidPath % R"(\InprocServer32)";
 
@@ -87,7 +87,7 @@ void unregisterShellExtensions()
         CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG
     };
 
-    for (const auto extension : listExtensions) {
+    for (const auto &extension : listExtensions) {
         const QString clsidPath = QString() % clsIdRegKey % extension;
         if (OCC::Utility::registryKeyExists(rootKey, clsidPath)) {
             OCC::Utility::registryDeleteKeyTree(rootKey, clsidPath);
@@ -186,16 +186,16 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updateMetad
         return cfapi::dehydratePlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId);
     } else {
         if (cfapi::findPlaceholderInfo(localPath)) {
-            return cfapi::updatePlaceholderInfo(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+            return cfapi::updatePlaceholderInfo(localPath, syncItem, replacesPath);
         } else {
-            return cfapi::convertToPlaceholder(localPath, syncItem._modtime, syncItem._size, syncItem._fileId, replacesPath);
+            return cfapi::convertToPlaceholder(localPath, syncItem, replacesPath);
         }
     }
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item)
 {
-    return cfapi::updatePlaceholderMarkInSync(filePath, fileId, {});
+    return cfapi::updatePlaceholderMarkInSync(filePath, item, {});
 }
 
 bool VfsCfApi::isPlaceHolderInSync(const QString &filePath) const
@@ -229,7 +229,7 @@ Result<void, QString> VfsCfApi::createPlaceholders(const QList<SyncFileItemPtr> 
 
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
-    const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
+    const auto localPath = FileSystem::longWinPath(QDir::toNativeSeparators(_setupParams.filesystemPath + item._file));
     if (cfapi::handleForPath(localPath)) {
         auto result = cfapi::dehydratePlaceholder(localPath, item._modtime, item._size, item._fileId);
         if (result) {
@@ -245,17 +245,17 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile, UpdateMetadataTypes updateType)
 {
-    const auto localPath = QDir::toNativeSeparators(filename);
-    const auto replacesPath = QDir::toNativeSeparators(replacesFile);
+    const auto localPath = FileSystem::longWinPath(QDir::toNativeSeparators(filename));
+    const auto replacesPath = FileSystem::longWinPath(QDir::toNativeSeparators(replacesFile));
 
     if (cfapi::findPlaceholderInfo(localPath)) {
-        if (updateType & Vfs::UpdateMetadataType::FileMetadata) {
-            return cfapi::updatePlaceholderInfo(localPath, item._modtime, item._size, item._fileId, replacesPath);
+        if (updateType.testFlag(Vfs::UpdateMetadataType::FileMetadata)) {
+            return cfapi::updatePlaceholderInfo(localPath, item, replacesPath);
         } else {
-            return cfapi::updatePlaceholderMarkInSync(localPath, item._fileId, replacesPath);
+            return cfapi::updatePlaceholderMarkInSync(localPath, item, replacesPath);
         }
     } else {
-        return cfapi::convertToPlaceholder(localPath, item._modtime, item._size, item._fileId, replacesPath);
+        return cfapi::convertToPlaceholder(localPath, item, replacesPath);
     }
 }
 
@@ -291,6 +291,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     if (isDirectory) {
         if (hasCloudTag) {
             ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
+            stat->type = CSyncEnums::ItemTypeVirtualDirectory;
+            return true;
         }
         return false;
     } else if (isSparseFile && isPinned) {
@@ -525,6 +527,48 @@ int VfsCfApi::finalizeHydrationJob(const QString &requestId)
     }
 
     return HydrationJob::Status::Error;
+}
+
+int VfsCfApi::finalizeNewPlaceholders(const QList<PlaceholderCreateInfo> &newEntries,
+                                      const QString &pathString)
+{
+    const auto &journal = params().journal;
+
+    for (const auto &entryInfo : newEntries) {
+
+        auto folderRecord = SyncJournalFileRecord{};
+        folderRecord._fileId = entryInfo.parsedProperties.fileId;
+        folderRecord._fileSize = entryInfo.parsedProperties.size;
+        folderRecord._etag = entryInfo.parsedProperties.etag;
+        folderRecord._path = entryInfo.fullPath.toUtf8();
+        folderRecord._type = (entryInfo.parsedProperties.isDirectory ? ItemTypeVirtualDirectory : ItemTypeVirtualFile);
+        folderRecord._remotePerm = entryInfo.parsedProperties.remotePerm;
+        folderRecord._modtime = entryInfo.parsedProperties.modtime;
+
+        const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
+        if (!updateRecordDbResult) {
+            qCWarning(lcCfApi) << "failed: failed to update db record for" << pathString;
+            return 0;
+        }
+    }
+
+    auto folderRecord = SyncJournalFileRecord{};
+    const auto fetchRecordDbResult = journal->getFileRecord(pathString, &folderRecord);
+    if (!fetchRecordDbResult || !folderRecord.isValid()) {
+        qCWarning(lcCfApi) << "failed: no valid db record for" << pathString;
+        return 0;
+    }
+
+    folderRecord._type = ItemTypeDirectory;
+    const auto updateRecordDbResult = journal->setFileRecord(folderRecord);
+    if (!updateRecordDbResult) {
+        qCWarning(lcCfApi) << "failed: failed to update db record for" << pathString;
+        return 0;
+    }
+
+    qCInfo(lcCfApi) << "update folder on-demand DB record succeeded" << pathString;
+
+    return 1;
 }
 
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)

@@ -1874,7 +1874,8 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(fakeFolder.syncOnce());
 
-        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        const auto folder = *fakeFolder.currentLocalState().find("a/b");
+        auto conflicts = findCaseClashConflicts(folder);
         QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
         const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
         QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);

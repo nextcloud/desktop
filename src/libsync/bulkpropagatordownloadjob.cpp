@@ -182,7 +182,8 @@ void BulkPropagatorDownloadJob::start()
 bool BulkPropagatorDownloadJob::updateMetadata(const SyncFileItemPtr &item)
 {
     const auto fullFileName = propagator()->fullLocalPath(item->_file);
-    const auto result = propagator()->updateMetadata(*item);
+    const auto updateMetadataFlags = Vfs::UpdateMetadataTypes{Vfs::UpdateMetadataType::AllMetadata};
+    const auto result = propagator()->updateMetadata(*item, updateMetadataFlags);
     if (!result) {
         abortWithError(item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
         return false;

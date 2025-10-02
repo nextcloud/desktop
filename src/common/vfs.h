@@ -10,9 +10,13 @@
 #include "syncfilestatus.h"
 #include "pinstate.h"
 
+#include "common/remoteinfo.h"
+
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
+#include <QString>
+#include <QMap>
 
 #include <deque>
 #include <memory>
@@ -27,6 +31,13 @@ class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
 using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
+
+struct OCSYNC_EXPORT PlaceholderCreateInfo {
+    QString name;
+    std::wstring stdWStringName;
+    QString fullPath;
+    RemoteInfo parsedProperties;
+};
 
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
@@ -183,7 +194,7 @@ public:
      */
     [[nodiscard]] virtual OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile) = 0;
 
-    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) = 0;
+    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) = 0;
 
     [[nodiscard]] virtual bool isPlaceHolderInSync(const QString &filePath) const = 0;
 
@@ -326,7 +337,7 @@ public:
     [[nodiscard]] bool isHydrating() const override { return false; }
 
     OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return {OCC::Vfs::ConvertToPlaceholderResult::Ok}; }
-    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const SyncFileItem &item) override {Q_UNUSED(filePath) Q_UNUSED(item) return {QString{}};}
     [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
 
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
