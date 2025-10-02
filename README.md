@@ -36,6 +36,7 @@ If you find any bugs or have any suggestion for improvement, please
 > [!TIP]
 > For building the client on macOS we have a tool called `mac-crafter`.
 > You will find more information about it in [its dedicated README](admin/osx/mac-crafter/README.md).
+> Also, please note the [README in the NextcloudIntegration project](shell_integration/MacOSX/NextcloudIntegration/README.md) which provides an even more convenient way to work on and build the desktop client on macOS by using Xcode.
 
 #### 1. 🚀 Set up your local development environment
 
