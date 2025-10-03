@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2020 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
@@ -15,34 +12,6 @@
 #include <syncengine.h>
 
 using namespace OCC;
-
-namespace {
-
-QStringList findCaseClashConflicts(const FileInfo &dir)
-{
-    QStringList conflicts;
-    for (const auto &item : dir.children) {
-        if (item.name.contains("(case clash from")) {
-            conflicts.append(item.path());
-        }
-    }
-    return conflicts;
-}
-
-bool expectConflict(FileInfo state, const QString path)
-{
-    PathComponents pathComponents(path);
-    auto base = state.find(pathComponents.parentDirComponents());
-    if (!base)
-        return false;
-    for (const auto &item : std::as_const(base->children)) {
-        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
-            return true;
-        }
-    }
-    return false;
-}
-}
 
 #define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
 
@@ -55,7 +24,7 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
-    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &record);
+    folder.syncJournal().getFileRecord(path, &record);
     return record;
 }
 
@@ -63,11 +32,11 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    if (!journal.getFileRecord(path + DVSUFFIX, &record) || !record.isValid()) {
+    journal.getFileRecord(path + DVSUFFIX, &record);
+    if (!record.isValid())
         return;
-    }
     record._type = ItemTypeVirtualFileDownload;
-    QVERIFY(journal.setFileRecord(record));
+    journal.setFileRecord(record);
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -75,11 +44,11 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
+    journal.getFileRecord(path, &record);
+    if (!record.isValid())
         return;
-    }
     record._type = ItemTypeVirtualFileDehydration;
-    QVERIFY(journal.setFileRecord(record));
+    journal.setFileRecord(record);
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -100,14 +69,6 @@ class TestSyncVirtualFiles : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
     void testVirtualFileLifecycle_data()
     {
         QTest::addColumn<bool>("doLocalDiscovery");
@@ -178,27 +139,17 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
         cleanup();
 
-        // If the local virtual file is removed, it should be gone remotely too
+        // If the local virtual file file is removed, it'll just be recreated
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
         fakeFolder.localModifier().remove("A/a1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
-        QVERIFY(!fakeFolder.remoteModifier().find("A/a1"));
-        cleanup();
-
-        // Restore the state prior to next test
-        // Essentially repeating creation of virtual file
-        fakeFolder.remoteModifier().insert("A/a1", 64);
-        fakeFolder.remoteModifier().setModTime("A/a1", someDate);
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1" DVSUFFIX).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
         QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
         cleanup();
 
         // Remote rename is propagated
@@ -235,8 +186,8 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
         cleanup();
 
-        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2" DVSUFFIX));
-        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3" DVSUFFIX));
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2" DVSUFFIX);
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3" DVSUFFIX);
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
@@ -480,7 +431,7 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
+            fakeFolder.syncJournal().wipeErrorBlacklist();
         };
         cleanup();
 
@@ -812,212 +763,6 @@ private slots:
         QVERIFY(dbRecord(fakeFolder, "case6-rename")._type == ItemTypeFile);
     }
 
-    void testCreateFileWithTrailingSpaces_acceptAndRejectInvalidFileName()
-    {
-        FakeFolder fakeFolder{ FileInfo() };
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        const QString fileWithSpaces1(" foo");
-        const QString fileWithSpaces2(" bar ");
-        const QString fileWithSpaces3("bla ");
-        const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar ");
-        const QString fileWithSpaces6("A/bla ");
-
-        fakeFolder.localModifier().insert(fileWithSpaces1);
-        fakeFolder.localModifier().insert(fileWithSpaces2);
-        fakeFolder.localModifier().insert(fileWithSpaces3);
-        fakeFolder.localModifier().mkdir("A");
-        fakeFolder.localModifier().insert(fileWithSpaces4);
-        fakeFolder.localModifier().insert(fileWithSpaces5);
-        fakeFolder.localModifier().insert(fileWithSpaces6);
-        
-        ItemCompletedSpy completeSpy(fakeFolder);
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-#if defined Q_OS_WINDOWS
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-#else
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-#endif
-
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces1);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces2);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces3);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces4);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces5);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces6);
-
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-#if defined Q_OS_WINDOWS
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" foo"))->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" bar"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("bla"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/ foo"))->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/ bar"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/bla"))->_status, SyncFileItem::Status::Success);
-#endif
-    }
-
-    void testCreateFileWithTrailingSpaces_acceptAndRejectInvalidFileName_enforceWindowsNamingRules()
-    {
-        FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.enableEnforceWindowsFileNameCompatibility();
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        const QString fileWithSpaces1(" foo");
-        const QString fileWithSpaces2(" bar ");
-        const QString fileWithSpaces3("bla ");
-        const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar ");
-        const QString fileWithSpaces6("A/bla ");
-
-        fakeFolder.localModifier().insert(fileWithSpaces1);
-        fakeFolder.localModifier().insert(fileWithSpaces2);
-        fakeFolder.localModifier().insert(fileWithSpaces3);
-        fakeFolder.localModifier().mkdir("A");
-        fakeFolder.localModifier().insert(fileWithSpaces4);
-        fakeFolder.localModifier().insert(fileWithSpaces5);
-        fakeFolder.localModifier().insert(fileWithSpaces6);
-
-        ItemCompletedSpy completeSpy(fakeFolder);
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces1);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces2);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces3);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces4);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces5);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces6);
-
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" foo"))->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" bar"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("bla"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/ foo"))->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/ bar"))->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/bla"))->_status, SyncFileItem::Status::Success);
-    }
-
-    void testCreateFileWithTrailingSpaces_remoteDontGetRenamedAutomatically()
-    {
-        // On Windows we can't create files/folders with leading/trailing spaces locally. So, we have to fail those items. On other OSs - we just sync them down normally.
-        FakeFolder fakeFolder{ FileInfo() };
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar ");
-        const QString fileWithSpaces6("A/bla ");
-
-        const QString fileWithSpacesVirtual4(fileWithSpaces4 + DVSUFFIX);
-        const QString fileWithSpacesVirtual5(fileWithSpaces5 + DVSUFFIX);
-        const QString fileWithSpacesVirtual6(fileWithSpaces6 + DVSUFFIX);
-
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert(fileWithSpaces4);
-        fakeFolder.remoteModifier().insert(fileWithSpaces5);
-        fakeFolder.remoteModifier().insert(fileWithSpaces6);
-
-        ItemCompletedSpy completeSpy(fakeFolder);
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-#if defined Q_OS_WINDOWS
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-#else
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-#endif
-    }
-
-    void testCreateFileWithTrailingSpaces_remoteGetRenamedManually()
-    {
-        // On Windows we can't create files/folders with leading/trailing spaces locally. So, we have to fail those items. On other OSs - we just sync them down normally.
-        FakeFolder fakeFolder{FileInfo()};
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar ");
-        const QString fileWithSpaces6("A/bla ");
-
-        const QString fileWithSpacesVirtual4(fileWithSpaces4 + DVSUFFIX);
-        const QString fileWithSpacesVirtual5(fileWithSpaces5 + DVSUFFIX);
-        const QString fileWithSpacesVirtual6(fileWithSpaces6 + DVSUFFIX);
-
-        const QString fileWithoutSpaces4("A/foo");
-        const QString fileWithoutSpaces5("A/bar");
-        const QString fileWithoutSpaces6("A/bla");
-
-        const QString fileWithoutSpacesVirtual4(fileWithoutSpaces4 + DVSUFFIX);
-        const QString fileWithoutSpacesVirtual5(fileWithoutSpaces5 + DVSUFFIX);
-        const QString fileWithoutSpacesVirtual6(fileWithoutSpaces6 + DVSUFFIX);
-
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert(fileWithSpaces4);
-        fakeFolder.remoteModifier().insert(fileWithSpaces5);
-        fakeFolder.remoteModifier().insert(fileWithSpaces6);
-
-        ItemCompletedSpy completeSpy(fakeFolder);
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-#if defined Q_OS_WINDOWS
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-#else
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-#endif
-
-        fakeFolder.remoteModifier().rename(fileWithSpaces4, fileWithoutSpaces4);
-        fakeFolder.remoteModifier().rename(fileWithSpaces5, fileWithoutSpaces5);
-        fakeFolder.remoteModifier().rename(fileWithSpaces6, fileWithoutSpaces6);
-
-        completeSpy.clear();
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-    }
-
     // Dehydration via sync works
     void testSyncDehydration()
     {
@@ -1070,9 +815,9 @@ private slots:
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord normal, suffix;
-            return (!fakeFolder.syncJournal().getFileRecord(path, &normal) || !normal.isValid())
-                && fakeFolder.syncJournal().getFileRecord(path + DVSUFFIX, &suffix) && suffix.isValid()
-                && suffix._type == ItemTypeVirtualFile;
+            fakeFolder.syncJournal().getFileRecord(path, &normal);
+            fakeFolder.syncJournal().getFileRecord(path + DVSUFFIX, &suffix);
+            return !normal.isValid() && suffix.isValid() && suffix._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated("A/a1"));
@@ -1443,37 +1188,37 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability("file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("local/file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("online/file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("unspec/file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("online/file1" DVSUFFIX), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AllHydrated);
         setPin("online/sub", PinState::Unspecified);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::AllDehydrated);
 
         triggerDownload(fakeFolder, "unspec/file1");
         setPin("local/file2", PinState::OnlineOnly);
         setPin("online/file2" DVSUFFIX, PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
 
-        QVERIFY(vfs->setPinState("local", PinState::AlwaysLocal));
-        QVERIFY(vfs->setPinState("online", PinState::OnlineOnly));
+        vfs->setPinState("local", PinState::AlwaysLocal);
+        vfs->setPinState("online", PinState::OnlineOnly);
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
 
-        auto r = vfs->availability("nonexistent", Vfs::AvailabilityRecursivity::RecursiveAvailability);
+        auto r = vfs->availability("nonexistant");
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
@@ -1548,13 +1293,13 @@ private slots:
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename" DVSUFFIX, PinState::AlwaysLocal));
+        vfs->setPinState("onlinerenamed2/file1rename" DVSUFFIX, PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename"));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::AlwaysLocal);
 
-        QVERIFY(vfs->setPinState("onlinerenamed2", PinState::Unspecified));
-        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly));
+        vfs->setPinState("onlinerenamed2", PinState::Unspecified);
+        vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename" DVSUFFIX));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
@@ -1631,7 +1376,7 @@ private slots:
 
         cleanup();
         // Dehydrate
-        QVERIFY(vfs->setPinState(QString(), PinState::OnlineOnly));
+        vfs->setPinState(QString(), PinState::OnlineOnly);
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(itemInstruction(completeSpy, "A/igno" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
@@ -1654,392 +1399,6 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState().find("A/hello")->size, 12);
         QCOMPARE(fakeFolder.currentLocalState().find("A/hello" DVSUFFIX)->size, 222);
         QCOMPARE(fakeFolder.currentLocalState().find("A/igno" DVSUFFIX)->size, 123);
-    }
-
-    void testUpdateMetadataErrorManagement()
-    {
-        FakeFolder fakeFolder{FileInfo{}};
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // Existing files are propagated just fine in both directions
-        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
-        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("aaa/subfolder/bar"));
-        QVERIFY(fakeFolder.syncOnce());
-
-        // New files on the remote create virtual files
-        fakeFolder.remoteModifier().setModTime(QStringLiteral("aaa/subfolder/bar"), QDateTime::fromSecsSinceEpoch(0));
-        QVERIFY(!fakeFolder.syncOnce());
-
-        QVERIFY(!fakeFolder.syncOnce());
-    }
-
-    void testInvalidFutureMtimeRecovery()
-    {
-        constexpr auto FUTURE_MTIME = 0xFFFFFFFF;
-        constexpr auto CURRENT_MTIME = 1646057277;
-
-        FakeFolder fakeFolder{FileInfo{}};
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        const QString fooFileRootFolder("foo");
-        const QString barFileRootFolder("bar");
-        const QString fooFileSubFolder("subfolder/foo");
-        const QString barFileSubFolder("subfolder/bar");
-        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
-        const QString barFileAaaSubFolder("aaa/subfolder/bar");
-
-        fakeFolder.remoteModifier().insert(fooFileRootFolder);
-        fakeFolder.remoteModifier().insert(barFileRootFolder);
-        fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
-        fakeFolder.remoteModifier().insert(fooFileSubFolder);
-        fakeFolder.remoteModifier().insert(barFileSubFolder);
-        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
-        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
-        fakeFolder.remoteModifier().insert(fooFileAaaSubFolder);
-        fakeFolder.remoteModifier().insert(barFileAaaSubFolder);
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileRootFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileRootFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.remoteModifier().setModTimeKeepEtag(fooFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.remoteModifier().setModTimeKeepEtag(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-        fakeFolder.localModifier().setModTime(fooFileRootFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-        fakeFolder.localModifier().setModTime(barFileRootFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-        fakeFolder.localModifier().setModTime(fooFileSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-        fakeFolder.localModifier().setModTime(barFileSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-        fakeFolder.localModifier().setModTime(fooFileAaaSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder + DVSUFFIX, QDateTime::fromSecsSinceEpoch(FUTURE_MTIME));
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QVERIFY(fakeFolder.syncOnce());
-    }
-
-    void testInvalidMtimeLocalDiscovery()
-    {
-        constexpr auto INVALID_MTIME1 = 0;
-        constexpr auto INVALID_MTIME2 = 0xFFFFFFFF;
-        constexpr auto CURRENT_MTIME = 1646057277;
-
-        FakeFolder fakeFolder{FileInfo{}};
-        setupVfs(fakeFolder);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy statusSpy(&fakeFolder.syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged);
-
-        const QString fooFileRootFolder("foo");
-        const QString barFileRootFolder("bar");
-        const QString fooFileSubFolder("subfolder/foo");
-        const QString barFileSubFolder("subfolder/bar");
-        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
-        const QString barFileAaaSubFolder("aaa/subfolder/bar");
-
-        auto checkStatus = [&]() -> SyncFileStatus::SyncFileStatusTag {
-            auto file = QFileInfo{fakeFolder.syncEngine().localPath(), barFileAaaSubFolder};
-            auto locPath = fakeFolder.syncEngine().localPath();
-            auto itemFound = false;
-            // Start from the end to get the latest status
-            for (int i = statusSpy.size() - 1; i >= 0 && !itemFound; --i) {
-                if (QFileInfo(statusSpy.at(i)[0].toString()) == file) {
-                    itemFound = true;
-                    return statusSpy.at(i)[1].value<SyncFileStatus>().tag();
-                }
-            }
-
-            return {};
-        };
-
-        const auto lastModified = [&](const QString &path) -> qint64 {
-            return fakeFolder.currentLocalState().find(path)->lastModified.toSecsSinceEpoch();
-        };
-
-        fakeFolder.localModifier().insert(fooFileRootFolder);
-        fakeFolder.localModifier().insert(barFileRootFolder);
-        fakeFolder.localModifier().mkdir(QStringLiteral("subfolder"));
-        fakeFolder.localModifier().insert(fooFileSubFolder);
-        fakeFolder.localModifier().insert(barFileSubFolder);
-        fakeFolder.localModifier().mkdir(QStringLiteral("aaa"));
-        fakeFolder.localModifier().mkdir(QStringLiteral("aaa/subfolder"));
-        fakeFolder.localModifier().insert(fooFileAaaSubFolder);
-        fakeFolder.localModifier().insert(barFileAaaSubFolder);
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
-
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilBeforePropagation();
-
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
-
-        fakeFolder.execUntilFinished();
-
-        // ensure mtime has changed after the sync
-        QCOMPARE_GT(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
-
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        // ensure mtime is now CURRENT_MTIME
-        QCOMPARE(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
-
-        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
-
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilBeforePropagation();
-
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
-
-        fakeFolder.execUntilFinished();
-
-        // ensure mtime has changed after the sync
-        QCOMPARE_GT(lastModified(barFileAaaSubFolder), CURRENT_MTIME);
-
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.localModifier().appendByte(barFileAaaSubFolder);
-        fakeFolder.localModifier().setModTime(barFileAaaSubFolder, QDateTime::fromSecsSinceEpoch(INVALID_MTIME2));
-
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilBeforePropagation();
-
-        QCOMPARE(checkStatus(), SyncFileStatus::StatusSync);
-
-        // the server only considers an mtime of 0-86400 (1d) as invalid, so this is fine
-        // see also: apps/dav/lib/Connector/Sabre/MtimeSanitizer.php
-        QCOMPARE(lastModified(barFileAaaSubFolder), INVALID_MTIME2);
-
-        fakeFolder.execUntilFinished();
-    }
-
-    void testServer_caseClash_createConflict()
-    {
-        constexpr auto testLowerCaseFile = "test";
-        constexpr auto testUpperCaseFile = "TEST";
-
-#if defined Q_OS_LINUX
-        constexpr auto shouldHaveCaseClashConflict = false;
-#else
-        constexpr auto shouldHaveCaseClashConflict = true;
-#endif
-
-        FakeFolder fakeFolder{FileInfo{}};
-        setupVfs(fakeFolder);
-
-        fakeFolder.remoteModifier().insert("otherFile.txt");
-        fakeFolder.remoteModifier().insert(testLowerCaseFile);
-        fakeFolder.remoteModifier().insert(testUpperCaseFile);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
-        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-    }
-
-    void testServer_subFolderCaseClash_createConflict()
-    {
-        constexpr auto testLowerCaseFile = "a/b/test";
-        constexpr auto testUpperCaseFile = "a/b/TEST";
-
-#if defined Q_OS_LINUX
-        constexpr auto shouldHaveCaseClashConflict = false;
-#else
-        constexpr auto shouldHaveCaseClashConflict = true;
-#endif
-
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        fakeFolder.remoteModifier().mkdir("a");
-        fakeFolder.remoteModifier().mkdir("a/b");
-        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
-        fakeFolder.remoteModifier().insert(testLowerCaseFile);
-        fakeFolder.remoteModifier().insert(testUpperCaseFile);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        const auto folder = *fakeFolder.currentLocalState().find("a/b");
-        auto conflicts = findCaseClashConflicts(folder);
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
-        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-    }
-
-    void testServer_caseClash_createConflictOnMove()
-    {
-        constexpr auto testLowerCaseFile = "test";
-        constexpr auto testUpperCaseFile = "TEST2";
-        constexpr auto testUpperCaseFileAfterMove = "TEST";
-
-#if defined Q_OS_LINUX
-        constexpr auto shouldHaveCaseClashConflict = false;
-#else
-        constexpr auto shouldHaveCaseClashConflict = true;
-#endif
-
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        fakeFolder.remoteModifier().insert("otherFile.txt");
-        fakeFolder.remoteModifier().insert(testLowerCaseFile);
-        fakeFolder.remoteModifier().insert(testUpperCaseFile);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
-        QCOMPARE(conflicts.size(), 0);
-        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
-        QCOMPARE(hasConflict, false);
-
-        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
-        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-    }
-
-    void testServer_subFolderCaseClash_createConflictOnMove()
-    {
-        constexpr auto testLowerCaseFile = "a/b/test";
-        constexpr auto testUpperCaseFile = "a/b/TEST2";
-        constexpr auto testUpperCaseFileAfterMove = "a/b/TEST";
-
-#if defined Q_OS_LINUX
-        constexpr auto shouldHaveCaseClashConflict = false;
-#else
-        constexpr auto shouldHaveCaseClashConflict = true;
-#endif
-
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        fakeFolder.remoteModifier().mkdir("a");
-        fakeFolder.remoteModifier().mkdir("a/b");
-        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
-        fakeFolder.remoteModifier().insert(testLowerCaseFile);
-        fakeFolder.remoteModifier().insert(testUpperCaseFile);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
-        QCOMPARE(conflicts.size(), 0);
-        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
-        QCOMPARE(hasConflict, false);
-
-        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
-        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
-        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
-    }
-
-    void testDataFingerPrint()
-    {
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        fakeFolder.remoteModifier().mkdir("a");
-        fakeFolder.remoteModifier().mkdir("a/b");
-        fakeFolder.remoteModifier().mkdir("a/b/d");
-        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
-
-        //Server support finger print, but none is set.
-        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.remoteModifier().remove("a/b/otherFile.txt");
-        fakeFolder.remoteModifier().remove("a/b/d");
-        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testLockFile_lockedFileReadOnly_afterSync()
-    {
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        ItemCompletedSpy completeSpy(fakeFolder);
-
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert("A/a1");
-
-        completeSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
-        OCC::SyncJournalFileRecord fileRecordBefore;
-        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1") + DVSUFFIX, &fileRecordBefore));
-        QVERIFY(fileRecordBefore.isValid());
-        QVERIFY(!fileRecordBefore._lockstate._locked);
-
-        const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
-        QVERIFY(localFileNotLocked.isWritable());
-
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
-        fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
-        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
-
-        completeSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
-        OCC::SyncJournalFileRecord fileRecordLocked;
-        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1") + DVSUFFIX, &fileRecordLocked));
-        QVERIFY(fileRecordLocked.isValid());
-        QVERIFY(fileRecordLocked._lockstate._locked);
-
-        const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
-        QVERIFY(!localFileLocked.isWritable());
     }
 };
 

@@ -1,8 +1,7 @@
 # - MACRO_ENSURE_OUT_OF_SOURCE_BUILD(<errorMessage>)
 # MACRO_ENSURE_OUT_OF_SOURCE_BUILD(<errorMessage>)
 
-# SPDX-FileCopyrightText: 2006 Alexander Neundorf <neundorf@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2006, Alexander Neundorf, <neundorf@kde.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.

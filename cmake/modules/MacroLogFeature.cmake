@@ -7,7 +7,7 @@
 #   FEATURE: name of the feature, e.g. "libjpeg"
 #   DESCRIPTION: description what this feature provides
 #   URL: home page
-#   REQUIRED: TRUE or FALSE, indicating whether the feature is required
+#   REQUIRED: TRUE or FALSE, indicating whether the featue is required
 #   MIN_VERSION: minimum version number. empty string if unneeded
 #   COMMENTS: More info you may want to provide.  empty string if unnecessary
 #
@@ -24,10 +24,9 @@
 # ...
 # MACRO_DISPLAY_FEATURE_LOG()
 
-# SPDX-FileCopyrightText: 2006 Alexander Neundorf <neundorf@kde.org>
-# SPDX-FileCopyrightText: 2006 Allen Winter <winter@kde.org>
-# SPDX-FileCopyrightText: 2009 Sebastian Trueg <trueg@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2006, Alexander Neundorf, <neundorf@kde.org>
+# Copyright (c) 2006, Allen Winter, <winter@kde.org>
+# Copyright (c) 2009, Sebastian Trueg, <trueg@kde.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.

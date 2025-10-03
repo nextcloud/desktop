@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OWNCLOUDGUI_H
@@ -67,14 +75,15 @@ signals:
 public slots:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
-    void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
+    void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
+    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
+    void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange(OCC::Folder *);
+    void slotSyncStateChange(Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
@@ -83,23 +92,25 @@ public slots:
     void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);
-    void slotTrayMessageIfServerUnsupported(const OCC::AccountPtr &account);
-    void slotNeedToAcceptTermsOfService(const OCC::AccountPtr &account,
-                                        OCC::AccountState::State state);
+    void slotAccountStateChanged();
+    void slotTrayMessageIfServerUnsupported(Account *account);
+
 
     /**
      * Open a share dialog for a file or folder.
      *
+     * sharePath is the full remote path to the item,
      * localPath is the absolute local path to it (so not relative
      * to the folder).
      */
-    void slotShowShareDialog(const QString &localPath) const;
-    void slotShowFileActivityDialog(const QString &localPath) const;
-    void slotNewAccountWizard();
+    void slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
+
+    void slotRemoveDestroyedShareDialogs();
 
 private slots:
     void slotLogin();
     void slotLogout();
+    void slotNewAccountWizard();
 
 private:
     QPointer<Systray> _tray;
@@ -110,9 +121,11 @@ private:
     QDBusConnection _bus;
 #endif
 
-    QAction *_actionNewAccountWizard = nullptr;
-    QAction *_actionSettings = nullptr;
-    QAction *_actionEstimate = nullptr;
+    QMap<QString, QPointer<ShareDialog>> _shareDialogs;
+
+    QAction *_actionNewAccountWizard;
+    QAction *_actionSettings;
+    QAction *_actionEstimate;
 
 
     QList<QAction *> _recentItemsActions;

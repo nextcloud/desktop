@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_OWNCLOUD_HTTP_CREDS_PAGE_H
@@ -25,11 +34,12 @@ class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 public:
     OwncloudHttpCredsPage(QWidget *parent);
 
-    [[nodiscard]] AbstractCredentials *getCredentials() const override;
+    AbstractCredentials *getCredentials() const override;
 
     void initializePage() override;
     void cleanupPage() override;
     bool validatePage() override;
+    int nextId() const override;
     void setConnected();
     void setErrorString(const QString &err);
 
@@ -46,7 +56,7 @@ private:
     void customizeStyle();
 
     Ui_OwncloudHttpCredsPage _ui;
-    bool _connected = false;
+    bool _connected;
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
 };

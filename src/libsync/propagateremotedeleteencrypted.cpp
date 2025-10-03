@@ -1,11 +1,19 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "propagateremotedeleteencrypted.h"
 #include "clientsideencryptionjobs.h"
-#include "foldermetadata.h"
 #include "owncloudpropagator.h"
 #include "encryptfolderjob.h"
 #include <QLoggingCategory>
@@ -16,7 +24,7 @@ using namespace OCC;
 Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED, "nextcloud.sync.propagator.remove.encrypted")
 
 PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
-    : BasePropagateRemoteDeleteEncrypted(propagator, item, parent)
+    : AbstractPropagateRemoteDeleteEncrypted(propagator, item, parent)
 {
 
 }
@@ -26,29 +34,24 @@ void PropagateRemoteDeleteEncrypted::start()
     Q_ASSERT(!_item->_encryptedFileName.isEmpty());
 
     const QFileInfo info(_item->_encryptedFileName);
-    fetchMetadataForPath(info.path());
+    startLsColJob(info.path());
 }
 
-void PropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(const QByteArray &folderId, int statusCode)
+void PropagateRemoteDeleteEncrypted::slotFolderUnLockedSuccessfully(const QByteArray &folderId)
 {
-    BasePropagateRemoteDeleteEncrypted::slotFolderUnLockFinished(folderId, statusCode);
+    AbstractPropagateRemoteDeleteEncrypted::slotFolderUnLockedSuccessfully(folderId);
     emit finished(!_isTaskFailed);
 }
 
-void PropagateRemoteDeleteEncrypted::slotFetchMetadataJobFinished(int statusCode, const QString &message)
+void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
-    Q_UNUSED(message);
     if (statusCode == 404) {
         qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata not found, but let's proceed with removing the file anyway.";
         deleteRemoteItem(_item->_encryptedFileName);
         return;
     }
 
-    const auto metadata = folderMetadata();
-    if (!metadata || !metadata->isValid()) {
-        taskFailed();
-        return;
-    }
+    FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata Received, preparing it for removal of the file";
 
@@ -57,10 +60,10 @@ void PropagateRemoteDeleteEncrypted::slotFetchMetadataJobFinished(int statusCode
 
     // Find existing metadata for this file
     bool found = false;
-    const QVector<FolderMetadata::EncryptedFile> files = metadata->files();
-    for (const FolderMetadata::EncryptedFile &file : files) {
+    const QVector<EncryptedFile> files = metadata.files();
+    for (const EncryptedFile &file : files) {
         if (file.originalFilename == fileName) {
-            metadata->removeEncryptedFile(file);
+            metadata.removeEncryptedFile(file);
             found = true;
             break;
         }
@@ -73,12 +76,12 @@ void PropagateRemoteDeleteEncrypted::slotFetchMetadataJobFinished(int statusCode
     }
 
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
-    uploadMetadata(EncryptedFolderMetadataHandler::UploadMode::KeepLock);
-}
 
-void PropagateRemoteDeleteEncrypted::slotUpdateMetadataJobFinished(int statusCode, const QString &message)
-{
-    Q_UNUSED(statusCode);
-    Q_UNUSED(message);
-    deleteRemoteItem(_item->_encryptedFileName);
+    auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata.encryptedMetadata(), _folderToken);
+    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray& fileId) {
+        Q_UNUSED(fileId);
+        deleteRemoteItem(_item->_encryptedFileName);
+    });
+    connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
+    job->start();
 }

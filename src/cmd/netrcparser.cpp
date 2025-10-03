@@ -1,12 +1,22 @@
 /*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QDir>
 #include <QFile>
-#include <QRegularExpression>
+#include <QTextStream>
+
+#include <qtokenizer.h>
 
 #include <QDebug>
 
@@ -48,29 +58,26 @@ bool NetrcParser::parse()
         return false;
     }
     QString content = netrc.readAll();
-    if (content.isEmpty()) {
-        return false;
-    }
 
-    auto tokens = content.split(QRegularExpression("\\s+"));
+    QStringTokenizer tokenizer(content, " \n\t");
+    tokenizer.setQuoteCharacters("\"'");
 
     LoginPair pair;
     QString machine;
     bool isDefault = false;
-    for(int i=0; i<tokens.count(); i++) {
-        const auto key = tokens[i];
+    while (tokenizer.hasNext()) {
+        QString key = tokenizer.next();
         if (key == defaultKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
             isDefault = true;
             continue; // don't read a value
         }
 
-        i++;
-        if (i >= tokens.count()) {
+        if (!tokenizer.hasNext()) {
             qDebug() << "error fetching value for" << key;
-            break;
+            return false;
         }
-        auto value = tokens[i];
+        QString value = tokenizer.next();
 
         if (key == machineKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);

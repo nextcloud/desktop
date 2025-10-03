@@ -1,105 +1,94 @@
-<!--
-  - SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-  - SPDX-FileCopyrightText: 2011 Nextcloud GmbH and Nextcloud contributors
-  - SPDX-License-Identifier: GPL-2.0-or-later
--->
 # Nextcloud Desktop Client
 
-[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/desktop)](https://api.reuse.software/info/github.com/nextcloud/desktop)
-
-The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server with your computer.
+The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
+with your computer.
 
 <p align="center">
-    <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
+    <img src="https://nextcloud.com/wp-content/themes/next/assets/img/clients/desktop/macsettings.png?x16328" alt="Desktop Client on Mac OS]">
 </p>
 
-## :rocket: Releases
-For the latest stable recommended version, please refer to the [download page https://nextcloud.com/install/#install-clients](https://nextcloud.com/install/#install-clients)
+## :blue_heart: :tada: Contributing
 
-## Contributing to the desktop client
-:v: Please read the [Code of Conduct](https://nextcloud.com/community/code-of-conduct/). This document offers some guidance to ensure Nextcloud participants can cooperate effectively in a positive and inspiring atmosphere and to explain how together we can strengthen and support each other.
+### :hammer_and_wrench: How to compile the desktop client
 
-### 👪 Join the team
-There are many ways to contribute, of which development is only one! Find out [how to get involved](https://nextcloud.com/contribute/), including as a translator, designer, tester, helping others, and much more! 😍
+:building_construction: [System requirements](https://github.com/nextcloud/desktop/wiki/System-requirements-for-compiling-the-desktop-client) includes OpenSSL 1.1.x, QtKeychain, Qt 5.x.x and zlib.
 
-### Help testing
-Download and install the client:<br>
-[🔽 All releases](https://github.com/nextcloud-releases/desktop/releases)<br>
-[🔽 Daily master builds](https://download.nextcloud.com/desktop/daily)
+#### :memo: Step by step instructions
 
-### Reporting issues
-If you find any bugs or have any suggestion for improvement, please
-[open an issue in this repository](https://github.com/nextcloud/desktop/issues).
-
-### Bug fixing and development
-
-> [!TIP]
-> For building the client on macOS we have a tool called `mac-crafter`.
-> You will find more information about it in [its dedicated README](admin/osx/mac-crafter/README.md).
-
-#### 1. 🚀 Set up your local development environment
-
-> [!NOTE]  
-> Find the system requirements and instructions on [how to work on Windows with KDE Craft](https://github.com/nextcloud/desktop-client-blueprints/) on our [desktop client blueprints repository](https://github.com/nextcloud/desktop-client-blueprints/).
-
-1.1 System requirements
-- [Windows 10, Windows 11](https://github.com/nextcloud/desktop-client-blueprints/), macOS 10.14 Mojave (or newer) or Linux
-- [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
-- Developer tools: cmake, clang/gcc/g++:
-- Qt6 since 3.14, Qt5 for earlier versions
-- OpenSSL
-- [🔽 QtKeychain](https://github.com/frankosterfeld/qtkeychain)
-- SQLite
-
-1.2 Optional
-- [Qt Creator IDE](https://www.qt.io/product/development-tools)
-- [delta: A viewer for git and diff output](https://github.com/dandavison/delta)
-
-> [!TIP]
-> We highly recommend [Nextcloud development environment on Docker Compose](https://juliusknorr.github.io/nextcloud-docker-dev/) for testing/bug fixing/development.<br>
-> ▶️ https://juliusknorr.github.io/nextcloud-docker-dev/
-
-1.3 Step by step instructions on how to build the client to contribute
-1. Clone the Github repository:
+##### Clone the repo and create build directory
 ```
-git clone https://github.com/nextcloud/desktop.git
+$ git clone https://github.com/nextcloud/desktop.git
+$ cd desktop
+$ mkdir build
+$ cd build
 ```
-2. Create <build directory>:
+##### Compile and install
+
+:warning: For development reasons it is better to **install the client on user space** instead on the global system. Mixing up libs/dll's of different version can lead to undefined behavior and crashes:
+
+* You could use the **cmake flag** ```CMAKE_INSTALL_PREFIX``` as ```~/.local/``` in a **Linux** system. If you want to install system wide you could use ```/usr/local``` or ```/opt/nextcloud/```.
+
+* On **Windows 10** [```$USERPROFILE```](https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables#a-href-idbkmk-2avariables-that-are-recognized-only-in-the-user-context) refers to ```C:\Users\<USERNAME>```.
+
+##### Linux & Mac OS
+
 ```
-mkdir <build directory>
-```
-3. Compile:
-```
-cd <build directory>
-cmake -S <cloned desktop repo> -B build -DCMAKE_PREFIX_PATH=<dependencies> -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=. -DNEXTCLOUD_DEV=ON
+$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
+$ make install
 ```
 
-> [!TIP]
-> The cmake variable NEXTCLOUD_DEV allows you to run your own build of the client while developing in parallel with an installed version of the client.
+##### Windows
 
-4. Build it:
-- Windows:
 ```
-cmake --build .
-```
-- Other platforms:
-```
-make
+$ cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_INSTALL_PREFIX=$USERPROFILE\nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build . --config Debug --target install
 ```
 
-5. 🐛 [Pick a good first issue](https://github.com/nextcloud/desktop/labels/good%20first%20issue)
-6. 👩‍🔧 Create a branch and make your changes. Remember to sign off your commits using `git commit -sm "Your commit message"`
-7. ⬆ Create a [pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) and `@mention` the people from the issue to review
-8. 👍 Fix things that come up during a review
-9. 🎉 Wait for it to get merged!
+:information_source: More detailed instructions can be found at the [Desktop Client Wiki](https://github.com/nextcloud/desktop/wiki).
 
-## Get in touch 💬
-* [📋 Forum](https://help.nextcloud.com)
-* [👥 Facebook](https://www.facebook.com/nextclouders)
-* [🐣 Twitter](https://twitter.com/Nextclouders)
-* [🐘 Mastodon](https://mastodon.xyz/@nextcloud)
+### :inbox_tray: Where to find binaries to download
 
-You can also [get support for Nextcloud](https://nextcloud.com/support)!
+#### :high_brightness: Daily builds
+
+- Daily builds based on the latest master are available for Linux :penguin:, Mac, and Windows
+[in the desktop/daily folder of our download server](https://download.nextcloud.com/desktop/daily).
+For more info: [Wiki/Daily Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
+
+#### :rocket: Releases
+
+- Refer to the [download page https://nextcloud.com/install/#install-clients](https://nextcloud.com/install/#install-clients)
+
+### :bomb: Reporting issues
+
+- If you find any bugs or have any suggestion for improvement, please
+file an issue at https://github.com/nextcloud/desktop/issues. Do not
+contact the authors directly by mail, as this increases the chance
+of your report being lost. :boom:
+
+### :smiley: :trophy: Pull requests
+
+- If you created a patch :heart_eyes:, please submit a [Pull
+Request](https://github.com/nextcloud/desktop/pulls).
+- How to create a pull request? This guide will help you get started: [Opening a pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) :heart:
+
+
+## :satellite: Contact us
+
+If you want to contact us, e.g. before starting a more complex feature, for questions :question:
+you can join us at
+[#nextcloud-client](https://webchat.freenode.net/?channels=nextcloud-client).
+
+## :v: Code of conduct
+
+The Nextcloud community has core values that are shared between all members during conferences, hackweeks and on all interactions in online platforms including [Github](https://github.com/nextcloud) and [Forums](https://help.nextcloud.com). If you contribute, participate or interact with this community, please respect [our shared values](https://nextcloud.com/code-of-conduct/). :relieved:
+
+## :memo: Source code
+
+The Nextcloud Desktop Client is developed in Git. Since Git makes it easy to
+fork and improve the source code and to adapt it to your need, many copies
+can be found on the Internet, in particular on GitHub. However, the
+authoritative repository maintained by the developers is located at
+https://github.com/nextcloud/desktop.
 
 ## :scroll: License
 

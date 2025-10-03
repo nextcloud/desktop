@@ -10,8 +10,7 @@
 #  See help for CheckCSourceCompiles for a listing of variables
 #  that can modify the build.
 
-# SPDX-FileCopyrightText: 2006 Alexander Neundorf <neundorf@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2006, Alexander Neundorf, <neundorf@kde.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.

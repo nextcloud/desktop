@@ -1,7 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
 #ifndef PROPAGATEDOWNLOADENCRYPTED_H
 #define PROPAGATEDOWNLOADENCRYPTED_H
 
@@ -11,22 +7,24 @@
 #include "syncfileitem.h"
 #include "owncloudpropagator.h"
 #include "clientsideencryption.h"
-#include "foldermetadata.h"
 
 class QJsonDocument;
 
 namespace OCC {
-class EncryptedFolderMetadataHandler;
+
 class PropagateDownloadEncrypted : public QObject {
   Q_OBJECT
 public:
   PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
   void start();
   bool decryptFile(QFile& tmpFile);
-  [[nodiscard]] QString errorString() const;
+  QString errorString() const;
 
-private slots:
-  void slotFetchMetadataJobFinished(int statusCode, const QString &message);
+public slots:
+  void checkFolderId(const QStringList &list);
+  void checkFolderEncryptedMetadata(const QJsonDocument &json);
+  void folderIdError();
+  void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
 
 signals:
   void fileMetadataFound();
@@ -39,12 +37,8 @@ private:
   QString _localParentPath;
   SyncFileItemPtr _item;
   QFileInfo _info;
-  FolderMetadata::EncryptedFile _encryptedInfo;
+  EncryptedFile _encryptedInfo;
   QString _errorString;
-  QString _remoteParentPath;
-  QString _parentPathInDb;
-
-  QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };
 
 }

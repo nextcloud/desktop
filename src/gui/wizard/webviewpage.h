@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #ifndef WEBVIEWPAGE_H
 #define WEBVIEWPAGE_H
 
@@ -19,13 +14,14 @@ class WebViewPage : public AbstractCredentialsWizardPage
     Q_OBJECT
 public:
     WebViewPage(QWidget *parent = nullptr);
-    ~WebViewPage() override;
+    ~WebViewPage();
 
     void initializePage() override;
     void cleanupPage() override;
-    [[nodiscard]] bool isComplete() const override;
+    int nextId() const override;
+    bool isComplete() const override;
 
-    [[nodiscard]] AbstractCredentials* getCredentials() const override;
+    AbstractCredentials* getCredentials() const override;
     void setConnected();
 
 signals:
@@ -44,7 +40,7 @@ private:
     QString _user;
     QString _pass;
 
-    bool _useSystemProxy = false;
+    bool _useSystemProxy;
 
     QSize _originalWizardSize;
 };

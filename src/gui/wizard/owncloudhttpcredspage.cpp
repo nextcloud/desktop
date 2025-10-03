@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "QProgressIndicator.h"
@@ -19,6 +28,7 @@ namespace OCC {
 OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget *parent)
     : AbstractCredentialsWizardPage()
     , _ui()
+    , _connected(false)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
@@ -95,15 +105,11 @@ void OwncloudHttpCredsPage::initializePage()
         const QString user = url.userName();
         const QString password = url.password();
 
-        _ui.leUsername->setText(user);
-        _ui.lePassword->setText(password);
-
         if (!user.isEmpty()) {
-            _ui.errorLabel->setVisible(false);
-            startSpinner();
-
-            emit completeChanged();
-            emit connectToOCUrl(field("OCUrl").toString().simplified());
+            _ui.leUsername->setText(user);
+        }
+        if (!password.isEmpty()) {
+            _ui.lePassword->setText(password);
         }
     }
     _ui.tokenLabel->setText(HttpCredentialsGui::requestAppPasswordText(ocWizard->account().data()));
@@ -119,7 +125,7 @@ void OwncloudHttpCredsPage::cleanupPage()
 
 bool OwncloudHttpCredsPage::validatePage()
 {
-    if (_ui.leUsername->text().isEmpty()) {
+    if (_ui.leUsername->text().isEmpty() || _ui.lePassword->text().isEmpty()) {
         return false;
     }
 
@@ -144,6 +150,11 @@ bool OwncloudHttpCredsPage::validatePage()
         return true;
     }
     return true;
+}
+
+int OwncloudHttpCredsPage::nextId() const
+{
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 void OwncloudHttpCredsPage::setConnected()

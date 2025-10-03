@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef CONNECTIONVALIDATOR_H
@@ -23,7 +31,7 @@ namespace OCC {
  * checkAuthentication is the quick version that only does the propfind
  * while checkServerAndAuth is doing the 4 calls.
  *
- * We cannot use the capabilities call to test the login and the password because of
+ * We cannot use the capabilites call to test the login and the password because of
  * https://github.com/owncloud/core/issues/12930
  *
  * Here follows the state machine
@@ -52,7 +60,8 @@ namespace OCC {
   +---------------------------+
   |
   +-> checkServerCapabilities --------------v (in parallel)
-        JsonApiJob (cloud/capabilities)
+        JsonApiJob (cloud/capabilities)     JsonApiJob (ocs/v1.php/config)
+        |                                   +-> ocsConfigReceived
         +-> slotCapabilitiesRecieved -+
                                       |
     +---------------------------------+
@@ -67,44 +76,11 @@ namespace OCC {
 
 class UserInfo;
 
-class TermsOfServiceChecker : public QObject
-{
-    Q_OBJECT
-
-    Q_PROPERTY(bool needToSign READ needToSign NOTIFY needToSignChanged FINAL)
-public:
-    explicit TermsOfServiceChecker(AccountPtr account,
-                                   QObject *parent = nullptr);
-
-    explicit TermsOfServiceChecker(QObject *parent = nullptr);
-
-    [[nodiscard]] bool needToSign() const;
-
-public slots:
-    void start();
-
-signals:
-    void needToSignChanged();
-
-    void done();
-
-private slots:
-    void slotServerTermsOfServiceRecieved(const QJsonDocument &reply);
-
-private:
-    void checkServerTermsOfService();
-
-    AccountPtr _account;
-    bool _needToSign = false;
-};
-
 class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(AccountStatePtr accountState,
-                                 const QStringList &previousErrors,
-                                 QObject *parent = nullptr);
+    explicit ConnectionValidator(AccountStatePtr accountState, QObject *parent = nullptr);
 
     enum Status {
         Undefined,
@@ -115,11 +91,9 @@ public:
         CredentialsWrong, // AuthenticationRequiredError
         SslError, // SSL handshake error, certificate rejected by user?
         StatusNotFound, // Error retrieving status.php
-        StatusRedirect, // 204 URL received one of redirect HTTP codes (301-307), possibly a captive portal
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
-        Timeout, // actually also used for other errors on the authed request
-        NeedToSignTermsOfService,
+        Timeout // actually also used for other errors on the authed request
     };
     Q_ENUM(Status);
 
@@ -135,14 +109,10 @@ public slots:
     void checkAuthentication();
 
 signals:
-    void connectionResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
+    void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
-    void slotCheckRedirectCostFreeUrl();
-
     void slotCheckServerAndAuth();
-
-    void slotCheckRedirectCostFreeUrlFinished(int statusCode);
 
     void slotStatusFound(const QUrl &url, const QJsonObject &info);
     void slotNoStatusFound(QNetworkReply *reply);
@@ -152,9 +122,7 @@ protected slots:
     void slotAuthSuccess();
 
     void slotCapabilitiesRecieved(const QJsonDocument &);
-    void slotUserFetched(OCC::UserInfo *userInfo);
-
-    void termsOfServiceCheckDone();
+    void slotUserFetched(UserInfo *userInfo);
 
 private:
 #ifndef TOKEN_AUTH_ONLY
@@ -163,6 +131,7 @@ private:
     void reportResult(Status status);
     void checkServerCapabilities();
     void fetchUser();
+    static void ocsConfigReceived(const QJsonDocument &json, AccountPtr account);
 
     /** Sets the account's server version
      *
@@ -170,14 +139,10 @@ private:
      */
     bool setAndCheckServerVersion(const QString &version);
 
-    void checkServerTermsOfService();
-
-    const QStringList _previousErrors;
     QStringList _errors;
     AccountStatePtr _accountState;
     AccountPtr _account;
-    TermsOfServiceChecker _termsOfServiceChecker;
-    bool _isCheckingServerAndAuth = false;
+    bool _isCheckingServerAndAuth;
 };
 }
 

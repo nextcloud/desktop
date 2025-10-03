@@ -1,5 +1,3 @@
-# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-# SPDX-License-Identifier: LGPL-2.1-or-later
 add_library(NCContextMenu MODULE
     dllmain.cpp
     NCClientInterface.cpp
@@ -13,17 +11,7 @@ add_library(NCContextMenu MODULE
 target_link_libraries(NCContextMenu
     NCUtil)
 
-set_target_properties(NCContextMenu
-    PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY
-            ${BIN_OUTPUT_DIRECTORY}
-        RUNTIME_OUTPUT_DIRECTORY
-            ${BIN_OUTPUT_DIRECTORY}
-)
-
 install(TARGETS NCContextMenu
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-install(FILES $<TARGET_PDB_FILE:NCContextMenu> DESTINATION bin OPTIONAL)

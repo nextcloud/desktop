@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Michael Schuster <michael@schuster.ms>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "account.h"
@@ -162,8 +171,6 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             qCWarning(lcKeychainChunk) << "Error while writing" << writeJob->key() << "chunk" << writeJob->errorString();
             _chunkBuffer.clear();
         }
-
-        writeJob->deleteLater();
     }
 
     // write a chunk if there is any in the buffer
@@ -184,7 +191,9 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
         // keep the limit
         if (_chunkCount > KeychainChunk::MaxChunks) {
-            qCWarning(lcKeychainChunk) << "Maximum chunk count exceeded while writing chunk" << QString::number(index) << "cutting off after" << QString::number(KeychainChunk::MaxChunks) << "chunks";
+            qCWarning(lcKeychainChunk) << "Maximum chunk count exceeded while writing" << writeJob->key() << "chunk" << QString::number(index) << "cutting off after" << QString::number(KeychainChunk::MaxChunks) << "chunks";
+
+            writeJob->deleteLater();
 
             _chunkBuffer.clear();
 
@@ -196,7 +205,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             return;
         }
 
-        const QString keyWithIndex = _key + (index > 0 ? (QStringLiteral(".") + QString::number(index)) : QString());
+        const QString keyWithIndex = _key + (index > 0 ? (QString(".") + QString::number(index)) : QString());
         const QString kck = _account ? AbstractCredentials::keychainKey(
                 _account->url().toString(),
                 keyWithIndex,
@@ -222,6 +231,8 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             deleteLater();
         }
     }
+
+    writeJob->deleteLater();
 }
 
 /*
@@ -302,7 +313,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
 #if defined(Q_OS_WIN)
         // try to fetch next chunk
         if (_chunkCount < KeychainChunk::MaxChunks) {
-            const QString keyWithIndex = _key + QStringLiteral(".") + QString::number(_chunkCount);
+            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
             const QString kck = _account ? AbstractCredentials::keychainKey(
                     _account->url().toString(),
                     keyWithIndex,
@@ -325,7 +336,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
         }
 #endif
     } else {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
         if (!readJob->insecureFallback()) { // If insecureFallback is set, the next test would be pointless
             if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
                     || readJob->error() == QKeychain::OtherError)) {
@@ -431,7 +442,7 @@ void DeleteJob::slotDeleteJobDone(QKeychain::Job *incomingJob)
 #if defined(Q_OS_WIN)
         // try to delete next chunk
         if (_chunkCount < KeychainChunk::MaxChunks) {
-            const QString keyWithIndex = _key + QStringLiteral(".") + QString::number(_chunkCount);
+            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
             const QString kck = _account ? AbstractCredentials::keychainKey(
                     _account->url().toString(),
                     keyWithIndex,

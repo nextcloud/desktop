@@ -1,7 +1,3 @@
-# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2018 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
-
 # Use static runtime for all subdirectories
 foreach(buildType "" "_DEBUG" "_MINSIZEREL" "_RELEASE" "_RELWITHDEBINFO")
     string(REPLACE "/MD" "/MT" "CMAKE_CXX_FLAGS${buildType}" "${CMAKE_CXX_FLAGS${buildType}}")

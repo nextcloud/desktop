@@ -1,8 +1,15 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-FileCopyrightText: 2000-2013 Liferay, Inc. All rights reserved
- * SPDX-License-Identifier: LGPL-2.1-or-later
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 #include "CommunicationSocket.h"
@@ -111,11 +118,11 @@ bool CommunicationSocket::ReadLine(wstring* response)
             return true;
         }
 
-        std::array<char, 128> resp_utf8 = {};
+        std::array<char, 128> resp_utf8;
         DWORD numBytesRead = 0;
         DWORD totalBytesAvailable = 0;
 
-        if (!PeekNamedPipe(_pipe, nullptr, 0, nullptr, &totalBytesAvailable, nullptr)) {
+        if (!PeekNamedPipe(_pipe, nullptr, 0, 0, &totalBytesAvailable, 0)) {
             Close();
             return false;
         }

@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_FOLDERWIZARD_H
@@ -33,7 +41,7 @@ class FormatWarningsWizardPage : public QWizardPage
 {
     Q_OBJECT
 protected:
-    [[nodiscard]] QString formatWarnings(const QStringList &warnings) const;
+    QString formatWarnings(const QStringList &warnings) const;
 };
 
 /**
@@ -45,24 +53,18 @@ class FolderWizardLocalPath : public FormatWarningsWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardLocalPath(const AccountPtr &account);
-    ~FolderWizardLocalPath() override;
+    ~FolderWizardLocalPath();
 
-    [[nodiscard]] bool isComplete() const override;
+    bool isComplete() const override;
     void initializePage() override;
     void cleanupPage() override;
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
-
-protected:
-    void changeEvent(QEvent *) override;
-
 protected slots:
     void slotChooseLocalFolder();
 
 private:
-    void changeStyle();
-
-    Ui_FolderWizardSourcePage _ui{};
+    Ui_FolderWizardSourcePage _ui;
     Folder::Map _folderMap;
     AccountPtr _account;
 };
@@ -78,18 +80,19 @@ class FolderWizardRemotePath : public FormatWarningsWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardRemotePath(const AccountPtr &account);
-    ~FolderWizardRemotePath() override;
+    ~FolderWizardRemotePath();
 
-    [[nodiscard]] bool isComplete() const override;
+    bool isComplete() const override;
 
     void initializePage() override;
     void cleanupPage() override;
 
 protected slots:
+
     void showWarn(const QString & = QString()) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString &);
-    void slotCreateRemoteFolderFinished();
+    void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error);
     void slotHandleMkdirNetworkError(QNetworkReply *);
     void slotHandleLsColNetworkError(QNetworkReply *);
     void slotUpdateDirectories(const QStringList &);
@@ -101,18 +104,12 @@ protected slots:
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList &subpaths);
 
-protected:
-    void changeEvent(QEvent *) override;
-
-private slots:
-    void changeStyle();
-
 private:
     LsColJob *runLsColJob(const QString &path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
-    Ui_FolderWizardTargetPage _ui{};
-    bool _warnWasVisible = false;
+    Ui_FolderWizardTargetPage _ui;
+    bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
     QStringList _encryptedPaths;
@@ -127,7 +124,7 @@ class FolderWizardSelectiveSync : public QWizardPage
     Q_OBJECT
 public:
     explicit FolderWizardSelectiveSync(const AccountPtr &account);
-    ~FolderWizardSelectiveSync() override;
+    ~FolderWizardSelectiveSync();
 
     bool validatePage() override;
 
@@ -157,14 +154,14 @@ public:
     };
 
     explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr);
-    ~FolderWizard() override;
+    ~FolderWizard();
 
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;
-    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
+    FolderWizardRemotePath *_folderWizardTargetPage;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
 };
 

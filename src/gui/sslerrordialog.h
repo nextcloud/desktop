@@ -1,9 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2012 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
 #ifndef SSLERRORDIALOG_H
 #define SSLERRORDIALOG_H
 
@@ -42,16 +49,16 @@ class SslErrorDialog : public QDialog
     Q_OBJECT
 public:
     explicit SslErrorDialog(AccountPtr account, QWidget *parent = nullptr);
-    ~SslErrorDialog() override;
+    ~SslErrorDialog();
     bool checkFailingCertsKnown(const QList<QSslError> &errors);
     bool trustConnection();
-    [[nodiscard]] QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
+    QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 
 private:
-    [[nodiscard]] QString styleSheet() const;
-    bool _allTrusted = false;
+    QString styleSheet() const;
+    bool _allTrusted;
 
-    [[nodiscard]] QString certDiv(QSslCertificate) const;
+    QString certDiv(QSslCertificate) const;
 
     QList<QSslCertificate> _unknownCerts;
     QString _customConfigHandle;

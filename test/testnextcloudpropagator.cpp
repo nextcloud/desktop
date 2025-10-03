@@ -1,19 +1,14 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
- *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+   This software is in the public domain, furnished "as is", without technical
+   support, and with no warranty, express or implied, as to its usefulness for
+   any purpose.
+*/
 
 #include <QtTest>
 #include <QDebug>
 
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
-#include "syncenginetestutils.h"
 
 using namespace OCC;
 namespace OCC {
@@ -25,14 +20,6 @@ class TestNextcloudPropagator : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
     void testUpdateErrorFromSession()
     {
         //OwncloudPropagator propagator(nullptr, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
@@ -85,31 +72,9 @@ private slots:
         tests.append(Test("\"fii\"-gzip", "fii"));
         tests.append(Test("W/\"foo\"", "foo"));
 
-        for (const auto &test : tests) {
+        foreach (const auto& test, tests) {
             QCOMPARE(parseEtag(test.first), QByteArray(test.second));
         }
-    }
-
-    void testParseException()
-    {
-        QNetworkRequest request;
-        request.setUrl(QStringLiteral("http://cloud.example.de/"));
-        const auto body = QByteArrayLiteral(
-            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-            "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
-            "<s:exception>Sabre\\Exception\\UnsupportedMediaType</s:exception>\n"
-            "<s:message>Virus detected!</s:message>\n"
-            "</d:error>");
-        const auto reply = new FakeErrorReply(QNetworkAccessManager::PutOperation,
-                                              request,
-                                              this,
-                                              415, body);
-        const auto exceptionParsed = OCC::getExceptionFromReply(reply);
-        // verify parsing succeeded
-        QVERIFY(!exceptionParsed.first.isEmpty());
-        QVERIFY(!exceptionParsed.second.isEmpty());
-        // verify buffer is not changed
-        QCOMPARE(reply->readAll().size(), body.size());
     }
 };
 

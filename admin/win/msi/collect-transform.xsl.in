@@ -1,8 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!--
-  - SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-  - SPDX-License-Identifier: GPL-2.0-or-later
--->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:wix="http://schemas.microsoft.com/wix/2006/wi">
@@ -30,9 +26,12 @@
   </xsl:template>
 
   <!-- Exclude Shell Extensions -->
-  <xsl:key name="shellext-search" match="wix:Component[contains(wix:File/@Source, 'NCContextMenu.dll') or contains(wix:File/@Source, 'NCOverlays.dll')]" use="@Id" />
+  <xsl:key name="shellext-search" match="wix:Component[contains(wix:File/@Source, 'shellext')]" use="@Id" />
   <xsl:template match="wix:Component[key('shellext-search', @Id)]" />
   <xsl:template match="wix:ComponentRef[key('shellext-search', @Id)]" />
+
+  <xsl:key name="shellext-search" match="wix:Directory[contains(@Name, 'shellext')]" use="@Id" />
+  <xsl:template match="wix:Directory[key('shellext-search', @Id)]" />
 
   <!-- Exclude VC Redist -->
   <xsl:key name="vc-redist-32-search" match="wix:Component[contains(wix:File/@Source, 'vc_redist.x86.exe')]" use="@Id" />
@@ -42,8 +41,4 @@
   <xsl:key name="vc-redist-64-search" match="wix:Component[contains(wix:File/@Source, 'vc_redist.x64.exe')]" use="@Id" />
   <xsl:template match="wix:Component[key('vc-redist-64-search', @Id)]" />
   <xsl:template match="wix:ComponentRef[key('vc-redist-64-search', @Id)]" />
-
-  <xsl:key name="qt6-webengine-core-pdb" match="wix:Component[contains(wix:File/@Source, 'Qt6WebEngineCore.pdb')]" use="@Id" />
-  <xsl:template match="wix:Component[key('qt6-webengine-core-pdb', @Id)]" />
-  <xsl:template match="wix:ComponentRef[key('qt6-webengine-core-pdb', @Id)]" />
 </xsl:stylesheet>

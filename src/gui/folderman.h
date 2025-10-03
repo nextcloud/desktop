@@ -1,32 +1,31 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
+
 
 #ifndef FOLDERMAN_H
 #define FOLDERMAN_H
 
-#include <QByteArray>
 #include <QObject>
 #include <QQueue>
 #include <QList>
 
 #include "folder.h"
 #include "folderwatcher.h"
-#ifdef Q_OS_WIN
 #include "navigationpanehelper.h"
-#endif
 #include "syncfileitem.h"
 
 class TestFolderMan;
-class TestCfApiShellExtensionsIPC;
-class TestShareModel;
-class TestFolderStatusModel;
-class ShareTestHelper;
-class EndToEndTestHelper;
-class TestSyncConflictsModel;
-class TestRemoteWipe;
 
 namespace OCC {
 
@@ -34,7 +33,6 @@ class Application;
 class SyncResult;
 class SocketApi;
 class LockWatcher;
-class UpdateE2eeFolderUsersMetadataJob;
 
 /**
  * @brief The FolderMan class
@@ -64,20 +62,7 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    enum class PathValidityResult {
-        Valid,
-        ErrorRecursiveValidity,
-        ErrorContainsFolder,
-        ErrorContainedInFolder,
-        ErrorNonEmptyFolder
-    };
-
-    enum class GoodPathStrategy {
-        AllowOnlyNewPath,
-        AllowOverrideExistingPath,
-    };
-
-    ~FolderMan() override;
+    ~FolderMan();
     static FolderMan *instance();
 
     int setupFolders();
@@ -89,21 +74,17 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
-    [[nodiscard]] const Folder::Map &map() const;
+    const Folder::Map &map() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
     Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
-    void removeFolder(Folder *folderToRemove);
+    void removeFolder(Folder *);
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
-
-    // Takes local file paths and finds the corresponding folder, adding to correct selective sync list
-    void whitelistFolderPath(const QString &path);
-    void blacklistFolderPath(const QString &path);
 
     /**
       * returns a list of local files that exist on the local harddisk for an
@@ -116,10 +97,10 @@ public:
     Folder *folder(const QString &);
 
     /**
-     * Migrate accounts from owncloud
+     * Migrate accounts from owncloud < 2.0
      * Creates a folder for a specific configuration, identified by alias.
      */
-    void setupLegacyFolder(const QString &, AccountState *account);
+    Folder *setupFolderFromOldConfigFile(const QString &, AccountState *account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
@@ -132,10 +113,11 @@ public:
     bool startFromScratch(const QString &);
 
     /// Produce text for use in the tray tooltip
-    static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused, ProgressInfo *progress);
+    static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused);
 
     /// Compute status summarizing multiple folders
-    static void trayOverallStatus(const QList<Folder *> &folders, SyncResult::Status *status, bool *unresolvedConflicts, ProgressInfo **overallProgressInfo);
+    static void trayOverallStatus(const QList<Folder *> &folders,
+        SyncResult::Status *status, bool *unresolvedConflicts);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
@@ -143,10 +125,7 @@ public:
     static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
-
-#ifdef Q_OS_WIN
     NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
-#endif
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
@@ -154,9 +133,9 @@ public:
      *
      * Note that different accounts are allowed to sync to the same folder.
      *
-     * @returns an empty string and PathValidityResult::Valid if it is allowed, or an error if it is not allowed
+     * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    [[nodiscard]] QPair<PathValidityResult, QString> checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
@@ -167,7 +146,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl, GoodPathStrategy allowExisting) const;
+    QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,
@@ -175,13 +154,13 @@ public:
      * at once.
      * These helper functions can be removed once it's properly per-folder.
      */
-    [[nodiscard]] bool ignoreHiddenFiles() const;
+    bool ignoreHiddenFiles() const;
     void setIgnoreHiddenFiles(bool ignore);
 
     /**
      * Access to the current queue of scheduled folders.
      */
-    [[nodiscard]] QQueue<Folder *> scheduleQueue() const;
+    QQueue<Folder *> scheduleQueue() const;
 
     /**
      * Access to the currently syncing folder.
@@ -191,7 +170,7 @@ public:
      *
      * See also isAnySyncRunning()
      */
-    [[nodiscard]] Folder *currentSyncFolder() const;
+    Folder *currentSyncFolder() const;
 
     /**
      * Returns true if any folder is currently syncing.
@@ -199,7 +178,7 @@ public:
      * This might be a FolderMan-scheduled sync, or a externally
      * managed sync like a placeholder hydration.
      */
-    [[nodiscard]] bool isAnySyncRunning() const;
+    bool isAnySyncRunning() const;
 
     /** Removes all folders */
     int unloadAndDeleteAllFolders();
@@ -213,9 +192,6 @@ public:
     /** Queues a folder for syncing. */
     void scheduleFolder(Folder *);
 
-    /** Queues a folder for syncing that starts immediately. */
-    void scheduleFolderForImmediateSync(Folder *);
-
     /** Puts a folder in the very front of the queue. */
     void scheduleFolderNext(Folder *);
 
@@ -224,23 +200,14 @@ public:
 
     void setDirtyProxy();
     void setDirtyNetworkLimits();
-    void setDirtyNetworkLimits(const AccountPtr &account) const;
 
-    /** removes current user from the share **/
-    void leaveShare(const QString &localFile);
-
-    /** Whether or not vfs is supported in the location. */
-    [[nodiscard]] bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
-
-    /** If the folder configuration is no longer supported this will return an error string */
-    [[nodiscard]] Result<void, QString> unsupportedConfiguration(const QString &path) const;
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
       *
       * Attention: The folder may be zero. Do a general update of the state then.
       */
-    void folderSyncStateChange(OCC::Folder *);
+    void folderSyncStateChange(Folder *);
 
     /**
      * Indicates when the schedule queue changes.
@@ -250,12 +217,12 @@ signals:
     /**
      * Emitted whenever the list of configured folders changes.
      */
-    void folderListChanged(const OCC::Folder::Map &);
+    void folderListChanged(const Folder::Map &);
 
     /**
      * Emitted once slotRemoveFoldersForAccount is done wiping
      */
-    void wipeDone(OCC::AccountState *account, bool success);
+    void wipeDone(AccountState *account, bool success);
 
 public slots:
 
@@ -273,26 +240,22 @@ public slots:
     /**
      * Triggers a sync run once the lock on the given file is removed.
      *
-     * Automatically determines the folder that's responsible for the file.
+     * Automatically detemines the folder that's responsible for the file.
      * See slotWatchedFileUnlocked().
      */
     void slotSyncOnceFileUnlocks(const QString &path);
 
     // slot to schedule an ETag job (from Folder only)
-    void slotScheduleETagJob(const QString &alias, OCC::RequestEtagJob *job);
+    void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);
 
     /** Wipe folder */
-    void slotWipeFolderForAccount(OCC::AccountState *accountState);
-
-    void forceSyncForFolder(OCC::Folder *folder);
-
-    void removeE2eFiles(const OCC::AccountPtr &account) const;
+    void slotWipeFolderForAccount(AccountState *accountState);
 
 private slots:
-    void slotFolderSyncPaused(OCC::Folder *, bool paused);
+    void slotFolderSyncPaused(Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
-    void slotFolderSyncFinished(const OCC::SyncResult &);
+    void slotFolderSyncFinished(const SyncResult &);
 
     void slotRunOneEtagJob();
     void slotEtagJobDestroyed(QObject *);
@@ -301,15 +264,15 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotAccountRemoved(OCC::AccountState *accountState);
+    void slotAccountRemoved(AccountState *accountState);
 
-    void slotRemoveFoldersForAccount(OCC::AccountState *accountState);
+    void slotRemoveFoldersForAccount(AccountState *accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(const OCC::AccountPtr &account);
+    void slotServerVersionChanged(Account *account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -327,11 +290,9 @@ private slots:
      */
     void slotScheduleFolderByTime();
 
-    void slotSetupPushNotifications(const OCC::Folder::Map &);
-    void slotProcessFilesPushNotification(OCC::Account *account);
-    void slotConnectToPushNotifications(const OCC::AccountPtr &account);
-
-    void slotLeaveShare(const QString &localFile, const QByteArray &folderToken = {});
+    void slotSetupPushNotifications(const Folder::Map &);
+    void slotProcessFilesPushNotification(Account *account);
+    void slotConnectToPushNotifications(Account *account);
 
 private:
     /** Adds a new folder, does not add it to the account settings and
@@ -348,7 +309,7 @@ private:
 
     // finds all folder configuration files
     // and create the folders
-    [[nodiscard]] QString getBackupName(QString fullPathName) const;
+    QString getBackupName(QString fullPathName) const;
 
     // makes the folder known to the socket api
     void registerFolderWithSocketApi(Folder *folder);
@@ -361,11 +322,7 @@ private:
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
 
-    bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
-
-    [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
-
-    void addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list);
+    bool pushNotificationsFilesReady(Account *account);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
@@ -394,14 +351,8 @@ private:
     /// Picks the next scheduled folder and starts the sync
     QTimer _startScheduledSyncTimer;
 
-    bool _nextSyncShouldStartImmediately = false;
-
     QScopedPointer<SocketApi> _socketApi;
-#ifdef Q_OS_WIN
     NavigationPaneHelper _navigationPaneHelper;
-#endif
-
-    QPointer<UpdateE2eeFolderUsersMetadataJob> _removeE2eeShareJob;
 
     bool _appRestartRequired = false;
 
@@ -409,12 +360,6 @@ private:
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
     friend class ::TestFolderMan;
-    friend class ::TestSyncConflictsModel;
-    friend class ::TestCfApiShellExtensionsIPC;
-    friend class ::ShareTestHelper;
-    friend class ::EndToEndTestHelper;
-    friend class ::TestFolderStatusModel;
-    friend class ::TestRemoteWipe;
 };
 
 } // namespace OCC

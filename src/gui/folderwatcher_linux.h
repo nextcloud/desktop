@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_FOLDERWATCHER_LINUX_H
@@ -29,9 +37,9 @@ class FolderWatcherPrivate : public QObject
 public:
     FolderWatcherPrivate() = default;
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
-    ~FolderWatcherPrivate() override;
+    ~FolderWatcherPrivate();
 
-    [[nodiscard]] int testWatchCount() const { return _pathToWatch.size(); }
+    int testWatchCount() const { return _pathToWatch.size(); }
 
     /// On linux the watcher is ready when the ctor finished.
     bool _ready = true;
@@ -46,13 +54,13 @@ protected:
     void removeFoldersBelow(const QString &path);
 
 private:
-    FolderWatcher *_parent = nullptr;
+    FolderWatcher *_parent;
 
     QString _folder;
     QHash<int, QString> _watchToPath;
     QMap<QString, int> _pathToWatch;
     QScopedPointer<QSocketNotifier> _socket;
-    int _fd = 0;
+    int _fd;
 };
 }
 

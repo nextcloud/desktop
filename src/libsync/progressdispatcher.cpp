@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "progressdispatcher.h"
@@ -33,8 +41,6 @@ QString Progress::asResultString(const SyncFileItem &item)
         }
     case CSYNC_INSTRUCTION_CONFLICT:
         return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into conflict file");
-    case CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT:
-        return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into case conflict conflict file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
@@ -48,10 +54,6 @@ QString Progress::asResultString(const SyncFileItem &item)
         return QCoreApplication::translate("progress", "Error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "Updated local metadata");
-    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
-        return QCoreApplication::translate("progress", "Updated local virtual files metadata");
-    case CSYNC_INSTRUCTION_UPDATE_ENCRYPTION_METADATA:
-        return QCoreApplication::translate("progress", "Updated end-to-end encryption metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate("progress", "Unknown");
@@ -63,30 +65,25 @@ QString Progress::asActionString(const SyncFileItem &item)
 {
     switch (item._instruction) {
     case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
         if (item._direction != SyncFileItem::Up)
-            return QCoreApplication::translate("progress", "Downloading");
+            return QCoreApplication::translate("progress", "downloading");
         else
-            return QCoreApplication::translate("progress", "Uploading");
+            return QCoreApplication::translate("progress", "uploading");
     case CSYNC_INSTRUCTION_REMOVE:
-        return QCoreApplication::translate("progress", "Deleting");
+        return QCoreApplication::translate("progress", "deleting");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
     case CSYNC_INSTRUCTION_RENAME:
-        return QCoreApplication::translate("progress", "Moving");
+        return QCoreApplication::translate("progress", "moving");
     case CSYNC_INSTRUCTION_IGNORE:
-        return QCoreApplication::translate("progress", "Ignoring");
+        return QCoreApplication::translate("progress", "ignoring");
     case CSYNC_INSTRUCTION_STAT_ERROR:
     case CSYNC_INSTRUCTION_ERROR:
-        return QCoreApplication::translate("progress", "Error");
+        return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
-        return QCoreApplication::translate("progress", "Updating local metadata");
-    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
-        return QCoreApplication::translate("progress", "Updating local virtual files metadata");
-    case CSYNC_INSTRUCTION_UPDATE_ENCRYPTION_METADATA:
-        return QCoreApplication::translate("progress", "Updating end-to-end encryption metadata");
+        return QCoreApplication::translate("progress", "updating local metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         break;
@@ -100,9 +97,7 @@ bool Progress::isWarningKind(SyncFileItem::Status kind)
         || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
         || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
         || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError
-        || kind == SyncFileItem::FileLocked || kind == SyncFileItem::FileNameInvalid
-        || kind == SyncFileItem::FileNameInvalidOnServer
-        || kind == SyncFileItem::FileNameClash;
+        || kind == SyncFileItem::FileLocked;
 }
 
 bool Progress::isIgnoredKind(SyncFileItem::Status kind)
@@ -285,8 +280,8 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
     // on the upload speed. That's particularly relevant for large file
     // up/downloads, where files per second will be close to 0.
     //
-    // However, when many *small* files are transferred, the estimate
-    // can become very pessimistic as the transferred amount per second
+    // However, when many *small* files are transfered, the estimate
+    // can become very pessimistic as the transfered amount per second
     // drops significantly.
     //
     // So, if we detect a high rate of files per second or a very low
@@ -324,7 +319,7 @@ quint64 ProgressInfo::optimisticEta() const
 {
     // This assumes files and transfers finish as quickly as possible
     // *but* note that maxPerSecond could be serious underestimate
-    // (if we never got to fully exercise transfer or files/second)
+    // (if we never got to fully excercise transfer or files/second)
 
     return _fileProgress.remaining() / _maxFilesPerSecond * 1000
         + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
@@ -361,7 +356,7 @@ void ProgressInfo::updateEstimates()
 void ProgressInfo::recomputeCompletedSize()
 {
     qint64 r = _totalSizeOfCompletedJobs;
-    for (const auto &i : std::as_const(_currentItems)) {
+    foreach (const ProgressItem &i, _currentItems) {
         if (isSizeDependent(i._item))
             r += i._progress._completed;
     }
@@ -370,7 +365,7 @@ void ProgressInfo::recomputeCompletedSize()
 
 ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
 {
-    Estimates est{};
+    Estimates est;
     est.estimatedBandwidth = _progressPerSec;
     if (_progressPerSec != 0) {
         est.estimatedEta = qRound64(static_cast<double>(_total - _completed) / _progressPerSec) * 1000;

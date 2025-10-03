@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_NETWORKSETTINGS_H
@@ -9,10 +17,8 @@
 
 #include <QWidget>
 
-#include "libsync/accountfwd.h"
 
 namespace OCC {
-class Account;
 
 namespace Ui {
     class NetworkSettings;
@@ -27,9 +33,9 @@ class NetworkSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit NetworkSettings(const AccountPtr &account = {}, QWidget *parent = nullptr);
-    ~NetworkSettings() override;
-    [[nodiscard]] QSize sizeHint() const override;
+    explicit NetworkSettings(QWidget *parent = nullptr);
+    ~NetworkSettings();
+    QSize sizeHint() const override;
 
 private slots:
     void saveProxySettings();
@@ -48,7 +54,6 @@ private:
     void loadBWLimitSettings();
 
     Ui::NetworkSettings *_ui;
-    AccountPtr _account;
 };
 
 

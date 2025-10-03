@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
-** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.
@@ -43,7 +42,7 @@ public:
     QtSingleCoreApplication(const QString &id, int &argc, char **argv);
 
     bool isRunning();
-    [[nodiscard]] QString id() const;
+    QString id() const;
     void setBlock(bool value);
 
 public Q_SLOTS:
@@ -56,7 +55,7 @@ Q_SIGNALS:
 
 private:
     QtLocalPeer* peer;
-    bool block = false;
+    bool block;
 };
 
 } // namespace SharedTools

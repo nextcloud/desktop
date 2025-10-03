@@ -1,6 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Michael Schuster <michael@schuster.ms>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "userinfo.h"
@@ -27,6 +37,9 @@ UserInfo::UserInfo(AccountState *accountState, bool allowDisconnectedAccountStat
     , _accountState(accountState)
     , _allowDisconnectedAccountState(allowDisconnectedAccountState)
     , _fetchAvatarImage(fetchAvatarImage)
+    , _lastQuotaTotalBytes(0)
+    , _lastQuotaUsedBytes(0)
+    , _active(false)
 {
     connect(accountState, &AccountState::stateChanged,
         this, &UserInfo::slotAccountStateChanged);
@@ -66,7 +79,7 @@ void UserInfo::slotRequestFailed()
 
 bool UserInfo::canGetInfo() const
 {
-    if (!_accountState || !_active || !_accountState->account() || _accountState->account()->isPublicShareLink()) {
+    if (!_accountState || !_active) {
         return false;
     }
     AccountPtr account = _accountState->account();
@@ -100,23 +113,17 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
 
     AccountPtr account = _accountState->account();
 
-    if (const auto newUserId = objData.value("id").toString(); !newUserId.isEmpty()) {
-        if (QString::compare(account->davUser(), newUserId, Qt::CaseInsensitive) != 0) {
-            // TODO: the error message should be in the UI
-            qInfo() << "Authenticated with the wrong user! Please login with the account:" << account->prettyName();
-            if (account->credentials()) {
-                account->credentials()->askFromUser();
-            }
-            return;
-        }
-        account->setDavUser(newUserId);
+    // User Info
+    QString user = objData.value("id").toString();
+    if (!user.isEmpty()) {
+        account->setDavUser(user);
     }
-
     QString displayName = objData.value("display-name").toString();
     if (!displayName.isEmpty()) {
         account->setDavDisplayName(displayName);
     }
 
+    // Quota
     auto objQuota = objData.value("quota").toObject();
     qint64 used = objQuota.value("used").toDouble();
     qint64 total = objQuota.value("quota").toDouble();
@@ -130,15 +137,15 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     _jobRestartTimer.start(defaultIntervalT);
     _lastInfoReceived = QDateTime::currentDateTime();
 
-    if(_fetchAvatarImage && !account->isPublicShareLink()) {
+    // Avatar Image
+    if(_fetchAvatarImage) {
         auto *job = new AvatarJob(account, account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &UserInfo::slotAvatarImage);
         job->start();
-        return;
     }
-
-    emit fetchedLastInfo(this);
+    else
+        emit fetchedLastInfo(this);
 }
 
 void UserInfo::slotAvatarImage(const QImage &img)

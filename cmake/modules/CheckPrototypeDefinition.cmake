@@ -1,4 +1,4 @@
-# - Check if the prototype we expect is correct.
+# - Check if the protoype we expect is correct.
 # check_prototype_definition(FUNCTION PROTOTYPE RETURN HEADER VARIABLE)
 #  FUNCTION - The name of the function (used to check if prototype exists)
 #  PROTOTYPE- The prototype to check.
@@ -20,10 +20,6 @@
 #  CMAKE_REQUIRED_LIBRARIES = list of libraries to link
 
 #=============================================================================
-# SPDX-FileCopyrightText: 2005-2009 Kitware, Inc.
-# SPDX-FileCopyrightText: 2010-2011 Andreas Schneider <asn@cryptomilk.org>
-# SPDX-License-Identifier: BSD-3-Clause
-#
 # Copyright 2005-2009 Kitware, Inc.
 # Copyright 2010-2011 Andreas Schneider <asn@cryptomilk.org>
 #

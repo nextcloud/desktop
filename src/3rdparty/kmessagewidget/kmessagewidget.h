@@ -1,9 +1,22 @@
 /* This file is part of the KDE libraries
  *
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2011 Aurélien Gâteau <agateau@kde.org>
- * SPDX-FileCopyrightText: 2014 Dominik Haumann <dhaumann@kde.org>
- * SPDX-License-Identifier: LGPL-2.0-or-later
+ * Copyright (c) 2011 Aurélien Gâteau <agateau@kde.org>
+ * Copyright (c) 2014 Dominik Haumann <dhaumann@kde.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301  USA
  */
 #ifndef KMESSAGEWIDGET_H
 #define KMESSAGEWIDGET_H
@@ -125,7 +138,7 @@ public:
      * Get the text of this message widget.
      * @see setText()
      */
-    [[nodiscard]] QString text() const;
+    QString text() const;
 
     /**
      * Check whether word wrap is enabled.
@@ -136,14 +149,14 @@ public:
      *
      * @see setWordWrap()
      */
-    [[nodiscard]] bool wordWrap() const;
+    bool wordWrap() const;
 
     /**
      * Check whether the close button is visible.
      *
      * @see setCloseButtonVisible()
      */
-    [[nodiscard]] bool isCloseButtonVisible() const;
+    bool isCloseButtonVisible() const;
 
     /**
      * Get the type of this message.
@@ -151,7 +164,7 @@ public:
      *
      * @see KMessageWidget::MessageType, setMessageType()
      */
-    [[nodiscard]] MessageType messageType() const;
+    MessageType messageType() const;
 
     /**
      * Add @p action to the message widget.
@@ -174,24 +187,24 @@ public:
     /**
      * Returns the preferred size of the message widget.
      */
-    [[nodiscard]] QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
     /**
      * Returns the minimum size of the message widget.
      */
-    [[nodiscard]] QSize minimumSizeHint() const override;
+    QSize minimumSizeHint() const override;
 
     /**
      * Returns the required height for @p width.
      * @param width the width in pixels
      */
-    [[nodiscard]] int heightForWidth(int width) const override;
+    int heightForWidth(int width) const override;
 
     /**
      * The icon shown on the left of the text. By default, no icon is shown.
      * @since 4.11
      */
-    [[nodiscard]] QIcon icon() const;
+    QIcon icon() const;
 
     /**
      * Check whether the hide animation started by calling animatedHide()
@@ -201,7 +214,7 @@ public:
      * @see animatedHide(), hideAnimationFinished()
      * @since 5.0
      */
-    [[nodiscard]] bool isHideAnimationRunning() const;
+    bool isHideAnimationRunning() const;
 
     /**
      * Check whether the show animation started by calling animatedShow()
@@ -211,7 +224,7 @@ public:
      * @see animatedShow(), showAnimationFinished()
      * @since 5.0
      */
-    [[nodiscard]] bool isShowAnimationRunning() const;
+    bool isShowAnimationRunning() const;
 
 public Q_SLOTS:
     /**

@@ -1,13 +1,26 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
+/******************************************************************************
+ *   Copyright (C) 2014 by Olivier Goffart <ogoffart@woboq.com                *
+ *                                                                            *
+ *   This program is free software; you can redistribute it and/or modify     *
+ *   it under the terms of the GNU General Public License as published by     *
+ *   the Free Software Foundation; either version 2 of the License, or        *
+ *   (at your option) any later version.                                      *
+ *                                                                            *
+ *   This program is distributed in the hope that it will be useful,          *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU General Public License for more details.                             *
+ *                                                                            *
+ *   You should have received a copy of the GNU General Public License        *
+ *   along with this program; if not, write to the                            *
+ *   Free Software Foundation, Inc.,                                          *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
+ ******************************************************************************/
 
 #include <KOverlayIconPlugin>
 #include <KPluginFactory>
 #include <QtNetwork/QLocalSocket>
-#include <KFileItem>
+#include <KIOCore/kfileitem.h>
 #include <QDir>
 #include <QTimer>
 #include "ownclouddolphinpluginhelper.h"
@@ -37,7 +50,7 @@ public:
         QDir localPath(url.toLocalFile());
         const QByteArray localFile = localPath.canonicalPath().toUtf8();
 
-        helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n").constData());
+        helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n"));
 
         StatusMap::iterator it = m_status.find(localFile);
         if (it != m_status.constEnd()) {
@@ -53,16 +66,16 @@ private:
             return r;
 
         if (status.startsWith("OK"))
-            r << QStringLiteral("vcs-normal");
+            r << "vcs-normal";
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << QStringLiteral("vcs-update-required");
+            r << "vcs-update-required";
         if (status.startsWith("IGNORE") || status.startsWith("WARN"))
-            r << QStringLiteral("vcs-locally-modified-unstaged");
+            r << "vcs-locally-modified-unstaged";
         if (status.startsWith("ERROR"))
-            r << QStringLiteral("vcs-conflicting");
+            r << "vcs-conflicting";
 
         if (status.contains("+SWM"))
-            r << QStringLiteral("document-share");
+            r << "document-share";
 
         return r;
     }
@@ -85,7 +98,7 @@ private:
             return;
         status = tokens[1];
 
-        Q_EMIT overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
+        emit overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
     }
 };
 

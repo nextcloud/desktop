@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef SETTINGSDIALOG_H
@@ -20,11 +28,11 @@ class QStandardItemModel;
 
 namespace OCC {
 
+class AccountState;
+
 namespace Ui {
     class SettingsDialog;
 }
-
-class AccountState;
 class AccountSettings;
 class Application;
 class FolderMan;
@@ -37,17 +45,17 @@ class ownCloudGui;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QWidget* currentPage READ currentPage NOTIFY currentPageChanged)
+    Q_PROPERTY(QWidget* currentPage READ currentPage)
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
-    ~SettingsDialog() override;
+    ~SettingsDialog();
 
     QWidget* currentPage();
 
 public slots:
     void showFirstPage();
-    void showIssuesList(OCC::AccountState *account);
+    void showIssuesList(AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -55,7 +63,6 @@ public slots:
 signals:
     void styleChanged();
     void onActivate();
-    void currentPageChanged();
 
 protected:
     void reject() override;
@@ -63,8 +70,8 @@ protected:
     void changeEvent(QEvent *) override;
 
 private slots:
-    void accountAdded(OCC::AccountState *);
-    void accountRemoved(OCC::AccountState *);
+    void accountAdded(AccountState *);
+    void accountRemoved(AccountState *);
 
 private:
     void customizeStyle();

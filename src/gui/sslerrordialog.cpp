@@ -1,12 +1,18 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2012 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
 #include "configfile.h"
 #include "sslerrordialog.h"
-#include "theme.h"
 
 #include <QtGui>
 #include <QtNetwork>
@@ -32,27 +38,6 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return false;
     }
 
-    if (!account) {
-        return false;
-    }
-
-    // Check if HSTS is active for this host
-    auto qnam = account->networkAccessManager();
-    if (qnam && qnam->isStrictTransportSecurityEnabled()) {
-        // Get the host from the account URL
-        QString host = account->url().host();
-
-        // Check if this host has an active HSTS policy
-        auto hstsPolicies = qnam->strictTransportSecurityHosts();
-        for (const auto &policy : hstsPolicies) {
-            if (policy.host() == host && !policy.isExpired()) {
-                // HSTS is active for this host, don't show the dialog
-                qCInfo(lcSslErrorDialog) << "SSL certificate error, but HSTS is active. Rejecting connection.";
-                return false;
-            }
-        }
-    }
-
     SslErrorDialog dlg(account);
     // whether the failing certs have previously been accepted
     if (dlg.checkFailingCertsKnown(errors)) {
@@ -71,6 +56,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 
 SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     : QDialog(parent)
+    , _allTrusted(false)
     , _ui(new Ui::SslErrorDialog)
     , _account(account)
 {
@@ -82,8 +68,6 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     QPushButton *cancelButton =
         _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
     okButton->setEnabled(false);
-
-    _ui->_cbTrustConnect->setEnabled(!Theme::instance()->forbidBadSSL());
     connect(_ui->_cbTrustConnect, &QAbstractButton::clicked,
         okButton, &QWidget::setEnabled);
 
@@ -121,8 +105,6 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
 
     QStringList errorStrings;
 
-    QStringList additionalErrorStrings;
-
     QList<QSslCertificate> trustedCerts = _account->approvedCerts();
 
     for (int i = 0; i < errors.count(); ++i) {
@@ -133,8 +115,6 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
         errorStrings += error.errorString();
         if (!error.certificate().isNull()) {
             _unknownCerts.append(error.certificate());
-        } else {
-            additionalErrorStrings.append(error.errorString());
         }
     }
 
@@ -152,10 +132,10 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
     msg += QL("<div id=\"ca_errors\">");
-    for (const auto &cert : _unknownCerts) {
+    foreach (const QSslCertificate &cert, _unknownCerts) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
-        for (const auto &err : errors) {
+        foreach (QSslError err, errors) {
             if (err.certificate() == cert) {
                 msg += QL("<p>") + err.errorString() + QL("</p>");
             }
@@ -166,17 +146,6 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
             msg += QL("<hr/>");
         }
     }
-
-    if (!additionalErrorStrings.isEmpty()) {
-        msg += QL("<h4>") + tr("Additional errors:") + QL("</h4>");
-
-        for (const auto &errorString : additionalErrorStrings) {
-            msg += QL("<div id=\"ca_error\">");
-            msg += QL("<p>") + errorString + QL("</p>");
-            msg += QL("</div>");
-        }
-    }
-
     msg += QL("</div></body></html>");
 
     auto *doc = new QTextDocument(nullptr);
@@ -215,7 +184,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 
     msg += QL("<p>");
 
-    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZone::UTC)) {
+    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), Qt::UTC)) {
 	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
         msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
     }

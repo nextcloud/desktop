@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
  *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
  */
 
 #include <QtTest>
@@ -20,15 +17,14 @@ using namespace OCC;
 // pass combination of FILE_SHARE_READ, FILE_SHARE_WRITE, FILE_SHARE_DELETE
 HANDLE makeHandle(const QString &file, int shareMode)
 {
-    const auto fName = FileSystem::longWinPath(file);
-    const auto wuri = reinterpret_cast<const wchar_t *>(fName.utf16());
+    const wchar_t *wuri = reinterpret_cast<const wchar_t *>(file.utf16());
     auto handle = CreateFileW(
         wuri,
         GENERIC_READ | GENERIC_WRITE,
         shareMode,
-        nullptr, OPEN_EXISTING,
+        NULL, OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
-        nullptr);
+        NULL);
     if (handle == INVALID_HANDLE_VALUE) {
         qWarning() << GetLastError();
     }
@@ -41,17 +37,8 @@ class TestLockedFiles : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
     void testBasicLockFileWatcher()
     {
-        QTemporaryDir tmp;
         int count = 0;
         QString file;
 
@@ -59,16 +46,12 @@ private slots:
         watcher.setCheckInterval(std::chrono::milliseconds(50));
         connect(&watcher, &LockWatcher::fileUnlocked, &watcher, [&](const QString &f) { ++count; file = f; });
 
-        const QString tmpFile = tmp.path() + QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
-                                                               "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
-                                                               "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
-                                                               "olonglonglonglong/file🐷.txt");
+        QString tmpFile;
         {
-            // use a long file path to ensure we handle that correctly
-            QVERIFY(QFileInfo(tmpFile).dir().mkpath("."));
-            QFile tmp(tmpFile);
-            QVERIFY(tmp.open(QFile::WriteOnly));
-            QVERIFY(tmp.write("ownCLoud"));
+            QTemporaryFile tmp;
+            tmp.setAutoRemove(false);
+            tmp.open();
+            tmpFile = tmp.fileName();
         }
         QVERIFY(QFile::exists(tmpFile));
 
@@ -108,7 +91,7 @@ private slots:
         QCOMPARE(file, tmpFile);
         QVERIFY(!watcher.contains(tmpFile));
 #endif
-        QVERIFY(tmp.remove());
+        QFile::remove(tmpFile);
     }
 
 #ifdef Q_OS_WIN

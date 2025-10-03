@@ -1,19 +1,24 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Christian Kamm <mail@ckamm.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "vfs_suffix.h"
 
+#include <QFile>
+
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
-
-#include <QFile>
-#include <QLoggingCategory>
-
-Q_LOGGING_CATEGORY(lcVfsSuffix, "nextcloud.sync.vfs.suffix", QtInfoMsg)
 
 namespace OCC {
 
@@ -40,17 +45,12 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
     // that are not marked as a virtual file. These could be real .owncloud
     // files that were synced before vfs was enabled.
     QByteArrayList toWipe;
-    if (!params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
+    params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
         if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
             toWipe.append(rec._path);
-    })) {
-        qWarning() << "Could not get files below path \"\" from local DB";
-    }
-    for (const auto &path : toWipe) {
-        if (!params.journal->deleteFileRecord(path)) {
-            qWarning() << "Failed to delete file record from local DB" << path;
-        }
-    }
+    });
+    for (const auto &path : toWipe)
+        params.journal->deleteFileRecord(path);
 }
 
 void VfsSuffix::stop()
@@ -66,36 +66,25 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const SyncFileItem &syncItem, const QString &filePath, const QString &replacesFile)
+Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
 {
-    Q_UNUSED(replacesFile)
-
-    if (syncItem._modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modification time")};
-    }
-
-    qCDebug(lcVfsSuffix()) << "setModTime" << filePath << syncItem._modtime;
-    FileSystem::setModTime(filePath, syncItem._modtime);
-    return {OCC::Vfs::ConvertToPlaceholderResult::Ok};
+    FileSystem::setModTime(filePath, modtime);
+    return {};
 }
 
 Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 {
-    if (item._modtime <= 0) {
-        return {tr("Error updating metadata due to invalid modification time")};
-    }
-
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
     QString fn = _setupParams.filesystemPath + item._file;
     if (!fn.endsWith(fileSuffix())) {
         ASSERT(false, "vfs file isn't ending with suffix");
-        return QStringLiteral("vfs file isn't ending with suffix");
+        return QString("vfs file isn't ending with suffix");
     }
 
     QFile file(fn);
     if (file.exists() && file.size() > 1
         && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
-        return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
+        return QString("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
     if (!file.open(QFile::ReadWrite | QFile::Truncate))
@@ -103,24 +92,8 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 
     file.write(" ");
     file.close();
-    qCDebug(lcVfsSuffix()) << "setModTime" << fn << item._modtime;
     FileSystem::setModTime(fn, item._modtime);
     return {};
-}
-
-Result<void, QString> VfsSuffix::createPlaceholders(const QList<SyncFileItemPtr> &items)
-{
-    auto result = Result<void, QString>{};
-
-    for (const auto &oneItem : items) {
-        const auto itemResult = createPlaceholder(*oneItem);
-        if (!itemResult) {
-            result = itemResult;
-            break;
-        }
-    }
-
-    return result;
 }
 
 Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
@@ -149,17 +122,18 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, UpdateMetadataTypes)
+Result<void, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
-    return Vfs::ConvertToPlaceholderResult::Ok;
+    return {};
 }
 
 bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)
 {
     if (!filePath.endsWith(fileSuffix()))
         return false;
-    return FileSystem::fileExists(filePath) && FileSystem::getSize(filePath) == 1;
+    QFileInfo fi(filePath);
+    return fi.exists() && fi.size() == 1;
 }
 
 bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
@@ -171,16 +145,11 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
     return false;
 }
 
-bool VfsSuffix::setPinState(const QString &folderPath, PinState state)
+Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
 {
-    qCDebug(lcVfsSuffix) << "setPinState" << folderPath << state;
-    return setPinStateInDb(folderPath, state);
-}
-
-Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck)
-{
-    Q_UNUSED(recursiveCheck)
     return availabilityInDb(folderPath);
 }
 
 } // namespace OCC
+
+OCC_DEFINE_VFS_FACTORY("suffix", OCC::VfsSuffix)

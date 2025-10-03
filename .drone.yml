@@ -1,13 +1,126 @@
+kind: pipeline
+name: qt-5.12
+
+steps:
+- name: cmake
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+- name: compile
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - make -j$(nproc)
+- name: test
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - useradd -m -s /bin/bash test
+    - chown -R test:test .
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+
+volumes:
+- name: build
+  temp: {}
+
+trigger:
+  branch:
+    - master
+    - stable-*
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
+name: qt-5.12-clang
+
+steps:
+- name: cmake
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+- name: compile
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - ninja
+- name: test
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
+    - useradd -m -s /bin/bash test
+    - chown -R test:test .
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
+- name: clang-tidy
+  image: nextcloudci/client-5.12:client-5.12-11
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - "! run-clang-tidy-10 -j$(nproc) -p /drone/build -header-filter $PWD -quiet | grep -A 5 ': error:'"
+
+volumes:
+- name: build
+  temp: {}
+
+trigger:
+  branch:
+    - master
+    - stable-*
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
+name: AppImage
+
+steps:
+- name: build
+  image: nextcloudci/client-5.12:client-5.12-9
+  environment:
+    CI_UPLOAD_GIT_TOKEN:
+      from_secret: CI_UPLOAD_GIT_TOKEN
+    CI_UPLOAD_GIT_USERNAME:
+      from_secret: CI_UPLOAD_GIT_USERNAME
+  commands:
+    - /bin/bash -c "./admin/linux/build-appimage.sh"
+    - /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
+trigger:
+  branch:
+    - master
+    - stable-*
+  event:
+    - pull_request
+    - push
 ---
 kind: pipeline
 name: Debian
 
-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-# SPDX-License-Identifier: GPL-2.0-or-later
-
 steps:
 - name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-debian:client-debian-3
+  image: nextcloudci/client-debian-ci:client-debian-ci-2
   commands:
     - /bin/bash -c "./admin/linux/debian/drone-build.sh" || echo "[WARNING] Debian build failed but this is a non-blocking CI event"
   environment:
@@ -22,6 +135,18 @@ trigger:
     - pull_request
     - push
 ---
-kind: signature
-hmac: 93c5b346ab89a97fab839c71cf8b32e79c78b72105acb59a1848ece230047f7f
-...
+kind: pipeline
+name: Documentation
+
+steps:
+- name: build
+  image: nextcloudci/documentation:documentation-5
+  commands:
+    - cd doc
+    - make html
+trigger:
+  branch:
+    - master
+  event:
+    - pull_request
+    - push

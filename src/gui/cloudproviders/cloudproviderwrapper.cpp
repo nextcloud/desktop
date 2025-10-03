@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Julius Härtl <jus@bitgrid.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <glib.h>
@@ -13,7 +22,6 @@
 #include <account.h>
 #include <folder.h>
 #include <accountstate.h>
-#include <QApplication>
 #include <QDesktopServices>
 #include "openfilemanager.h"
 #include "owncloudgui.h"
@@ -23,14 +31,12 @@ using namespace OCC;
 
 GSimpleActionGroup *actionGroup = nullptr;
 
-int CloudProviderWrapper::preferredTextWidth = 0;
-
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
 {
-    GMenuModel *model = nullptr;
-    GActionGroup *action_group = nullptr;
-    QString accountName = QStringLiteral("Folder/%1").arg(folderId);
+    GMenuModel *model;
+    GActionGroup *action_group;
+    QString accountName = QString("Folder/%1").arg(folderId);
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
     _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName.toUtf8().data());
@@ -44,10 +50,10 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     action_group = getActionGroup();
     cloud_providers_account_exporter_set_action_group (_cloudProviderAccount, action_group);
 
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo, this, &CloudProviderWrapper::slotUpdateProgress);
-    connect(_folder, &Folder::syncStarted, this, &CloudProviderWrapper::slotSyncStarted);
-    connect(_folder, &Folder::syncFinished, this, &CloudProviderWrapper::slotSyncFinished);
-    connect(_folder, &Folder::syncPausedChanged, this, &CloudProviderWrapper::slotSyncPausedChanged);
+    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)), this, SLOT(slotUpdateProgress(QString, ProgressInfo)));
+    connect(_folder, SIGNAL(syncStarted()), this, SLOT(slotSyncStarted()));
+    connect(_folder, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(const SyncResult)));
+    connect(_folder, SIGNAL(syncPausedChanged(Folder*,bool)), this, SLOT(slotSyncPausedChanged(Folder*, bool)));
 
     _paused = _folder->syncPaused();
     updatePauseStatus();
@@ -60,7 +66,6 @@ CloudProviderWrapper::~CloudProviderWrapper()
     g_object_unref(_cloudProviderAccount);
     g_object_unref(_mainMenu);
     g_object_unref(actionGroup);
-    actionGroup = nullptr;
     g_object_unref(_recentMenu);
 }
 
@@ -95,15 +100,11 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     // Build recently changed files list
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
-        const auto fm = QFontMetricsF{QApplication::font()};
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
-        QString elidedKindStr = fm.elidedText(kindStr, Qt::ElideRight, preferredTextWidth);
         QString timeStr = QTime::currentTime().toString("hh:mm");
-        QString fileName = progress._lastCompletedItem._file;
-        QString elidedFileName = fm.elidedText(fileName, Qt::ElideRight, preferredTextWidth);
-        QString actionText = tr("%1 (%2, %3)").arg(elidedFileName, elidedKindStr, timeStr);
+        QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
         if (f) {
-            QString fullPath = f->path() + '/' + fileName;
+            QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
             if (QFile(fullPath).exists()) {
                 if (_recentlyChanged.length() > 5)
                     _recentlyChanged.removeFirst();
@@ -118,7 +119,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
     // Build status details text
     QString msg;
     if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
-        msg =  tr("Checking for changes in \"%1\"").arg(progress._currentDiscoveredRemoteFolder);
+        msg =  tr("Checking for changes in '%1'").arg(progress._currentDiscoveredRemoteFolder);
     } else if (progress.totalSize() == 0) {
         qint64 currentFile = progress.currentFile();
         qint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
@@ -146,7 +147,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     if (!progress._lastCompletedItem.isEmpty()
             && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
-        GMenuItem* item = nullptr;
+        GMenuItem* item;
         g_menu_remove_all (G_MENU(_recentMenu));
         if(!_recentlyChanged.isEmpty()) {
             QList<QPair<QString, QString>>::iterator i;
@@ -168,11 +169,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
 void CloudProviderWrapper::updateStatusText(QString statusText)
 {
-    if (!_folder) {
-        return;
-    }
-
-    QString status = QStringLiteral("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
+    QString status = QString("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
     cloud_providers_account_exporter_set_status_details(_cloudProviderAccount, status.toUtf8().data());
 }
 
@@ -209,36 +206,23 @@ void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
     updateStatusText(result.statusString());
 }
 
-static GMenuItem* addMenuItem(const QString text, const gchar *action)
-{
-    const auto fm = QFontMetricsF{QApplication::font()};
-    CloudProviderWrapper::preferredTextWidth = MAX (CloudProviderWrapper::preferredTextWidth, (fm.boundingRect (text)).width ());
-    return menu_item_new (text, action);
-}
-
 GMenuModel* CloudProviderWrapper::getMenuModel() {
 
-    GMenu* section = nullptr;
-    GMenuItem* item = nullptr;
+    GMenu* section;
+    GMenuItem* item;
+    QString item_label;
 
     _mainMenu = g_menu_new();
 
     section = g_menu_new();
-    item = addMenuItem(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), "cloudprovider.openmaindialog");
-    g_menu_append_item(section, item);
-    g_clear_object (&item);
-    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
-    g_clear_object (&section);
-
-    section = g_menu_new();
-    item = addMenuItem(tr("Open in browser"), "cloudprovider.openwebsite");
+    item = menu_item_new(tr("Open website"), "cloudprovider.openwebsite");
     g_menu_append_item(section, item);
     g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
     g_clear_object (&section);
 
     _recentMenu = g_menu_new();
-    item = addMenuItem(tr("No recently changed files"), nullptr);
+    item = menu_item_new(tr("No recently changed files"), nullptr);
     g_menu_append_item(_recentMenu, item);
     g_clear_object (&item);
 
@@ -250,23 +234,23 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     g_clear_object (&section);
 
     section = g_menu_new();
-    item = addMenuItem (tr("Pause synchronization"), "cloudprovider.pause");
+    item = menu_item_new(tr("Pause synchronization"), "cloudprovider.pause");
     g_menu_append_item(section, item);
     g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
     g_clear_object (&section);
 
     section = g_menu_new();
-    item = addMenuItem(tr("Help"), "cloudprovider.openhelp");
+    item = menu_item_new(tr("Help"), "cloudprovider.openhelp");
     g_menu_append_item(section, item);
     g_clear_object (&item);
-    item = addMenuItem(tr("Settings"), "cloudprovider.opensettings");
+    item = menu_item_new(tr("Settings"), "cloudprovider.opensettings");
     g_menu_append_item(section, item);
     g_clear_object (&item);
-    item = addMenuItem(tr("Log out"), "cloudprovider.logout");
+    item = menu_item_new(tr("Log out"), "cloudprovider.logout");
     g_menu_append_item(section, item);
     g_clear_object (&item);
-    item = addMenuItem(tr("Quit sync client"), "cloudprovider.quit");
+    item = menu_item_new(tr("Quit sync client"), "cloudprovider.quit");
     g_menu_append_item(section, item);
     g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
@@ -289,10 +273,6 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
 
     if(g_str_equal(name, "opensettings")) {
         gui->slotShowSettings();
-    }
-
-    if(g_str_equal(name, "openmaindialog")) {
-        gui->slotOpenMainDialog();
     }
 
     if(g_str_equal(name, "openwebsite")) {
@@ -334,7 +314,7 @@ activate_action_pause (GSimpleAction *action,
 {
     Q_UNUSED(parameter);
     auto *self = static_cast<CloudProviderWrapper*>(user_data);
-    GVariant *old_state = nullptr, *new_state = nullptr;
+    GVariant *old_state, *new_state;
 
     old_state = g_action_get_state (G_ACTION (action));
     new_state = g_variant_new_boolean (!(bool)g_variant_get_boolean (old_state));
@@ -344,7 +324,6 @@ activate_action_pause (GSimpleAction *action,
 }
 
 static GActionEntry actions[] = {
-    { "openmaindialog",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "openwebsite",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "quit",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "logout",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},

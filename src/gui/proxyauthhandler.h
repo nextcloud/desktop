@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2015 by Christian Kamm <kamm@incasoftware.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -41,7 +49,7 @@ class ProxyAuthHandler : public QObject
 public:
     static ProxyAuthHandler *instance();
 
-    ~ProxyAuthHandler() override;
+    virtual ~ProxyAuthHandler();
 
 public slots:
     /// Intended for QNetworkAccessManager::proxyAuthenticationRequired()
@@ -69,8 +77,8 @@ private:
                    int &counter,
                    const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
 
-    [[nodiscard]] QString keychainUsernameKey() const;
-    [[nodiscard]] QString keychainPasswordKey() const;
+    QString keychainUsernameKey() const;
+    QString keychainPasswordKey() const;
 
     /// The hostname:port of the current proxy, used for detecting switches
     /// to a different proxy.

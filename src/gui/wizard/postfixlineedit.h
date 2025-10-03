@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2016 by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCC_POSTFIXLINEEDIT_H
@@ -27,10 +35,10 @@ public:
 
     /** @brief sets an optional postfix shown greyed out */
     void setPostfix(const QString &postfix);
-    /** @brief retrieves the postfix */
-    [[nodiscard]] QString postfix() const;
+    /** @brief retrives the postfix */
+    QString postfix() const;
     /** @brief retrieves combined text() and postfix() */
-    [[nodiscard]] QString fullText() const;
+    QString fullText() const;
 
     /** @brief sets text() from full text, discarding prefix() */
     void setFullText(const QString &text);

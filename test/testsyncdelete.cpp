@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
@@ -19,13 +16,6 @@ class TestSyncDelete : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
 
     void testDeleteDirectoryWithNewFile()
     {
@@ -35,7 +25,7 @@ private slots:
         fakeFolder.remoteModifier().remove("A");
         fakeFolder.localModifier().insert("A/hello.txt");
 
-        // Symmetry
+        // Symetry
         fakeFolder.localModifier().remove("B");
         fakeFolder.remoteModifier().insert("B/hello.txt");
 
@@ -45,7 +35,7 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/hello.txt"));
 
-        // Symmetry
+        // Symetry
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
         QVERIFY(fakeFolder.currentRemoteState().find("B/hello.txt"));
 

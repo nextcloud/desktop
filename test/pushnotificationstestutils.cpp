@@ -1,12 +1,6 @@
-/*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #include <QLoggingCategory>
 #include <QSignalSpy>
 #include <QTest>
-#include <cstdint>
 #include <functional>
 
 #include "pushnotificationstestutils.h"
@@ -18,7 +12,7 @@ FakeWebSocketServer::FakeWebSocketServer(quint16 port, QObject *parent)
     : QObject(parent)
     , _webSocketServer(new QWebSocketServer(QStringLiteral("Fake Server"), QWebSocketServer::NonSecureMode, this))
 {
-    if (!_webSocketServer->listen(QHostAddress::LocalHost, port)) {
+    if (!_webSocketServer->listen(QHostAddress::Any, port)) {
         Q_UNREACHABLE();
     }
     connect(_webSocketServer, &QWebSocketServer::newConnection, this, &FakeWebSocketServer::onNewConnection);
@@ -122,15 +116,15 @@ uint32_t FakeWebSocketServer::textMessagesCount() const
     return _processTextMessageSpy->count();
 }
 
-QString FakeWebSocketServer::textMessage(int messageNumber) const
+QString FakeWebSocketServer::textMessage(uint32_t messageNumber) const
 {
-    Q_ASSERT(0 <= messageNumber && messageNumber < _processTextMessageSpy->count());
+    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
     return _processTextMessageSpy->at(messageNumber).at(1).toString();
 }
 
-QWebSocket *FakeWebSocketServer::socketForTextMessage(int messageNumber) const
+QWebSocket *FakeWebSocketServer::socketForTextMessage(uint32_t messageNumber) const
 {
-    Q_ASSERT(0 <= messageNumber && messageNumber < _processTextMessageSpy->count());
+    Q_ASSERT(messageNumber < _processTextMessageSpy->count());
     return _processTextMessageSpy->at(messageNumber).at(0).value<QWebSocket *>();
 }
 

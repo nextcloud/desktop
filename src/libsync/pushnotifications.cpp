@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "pushnotifications.h"
@@ -21,7 +30,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
     , _account(account)
     , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
 {
-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
+    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
     connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
     connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
@@ -66,9 +75,6 @@ void PushNotifications::closeWebSocket()
     if (_reconnectTimer) {
         _reconnectTimer->stop();
     }
-
-    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
-    disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
 
     _webSocket->close();
 }
@@ -165,8 +171,6 @@ void PushNotifications::openWebSocket()
     const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
 
     qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
-    connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
     _webSocket->open(webSocketUrl);
 }
 
@@ -189,7 +193,7 @@ void PushNotifications::handleAuthenticated()
     emit ready();
 
     // We maybe reconnected to websocket while being offline for a
-    // while. To not miss any notifications that may have happened,
+    // while. To not miss any notifications that may have happend,
     // emit all the signals once.
     emitFilesChanged();
     emitNotificationsChanged();

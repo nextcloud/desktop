@@ -12,13 +12,13 @@ class UpdateInfo
 {
 public:
     void setVersion(const QString &v);
-    [[nodiscard]] QString version() const;
+    QString version() const;
     void setVersionString(const QString &v);
-    [[nodiscard]] QString versionString() const;
+    QString versionString() const;
     void setWeb(const QString &v);
-    [[nodiscard]] QString web() const;
+    QString web() const;
     void setDownloadUrl(const QString &v);
-    [[nodiscard]] QString downloadUrl() const;
+    QString downloadUrl() const;
     /**
       Parse XML object from DOM element.
      */

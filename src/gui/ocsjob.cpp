@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "ocsjob.h"
@@ -32,7 +40,7 @@ void OcsJob::setVerb(const QByteArray &verb)
 
 void OcsJob::addParam(const QString &name, const QString &value)
 {
-    _params.insert(name, value);
+    _params.append(qMakePair(name, value));
 }
 
 void OcsJob::addPassStatusCode(int code)
@@ -50,21 +58,16 @@ void OcsJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
     _request.setRawHeader(headerName, value);
 }
 
-QString OcsJob::getParamValue(const QString &key) const
-{
-    return _params.value(key);
-}
-
 static QUrlQuery percentEncodeQueryItems(
-    const QHash<QString, QString> &items)
+    const QList<QPair<QString, QString>> &items)
 {
     QUrlQuery result;
     // Note: QUrlQuery::setQueryItems() does not fully percent encode
     // the query items, see #5042
-    for (auto it = std::cbegin(items); it != std::cend(items); ++it) {
+    foreach (const auto &item, items) {
         result.addQueryItem(
-            QUrl::toPercentEncoding(it.key()),
-            QUrl::toPercentEncoding(it.value()));
+            QUrl::toPercentEncoding(item.first),
+            QUrl::toPercentEncoding(item.second));
     }
     return result;
 }
@@ -82,13 +85,13 @@ void OcsJob::start()
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.
         QByteArray postData;
-        for (auto it = std::cbegin(_params); it != std::cend(_params); ++it) {
+        Q_FOREACH (auto tmp, _params) {
             if (!postData.isEmpty()) {
                 postData.append("&");
             }
-            postData.append(QUrl::toPercentEncoding(it.key()));
+            postData.append(QUrl::toPercentEncoding(tmp.first));
             postData.append("=");
-            postData.append(QUrl::toPercentEncoding(it.value()));
+            postData.append(QUrl::toPercentEncoding(tmp.second));
         }
         buffer->setData(postData);
     }
@@ -102,7 +105,7 @@ bool OcsJob::finished()
 {
     const QByteArray replyData = reply()->readAll();
 
-    QJsonParseError error{};
+    QJsonParseError error;
     QString message;
     int statusCode = 0;
     auto json = QJsonDocument::fromJson(replyData, &error);
@@ -131,9 +134,8 @@ bool OcsJob::finished()
 
     } else {
         // save new ETag value
-        if (const auto etagHeader = reply()->header(QNetworkRequest::ETagHeader); etagHeader.isValid()) {
-            emit etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
-        }
+        if(reply()->rawHeaderList().contains("ETag"))
+            emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
         emit jobFinished(json, statusCode);
     }

@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QThread>
@@ -39,7 +47,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     if (_directory == INVALID_HANDLE_VALUE) {
         const auto error = GetLastError();
         qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatWinError(error);
-        _directory = nullptr;
+        _directory = 0;
         return;
     }
 
@@ -57,7 +65,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     while (!_done) {
         ResetEvent(_resultEvent);
 
-        auto pFileNotifyBuffer =
+        FILE_NOTIFY_INFORMATION *pFileNotifyBuffer =
                 reinterpret_cast<FILE_NOTIFY_INFORMATION *>(fileNotifyBuffer.data());
         DWORD dwBytesReturned = 0;
         if (!ReadDirectoryChangesW(_directory, pFileNotifyBuffer,
@@ -144,7 +152,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             // and new files in a folder, probably because of the folder's mtime
             // changing. We don't need them.
             const bool skip = curEntry->Action == FILE_ACTION_MODIFIED
-                && FileSystem::isDir(longfile);
+                && QFileInfo(longfile).isDir();
 
             if (!skip) {
                 emit changed(longfile);
@@ -155,7 +163,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             if (curEntry->NextEntryOffset == 0) {
                 break;
             }
-            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefore we first need to cast to char
+            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
             curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char*>(curEntry) + curEntry->NextEntryOffset);
         }
     }

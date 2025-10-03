@@ -1,1 +1,10 @@
-<svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"><path style="fill:none;fill-rule:nonzero" d="M0 0h24v24H0z"/><path d="M8 13V5.825L5.425 8.4 4 7l5-5 5 5-1.425 1.4L10 5.825V13H8Zm7 9-5-5 1.425-1.4L14 18.175V11h2v7.175l2.575-2.575L20 17l-5 5Z" style="fill-rule:nonzero" transform="matrix(.93 0 0 .93 .83 .84)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="64" width="64" version="1.0" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs>
+  <linearGradient id="a" y2="62" gradientUnits="userSpaceOnUse" x2="32" gradientTransform="translate(0,1)" x1="32">
+   <stop offset="0"/>
+   <stop stop-color="#363636" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path opacity=".7" d="m20 1-20 20h12v14h16v-14h12zm16 28v14h-12l20 20 20-20h-12v-14z" fill="url(#a)"/>
+</svg>

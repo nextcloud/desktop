@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QJsonDocument>
@@ -19,7 +27,6 @@
 #include "networkjobs.h"
 #include "clientproxy.h"
 #include <creds/abstractcredentials.h>
-#include "systray.h"
 
 namespace OCC {
 
@@ -29,21 +36,18 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", 
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
-ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QStringList &previousErrors, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, QObject *parent)
     : QObject(parent)
-    , _previousErrors(previousErrors)
     , _accountState(accountState)
     , _account(accountState->account())
-    , _termsOfServiceChecker(_account)
+    , _isCheckingServerAndAuth(false)
 {
-    connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
-            this, &ConnectionValidator::termsOfServiceCheckDone);
 }
 
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No %1 account configured", "The placeholder will be the application name. Please keep it").arg(APPLICATION_NAME);
+        _errors << tr("No Nextcloud account configured");
         reportResult(NotConfigured);
         return;
     }
@@ -52,14 +56,15 @@ void ConnectionValidator::checkServerAndAuth()
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if (ClientProxy::isUsingSystemDefault() || _account->proxyType() == QNetworkProxy::DefaultProxy) {
+    if (ClientProxy::isUsingSystemDefault()) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
-        ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
+        ClientProxy::lookupSystemProxyAsync(_account->url(),
+            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
-        QMetaObject::invokeMethod(this, "slotCheckRedirectCostFreeUrl", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, "slotCheckServerAndAuth", Qt::QueuedConnection);
     }
 }
 
@@ -77,21 +82,10 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
     }
     _account->networkAccessManager()->setProxy(proxy);
 
-    slotCheckRedirectCostFreeUrl();
+    slotCheckServerAndAuth();
 }
 
 // The actual check
-
-void ConnectionValidator::slotCheckRedirectCostFreeUrl()
-{
-    const auto checkJob = new CheckRedirectCostFreeUrlJob(_account, this);
-    checkJob->setTimeout(timeoutToUseMsec);
-    checkJob->setIgnoreCredentialFailure(true);
-    connect(checkJob, &CheckRedirectCostFreeUrlJob::timeout, this, &ConnectionValidator::slotJobTimeout);
-    connect(checkJob, &CheckRedirectCostFreeUrlJob::jobFinished, this, &ConnectionValidator::slotCheckRedirectCostFreeUrlFinished);
-    checkJob->start();
-}
-
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     auto *checkJob = new CheckServerJob(_account, this);
@@ -103,15 +97,6 @@ void ConnectionValidator::slotCheckServerAndAuth()
     checkJob->start();
 }
 
-void ConnectionValidator::slotCheckRedirectCostFreeUrlFinished(int statusCode)
-{
-    if (statusCode >= 301 && statusCode <= 307) {
-        reportResult(StatusRedirect);
-        return;
-    }
-    slotCheckServerAndAuth();
-}
-
 void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &info)
 {
     // Newer servers don't disclose any version in status.php anymore
@@ -120,7 +105,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     QString serverVersion = CheckServerJob::version(info);
 
     // status.php was found.
-    qCInfo(lcConnectionValidator) << "** Application: Nextcloud found: "
+    qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
                                   << url << " with version "
                                   << CheckServerJob::versionString(info)
                                   << "(" << serverVersion << ")";
@@ -129,7 +114,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        emit _account->wantsAccountSaved(_account);
+        _account->wantsAccountSaved(_account.data());
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
@@ -151,11 +136,8 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    qCWarning(lcConnectionValidator) << reply->error() << reply->errorString() << job->errorString() << reply->peek(1024);
+    qCWarning(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
-        if (const auto hstsError = AbstractNetworkJob::hstsErrorStringFromReply(reply)) {
-            _errors.append(*hstsError);
-        }
         reportResult(SslError);
         return;
     }
@@ -215,20 +197,13 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         stat = CredentialsWrong;
 
     } else if (reply->error() != QNetworkReply::NoError) {
-        QByteArray body;
-        _errors << job->errorStringParsingBody(&body);
+        _errors << job->errorStringParsingBody();
 
         const int httpStatus =
             reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpStatus == 503) {
             _errors.clear();
             stat = ServiceUnavailable;
-        } else if (httpStatus == 403) {
-            const auto davException = job->errorStringParsingBodyException(body);
-            if (davException == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
-                qCInfo(lcConnectionValidator) << "The terms of service need to be signed";
-                stat = NeedToSignTermsOfService;
-            }
         }
     }
 
@@ -252,6 +227,17 @@ void ConnectionValidator::checkServerCapabilities()
     job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
     job->start();
+
+    // And we'll retrieve the ocs config in parallel
+    // note that 'this' might be destroyed before the job finishes, so intentionally not parented
+    auto configJob = new JsonApiJob(_account, QLatin1String("ocs/v1.php/config"));
+    configJob->setTimeout(timeoutToUseMsec);
+    auto account = _account; // capturing account by value will make it live long enough
+    QObject::connect(configJob, &JsonApiJob::jsonReceived, _account.data(),
+        [=](const QJsonDocument &json) {
+            ocsConfigReceived(json, account);
+        });
+    configJob->start();
 }
 
 void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
@@ -271,14 +257,18 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
     _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
-    checkServerTermsOfService();
+    fetchUser();
+}
 
-    if (_account->isPublicShareLink()) {
-        slotUserFetched(nullptr);
+void ConnectionValidator::ocsConfigReceived(const QJsonDocument &json, AccountPtr account)
+{
+    QString host = json.object().value("ocs").toObject().value("data").toObject().value("host").toString();
+    if (host.isEmpty()) {
+        qCWarning(lcConnectionValidator) << "Could not extract 'host' from ocs config reply";
         return;
     }
-
-    fetchUser();
+    qCInfo(lcConnectionValidator) << "Determined user-visible host to be" << host;
+    account->setUserVisibleHost(host);
 }
 
 void ConnectionValidator::fetchUser()
@@ -304,20 +294,17 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     // We attempt to work with servers >= 7.0.0 but warn users.
     // Check usages of Account::serverVersionUnsupported() for details.
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     // Record that the server supports HTTP/2
     // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
+                reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
         }
     }
+#endif
     return true;
-}
-
-void ConnectionValidator::checkServerTermsOfService()
-{
-    _termsOfServiceChecker.start();
 }
 
 void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
@@ -329,21 +316,10 @@ void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 
 #ifndef TOKEN_AUTH_ONLY
     connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
-    _account->e2e()->setAccount(_account);
-    _account->e2e()->initialize(nullptr);
+    _account->e2e()->initialize(_account);
 #else
     reportResult(Connected);
 #endif
-}
-
-void ConnectionValidator::termsOfServiceCheckDone()
-{
-    if (_termsOfServiceChecker.needToSign()) {
-        reportResult(NeedToSignTermsOfService);
-        return;
-    }
-
-    fetchUser();
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -355,73 +331,7 @@ void ConnectionValidator::reportConnected() {
 void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
-
-    // TODO: notify user of errors
-    if (!_errors.isEmpty() && _previousErrors != _errors) {
-       qCWarning(lcConnectionValidator) << "Connection issues:" << _errors;
-    }
-
     deleteLater();
-}
-
-TermsOfServiceChecker::TermsOfServiceChecker(AccountPtr account, QObject *parent)
-    : QObject(parent)
-    , _account(account)
-{
-}
-
-TermsOfServiceChecker::TermsOfServiceChecker(QObject *parent)
-    : QObject(parent)
-{
-}
-
-bool TermsOfServiceChecker::needToSign() const
-{
-    return _needToSign;
-}
-
-void TermsOfServiceChecker::start()
-{
-    checkServerTermsOfService();
-}
-
-void TermsOfServiceChecker::slotServerTermsOfServiceRecieved(const QJsonDocument &reply)
-{
-    qCInfo(lcConnectionValidator) << "Terms of service status" << reply;
-
-    if (reply.object().contains("ocs")) {
-        const auto needToSign = !reply.object().value("ocs").toObject().value("data").toObject().value("hasSigned").toBool(false);
-        if (needToSign != _needToSign) {
-            _needToSign = needToSign;
-            qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
-            emit needToSignChanged();
-        }
-    } else if (_needToSign) {
-        _needToSign = false;
-        qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
-        emit needToSignChanged();
-    }
-
-    qCInfo(lcConnectionValidator) << "done";
-    emit done();
-}
-
-void TermsOfServiceChecker::checkServerTermsOfService()
-{
-    if (!_account) {
-        qCInfo(lcConnectionValidator) << "done";
-        emit done();
-    }
-
-    // The main flow now needs the capabilities
-    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/apps/terms_of_service/terms"), this);
-    job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &TermsOfServiceChecker::slotServerTermsOfServiceRecieved);
-    QObject::connect(job, &JsonApiJob::networkError, this, [] (QNetworkReply *reply)
-                     {
-                         qCInfo(lcConnectionValidator()) << "network error" << reply->error();
-                     });
-    job->start();
 }
 
 } // namespace OCC

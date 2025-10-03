@@ -1,34 +1,17 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2012 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
-#include "accessmanager.h"
-#include "account.h"
-#include "accountmanager.h"
-#include "clientproxy.h"
-#include "common/utility.h"
-#include "configfile.h"
-#include "filesystem.h"
-#include "folderman.h"
-#include "networkjobs.h"
-#include "owncloudgui.h"
-#include "owncloudsetupwizard.h"
-#include "owncloudpropagator_p.h"
-#include "sslerrordialog.h"
-#include "wizard/owncloudwizard.h"
-#include "wizard/owncloudwizardcommon.h"
-#include "account.h"
-
-#include "creds/credentialsfactory.h"
-#include "creds/abstractcredentials.h"
-#include "creds/dummycredentials.h"
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "gui/macOS/fileprovider.h"
-#include "gui/macOS/fileprovidersettingscontroller.h"
-#endif
 
 #include <QAbstractButton>
 #include <QtCore>
@@ -36,6 +19,24 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QApplication>
+
+#include "wizard/owncloudwizardcommon.h"
+#include "wizard/owncloudwizard.h"
+#include "owncloudsetupwizard.h"
+#include "configfile.h"
+#include "folderman.h"
+#include "accessmanager.h"
+#include "account.h"
+#include "networkjobs.h"
+#include "sslerrordialog.h"
+#include "accountmanager.h"
+#include "clientproxy.h"
+#include "filesystem.h"
+#include "owncloudgui.h"
+
+#include "creds/credentialsfactory.h"
+#include "creds/abstractcredentials.h"
+#include "creds/dummycredentials.h"
 
 namespace OCC {
 
@@ -64,38 +65,28 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> owncloudSetupWizard = nullptr;
+static QPointer<OwncloudSetupWizard> wiz = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
-    ConfigFile cfg;
-    if (!cfg.overrideServerUrl().isEmpty()) {
-        Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
-        Theme::instance()->setForceOverrideServerUrl(true);
-        Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
-
-        Theme::instance()->setStartLoginFlowAutomatically(true);
-    }
-    if (!owncloudSetupWizard.isNull()) {
+    if (!wiz.isNull()) {
         bringWizardToFrontIfVisible();
         return;
     }
 
-    owncloudSetupWizard = new OwncloudSetupWizard(parent);
-    connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
-
+    wiz = new OwncloudSetupWizard(parent);
+    connect(wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
     FolderMan::instance()->setSyncEnabled(false);
-    owncloudSetupWizard->startWizard();
+    wiz->startWizard();
 }
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
-    if (owncloudSetupWizard.isNull()) {
+    if (wiz.isNull()) {
         return false;
     }
 
-    ownCloudGui::raiseDialog(owncloudSetupWizard->_ocWizard);
+    ownCloudGui::raiseDialog(wiz->_ocWizard);
     return true;
 }
 
@@ -103,9 +94,7 @@ void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();
     account->setCredentials(CredentialsFactory::create("dummy"));
-    const auto defaultUrl =
-        Theme::instance()->multipleOverrideServers() ? QString{} : Theme::instance()->overrideServerUrl();
-    account->setUrl(defaultUrl);
+    account->setUrl(Theme::instance()->overrideServerUrl());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 
@@ -120,65 +109,49 @@ void OwncloudSetupWizard::startWizard()
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
-    {
-        ConfigFile cfg;
-        if (!cfg.overrideLocalDir().isEmpty()) {
-            _ocWizard->setProperty("localFolder", cfg.overrideLocalDir());
-        }
-    }
 
     // remember the local folder to compare later if it changed, but clean first
-    _initLocalFolder = Utility::trailingSlashPath(QDir::fromNativeSeparators(localFolder));
+    QString lf = QDir::fromNativeSeparators(localFolder);
+    if (!lf.endsWith(QLatin1Char('/'))) {
+        lf.append(QLatin1Char('/'));
+    }
+
+    _initLocalFolder = lf;
+
     _ocWizard->setRemoteFolder(_remoteFolder);
 
-    const auto isEnforcedServerSetup =
-        Theme::instance()->startLoginFlowAutomatically() && Theme::instance()->forceOverrideServerUrl() && !account->url().isEmpty();
-
 #ifdef WITH_PROVIDERS
-    const auto startPage = isEnforcedServerSetup ? WizardCommon::Page_ServerSetup : WizardCommon::Page_Welcome;
+    const auto startPage = WizardCommon::Page_Welcome;
 #else // WITH_PROVIDERS
     const auto startPage = WizardCommon::Page_ServerSetup;
 #endif // WITH_PROVIDERS
     _ocWizard->setStartId(startPage);
+
     _ocWizard->restart();
-    _ocWizard->adjustWizardSize();
+
     _ocWizard->open();
     _ocWizard->raise();
 }
 
 // also checks if an installation is valid and determines auth type in a second step
-void OwncloudSetupWizard::slotCheckServer(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings)
+void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
 {
-    AccountPtr account = _ocWizard->account();
-    account->setUrl(serverURL);
-
-    account->setProxyType(proxySettings._proxyType);
-    switch (proxySettings._proxyType)
-    {
-    case QNetworkProxy::HttpCachingProxy:
-    case QNetworkProxy::FtpCachingProxy:
-    case QNetworkProxy::NoProxy:
-    case QNetworkProxy::ProxyType::DefaultProxy:
-        // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
-        // when there was a previous account.
-        account->networkAccessManager()->setProxy({QNetworkProxy::NoProxy});
-        break;
-    case QNetworkProxy::Socks5Proxy:
-    case QNetworkProxy::HttpProxy:
-        account->setProxyHostName(proxySettings._host);
-        account->setProxyPort(proxySettings._port);
-        account->setProxyNeedsAuth(proxySettings._needsAuth == WizardProxySettingsDialog::ProxyAuthentication::AuthenticationRequired);
-        if (account->proxyNeedsAuth()) {
-            account->setProxyUser(proxySettings._user);
-            account->setProxyPassword(proxySettings._password);
-        }
-
-        break;
+    QString fixedUrl = urlString;
+    QUrl url = QUrl::fromUserInput(fixedUrl);
+    // fromUserInput defaults to http, not http if no scheme is specified
+    if (!fixedUrl.startsWith("http://") && !fixedUrl.startsWith("https://")) {
+        url.setScheme("https");
     }
+    AccountPtr account = _ocWizard->account();
+    account->setUrl(url);
+
+    // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
+    // when there was a previous account.
+    account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
 
     // And also reset the QSslConfiguration, for the same reason (#6832)
     // Here the client certificate is added, if any. Later it'll be in HttpCredentials
-    account->setSslConfiguration(QSslConfiguration::defaultConfiguration());
+    account->setSslConfiguration(QSslConfiguration());
     auto sslConfiguration = account->getOrCreateSslConfig(); // let Account set defaults
     if (!_ocWizard->_clientSslCertificate.isNull()) {
         sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
@@ -194,9 +167,10 @@ void OwncloudSetupWizard::slotCheckServer(const QUrl &serverURL, const OCC::Wiza
     account->networkAccessManager()->clearAccessCache();
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if (ClientProxy::isUsingSystemDefault() || account->proxyType() == QNetworkProxy::DefaultProxy) {
+    if (ClientProxy::isUsingSystemDefault()) {
         qCDebug(lcWizard) << "Trying to look up system proxy";
-        ClientProxy::lookupSystemProxyAsync(account->url(), this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
+        ClientProxy::lookupSystemProxyAsync(account->url(),
+            this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
@@ -301,11 +275,7 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
         qCInfo(lcWizard) << " was redirected to" << url.toString();
     }
 
-    if (_ocWizard->account()->isPublicShareLink()) {
-        _ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
-    } else {
-        slotDetermineAuthType();
-    }
+    slotDetermineAuthType();
 }
 
 void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
@@ -352,45 +322,13 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 {
     qCInfo(lcWizard) << "Connect to url: " << url;
     AbstractCredentials *creds = _ocWizard->getCredentials();
-    if (creds) {
-        _ocWizard->account()->setCredentials(creds);
-        creds->persist();
-    }
+    _ocWizard->account()->setCredentials(creds);
+    _ocWizard->setField(QLatin1String("OCUrl"), url);
+    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
+                                            .arg(Theme::instance()->appNameGUI())
+                                            .arg(url));
 
-    if (_ocWizard->account()->isPublicShareLink()) {
-        _ocWizard->account()->setDavUser(creds->user());
-        _ocWizard->account()->setDavDisplayName(creds->user());
-
-        _ocWizard->setField(QLatin1String("OCUrl"), url);
-        _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
-                                                .arg(Theme::instance()->appNameGUI())
-                                                .arg(url));
-
-        testOwnCloudConnect();
-        return;
-    }
-
-    const auto fetchUserNameJob = new JsonApiJob(_ocWizard->account()->sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
-    connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, url](const QJsonDocument &json, int statusCode) {
-        if (statusCode != 100) {
-            qCWarning(lcWizard) << "Could not fetch username.";
-        }
-
-        sender()->deleteLater();
-
-        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
-        const auto userId = objData.value("id").toString("");
-        const auto displayName = objData.value("display-name").toString("");
-        _ocWizard->account()->setDavUser(userId);
-        _ocWizard->account()->setDavDisplayName(displayName);
-
-        _ocWizard->setField(QLatin1String("OCUrl"), url);
-        _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2 …")
-                                                .arg(Theme::instance()->appNameGUI(), url));
-
-        testOwnCloudConnect();
-    });
-    fetchUserNameJob->start();
+    testOwnCloudConnect();
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
@@ -404,22 +342,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     job->setFollowRedirects(false);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
-    connect(job, &PropfindJob::finishedWithError, this, [this] (QNetworkReply *reply) -> void {
-        if (reply && reply->error() == QNetworkReply::ContentAccessDenied) {
-            // A 403 might indicate that the terms of service need to be signed.
-            // catch this special case here, fall back to the standard error handler if it's not TOS-related
-            auto davException = OCC::getExceptionFromReply(reply);
-            if (!davException.first.isEmpty() && davException.first == QStringLiteral(R"(OCA\TermsOfService\TermsNotSignedException)")) {
-                // authentication was successful, but the user hasn't signed the terms of service yet.  Prompt for that in the next step
-                qCInfo(lcWizard) << "Terms of service not accepted yet!  Will prompt the user in the next step";
-                _ocWizard->_needsToAcceptTermsOfService = true;
-                _ocWizard->successfulStep();
-                return;
-            }
-        }
-        slotAuthError();
-    });
-
+    connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
     job->start();
 }
 
@@ -453,18 +376,17 @@ void OwncloudSetupWizard::slotAuthError()
             return;
         }
         errorMsg = tr("The authenticated request to the server was redirected to "
-                      "\"%1\". The URL is bad, the server is misconfigured.")
+                      "'%1'. The URL is bad, the server is misconfigured.")
                        .arg(Utility::escape(redirectUrl.toString()));
 
-    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
         // A 404 is actually a success: we were authorized to know that the folder does
         // not exist. It will be created later...
+    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
         _ocWizard->successfulStep();
         return;
 
-    } else if (reply->error() != QNetworkReply::NoError) {
         // Provide messages for other errors, such as invalid credentials.
-
+    } else if (reply->error() != QNetworkReply::NoError) {
         if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
@@ -473,14 +395,14 @@ void OwncloudSetupWizard::slotAuthError()
             errorMsg = job->errorStringParsingBody();
         }
 
-    } else {
         // Something else went wrong, maybe the response was 200 but with invalid data.
+    } else {
         errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
     }
 
     // bring wizard to top
     _ocWizard->bringToTop();
-    if (_ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
@@ -511,14 +433,6 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
 {
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    if (Mac::FileProvider::fileProviderAvailable() && _ocWizard->useVirtualFileSync()) {
-        qCInfo(lcWizard) << "Not creating local/remote folders as because macOS File Provider uses its own sync root";
-        finalizeSetup(true);
-        return;
-    }
-#endif
-
     qCInfo(lcWizard) << "Setup local sync folder for new oC connection " << localFolder;
     const QDir fi(localFolder);
 
@@ -551,7 +465,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
          *
          *         Purpose: Don't rely on unsafe paths, be extra careful.
          *
-         *         Example: https://cloud.example.com/remote.php/dav//
+         *         Example: https://cloud.example.com/remote.php/webdav//
          *
         */
         qCInfo(lcWizard) << "Sanitize got URL path:" << QString(_ocWizard->account()->url().toString() + '/' + _ocWizard->account()->davPath() + remoteFolder);
@@ -622,28 +536,26 @@ void OwncloudSetupWizard::createRemoteFolder()
     _ocWizard->appendToConfigurationLog(tr("creating folder on Nextcloud: %1").arg(_remoteFolder));
 
     auto *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
-    connect(job, &MkColJob::finishedWithError, this, &OwncloudSetupWizard::slotCreateRemoteFolderFinished);
-    connect(job, &MkColJob::finishedWithoutError, this, [this] {
-        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 created successfully.").arg(_remoteFolder));
-        finalizeSetup(true);
-    });
+    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
     job->start();
 }
 
-void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
+void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
 {
-    auto error = reply->error();
-    qCWarning(lcWizard) << "** webdav mkdir request finished " << error;
+    qCDebug(lcWizard) << "** webdav mkdir request finished " << error;
     //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
     //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
     bool success = true;
-    if (error == 202) {
+
+    if (error == QNetworkReply::NoError) {
+        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 created successfully.").arg(_remoteFolder));
+    } else if (error == 202) {
         _ocWizard->appendToConfigurationLog(tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
     } else if (error > 202 && error < 300) {
-        _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg(static_cast<int>(error)), false);
+        _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error), false);
 
-        _ocWizard->appendToConfigurationLog(tr("The folder creation resulted in HTTP error code %1").arg(static_cast<int>(error)));
+        _ocWizard->appendToConfigurationLog(tr("The folder creation resulted in HTTP error code %1").arg((int)error));
     } else if (error == QNetworkReply::OperationCanceledError) {
         _ocWizard->displayError(tr("The remote folder creation failed because the provided credentials "
                                    "are wrong!"
@@ -665,6 +577,9 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply *reply)
 
 void OwncloudSetupWizard::finalizeSetup(bool success)
 {
+    // enable/disable the finish button.
+    _ocWizard->enableFinishOnResultWidget(success);
+
     const QString localFolder = _ocWizard->property("localFolder").toString();
     if (success) {
         if (!(localFolder.isEmpty() || _remoteFolder.isEmpty())) {
@@ -720,21 +635,6 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         // is changed.
         auto account = applyAccountChanges();
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-        if (_ocWizard->useVirtualFileSyncByDefault()) {
-            Mac::FileProvider::instance()->domainManager()->addFileProviderDomainForAccount(account);
-            auto const accountId = account->account()->userIdAtHostWithPort();
-            // let the user settings know that VFS is enabled
-            Mac::FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountId, true, false);
-            _ocWizard->appendToConfigurationLog(
-                tr("<font color=\"green\"><b>File Provider-based account %1 successfully created!</b></font>").arg(accountId));
-            _ocWizard->done(result);
-            emit ownCloudWizardDone(result);
-
-            return;
-        }
-#endif
-
         QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
@@ -744,17 +644,11 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-#ifndef BUILD_FILE_PROVIDER_MODULE
             if (_ocWizard->useVirtualFileSync()) {
                 folderDefinition.virtualFilesMode = bestAvailableVfsMode();
             }
-#endif
-
-#ifdef Q_OS_WIN
-            if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
+            if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
-            }
-#endif
 
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {
@@ -774,7 +668,6 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     }
 
     // notify others.
-    _ocWizard->done(result);
     emit ownCloudWizardDone(result);
 }
 
@@ -784,10 +677,7 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 
     disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
         this, &OwncloudSetupWizard::slotAssistantFinished);
-
-    _ocWizard->done(QDialog::Rejected);
-
-    // Accept to check connectivity, only skip folder setup
+    _ocWizard->close();
     emit ownCloudWizardDone(QDialog::Accepted);
 }
 
@@ -804,13 +694,7 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto manager = AccountManager::instance();
 
     auto newState = manager->addAccount(newAccount);
-
-    if (newAccount->isPublicShareLink()) {
-        qCInfo(lcWizard()) << "seeting up public share link account";
-    }
-
-    manager->saveAccount(newAccount);
-
+    manager->save();
     return newState;
 }
 

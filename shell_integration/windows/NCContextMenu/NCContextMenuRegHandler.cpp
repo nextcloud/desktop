@@ -1,8 +1,16 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
- */
+/**
+* Copyright (c) 2015 Daniel Molkentin <danimo@owncloud.com>. All rights reserved.
+*
+* This library is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Lesser General Public License as published by the Free
+* Software Foundation; either version 2.1 of the License, or (at your option)
+* any later version.
+*
+* This library is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+* details.
+*/
 
 #include "NCContextMenuRegHandler.h"
 #include "RegDelnode.h"
@@ -13,7 +21,7 @@ namespace {
 
 HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR pszData)
 {
-    HRESULT hr = 0;
+    HRESULT hr;
     HKEY hKey = nullptr;
 
     // Creates the specified registry key. If the key already exists, the 
@@ -23,8 +31,8 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 
     if (SUCCEEDED(hr))
     {
-        DWORD cbData = 0;
-        const BYTE * lpData = nullptr;
+        DWORD cbData;
+        const BYTE * lpData;
 
         if (pszData)
         {
@@ -35,7 +43,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
         else
         {
             cbData = 0;
-            lpData = nullptr;
+            lpData = NULL;
         }
 
         hr = HRESULT_FROM_WIN32(RegSetValueEx(hKey, pszValueName, 0,
@@ -49,7 +57,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 
 HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR pszData, DWORD cbData)
 {
-    HRESULT hr = 0;
+    HRESULT hr;
     HKEY hKey = nullptr;
 
     // Try to open the specified registry key. 
@@ -77,7 +85,7 @@ HRESULT NCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
         return E_INVALIDARG;
     }
 
-    HRESULT hr = 0;
+    HRESULT hr;
 
     wchar_t szCLSID[MAX_PATH];
     StringFromGUID2(clsid, szCLSID, ARRAYSIZE(szCLSID));
@@ -92,7 +100,7 @@ HRESULT NCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
 
         // Create the HKCR\CLSID\{<CLSID>}\ContextMenuOptIn subkey.
         if (SUCCEEDED(hr)) {
-            hr = SetHKCRRegistryKeyAndValue(szSubkey, L"ContextMenuOptIn", nullptr);
+            hr = SetHKCRRegistryKeyAndValue(szSubkey, L"ContextMenuOptIn", NULL);
         }
 
         // Create the HKCR\CLSID\{<CLSID>}\InprocServer32 key.
@@ -146,7 +154,7 @@ HRESULT NCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
         return E_INVALIDARG;
     }
 
-    HRESULT hr = 0;
+    HRESULT hr;
 
     wchar_t szCLSID[MAX_PATH];
     StringFromGUID2(clsid, szCLSID, ARRAYSIZE(szCLSID));
@@ -190,7 +198,7 @@ HRESULT NCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
         return E_INVALIDARG;
     }
 
-    HRESULT hr = 0;
+    HRESULT hr;
     
     wchar_t szSubkey[MAX_PATH];
 

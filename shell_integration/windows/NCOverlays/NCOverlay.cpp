@@ -1,8 +1,15 @@
-/*
- * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-FileCopyrightText: 2000-2013 Liferay, Inc. All rights reserved
- * SPDX-License-Identifier: LGPL-2.1-or-later
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 #include "NCOverlay.h"
@@ -91,8 +98,8 @@ IFACEMETHODIMP_(ULONG) NCOverlay::Release()
 
 IFACEMETHODIMP NCOverlay::GetPriority(int *pPriority)
 {
-    // this defines which handler has precedence, so
-    // we order this in terms of likelihood
+    // this defines which handler has prededence, so
+    // we order this in terms of likelyhood
     switch (_state) {
     case State_OK:
         *pPriority = 0; break;

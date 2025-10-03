@@ -1,6 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Michael Schuster <michael@schuster.ms>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef USERINFO_H
@@ -60,8 +70,8 @@ class UserInfo : public QObject
 public:
     explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent = nullptr);
 
-    [[nodiscard]] qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
-    [[nodiscard]] qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+    qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
+    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
 
     /**
      * When the quotainfo is active, it requests the quota at regular interval.
@@ -81,20 +91,20 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
-    void fetchedLastInfo(OCC::UserInfo *userInfo);
+    void fetchedLastInfo(UserInfo *userInfo);
 
 private:
-    [[nodiscard]] bool canGetInfo() const;
+    bool canGetInfo() const;
 
     QPointer<AccountState> _accountState;
     bool _allowDisconnectedAccountState;
     bool _fetchAvatarImage;
 
-    qint64 _lastQuotaTotalBytes = 0;
-    qint64 _lastQuotaUsedBytes = 0;
+    qint64 _lastQuotaTotalBytes;
+    qint64 _lastQuotaUsedBytes;
     QTimer _jobRestartTimer;
     QDateTime _lastInfoReceived; // the time at which the user info and quota was received last
-    bool _active = false; // if we should check at regular interval (when the UI is visible)
+    bool _active; // if we should check at regular interval (when the UI is visible)
     QPointer<JsonApiJob> _job; // the currently running job
 };
 

@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2019 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
  *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
  */
 
 #include <QtTest>
@@ -17,7 +14,7 @@ using namespace OCC;
 
 static constexpr qint64 stopAfter = 3'123'668;
 
-/* A FakeGetReply that sends max 'fakeSize' bytes, but whose ContentLength has the correct size */
+/* A FakeGetReply that sends max 'fakeSize' bytes, but whose ContentLength has the corect size */
 class BrokenFakeGetReply : public FakeGetReply
 {
     Q_OBJECT
@@ -25,11 +22,11 @@ public:
     using FakeGetReply::FakeGetReply;
     int fakeSize = stopAfter;
 
-    [[nodiscard]] qint64 bytesAvailable() const override
+    qint64 bytesAvailable() const override
     {
         if (aborted)
             return 0;
-        return std::min(size, fakeSize) + QIODevice::bytesAvailable(); // NOLINT: This is intended to simulate the brokenness
+        return std::min(size, fakeSize) + QIODevice::bytesAvailable(); // NOLINT: This is intended to simulare the brokeness
     }
 
     qint64 readData(char *data, qint64 maxlen) override
@@ -59,19 +56,12 @@ class TestDownload : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
 
     void testResume()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         auto size = 30 * 1000 * 1000;
         fakeFolder.remoteModifier().insert("A/a0", size);
 
@@ -85,7 +75,7 @@ private slots:
 
         QVERIFY(!fakeFolder.syncOnce()); // The sync must fail because not all the file was downloaded
         QCOMPARE(getItem(completeSpy, "A/a0")->_status, SyncFileItem::SoftError);
-        QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QStringLiteral("The file could not be downloaded completely."));
+        QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QString("The file could not be downloaded completely."));
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
 
         // Now, we need to restart, this time, it should resume.
@@ -106,7 +96,7 @@ private slots:
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         auto size = 3'500'000;
         fakeFolder.remoteModifier().insert("A/broken", size);
 
@@ -221,7 +211,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().insert("A/resendme", 300);
 
-        QByteArray serverMessage = "An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.";
+        QByteArray serverMessage = "Needs to be resend on a new connection!";
         int resendActual = 0;
         int resendExpected = 2;
 
@@ -230,7 +220,7 @@ private slots:
             if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/resendme") && resendActual < resendExpected) {
                 auto errorReply = new FakeErrorReply(op, request, this, 400, "ignore this body");
                 errorReply->setError(QNetworkReply::ContentReSendError, serverMessage);
-                errorReply->setAttribute(QNetworkRequest::Http2WasUsedAttribute, true);
+                errorReply->setAttribute(QNetworkRequest::HTTP2WasUsedAttribute, true);
                 errorReply->setAttribute(QNetworkRequest::HttpStatusCodeAttribute, QVariant());
                 resendActual += 1;
                 return errorReply;
@@ -246,7 +236,7 @@ private slots:
         resendActual = 0;
         resendExpected = 10;
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(resendActual, 4); // the 4th fails because it only resends 3 times
         QCOMPARE(getItem(completeSpy, "A/resendme")->_status, SyncFileItem::NormalError);

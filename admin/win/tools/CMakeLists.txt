@@ -1,6 +1,4 @@
-# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-# SPDX-License-Identifier: GPL-2.0-or-later
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.2)
 set(CMAKE_CXX_STANDARD 17)
 
 if(CMAKE_SIZEOF_VOID_P MATCHES 4)

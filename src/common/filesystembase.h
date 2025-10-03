@@ -1,24 +1,31 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2017 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #pragma once
 
 #include "config.h"
 
-#include "csync/ocsynclib.h"
-
 #include <QString>
+#include <ctime>
 #include <QFileInfo>
 #include <QLoggingCategory>
 
-#include <ctime>
-
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-#include <filesystem>
-#endif
+#include <ocsynclib.h>
 
 class QFile;
 
@@ -35,17 +42,11 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
  * @brief This file contains file system helper
  */
 namespace FileSystem {
-    enum class FolderPermissions {
-        ReadOnly,
-        ReadWrite,
-    };
 
     /**
      * @brief Mark the file as hidden  (only has effects on windows)
      */
     void OCSYNC_EXPORT setFileHidden(const QString &filename, bool hidden);
-
-    bool OCSYNC_EXPORT isFileHidden(const QString &filename);
 
     /**
      * @brief Marks the file as read-only.
@@ -64,7 +65,7 @@ namespace FileSystem {
      * This means that it will preserve explicitly set rw-r--r-- permissions even
      * when the umask is 0002. (setFileReadOnly() would adjust to rw-rw-r--)
      */
-    bool OCSYNC_EXPORT setFileReadOnlyWeak(const QString &filename, bool readonly);
+    void OCSYNC_EXPORT setFileReadOnlyWeak(const QString &filename, bool readonly);
 
     /**
      * @brief Try to set permissions so that other users on the local machine can not
@@ -84,34 +85,6 @@ namespace FileSystem {
     bool OCSYNC_EXPORT fileExists(const QString &filename, const QFileInfo & = QFileInfo());
 
     /**
-     * @brief Checks whether it is a dir.
-     *
-     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
-     * files, see above.
-     */
-    bool OCSYNC_EXPORT isDir(const QString &filename, const QFileInfo& = QFileInfo());
-
-    /**
-     * @brief Checks whether it is a file.
-     *
-     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
-     * files, see above.
-     */
-    bool OCSYNC_EXPORT isFile(const QString &filename, const QFileInfo& fileInfo = QFileInfo());
-
-    /**
-     * @brief Checks whether the file is writable.
-     *
-     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
-     * files, see above.
-     */
-    bool OCSYNC_EXPORT isWritable(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
-
-    bool OCSYNC_EXPORT isReadable(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
-
-    bool OCSYNC_EXPORT isSymLink(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
-
-    /**
      * @brief Rename the file \a originFileName to \a destinationFileName.
      *
      * It behaves as QFile::rename() but handles .lnk files correctly on Windows.
@@ -119,6 +92,14 @@ namespace FileSystem {
     bool OCSYNC_EXPORT rename(const QString &originFileName,
         const QString &destinationFileName,
         QString *errorString = nullptr);
+
+    /**
+     * Rename the file \a originFileName to \a destinationFileName, and
+     * overwrite the destination if it already exists - without extra checks.
+     */
+    bool OCSYNC_EXPORT uncheckedRenameReplace(const QString &originFileName,
+        const QString &destinationFileName,
+        QString *errorString);
 
     /**
      * Removes a file.
@@ -142,16 +123,6 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT openAndSeekFileSharedRead(QFile *file, QString *error, qint64 seek);
 
-    /**
-     * Returns `path + "/" + file` with native directory separators.
-     * 
-     * If `path` ends in a directory separator this method will not insert another one in-between.
-     *
-     * In the case one of the parameters is empty, the other parameter will be returned with native
-     * directory separators and a warning is logged.
-     */
-    QString OCSYNC_EXPORT joinPath(const QString &path, const QString &file);
-
 #ifdef Q_OS_WIN
     /**
      * Returns the file system used at the given path.
@@ -170,12 +141,6 @@ namespace FileSystem {
      *    the windows API functions work with the normal "unixoid" representation too.
      */
     QString OCSYNC_EXPORT pathtoUNC(const QString &str);
-
-    std::filesystem::perms OCSYNC_EXPORT filePermissionsWinSymlinkSafe(const QString &filename);
-    std::filesystem::perms OCSYNC_EXPORT filePermissionsWin(const QString &filename);
-    void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
-
-    bool OCSYNC_EXPORT setAclPermission(const QString &path, FileSystem::FolderPermissions permissions, bool applyAlsoToFiles);
 #endif
 
     /**
@@ -187,11 +152,6 @@ namespace FileSystem {
      * Returns whether the file is a shortcut file (ends with .lnk)
      */
     bool OCSYNC_EXPORT isLnkFile(const QString &filename);
-
-    /**
-     * Returns whether the file is an exclude file (contains patterns to exclude from sync)
-     */
-    bool OCSYNC_EXPORT isExcludeFile(const QString &filename);
 
     /**
      * Returns whether the file is a junction (windows only)

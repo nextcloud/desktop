@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
-** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.
@@ -75,8 +74,8 @@ QtLockedFile::QtLockedFile()
     : QFile()
 {
 #ifdef Q_OS_WIN
-    m_semaphore_hnd = nullptr;
-    m_mutex_hnd = nullptr;
+    m_semaphore_hnd = 0;
+    m_mutex_hnd = 0;
 #endif
     m_lock_mode = NoLock;
 }
@@ -91,8 +90,8 @@ QtLockedFile::QtLockedFile(const QString &name)
     : QFile(name)
 {
 #ifdef Q_OS_WIN
-    m_semaphore_hnd = nullptr;
-    m_mutex_hnd = nullptr;
+    m_semaphore_hnd = 0;
+    m_mutex_hnd = 0;
 #endif
     m_lock_mode = NoLock;
 }

@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2014 Alex Merry <alex.merry@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
-#
 #.rst:
 # ECMFindModuleHelpers
 # --------------------
@@ -71,7 +68,7 @@
 # If SKIP_DEPENDENCY_HANDLING is not set, the INTERFACE_LINK_LIBRARIES property
 # of the imported target for <component> will be set to contain the imported
 # targets for the components listed in <name>_<component>_component_deps.
-# <component>_FOUND will also be set to false if any of the components in
+# <component>_FOUND will also be set to false if any of the compoments in
 # <name>_<component>_component_deps are not found.  This requires the components
 # in <name>_<component>_component_deps to be listed before <component> in the
 # COMPONENTS argument.

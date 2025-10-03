@@ -1,10 +1,18 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2021 by Felix Weilbach <felix.weilbach@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "welcomepage.h"
-#include "guiutility.h"
 #include "theme.h"
 #include "wizard/owncloudwizard.h"
 #include "wizard/slideshow.h"
@@ -62,8 +70,8 @@ void WelcomePage::styleSlideShow()
     _ui->slideShow->addSlide(wizardTalkIconFileName, tr("Screensharing, online meetings & web conferences"));
 
     const auto isDarkBackground = Theme::isDarkColor(backgroundColor);
-    _ui->slideShowNextButton->setIcon(theme->uiThemeIcon(QStringLiteral("control-next.svg"), isDarkBackground));
-    _ui->slideShowPreviousButton->setIcon(theme->uiThemeIcon(QStringLiteral("control-prev.svg"), isDarkBackground));
+    _ui->slideShowNextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), isDarkBackground));
+    _ui->slideShowPreviousButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), isDarkBackground));
 }
 
 void WelcomePage::setupSlideShow()
@@ -75,6 +83,9 @@ void WelcomePage::setupSlideShow()
 
 void WelcomePage::setupLoginButton()
 {
+    const auto appName = Theme::instance()->appNameGUI();
+
+    _ui->loginButton->setText(tr("Log in to your %1").arg(appName));
     connect(_ui->loginButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
         _nextPage = WizardCommon::Page_ServerSetup;
         _ocWizard->next();
@@ -83,18 +94,11 @@ void WelcomePage::setupLoginButton()
 
 void WelcomePage::setupCreateAccountButton()
 {
-#ifdef WITH_WEBENGINE
     connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
         _ocWizard->setRegistration(true);
         _nextPage = WizardCommon::Page_WebView;
-        _ocWizard->setAuthType(OCC::DetermineAuthTypeJob::WebViewFlow);
+        _ocWizard->next();
     });
-#else // WITH_WEBENGINE
-    connect(_ui->createAccountButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
-        _ocWizard->setRegistration(true);
-        Utility::openBrowser(QStringLiteral("https://nextcloud.com/register"));
-    });
-#endif // WITH_WEBENGINE
 }
 
 void WelcomePage::setupHostYourOwnServerLabel()

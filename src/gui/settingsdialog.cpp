@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "settingsdialog.h"
@@ -31,8 +39,6 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
-#include <QQuickView>
-#include <QActionGroup>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -51,7 +57,10 @@ const float buttonSizeRatio = 1.618f; // golden ratio
  */
 QString shortDisplayNameForSettings(OCC::Account *account, int width)
 {
-    QString user = account->prettyName();
+    QString user = account->davDisplayName();
+    if (user.isEmpty()) {
+        user = account->credentials()->user();
+    }
     QString host = account->url().host();
     int port = account->url().port();
     if (port > 0 && port != 80 && port != 443) {
@@ -120,17 +129,17 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
 
-#if defined(BUILD_UPDATER)
-    connect(AccountManager::instance(), &AccountManager::accountAdded, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-    connect(AccountManager::instance(), &AccountManager::capabilitiesChanged, generalSettings, &GeneralSettings::loadUpdateChannelsList);
-#endif
+    QAction *networkAction = createColorAwareAction(QLatin1String(":/client/theme/network.svg"), tr("Network"));
+    _actionGroup->addAction(networkAction);
+    _toolBar->addAction(networkAction);
+    auto *networkSettings = new NetworkSettings;
+    _ui->stack->addWidget(networkSettings);
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
+    _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    const auto accountsList = AccountManager::instance()->accounts();
-    for (const auto &account : accountsList) {
-        accountAdded(account.data());
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
     }
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
@@ -141,7 +150,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     addAction(showLogWindow);
 
     auto *showLogWindow2 = new QAction(this);
-    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
     connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow2);
 
@@ -149,7 +158,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     customizeStyle();
 
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::Window);
     cfg.restoreGeometry(this);
 }
 
@@ -217,8 +226,8 @@ void SettingsDialog::showIssuesList(AccountState *account)
 {
     const auto userModel = UserModel::instance();
     const auto id = userModel->findUserIdForAccount(account);
-    UserModel::instance()->setCurrentUserId(id);
-    Systray::instance()->showWindow();
+    UserModel::instance()->switchCurrentUser(id);
+    emit Systray::instance()->showWindow();
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
@@ -226,8 +235,16 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
+    QAction *accountAction = nullptr;
+    QImage avatar = s->account()->avatar();
+    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    if (avatar.isNull()) {
+        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
+            actionText);
+    } else {
+        QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
+        accountAction = createActionWithIcon(icon, actionText);
+    }
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
@@ -246,7 +263,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionForAccount.insert(s->account().data(), accountAction);
     accountAction->trigger();
 
-    connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
+    connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
@@ -255,20 +272,11 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
-
-    const auto userInfo = new UserInfo(s, false, true, this);
-    connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
-        // UserInfo will go and update the account avatar
-        Q_UNUSED(fetchedInfo);
-        userInfo->deleteLater();
-    });
-    userInfo->setActive(true);
-    userInfo->slotFetchInfo();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-    auto *account = dynamic_cast<Account *>(sender());
+    auto *account = static_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -282,7 +290,7 @@ void SettingsDialog::slotAccountAvatarChanged()
 
 void SettingsDialog::slotAccountDisplayNameChanged()
 {
-    auto *account = dynamic_cast<Account *>(sender());
+    auto *account = static_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -335,7 +343,7 @@ void SettingsDialog::customizeStyle()
     QString background(palette().base().color().name());
     _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
-    for (const auto a : _actionGroup->actions()) {
+    Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
@@ -359,7 +367,7 @@ public:
     {
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {
-            // this means we are in the extension menu, no special action here
+            // this means we are in the extention menu, no special action here
             return nullptr;
         }
 

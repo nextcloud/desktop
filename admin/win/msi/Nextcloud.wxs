@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  - SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-  - SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * Copyright (C) by Michael Schuster <michael@schuster.ms>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
 -->
 <?include $(sys.CURRENTDIR)OEM.wxi?>
 <?include $(sys.CURRENTDIR)Platform.wxi?>
@@ -17,7 +28,7 @@
          But we then should never change the UpgradeCode.
      -->
     <Product Name="$(var.AppName)" Manufacturer="$(var.AppVendor)"
-        Id="$(var.ProductCode)"
+        Id="*" 
         UpgradeCode="$(var.UpgradeCode)"
         Language="1033" Codepage="$(var.codepage)" Version="$(var.VerFull)">
     <Package Id="*" Keywords="Installer" Description="$(var.AppName) $(var.VerDesc)" Manufacturer="$(var.AppVendor)"
@@ -33,10 +44,7 @@
         https://www.firegiant.com/wix/tutorial/upgrades-and-modularization/replacing-ourselves/
         https://www.joyofsetup.com/2010/01/16/major-upgrades-now-easier-than-ever/
     -->
-    <MajorUpgrade Schedule="afterInstallExecute" AllowDowngrades="yes" />
-    <Property Id="REINSTALLMODE" Value="dmus" />
-    <Property Id="MSIRMSHUTDOWN" Value="1" />
-    <Property Id="REBOOT" Value="ReallySuppress" />
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes" />
 
     <Media Id="1" Cabinet="$(var.AppShortName).cab" EmbedCab="yes" />
 
@@ -44,12 +52,15 @@
     <Property Id="INSTALLDIR">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
+	<Property Id="WINDOWSRELEASEID">
+        <RegistrySearch Id="RegistryWindowsReleaseId" Type="raw" Root="HKLM" Key="Software\Microsoft\Windows NT\CurrentVersion" Name="ReleaseId"/>
+    </Property>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
-        <RegistrySearch Id="RegistryLegacyUninstallString" Type="file" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppName)" Name="UninstallString" Win64="no">
-            <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
-        </RegistrySearch>
+        <DirectorySearch Id="LegacyUninstallVersion" Path="[INSTALLDIR]">
+            <FileSearch Name="Uninstall.exe" />
+        </DirectorySearch>
     </Property>
 
     <!-- Property to disable update checks -->
@@ -62,27 +73,18 @@
     <SetProperty Id="ExecNsisUninstaller" Value="&quot;$(var.AppShortName)&quot; &quot;[NSIS_UNINSTALLEXE]&quot;" Before="ExecNsisUninstaller" Sequence="execute" />
     <SetProperty Id="RemoveNavigationPaneEntries" Value="&quot;$(var.AppName)&quot;" Before="RemoveNavigationPaneEntries" Sequence="execute" />
 
-    <!-- Ensure ACLs -->
-    <Binary Id="EnsureACL" SourceFile="EnsureACL.js" />
-    <SetProperty Id="EnsureACL" Before="EnsureACL" Value="[INSTALLDIR]" Sequence="execute" />
-    <CustomAction Id="EnsureACL" BinaryKey="EnsureACL" JScriptCall="EnsureACL" Return="check" Execute="deferred" Impersonate="no" />
-
     <InstallExecuteSequence>
         <!-- Install: Remove previous NSIS installation, if detected -->
         <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
 
-        <!-- Install: Ensure ACLs are set -->
-        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed</Custom>
-
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
         <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
 
-        <!-- Uninstall: Cleanup the Registry -->
-        <Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+        <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
+        <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
-    <Property Id="APPNAME">$(var.AppName)</Property>
     <Property Id="ARPPRODUCTICON">$(var.AppIcon)</Property>
     <Property Id="ARPHELPLINK">$(var.AppHelpLink)</Property>
     <Property Id="ARPURLINFOABOUT">$(var.AppInfoLink)</Property>
@@ -145,7 +147,7 @@
         <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
             <Directory Id="INSTALLDIR" Name="$(var.AppName)">
                 <!-- Shell Extensions -->
-                <Directory Id="ShellExtDir" />
+                <Directory Id="ShellExtDir" Name="shellext" />
             </Directory>
         </Directory>
 
@@ -188,19 +190,6 @@
                 <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
             </RegistryKey>
         </Component>
-        <!-- Register URI handler -->
-        <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
-                <RegistryValue Type="string" Name="URL Protocol" Value="" />
-            </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
-            </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
-            </RegistryKey>
-        </Component>
     </DirectoryRef>
 
     <!-- Features -->
@@ -210,7 +199,6 @@
 
         <ComponentRef Id="RegistryVersionInfo" />
         <ComponentRef Id="RegistryDefaultSettings" />
-        <ComponentRef Id="RegistryUriHandler" />
 
         <Feature Id="ShellExtensions" Title="Integration for Windows Explorer"
             Description="This feature requires a reboot." >
@@ -229,5 +217,6 @@
             <Condition Level="0">(NO_DESKTOP_SHORTCUT=1)</Condition>
         </Feature>
     </Feature>
+	<Condition Message="This application only runs on Windows 10, version 1709 or higher!">(VersionNT>=603 AND WINDOWSRELEASEID>=1709)</Condition>
     </Product>
 </Wix>

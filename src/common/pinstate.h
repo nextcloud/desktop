@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2019 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Christian Kamm <mail@ckamm.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef PINSTATE_H
@@ -13,6 +21,7 @@
 
 namespace OCC {
 
+namespace PinStateEnums {
 OCSYNC_EXPORT Q_NAMESPACE
 
 /** Determines whether items should be available locally permanently or not
@@ -67,15 +76,8 @@ enum class PinState {
      * dehydrated (which is an arbitrary decision).
      */
     Unspecified = 3,
-
-    /** The file will never be synced to the cloud.
-     * 
-     * Useful for ignored files to indicate to the OS the file will never be
-     * synced
-     */
-    Excluded = 4,
 };
-Q_ENUM_NS(PinState)
+Q_ENUM_NS(PinState);
 
 /** A user-facing version of PinState.
  *
@@ -124,6 +126,8 @@ enum class VfsItemAvailability {
     OnlineOnly = 4,
 };
 Q_ENUM_NS(VfsItemAvailability)
+}
+using namespace PinStateEnums;
 
 }
 

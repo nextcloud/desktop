@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "syncresult.h"
@@ -31,10 +39,10 @@ QString SyncResult::statusString() const
         re = QLatin1String("Undefined");
         break;
     case NotYetStarted:
-        re = QLatin1String("Not yet started");
+        re = QLatin1String("Not yet Started");
         break;
     case SyncRunning:
-        re = QLatin1String("Sync running");
+        re = QLatin1String("Sync Running");
         break;
     case Success:
         re = QLatin1String("Success");
@@ -43,19 +51,19 @@ QString SyncResult::statusString() const
         re = QLatin1String("Error");
         break;
     case SetupError:
-        re = QLatin1String("Setup error");
+        re = QLatin1String("SetupError");
         break;
     case SyncPrepare:
-        re = QLatin1String("Preparing to sync");
+        re = QLatin1String("SyncPrepare");
         break;
     case Problem:
         re = QLatin1String("Success, some files were ignored.");
         break;
     case SyncAbortRequested:
-        re = QLatin1String("Sync request cancelled");
+        re = QLatin1String("Sync Request aborted by user");
         break;
     case Paused:
-        re = QLatin1String("Sync paused");
+        re = QLatin1String("Sync Paused");
         break;
     }
     return re;
@@ -133,7 +141,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         if (!_firstItemError) {
             _firstItemError = item;
         }
-    } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameInvalid || item->_status == SyncFileItem::FileNameInvalidOnServer || item->_status == SyncFileItem::FileNameClash) {
+    } else if (item->_status == SyncFileItem::Conflict) {
         if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
             _numNewConflictItems++;
             if (!_firstNewConflictItem) {

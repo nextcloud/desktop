@@ -1,8 +1,7 @@
 # - MACRO_ADD_LINK_FLAGS(target_name flag1 ... flagN)
 
-# SPDX-FileCopyrightText: 2006 Oswald Buddenhagen <ossi@kde.org>
-# SPDX-FileCopyrightText: 2006 Andreas Schneider <asn@cryptomilk.org>
-# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2006, Oswald Buddenhagen, <ossi@kde.org>
+# Copyright (c) 2006, Andreas Schneider, <asn@cryptomilk.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.

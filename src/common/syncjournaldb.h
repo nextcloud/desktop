@@ -1,27 +1,35 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef SYNCJOURNALDB_H
 #define SYNCJOURNALDB_H
 
 #include <QObject>
+#include <qmutex.h>
 #include <QDateTime>
 #include <QHash>
-#include <QMutex>
-#include <QVariant>
 #include <functional>
 
 #include "common/utility.h"
 #include "common/ownsql.h"
-#include "common/preparedsqlquerymanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/result.h"
 #include "common/pinstate.h"
-
-class TestSyncJournalDB;
 
 namespace OCC {
 class SyncJournalFileRecord;
@@ -37,7 +45,7 @@ class OCSYNC_EXPORT SyncJournalDb : public QObject
     Q_OBJECT
 public:
     explicit SyncJournalDb(const QString &dbFilePath, QObject *parent = nullptr);
-    ~SyncJournalDb() override;
+    virtual ~SyncJournalDb();
 
     /// Create a journal path for a specific configuration
     static QString makeDbName(const QString &localPath,
@@ -48,33 +56,22 @@ public:
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
-    /// Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list
-    static bool findPathInSelectiveSyncList(const QStringList &list, const QString &path);
-
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
-    [[nodiscard]] bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
-    [[nodiscard]] bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
-    [[nodiscard]] bool getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec);
-    [[nodiscard]] bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
-    [[nodiscard]] bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
-    [[nodiscard]] bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
-    [[nodiscard]] bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
-    [[nodiscard]] Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
-    [[nodiscard]] bool getRootE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec);
-    [[nodiscard]] bool listAllE2eeFoldersWithEncryptionStatusLessThan(const int status, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
-    [[nodiscard]] bool findEncryptedAncestorForRecord(const QString &filename, SyncJournalFileRecord *rec);
+    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
+    bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
+    bool getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec);
+    bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
+    bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
+    bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    bool setFileRecord(const SyncJournalFileRecord &record);
 
-    void keyValueStoreSet(const QString &key, QVariant value);
-    [[nodiscard]] qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
-    void keyValueStoreDelete(const QString &key);
-
-    [[nodiscard]] bool deleteFileRecord(const QString &filename, bool recursively = false);
-    [[nodiscard]] bool updateFileRecordChecksum(
-        const QString &filename,
+    bool deleteFileRecord(const QString &filename, bool recursively = false);
+    bool updateFileRecordChecksum(const QString &filename,
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
-    [[nodiscard]] bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo);
+    bool updateLocalMetadata(const QString &filename,
+        qint64 modtime, qint64 size, quint64 inode);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated
@@ -89,14 +86,14 @@ public:
     bool exists();
     void walCheckpoint();
 
-    [[nodiscard]] QString databaseFilePath() const;
+    QString databaseFilePath() const;
 
     static qint64 getPHash(const QByteArray &);
 
     void setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
     void wipeErrorBlacklistEntry(const QString &file);
     void wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category);
-    [[nodiscard]] int wipeErrorBlacklist();
+    int wipeErrorBlacklist();
     int errorBlackListEntryCount();
 
     struct DownloadInfo
@@ -108,7 +105,7 @@ public:
     };
     struct UploadInfo
     {
-        int _chunkUploadV1 = 0;
+        int _chunk = 0;
         uint _transferid = 0;
         qint64 _size = 0;
         qint64 _modtime = 0;
@@ -120,15 +117,15 @@ public:
          * (As opposed to a small file transfer which is stored in the db so we can detect the case
          * when the upload succeeded, but the connection was dropped before we got the answer)
          */
-        [[nodiscard]] bool isChunked() const { return _transferid != 0; }
+        bool isChunked() const { return _transferid != 0; }
     };
 
     struct PollInfo
     {
         QString _file; // The relative path of a file
         QString _url; // the poll url. (This pollinfo is invalid if _url is empty)
-        qint64 _modtime = 0LL; // The modtime of the file being uploaded
-        qint64 _fileSize = 0LL;
+        qint64 _modtime; // The modtime of the file being uploaded
+        qint64 _fileSize;
     };
 
     DownloadInfo getDownloadInfo(const QString &file);
@@ -142,7 +139,7 @@ public:
     QVector<uint> deleteStaleUploadInfos(const QSet<QString> &keep);
 
     SyncJournalErrorBlacklistRecord errorBlacklistEntry(const QString &);
-    [[nodiscard]] bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
+    bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
 
     /// Delete flags table entries that have no metadata correspondent
     void deleteStaleFlagsEntries();
@@ -164,18 +161,12 @@ public:
         SelectiveSyncWhiteList = 2,
         /** List of big sync folders that have not been confirmed by the user yet and that the UI
          * should notify about */
-        SelectiveSyncUndecidedList = 3,
-        /** List of encrypted folders that will need to be removed from the blacklist when E2EE gets set up*/
-        SelectiveSyncE2eFoldersToRemoveFromBlacklist = 4,
+        SelectiveSyncUndecidedList = 3
     };
     /* return the specified list from the database */
     QStringList getSelectiveSyncList(SelectiveSyncListType type, bool *ok);
     /* Write the selective sync list (remove all other entries of that list */
     void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
-
-    QStringList addSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
-
-    QStringList removeSelectiveSyncLists(SelectiveSyncListType type, const QString &path);
 
     /**
      * Make sure that on the next sync fileName and its parents are discovered from the server.
@@ -219,11 +210,11 @@ public:
      * This usually creates some temporary files next to the db file, like
      * $dbfile-shm or $dbfile-wal.
      *
-     * returns true if it could be opened or is currently opened.
+     * returns true if it could be openend or is currently opened.
      */
     bool open();
 
-    /** Returns whether the db is currently opened. */
+    /** Returns whether the db is currently openend. */
     bool isOpen();
 
     /** Close the database */
@@ -248,15 +239,6 @@ public:
 
     /// Retrieve a conflict record by path of the file with the conflict tag
     ConflictRecord conflictRecord(const QByteArray &path);
-
-    /// Retrieve a conflict record by path of the file with the conflict tag
-    ConflictRecord caseConflictRecordByBasePath(const QString &baseNamePath);
-
-    /// Retrieve a conflict record by path of the file with the conflict tag
-    ConflictRecord caseConflictRecordByPath(const QString &path);
-
-    /// Return all paths of files with a conflict tag in the name and records in the db
-    QByteArrayList caseClashConflictRecordPaths();
 
     /// Delete a conflict record by path of the file with the conflict tag
     void deleteConflictRecord(const QByteArray &path);
@@ -287,22 +269,12 @@ public:
      */
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
-    void setE2EeLockedFolder(const QByteArray &folderId, const QByteArray &folderToken);
-    QByteArray e2EeLockedFolder(const QByteArray &folderId);
-    QList<QPair<QByteArray, QByteArray>> e2EeLockedFolders();
-    void deleteE2EeLockedFolder(const QByteArray &folderId);
-
     /** Grouping for all functions relating to pin states,
      *
      * Use internalPinStates() to get at them.
      */
     struct OCSYNC_EXPORT PinStateInterface
     {
-        explicit PinStateInterface(SyncJournalDb *db)
-            : _db(db)
-        {
-        }
-
         PinStateInterface(const PinStateInterface &) = delete;
         PinStateInterface(PinStateInterface &&) = delete;
 
@@ -392,21 +364,11 @@ public:
      */
     int autotestFailCounter = -1;
 
-public slots:
-    /// Store a new or updated record in the database
-    void setCaseConflictRecord(const OCC::ConflictRecord &record);
-
-    /// Delete a case clash conflict record by path of the file with the conflict tag
-    void deleteCaseClashConflictByPathRecord(const QString &path);
-
 private:
     int getFileRecordCount();
-    [[nodiscard]] bool ensureCorrectEncryptionStatus();
-    [[nodiscard]] bool updateDatabaseStructure();
-    [[nodiscard]] bool updateMetadataTableStructure();
-    [[nodiscard]] bool updateErrorBlacklistTableStructure();
-    [[nodiscard]] bool removeColumn(const QString &columnName);
-    [[nodiscard]] bool hasDefaultValue(const QString &columnName);
+    bool updateDatabaseStructure();
+    bool updateMetadataTableStructure();
+    bool updateErrorBlacklistTableStructure();
     bool sqlFail(const QString &log, const SqlQuery &query);
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
@@ -420,14 +382,51 @@ private:
     // Returns the integer id of the checksum type
     //
     // Returns 0 on failure and for empty checksum types.
-    [[nodiscard]] int mapChecksumType(const QByteArray &checksumType);
+    int mapChecksumType(const QByteArray &checksumType);
 
     SqlDatabase _db;
     QString _dbFile;
-    QRecursiveMutex _mutex; // Public functions are protected with the mutex.
+    QMutex _mutex; // Public functions are protected with the mutex.
     QMap<QByteArray, int> _checksymTypeCache;
-    int _transaction = 0;
-    bool _metadataTableIsEmpty = false;
+    int _transaction;
+    bool _metadataTableIsEmpty;
+
+    SqlQuery _getFileRecordQuery;
+    SqlQuery _getFileRecordQueryByMangledName;
+    SqlQuery _getFileRecordQueryByInode;
+    SqlQuery _getFileRecordQueryByFileId;
+    SqlQuery _getFilesBelowPathQuery;
+    SqlQuery _getAllFilesQuery;
+    SqlQuery _listFilesInPathQuery;
+    SqlQuery _setFileRecordQuery;
+    SqlQuery _setFileRecordChecksumQuery;
+    SqlQuery _setFileRecordLocalMetadataQuery;
+    SqlQuery _getDownloadInfoQuery;
+    SqlQuery _setDownloadInfoQuery;
+    SqlQuery _deleteDownloadInfoQuery;
+    SqlQuery _getUploadInfoQuery;
+    SqlQuery _setUploadInfoQuery;
+    SqlQuery _deleteUploadInfoQuery;
+    SqlQuery _deleteFileRecordPhash;
+    SqlQuery _deleteFileRecordRecursively;
+    SqlQuery _getErrorBlacklistQuery;
+    SqlQuery _setErrorBlacklistQuery;
+    SqlQuery _getSelectiveSyncListQuery;
+    SqlQuery _getChecksumTypeIdQuery;
+    SqlQuery _getChecksumTypeQuery;
+    SqlQuery _insertChecksumTypeQuery;
+    SqlQuery _getDataFingerprintQuery;
+    SqlQuery _setDataFingerprintQuery1;
+    SqlQuery _setDataFingerprintQuery2;
+    SqlQuery _getConflictRecordQuery;
+    SqlQuery _setConflictRecordQuery;
+    SqlQuery _deleteConflictRecordQuery;
+    SqlQuery _getRawPinStateQuery;
+    SqlQuery _getEffectivePinStateQuery;
+    SqlQuery _getSubPinsQuery;
+    SqlQuery _countDehydratedFilesQuery;
+    SqlQuery _setPinStateQuery;
+    SqlQuery _wipePinStateQuery;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
@@ -450,10 +449,6 @@ private:
      * variable, for specific filesystems, or when WAL fails in a particular way.
      */
     QByteArray _journalMode;
-
-    PreparedSqlQueryManager _queryManager;
-
-    friend class ::TestSyncJournalDB;
 };
 
 bool OCSYNC_EXPORT

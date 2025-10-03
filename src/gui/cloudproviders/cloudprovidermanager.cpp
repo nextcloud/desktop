@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Julius Härtl <jus@bitgrid.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <glib.h>
@@ -17,7 +26,7 @@ CloudProvidersProviderExporter *_providerExporter;
 void on_name_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
     Q_UNUSED(name);
-    CloudProviderManager *self = nullptr;
+    CloudProviderManager *self;
     self = static_cast<CloudProviderManager*>(user_data);
     _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
     cloud_providers_provider_exporter_set_name (_providerExporter, APPLICATION_NAME);
@@ -35,8 +44,7 @@ void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user
 void CloudProviderManager::registerSignals()
 {
     OCC::FolderMan *folderManager = OCC::FolderMan::instance();
-    connect(folderManager, &OCC::FolderMan::folderListChanged,
-            this, &CloudProviderManager::slotFolderListChanged);
+    connect(folderManager, SIGNAL(folderListChanged(const Folder::Map &)), SLOT(slotFolderListChanged(const Folder::Map &)));
     slotFolderListChanged(folderManager->map());
 }
 

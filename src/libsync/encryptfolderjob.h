@@ -1,15 +1,21 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Kevin Ottens <kevin.ottens@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 #pragma once
 
-#include "account.h"
-#include "encryptedfoldermetadatahandler.h"
-#include "syncfileitem.h"
-#include "owncloudpropagator.h"
-
 #include <QObject>
+
+#include "account.h"
 
 namespace OCC {
 class SyncJournalDb;
@@ -24,41 +30,30 @@ public:
     };
     Q_ENUM(Status)
 
-    explicit EncryptFolderJob(const AccountPtr &account,
-                              SyncJournalDb *journal,
-                              const QString &path,
-                              const QString &pathNonEncrypted,
-                              const QString &_remoteSyncRootPath,
-                              const QByteArray &fileId,
-                              OwncloudPropagator *propagator = nullptr,
-                              SyncFileItemPtr item = {},
-                              QObject *parent = nullptr);
+    explicit EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, QObject *parent = nullptr);
     void start();
 
-    [[nodiscard]] QString errorString() const;
+    QString errorString() const;
 
 signals:
-    void finished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
-
-private:
-    void uploadMetadata();
+    void finished(int status);
 
 private slots:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
-    void slotEncryptionFlagError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
-    void slotUploadMetadataFinished(int statusCode, const QString &message);
-    void slotSetEncryptionFlag();
+    void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
+    void slotLockForEncryptionSuccess(const QByteArray &folderId, const QByteArray &token);
+    void slotLockForEncryptionError(const QByteArray &folderId, int httpReturnCode);
+    void slotUnlockFolderSuccess(const QByteArray &folderId);
+    void slotUnlockFolderError(const QByteArray &folderId, int httpReturnCode);
+    void slotUploadMetadataSuccess(const QByteArray &folderId);
+    void slotUpdateMetadataError(const QByteArray &folderId, int httpReturnCode);
 
 private:
     AccountPtr _account;
     SyncJournalDb *_journal;
     QString _path;
-    QString _pathNonEncrypted;
-    QString _remoteSyncRootPath;
     QByteArray _fileId;
+    QByteArray _folderToken;
     QString _errorString;
-    OwncloudPropagator *_propagator = nullptr;
-    SyncFileItemPtr _item;
-    QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };
 }

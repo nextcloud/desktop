@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCSSHAREJOB_H
@@ -38,7 +46,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getShares(const QString &path = "", const QMap<QString, QString> &params = {});
+    void getShares(const QString &path = "");
 
     /**
      * Delete the current Share
@@ -88,16 +96,6 @@ public:
      */
     void setPermissions(const QString &shareId,
         const Share::Permissions permissions);
-    
-    /**
-     * Set share link label
-     */
-    void setLabel(const QString &shareId, const QString &label);
-
-    /**
-     * Set share hideDownload flag
-     */
-    void setHideDownload(const QString &shareId, const bool hideDownload);
 
     /**
      * Create a new link share
@@ -107,8 +105,6 @@ public:
      */
     void createLinkShare(const QString &path, const QString &name,
         const QString &password);
-
-    void createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password);
 
     /**
      * Create a new share
@@ -127,11 +123,8 @@ public:
 
     /**
      * Returns information on the items shared with the current user.
-     * @param path Path to request shares for (default all shares)
      */
-    void getSharedWithMe(const QString &path = "");
-
-    static const QString _pathForSharesRequest;
+    void getSharedWithMe();
 
 signals:
     /**

@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2015 by Christian Kamm <kamm@incasoftware.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCC_PROXYAUTHDIALOG_H
@@ -25,12 +34,12 @@ class ProxyAuthDialog : public QDialog
 
 public:
     explicit ProxyAuthDialog(QWidget *parent = nullptr);
-    ~ProxyAuthDialog() override;
+    ~ProxyAuthDialog();
 
     void setProxyAddress(const QString &address);
 
-    [[nodiscard]] QString username() const;
-    [[nodiscard]] QString password() const;
+    QString username() const;
+    QString password() const;
 
     /// Resets the dialog for new credential entry.
     void reset();

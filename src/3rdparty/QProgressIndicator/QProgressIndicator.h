@@ -1,6 +1,25 @@
 /*
- * SPDX-FileCopyrightText: 2011 Morgan Leborgne
- * SPDX-License-Identifier: MIT
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2011 Morgan Leborgne
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 #ifndef QPROGRESSINDICATOR_H
@@ -29,27 +48,27 @@ public:
         \return The number of milliseconds between animation steps. By default, the animation delay is set to 40 milliseconds.
         \sa setAnimationDelay
      */
-    [[nodiscard]] int animationDelay() const { return m_delay; }
+    int animationDelay() const { return m_delay; }
 
     /*! Returns a Boolean value indicating whether the component is currently animated.
         \return Animation state.
         \sa startAnimation stopAnimation
      */
-    [[nodiscard]] bool isAnimated () const;
+    bool isAnimated () const;
 
     /*! Returns a Boolean value indicating whether the receiver shows itself even when it is not animating.
         \return Return true if the progress indicator shows itself even when it is not animating. By default, it returns false.
         \sa setDisplayedWhenStopped
      */
-    [[nodiscard]] bool isDisplayedWhenStopped() const;
+    bool isDisplayedWhenStopped() const;
 
     /*! Returns the color of the component.
         \sa setColor
       */
-    [[nodiscard]] const QColor & color() const { return m_color; }
+    const QColor & color() const { return m_color; }
 
-    [[nodiscard]] QSize sizeHint() const override;
-    [[nodiscard]] int heightForWidth(int w) const override;
+    virtual QSize sizeHint() const;
+    int heightForWidth(int w) const;
 public slots:
     /*! Starts the spin animation.
         \sa stopAnimation isAnimated
@@ -79,8 +98,8 @@ public slots:
      */
     void setColor(const QColor & color);
 protected:
-    void timerEvent(QTimerEvent * event) override;
-    void paintEvent(QPaintEvent * event) override;
+    virtual void timerEvent(QTimerEvent * event); 
+    virtual void paintEvent(QPaintEvent * event);
 private:
     int m_angle = 0;
     int m_timerId = -1;

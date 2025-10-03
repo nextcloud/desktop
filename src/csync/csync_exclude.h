@@ -1,10 +1,21 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-FileCopyrightText: 2008-2013 Andreas Schneider <asn@cryptomilk.org>
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef _CSYNC_EXCLUDE_H
@@ -32,15 +43,11 @@ enum CSYNC_EXCLUDE_TYPE {
   CSYNC_FILE_EXCLUDE_HIDDEN,
   CSYNC_FILE_EXCLUDE_STAT_FAILED,
   CSYNC_FILE_EXCLUDE_CONFLICT,
-  CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT,
   CSYNC_FILE_EXCLUDE_CANNOT_ENCODE,
   CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED,
-  CSYNC_FILE_EXCLUDE_LEADING_SPACE,
-  CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE,
 };
 
 class ExcludedFilesTest;
-class QFile;
 
 /**
  * Manages file/directory exclusion.
@@ -62,7 +69,7 @@ public:
     using Version = std::tuple<int, int, int>;
 
     explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
-    ~ExcludedFiles() override;
+    ~ExcludedFiles();
 
     /**
      * Adds a new path to a file containing exclude patterns.
@@ -70,6 +77,7 @@ public:
      * Does not load the file. Use reloadExcludeFiles() afterwards.
      */
     void addExcludeFilePath(const QString &path);
+    void addInTreeExcludeFilePath(const QString &path);
 
     /**
      * Whether conflict files shall be excluded.
@@ -84,7 +92,7 @@ public:
      * @param filePath     the absolute path to the file
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
-    [[nodiscard]] bool isExcluded(
+    bool isExcluded(
         const QString &filePath,
         const QString &basePath,
         bool excludeHidden) const;
@@ -132,11 +140,6 @@ public:
      */
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QString &path, ItemType filetype);
 
-    /**
-     * @brief Provide all active exclude patterns.
-     */
-    [[nodiscard]] QStringList activeExcludePatterns() const;
-
 public slots:
     /**
      * Reloads the exclude patterns from the registered paths.
@@ -145,7 +148,7 @@ public slots:
     /**
      * Loads the exclude patterns from file the registered base paths.
      */
-    void loadExcludeFilePatterns(const QString &basePath, QFile &file);
+    bool loadExcludeFile(const QString &basePath, const QString &file);
 
 private:
     /**
@@ -163,7 +166,7 @@ private:
      *
      * Would enable the "myexclude" pattern only for versions before 2.5.0.
      */
-    [[nodiscard]] bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
+    bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
 
     /**
      * @brief Match the exclude pattern against the full path.
@@ -173,7 +176,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    [[nodiscard]] CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
 
     // Our BasePath need to end with '/'
     class BasePathString : public QString

@@ -1,9 +1,22 @@
 /* This file is part of the KDE libraries
  *
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2011 Aurélien Gâteau <agateau@kde.org>
- * SPDX-FileCopyrightText: 2014 Dominik Haumann <dhaumann@kde.org>
- * SPDX-License-Identifier: LGPL-2.0-or-later
+ * Copyright (c) 2011 Aurélien Gâteau <agateau@kde.org>
+ * Copyright (c) 2014 Dominik Haumann <dhaumann@kde.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301  USA
  */
 #include "kmessagewidget.h"
 
@@ -27,7 +40,7 @@ class KMessageWidgetPrivate
 public:
     void init(KMessageWidget *);
 
-    KMessageWidget *q = nullptr;
+    KMessageWidget *q;
     QFrame *content = nullptr;
     QLabel *iconLabel = nullptr;
     QLabel *textLabel = nullptr;
@@ -36,8 +49,8 @@ public:
     QIcon icon;
     bool ignoreShowEventDoingAnimatedShow = false;
 
-    KMessageWidget::MessageType messageType = KMessageWidget::Positive;
-    bool wordWrap = false;
+    KMessageWidget::MessageType messageType;
+    bool wordWrap;
     QList<QToolButton *> buttons;
     QPixmap contentSnapShot;
 
@@ -48,7 +61,7 @@ public:
     void slotTimeLineChanged(qreal);
     void slotTimeLineFinished();
 
-    [[nodiscard]] int bestContentHeight() const;
+    int bestContentHeight() const;
 };
 
 void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
@@ -59,8 +72,8 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
 
     // Note: when changing the value 500, also update KMessageWidgetTest
     timeLine = new QTimeLine(500, q);
-    QObject::connect(timeLine, &QTimeLine::valueChanged, q, [this] (qreal value) { slotTimeLineChanged(value); });
-    QObject::connect(timeLine, &QTimeLine::finished, q, [this] () { slotTimeLineFinished(); });
+    QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
+    QObject::connect(timeLine, SIGNAL(finished()), q, SLOT(slotTimeLineFinished()));
 
     content = new QFrame(q);
     content->setObjectName(QStringLiteral("contentWidget"));
@@ -141,7 +154,7 @@ void KMessageWidgetPrivate::createLayout()
         layout->addWidget(iconLabel);
         layout->addWidget(textLabel);
 
-        for (QToolButton *button : std::as_const(buttons)) {
+        for (QToolButton *button : qAsConst(buttons)) {
             layout->addWidget(button);
         }
 

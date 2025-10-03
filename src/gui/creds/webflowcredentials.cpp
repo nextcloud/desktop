@@ -1,21 +1,7 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #include "webflowcredentials.h"
 
 #include "creds/httpcredentials.h"
 #include "creds/keychainchunk.h"
-#include "accessmanager.h"
-#include "account.h"
-#include "configfile.h"
-#include "theme.h"
-#ifdef WITH_WEBENGINE
-#include "wizard/webview.h"
-#endif // WITH_WEBENGINE
-#include "webflowcredentialsdialog.h"
-#include "networkjobs.h"
 
 #include <QAuthenticator>
 #include <QNetworkAccessManager>
@@ -25,6 +11,13 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QLabel>
+
+#include "accessmanager.h"
+#include "account.h"
+#include "configfile.h"
+#include "theme.h"
+#include "wizard/webview.h"
+#include "webflowcredentialsdialog.h"
 
 using namespace QKeychain;
 
@@ -151,13 +144,8 @@ void WebFlowCredentials::askFromUser() {
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
-    // LoginFlowV2 > WebViewFlow > Shib > Basic
-#ifdef WITH_WEBENGINE
+        // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
-#else // WITH_WEBENGINE
-        Q_UNUSED(type)
-        bool useFlow2 = true;
-#endif // WITH_WEBENGINE
 
         _askDialog = new WebFlowCredentialsDialog(_account, useFlow2);
 
@@ -168,8 +156,8 @@ void WebFlowCredentials::askFromUser() {
             _askDialog->setUrl(url);
         }
 
-        QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
-                          .arg(_account->prettyName(), _account->url().toDisplayString());
+        QString msg = tr("You have been logged out of %1 as user %2. Please login again.")
+                          .arg(_account->displayName(), _user);
         _askDialog->setInfo(msg);
 
         _askDialog->show();
@@ -185,9 +173,29 @@ void WebFlowCredentials::askFromUser() {
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
     Q_UNUSED(host)
 
+    // Compare the re-entered username case-insensitive and save the new value (avoid breaking the account)
+    // See issue: https://github.com/nextcloud/desktop/issues/1741
+    if (QString::compare(_user, user, Qt::CaseInsensitive) == 0) {
+        _user = user;
+    } else {
+        qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
+
+        QString msg = tr("Please login with the user: %1")
+                .arg(_user);
+        _askDialog->setError(msg);
+
+        if (!_askDialog->isUsingFlow2()) {
+            QUrl url = _account->url();
+            QString path = url.path() + "/index.php/login/flow";
+            url.setPath(path);
+            _askDialog->setUrl(url);
+        }
+
+        return;
+    }
+
     qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
-    _user = user;
     _password = pass;
     _ready = true;
     _credentialsValid = true;
@@ -195,6 +203,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     emit asked();
 
     _askDialog->close();
+    _askDialog->deleteLater();
     _askDialog = nullptr;
 }
 
@@ -218,12 +227,11 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
 void WebFlowCredentials::persist() {
     if (_user.isEmpty()) {
         // We don't even have a user nothing to see here move along
-        qCWarning(lcWebFlowCredentials) << "_user is unset, nothing to persist ...";
         return;
     }
 
     _account->setCredentialSetting(userC, _user);
-    emit _account->wantsAccountSaved(_account->sharedFromThis());
+    _account->wantsAccountSaved(_account);
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {
@@ -361,9 +369,9 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     _account->deleteAppPassword();
 
-    const auto kck = keychainKey(_account->url().toString(), _user, _account->id());
+    const QString kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
-        qCWarning(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
+        qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 
@@ -408,7 +416,7 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
 }
 
 void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
-    qCInfo(lcWebFlowCredentials()) << "request finished" << reply->request().url() << "with request id" << reply->request().rawHeader("X-Request-ID");
+    qCInfo(lcWebFlowCredentials()) << "request finished";
 
     if (reply->error() == QNetworkReply::NoError) {
         _credentialsValid = true;

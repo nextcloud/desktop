@@ -1,6 +1,4 @@
-# SPDX-FileCopyrightText: 2014 ownCloud GmbH
-# SPDX-FileCopyrightText: 2009 Andreas Schneider <asn@cryptomilk.org>
-# SPDX-License-Identifier: BSD-3-Clause
+# (c) 2014 Copyright ownCloud GmbH
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 
@@ -14,6 +12,9 @@
 #    # check for the version and set it
 #    set(LibSSH_VERSION 0.3.0)
 #    find_package_version_check(LibSSH DEFAULT_MSG)
+#
+#
+# Copyright (c) 2009 Andreas Schneider <asn@cryptomilk.org>
 #
 # Redistribution and use is allowed according to the terms of the New
 # BSD license.

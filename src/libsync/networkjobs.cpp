@@ -1,19 +1,17 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
-#include "networkjobs.h"
-#include "account.h"
-#include "helpers.h"
-#include "owncloudpropagator.h"
-#include "clientsideencryption.h"
-#include "common/checksums.h"
-
-#include "creds/abstractcredentials.h"
-#include "creds/httpcredentials.h"
-#include "configfile.h"
 
 #include <QJsonDocument>
 #include <QLoggingCategory>
@@ -25,40 +23,57 @@
 #include <QSslCipher>
 #include <QBuffer>
 #include <QXmlStreamReader>
-#include <QDomDocument>
 #include <QStringList>
 #include <QStack>
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
+#include <QJsonDocument>
 #include <QJsonObject>
-#include <QLoggingCategory>
 #ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
 #include <QPainterPath>
 #endif
+
+#include "networkjobs.h"
+#include "account.h"
+#include "owncloudpropagator.h"
+#include "clientsideencryption.h"
+
+#include "creds/abstractcredentials.h"
+#include "creds/httpcredentials.h"
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcLsColJob, "nextcloud.sync.networkjob.lscol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCheckServerJob, "nextcloud.sync.networkjob.checkserver", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCheckRedirectCostFreeUrlJob, "nextcloud.sync.networkjob.checkredirectcostfreeurl", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropfindJob, "nextcloud.sync.networkjob.propfind", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
+const int notModifiedStatusCode = 304;
 
-constexpr auto notModifiedStatusCode = 304;
-constexpr auto propfindPropElementTagName = "prop";
-constexpr auto propfindFileTagElementTagName = "tag";
-constexpr auto propfindFileTagsContainerElementTagName = "tags";
-constexpr auto propfindSystemFileTagElementTagName = "system-tag";
-constexpr auto propfindSystemFileTagsContainerElementTagName = "system-tags";
+QByteArray parseEtag(const char *header)
+{
+    if (!header)
+        return QByteArray();
+    QByteArray arr = header;
+
+    // Weak E-Tags can appear when gzip compression is on, see #3946
+    if (arr.startsWith("W/"))
+        arr = arr.mid(2);
+
+    // https://github.com/owncloud/client/issues/1195
+    arr.replace("-gzip", "");
+
+    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
+        arr = arr.mid(1, arr.length() - 2);
+    }
+    return arr;
+}
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -97,8 +112,8 @@ bool RequestEtagJob::finished()
     if (httpCode == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
-        QByteArray etag;
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        QString etag;
         while (!reader.atEnd()) {
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
@@ -107,9 +122,9 @@ bool RequestEtagJob::finished()
                     auto etagText = reader.readElementText();
                     auto parsedTag = parseEtag(etagText.toUtf8());
                     if (!parsedTag.isEmpty()) {
-                        etag += parsedTag;
+                        etag += QString::fromUtf8(parsedTag);
                     } else {
-                        etag += etagText.toUtf8();
+                        etag += etagText;
                     }
                 }
             }
@@ -166,11 +181,7 @@ bool MkColJob::finished()
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    if (reply()->error() != QNetworkReply::NoError) {
-        Q_EMIT finishedWithError(reply());
-    } else {
-        Q_EMIT finishedWithoutError();
-    }
+    emit finished(reply()->error());
     return true;
 }
 
@@ -272,21 +283,21 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
         // End elements with DAV:
         if (type == QXmlStreamReader::EndElement) {
             if (reader.namespaceUri() == QLatin1String("DAV:")) {
-                if (reader.name() == QStringLiteral("response")) {
+                if (reader.name() == "response") {
                     if (currentHref.endsWith('/')) {
                         currentHref.chop(1);
                     }
                     emit directoryListingIterated(currentHref, currentHttp200Properties);
                     currentHref.clear();
                     currentHttp200Properties.clear();
-                } else if (reader.name() == QStringLiteral("propstat")) {
+                } else if (reader.name() == "propstat") {
                     insidePropstat = false;
                     if (currentPropsHaveHttp200) {
                         currentHttp200Properties = QMap<QString, QString>(currentTmpProperties);
                     }
                     currentTmpProperties.clear();
                     currentPropsHaveHttp200 = false;
-                } else if (reader.name() == QStringLiteral("prop")) {
+                } else if (reader.name() == "prop") {
                     insideProp = false;
                 }
             }
@@ -309,13 +320,13 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
 
 /*********************************************************************************************/
 
-LsColJob::LsColJob(AccountPtr account, const QString &path)
-    : AbstractNetworkJob(account, path)
+LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
 {
 }
 
-LsColJob::LsColJob(AccountPtr account, const QUrl &url)
-    : AbstractNetworkJob(account, QString())
+LsColJob::LsColJob(AccountPtr account, const QUrl &url, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
     , _url(url)
 {
 }
@@ -330,161 +341,6 @@ QList<QByteArray> LsColJob::properties() const
     return _properties;
 }
 
-QList<QByteArray> LsColJob::defaultProperties(FolderType isRootPath, AccountPtr account)
-{
-    auto props = QList<QByteArray>{};
-
-    props << "resourcetype"
-          << "getlastmodified"
-          << "getcontentlength"
-          << "getetag"
-          << "quota-available-bytes"
-          << "quota-used-bytes"
-          << "http://owncloud.org/ns:size"
-          << "http://owncloud.org/ns:id"
-          << "http://owncloud.org/ns:fileid"
-          << "http://owncloud.org/ns:downloadURL"
-          << "http://owncloud.org/ns:dDC"
-          << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums"
-          << "http://nextcloud.org/ns:is-encrypted"
-          << "http://nextcloud.org/ns:metadata-files-live-photo"
-          << "http://nextcloud.org/ns:share-attributes";
-
-    if (isRootPath == FolderType::RootFolder) {
-        props << "http://owncloud.org/ns:data-fingerprint";
-    }
-
-    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
-        props << "http://owncloud.org/ns:share-types";
-    }
-    if (account->capabilities().filesLockAvailable()) {
-        props << "http://nextcloud.org/ns:lock"
-              << "http://nextcloud.org/ns:lock-owner-displayname"
-              << "http://nextcloud.org/ns:lock-owner"
-              << "http://nextcloud.org/ns:lock-owner-type"
-              << "http://nextcloud.org/ns:lock-owner-editor"
-              << "http://nextcloud.org/ns:lock-time"
-              << "http://nextcloud.org/ns:lock-timeout"
-              << "http://nextcloud.org/ns:lock-token";
-    }
-    props << "http://nextcloud.org/ns:is-mount-root";
-
-    return props;
-}
-
-void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
-{
-    for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        QString property = it.key();
-        QString value = it.value();
-        if (property == QLatin1String("resourcetype")) {
-            result.isDirectory = value.contains(QLatin1String("collection"));
-        } else if (property == QLatin1String("getlastmodified")) {
-            value.replace("GMT", "+0000");
-            const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
-            Q_ASSERT(date.isValid());
-            result.modtime = 0;
-            if (date.toSecsSinceEpoch() > 0) {
-                result.modtime = date.toSecsSinceEpoch();
-            }
-        } else if (property == QLatin1String("getcontentlength")) {
-            // See #4573, sometimes negative size values are returned
-            bool ok = false;
-            qlonglong ll = value.toLongLong(&ok);
-            if (ok && ll >= 0) {
-                result.size = ll;
-            } else {
-                result.size = 0;
-            }
-        } else if (property == "getetag") {
-            result.etag = Utility::normalizeEtag(value.toUtf8());
-        } else if (property == "id") {
-            result.fileId = value.toUtf8();
-        } else if (property == "downloadURL") {
-            result.directDownloadUrl = value;
-        } else if (property == "dDC") {
-            result.directDownloadCookies = value;
-        } else if (property == "permissions") {
-            result.remotePerm = RemotePermissions::fromServerString(value, algorithm, map);
-        } else if (property == "checksums") {
-            result.checksumHeader = findBestChecksum(value.toUtf8());
-        } else if (property == "share-types" && !value.isEmpty()) {
-            // Since QMap is sorted, "share-types" is always after "permissions".
-            if (result.remotePerm.isNull()) {
-                qWarning() << "Server returned a share type, but no permissions?";
-            } else {
-                // S means shared with me.
-                // But for our purpose, we want to know if the file is shared. It does not matter
-                // if we are the owner or not.
-                // Piggy back on the permission field
-                result.remotePerm.setPermission(RemotePermissions::IsShared);
-                result.sharedByMe = true;
-            }
-        } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
-            result._isE2eEncrypted = true;
-        } else if (property == "lock") {
-            result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
-        }
-        if (property == "lock-owner-displayname") {
-            result.lockOwnerDisplayName = value;
-        }
-        if (property == "lock-owner") {
-            result.lockOwnerId = value;
-        }
-        if (property == "lock-owner-type") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockOwnerType = static_cast<SyncFileItem::LockOwnerType>(intConvertedValue);
-            } else {
-                result.lockOwnerType = SyncFileItem::LockOwnerType::UserLock;
-            }
-        }
-        if (property == "lock-owner-editor") {
-            result.lockEditorApp = value;
-        }
-        if (property == "lock-time") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockTime = intConvertedValue;
-            } else {
-                result.lockTime = 0;
-            }
-        }
-        if (property == "lock-timeout") {
-            auto ok = false;
-            const auto intConvertedValue = value.toULongLong(&ok);
-            if (ok) {
-                result.lockTimeout = intConvertedValue;
-            } else {
-                result.lockTimeout = 0;
-            }
-        }
-        if (property == "lock-token") {
-            result.lockToken = value;
-        }
-        if (property == "metadata-files-live-photo") {
-            result.livePhotoFile = value;
-            result.isLivePhoto = true;
-        }
-    }
-
-    if (result.isDirectory && map.contains("size")) {
-        result.sizeOfFolder = map.value("size").toInt();
-    }
-
-    if (result.isDirectory && map.contains(FolderQuota::usedBytesC)) {
-        result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
-    }
-
-    if (result.isDirectory && map.contains(FolderQuota::availableBytesC)) {
-        result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
-    }
-}
-
 void LsColJob::start()
 {
     QList<QByteArray> properties = _properties;
@@ -493,7 +349,7 @@ void LsColJob::start()
         qCWarning(lcLsColJob) << "Propfind with no properties!";
     }
     QByteArray propStr;
-    for (const auto &prop : properties) {
+    foreach (const QByteArray &prop, properties) {
         if (prop.contains(':')) {
             int colIdx = prop.lastIndexOf(":");
             auto ns = prop.left(colIdx);
@@ -533,14 +389,9 @@ bool LsColJob::finished()
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    const auto contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
-    const auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    const auto validContentType = contentType.contains("application/xml; charset=utf-8") ||
-                                  contentType.contains("application/xml; charset=\"utf-8\"") ||
-                                  contentType.contains("text/xml; charset=utf-8") ||
-                                  contentType.contains("text/xml; charset=\"utf-8\"");
-
-    if (httpCode == 207 && validContentType) {
+    QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+    int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
         LsColXMLParser parser;
         connect(&parser, &LsColXMLParser::directoryListingSubfolders,
             this, &LsColJob::directoryListingSubfolders);
@@ -551,14 +402,7 @@ bool LsColJob::finished()
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &LsColJob::finishedWithoutError);
 
-        // bool LsColXMLParser::parse takes a while, let's process some events in attempt to make UI more responsive
-        // from https://doc.qt.io/qt-5/qcoreapplication.html#processEvents-1 
-        // "You can call this function occasionally when your program is busy doing a long operation (e.g. copying a file)."
-        // we should not abuse this function, as it affects QObject instances lifetime (when children are getting deleted or when deleteLater is called)
-        // one reason I had to remove ability for LsColJob to have parent, which, otherwise, leads to a crash later
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/dav/folder"
+        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
         if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
@@ -568,10 +412,7 @@ bool LsColJob::finished()
         emit finishedWithError(reply());
     }
 
-    this->deleteLater();
-
-    // fix crash on random deletion mess in the parent class, we never discard this job but always delete it inside this method
-    return false;
+    return true;
 }
 
 /*********************************************************************************************/
@@ -583,6 +424,8 @@ namespace {
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
+    , _subdirFallback(false)
+    , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
     connect(this, &AbstractNetworkJob::redirected,
@@ -693,7 +536,7 @@ bool CheckServerJob::finished()
         qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
-        QJsonParseError error{};
+        QJsonParseError error;
         auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
         if (error.error != QJsonParseError::NoError || status.isNull()) {
@@ -713,42 +556,6 @@ bool CheckServerJob::finished()
 
 /*********************************************************************************************/
 
-CheckRedirectCostFreeUrlJob::CheckRedirectCostFreeUrlJob(const AccountPtr &account, QObject *parent)
-    : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
-{
-    setIgnoreCredentialFailure(true);
-}
-
-void CheckRedirectCostFreeUrlJob::start()
-{
-    setFollowRedirects(false);
-    sendRequest("GET", Utility::concatUrlPath(account()->url(), QStringLiteral("/index.php/204")));
-    AbstractNetworkJob::start();
-}
-
-void CheckRedirectCostFreeUrlJob::onTimedOut()
-{
-    qCDebug(lcCheckRedirectCostFreeUrlJob) << "TIMEOUT";
-    if (reply() && reply()->isRunning()) {
-        emit timeout(reply()->url());
-    } else if (!reply()) {
-        qCDebug(lcCheckRedirectCostFreeUrlJob) << "Timeout without a reply?";
-    }
-    AbstractNetworkJob::onTimedOut();
-}
-
-bool CheckRedirectCostFreeUrlJob::finished()
-{
-    const auto statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (statusCode >= 301 && statusCode <= 307) {
-        const auto redirectionTarget = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-        qCDebug(lcCheckRedirectCostFreeUrlJob) << "Redirecting cost-free URL" << reply()->url() << " to" << redirectionTarget;
-    }
-    emit jobFinished(statusCode);
-    return true;
-}
-/*********************************************************************************************/
-
 PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
@@ -756,7 +563,7 @@ PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *paren
 
 void PropfindJob::start()
 {
-    const auto properties = _properties;
+    QList<QByteArray> properties = _properties;
 
     if (properties.isEmpty()) {
         qCWarning(lcLsColJob) << "Propfind with no properties!";
@@ -768,21 +575,21 @@ void PropfindJob::start()
     req.setPriority(QNetworkRequest::HighPriority);
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
-    for (const auto &prop : properties) {
+    foreach (const QByteArray &prop, properties) {
         if (prop.contains(':')) {
-            const auto colIdx = prop.lastIndexOf(":");
+            int colIdx = prop.lastIndexOf(":");
             propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
         } else {
             propStr += "    <d:" + prop + " />\n";
         }
     }
-    const auto xml = QByteArray("<?xml version=\"1.0\" ?>\n"
-                                "<d:propfind xmlns:d=\"DAV:\">\n"
-                                "  <d:prop>\n"
-                    + propStr + "  </d:prop>\n"
-                                "</d:propfind>\n");
+    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
+                     "<d:propfind xmlns:d=\"DAV:\">\n"
+                     "  <d:prop>\n"
+        + propStr + "  </d:prop>\n"
+                    "</d:propfind>\n";
 
-    const auto buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
@@ -805,132 +612,44 @@ bool PropfindJob::finished()
     qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
                           << replyStatusString();
 
-    const auto http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (http_result_code == 207) {
         // Parse DAV response
-        auto domDocument = QDomDocument();
+        QXmlStreamReader reader(reply());
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-        if (const auto res = domDocument.setContent(reply(), QDomDocument::ParseOption::UseNamespaceProcessing); !res) {
-            qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
-            emit finishedWithError(reply());
+        QVariantMap items;
+        // introduced to nesting is ignored
+        QStack<QString> curElement;
 
-        } else {
-            const auto parsedItems = processPropfindDomDocument(domDocument);
-            emit result(parsedItems);
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement) {
+                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
+                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
+                } else {
+                    curElement.push(reader.name().toString());
+                }
+            }
+            if (type == QXmlStreamReader::EndElement) {
+                if (curElement.top() == reader.name()) {
+                    curElement.pop();
+                }
+            }
         }
-
+        if (reader.hasError()) {
+            qCWarning(lcPropfindJob) << "XML parser error: " << reader.errorString();
+            emit finishedWithError(reply());
+        } else {
+            emit result(items);
+        }
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
         emit finishedWithError(reply());
     }
-
     return true;
-}
-
-QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocument)
-{
-    if (!domDocument.hasChildNodes()) {
-        return {};
-    }
-
-    auto items = QVariantMap();
-
-    const auto rootElement = domDocument.documentElement();
-    const auto propNodes = rootElement.elementsByTagName(propfindPropElementTagName);
-
-    for (auto i = 0; i < propNodes.count(); ++i) {
-        const auto propNode = propNodes.at(i);
-        const auto propElement = propNode.toElement();
-
-        if (propElement.isNull() || propElement.tagName() != propfindPropElementTagName) {
-            continue;
-        }
-
-        auto propChildNode = propElement.firstChild();
-
-        while (!propChildNode.isNull()) {
-            const auto propChildElement = propChildNode.toElement();
-
-            if (!propChildElement.isNull()) {
-                const auto propChildElementTagName = propChildElement.tagName();
-
-                if (propChildElementTagName == propfindFileTagsContainerElementTagName) {
-                    const auto tagList = processTagsInPropfindDomDocument(domDocument);
-                    items.insert(propChildElementTagName, tagList);
-                } else if (propChildElementTagName == propfindSystemFileTagsContainerElementTagName) {
-                    const auto systemTagList = processSystemTagsInPropfindDomDocument(domDocument);
-                    items.insert(propChildElementTagName, systemTagList);
-                } else {
-                    items.insert(propChildElementTagName, propChildElement.text());
-                }
-            }
-
-            propChildNode = propChildNode.nextSibling();
-        }
-    }
-
-    return items;
-}
-
-QStringList PropfindJob::processTagsInPropfindDomDocument(const QDomDocument &domDocument)
-{
-    const auto tagNodes = domDocument.elementsByTagName(propfindFileTagElementTagName);
-    if (tagNodes.isEmpty()) {
-        return {};
-    }
-
-    const auto tagCount = tagNodes.count();
-    auto tagList = QStringList();
-    tagList.reserve(tagCount);
-
-    for (auto i = 0; i < tagCount; ++i) {
-        const auto tagNode = tagNodes.at(i);
-        const auto tagElement = tagNode.toElement();
-
-        if (tagElement.isNull()) {
-            continue;
-        }
-
-        tagList.append(tagElement.text());
-    }
-
-    return tagList;
-}
-
-QVariantList PropfindJob::processSystemTagsInPropfindDomDocument(const QDomDocument &domDocument)
-{
-    const auto systemTagNodes = domDocument.elementsByTagName(propfindSystemFileTagElementTagName);
-    if (systemTagNodes.isEmpty()) {
-        return {};
-    }
-
-    const auto systemTagCount = systemTagNodes.count();
-    auto systemTagsList = QVariantList();
-
-    for (auto i = 0; i < systemTagCount; ++i) {
-        const auto systemTagNode = systemTagNodes.at(i);
-        const auto systemTagElem = systemTagNode.toElement();
-
-        if (systemTagElem.isNull()) {
-            continue;
-        }
-
-        auto systemTagMap = QVariantMap{ { QStringLiteral("tag"), systemTagElem.text() } };
-
-        const auto systemTagElemAttrs = systemTagElem.attributes();
-        for (auto i = 0; i < systemTagElemAttrs.count(); ++i) {
-            const auto systemTagElemAttrNode = systemTagElemAttrs.item(i);
-            const auto systemTagElemAttr = systemTagElemAttrNode.toAttr();
-
-            systemTagMap.insert(systemTagElemAttr.name(), systemTagElemAttr.value());
-        }
-
-        systemTagsList.append(systemTagMap);
-    }
-
-    return systemTagsList;
 }
 
 /*********************************************************************************************/
@@ -940,9 +659,9 @@ AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObjec
     : AbstractNetworkJob(account, QString(), parent)
 {
     if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
     } else {
-        _avatarUrl = Utility::concatUrlPath(account->url(), QStringLiteral("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
     }
 }
 
@@ -991,7 +710,7 @@ bool AvatarJob::finished()
             }
         }
     }
-    emit avatarPixmap(avImage);
+    emit(avatarPixmap(avImage));
     return true;
 }
 #endif
@@ -1092,23 +811,28 @@ bool EntityExistsJob::finished()
 /*********************************************************************************************/
 
 JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : SimpleApiJob(account, path, parent)
+    : AbstractNetworkJob(account, path, parent)
 {
 }
 
-void JsonApiJob::setBody(const QJsonDocument &body)
+void JsonApiJob::addQueryParams(const QUrlQuery &params)
 {
-    SimpleApiJob::setBody(body.toJson());
-    qCDebug(lcJsonApiJob) << "Set body for request:" << SimpleApiJob::body();
-    if (!SimpleApiJob::body().isEmpty()) {
-        request().setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    }
+    _additionalParams = params;
+}
+
+void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+   _request.setRawHeader(headerName, value);
 }
 
 void JsonApiJob::start()
 {
-    additionalParams().addQueryItem(QLatin1String("format"), QLatin1String("json"));
-    SimpleApiJob::start();
+    addRawHeader("OCS-APIREQUEST", "true");
+    auto query = _additionalParams;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
+    sendRequest(_usePOST ? "POST" : "GET", url, _request);
+    AbstractNetworkJob::start();
 }
 
 bool JsonApiJob::finished()
@@ -1127,30 +851,32 @@ bool JsonApiJob::finished()
 
     QString jsonStr = QString::fromUtf8(reply()->readAll());
     if (jsonStr.contains("<?xml version=\"1.0\"?>")) {
-        static const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
-        const auto rexMatch = rex.match(jsonStr);
-        if (rexMatch.hasMatch()) {
+        QRegExp rex("<statuscode>(\\d+)</statuscode>");
+        if (jsonStr.contains(rex)) {
             // this is a error message coming back from ocs.
-            statusCode = rexMatch.captured(1).toInt();
+            statusCode = rex.cap(1).toInt();
         }
     } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        static const QRegularExpression rex(R"("statuscode":(\d+))");
+        QRegExp rex(R"("statuscode":(\d+),)");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
-        const auto rxMatch = rex.match(jsonStr);
-        if (rxMatch.hasMatch()) {
-            statusCode = rxMatch.captured(1).toInt();
+        if (jsonStr.contains(rex)) {
+            statusCode = rex.cap(1).toInt();
         }
     }
 
     // save new ETag value
-    if (const auto etagHeader = reply()->header(QNetworkRequest::ETagHeader); etagHeader.isValid()) {
-        emit etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
+    if(reply()->rawHeaderList().contains("ETag"))
+        emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
+
+    const auto desktopNotificationsAllowed = reply()->rawHeader(QByteArray("X-Nextcloud-User-Status"));
+    if(!desktopNotificationsAllowed.isEmpty()) {
+        emit allowDesktopNotificationsChanged(desktopNotificationsAllowed == "online");
     }
 
-    QJsonParseError error{};
+    QJsonParseError error;
     auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
     // empty or invalid response and status code is != 304 because jsonStr is expected to be empty
     if ((error.error != QJsonParseError::NoError || json.isNull()) && httpStatusCode != notModifiedStatusCode) {
@@ -1168,7 +894,6 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
-    useFlow2 = ConfigFile().forceLoginV2();
 }
 
 void DetermineAuthTypeJob::start()
@@ -1200,29 +925,26 @@ void DetermineAuthTypeJob::start()
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
-        const auto reply = get->reply();
-        const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate");
-        if (reply->error() == QNetworkReply::AuthenticationRequiredError
-            && (wwwAuthenticateHeader.startsWith("Basic") || wwwAuthenticateHeader.startsWith("Bearer"))) {
+        if (get->reply()->error() == QNetworkReply::AuthenticationRequiredError) {
             _resultGet = Basic;
         } else {
             _resultGet = LoginFlowV2;
-        }
-        if (_account->isPublicShareLink()) {
-            _resultGet = Basic;
         }
         _getDone = true;
         checkAllDone();
     });
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
-
-        if (authChallenge.isEmpty()) {
-            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+        if (authChallenge.contains("bearer ")) {
+            _resultPropfind = OAuth;
         } else {
-            qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+            if (authChallenge.isEmpty()) {
+                qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+            } else {
+                qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
+            }
+            _resultPropfind = Basic;
         }
-        _resultPropfind = Basic;
         _propfindDone = true;
         checkAllDone();
     });
@@ -1236,22 +958,11 @@ void DetermineAuthTypeJob::start()
                 auto flow = gs.toObject().value("desktoplogin");
                 if (flow != QJsonValue::Undefined) {
                     if (flow.toInt() == 1) {
-#ifdef WITH_WEBENGINE
-                        if(!this->useFlow2) {
-                            _resultOldFlow = WebViewFlow;
-                        } else {
-                            qCWarning(lcDetermineAuthTypeJob) << "Server only supports flow1, but this client was configured to only use flow2";
-                        }
-#else // WITH_WEBENGINE
-                        qCWarning(lcDetermineAuthTypeJob) << "Server does only support flow1, but this client was compiled without support for flow1";
-#endif // WITH_WEBENGINE
+                        _resultOldFlow = WebViewFlow;
                     }
                 }
             }
         } else {
-            _resultOldFlow = Basic;
-        }
-        if (_account->isPublicShareLink()) {
             _resultOldFlow = Basic;
         }
         _oldFlowDone = true;
@@ -1274,30 +985,20 @@ void DetermineAuthTypeJob::checkAllDone()
 
     auto result = _resultPropfind;
 
-#ifdef WITH_WEBENGINE
-    // WebViewFlow > Basic
+    // WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
-        if (useFlow2) {
-            result = LoginFlowV2;
-        }
     }
-#endif // WITH_WEBENGINE
 
-    // LoginFlowV2 > WebViewFlow > Basic
+    // LoginFlowV2 > WebViewFlow > OAuth > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }
 
-#ifdef WITH_WEBENGINE
     // If we determined that we need the webview flow (GS for example) then we switch to that
     if (_resultOldFlow == WebViewFlow) {
         result = WebViewFlow;
-        if (useFlow2) {
-            result = LoginFlowV2;
-        }
     }
-#endif // WITH_WEBENGINE
 
     // If we determined that a simple get gave us an authentication required error
     // then the server enforces basic auth and we got no choice but to use this
@@ -1329,39 +1030,9 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
-SimpleFileJob::SimpleFileJob(AccountPtr account, const QString &filePath, QObject *parent)
-    : AbstractNetworkJob(account, filePath, parent)
-{
-}
-
-QNetworkReply *SimpleFileJob::startRequest(
-    const QByteArray &verb, const QNetworkRequest req, QIODevice *requestBody)
-{
-    return startRequest(verb, makeDavUrl(path()), req, requestBody);
-}
-
-QNetworkReply *SimpleFileJob::startRequest(
-    const QByteArray &verb, const QUrl &url, const QNetworkRequest req, QIODevice *requestBody)
-{
-    _verb = verb;
-    const auto reply = sendRequest(verb, url, req, requestBody);
-
-    if (reply->error() != QNetworkReply::NoError) {
-        qCWarning(lcSimpleFileJob) << verb << " Network error: " << reply->errorString();
-    }
-    AbstractNetworkJob::start();
-    return reply;
-}
-
-bool SimpleFileJob::finished()
-{
-    qCInfo(lcSimpleFileJob) << _verb << "for" << reply()->request().url() << "FINISHED WITH STATUS" << replyStatusString();
-    emit finishedSignal(reply());
-    return true;
-}
 
 DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
-    : SimpleFileJob(account, path, parent)
+    : AbstractNetworkJob(account, path, parent)
 {
 
 }
@@ -1370,13 +1041,14 @@ void DeleteApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-
-    startRequest("DELETE", req);
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("DELETE", url, req);
+    AbstractNetworkJob::start();
 }
 
 bool DeleteApiJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "DeleteApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
                          << reply()->error()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
@@ -1392,7 +1064,7 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
     emit result(httpStatus);
-    return SimpleFileJob::finished();
+    return true;
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
@@ -1425,86 +1097,6 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         targetFun(oldUrl);
     });
     job->start();
-}
-
-SimpleApiJob::SimpleApiJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
-
-void SimpleApiJob::setBody(const QByteArray &body)
-{
-    _body = body;
-    qCDebug(lcSimpleApiJob) << "Set body for request:" << _body;
-}
-
-
-void SimpleApiJob::setVerb(Verb value)
-{
-    _verb = value;
-}
-
-
-QByteArray SimpleApiJob::verbToString() const
-{
-    switch (_verb) {
-    case Verb::Get:
-        return "GET";
-    case Verb::Post:
-        return "POST";
-    case Verb::Put:
-        return "PUT";
-    case Verb::Delete:
-        return "DELETE";
-    }
-    return "GET";
-}
-
-void SimpleApiJob::start()
-{
-    addRawHeader("OCS-APIREQUEST", "true");
-    auto query = _additionalParams;
-    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    const auto httpVerb = verbToString();
-    if (!SimpleApiJob::body().isEmpty()) {
-        sendRequest(httpVerb, url, request(), SimpleApiJob::body());
-    } else {
-        sendRequest(httpVerb, url, request());
-    }
-    AbstractNetworkJob::start();
-}
-
-bool SimpleApiJob::finished()
-{
-    const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qCWarning(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
-    emit resultReceived(httpStatusCode);
-    return true;
-}
-
-QNetworkRequest& SimpleApiJob::request()
-{
-    return _request;
-}
-
-QByteArray& SimpleApiJob::body()
-{
-    return _body;
-}
-
-QUrlQuery &SimpleApiJob::additionalParams()
-{
-    return _additionalParams;
-}
-
-void SimpleApiJob::addQueryParams(const QUrlQuery &params)
-{
-    _additionalParams = params;
-}
-
-void SimpleApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
-{
-    request().setRawHeader(headerName, value);
 }
 
 } // namespace OCC

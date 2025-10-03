@@ -1,10 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
@@ -47,7 +45,7 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
-    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &record);
+    folder.syncJournal().getFileRecord(path, &record);
     return record;
 }
 
@@ -55,11 +53,11 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
+    journal.getFileRecord(path, &record);
+    if (!record.isValid())
         return;
-    }
     record._type = ItemTypeVirtualFileDownload;
-    QVERIFY(journal.setFileRecord(record));
+    journal.setFileRecord(record);
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -67,11 +65,11 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
+    journal.getFileRecord(path, &record);
+    if (!record.isValid())
         return;
-    }
     record._type = ItemTypeVirtualFileDehydration;
-    QVERIFY(journal.setFileRecord(record));
+    journal.setFileRecord(record);
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -219,8 +217,8 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "A/a3")._fileSize, 33);
         cleanup();
 
-        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2"));
-        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3"));
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2");
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3");
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
@@ -438,7 +436,7 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
+            fakeFolder.syncJournal().wipeErrorBlacklist();
         };
         cleanup();
 
@@ -710,7 +708,8 @@ private slots:
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord rec;
-            return fakeFolder.syncJournal().getFileRecord(path, &rec) && rec.isValid() && rec._type == ItemTypeVirtualFile;
+            fakeFolder.syncJournal().getFileRecord(path, &rec);
+            return rec.isValid() && rec._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated("A/a1"));
@@ -934,37 +933,37 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability("file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("local/file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("online/file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("unspec/file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("file1"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("online/file1"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1"), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AllHydrated);
         setPin("online/sub", PinState::Unspecified);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::AllDehydrated);
 
         triggerDownload(fakeFolder, "unspec/file1");
         setPin("local/file2", PinState::OnlineOnly);
         setPin("online/file2", PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
 
-        QVERIFY(vfs->setPinState("local", PinState::AlwaysLocal));
-        QVERIFY(vfs->setPinState("online", PinState::OnlineOnly));
+        vfs->setPinState("local", PinState::AlwaysLocal);
+        vfs->setPinState("online", PinState::OnlineOnly);
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
 
-        auto r = vfs->availability("nonexistent", Vfs::AvailabilityRecursivity::RecursiveAvailability);
+        auto r = vfs->availability("nonexistant");
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
@@ -1038,13 +1037,13 @@ private slots:
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::AlwaysLocal));
+        vfs->setPinState("onlinerenamed2/file1rename", PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename"));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::AlwaysLocal);
 
-        QVERIFY(vfs->setPinState("onlinerenamed2", PinState::Unspecified));
-        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly));
+        vfs->setPinState("onlinerenamed2", PinState::Unspecified);
+        vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
         QVERIFY(fakeFolder.syncOnce());
 
         XAVERIFY_VIRTUAL(fakeFolder, "onlinerenamed2/file1rename");

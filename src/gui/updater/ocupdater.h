@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCUPDATER_H
@@ -63,7 +71,7 @@ public:
     UpdaterScheduler(QObject *parent);
 
 signals:
-    void updaterAnnouncement(const QString &title, const QString &msg, const QUrl &webUrl);
+    void updaterAnnouncement(const QString &title, const QString &msg);
     void requestRestart();
 
 private slots:
@@ -89,11 +97,6 @@ public:
         DownloadFailed,
         DownloadTimedOut,
         UpdateOnlyAvailableThroughSystem };
-
-    enum UpdateStatusStringFormat {
-        PlainText,
-        Html,
-    };
     explicit OCUpdater(const QUrl &url);
 
     void setUpdateUrl(const QUrl &url);
@@ -102,13 +105,13 @@ public:
 
     void checkForUpdate() override;
 
-    [[nodiscard]] QString statusString(UpdateStatusStringFormat format = PlainText) const;
-    [[nodiscard]] int downloadState() const;
+    QString statusString() const;
+    int downloadState() const;
     void setDownloadState(DownloadState state);
 
 signals:
     void downloadStateChanged();
-    void newUpdateAvailable(const QString &header, const QString &message, const QUrl &webUrl);
+    void newUpdateAvailable(const QString &header, const QString &message);
     void requestRestart();
 
 public slots:
@@ -125,13 +128,13 @@ private slots:
 
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
-    [[nodiscard]] bool updateSucceeded() const;
-    [[nodiscard]] QNetworkAccessManager *qnam() const { return _accessManager; }
-    [[nodiscard]] UpdateInfo updateInfo() const { return _updateInfo; }
+    bool updateSucceeded() const;
+    QNetworkAccessManager *qnam() const { return _accessManager; }
+    UpdateInfo updateInfo() const { return _updateInfo; }
 
 private:
     QUrl _updateUrl;
-    int _state = Unknown;
+    int _state;
     QNetworkAccessManager *_accessManager;
     QTimer *_timeoutWatchdog; /** Timer to guard the timeout of an individual network request */
     UpdateInfo _updateInfo;
@@ -148,6 +151,7 @@ public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
 private slots:
+    void slotSetSeenVersion();
     void slotDownloadFinished();
     void slotWriteFile();
 

@@ -1,10 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-FileCopyrightText: 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2013- by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include <errno.h>
@@ -22,7 +34,6 @@
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "common/filesystembase.h"
-#include "common/utility.h"
 
 #include <QtCore/QLoggingCategory>
 
@@ -40,6 +51,8 @@ struct csync_vio_handle_t {
   int firstFind;
   QString path; // Always ends with '\'
 };
+
+static int _csync_vio_local_stat_mb(const QString &path, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
 
@@ -104,7 +117,7 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
 
   std::unique_ptr<csync_file_stat_t> file_stat;
-  DWORD rem = 0;
+  DWORD rem;
 
   errno = 0;
 
@@ -130,11 +143,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   file_stat = std::make_unique<csync_file_stat_t>();
   file_stat->path = path.toUtf8();
 
-    const auto isDirectory = handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-
     if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
       // all good
-    } else if ((handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && !isDirectory) {
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
       // Detect symlinks, and treat junctions as symlinks too.
       if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
           || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
@@ -145,19 +156,15 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
           // but will also treat them normally for now.
           file_stat->type = ItemTypeFile;
       }
-    } else if ((handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE) &&
-               !isDirectory) {
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
+                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
+              ) {
         file_stat->type = ItemTypeSkip;
-    } else if (isDirectory) {
-        if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT &&
-            (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK ||
-             handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT)) {
-            file_stat->type = ItemTypeSoftLink;
-        } else {
-            file_stat->type = ItemTypeDirectory;
-        }
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        file_stat->type = ItemTypeDirectory;
     } else {
-        file_stat->type = ItemTypeFile;
+        // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
+        file_stat->type = !OCC::FileSystem::isLnkFile(path) ? ItemTypeFile : ItemTypeSoftLink;
     }
 
     /* Check for the hidden flag */
@@ -168,9 +175,12 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
     file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
 
-    // path always ends with '\', by construction
+    QString fullPath;
+    fullPath.reserve(handle->path.size() + std::wcslen(handle->ffd.cFileName));
+    fullPath += handle->path; // path always ends with '\', by construction
+    fullPath += QString::fromWCharArray(handle->ffd.cFileName);
 
-    if (csync_vio_local_stat(handle->path + QString::fromWCharArray(handle->ffd.cFileName), file_stat.get()) < 0) {
+    if (_csync_vio_local_stat_mb(fullPath, file_stat.get()) < 0) {
         // Will get excluded by _csync_detect_update.
         file_stat->type = ItemTypeSkip;
     }
@@ -178,30 +188,39 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     return file_stat;
 }
 
+
 int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
+{
+    int rc = _csync_vio_local_stat_mb(uri, buf);
+    return rc;
+}
+
+static int _csync_vio_local_stat_mb(const QString &path, csync_file_stat_t *buf)
 {
     /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
        But we still need to fetch the file ID.
        Possible optimisation: only fetch the file id when we need it (for new files)
       */
 
-    HANDLE h = nullptr;
+    HANDLE h;
     BY_HANDLE_FILE_INFORMATION fileInfo;
     ULARGE_INTEGER FileIndex;
 
-    h = CreateFileW(reinterpret_cast<const wchar_t *>(OCC::FileSystem::longWinPath(uri).utf16()), 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-        nullptr, OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
-        nullptr);
+    const auto longPath = OCC::FileSystem::longWinPath(path);
+
+    h = CreateFileW(longPath.toStdWString().data(), 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+                     nullptr, OPEN_EXISTING,
+                     FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
+                     nullptr );
     if( h == INVALID_HANDLE_VALUE ) {
+        qCCritical(lcCSyncVIOLocal) << "CreateFileW failed on" << longPath;
         errno = GetLastError();
-        qCCritical(lcCSyncVIOLocal) << "CreateFileW failed on" << uri << OCC::Utility::formatWinError(errno);
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
+        qCCritical(lcCSyncVIOLocal) << "GetFileInformationByHandle failed on" << longPath;
         errno = GetLastError();
-        qCCritical(lcCSyncVIOLocal) << "GetFileInformationByHandle failed on" << uri << OCC::Utility::formatWinError(errno);
         CloseHandle(h);
         return -1;
     }
@@ -214,7 +233,7 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
     buf->inode = FileIndex.QuadPart;
     buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
 
-    DWORD rem = 0;
+    DWORD rem;
     buf->modtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
 
     CloseHandle(h);

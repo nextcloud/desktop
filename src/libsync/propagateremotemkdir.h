@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 #pragma once
 
@@ -20,8 +28,8 @@ class PropagateRemoteMkdir : public PropagateItemJob
 {
     Q_OBJECT
     QPointer<AbstractNetworkJob> _job;
-    bool _deleteExisting = false;
-    PropagateUploadEncrypted *_uploadEncryptedHelper = nullptr;
+    bool _deleteExisting;
+    PropagateUploadEncrypted *_uploadEncryptedHelper;
     friend class PropagateDirectory; // So it can access the _item;
 public:
     PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
@@ -45,7 +53,9 @@ private slots:
     void slotStartMkcolJob();
     void slotStartEncryptedMkcolJob(const QString &path, const QString &filename, quint64 size);
     void slotMkcolJobFinished();
-    void slotEncryptFolderFinished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
+    void slotEncryptFolderFinished();
+    void propfindResult(const QVariantMap &);
+    void propfindError();
     void success();
 
 private:

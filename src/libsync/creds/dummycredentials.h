@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_CREDS_DUMMY_CREDENTIALS_H
@@ -18,11 +26,11 @@ class OWNCLOUDSYNC_EXPORT DummyCredentials : public AbstractCredentials
 public:
     QString _user;
     QString _password;
-    [[nodiscard]] QString authType() const override;
-    [[nodiscard]] QString user() const override;
-    [[nodiscard]] QString password() const override;
-    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
-    [[nodiscard]] bool ready() const override;
+    QString authType() const override;
+    QString user() const override;
+    QString password() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
     bool stillValid(QNetworkReply *reply) override;
     void fetchFromKeychain() override;
     void askFromUser() override;

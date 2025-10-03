@@ -1,8 +1,15 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-FileCopyrightText: 2000-2013 Liferay, Inc. All rights reserved
- * SPDX-License-Identifier: LGPL-2.1-or-later
+/**
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 #include "NCOverlayRegistrationHandler.h"
@@ -24,7 +31,7 @@ using namespace std;
 
 HRESULT NCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PCWSTR friendlyName)
 {
-    HRESULT hResult = 0;
+    HRESULT hResult;
     HKEY shellOverlayKey = nullptr;
     // the key may not exist yet
     hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &shellOverlayKey, nullptr));
@@ -55,7 +62,7 @@ HRESULT NCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PC
 
 HRESULT NCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 {
-    HRESULT hResult = 0;
+    HRESULT hResult;
     HKEY shellOverlayKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, KEY_WRITE, &shellOverlayKey));
 
@@ -80,7 +87,7 @@ HRESULT NCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWST
 
     wchar_t stringCLSID[MAX_PATH];
     StringFromGUID2(clsid, stringCLSID, ARRAYSIZE(stringCLSID));
-    HRESULT hResult = 0;
+    HRESULT hResult;
     HKEY hKey = nullptr;
 
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, REGISTRY_CLSID, 0, KEY_WRITE, &hKey));
@@ -132,7 +139,7 @@ HRESULT NCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
     wchar_t stringCLSID[MAX_PATH];
 
     StringFromGUID2(clsid, stringCLSID, ARRAYSIZE(stringCLSID));
-    HRESULT hResult = 0;
+    HRESULT hResult;
     HKEY hKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, REGISTRY_CLSID, 0, DELETE, &hKey));
     if (!SUCCEEDED(hResult)) {

@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
@@ -19,13 +16,12 @@ class StatusPushSpy : public QSignalSpy
     SyncEngine &_syncEngine;
 public:
     StatusPushSpy(SyncEngine &syncEngine)
-        : QSignalSpy(&syncEngine.syncFileStatusTracker(), &OCC::SyncFileStatusTracker::fileStatusChanged)
+        : QSignalSpy(&syncEngine.syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString&, SyncFileStatus)))
         , _syncEngine(syncEngine)
     { }
 
-    [[nodiscard]] SyncFileStatus statusOf(const QString &relativePath) const {
+    SyncFileStatus statusOf(const QString &relativePath) const {
         QFileInfo file(_syncEngine.localPath(), relativePath);
-        auto locPath = _syncEngine.localPath();
         // Start from the end to get the latest status
         for (int i = size() - 1; i >= 0; --i) {
             if (QFileInfo(at(i)[0].toString()) == file)
@@ -34,7 +30,7 @@ public:
         return {};
     }
 
-    [[nodiscard]] bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
+    bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
         QFileInfo firstFile(_syncEngine.localPath(), firstPath);
         QFileInfo secondFile(_syncEngine.localPath(), secondPath);
         // Start from the end to get the latest status
@@ -69,14 +65,6 @@ class TestSyncFileStatusTracker : public QObject
     }
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
     void parentsGetSyncStatusUploadDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().appendByte("B/b1");
@@ -450,7 +438,7 @@ private slots:
         fakeFolder.remoteModifier().insert("B/b3");
         fakeFolder.remoteModifier().find("B/b3")->extraDavProperties = "<oc:share-types><oc:share-type>0</oc:share-type></oc:share-types>";
         fakeFolder.remoteModifier().find("A/a1")->isShared = true; // becomes shared
-        fakeFolder.remoteModifier().find("A", FileInfo::Invalidate); // change the etags of the parent
+        fakeFolder.remoteModifier().find("A", true); // change the etags of the parent
 
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
@@ -479,7 +467,6 @@ private slots:
     }
 
     void renameError() {
-        // when rename has failed - the old file name must be restored
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.serverErrorPaths().append("A/a1");
         fakeFolder.localModifier().rename("A/a1", "A/a1m");
@@ -501,70 +488,24 @@ private slots:
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
-        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         statusSpy.clear();
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.syncOnce());
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         statusSpy.clear();
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.syncOnce());
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
         QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
-        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusNone));
-        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusNone));
         QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusNone));
-        statusSpy.clear();
-    }
-
-    void silentlyExcludedFilesRemovedFromExclude()
-    {
-        FakeFolder fakeFolder{{}};
-        fakeFolder.localModifier().mkdir("A");
-        fakeFolder.localModifier().mkdir("A/photos");
-        fakeFolder.localModifier().insert("A/photos/image.png");
-        fakeFolder.localModifier().insert("A/photos/image1.png");
-        fakeFolder.localModifier().insert("A/photos/image2.png");
-        StatusPushSpy statusSpy(fakeFolder.syncEngine());
-
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilFinished();
-        verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        statusSpy.clear();
-
-        // add ignore pattern for .png files and Allow to Delete
-        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("]*.png"));
-
-        // sync again and make sure .png files are ignored
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilFinished();
-        verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
-        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
-        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
-        statusSpy.clear();
-
-        // remove exclude for .png files
-        fakeFolder.syncEngine().excludedFiles().clearManualExcludes();
-        fakeFolder.syncEngine().excludedFiles().reloadExcludeFiles();
-
-        // make sure the status is again correct
-        fakeFolder.scheduleSync();
-        fakeFolder.execUntilFinished();
-        verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         statusSpy.clear();
     }
 

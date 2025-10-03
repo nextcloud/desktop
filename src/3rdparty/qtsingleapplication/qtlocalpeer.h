@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
-** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.
@@ -28,8 +27,6 @@
 **
 ****************************************************************************/
 
-#pragma once
-
 #include <qtlockedfile.h>
 
 #include <QLocalServer>
@@ -46,7 +43,7 @@ public:
     explicit QtLocalPeer(QObject *parent = nullptr, const QString &appId = QString());
     bool isClient();
     bool sendMessage(const QString &message, int timeout, bool block);
-    [[nodiscard]] QString applicationId() const
+    QString applicationId() const
         { return id; }
     static QString appSessionId(const QString &appId);
 

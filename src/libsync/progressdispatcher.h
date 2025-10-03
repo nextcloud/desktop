@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef PROGRESSDISPATCHER_H
@@ -18,8 +26,6 @@
 #include "syncfileitem.h"
 
 namespace OCC {
-
-OCSYNC_EXPORT Q_NAMESPACE
 
 /**
  * @brief The ProgressInfo class
@@ -62,7 +68,7 @@ public:
         Done
     };
 
-    [[nodiscard]] Status status() const;
+    Status status() const;
 
     /**
      * Called when propagation starts.
@@ -78,21 +84,21 @@ public:
      * is about to start via the transmissionProgress() signal. The
      * first ProgressInfo will have isUpdatingEstimates() == false.
      */
-    [[nodiscard]] bool isUpdatingEstimates() const;
+    bool isUpdatingEstimates() const;
 
     /**
      * Increase the file and size totals by the amount indicated in item.
      */
     void adjustTotalsForFile(const SyncFileItem &item);
 
-    [[nodiscard]] qint64 totalFiles() const;
-    [[nodiscard]] qint64 completedFiles() const;
+    qint64 totalFiles() const;
+    qint64 completedFiles() const;
 
-    [[nodiscard]] qint64 totalSize() const;
-    [[nodiscard]] qint64 completedSize() const;
+    qint64 totalSize() const;
+    qint64 completedSize() const;
 
     /** Number of a file that is currently in progress. */
-    [[nodiscard]] qint64 currentFile() const;
+    qint64 currentFile() const;
 
     /** Return true if the size needs to be taken in account in the total amount of time */
     static inline bool isSizeDependent(const SyncFileItem &item)
@@ -125,10 +131,10 @@ public:
     struct OWNCLOUDSYNC_EXPORT Progress
     {
         /** Returns the estimates about progress per second and eta. */
-        [[nodiscard]] Estimates estimates() const;
+        Estimates estimates() const;
 
-        [[nodiscard]] qint64 completed() const;
-        [[nodiscard]] qint64 remaining() const;
+        qint64 completed() const;
+        qint64 remaining() const;
 
     private:
         /**
@@ -157,7 +163,7 @@ public:
         friend class ProgressInfo;
     };
 
-    Status _status = Starting;
+    Status _status;
 
     struct OWNCLOUDSYNC_EXPORT ProgressItem
     {
@@ -179,7 +185,7 @@ public:
     /**
      * Get the total completion estimate
      */
-    [[nodiscard]] Estimates totalProgress() const;
+    Estimates totalProgress() const;
 
     /**
      * Get the optimistic eta.
@@ -187,7 +193,7 @@ public:
      * This value is based on the highest observed transfer bandwidth
      * and files-per-second speed.
      */
-    [[nodiscard]] quint64 optimisticEta() const;
+    quint64 optimisticEta() const;
 
     /**
      * Whether the remaining-time estimate is trusted.
@@ -195,12 +201,12 @@ public:
      * We don't trust it if it is hugely above the optimistic estimate.
      * See #5046.
      */
-    [[nodiscard]] bool trustEta() const;
+    bool trustEta() const;
 
     /**
      * Get the current file completion estimate structure
      */
-    [[nodiscard]] Estimates fileProgress(const SyncFileItem &item) const;
+    Estimates fileProgress(const SyncFileItem &item) const;
 
 private slots:
     /**
@@ -221,11 +227,11 @@ private:
     Progress _fileProgress;
 
     // All size from completed jobs only.
-    qint64 _totalSizeOfCompletedJobs = 0LL;
+    qint64 _totalSizeOfCompletedJobs;
 
     // The fastest observed rate of files per second in this sync.
-    double _maxFilesPerSecond = 0.0;
-    double _maxBytesPerSecond = 0.0;
+    double _maxFilesPerSecond;
+    double _maxBytesPerSecond;
 };
 
 namespace Progress {
@@ -243,12 +249,9 @@ namespace Progress {
  * in IssuesWidget.
  */
 enum class ErrorCategory {
-    NoError,
-    GenericError,
-    NetworkError,
+    Normal,
     InsufficientRemoteStorage,
 };
-Q_ENUM_NS(OCC::ErrorCategory)
 
 /**
  * @file progressdispatcher.h
@@ -266,7 +269,7 @@ class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
     friend class Folder; // only allow Folder class to access the setting slots.
 public:
     static ProgressDispatcher *instance();
-    ~ProgressDispatcher() override;
+    ~ProgressDispatcher();
 
 signals:
     /**
@@ -276,25 +279,16 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo(const QString &folder, const OCC::ProgressInfo &progress);
+    void progressInfo(const QString &folder, const ProgressInfo &progress);
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
+    void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
     /**
      * @brief A new folder-wide sync error was seen.
      */
-    void syncError(const QString &folder, const QString &message, OCC::ErrorCategory category);
-
-    /**
-     * @brief Emitted when an error needs to be added into GUI
-     * @param[out] folder The folder which is being processed
-     * @param[out] status of the error
-     * @param[out] full error message
-     * @param[out] subject (optional)
-     */
-    void addErrorToGui(const QString &folder, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+    void syncError(const QString &folder, const QString &message, ErrorCategory category);
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

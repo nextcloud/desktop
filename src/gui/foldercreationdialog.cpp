@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "foldercreationdialog.h"
@@ -36,7 +45,7 @@ FolderCreationDialog::FolderCreationDialog(const QString &destination, QWidget *
         ui->newFolderNameEdit->setText(suggestedFolderNamePrefix);
     } else {
         for (unsigned int i = 2; i < std::numeric_limits<unsigned int>::max(); ++i) {
-            const QString suggestedPostfix = QStringLiteral(" (%1)").arg(i);
+            const QString suggestedPostfix = QString(" (%1)").arg(i);
 
             if (!QDir(newFolderFullPath + suggestedPostfix).exists()) {
                 ui->newFolderNameEdit->setText(suggestedFolderNamePrefix + suggestedPostfix);
@@ -58,17 +67,13 @@ void FolderCreationDialog::accept()
 {
     Q_ASSERT(!_destination.endsWith('/'));
 
-    const auto fullPath = QString(_destination + "/" + ui->newFolderNameEdit->text());
-
-    if (QDir(fullPath).exists()) {
+    if (QDir(_destination + "/" + ui->newFolderNameEdit->text()).exists()) {
         ui->labelErrorMessage->setVisible(true);
         return;
     }
 
-    if (QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
-        Q_EMIT folderCreated(fullPath);
-    } else {
-        QMessageBox::critical(this, tr("Error"), tr("Could not create a folder! Check your write permissions."), QMessageBox::Ok);
+    if (!QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
+        QMessageBox::critical(this, tr("Error"), tr("Could not create a folder! Check your write permissions."));
     }
 
     QDialog::accept();

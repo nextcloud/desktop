@@ -1,7 +1,19 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef SYNCJOURNALFILERECORD_H
@@ -19,17 +31,6 @@ namespace OCC {
 
 class SyncFileItem;
 
-struct SyncJournalFileLockInfo {
-    bool _locked = false;
-    QString _lockOwnerDisplayName;
-    QString _lockOwnerId;
-    qint64 _lockOwnerType = 0;
-    QString _lockEditorApp;
-    qint64 _lockTime = 0;
-    qint64 _lockTimeout = 0;
-    QString _lockToken;
-};
-
 /**
  * @brief The SyncJournalFileRecord class
  * @ingroup libsync
@@ -37,12 +38,10 @@ struct SyncJournalFileLockInfo {
 class OCSYNC_EXPORT SyncJournalFileRecord
 {
 public:
-    [[nodiscard]] bool isValid() const
+    bool isValid() const
     {
         return !_path.isEmpty();
     }
-
-    using EncryptionStatus = EncryptionStatusEnums::JournalDbEncryptionStatus;
 
     /** Returns the numeric part of the full id in _fileId.
      *
@@ -50,15 +49,14 @@ public:
      *
      * It is used in the construction of private links.
      */
-    [[nodiscard]] QByteArray numericFileId() const;
-    [[nodiscard]] QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
+    QByteArray numericFileId() const;
+    QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
-    [[nodiscard]] bool isDirectory() const { return _type == ItemTypeVirtualDirectory || _type == ItemTypeDirectory; }
-    [[nodiscard]] bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
-    [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
-    [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
-    [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
-    [[nodiscard]] bool isE2eEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
+    bool isDirectory() const { return _type == ItemTypeDirectory; }
+    bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
+    bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
+    QString path() const { return QString::fromUtf8(_path); }
+    QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
 
     QByteArray _path;
     quint64 _inode = 0;
@@ -71,21 +69,8 @@ public:
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
-    EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted;
-    SyncJournalFileLockInfo _lockstate;
-    bool _isShared = false;
-    qint64 _lastShareStateFetchedTimestamp = 0;
-    bool _sharedByMe = false;
-    bool _isLivePhoto = false;
-    QString _livePhotoFile;
-    struct FolderQuota {
-        qint64 bytesUsed = -1;
-        qint64 bytesAvailable = -1;
-    };
-    FolderQuota _folderQuota;
+    bool _isE2eEncrypted = false;
 };
-
-QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);
 
 bool OCSYNC_EXPORT
 operator==(const SyncJournalFileRecord &lhs,
@@ -121,10 +106,10 @@ public:
     QString _file;
     QString _renameTarget;
 
-    /// The last X-Request-ID of the request that failed
+    /// The last X-Request-ID of the request that failled
     QByteArray _requestId;
 
-    [[nodiscard]] bool isValid() const;
+    bool isValid() const;
 };
 
 /** Represents a conflict in the conflicts table.
@@ -169,7 +154,7 @@ public:
     QByteArray initialBasePath;
 
 
-    [[nodiscard]] bool isValid() const { return !path.isEmpty(); }
+    bool isValid() const { return !path.isEmpty(); }
 };
 }
 

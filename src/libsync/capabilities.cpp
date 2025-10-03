@@ -1,16 +1,23 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "capabilities.h"
-#include "configfile.h"
 
 #include <QVariantMap>
 #include <QLoggingCategory>
 #include <QUrl>
-#include <QVersionNumber>
+
 #include <QDebug>
 
 namespace OCC {
@@ -83,26 +90,6 @@ int Capabilities::sharePublicLinkExpireDateDays() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
 }
 
-bool Capabilities::shareInternalEnforceExpireDate() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["enforced"].toBool();
-}
-
-int Capabilities::shareInternalExpireDateDays() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_internal"].toMap()["days"].toInt();
-}
-
-bool Capabilities::shareRemoteEnforceExpireDate() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["enforced"].toBool();
-}
-
-int Capabilities::shareRemoteExpireDateDays() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date_remote"].toMap()["days"].toInt();
-}
-
 bool Capabilities::sharePublicLinkMultiple() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["multiple"].toBool();
@@ -111,15 +98,6 @@ bool Capabilities::sharePublicLinkMultiple() const
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
-}
-
-int Capabilities::shareDefaultPermissions() const
-{
-    if(_capabilities["files_sharing"].toMap().contains("default_permissions")) {
-        return _capabilities["files_sharing"].toMap()["default_permissions"].toInt();
-    }
-    
-    return {};
 }
 
 bool Capabilities::clientSideEncryptionAvailable() const
@@ -136,43 +114,24 @@ bool Capabilities::clientSideEncryptionAvailable() const
     }
 
     const auto version = properties.value(QStringLiteral("api-version"), "1.0").toByteArray();
+    qCInfo(lcServerCapabilities) << "E2EE API version:" << version;
     const auto splittedVersion = version.split('.');
 
     bool ok = false;
     const auto major = !splittedVersion.isEmpty() ? splittedVersion.at(0).toInt(&ok) : 0;
     if (!ok) {
-        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (major), E2EE disabled" << version;
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (major), E2EE disabled";
         return false;
     }
 
     ok = false;
     const auto minor = splittedVersion.size() > 1 ? splittedVersion.at(1).toInt(&ok) : 0;
     if (!ok) {
-        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (minor), E2EE disabled" << version;
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (minor), E2EE disabled";
         return false;
     }
 
-    const auto capabilityAvailable = (major >= 1 && minor >= 0);
-    if (!capabilityAvailable) {
-        qCInfo(lcServerCapabilities) << "Incompatible E2EE API version:" << version;
-    }
-    return capabilityAvailable;
-}
-
-double Capabilities::clientSideEncryptionVersion() const
-{
-    const auto foundEndToEndEncryptionInCaps = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
-    if (foundEndToEndEncryptionInCaps == _capabilities.constEnd()) {
-        return 1.0;
-    }
-
-    const auto properties = (*foundEndToEndEncryptionInCaps).toMap();
-    const auto enabled = properties.value(QStringLiteral("enabled"), false).toBool();
-    if (!enabled) {
-        return 0.0;
-    }
-
-    return properties.value(QStringLiteral("api-version"), "1.0").toDouble();
+    return major == 1 && minor >= 1;
 }
 
 bool Capabilities::notificationsAvailable() const
@@ -191,20 +150,10 @@ bool Capabilities::hasActivities() const
     return _capabilities.contains("activity");
 }
 
-bool Capabilities::isClientStatusReportingEnabled() const
-{
-    if (!_capabilities.contains(QStringLiteral("security_guard"))) {
-        return false;
-    }
-    const auto securityGuardCaps = _capabilities[QStringLiteral("security_guard")].toMap();
-    return securityGuardCaps.contains(QStringLiteral("diagnostics")) && securityGuardCaps[QStringLiteral("diagnostics")].toBool();
-}
-
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
-    const auto supportedTypes = _capabilities["checksums"].toMap()["supportedTypes"].toList();
-    QList<QByteArray> list(supportedTypes.count());
-    for (const auto &t : supportedTypes) {
+    QList<QByteArray> list;
+    foreach (const auto &t, _capabilities["checksums"].toMap()["supportedTypes"].toList()) {
         list.push_back(t.toByteArray());
     }
     return list;
@@ -238,99 +187,10 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
-qint64 Capabilities::maxChunkSize() const
-{
-    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_size"].toLongLong();
-}
-
-int Capabilities::maxConcurrentChunkUploads() const
-{
-    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_parallel_count"].toInt();
-}
-
-bool Capabilities::bulkUpload() const
-{
-    return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";
-}
-
-bool Capabilities::filesLockAvailable() const
-{
-    return _capabilities["files"].toMap()["locking"].toByteArray() >= "1.0";
-}
-
-bool Capabilities::filesLockTypeAvailable() const
-{
-    return _capabilities["files"].toMap()["api-feature-lock-type"].toByteArray() >= "1.0";
-}
-
 bool Capabilities::userStatus() const
 {
-    if (!_capabilities.contains("user_status")) {
-        return false;
-    }
-    const auto userStatusMap = _capabilities["user_status"].toMap();
-    return userStatusMap.value("enabled", false).toBool();
+    return _capabilities.contains("notifications") && _capabilities["notifications"].toMap().contains("user-status");
 }
-
-bool Capabilities::userStatusSupportsEmoji() const
-{
-    if (!userStatus()) {
-        return false;
-    }
-    const auto userStatusMap = _capabilities["user_status"].toMap();
-    return userStatusMap.value("supports_emoji", false).toBool();
-}
-
-bool Capabilities::userStatusSupportsBusy() const
-{
-    if (!userStatus()) {
-        return false;
-    }
-    const auto userStatusMap = _capabilities["user_status"].toMap();
-    return userStatusMap.value("supports_busy", false).toBool();
-}
-
-bool Capabilities::ncAssistantEnabled() const
-{
-    if (_capabilities.contains("assistant")
-        && _capabilities["assistant"].toMap()["enabled"].toBool()) {
-
-        const auto minimumVersion = QVersionNumber(1, 0, 9);
-        const auto versionString = _capabilities["assistant"].toMap()["version"].toString();
-
-        if (const auto currentVersion = QVersionNumber::fromString(versionString);
-            QVersionNumber::compare(currentVersion, minimumVersion) >= 0) {
-            return true;
-        }
-
-        qCInfo(lcServerCapabilities) << "The NC Assistant app only provides a direct link starting at 1.0.9.";
-    }
-
-    return false;
-}
-
-QColor Capabilities::serverColor() const
-{
-    const auto themingMap = serverThemingMap();
-    return themingMap.contains("color") ? QColor(themingMap["color"].toString()) : QColor();
-}
-
-QColor Capabilities::serverTextColor() const
-{
-    const auto themingMap = serverThemingMap();
-    return themingMap.contains("color-text") ? QColor(themingMap["color-text"].toString()) : QColor();
-}
-
-QMap<QString, QVariant> Capabilities::serverThemingMap() const
-{
-    if (!_capabilities.contains("theming")) {
-        return {};
-    }
-
-    return _capabilities["theming"].toMap();
-}
-
-
 
 PushNotificationTypes Capabilities::availablePushNotifications() const
 {
@@ -374,9 +234,8 @@ bool Capabilities::privateLinkPropertyAvailable() const
 
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
-    const auto httpErrorCodes = _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList();
-    QList<int> list(httpErrorCodes.count());
-    for (const auto &t : httpErrorCodes) {
+    QList<int> list;
+    foreach (const auto &t, _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList()) {
         list.push_back(t.toInt());
     }
     return list;
@@ -397,44 +256,9 @@ bool Capabilities::uploadConflictFiles() const
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
 
-bool Capabilities::groupFoldersAvailable() const
-{
-    return _capabilities[QStringLiteral("groupfolders")].toMap().value(QStringLiteral("hasGroupFolders"), false).toBool();
-}
-
-bool Capabilities::serverHasValidSubscription() const
-{
-    return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("hasValidSubscription"), false).toBool();
-}
-
-QString Capabilities::desktopEnterpriseChannel() const
-{
-    return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("desktopEnterpriseChannel"), ConfigFile().defaultUpdateChannel()).toString();
-}
-
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
-}
-
-QStringList Capabilities::forbiddenFilenames() const
-{
-    return _capabilities["files"].toMap()["forbidden_filenames"].toStringList();
-}
-
-QStringList Capabilities::forbiddenFilenameCharacters() const
-{
-    return _capabilities["files"].toMap()["forbidden_filename_characters"].toStringList();
-}
-
-QStringList Capabilities::forbiddenFilenameBasenames() const
-{
-    return _capabilities["files"].toMap()["forbidden_filename_basenames"].toStringList();
-}
-
-QStringList Capabilities::forbiddenFilenameExtensions() const
-{
-    return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -448,7 +272,7 @@ void Capabilities::addDirectEditor(DirectEditor* directEditor)
 
 DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
 {
-    for (const auto editor : std::as_const(_directEditors)) {
+    foreach(DirectEditor* editor, _directEditors) {
         if(editor->hasMimetype(mimeType))
             return editor;
     }
@@ -458,7 +282,7 @@ DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType
 
 DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
 {
-    for (const auto editor : std::as_const(_directEditors)) {
+    foreach(DirectEditor* editor, _directEditors) {
         if(editor->hasOptionalMimetype(mimeType))
             return editor;
     }

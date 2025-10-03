@@ -1,10 +1,19 @@
-# SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2014 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 #
-# This program is the core of the nextcloud integration to Nautilus
-# It will be installed on /usr/share/nautilus-python/extensions/ with the paquet Nextcloud-client-nautilus
-# (https://github.com/nextcloud/desktop/edit/master/shell_integration/nautilus/syncstate.py)
+# Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+#
+# This program is the core of OwnCloud integration to Nautilus
+# It will be installed on /usr/share/nautilus-python/extensions/ with the paquet owncloud-client-nautilus
+# (https://github.com/owncloud/client/edit/master/shell_integration/nautilus/syncstate.py)
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
 
 import sys
 python3 = sys.version_info[0] >= 3
@@ -19,7 +28,7 @@ import time
 
 from gi.repository import GObject, Nautilus
 
-# Note: setappname.sh will search and replace 'Nextcloud' on this file to update this line and other
+# Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
 # occurrences of the name
 appname = 'Nextcloud'
 
@@ -96,7 +105,7 @@ class SocketConnect(GObject.GObject):
                 return False  # Don't run again
             except Exception as e:
                 print("Could not connect to unix socket " + sock_file + ". " + str(e))
-        except Exception as e:  # Bad habit
+        except Exception as e:  # Bad habbit
             print("Connect could not be established, try again later.")
             self._sock.close()
 
@@ -166,7 +175,7 @@ class SocketConnect(GObject.GObject):
 socketConnect = SocketConnect()
 
 
-class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
+class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
@@ -191,13 +200,9 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
                 break
         return (topLevelFolder, internalFile)
 
-    # The get_file_items method of Nautilus.MenuProvider no longer takes
-    # the window argument. To keep supporting older versions of Nautilus,
-    # we can use variadic arguments.
-    def get_file_items(self, *args):
+    def get_file_items(self, window, files):
         # Show the menu extension to share a file or folder
 
-        files = args[-1]
         # Get usable file paths from the uris
         all_internal_files = True
         for i, file_uri in enumerate(files):
@@ -261,18 +266,18 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         if len(menu_items) == 0:
             return []
 
-        # Set up the 'Nextcloud...' submenu
-        item_nextcloud = Nautilus.MenuItem(
+        # Set up the 'ownCloud...' submenu
+        item_owncloud = Nautilus.MenuItem(
             name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
         menu = Nautilus.Menu()
-        item_nextcloud.set_submenu(menu)
+        item_owncloud.set_submenu(menu)
 
         for action, enabled, label in menu_items:
             item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
             item.connect("activate", self.context_menu_action, action, filesstring)
             menu.append_item(item)
 
-        return [item_nextcloud]
+        return [item_owncloud]
 
 
     def legacy_menu_items(self, files):
@@ -306,11 +311,11 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         if not shareable:
             return []
 
-        # Set up the 'Nextcloud...' submenu
-        item_nextcloud = Nautilus.MenuItem(
+        # Set up the 'ownCloud...' submenu
+        item_owncloud = Nautilus.MenuItem(
             name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
         menu = Nautilus.Menu()
-        item_nextcloud.set_submenu(menu)
+        item_owncloud.set_submenu(menu)
 
         # Add share menu option
         item = Nautilus.MenuItem(
@@ -333,7 +338,7 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
             item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', filename)
             menu.append_item(item_emailprivatelink)
 
-        return [item_nextcloud]
+        return [item_owncloud]
 
 
     def context_menu_action(self, menu, action, filename):
@@ -341,7 +346,7 @@ class MenuExtension_Nextcloud(GObject.GObject, Nautilus.MenuProvider):
         socketConnect.sendCommand(action + ":" + filename + "\n")
 
 
-class SyncStateExtension_Nextcloud(GObject.GObject, Nautilus.InfoProvider):
+class SyncStateExtension_ownCloud(GObject.GObject, Nautilus.InfoProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
@@ -419,23 +424,23 @@ class SyncStateExtension_Nextcloud(GObject.GObject, Nautilus.InfoProvider):
             self.invalidate_items_underneath(args[0])
 
     def set_emblem(self, item, state):
-        Emblems = { 'OK'        : [appname + '_ok'],
-                    'SYNC'      : [appname + '_sync'],
-                    'NEW'       : [appname + '_sync'],
-                    'IGNORE'    : [appname + '_warn'],
-                    'ERROR'     : [appname + '_error'],
-                    'OK+SWM'    : [appname + '_a_shared', appname + '_ok'],
-                    'SYNC+SWM'  : [appname + '_a_shared', appname + '_sync'],
-                    'NEW+SWM'   : [appname + '_a_shared', appname + '_sync'],
-                    'IGNORE+SWM': [appname + '_a_shared', appname + '_warn'],
-                    'ERROR+SWM' : [appname + '_a_shared', appname + '_error'],
+        Emblems = { 'OK'        : appname +'_ok',
+                    'SYNC'      : appname +'_sync',
+                    'NEW'       : appname +'_sync',
+                    'IGNORE'    : appname +'_warn',
+                    'ERROR'     : appname +'_error',
+                    'OK+SWM'    : appname +'_ok_shared',
+                    'SYNC+SWM'  : appname +'_sync_shared',
+                    'NEW+SWM'   : appname +'_sync_shared',
+                    'IGNORE+SWM': appname +'_warn_shared',
+                    'ERROR+SWM' : appname +'_error_shared',
                     'NOP'       : ''
                   }
 
         emblem = 'NOP' # Show nothing if no emblem is defined.
         if state in Emblems:
-            for emblem in Emblems[state]:
-                item.add_emblem(emblem)
+            emblem = Emblems[state]
+        item.add_emblem(emblem)
 
     def update_file_info(self, item):
         if item.get_uri_scheme() != 'file':

@@ -2,8 +2,8 @@
 //  main.m
 //  desktopclient
 //
-//  SPDX-FileCopyrightText: 2015 ownCloud GmbH
-//  SPDX-License-Identifier: GPL-2.0-or-later
+//  Created by Jocelyn Turcotte on 01/06/15.
+//
 //
 
 // This is fake application bundle with the same bundle ID as the real desktop client.

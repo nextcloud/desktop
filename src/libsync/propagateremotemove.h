@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 #pragma once
 
@@ -14,7 +22,7 @@ namespace OCC {
  * @brief The MoveJob class
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT MoveJob : public AbstractNetworkJob
+class MoveJob : public AbstractNetworkJob
 {
     Q_OBJECT
     const QString _destination;
@@ -49,7 +57,7 @@ public:
     }
     void start() override;
     void abort(PropagatorJob::AbortType abortType) override;
-    [[nodiscard]] JobParallelism parallelism() const override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
+    JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 
     /**
      * Rename the directory in the selective sync list

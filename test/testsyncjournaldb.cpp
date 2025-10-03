@@ -1,12 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+ *    This software is in the public domain, furnished "as is", without technical
+ *       support, and with no warranty, express or implied, as to its usefulness for
+ *          any purpose.
+ *          */
 
 #include <QtTest>
 
@@ -14,7 +10,6 @@
 
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
-#include "logger.h"
 
 using namespace OCC;
 
@@ -37,12 +32,9 @@ public:
     }
 
 private slots:
+
     void initTestCase()
     {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
     }
 
     void cleanupTestCase()
@@ -54,7 +46,7 @@ private slots:
     void testFileRecord()
     {
         SyncJournalFileRecord record;
-        QVERIFY(_db.getFileRecord(QByteArrayLiteral("nonexistent"), &record));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("nonexistant"), &record));
         QVERIFY(!record.isValid());
 
         record._path = "foo";
@@ -76,7 +68,7 @@ private slots:
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
-        QVERIFY(_db.updateFileRecordChecksum("foo", "newchecksum", "Adler32"));
+        _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -89,59 +81,13 @@ private slots:
         record._fileId = "efg";
         record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        QVERIFY(_db.setFileRecord(record));
+        _db.setFileRecord(record);
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
         QVERIFY(_db.deleteFileRecord("foo"));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &record));
         QVERIFY(!record.isValid());
-    }
-
-    void testFolderQuota()
-    {
-        const auto bigFolderRecord = QByteArray("bigfolder");
-        SyncJournalFileRecord record;
-        record._path = bigFolderRecord;
-        record._inode = std::numeric_limits<quint32>::max() + 12ull;
-        record._modtime = dropMsecs(QDateTime::currentDateTime());
-        record._type = ItemTypeDirectory;
-        record._etag = "123123";
-        record._fileId = "abcd";
-        record._fileSize = 213089999;
-        QVERIFY(_db.setFileRecord(record));
-
-        SyncJournalFileRecord storedRecord;
-        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
-        QVERIFY(storedRecord == record);
-        // default values
-        QCOMPARE(storedRecord._folderQuota.bytesAvailable, -1);
-        QCOMPARE(storedRecord._folderQuota.bytesUsed, -1);
-
-        record._folderQuota.bytesUsed = 100;
-        record._folderQuota.bytesAvailable = 5000;
-        QVERIFY(_db.setFileRecord(record));
-        QVERIFY(_db.getFileRecord(bigFolderRecord, &storedRecord));
-        QVERIFY(storedRecord == record);
-        QCOMPARE(storedRecord._folderQuota.bytesAvailable, 5000);
-        QCOMPARE(storedRecord._folderQuota.bytesUsed, 100);
-    }
-
-    void testFolderMigration() {
-        const auto quotaBytesUsed =  QStringLiteral("quotaBytesUsed");
-        const auto quotaBytesAvailable =  QStringLiteral("quotaBytesAvailable");
-        const auto metadata = QStringLiteral("metadata");
-        const auto columnsBeforeRemoval = _db.tableColumns(metadata.toLatin1());
-        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesUsed.toLatin1()), -1);
-        QCOMPARE_GT(columnsBeforeRemoval.indexOf(quotaBytesAvailable.toLatin1()), -1);
-        QVERIFY(_db.removeColumn(quotaBytesAvailable));
-        QVERIFY(_db.removeColumn(quotaBytesUsed));
-        QVERIFY(_db.updateMetadataTableStructure());
-        const auto columnsAfterConnect = _db.tableColumns(metadata.toLatin1());
-        QVERIFY(columnsAfterConnect.indexOf(quotaBytesUsed.toLatin1()) > -1);
-        QVERIFY(columnsAfterConnect.indexOf(quotaBytesAvailable.toLatin1()) > -1);
-        QVERIFY(_db.hasDefaultValue(quotaBytesUsed));
-        QVERIFY(_db.hasDefaultValue(quotaBytesAvailable));
     }
 
     void testFileRecordChecksum()
@@ -161,6 +107,8 @@ private slots:
             QVERIFY(storedRecord._remotePerm == record._remotePerm);
             QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
 
+            // qDebug()<< "OOOOO " << storedRecord._modtime.toTime_t() << record._modtime.toTime_t();
+
             // Attention: compare time_t types here, as QDateTime seem to maintain
             // milliseconds internally, which disappear in sqlite. Go for full seconds here.
             QVERIFY(storedRecord._modtime == record._modtime);
@@ -169,7 +117,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
-            record._remotePerm = RemotePermissions::fromDbValue("RW");
+            record._remotePerm = RemotePermissions();
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
 
             QVERIFY(_db.setFileRecord(record));
@@ -183,7 +131,7 @@ private slots:
     void testDownloadInfo()
     {
         using Info = SyncJournalDb::DownloadInfo;
-        Info record = _db.getDownloadInfo("nonexistent");
+        Info record = _db.getDownloadInfo("nonexistant");
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
@@ -203,11 +151,11 @@ private slots:
     void testUploadInfo()
     {
         using Info = SyncJournalDb::UploadInfo;
-        Info record = _db.getUploadInfo("nonexistent");
+        Info record = _db.getUploadInfo("nonexistant");
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
-        record._chunkUploadV1 = 12;
+        record._chunk = 12;
         record._transferid = 812974891;
         record._size = 12894789147;
         record._modtime = dropMsecs(QDateTime::currentDateTime());
@@ -263,16 +211,14 @@ private slots:
         auto initialEtag = QByteArray("etag");
         auto makeEntry = [&](const QByteArray &path, ItemType type) {
             SyncJournalFileRecord record;
-            record._modtime = QDateTime::currentSecsSinceEpoch();
             record._path = path;
             record._type = type;
             record._etag = initialEtag;
-            record._remotePerm = RemotePermissions::fromDbValue("RW");
-            QVERIFY(_db.setFileRecord(record));
+            _db.setFileRecord(record);
         };
         auto getEtag = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
-            [[maybe_unused]] const auto result = _db.getFileRecord(path, &record);
+            _db.getFileRecord(path, &record);
             return record._etag;
         };
 
@@ -329,9 +275,7 @@ private slots:
         auto makeEntry = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
             record._path = path;
-            record._remotePerm = RemotePermissions::fromDbValue("RW");
-            record._modtime = QDateTime::currentSecsSinceEpoch();
-            QVERIFY(_db.setFileRecord(record));
+            _db.setFileRecord(record);
         };
 
         QByteArrayList elements;
@@ -345,15 +289,15 @@ private slots:
             << "foo bla bar/file"
             << "fo_"
             << "fo_/file";
-        for (const auto& elem : std::as_const(elements)) {
+        for (const auto& elem : elements)
             makeEntry(elem);
-        }
 
         auto checkElements = [&]() {
             bool ok = true;
-            for (const auto& elem : std::as_const(elements)) {
+            for (const auto& elem : elements) {
                 SyncJournalFileRecord record;
-                if (!_db.getFileRecord(elem, &record) || !record.isValid()) {
+                _db.getFileRecord(elem, &record);
+                if (!record.isValid()) {
                     qWarning() << "Missing record: " << elem;
                     ok = false;
                 }
@@ -361,17 +305,17 @@ private slots:
             return ok;
         };
 
-        QVERIFY(_db.deleteFileRecord("moo", true));
+        _db.deleteFileRecord("moo", true);
         elements.removeAll("moo");
         elements.removeAll("moo/file");
         QVERIFY(checkElements());
 
-        QVERIFY(_db.deleteFileRecord("fo_", true));
+        _db.deleteFileRecord("fo_", true);
         elements.removeAll("fo_");
         elements.removeAll("fo_/file");
         QVERIFY(checkElements());
 
-        QVERIFY(_db.deleteFileRecord("foo%bar", true));
+        _db.deleteFileRecord("foo%bar", true);
         elements.removeAll("foo%bar");
         QVERIFY(checkElements());
     }
@@ -438,31 +382,31 @@ private slots:
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("online/local"), PinState::AlwaysLocal);
         QCOMPARE(get("local/online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit/local"), PinState::AlwaysLocal);
         QCOMPARE(get("inherit/online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("inherit/nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/nonexistant"), PinState::AlwaysLocal);
 
         // Inheriting checks, level 1
         QCOMPARE(get("local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("online/nonexistent"), PinState::OnlineOnly);
+        QCOMPARE(get("online/nonexistant"), PinState::OnlineOnly);
 
         // Inheriting checks, level 2
         QCOMPARE(get("local/inherit/inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("local/local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/local/nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("local/online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("local/online/nonexistent"), PinState::OnlineOnly);
+        QCOMPARE(get("local/online/nonexistant"), PinState::OnlineOnly);
         QCOMPARE(get("online/inherit/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("online/local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("online/local/nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("online/online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("online/online/nonexistent"), PinState::OnlineOnly);
+        QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
 
         // Spot check the recursive variant
         QCOMPARE(getRecursive(""), PinState::Inherited);
@@ -483,12 +427,12 @@ private slots:
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("nonexistent"), PinState::OnlineOnly);
+        QCOMPARE(get("nonexistant"), PinState::OnlineOnly);
         make("", PinState::AlwaysLocal);
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("nonexistent"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
 
         // Wiping
         QCOMPARE(getRaw("local/local"), PinState::AlwaysLocal);

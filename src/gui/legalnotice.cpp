@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "legalnotice.h"
@@ -43,8 +52,8 @@ void LegalNotice::changeEvent(QEvent *e)
 
 void LegalNotice::customizeStyle()
 {
-    QString notice = tr("<p>Copyright 2017-2025 Nextcloud GmbH<br />"
-                        "Copyright 2012-2023 ownCloud GmbH</p>");
+    QString notice = tr("<p>Copyright 2017-2021 Nextcloud GmbH<br />"
+                        "Copyright 2012-2018 ownCloud GmbH</p>");
 
     notice += tr("<p>Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.</p>");
 

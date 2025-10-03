@@ -1,134 +1,99 @@
 #! /bin/bash
 
-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-# SPDX-License-Identifier: GPL-2.0-or-later
-
 set -xe
 
-export APPNAME=${APPNAME:-Nextcloud}
-export EXECUTABLE_NAME=${EXECUTABLE_NAME:-nextcloud}
-export BUILD_UPDATER=${BUILD_UPDATER:-OFF}
-export BUILDNR=${BUILDNR:-0000}
-export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
-export QT_BASE_DIR=${QT_BASE_DIR:-/usr}
-export OPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR:-/usr/lib/x86_64-linux-gnu}
-export VERSION_SUFFIX=${VERSION_SUFFIX:stable}
+mkdir /app
+mkdir /build
 
-# Set defaults
-export SUFFIX=${PR_ID:=${DRONE_PULL_REQUEST:=master}}
+#Set Qt-5.12
+export QT_BASE_DIR=/opt/qt5.12.9
+export QTDIR=$QT_BASE_DIR
+export PATH=$QT_BASE_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
+
+#Set APPID for .desktop file processing
+export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud
+
+#set defaults
+export SUFFIX=${DRONE_PULL_REQUEST:=master}
 if [ $SUFFIX != "master" ]; then
     SUFFIX="PR-$SUFFIX"
 fi
-if [ "$BUILD_UPDATER" != "OFF" ]; then
-    BUILD_UPDATER=ON
-fi
 
-# Ensure we use gcc-11 on RHEL-like systems
-if [ -e "/opt/rh/gcc-toolset-11/enable" ]; then
-    source /opt/rh/gcc-toolset-11/enable
-fi
+#QtKeyChain v0.10.0
+cd /build
+git clone https://github.com/frankosterfeld/qtkeychain.git
+cd qtkeychain
+git checkout v0.10.0
+mkdir build
+cd build
+cmake -D CMAKE_INSTALL_PREFIX=/usr ../
+make -j4
+make install
 
-mkdir /app
-
-# Build client
+#Build client
+cd /build
 mkdir build-client
 cd build-client
-cmake \
-    -G Ninja \
-    -DCMAKE_PREFIX_PATH=${QT_BASE_DIR} \
-    -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR} \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_TESTING=OFF \
-    -DBUILD_UPDATER=$BUILD_UPDATER \
-    -DMIRALL_VERSION_BUILD=$BUILDNR \
-    -DMIRALL_VERSION_SUFFIX="$VERSION_SUFFIX" \
-    -DCMAKE_UNITY_BUILD=ON \
-    ${DESKTOP_CLIENT_ROOT}
-cmake --build . --target all
-DESTDIR=/app cmake --install .
+cmake -D CMAKE_INSTALL_PREFIX=/usr \
+    -D BUILD_TESTING=OFF \
+    -D BUILD_UPDATER=ON \
+    -DMIRALL_VERSION_SUFFIX=PR-$DRONE_PULL_REQUEST \
+    -DMIRALL_VERSION_BUILD=$DRONE_BUILD_NUMBER \
+    $DRONE_WORKSPACE
+make -j4
+make DESTDIR=/app install
 
 # Move stuff around
 cd /app
 
-[ -d usr/lib/x86_64-linux-gnu ] && mv usr/lib/x86_64-linux-gnu/* usr/lib/
+mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/
+rm -rf ./usr/lib/cmake
+rm -rf ./usr/include
+rm -rf ./usr/mkspecs
+rm -rf ./usr/lib/x86_64-linux-gnu/
 
-mkdir -p AppDir/usr/plugins
-mv usr/lib64/*sync_vfs_suffix.so AppDir/usr/plugins || mv usr/lib/*sync_vfs_suffix.so AppDir/usr/plugins
-mv usr/lib64/*sync_vfs_xattr.so  AppDir/usr/plugins || mv usr/lib/*sync_vfs_xattr.so  AppDir/usr/plugins
+# Don't bundle nextcloudcmd as we don't run it anyway
+rm -rf ./usr/bin/nextcloudcmd
 
-rm -rf usr/lib/cmake
-rm -rf usr/include
-rm -rf usr/mkspecs
-rm -rf usr/lib/x86_64-linux-gnu/
-
-# Don't bundle the explorer extensions as we can't do anything with them in the AppImage
-rm -rf usr/share/caja-python/
-rm -rf usr/share/nautilus-python/
-rm -rf usr/share/nemo-python/
-
-# The client-specific data dir also contains the translations, we want to have those in the AppImage.
-mkdir -p AppDir/usr/share
-mv usr/share/${EXECUTABLE_NAME} AppDir/usr/share/${EXECUTABLE_NAME}
+# Don't bundle the explorer extentions as we can't do anything with them in the AppImage
+rm -rf ./usr/share/caja-python/
+rm -rf ./usr/share/nautilus-python/
+rm -rf ./usr/share/nemo-python/
 
 # Move sync exclude to right location
-mv /app/etc/*/sync-exclude.lst usr/bin/
-rm -rf etc
+mv ./etc/Nextcloud/sync-exclude.lst ./usr/bin/
+rm -rf ./etc
 
-# com.nextcloud.desktopclient.nextcloud.desktop
-DESKTOP_FILE=$(ls /app/usr/share/applications/*.desktop)
+DESKTOP_FILE=/app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop
+sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' ${DESKTOP_FILE} # Bug in desktop file?
+cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linuxeployqt bug, FIXME
 
-# Use linuxdeploy to deploy
-export APPIMAGE_NAME=linuxdeploy-x86_64.AppImage
-wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
-chmod a+x ${APPIMAGE_NAME}
-./${APPIMAGE_NAME} --appimage-extract
-rm ./${APPIMAGE_NAME}
-cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
-export LD_LIBRARY_PATH=/app/usr/lib64:/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
+# Because distros need to get their shit together
+cp -R /lib/x86_64-linux-gnu/libssl.so* ./usr/lib/
+cp -R /lib/x86_64-linux-gnu/libcrypto.so* ./usr/lib/
+cp -P /usr/local/lib/libssl.so* ./usr/lib/
+cp -P /usr/local/lib/libcrypto.so* ./usr/lib/
 
-# Use linuxdeploy-plugin-qt to deploy qt dependencies
-export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
-wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
-chmod a+x ${APPIMAGE_NAME}
-./${APPIMAGE_NAME} --appimage-extract
-rm ./${APPIMAGE_NAME}
-cp -r ./squashfs-root ./linuxdeploy-plugin-qt-squashfs-root
+# NSS fun
+cp -P -r /usr/lib/x86_64-linux-gnu/nss ./usr/lib/
 
-export PATH=${QT_BASE_DIR}/bin:${PATH}
-export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
-./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
+# Use linuxdeployqt to deploy
+cd /build
+wget --ca-directory=/etc/ssl/certs/ -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+chmod a+x linuxdeployqt*.AppImage
+./linuxdeployqt-continuous-x86_64.AppImage --appimage-extract
+rm ./linuxdeployqt-continuous-x86_64.AppImage
+unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/app/usr/lib/
+./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=$DRONE_WORKSPACE/src/gui
 
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+# Set origin
+./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/libnextcloudsync.so.0
 
-# Workaround issue #103 and #7231
-export APPIMAGETOOL=appimagetool-x86_64.AppImage
-wget -O ${APPIMAGETOOL} --ca-directory=/etc/ssl/certs -c https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-chmod a+x ${APPIMAGETOOL}
-rm -rf ./squashfs-root
-./${APPIMAGETOOL} --appimage-extract
-rm ./${APPIMAGETOOL}
-cp -r ./squashfs-root ./appimagetool-squashfs-root
-rm -rf ./squashfs-root
-APPIMAGE=$(ls *.AppImage)
-./"${APPIMAGE}" --appimage-extract
-rm ./"${APPIMAGE}"
-rm ./squashfs-root/usr/lib/libglib-2.0.so.0
-LD_LIBRARY_PATH="$PWD/appimagetool-squashfs-root/usr/lib":$LD_LIBRARY_PATH PATH="$PWD/appimagetool-squashfs-root/usr/bin":$PATH appimagetool -n ./squashfs-root "${APPIMAGE}"
+# Build AppImage
+./squashfs-root/AppRun ${DESKTOP_FILE} -appimage
 
-#move AppImage
-export COMMIT=${GITHUB_SHA:=${DRONE_COMMIT}}
-if [ ! -z "$COMMIT" ]
-then
-    export APPIMAGE_NAME="${EXECUTABLE_NAME}-${SUFFIX}-${COMMIT}-x86_64.AppImage"
-else
-    export APPIMAGE_NAME="${EXECUTABLE_NAME}-${SUFFIX}-x86_64.AppImage"
-fi
-mv *.AppImage ${DESKTOP_CLIENT_ROOT}/$APPIMAGE_NAME
-
-# tell GitHub Actions the name of our appimage
-if [ ! -z "$GITHUB_OUTPUT" ]; then
-  echo "AppImage name: ${APPIMAGE_NAME}"
-  echo "APPIMAGE_NAME=${APPIMAGE_NAME}" >> "$GITHUB_OUTPUT"
-fi
+mv Nextcloud*.AppImage Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage

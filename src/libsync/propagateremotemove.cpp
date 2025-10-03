@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "propagateremotemove.h"
@@ -10,9 +18,7 @@
 #include "account.h"
 #include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
-#include "common/filesystembase.h"
 #include "common/asserts.h"
-#include <QFileInfo>
 #include <QFile>
 #include <QStringList>
 #include <QDir>
@@ -73,7 +79,9 @@ void PropagateRemoteMove::start()
         return;
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);
-    qCInfo(lcPropagateRemoteMove) << origin << _item->_renameTarget;
+    qCDebug(lcPropagateRemoteMove) << origin << _item->_renameTarget;
+
+    QString targetFile(propagator()->fullLocalPath(_item->_renameTarget));
 
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
@@ -91,7 +99,7 @@ void PropagateRemoteMove::start()
             SyncJournalFileRecord parentRec;
             bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
             if (!ok) {
-                done(SyncFileItem::NormalError, {}, ErrorCategory::GenericError);
+                done(SyncFileItem::NormalError);
                 return;
             }
 
@@ -160,7 +168,7 @@ void PropagateRemoteMove::start()
             QString error;
             if (!FileSystem::uncheckedRenameReplace(localTargetAlt, localTarget, &error)) {
                 done(SyncFileItem::NormalError, tr("Could not rename %1 to %2, error: %3")
-                     .arg(folderTargetAlt, folderTarget, error), ErrorCategory::GenericError);
+                     .arg(folderTargetAlt, folderTarget, error));
                 return;
             }
             qCInfo(lcPropagateRemoteMove) << "Suffix vfs required local rename of"
@@ -199,32 +207,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
     if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
-        const auto filePath = propagator()->fullLocalPath(_item->_renameTarget);
-        const auto filePathOriginal = propagator()->fullLocalPath(_item->_originalFile);
-        const auto oldFile = QFileInfo{filePathOriginal};
-        QFile file(filePath);
-        auto permissionsHandler = FileSystem::FilePermissionsRestore{oldFile.absolutePath(), FileSystem::FolderPermissions::ReadWrite};
-        if (!file.rename(filePathOriginal)) {
-            qCWarning(lcPropagateRemoteMove) << "Could not MOVE file" << filePathOriginal << " to" << filePath
-                                             << " with error:" << _job->errorString() << " and failed to restore it !";
-        } else {
-            qCWarning(lcPropagateRemoteMove)
-                << "Could not MOVE file" << filePathOriginal << " to" << filePath
-                << " with error:" << _job->errorString() << " and successfully restored it.";
-
-            auto restoredItem = *_item;
-            restoredItem._renameTarget = _item->_originalFile;
-            const auto result = propagator()->updateMetadata(restoredItem);
-            if (!result) {
-                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
-                return;
-            } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-                done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(restoredItem._file), ErrorCategory::GenericError);
-                return;
-            }
-        }
-
-        done(status, _job->errorString(), ErrorCategory::GenericError);
+        done(status, _job->errorString());
         return;
     }
 
@@ -235,7 +218,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
         done(SyncFileItem::NormalError,
             tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")
                 .arg(_item->_httpErrorCode)
-                .arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()), ErrorCategory::GenericError);
+                .arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
         return;
     }
 
@@ -250,27 +233,13 @@ void PropagateRemoteMove::finalize()
     // The db is only queried to transfer the content checksum from the old
     // to the new record. It is not a problem to skip it here.
     SyncJournalFileRecord oldRecord;
-    if (!propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord)) {
-        qCWarning(lcPropagateRemoteMove) << "Could not get file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
-        return;
-    }
+    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     auto &vfs = propagator()->syncOptions()._vfs;
     auto pinState = vfs->pinState(_item->_originalFile);
 
-    const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
-
-    if (FileSystem::fileExists(targetFile)) {
-        // Delete old db data.
-        if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
-            qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << _item->_originalFile;
-            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
-            return;
-        }
-        if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
-            qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << _item->_originalFile << "to inherited";
-        }
-    }
+    // Delete old db data.
+    propagator()->_journal->deleteFileRecord(_item->_originalFile);
+    vfs->setPinState(_item->_originalFile, PinState::Inherited);
 
     SyncFileItem newItem(*_item);
     newItem._type = _item->_type;
@@ -283,32 +252,26 @@ void PropagateRemoteMove::finalize()
             newItem._size = oldRecord._fileSize;
         }
     }
-
-    const auto result = propagator()->updateMetadata(newItem);
-    if (!result && QFileInfo::exists(targetFile)) {
-        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
-        return;
-    } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
+    if (!propagator()->updateMetadata(newItem)) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
-    if (pinState && *pinState != PinState::Inherited &&
-        !vfs->setPinState(newItem._renameTarget, *pinState) &&
-        QFileInfo::exists(targetFile)) {
-        done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
+    if (pinState && *pinState != PinState::Inherited
+        && !vfs->setPinState(newItem._renameTarget, *pinState)) {
+        done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;
     }
 
     if (_item->isDirectory()) {
         propagator()->_renamedDirectories.insert(_item->_file, _item->_renameTarget);
         if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
-            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"), ErrorCategory::GenericError);
+            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
         }
     }
 
     propagator()->_journal->commit("Remote Rename");
-    done(SyncFileItem::Success, {}, ErrorCategory::NoError);
+    done(SyncFileItem::Success);
 }
 
 bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QString &from_, const QString &to_)

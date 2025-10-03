@@ -1,0 +1,45 @@
+Checks: '-*,
+    bugprone-*,
+    -bugprone-forward-declaration-namespace,
+    cppcoreguidelines-init-variables,
+    misc-*,
+    -misc-non-private-member-variables-in-classes,
+    modernize-avoid-bind,
+    modernize-concat-nested-namespaces,
+    modernize-deprecated-headers,
+    modernize-deprecated-ios-base-aliases,
+    modernize-loop-convert,
+    modernize-make-*,
+    modernize-raw-string-literal,
+    modernize-redundant-void-arg,
+    modernize-replace-*,
+    modernize-return-braced-init-list,
+    modernize-shrink-to-fit,
+    modernize-unary-static-assert,
+    modernize-use-auto,
+    modernize-use-bool-literals,
+    modernize-use-default-member-init,
+    modernize-use-emplace,
+    modernize-use-equals-delete,
+    modernize-use-nodiscard,
+    modernize-use-equals-default,
+    modernize-use-noexcept,
+    modernize-user-override,
+    modernize-use-nullptr,
+    modernize-use-transparent-functors,
+    modernize-use-uncaught-exceptions,
+    modernize-use-using,
+'
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
+CheckOptions:
+  - key: bugprone-assert-side-effect.AssertMacros
+    value: 'assert;Q_ASSERT'
+  - key: bugprone-dangling-handle.HandleClasses
+    value: 'std::basic_string_view;std::experimental::basic_string_view;QStringView'
+  - key: bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression
+    value: 1
+  - key: modernize-use-default-member-init.UseAssignment
+    value: 1

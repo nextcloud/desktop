@@ -1,175 +1,26 @@
 @echo off
-REM SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-REM SPDX-License-Identifier: GPL-2.0-or-later
 set HarvestAppDir=%~1
 set BuildArch=@MSI_BUILD_ARCH@
 
-setlocal EnableDelayedExpansion
-
-REM list of additional supported languages in the installer, grouped by codepage
-REM since candle needs to be run for each codepage we can reuse its output for the other languages
-REM
-REM each additional language will add about ~1min of build time!
-REM in order to be able to create transforms of the installer we must have an already-translated MSI ready, so for each language a separate temporary MSI will be built
-REM
-REM IMPORTANT: end each line but the last with ;^
-REM
-REM see also: https://learn.microsoft.com/en-gb/windows/win32/msi/localizing-the-error-and-actiontext-tables
-REM the codepage is the value of the "ASCII code page" in the table
-set languages=^
-1252:en-us de-de fr-fr it-it es-es
-
-set languages_to_id=^
-en-us:1033;^
-de-de:1031;^
-fr-fr:1036;^
-it-it:1040;^
-es-es:3082
-
-set LF=^
-
-
-REM do NOT delete the two lines above!  !LF! will contain a single newline in that case, which
-REM will be used to replace the ; from the languages list with the newline in order to make
-REM Batch's FOR loop happy...
-
 if "%HarvestAppDir%" == "" (
-  echo "Missing parameter: Please specify file collection source path (HarvestAppDir)."
-  exit 1
+    echo "Missing parameter: Please specify file collection source path (HarvestAppDir)."
+    exit 1
 )
 
 if "%WIX%" == "" (
-  echo "WiX Toolset path not set (environment variable 'WIX'). Please install the WiX Toolset."
-  exit 1
+    echo "WiX Toolset path not set (environment variable 'WIX'). Please install the WiX Toolset."
+    exit 1
 )
 
-if "%WISUBSTG%" == "" (
-  REM WISUBSTG is used only in :create_language_transform^(s^) for non-en-us locales
-  echo :: Did not find WiSubStg.vbs ^(environment variable 'WISUBSTG'^), will only build the English installer
-  set languages=1252:en-us
-) else ( if "%WILANGID%" == "" (
-  REM WILANGID is used to update the supported languages field in the MSI ^(Package in .wxs file -- unfortunately the Language attribute only allows one language at a time^)
-  REM Nextcloud.wxs specifies the language as 1033 ^(en-us^) as default, so this step can be skipped
-  echo :: Did not find WiLangId.vbs ^(environment variable 'WILANGID'^), the resulting MSI will be in English by default
-))
-
-REM generate a ProductCode to use in the resulting MSI to ensure that the embedded
-REM transforms don't break managed deployments (see #8610)
-REM the uuidgen tool is provided by the Visual Studio CLI tools
-for /f %%i in ('uuidgen -c') do set PRODUCTCODE=%%i
-echo/
-echo :: Using ProductCode=%PRODUCTCODE%
-
-echo/
-echo :: Harvesting files for MSI
+Rem Generate collect.wxs
 "%WIX%\bin\heat.exe" dir "%HarvestAppDir%" -dr INSTALLDIR -sreg -srd -sfrag -ag -cg ClientFiles -var var.HarvestAppDir -platform='%BuildArch%' -t collect-transform.xsl -out collect.wxs
 if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
-call :build_each_language
+Rem Compile en-US (https://www.firegiant.com/wix/tutorial/transforms/morphing-installers/)
+"%WIX%\bin\candle.exe" -dcodepage=1252 -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs
+if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
 
-call :embed_language_transforms
+Rem Link MSI package
+"%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj -out "@MSI_INSTALLER_FILENAME@"
 
-if NOT "%WILANGID%" == "" (
-  set supported_language_ids=
-  for /f "tokens=1,2 eol=; delims=:" %%i in ("%languages_to_id:;=!LF!%") do (
-    REM join all known language IDs with a comma
-    if "!supported_language_ids!" == "" (
-      REM the first language in the list does not need a comma at the start
-      set supported_language_ids=%%j
-    ) else (
-      set supported_language_ids=!supported_language_ids!,%%j
-    )
-  )
-  echo :: Updating supported languages in MSI Package to !supported_language_ids!
-  cscript "%WILANGID%" "en-us_@MSI_INSTALLER_FILENAME@" Package !supported_language_ids!
-  echo/
-)
-
-REM rename the en-US installer to a non-prefixed file name
-echo :: Finalising MSI build
-rename "en-us_@MSI_INSTALLER_FILENAME@" "@MSI_INSTALLER_FILENAME@"
-echo/
-
-echo :: Done
-exit 0
-
-
-:build_each_language
-  for /f "tokens=1,* eol=; delims=:" %%l in ("%languages:;=!LF!%") do (
-    set codepage=%%l
-    call :compile_msi_for_codepage %%l
-    call :link_msi_for_cultures %%m
-  )
-  exit /b
-
-
-:compile_msi_for_codepage codepage
-  set codepage=%~1
-
-  echo :: Compiling MSI project for codepage !codepage!
-  "%WIX%\bin\candle.exe" -dcodepage=!codepage! -dProductCode=%PRODUCTCODE% -dPlatform=%BuildArch% -arch %BuildArch% -dHarvestAppDir="%HarvestAppDir%" -ext WixUtilExtension NCMsiHelper.wxs WinShellExt.wxs collect.wxs Nextcloud.wxs RegistryCleanupCustomAction.wxs
-  if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
-  echo/
-
-  exit /b
-
-
-:link_msi_for_cultures culture1 culture2 ...
-  set cultures=%*
-
-  for %%c in (%cultures: =!LF!%) do (
-    set culture=%%c
-
-    echo :: Linking MSI project for !culture!
-    "%WIX%\bin\light.exe" -sw1076 -ext WixUIExtension -ext WixUtilExtension -cultures:!culture!;en-us NCMsiHelper.wixobj WinShellExt.wixobj collect.wixobj Nextcloud.wixobj RegistryCleanupCustomAction.wixobj -out "!culture!_@MSI_INSTALLER_FILENAME@"
-    if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
-
-    if NOT "!culture!" == "en-us" (
-      REM en-us is the base language for our installer, no need to create transforms for that
-
-      echo :: Creating MSI transform for !culture!
-      "%WIX%\bin\torch.exe" -p -t language "en-us_@MSI_INSTALLER_FILENAME@" "!culture!_@MSI_INSTALLER_FILENAME@" -out "!culture!.mst"
-      if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
-
-      REM at this point we do not need the translated installer anymore
-      del "!culture!_@MSI_INSTALLER_FILENAME@"
-    )
-
-  )
-  exit /b
-
-
-:embed_language_transforms
-  REM same loop as in :build_each_language, but we don't care about the codepage
-  for /f "tokens=1,* eol=; delims=:" %%l in ("%languages:;=!LF!%") do (
-    call :embed_language_transform %%m
-  )
-  exit /b
-
-
-:embed_language_transform culture1 culture2 ...
-  set cultures=%*
-
-  for %%c in (%cultures: =!LF!%) do (
-    set culture=%%c
-
-    if NOT "!culture!" == "en-us" (
-      REM en-us is the base language for our installer, there is no transform for that
-
-      call :set_language_id_for_culture
-      echo :: Embedding language !culture! with id !language_id! into MSI
-      cscript "%WISUBSTG%" "en-us_@MSI_INSTALLER_FILENAME@" "!culture!.mst" !language_id!
-    )
-  )
-  exit /b
-
-
-:set_language_id_for_culture !culture! needs to be set already
-  set language_id=""
-  for /f "tokens=1,2 eol=; delims=:" %%i in ("%languages_to_id:;=!LF!%") do (
-    if "!culture!" == "%%i" (
-      set language_id=%%j
-      exit /b
-    )
-  )
-  exit /b
+exit %ERRORLEVEL%

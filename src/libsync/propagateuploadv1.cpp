@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "config.h"
@@ -31,21 +39,13 @@ void PropagateUploadFileV1::doStartUpload()
 {
     _chunkCount = int(std::ceil(_fileToUpload._size / double(chunkSize())));
     _startChunk = 0;
-    Q_ASSERT(_item->_modtime > 0);
-    if (_item->_modtime <= 0) {
-        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-    }
-    _transferId = uint(Utility::rand()) ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16);
+    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    Q_ASSERT(_item->_modtime > 0);
-    if (_item->_modtime <= 0) {
-        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-    }
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
-        _startChunk = progressInfo._chunkUploadV1;
+        _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUploadV1) << _item->_file << ": Resuming from chunk " << _startChunk;
     } else if (_chunkCount <= 1 && !_item->_checksumHeader.isEmpty()) {
@@ -54,12 +54,8 @@ void PropagateUploadFileV1::doStartUpload()
         // in reconcile (issue #5106)
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
-        pi._chunkUploadV1 = 0;
+        pi._chunk = 0;
         pi._transferid = 0; // We set a null transfer id because it is not chunked.
-        Q_ASSERT(_item->_modtime > 0);
-        if (_item->_modtime <= 0) {
-            qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-        }
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
@@ -94,11 +90,6 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _fileToUpload._file;
 
-    if (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock &&
-        _item->_locked == SyncFileItem::LockStatus::LockedItem) {
-        headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
-    }
-
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
@@ -107,7 +98,7 @@ void PropagateUploadFileV1::startNextChunk()
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
         uint transid = _transferId ^ uint(chunkSize());
         qCInfo(lcPropagateUploadV1) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
-        path += QStringLiteral("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
+        path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
 
@@ -215,9 +206,6 @@ void PropagateUploadFileV1::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
-        const auto exceptionParsed = getExceptionFromReply(job->reply());
-        _item->_errorExceptionName = exceptionParsed.first;
-        _item->_errorExceptionMessage = exceptionParsed.second;
         return;
     }
 
@@ -256,11 +244,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
     }
 
-    // Check whether the file changed since discovery. the file check here is the original and not the temporary.
-    Q_ASSERT(_item->_modtime > 0);
-    if (_item->_modtime <= 0) {
-        qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-    }
+    // Check whether the file changed since discovery. the file check here is the original and not the temprary.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
@@ -291,19 +275,14 @@ void PropagateUploadFileV1::slotPutFinished()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
-
-        for (auto *job : std::as_const(_jobs)) {
+        foreach (auto *job, _jobs) {
             // Take the minimum finished one
             if (auto putJob = qobject_cast<PUTFileJob *>(job)) {
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
             }
         }
-        pi._chunkUploadV1 = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
+        pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
-        Q_ASSERT(_item->_modtime > 0);
-        if (_item->_modtime <= 0) {
-            qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
-        }
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         pi._contentChecksum = _item->_checksumHeader;
@@ -322,12 +301,6 @@ void PropagateUploadFileV1::slotPutFinished()
             qCWarning(lcPropagateUploadV1) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
-    }
-
-    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
-        if (oldRecord._etag != _item->_etag) {
-            _item->updateLockStateFromDbRecord(oldRecord);
-        }
     }
 
     _item->_etag = etag;
@@ -366,7 +339,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {
         amount -= (_jobs.count() - 1) * chunkSize();
-        for (QObject *j : std::as_const(_jobs)) {
+        foreach (QObject *j, _jobs) {
             amount += j->property("byteWritten").toULongLong();
         }
     } else {

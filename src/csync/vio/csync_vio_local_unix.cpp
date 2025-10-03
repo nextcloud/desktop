@@ -1,10 +1,22 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-FileCopyrightText: 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (c) 2013- by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include <cerrno>
@@ -40,7 +52,8 @@ struct csync_vio_handle_t {
 static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
-    auto handle = std::make_unique<csync_vio_handle_t>();
+    QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
+
     auto dirname = QFile::encodeName(name);
 
     handle->dh = _topendir(dirname.constData());
@@ -49,7 +62,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     }
 
     handle->path = dirname;
-    return handle.release();
+    return handle.take();
 }
 
 int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
@@ -111,8 +124,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   if (vfs) {
       // Directly modifies file_stat->type.
       // We can ignore the return value since we're done here anyway.
-      const auto result = vfs->statTypeVirtualFile(file_stat.get(), &handle->path);
-      Q_UNUSED(result)
+      vfs->statTypeVirtualFile(file_stat.get(), &handle->path);
   }
 
   return file_stat;
@@ -157,7 +169,5 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
   buf->inode = sb.st_ino;
   buf->modtime = sb.st_mtime;
   buf->size = sb.st_size;
-  buf->isPermissionsInvalid = (sb.st_mode & S_IWOTH) == S_IWOTH;
-
   return 0;
 }

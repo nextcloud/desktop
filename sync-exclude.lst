@@ -8,7 +8,6 @@
 ]Icon\r*
 ].DS_Store
 ].ds_store
-*.textClipping
 ._*
 ]Thumbs.db
 ]photothumb.db
@@ -23,7 +22,6 @@ System Volume Information
 ].Trash-*
 .fseventd
 .apdisk
-.Spotlight-V100
 
 .directory
 
@@ -42,12 +40,6 @@ System Volume Information
 *.unison
 .nfs*
 
-# (default) metadata files created by Syncthing
-.stfolder
-.stignore
-.stversions
-
 My Saved Places.
 
-
-*.sb-*
+\#*#

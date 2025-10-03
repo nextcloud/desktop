@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2018 by J-P Nurmi <jpnurmi@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCC_SLIDESHOW_H
@@ -20,7 +29,7 @@ namespace OCC {
 class SlideShow : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(int interval READ interval WRITE setInterval NOTIFY intervalChanged)
+    Q_PROPERTY(int interval READ interval WRITE setInterval)
     Q_PROPERTY(int currentSlide READ currentSlide WRITE setCurrentSlide NOTIFY currentSlideChanged)
 
 public:
@@ -28,15 +37,15 @@ public:
 
     void addSlide(const QPixmap &pixmap, const QString &label);
 
-    [[nodiscard]] bool isActive() const;
+    bool isActive() const;
 
-    [[nodiscard]] int interval() const;
+    int interval() const;
     void setInterval(int interval);
 
-    [[nodiscard]] int currentSlide() const;
+    int currentSlide() const;
     void setCurrentSlide(int index);
 
-    [[nodiscard]] QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
 public slots:
     void startShow(int interval = 0);
@@ -48,7 +57,6 @@ public slots:
 signals:
     void clicked();
     void currentSlideChanged(int index);
-    void intervalChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

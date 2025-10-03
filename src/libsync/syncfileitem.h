@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef SYNCFILEITEM_H
@@ -15,8 +23,7 @@
 
 #include <csync.h>
 
-#include "owncloudlib.h"
-#include "common/syncitemenums.h"
+#include <owncloudlib.h>
 
 namespace OCC {
 
@@ -39,15 +46,14 @@ public:
     };
     Q_ENUM(Direction)
 
-    using EncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus;
-
-    // Note: the order of these statuses is used for ordering in the SortedActivityListModel
     enum Status { // stored in 4 bits
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
         NormalError, ///< Error attached to a particular file
         SoftError, ///< More like an information
+
+        Success, ///< The file was properly synced
 
         /** Marks a conflict, old or new.
          *
@@ -64,17 +70,6 @@ public:
          * The filename is invalid on this platform and could not created.
          */
         FileNameInvalid,
-
-        /**
-         * The filename contains invalid characters and can not be uploaded to the server
-         */
-        FileNameInvalidOnServer,
-
-        /**
-         * There is a file name clash (e.g. attempting to download test.txt when TEST.TXT already exists
-         * on a platform where the filesystem is case-insensitive
-         */
-        FileNameClash,
 
         /** For errors that should only appear in the error view.
          *
@@ -94,17 +89,11 @@ public:
          *
          * A SoftError caused by blacklisting.
          */
-        BlacklistedError,
-
-        Success, ///< The file was properly synced
+        BlacklistedError
     };
     Q_ENUM(Status)
 
-    using LockStatus = SyncFileItemEnums::LockStatus;
-
-    using LockOwnerType = SyncFileItemEnums::LockOwnerType;
-
-    [[nodiscard]] SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
+    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
      *
@@ -112,10 +101,6 @@ public:
      * to go through a a SyncFileItem, like PollJob.
      */
     static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
-
-    /** Creates a basic SyncFileItem from remote properties
-     */
-    [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties, RemotePermissions::MountedPermissionAlgorithm algorithm);
 
 
     SyncFileItem()
@@ -127,6 +112,7 @@ public:
         , _status(NoStatus)
         , _isRestoration(false)
         , _isSelectiveSync(false)
+        , _isEncrypted(false)
     {
     }
 
@@ -169,7 +155,7 @@ public:
         return data1[prefixL] < data2[prefixL];
     }
 
-    [[nodiscard]] QString destination() const
+    QString destination() const
     {
         if (!_renameTarget.isEmpty()) {
             return _renameTarget;
@@ -177,20 +163,20 @@ public:
         return _file;
     }
 
-    [[nodiscard]] bool isEmpty() const
+    bool isEmpty() const
     {
         return _file.isEmpty();
     }
 
-    [[nodiscard]] bool isDirectory() const
+    bool isDirectory() const
     {
-        return _type == ItemTypeDirectory || _type == ItemTypeVirtualDirectory;
+        return _type == ItemTypeDirectory;
     }
 
     /**
      * True if the item had any kind of error.
      */
-    [[nodiscard]] bool hasErrorStatus() const
+    bool hasErrorStatus() const
     {
         return _status == SyncFileItem::SoftError
             || _status == SyncFileItem::NormalError
@@ -201,7 +187,7 @@ public:
     /**
      * Whether this item should appear on the issues tab.
      */
-    [[nodiscard]] bool showInIssuesTab() const
+    bool showInIssuesTab() const
     {
         return hasErrorStatus() || _status == SyncFileItem::Conflict;
     }
@@ -209,16 +195,12 @@ public:
     /**
      * Whether this item should appear on the protocol tab.
      */
-    [[nodiscard]] bool showInProtocolTab() const
+    bool showInProtocolTab() const
     {
         return (!showInIssuesTab() || _status == SyncFileItem::Restoration)
             // Don't show conflicts that were resolved as "not a conflict after all"
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
-
-    [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
-
-    void updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord);
 
     // Variables useful for everybody
 
@@ -265,14 +247,10 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
-    EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted; // The file is E2EE or the content of the directory should be E2EE
-    EncryptionStatus _e2eEncryptionServerCapability = EncryptionStatus::NotEncrypted;
-    EncryptionStatus _e2eEncryptionStatusRemote = EncryptionStatus::NotEncrypted;
+    bool _isEncrypted BITFIELD(1); // The file is E2EE or the content of the directory should be E2EE
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
-    QString _errorExceptionName; // Contains a server exception string only in case of error
-    QString _errorExceptionMessage; // Contains a server exception message string only in case of error
     QByteArray _responseTimeStamp;
     QByteArray _requestId; // X-Request-Id of the failed request
     quint32 _affectedItems = 1; // the number of affected items by the operation on this item.
@@ -300,46 +278,6 @@ public:
 
     QString _directDownloadUrl;
     QString _directDownloadCookies;
-
-    LockStatus _locked = LockStatus::UnlockedItem;
-    QString _lockOwnerId;
-    QString _lockOwnerDisplayName;
-    LockOwnerType _lockOwnerType = LockOwnerType::UserLock;
-    QString _lockEditorApp;
-    qint64 _lockTime = 0;
-    qint64 _lockTimeout = 0;
-    QString _lockToken;
-
-    bool _isShared = false;
-    time_t _lastShareStateFetchedTimestamp = 0;
-
-    bool _sharedByMe = false;
-
-    bool _isFileDropDetected = false;
-
-    bool _isEncryptedMetadataNeedUpdate = false;
-
-    bool _isAnyInvalidCharChild = false;
-    bool _isAnyCaseClashChild = false;
-
-    bool _isLivePhoto = false;
-    QString _livePhotoFile;
-
-    bool isPermissionsInvalid = false;
-
-    QString _discoveryResult;
-
-    /// if true, requests the file to be permanently deleted instead of moved to the trashbin
-    /// only relevant for when `_instruction` is set to `CSYNC_INSTRUCTION_REMOVE`
-    bool _wantsPermanentDeletion = false;
-
-    struct FolderQuota {
-        int64_t bytesUsed = -1;
-        int64_t bytesAvailable = -1;
-        static constexpr char availableBytesC[] = "quota-available-bytes";
-        static constexpr char usedBytesC[] = "quota-used-bytes";
-    };
-    FolderQuota _folderQuota;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

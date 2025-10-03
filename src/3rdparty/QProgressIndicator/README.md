@@ -1,7 +1,3 @@
-<!--
-  - SPDX-FileCopyrightText: 2011 Morgan Leborgne
-  - SPDX-License-Identifier: MIT
--->
 ## Description
 
 The QProgressIndicator class lets an application display a progress indicator to show that a lengthy task is under way.

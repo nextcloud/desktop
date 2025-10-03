@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2017 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
  *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
  */
 
 #include <QtTest>
@@ -35,13 +32,6 @@ class TestAllFilesDeleted : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
 
     void testAllFilesDeletedKeep_data()
     {
@@ -79,11 +69,9 @@ private slots:
                 fakeFolder.syncEngine().journal()->clearFileTable(); // That's what Folder is doing
             });
 
-        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : static_cast<FileModifier&>(fakeFolder.localModifier());
-        const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &key : childrenKeys) {
-            modifier.remove(key);
-        }
+        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
+        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+            modifier.remove(s);
 
         QVERIFY(!fakeFolder.syncOnce()); // Should fail because we cancel the sync
         QCOMPARE(aboutToRemoveAllFilesCalled, 1);
@@ -121,11 +109,9 @@ private slots:
                 callback(false);
             });
 
-        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : static_cast<FileModifier&>(fakeFolder.localModifier());
-        const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &key : childrenKeys) {
-            modifier.remove(key);
-        }
+        auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
+        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+            modifier.remove(s);
 
         QVERIFY(fakeFolder.syncOnce()); // Should succeed, and all files must then be deleted
 
@@ -153,10 +139,8 @@ private slots:
             [&] { QVERIFY(false); });
         QVERIFY(fakeFolder.syncOnce());
 
-        const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &s : childrenKeys) {
+        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
             fakeFolder.syncJournal().avoidRenamesOnNextSync(s); // clears all the fileid and inodes.
-        }
         fakeFolder.localModifier().remove("A/a1");
         auto expectedState = fakeFolder.currentLocalState();
         QVERIFY(fakeFolder.syncOnce());
@@ -191,7 +175,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
 
-        // Do some change locally
+        // Do some change localy
         fakeFolder.localModifier().appendByte("A/a1");
 
         // reset the server.
@@ -226,15 +210,14 @@ private slots:
 
         int fingerprintRequests = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *stream) -> QNetworkReply * {
-            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
             if (verb == "PROPFIND") {
                 auto data = stream->readAll();
                 if (data.contains("data-fingerprint")) {
-                    if (request.url().path().endsWith("dav/files/admin/")) {
+                    if (request.url().path().endsWith("webdav/"))
                         ++fingerprintRequests;
-                    } else {
+                    else
                         fingerprintRequests = -10000; // fingerprint queried on incorrect path
-                    }
                 }
             }
             return nullptr;
@@ -269,7 +252,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fingerprintRequests, 2);
         auto currentState = fakeFolder.currentLocalState();
-        // Although the local file is kept as a conflict, the server file is downloaded
+        // Altough the local file is kept as a conflict, the server file is downloaded
         QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
         auto conflict = findConflict(currentState, "A/a1");
         QVERIFY(conflict);
@@ -335,7 +318,7 @@ private slots:
             QStringList() << "A/" << "B/" << "C/" << "S/");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one locally
+        QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy
         QCOMPARE(fakeFolder.currentRemoteState(), FileInfo::A12_B12_C12_S12()); // Server not changed
         QCOMPARE(aboutToRemoveAllFilesCalled, 0); // But we did not show the popup
     }

@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QInputDialog>
@@ -37,7 +46,16 @@ void HttpCredentialsGui::askFromUserAsync()
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
-        if (type == DetermineAuthTypeJob::Basic) {
+        if (type == DetermineAuthTypeJob::OAuth) {
+            _asyncAuth.reset(new OAuth(_account, this));
+            _asyncAuth->_expectedUser = _account->davUser();
+            connect(_asyncAuth.data(), &OAuth::result,
+                this, &HttpCredentialsGui::asyncAuthResult);
+            connect(_asyncAuth.data(), &OAuth::destroyed,
+                this, &HttpCredentialsGui::authorisationLinkChanged);
+            _asyncAuth->start();
+            emit authorisationLinkChanged();
+        } else if (type == DetermineAuthTypeJob::Basic) {
             showDialog();
         } else {
             // Shibboleth?
@@ -48,11 +66,37 @@ void HttpCredentialsGui::askFromUserAsync()
     job->start();
 }
 
+void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
+    const QString &token, const QString &refreshToken)
+{
+    switch (r) {
+    case OAuth::NotSupported:
+        showDialog();
+        _asyncAuth.reset(nullptr);
+        return;
+    case OAuth::Error:
+        _asyncAuth.reset(nullptr);
+        emit asked();
+        return;
+    case OAuth::LoggedIn:
+        break;
+    }
+
+    ASSERT(_user == user); // ensured by _asyncAuth
+
+    _password = token;
+    _refreshToken = refreshToken;
+    _ready = true;
+    persist();
+    _asyncAuth.reset(nullptr);
+    emit asked();
+}
+
 void HttpCredentialsGui::showDialog()
 {
     QString msg = tr("Please enter %1 password:<br>"
                      "<br>"
-                     "Username: %2<br>"
+                     "User: %2<br>"
                      "Account: %3<br>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(_user),
@@ -64,7 +108,7 @@ void HttpCredentialsGui::showDialog()
     }
     if (!_fetchErrorString.isEmpty()) {
         msg += QLatin1String("<br>")
-            + tr("Reading from keychain failed with error: \"%1\"")
+            + tr("Reading from keychain failed with error: '%1'")
                   .arg(Utility::escape(_fetchErrorString))
             + QLatin1String("<br>");
     }
@@ -84,6 +128,7 @@ void HttpCredentialsGui::showDialog()
     connect(dialog, &QDialog::finished, this, [this, dialog](int result) {
         if (result == QDialog::Accepted) {
             _password = dialog->textValue();
+            _refreshToken.clear();
             _ready = true;
             persist();
         }

@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -33,6 +42,9 @@ public:
         SyncProgressOverallPercent,
         SyncProgressOverallString,
         SyncProgressItemString,
+        WarningCount,
+        SyncRunning,
+        SyncDate,
 
         AddButton, // 1 = enabled; 2 = disabled
         FolderSyncText,
@@ -40,7 +52,7 @@ public:
 
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
-    [[nodiscard]] QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
+    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
         const QModelIndex &index) override;
 

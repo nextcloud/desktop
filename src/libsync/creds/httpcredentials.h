@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_CREDS_HTTP_CREDENTIALS_H
@@ -31,7 +40,7 @@ namespace OCC {
 
    HttpCredentials is then split in HttpCredentials and HttpCredentialsGui.
 
-   This class handles HTTP Basic Auth. But anything that needs GUI to ask the user
+   This class handle both HTTP Basic Auth and OAuth. But anything that needs GUI to ask the user
    is in HttpCredentialsGui.
 
    The authentication mechanism looks like this.
@@ -43,13 +52,13 @@ namespace OCC {
                 v                            }
           slotReadClientCertPEMJobDone       }     There are first 3 QtKeychain jobs to fetch
                 |                             }   the TLS client keys, if any, and the password
-                v                            }
+                v                            }      (or refresh token
           slotReadClientKeyPEMJobDone        }
                 |                           }
                 v
             slotReadJobDone
                 |        |
-                |        +-------> emit fetched()
+                |        +-------> emit fetched()   if OAuth is not used
                 |
                 v
             refreshAccessToken()
@@ -74,22 +83,30 @@ public:
     explicit HttpCredentials(const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
-    [[nodiscard]] QString authType() const override;
-    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
-    [[nodiscard]] bool ready() const override;
+    QString authType() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
     void fetchFromKeychain() override;
     bool stillValid(QNetworkReply *reply) override;
     void persist() override;
-    [[nodiscard]] QString user() const override;
+    QString user() const override;
     // the password or token
-    [[nodiscard]] QString password() const override;
+    QString password() const override;
     void invalidateToken() override;
     void forgetSensitiveData() override;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
+    /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
+     * otherwise return false
+     */
+    bool refreshAccessToken();
+
     // To fetch the user name as early as possible
     void setAccount(Account *account) override;
+
+    // Whether we are using OAuth
+    bool isUsingOAuth() const { return !_refreshToken.isNull(); }
 
     bool retryIfNeeded(AbstractNetworkJob *) override;
 
@@ -131,7 +148,7 @@ protected:
      * If that happens, this function will schedule another try and
      * return true.
      */
-    bool keychainUnavailableRetryLater(QKeychain::ReadPasswordJob *);
+    bool keychainUnavailableRetryLater(QKeychain::Job *);
 
     /** Takes client cert pkcs12 and unwraps the key/cert.
      *
@@ -140,18 +157,21 @@ protected:
     bool unpackClientCertBundle();
 
     QString _user;
-    QString _password; // user's password
+    QString _password; // user's password, or access_token for OAuth
+    QString _refreshToken; // OAuth _refreshToken, set if OAuth is used.
     QString _previousPassword;
 
     QString _fetchErrorString;
     bool _ready = false;
-
+    bool _isRenewingOAuthToken = false;
     QByteArray _clientCertBundle;
     QByteArray _clientCertPassword;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
     bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
+
+    QVector<QPointer<AbstractNetworkJob>> _retryQueue; // Jobs we need to retry once the auth token is fetched
 };
 
 

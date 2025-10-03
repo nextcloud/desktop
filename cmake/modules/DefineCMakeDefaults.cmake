@@ -1,6 +1,4 @@
-# SPDX-FileCopyrightText: 2014 ownCloud GmbH
-# SPDX-License-Identifier: BSD-3-Clause
-#
+# (c) 2014 Copyright ownCloud GmbH
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 
@@ -27,5 +25,3 @@ set(GENERIC_LIB_SOVERSION "0")
 # set -Werror
 set(CMAKE_ENABLE_WERROR ON)
 
-# enables folders for targets to be visible in an IDE
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)

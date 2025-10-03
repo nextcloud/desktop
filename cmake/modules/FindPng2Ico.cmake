@@ -40,9 +40,6 @@
 # Since 1.7.0.
 
 #=============================================================================
-# SPDX-FileCopyrightText: 2014 Alex Merry <alex.merry@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
-#
 # Copyright 2014 Alex Merry <alex.merry@kde.org>
 #
 # Redistribution and use in source and binary forms, with or without

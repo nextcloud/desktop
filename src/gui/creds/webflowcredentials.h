@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #ifndef WEBFLOWCREDENTIALS_H
 #define WEBFLOWCREDENTIALS_H
 
@@ -48,12 +43,12 @@ public:
             const QSslKey &key = QSslKey(),
             const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
 
-    [[nodiscard]] QString authType() const override;
-    [[nodiscard]] QString user() const override;
-    [[nodiscard]] QString password() const override;
-    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
+    QString authType() const override;
+    QString user() const override;
+    QString password() const override;
+    QNetworkAccessManager *createQNAM() const override;
 
-    [[nodiscard]] bool ready() const override;
+    bool ready() const override;
 
     void fetchFromKeychain() override;
     void askFromUser() override;

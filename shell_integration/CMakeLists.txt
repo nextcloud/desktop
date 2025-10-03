@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2012 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 if (APPLE)
   add_subdirectory(MacOSX)
 endif()
@@ -14,12 +11,11 @@ if( UNIX AND NOT APPLE )
   endif()
 
   if(BUILD_SHELL_INTEGRATION_DOLPHIN)
-    find_package(KF5KIO "5.16" CONFIG QUIET)
-    find_package(KF6KIO "5.240" CONFIG QUIET)
-    if(KF5KIO_FOUND OR KF6KIO_FOUND)
+    find_package(KF5KIO "5.16")
+    if(KF5KIO_FOUND)
       add_subdirectory(dolphin)
     else()
-      message("Dolphin plugin disabled: KDE Frameworks 5 and 6 not found")
+      message("Dolphin plugin disabled: KDE Frameworks 5.16 not found")
     endif()
   endif()
 endif()

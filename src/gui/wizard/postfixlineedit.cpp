@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2016 by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QStyle>
@@ -24,7 +32,7 @@ void PostfixLineEdit::setPostfix(const QString &postfix)
     _postfix = postfix;
     QFontMetricsF fm(font());
     QMargins tm = textMargins();
-    tm.setRight(tm.right() + qRound(fm.horizontalAdvance(_postfix)) + verticalMargin);
+    tm.setRight(tm.right() + qRound(fm.width(_postfix)) + verticalMargin);
     setTextMargins(tm);
 }
 
@@ -55,7 +63,7 @@ void PostfixLineEdit::paintEvent(QPaintEvent *pe)
     //
     p.setPen(palette().color(QPalette::Disabled, QPalette::Text));
     QFontMetricsF fm(font());
-    int start = rect().right() - qRound(fm.horizontalAdvance(_postfix));
+    int start = rect().right() - qRound(fm.width(_postfix));
     QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);

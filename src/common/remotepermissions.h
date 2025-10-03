@@ -1,7 +1,19 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2017 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #pragma once
@@ -29,53 +41,40 @@ private:
 
 public:
     enum Permissions {
-        CanRead = 1,              // G
-        CanWrite,                 // W
-        CanDelete,                // D
-        CanRename,                // N
-        CanMove,                  // V
-        CanAddFile,               // C
-        CanAddSubDirectories,     // K
-        CanReshare,               // R
+        CanWrite = 1,             // W
+        CanDelete = 2,            // D
+        CanRename = 3,            // N
+        CanMove = 4,              // V
+        CanAddFile = 5,           // C
+        CanAddSubDirectories = 6, // K
+        CanReshare = 7,           // R
         // Note: on the server, this means SharedWithMe, but in discoveryphase.cpp we also set
         // this permission when the server reports the any "share-types"
-        IsShared,                 // S
-        IsMounted,                // M
-        IsMountedSub,             // m (internal: set if the parent dir has IsMounted)
+        IsShared = 8,             // S
+        IsMounted = 9,            // M
+        IsMountedSub = 10,        // m (internal: set if the parent dir has IsMounted)
 
         // Note: when adding support for more permissions, we need to invalid the cache in the database.
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)
         PermissionsCount = IsMountedSub
     };
 
-    enum class MountedPermissionAlgorithm {
-        UseMountRootProperty,
-        WildGuessMountedSubProperty,
-    };
-
     /// null permissions
     RemotePermissions() = default;
 
     /// array with one character per permission, "" is null, " " is non-null but empty
-    [[nodiscard]] QByteArray toDbValue() const;
+    QByteArray toDbValue() const;
 
     /// output for display purposes, no defined format (same as toDbValue in practice)
-    [[nodiscard]] QString toString() const;
+    QString toString() const;
 
     /// read value that was written with toDbValue()
     static RemotePermissions fromDbValue(const QByteArray &);
 
     /// read a permissions string received from the server, never null
-    static RemotePermissions fromServerString(const QString &value,
-                                              MountedPermissionAlgorithm algorithm = MountedPermissionAlgorithm::WildGuessMountedSubProperty,
-                                              const QMap<QString, QString> &otherProperties = {});
+    static RemotePermissions fromServerString(const QString &);
 
-    /// read a permissions string received from the server, never null
-    static RemotePermissions fromServerString(const QString &value,
-                                              MountedPermissionAlgorithm algorithm,
-                                              const QVariantMap &otherProperties = {});
-
-    [[nodiscard]] bool hasPermission(Permissions p) const
+    bool hasPermission(Permissions p) const
     {
         return _value & (1 << static_cast<int>(p));
     }
@@ -88,7 +87,7 @@ public:
         _value &= ~(1 << static_cast<int>(p));
     }
 
-    [[nodiscard]] bool isNull() const { return !(_value & notNullMask); }
+    bool isNull() const { return !(_value & notNullMask); }
     friend bool operator==(RemotePermissions a, RemotePermissions b)
     {
         return a._value == b._value;
@@ -100,15 +99,8 @@ public:
 
     friend QDebug operator<<(QDebug &dbg, RemotePermissions p)
     {
-        return dbg << p.toString();
+        return dbg << p.toString().constData();
     }
-
-private:
-
-    template <typename T>
-    static RemotePermissions internalFromServerString(const QString &value,
-                                                      const T&otherProperties,
-                                                      MountedPermissionAlgorithm algorithm);
 };
 
 

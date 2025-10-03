@@ -1,11 +1,12 @@
-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2012 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 include( InstallRequiredSystemLibraries )
 
 set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 
-include("${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake")
+if ( DEFINED OEM_THEME_DIR AND EXISTS ${OEM_THEME_DIR}/OEM.cmake )
+     include ( "${OEM_THEME_DIR}/OEM.cmake" )
+else ()
+     include ( "${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake" )
+endif()
 
 include( VERSION.cmake )
 set( CPACK_PACKAGE_VERSION_MAJOR  ${MIRALL_VERSION_MAJOR} )

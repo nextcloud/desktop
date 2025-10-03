@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #include "webviewpage.h"
 
 #include <QWebEngineUrlRequestJob>
@@ -11,11 +6,10 @@
 #include <QNetworkProxyFactory>
 #include <QScreen>
 
-#include "account.h"
-#include "common/utility.h"
-#include "creds/webflowcredentials.h"
 #include "owncloudwizard.h"
+#include "creds/webflowcredentials.h"
 #include "webview.h"
+#include "account.h"
 
 namespace OCC {
 
@@ -31,8 +25,8 @@ WebViewPage::WebViewPage(QWidget *parent)
     _webView = new WebView(this);
 
     auto *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(_webView, 1);
+    layout->setMargin(0);
+    layout->addWidget(_webView);
     setLayout(layout);
 
     connect(_webView, &WebView::urlCatched, this, &WebViewPage::urlCatched);
@@ -52,7 +46,11 @@ void WebViewPage::initializePage() {
     if (_ocWizard->registration()) {
         url = "https://nextcloud.com/register";
     } else {
-        url = Utility::trailingSlashPath(_ocWizard->ocUrl()) + "index.php/login/flow";
+        url = _ocWizard->ocUrl();
+        if (!url.endsWith('/')) {
+            url += "/";
+        }
+        url += "index.php/login/flow";
     }
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
@@ -94,6 +92,10 @@ void WebViewPage::cleanupPage()
 {
     _ocWizard->resize(_originalWizardSize);
     _ocWizard->centerWindow();
+}
+
+int WebViewPage::nextId() const {
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 bool WebViewPage::isComplete() const {

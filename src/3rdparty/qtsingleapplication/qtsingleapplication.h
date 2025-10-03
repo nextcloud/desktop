@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
-** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.
@@ -45,14 +44,15 @@ class QtSingleApplication : public QApplication
 
 public:
     QtSingleApplication(const QString &id, int &argc, char **argv);
-    ~QtSingleApplication() override;
+    ~QtSingleApplication();
 
     bool isRunning(qint64 pid = -1);
 
     void setActivationWindow(QWidget* aw, bool activateOnMessage = true);
-    [[nodiscard]] QWidget* activationWindow() const;
+    QWidget* activationWindow() const;
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
 
-    [[nodiscard]] QString applicationId() const;
+    QString applicationId() const;
     void setBlock(bool value);
 
 public Q_SLOTS:
@@ -66,9 +66,9 @@ Q_SIGNALS:
 private:
     QString instancesFileName(const QString &appId);
 
-    qint64 firstPeer = -1;
+    qint64 firstPeer;
     QSharedMemory *instances;
-    QtLocalPeer *pidPeer = nullptr;
+    QtLocalPeer *pidPeer;
     QWidget *actWin;
     QString appId;
     bool block;

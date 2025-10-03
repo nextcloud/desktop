@@ -1,69 +1,10 @@
 <RCC>
     <qresource prefix="/qml">
-        <file>src/gui/UserStatusMessageView.qml</file>
-        <file>src/gui/UserStatusSelectorPage.qml</file>
-        <file>src/gui/EmojiPicker.qml</file>
-        <file>src/gui/UserStatusSelectorButton.qml</file>
-        <file>src/gui/UserStatusSetStatusView.qml</file>
-        <file>src/gui/PredefinedStatusButton.qml</file>
-        <file>src/gui/ErrorBox.qml</file>
-        <file>src/gui/filedetails/FileActivityView.qml</file>
-        <file>src/gui/filedetails/FileDetailsPage.qml</file>
-        <file>src/gui/filedetails/FileDetailsView.qml</file>
-        <file>src/gui/filedetails/FileDetailsWindow.qml</file>
-        <file>src/gui/filedetails/FileTag.qml</file>
-        <file>src/gui/filedetails/NCInputDateField.qml</file>
-        <file>src/gui/filedetails/NCInputTextArea.qml</file>
-        <file>src/gui/filedetails/NCInputTextField.qml</file>
-        <file>src/gui/filedetails/NCTabButton.qml</file>
-        <file>src/gui/filedetails/ShareeDelegate.qml</file>
-        <file>src/gui/filedetails/ShareDelegate.qml</file>
-        <file>src/gui/filedetails/ShareDetailsPage.qml</file>
-        <file>src/gui/filedetails/ShareeSearchField.qml</file>
-        <file>src/gui/filedetails/ShareView.qml</file>
-        <file>src/gui/tray/MainWindow.qml</file>
+        <file>src/gui/tray/Window.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
-        <file>src/gui/tray/SyncStatus.qml</file>
-        <file>src/gui/tray/ActivityItem.qml</file>
-        <file>src/gui/tray/AutoSizingMenu.qml</file>
-        <file>src/gui/tray/ActivityList.qml</file>
-        <file>src/gui/tray/CurrentAccountHeaderButton.qml</file>
-        <file>src/gui/tray/TrayWindowHeader.qml</file>
-        <file>src/gui/tray/UnifiedSearchInputContainer.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultItem.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultItemSkeleton.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultItemSkeletonContainer.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultItemSkeletonGradientRectangle.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
-        <file>src/gui/tray/UnifiedSearchPlaceholderView.qml</file>
-        <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
-        <file>src/gui/tray/ActivityItemContextMenu.qml</file>
-        <file>src/gui/tray/ActivityItemActions.qml</file>
-        <file>src/gui/tray/ActivityItemContent.qml</file>
-        <file>src/gui/tray/TalkReplyTextField.qml</file>
-        <file>src/gui/tray/CallNotificationDialog.qml</file>
-        <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
-        <file>src/gui/tray/EncryptionTokenDiscoveryDialog.qml</file>
-        <file>src/gui/tray/NCBusyIndicator.qml</file>
-        <file>src/gui/tray/NCIconWithBackgroundImage.qml</file>
-        <file>src/gui/tray/NCToolTip.qml</file>
-        <file>src/gui/tray/NCProgressBar.qml</file>
-        <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
-        <file>src/gui/tray/ListItemLineAndSubline.qml</file>
-        <file>src/gui/tray/TrayFoldersMenuButton.qml</file>
-        <file>src/gui/tray/TrayFolderListItem.qml</file>
-        <file>src/gui/ResolveConflictsDialog.qml</file>
-        <file>src/gui/ConflictDelegate.qml</file>
-        <file>src/gui/ConflictItemFileInfo.qml</file>
-        <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
-        <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
-        <file>src/gui/macOS/ui/FileProviderEvictionDialog.qml</file>
-        <file>src/gui/macOS/ui/FileProviderSyncStatus.qml</file>
-        <file>src/gui/macOS/ui/FileProviderStorageInfo.qml</file>
+        <file>src/gui/tray/ActivityActionButton.qml</file>
     </qresource>
 </RCC>

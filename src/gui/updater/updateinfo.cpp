@@ -84,11 +84,13 @@ UpdateInfo UpdateInfo::parseElement(const QDomElement &element, bool *ok)
 
 UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
 {
+    QString errorMsg;
+    int errorLine = 0, errorCol = 0;
     QDomDocument doc;
-    if (const auto result = doc.setContent(xml); !result) {
-        qCWarning(lcUpdater).noquote().nospace() << result.errorMessage << " at " << result.errorLine << "," << result.errorColumn
-                                << "\n" <<  xml.split("\n").value(result.errorLine - 1) << "\n"
-                                << QStringLiteral(" ").repeated(result.errorColumn - 1) << "^\n"
+    if (!doc.setContent(xml, false, &errorMsg, &errorLine, &errorCol)) {
+        qCWarning(lcUpdater).noquote().nospace() << errorMsg << " at " << errorLine << "," << errorCol
+                                << "\n" <<  xml.splitRef("\n").value(errorLine-1) << "\n"
+                                << QString(" ").repeated(errorCol - 1) << "^\n"
                                 << "->" << xml << "<-";
         if (ok)
             *ok = false;

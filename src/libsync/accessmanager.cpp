@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QLoggingCategory>
@@ -12,7 +20,7 @@
 #include <QSslConfiguration>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
-#include <QNetworkInformation>
+#include <QNetworkConfiguration>
 #include <QUuid>
 
 #include "cookiejar.h"
@@ -27,25 +35,25 @@ Q_LOGGING_CATEGORY(lcAccessManager, "nextcloud.sync.accessmanager", QtInfoMsg)
 AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
+#if defined(Q_OS_MAC)
+    // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
+    QNetworkProxy proxy = this->proxy();
+    proxy.setHostName(" ");
+    setProxy(proxy);
+#endif
+
+#ifndef Q_OS_LINUX
+    // Atempt to workaround for https://github.com/owncloud/client/issues/3969
+    setConfiguration(QNetworkConfiguration());
+#endif
     setCookieJar(new CookieJar);
-
-    // Enable HSTS (HTTP Strict Transport Security) for all connections
-    enableStrictTransportSecurityStore(true);
-    setStrictTransportSecurityEnabled(true);
-
-    connect(this, &QNetworkAccessManager::authenticationRequired, this, [](QNetworkReply *reply, QAuthenticator *authenticator) {
-        Q_UNUSED(reply)
-
-        if (authenticator->user().isEmpty()) {
-            qCWarning(lcAccessManager) << "Server requested authentication and we didn't provide a user";
-            authenticator->setUser(QUuid::createUuid().toString());
-        }
-    });
 }
 
 QByteArray AccessManager::generateRequestId()
 {
-    return QUuid::createUuid().toByteArray(QUuid::WithoutBraces);
+    // Use a UUID with the starting and ending curly brace removed.
+    auto uuid = QUuid::createUuid().toByteArray();
+    return uuid.mid(1, uuid.size() - 2);
 }
 
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
@@ -78,7 +86,7 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
         // http2 seems to cause issues, as with our recommended server setup we don't support http2, disable it by default for now
         static const bool http2EnabledEnv = qEnvironmentVariableIntValue("OWNCLOUD_HTTP2_ENABLED") == 1;
 
-        newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, http2EnabledEnv);
+        newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, http2EnabledEnv);
     }
 #endif
 

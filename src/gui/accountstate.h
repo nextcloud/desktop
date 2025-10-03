@@ -1,24 +1,30 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
+
 
 #ifndef ACCOUNTINFO_H
 #define ACCOUNTINFO_H
 
-#include "connectionvalidator.h"
-#include "creds/abstractcredentials.h"
-
 #include <QByteArray>
 #include <QElapsedTimer>
 #include <QPointer>
-#include <QTimer>
-
+#include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
+#include "userstatus.h"
 #include <memory>
 
 class QSettings;
-class FakeAccountState;
 
 namespace OCC {
 
@@ -38,7 +44,6 @@ class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
     Q_PROPERTY(AccountPtr account MEMBER _account)
-    Q_PROPERTY(State state READ state NOTIFY stateChanged)
 
 public:
     enum State {
@@ -56,10 +61,6 @@ public:
         /// don't bother the user too much and try again.
         ServiceUnavailable,
 
-        /// Connection is being redirected (likely a captive portal is in effect)
-        /// Do not proceed with connecting and check back later
-        RedirectDetected,
-
         /// Similar to ServiceUnavailable, but we know the server is down
         /// for maintenance
         MaintenanceMode,
@@ -73,18 +74,27 @@ public:
         ConfigurationError,
 
         /// We are currently asking the user for credentials
-        AskingCredentials,
-
-        /// Need to sign terms of service by going to web UI
-        NeedToSignTermsOfService,
+        AskingCredentials
     };
 
     /// The actual current connectivity status.
     using ConnectionStatus = ConnectionValidator::Status;
 
     /// Use the account as parent
-    explicit AccountState(const AccountPtr &account);
-    ~AccountState() override;
+    explicit AccountState(AccountPtr account);
+    ~AccountState();
+
+    /** Creates an account state from settings and an Account object.
+     *
+     * Use from AccountManager with a prepared QSettings object only.
+     */
+    static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
+
+    /** Writes account state information to settings.
+     *
+     * It does not write the Account data.
+     */
+    void writeToSettings(QSettings &settings);
 
     AccountPtr account() const;
 
@@ -117,8 +127,6 @@ public:
     void signIn();
 
     bool isConnected() const;
-
-    bool needsToSignTermsOfService() const;
 
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
@@ -154,73 +162,69 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the notifications status retrieved by the notifications endpoint
+    /** Returns the user status (Online, Dnd, Away, Offline, Invisible)
+     *  https://gist.github.com/georgehrke/55a0412007f13be1551d1f9436a39675
+    */
+    UserStatus::Status status() const;
+
+    /** Returns the user status Message (emoji + text)
+    */
+    QString statusMessage() const;
+
+    /** Returns the user status icon url
+    */
+    QUrl statusIcon() const;
+
+    /** Returns the notifications status retrieved by the notificatons endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
     bool isDesktopNotificationsAllowed() const;
 
-    /** Set desktop notifications status retrieved by the notifications endpoint
+    /** Set desktop notifications status retrieved by the notificatons endpoint
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
 
-    ConnectionStatus lastConnectionStatus() const;
-    
-    void trySignIn();
-
-    void systemOnlineConfigurationChanged();
+    /** Fetch the user status (status, icon, message)
+    */
+    void fetchUserStatus();
 
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
-    virtual void checkConnectivity();
+    void checkConnectivity();
 
 private:
-    virtual void setState(State state);
+    void setState(State state);
     void fetchNavigationApps();
 
-    int retryCount() const;
-    void increaseRetryCount();
-    void resetRetryCount();
-
 signals:
-    void stateChanged(OCC::AccountState::State state);
+    void stateChanged(State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
     void statusChanged();
-    void desktopNotificationsAllowedChanged();
-    void termsOfServiceChanged(OCC::AccountPtr account, AccountState::State state);
 
 protected Q_SLOTS:
-    void slotConnectionValidatorResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
+    void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
 
     /// When client gets a 401 or 403 checks if server requested remote wipe
     /// before asking for user credentials again
     void slotHandleRemoteWipeCheck();
 
-    void slotCredentialsFetched(OCC::AbstractCredentials *creds);
-    void slotCredentialsAsked(OCC::AbstractCredentials *creds);
+    void slotCredentialsFetched(AbstractCredentials *creds);
+    void slotCredentialsAsked(AbstractCredentials *creds);
 
     void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
     void slotOcsError(int statusCode, const QString &message);
 
-private Q_SLOTS:
-
-    void slotCheckConnection();
-    void slotCheckServerAvailibility();
-    void slotPushNotificationsReady();
-    void slotServerUserStatusChanged();
-
 private:
     AccountPtr _account;
     State _state;
     ConnectionStatus _connectionStatus;
-    ConnectionStatus _lastConnectionValidatorStatus = ConnectionStatus::Undefined;
     QStringList _connectionErrors;
-    bool _waitingForNewCredentials = false;
+    bool _waitingForNewCredentials;
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
-    TermsOfServiceChecker _termsOfServiceChecker;
     QByteArray _notificationsEtagResponseHeader;
     QByteArray _navigationAppsEtagResponseHeader;
 
@@ -234,31 +238,21 @@ private:
     /**
      * Milliseconds for which to delay reconnection after 503/maintenance.
      */
-    int _maintenanceToConnectedDelay = 0;
+    int _maintenanceToConnectedDelay;
 
     /**
      * Connects remote wipe check with the account
      * the log out triggers the check (loads app password -> create request)
      */
-    RemoteWipe *_remoteWipe = nullptr;
+    RemoteWipe *_remoteWipe;
 
     /**
      * Holds the App names and URLs available on the server
      */
     AccountAppList _apps;
 
-    bool _isDesktopNotificationsAllowed = false;
-
-    int _retryCount = 0;
-
-    QTimer _checkConnectionTimer;
-    QElapsedTimer _lastCheckConnectionTimer;
-
-    QTimer _checkServerAvailibilityTimer;
-
-    explicit AccountState() = default;
-
-    friend class ::FakeAccountState;
+    UserStatus *_userStatus;
+    bool _isDesktopNotificationsAllowed;
 };
 
 class AccountApp : public QObject
@@ -269,10 +263,10 @@ public:
         const QString &id, const QUrl &iconUrl,
         QObject* parent = nullptr);
 
-    [[nodiscard]] QString name() const;
-    [[nodiscard]] QUrl url() const;
-    [[nodiscard]] QString id() const;
-    [[nodiscard]] QUrl iconUrl() const;
+    QString name() const;
+    QUrl url() const;
+    QString id() const;
+    QUrl iconUrl() const;
 
 private:
     QString _name;

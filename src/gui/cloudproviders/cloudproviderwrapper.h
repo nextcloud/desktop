@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Julius Härtl <jus@bitgrid.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef CLOUDPROVIDER_H
@@ -29,10 +38,8 @@ class CloudProviderWrapper : public QObject
 {
     Q_OBJECT
 public:
-    static int preferredTextWidth;
-
     explicit CloudProviderWrapper(QObject *parent = nullptr, Folder *folder = nullptr, int folderId = 0, CloudProvidersProviderExporter* cloudprovider = nullptr);
-    ~CloudProviderWrapper() override;
+    ~CloudProviderWrapper();
     CloudProvidersAccountExporter* accountExporter();
     Folder* folder();
     GMenuModel* getMenuModel();
@@ -42,9 +49,9 @@ public:
 
 public slots:
     void slotSyncStarted();
-    void slotSyncFinished(const OCC::SyncResult &);
-    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
-    void slotSyncPausedChanged(OCC::Folder*, bool);
+    void slotSyncFinished(const SyncResult &);
+    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
+    void slotSyncPausedChanged(Folder*, bool);
 
 private:
     Folder *_folder;

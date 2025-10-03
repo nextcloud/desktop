@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2018 by J-P Nurmi <jpnurmi@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "slideshow.h"
@@ -9,6 +18,8 @@
 #include <QPainter>
 #include <QStyle>
 #include <QStyleHints>
+
+#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
 
 namespace OCC {
 
@@ -19,7 +30,6 @@ static const int SlideDistance = 400;
 SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setStyleSheet(QStringLiteral("font: bold 18pt"));
 }
 
 void SlideShow::addSlide(const QPixmap &pixmap, const QString &label)
@@ -46,8 +56,6 @@ void SlideShow::setInterval(int interval)
 
     _interval = interval;
     maybeRestartTimer();
-
-    emit intervalChanged();
 }
 
 int SlideShow::currentSlide() const
@@ -65,7 +73,7 @@ void SlideShow::setCurrentSlide(int index)
         _animation->setDuration(SlideDuration);
         _animation->setEasingCurve(QEasingCurve::OutCubic);
         _animation->setStartValue(static_cast<qreal>(_currentIndex));
-        connect(_animation.data(), &QVariantAnimation::valueChanged, this, qOverload<>(&SlideShow::update));
+        connect(_animation.data(), SIGNAL(valueChanged(QVariant)), this, SLOT(update()));
     }
     _animation->setEndValue(static_cast<qreal>(index));
     _animation->start(QAbstractAnimation::DeleteWhenStopped);
@@ -79,20 +87,20 @@ void SlideShow::setCurrentSlide(int index)
 
 QSize SlideShow::sizeHint() const
 {
-    const auto fm = fontMetrics();
-    QSize labelSize;
-    for (const auto &label : _labels) {
-        const auto labelBoundingRect = fm.boundingRect(rect(), Qt::TextWordWrap, label);
-        labelSize.setWidth(std::max(labelBoundingRect.width(), labelSize.width()));
-        labelSize.setHeight(std::max(labelBoundingRect.height(), labelSize.height()));
+    QFontMetrics fm = fontMetrics();
+    QSize labelSize(0, fm.height());
+    for (const QString &label : _labels) {
+#if (HASQT5_11)
+        labelSize.setWidth(std::max(fm.horizontalAdvance(label), labelSize.width()));
+#else
+        labelSize.setWidth(std::max(fm.width(label), labelSize.width()));
+#endif
     }
-
     QSize pixmapSize;
-    for (const auto &pixmap : _pixmaps) {
+    for (const QPixmap &pixmap : _pixmaps) {
         pixmapSize.setWidth(std::max(pixmap.width(), pixmapSize.width()));
         pixmapSize.setHeight(std::max(pixmap.height(), pixmapSize.height()));
     }
-
     return {
         std::max(labelSize.width(), pixmapSize.width()),
         labelSize.height() + Spacing + pixmapSize.height()
@@ -181,29 +189,14 @@ void SlideShow::maybeRestartTimer()
 }
 
 void SlideShow::drawSlide(QPainter *painter, int index)
-{    
-    const auto label = _labels.value(index);
-    const auto labelRect = style()->itemTextRect(fontMetrics(),
-                                                 rect(),
-                                                 Qt::AlignBottom | Qt::AlignHCenter | Qt::TextWordWrap,
-                                                 isEnabled(),
-                                                 label);
-    style()->drawItemText(painter,
-                          labelRect,
-                          Qt::AlignCenter | Qt::TextWordWrap,
-                          palette(),
-                          isEnabled(),
-                          label,
-                          QPalette::WindowText);
+{
+    QString label = _labels.value(index);
+    QRect labelRect = style()->itemTextRect(fontMetrics(), rect(), Qt::AlignBottom | Qt::AlignHCenter, isEnabled(), label);
+    style()->drawItemText(painter, labelRect, Qt::AlignCenter, palette(), isEnabled(), label, QPalette::WindowText);
 
-    const auto pixmap = _pixmaps.value(index);
-    const auto pixmapRect = style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing),
-                                                    Qt::AlignCenter,
-                                                    pixmap);
-    style()->drawItemPixmap(painter,
-                            pixmapRect,
-                            Qt::AlignCenter,
-                            pixmap);
+    QPixmap pixmap = _pixmaps.value(index);
+    QRect pixmapRect = style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing), Qt::AlignCenter, pixmap);
+    style()->drawItemPixmap(painter, pixmapRect, Qt::AlignCenter, pixmap);
 }
 
 } // namespace OCC

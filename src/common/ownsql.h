@@ -1,7 +1,19 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef OWNSQL_H
@@ -38,7 +50,7 @@ public:
     bool transaction();
     bool commit();
     void close();
-    [[nodiscard]] QString error() const;
+    QString error() const;
     sqlite3 *sqliteDb();
 
 private:
@@ -92,6 +104,12 @@ public:
     explicit SqlQuery(SqlDatabase &db);
     explicit SqlQuery(const QByteArray &sql, SqlDatabase &db);
     /**
+     * Prepare the SqlQuery if it was not prepared yet.
+     * Otherwise, clear the results and the bindings.
+     * return false if there is an error
+     */
+    bool initOrReset(const QByteArray &sql, SqlDatabase &db);
+    /**
      * Prepare the SqlQuery.
      * If the query was already prepared, this will first call finish(), and re-prepare it.
      * This function must only be used if the constructor was setting a SqlDatabase
@@ -99,8 +117,8 @@ public:
     int prepare(const QByteArray &sql, bool allow_failure = false);
 
     ~SqlQuery();
-    [[nodiscard]] QString error() const;
-    [[nodiscard]] int errorId() const;
+    QString error() const;
+    int errorId() const;
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
@@ -123,37 +141,37 @@ public:
     template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
+        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, static_cast<int>(value));
     }
 
     template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
+        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, value);
     }
 
     void bindValue(int pos, const QByteArray &value)
     {
+        qCDebug(lcSql) << "SQL bind" << pos << QString::fromUtf8(value);
         bindValueInternal(pos, value);
     }
 
-    [[nodiscard]] const QByteArray &lastQuery() const;
+    const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
+    void finish();
 
 private:
     void bindValueInternal(int pos, const QVariant &value);
-    void finish();
 
     SqlDatabase *_sqldb = nullptr;
     sqlite3 *_db = nullptr;
     sqlite3_stmt *_stmt = nullptr;
     QString _error;
-    int _errId = 0;
+    int _errId;
     QByteArray _sql;
-
-    friend class SqlDatabase;
-    friend class PreparedSqlQueryManager;
 };
 
 } // namespace OCC

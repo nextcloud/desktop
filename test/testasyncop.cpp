@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
  *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
  */
 
 #include <QtTest>
@@ -50,13 +47,6 @@ class TestAsyncOp : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
 
     void asyncUploadOperations()
     {
@@ -64,7 +54,7 @@ private slots:
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } } });
         // Reduce max chunk size a bit so we get more chunks
         SyncOptions options;
-        options.setMaxChunkSize(20 * 1000);
+        options._maxChunkSize = 20 * 1000;
         fakeFolder.syncEngine().setSyncOptions(options);
         int nGET = 0;
 
@@ -103,7 +93,7 @@ private slots:
                     return FakePutReply::perform(fakeFolder.remoteModifier(), request, putPayload);
                 };
                 return new FakeAsyncReply("/async-poll/" + file.toUtf8(), op, request, &fakeFolder.syncEngine());
-            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QString file = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
                 Q_ASSERT(testCases.contains(file));
                 auto &testCase = testCases[file];
@@ -154,19 +144,20 @@ private slots:
             testCases[file] = { std::move(cb) };
         };
         fakeFolder.localModifier().mkdir("success");
-        insertFile("success/chunked_success", options.maxChunkSize() * 3, successCallback);
+        insertFile("success/chunked_success", options._maxChunkSize * 3, successCallback);
         insertFile("success/single_success", 300, successCallback);
-        insertFile("success/chunked_patience", options.maxChunkSize() * 3, waitAndChain(waitAndChain(successCallback)));
+        insertFile("success/chunked_patience", options._maxChunkSize * 3,
+            waitAndChain(waitAndChain(successCallback)));
         insertFile("success/single_patience", 300,
             waitAndChain(waitAndChain(successCallback)));
         fakeFolder.localModifier().mkdir("err");
-        insertFile("err/chunked_error", options.maxChunkSize() * 3, errorCallback);
+        insertFile("err/chunked_error", options._maxChunkSize * 3, errorCallback);
         insertFile("err/single_error", 300, errorCallback);
-        insertFile("err/chunked_error2", options.maxChunkSize() * 3, waitAndChain(errorCallback));
+        insertFile("err/chunked_error2", options._maxChunkSize * 3, waitAndChain(errorCallback));
         insertFile("err/single_error2", 300, waitAndChain(errorCallback));
 
         // First sync should finish by itself.
-        // All the things in "success/" should be transferred, the things in "err/" not
+        // All the things in "success/" should be transfered, the things in "err/" not
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
         QCOMPARE(*fakeFolder.currentLocalState().find("success"),
@@ -180,12 +171,13 @@ private slots:
         fakeFolder.localModifier().mkdir("waiting");
         insertFile("waiting/small", 300, waitForeverCallback);
         insertFile("waiting/willNotConflict", 300, waitForeverCallback);
-        insertFile("waiting/big", options.maxChunkSize() * 3, waitAndChain(waitAndChain([&](TestCase *tc, const QNetworkRequest &request) {
-                       QTimer::singleShot(0, &fakeFolder.syncEngine(), &SyncEngine::abort);
-                       return waitAndChain(waitForeverCallback)(tc, request);
-                   })));
+        insertFile("waiting/big", options._maxChunkSize * 3,
+            waitAndChain(waitAndChain([&](TestCase *tc, const QNetworkRequest &request) {
+                QTimer::singleShot(0, &fakeFolder.syncEngine(), &SyncEngine::abort);
+                return waitAndChain(waitForeverCallback)(tc, request);
+            })));
 
-        QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
+        fakeFolder.syncJournal().wipeErrorBlacklist();
 
         // This second sync will redo the files that had errors
         // But the waiting folder will not complete before it is aborted.
@@ -224,7 +216,7 @@ private slots:
                 nGET++;
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 nDELETE++;
-            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 nMOVE++;
             }
             return nullptr;

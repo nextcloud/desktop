@@ -1,15 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2017 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
-#include "common/result.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>
 
@@ -21,26 +17,19 @@ struct OperationCounter {
     int nPUT = 0;
     int nMOVE = 0;
     int nDELETE = 0;
-    int nPROPFIND = 0;
-    int nMKCOL = 0;
 
     void reset() { *this = {}; }
 
     auto functor() {
         return [&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation) {
+            if (op == QNetworkAccessManager::GetOperation)
                 ++nGET;
-            } else if (op == QNetworkAccessManager::PutOperation) {
+            if (op == QNetworkAccessManager::PutOperation)
                 ++nPUT;
-            } else if (op == QNetworkAccessManager::DeleteOperation) {
+            if (op == QNetworkAccessManager::DeleteOperation)
                 ++nDELETE;
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
                 ++nMOVE;
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND") {
-                ++nPROPFIND;
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MKCOL") {
-                ++nMKCOL;
-            }
             return nullptr;
         };
     }
@@ -80,7 +69,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : std::as_const(base->children)) {
+    for (const auto &item : base->children) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
@@ -89,57 +78,11 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     return false;
 }
 
-static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
-{
-    fi->permissions = perm;
-    for (auto &subFi : fi->children)
-        setAllPerm(&subFi, perm);
-}
-
 class TestSyncMove : public QObject
 {
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        Logger::instance()->setLogFlush(true);
-        Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
-    void testMoveCustomRemoteRoot()
-    {
-        FileInfo subFolder(QStringLiteral("AS"), { { QStringLiteral("f1"), 4 } });
-        FileInfo folder(QStringLiteral("A"), { subFolder });
-        FileInfo fileInfo({}, { folder });
-
-        FakeFolder fakeFolder(fileInfo, folder, QStringLiteral("/A"));
-        auto &localModifier = fakeFolder.localModifier();
-
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        // Move file and then move it back again
-        {
-            counter.reset();
-            localModifier.rename(QStringLiteral("AS/f1"), QStringLiteral("f1"));
-
-            ItemCompletedSpy completeSpy(fakeFolder);
-            QVERIFY(fakeFolder.syncOnce());
-
-            QCOMPARE(counter.nGET, 0);
-            QCOMPARE(counter.nPUT, 0);
-            QCOMPARE(counter.nMOVE, 1);
-            QCOMPARE(counter.nDELETE, 0);
-
-            QVERIFY(itemSuccessful(completeSpy, "f1", CSYNC_INSTRUCTION_RENAME));
-            QVERIFY(fakeFolder.currentRemoteState().find("A/f1"));
-            QVERIFY(!fakeFolder.currentRemoteState().find("A/AS/f1"));
-        }
-    }
-
     void testRemoteChangeInMovedFolder()
     {
         // issue #5192
@@ -165,22 +108,7 @@ private slots:
     void testSelectiveSyncMovedFolder()
     {
         // issue #5224
-        FakeFolder fakeFolder{
-                              FileInfo{QString(), {
-                                      FileInfo{QStringLiteral("parentFolder"), {
-                                              FileInfo{QStringLiteral("subFolderA"), {
-                                                      {QStringLiteral("fileA.txt"), 400}
-                                                  }
-                                              },
-                                              FileInfo{QStringLiteral("subFolderB"), {
-                                                      {QStringLiteral("fileB.txt"), 400}
-                                                  }
-                                              }
-                                          }
-                                      }
-                                  }
-                              }
-        };
+        FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("parentFolder"), { FileInfo{ QStringLiteral("subFolderA"), { { QStringLiteral("fileA.txt"), 400 } } }, FileInfo{ QStringLiteral("subFolderB"), { { QStringLiteral("fileB.txt"), 400 } } } } } } } };
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto expectedServerState = fakeFolder.currentRemoteState();
@@ -323,45 +251,6 @@ private slots:
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
     }
 
-    void testLocalExternalStorageRenameDetection()
-    {
-        FakeFolder fakeFolder{{}};
-        fakeFolder.remoteModifier().mkdir("external-storage");
-        auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
-        externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRMG"));
-        QVERIFY(fakeFolder.syncOnce());
-
-        OperationCounter operationCounter;
-        fakeFolder.setServerOverride(operationCounter.functor());
-
-        fakeFolder.localModifier().insert("external-storage/file", 100);
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
-        QCOMPARE(operationCounter.nPUT, 1);
-
-        const auto firstFileId = fakeFolder.remoteModifier().find("external-storage/file")->fileId;
-
-        fakeFolder.localModifier().rename("external-storage/file", "external-storage/file2");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(operationCounter.nMOVE, 1);
-
-        fakeFolder.localModifier().rename("external-storage/file2", "external-storage/file3");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(operationCounter.nMOVE, 2);
-
-        const auto renamedFileId = fakeFolder.remoteModifier().find("external-storage/file3")->fileId;
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
-
-        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file"), nullptr);
-        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file2"), nullptr);
-        QVERIFY(fakeFolder.remoteModifier().find("external-storage/file3"));
-        QCOMPARE(firstFileId, renamedFileId);
-    }
-
     void testDuplicateFileId_data()
     {
         QTest::addColumn<QString>("prefix");
@@ -430,7 +319,7 @@ private slots:
         QCOMPARE(counter.nGET, 1);
         counter.reset();
 
-        // remove locally, and remote move at the same time
+        // remove localy, and remote move at the same time
         fakeFolder.localModifier().remove("A/Q/W/a1m");
         remote.rename("A/Q/W/a1m", "A/Q/W/a1p");
         remote.rename(prefix + "/A/Q/W/a1m", prefix + "/A/Q/W/a1p");
@@ -672,7 +561,7 @@ private slots:
         }
         conflicts = findConflicts(currentLocal.children["B4"]);
         QCOMPARE(conflicts.size(), 1);
-        for (const auto& c : std::as_const(conflicts)) {
+        for (const auto& c : conflicts) {
             QCOMPARE(currentLocal.find(c)->contentChar, 'L');
             local.remove(c);
         }
@@ -742,6 +631,38 @@ private slots:
             // BUG: This doesn't behave right
             //QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         }
+    }
+
+    // https://github.com/owncloud/client/issues/6629#issuecomment-402450691
+    // When a file is moved and the server mtime was not in sync, the local mtime should be kept
+    void testMoveAndMTimeChange()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        // Changing the mtime on the server (without invalidating the etag)
+        fakeFolder.remoteModifier().find("A/a1")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-50000);
+        fakeFolder.remoteModifier().find("A/a2")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-40000);
+
+        // Move a few files
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1_server_renamed");
+        fakeFolder.localModifier().rename("A/a2", "A/a2_local_renamed");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 1);
+        QCOMPARE(counter.nDELETE, 0);
+
+        // Another sync should do nothing
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 1);
+        QCOMPARE(counter.nDELETE, 0);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
     // Test for https://github.com/owncloud/client/issues/6694
@@ -815,7 +736,7 @@ private slots:
     {
         QFETCH(bool, local);
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
-        auto &modifier = local ? static_cast<FileModifier&>(fakeFolder.localModifier()) : fakeFolder.remoteModifier();
+        auto &modifier = local ? fakeFolder.localModifier() : fakeFolder.remoteModifier();
 
         modifier.mkdir("FolA");
         modifier.mkdir("FolA/FolB");
@@ -861,7 +782,7 @@ private slots:
 
         // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
 
-        // 1) move the folder alphabetically before
+        // 1) move the folder alphabeticaly before
         fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
         fakeFolder.localModifier().rename("A", "_A");
         fakeFolder.localModifier().rename("B/b1", "B/b1m");
@@ -937,29 +858,6 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    void testRenameParallelismWithBlacklist()
-    {
-        constexpr auto testFileName = "blackListFile";
-        FakeFolder fakeFolder{ FileInfo{} };
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert("A/file");
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.remoteModifier().insert(testFileName);
-        fakeFolder.serverErrorPaths().append(testFileName, 500); // will be blacklisted
-        QVERIFY(!fakeFolder.syncOnce());
-
-        fakeFolder.remoteModifier().mkdir("B");
-        fakeFolder.remoteModifier().rename("A/file", "B/file");
-        fakeFolder.remoteModifier().remove("A");
-
-        QVERIFY(!fakeFolder.syncOnce());
-        auto folderA = fakeFolder.currentLocalState().find("A");
-        QCOMPARE(folderA, nullptr);
-    }
-
     void testMovedWithError_data()
     {
         QTest::addColumn<Vfs::Mode>("vfsMode");
@@ -979,10 +877,6 @@ private slots:
 
     void testMovedWithError()
     {
-#if defined Q_OS_MACOS
-        QSKIP("not reliable on macOS");
-#endif
-
         QFETCH(Vfs::Mode, vfsMode);
         const auto getName = [vfsMode] (const QString &s)
         {
@@ -1032,397 +926,17 @@ private slots:
             fakeFolder.syncOnce();
         }
 
-        QVERIFY(fakeFolder.currentLocalState().find(getName(src)));
-        QVERIFY(!fakeFolder.currentLocalState().find(getName(dest)));
+        QVERIFY(!fakeFolder.currentLocalState().find(src));
+        QVERIFY(fakeFolder.currentLocalState().find(getName(dest)));
         if (vfsMode == Vfs::WithSuffix)
         {
             // the placeholder was not restored as it is still in error state
-            QVERIFY(!fakeFolder.currentLocalState().find(getName(dest)));
+            QVERIFY(!fakeFolder.currentLocalState().find(dest));
         }
         QVERIFY(fakeFolder.currentRemoteState().find(src));
         QVERIFY(!fakeFolder.currentRemoteState().find(dest));
     }
 
-    void testRenameDeepHierarchy()
-    {
-        FakeFolder fakeFolder{FileInfo{}};
-
-        fakeFolder.remoteModifier().mkdir("FolA");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB2");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
-        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
-        auto fileA = fakeFolder.remoteModifier().find("FolA/FileA.txt");
-        QVERIFY(fileA);
-        fileA->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
-        auto fileB = fakeFolder.remoteModifier().find("FolA/FolB/FileB.txt");
-        QVERIFY(fileB);
-        fileB->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
-        auto fileC = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FileC.txt");
-        QVERIFY(fileC);
-        fileC->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
-        auto fileD = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FileD.txt");
-        QVERIFY(fileD);
-        fileD->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
-        auto fileE = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FolE/FileE.txt");
-        QVERIFY(fileE);
-        fileE->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.remoteModifier().rename("FolA/FolB", "FolA/FolB2/FolB");
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.remoteModifier().insert("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
-        auto fileD2 = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
-        QVERIFY(fileD2);
-        fileD2->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
-        fakeFolder.remoteModifier().appendByte("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
-        auto fileDMoved = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
-        QVERIFY(fileDMoved);
-        fileDMoved->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed522</checksum></oc:checksums>";
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testRenameSameFileInMultiplePaths()
-    {
-        FakeFolder fakeFolder{FileInfo{}};
-
-        fakeFolder.remoteModifier().mkdir("FolderA");
-        fakeFolder.remoteModifier().mkdir("FolderA/folderParent");
-        fakeFolder.remoteModifier().mkdir("FolderB");
-        fakeFolder.remoteModifier().mkdir("FolderB/folderChild");
-        fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
-        fakeFolder.remoteModifier().mkdir("FolderC");
-
-        const auto folderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent");
-        const auto folderParentSharedFolderFileId = folderParentFileInfo->fileId;
-        const auto folderParentSharedFolderEtag = folderParentFileInfo->etag;
-        const auto folderChildFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild");
-        const auto folderChildInFolderAFolderFileId = folderChildFileInfo->fileId;
-        const auto folderChildInFolderAEtag = folderChildFileInfo->etag;
-        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
-        const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
-        const auto fileAInFolderAEtag = fileAFileInfo->etag;
-
-        auto folderCFileInfo = fakeFolder.remoteModifier().find("FolderC");
-        folderCFileInfo->fileId = folderParentSharedFolderFileId;
-        folderCFileInfo->etag = folderParentSharedFolderEtag;
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.remoteModifier().remove("FolderB/folderChild");
-        fakeFolder.remoteModifier().mkdir("FolderA/folderParent/folderChild");
-        fakeFolder.remoteModifier().insert("FolderA/folderParent/folderChild/FileA.txt");
-        fakeFolder.remoteModifier().mkdir("FolderC/folderChild");
-        fakeFolder.remoteModifier().insert("FolderC/folderChild/FileA.txt");
-
-        auto folderChildInFolderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/folderChild");
-        folderChildInFolderParentFileInfo->fileId = folderChildInFolderAFolderFileId;
-        folderChildInFolderParentFileInfo->etag = folderChildInFolderAEtag;
-
-        auto fileAInFolderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/folderChild/FileA.txt");
-        fileAInFolderParentFileInfo->fileId = fileAInFolderAFolderFileId;
-        fileAInFolderParentFileInfo->etag = fileAInFolderAEtag;
-
-        auto folderChildInFolderCFileInfo = fakeFolder.remoteModifier().find("FolderC/folderChild");
-        folderChildInFolderCFileInfo->fileId = folderChildInFolderAFolderFileId;
-        folderChildInFolderCFileInfo->etag = folderChildInFolderAEtag;
-
-        auto fileAInFolderCFileInfo = fakeFolder.remoteModifier().find("FolderC/folderChild/FileA.txt");
-        fileAInFolderCFileInfo->fileId = fileAInFolderAFolderFileId;
-        fileAInFolderCFileInfo->etag = fileAInFolderAEtag;
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
-        QVERIFY(fakeFolder.syncOnce());
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testBlockRenameTopFolderFromGroupFolder()
-    {
-        FakeFolder fakeFolder{{}};
-        fakeFolder.syncEngine().account()->setServerVersion("29.0.2.0");
-
-        fakeFolder.remoteModifier().mkdir("FolA");
-        auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
-        groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
-        fakeFolder.remoteModifier().mkdir("FolA/FolB");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
-        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
-        QVERIFY(fakeFolder.syncOnce());
-
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        fakeFolder.localModifier().insert("FolA/FileA2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FileB2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FileC2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FileD2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE2.txt");
-        fakeFolder.localModifier().rename("FolA", "FolA_Renamed");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nDELETE, 0);
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 10);
-        QCOMPARE(counter.nMOVE, 0);
-        QCOMPARE(counter.nMKCOL, 5);
-    }
-
-    void testAllowRenameChildFolderFromGroupFolder()
-    {
-        FakeFolder fakeFolder{{}};
-        fakeFolder.syncEngine().account()->setServerVersion("29.0.2.0");
-
-        fakeFolder.remoteModifier().mkdir("FolA");
-        auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
-        groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
-        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRMG"));
-        fakeFolder.remoteModifier().mkdir("FolA/FolB");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
-        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
-        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
-        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
-        QVERIFY(fakeFolder.syncOnce());
-
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        fakeFolder.localModifier().insert("FolA/FileA2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FileB2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FileC2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FileD2.txt");
-        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE2.txt");
-        fakeFolder.localModifier().rename("FolA/FolB", "FolA/FolB_Renamed");
-        fakeFolder.localModifier().rename("FolA/FileA.txt", "FolA/FileA_Renamed.txt");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nDELETE, 0);
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 5);
-        QCOMPARE(counter.nMOVE, 2);
-        QCOMPARE(counter.nMKCOL, 0);
-    }
-
-    void testMultipleRenameFromServer()
-    {
-        FakeFolder fakeFolder{{}};
-
-        fakeFolder.remoteModifier().mkdir("root");
-        fakeFolder.remoteModifier().mkdir("root/stable");
-        fakeFolder.remoteModifier().mkdir("root/stable/folder to move");
-        fakeFolder.remoteModifier().insert("root/stable/folder to move/index.txt");
-        fakeFolder.remoteModifier().mkdir("root/stable/move");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.remoteModifier().rename("root", "root test");
-        fakeFolder.remoteModifier().rename("root test/stable/folder to move", "root test/stable/folder");
-        fakeFolder.remoteModifier().rename("root test/stable/folder", "root test/stable/move/folder");
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
-            SyncFileItemPtr root, stable, folder, file, move;
-            for (auto &item : items) {
-                qDebug() << item->_file;
-                if (item->_file == "root") {
-                    root = item;
-                } else if (item->_file == "root test/stable") {
-                    stable = item;
-                } else if (item->_file == "root test/stable/move") {
-                    move = item;
-                } else if (item->_file == "root/stable/folder to move") {
-                    folder = item;
-                } else if (item->_file == "root test/stable/move/folder/index.txt") {
-                    file = item;
-                }
-            }
-
-            QVERIFY(root);
-            QCOMPARE(root->_instruction, CSYNC_INSTRUCTION_RENAME);
-            QCOMPARE(root->_direction, SyncFileItem::Down);
-
-            QVERIFY(stable);
-            QCOMPARE(stable->_instruction, CSYNC_INSTRUCTION_RENAME);
-            QCOMPARE(stable->_direction, SyncFileItem::Down);
-
-            QVERIFY(move);
-            QCOMPARE(move->_instruction, CSYNC_INSTRUCTION_RENAME);
-            QCOMPARE(move->_direction, SyncFileItem::Down);
-
-            QVERIFY(folder);
-            QCOMPARE(folder->_instruction, CSYNC_INSTRUCTION_RENAME);
-            QCOMPARE(folder->_direction, SyncFileItem::Down);
-
-            QVERIFY(file);
-            QCOMPARE(file->_instruction, CSYNC_INSTRUCTION_RENAME);
-            QCOMPARE(file->_direction, SyncFileItem::Down);
-        });
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nDELETE, 0);
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 0);
-        QCOMPARE(counter.nMOVE, 0);
-        QCOMPARE(counter.nMKCOL, 0);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testMultipleRenameFromLocal()
-    {
-        FakeFolder fakeFolder{{}};
-
-        fakeFolder.remoteModifier().mkdir("root");
-        fakeFolder.remoteModifier().mkdir("root/stable");
-        fakeFolder.remoteModifier().mkdir("root/stable/folder to move");
-        fakeFolder.remoteModifier().insert("root/stable/folder to move/index.txt");
-        fakeFolder.remoteModifier().mkdir("root/stable/move");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.localModifier().rename("root", "root test");
-        fakeFolder.localModifier().rename("root test/stable/folder to move", "root test/stable/folder");
-        fakeFolder.localModifier().rename("root test/stable/folder", "root test/stable/move/folder");
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nDELETE, 0);
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 0);
-        QCOMPARE(counter.nMOVE, 2);
-        QCOMPARE(counter.nMKCOL, 0);
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testRenameComplexScenarioNoRecordLeak()
-    {
-        FakeFolder fakeFolder{FileInfo{}};
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.remoteModifier().mkdir("0");
-        fakeFolder.remoteModifier().mkdir("0/00 without file");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a with file");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/a without file");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/a/aa with file");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/00 with file");
-        fakeFolder.remoteModifier().mkdir("0/00 without file/project/new without file");
-        fakeFolder.remoteModifier().insert("0/00 without file/project/00 with file/test.md");
-        fakeFolder.remoteModifier().insert("0/00 without file/project/a/a with file/test.md");
-        fakeFolder.remoteModifier().insert("0/00 without file/project/a/aa with file/test.md");
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        auto itemsCounter = 0;
-        auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
-
-        QVERIFY(dbResult);
-        QCOMPARE(itemsCounter, 12);
-
-        fakeFolder.remoteModifier().rename("0/00 without file/project", "project tests");
-        fakeFolder.remoteModifier().rename("project tests/a", "project tests/a empty");
-        fakeFolder.remoteModifier().rename("project tests/a empty/a with file", "project tests/a with file");
-        fakeFolder.remoteModifier().rename("project tests/a empty/a without file", "project tests/a without file");
-        fakeFolder.remoteModifier().rename("project tests/a empty/aa with file", "project tests/aa with file");
-        fakeFolder.remoteModifier().rename("project tests/new without file", "project tests/new without file");
-        fakeFolder.remoteModifier().rename("0/00 without file", "project tests/00 without file");
-        fakeFolder.remoteModifier().rename("0", "project tests/z 0 empty");
-
-        connect(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted, this, [&fakeFolder] () {
-            auto itemsCounter = 0;
-            auto dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
-
-            QVERIFY(dbResult);
-            if (itemsCounter > 12) {
-                QVERIFY(itemsCounter <= 12);
-            }
-        });
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        itemsCounter = 0;
-        dbResult = fakeFolder.syncJournal().getFilesBelowPath("", [&itemsCounter] (const SyncJournalFileRecord&) -> void { ++itemsCounter; });
-
-        QVERIFY(dbResult);
-        QCOMPARE(itemsCounter, 12);
-    }
-
-    void testRenameFileThatExistsInMultiplePaths()
-    {
-        FakeFolder fakeFolder{FileInfo{}};
-        QObject parent;
-
-        fakeFolder.setServerOverride([&parent](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::CustomOperation
-                && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
-                return new FakeErrorReply(op, request, &parent, 507);
-            }
-            return nullptr;
-        });
-
-        fakeFolder.remoteModifier().mkdir("FolderA");
-        fakeFolder.remoteModifier().mkdir("FolderA/folderParent");
-        fakeFolder.remoteModifier().insert("FolderA/folderParent/FileA.txt");
-        fakeFolder.remoteModifier().mkdir("FolderB");
-        fakeFolder.remoteModifier().mkdir("FolderB/folderChild");
-        fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
-        fakeFolder.remoteModifier().mkdir("FolderC");
-
-        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
-        const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
-        const auto fileAInFolderAEtag = fileAFileInfo->etag;
-        const auto duplicatedFileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
-
-        duplicatedFileAFileInfo->fileId = fileAInFolderAFolderFileId;
-        duplicatedFileAFileInfo->etag = fileAInFolderAEtag;
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        fakeFolder.localModifier().rename("FolderA/folderParent/FileA.txt", "FolderC/FileA.txt");
-
-        qDebug() << fakeFolder.currentLocalState();
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
-        QVERIFY(!fakeFolder.syncOnce());
-
-        qDebug() << fakeFolder.currentLocalState();
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
-        QVERIFY(fakeFolder.syncOnce());
-
-        qDebug() << fakeFolder.currentLocalState();
-    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

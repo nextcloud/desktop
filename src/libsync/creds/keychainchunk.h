@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Michael Schuster <michael@schuster.ms>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -8,9 +17,7 @@
 #define KEYCHAINCHUNK_H
 
 #include <QObject>
-
-#include <qt6keychain/keychain.h>
-
+#include <qt5keychain/keychain.h>
 #include "accountfwd.h"
 
 // We don't support insecure fallback
@@ -38,15 +45,15 @@ class OWNCLOUDSYNC_EXPORT Job : public QObject
 public:
     Job(QObject *parent = nullptr);
 
-    ~Job() override;
+    virtual ~Job();
 
-    [[nodiscard]] QKeychain::Error error() const;
-    [[nodiscard]] QString errorString() const;
+    QKeychain::Error error() const;
+    QString errorString() const;
 
-    [[nodiscard]] QByteArray binaryData() const;
-    [[nodiscard]] QString textData() const;
+    QByteArray binaryData() const;
+    QString textData() const;
 
-    [[nodiscard]] bool insecureFallback() const;
+    bool insecureFallback() const;
 
 // If we use it but don't support insecure fallback, give us nice compilation errors ;p
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
@@ -57,7 +64,7 @@ public:
      * @return Whether this job autodeletes itself once finished() has been emitted. Default is true.
      * @see setAutoDelete()
      */
-    [[nodiscard]] bool autoDelete() const;
+    bool autoDelete() const;
 
     /**
      * Set whether this job should autodelete itself once finished() has been emitted.
@@ -67,7 +74,7 @@ public:
 
 protected:
     QString _serviceName;
-    Account *_account = nullptr;
+    Account *_account;
     QString _key;
     bool _insecureFallback = false;
     bool _autoDelete = true;
@@ -102,7 +109,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on success (QKeychain::NoError).
+     * @return Returns true on succeess (QKeychain::NoError).
     */
     bool exec();
 
@@ -135,7 +142,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on success (QKeychain::NoError).
+     * @return Returns true on succeess (QKeychain::NoError).
     */
     bool exec();
 
@@ -145,7 +152,7 @@ signals:
 private slots:
     void slotReadJobDone(QKeychain::Job *incomingJob);
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 private:
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 #endif
@@ -173,7 +180,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on success (QKeychain::NoError).
+     * @return Returns true on succeess (QKeychain::NoError).
     */
     bool exec();
 

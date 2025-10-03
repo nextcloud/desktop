@@ -1,5 +1,3 @@
-# SPDX-FileCopyrightText: 2012 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 .tag                    export-subst
 .gitignore              export-ignore
 .gitattributes          export-ignore

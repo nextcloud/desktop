@@ -1,19 +1,32 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 // event masks
 #include "folderwatcher.h"
 
-#include "accountstate.h"
-#include "account.h"
-#include "capabilities.h"
+#include <cstdint>
+
+#include <QFileInfo>
+#include <QFlags>
+#include <QDir>
+#include <QMutexLocker>
+#include <QStringList>
+#include <QTimer>
 
 #if defined(Q_OS_WIN)
 #include "folderwatcher_win.h"
-#elif defined(Q_OS_MACOS)
+#elif defined(Q_OS_MAC)
 #include "folderwatcher_mac.h"
 #elif defined(Q_OS_UNIX)
 #include "folderwatcher_linux.h"
@@ -21,20 +34,6 @@
 
 #include "folder.h"
 #include "filesystem.h"
-
-#include <QFileInfo>
-#include <QFlags>
-#include <QDir>
-#include <QMutexLocker>
-#include <QStringList>
-
-#include <array>
-#include <cstdint>
-
-namespace
-{
-constexpr auto lockChangeDebouncingTimerIntervalMs = 500;
-}
 
 namespace OCC {
 
@@ -44,12 +43,6 @@ FolderWatcher::FolderWatcher(Folder *folder)
     : QObject(folder)
     , _folder(folder)
 {
-    _lockChangeDebouncingTimer.setInterval(lockChangeDebouncingTimerIntervalMs);
-
-    if (_folder && _folder->accountState() && _folder->accountState()->account()) {
-        connect(_folder->accountState()->account().data(), &Account::capabilitiesChanged, this, &FolderWatcher::folderAccountCapabilitiesChanged);
-        folderAccountCapabilitiesChanged();
-    }
 }
 
 FolderWatcher::~FolderWatcher() = default;
@@ -60,9 +53,20 @@ void FolderWatcher::init(const QString &root)
     _timer.start();
 }
 
-bool FolderWatcher::pathIsIgnored(const QString &path) const
+bool FolderWatcher::pathIsIgnored(const QString &path)
 {
-    return path.isEmpty();
+    if (path.isEmpty())
+        return true;
+    if (!_folder)
+        return false;
+
+#ifndef OWNCLOUD_TEST
+    if (_folder->isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
+        qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
+        return true;
+    }
+#endif
+    return false;
 }
 
 bool FolderWatcher::isReliable() const
@@ -76,7 +80,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
         QString path = dir.path() + "/" + newSubPaths[i];
         QFileInfo fileInfo(path);
         subPaths.append(path);
-        if (FileSystem::isDir(path)) {
+        if (fileInfo.isDir()) {
             QDir dir(path);
             appendSubPaths(dir, subPaths);
         }
@@ -85,7 +89,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
 
 void FolderWatcher::startNotificatonTest(const QString &path)
 {
-#ifdef Q_OS_MACOS
+#ifdef Q_OS_MAC
     // Testing the folder watcher on OSX is harder because the watcher
     // automatically discards changes that were performed by our process.
     // It would still be useful to test but the OSX implementation
@@ -111,13 +115,11 @@ void FolderWatcher::startNotificationTestWhenReady()
     auto path = _testNotificationPath;
     if (QFile::exists(path)) {
         auto mtime = FileSystem::getModTime(path);
-        qCDebug(lcFolderWatcher()) << "setModTime" << path << (mtime + 1);
         FileSystem::setModTime(path, mtime + 1);
     } else {
         QFile f(path);
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
-    FileSystem::setFileHidden(path, true);
 
     QTimer::singleShot(5000, this, [this]() {
         if (!_testNotificationPath.isEmpty())
@@ -126,20 +128,6 @@ void FolderWatcher::startNotificationTestWhenReady()
     });
 }
 
-void FolderWatcher::lockChangeDebouncingTimerTimedOut()
-{
-    if (!_unlockedFiles.isEmpty()) {
-        const auto unlockedFilesCopy = _unlockedFiles;
-        emit filesLockReleased(unlockedFilesCopy);
-        _unlockedFiles.clear();
-    }
-    if (!_lockedFiles.isEmpty()) {
-        const auto lockedFilesCopy = _lockedFiles;
-        emit filesLockImposed(lockedFilesCopy);
-        emit lockedFilesFound(lockedFilesCopy);
-        _lockedFiles.clear();
-    }
-}
 
 int FolderWatcher::testLinuxWatchCount() const
 {
@@ -150,26 +138,11 @@ int FolderWatcher::testLinuxWatchCount() const
 #endif
 }
 
-void FolderWatcher::slotLockFileDetectedExternally(const QString &lockFile)
-{
-    qCInfo(lcFolderWatcher) << "Lock file detected externally, probably a newly-uploaded office file: " << lockFile;
-    changeDetected(lockFile);
-}
-
-void FolderWatcher::setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking)
-{
-    _shouldWatchForFileUnlocking = shouldWatchForFileUnlocking;
-}
-
-int FolderWatcher::lockChangeDebouncingTimout() const
-{
-    return _lockChangeDebouncingTimer.interval();
-}
-
 void FolderWatcher::changeDetected(const QString &path)
 {
+    QFileInfo fileInfo(path);
     QStringList paths(path);
-    if (FileSystem::isDir(path)) {
+    if (fileInfo.isDir()) {
         QDir dir(path);
         appendSubPaths(dir, paths);
     }
@@ -184,7 +157,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
 
     // Check if the same path was reported within the last second.
-    const auto pathsSet = QSet<QString>{paths.begin(), paths.end()};
+    QSet<QString> pathsSet = paths.toSet();
     if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
         // the same path was reported within the last second. Skip.
         return;
@@ -194,57 +167,27 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
     QSet<QString> changedPaths;
 
-    for (const auto &path : paths) {
+    // ------- handle ignores:
+    for (int i = 0; i < paths.size(); ++i) {
+        QString path = paths[i];
         if (!_testNotificationPath.isEmpty()
             && Utility::fileNamesEqual(path, _testNotificationPath)) {
             _testNotificationPath.clear();
         }
-
-        const auto lockFileNamePattern = FileSystem::filePathLockFilePatternMatch(path);
-        const auto checkResult = FileSystem::lockFileTargetFilePath(path, lockFileNamePattern);
-        if (_shouldWatchForFileUnlocking) {
-            // Lock file has been deleted, file now unlocked
-            if (checkResult.type == FileSystem::FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
-                _lockedFiles.remove(checkResult.path);
-                _unlockedFiles.insert(checkResult.path);
-            }
-        }
-
-        if (checkResult.type == FileSystem::FileLockingInfo::Type::Locked && !checkResult.path.isEmpty()) {
-            _unlockedFiles.remove(checkResult.path);
-            _lockedFiles.insert(checkResult.path);
-        }
-
-        // ------- handle ignores:
         if (pathIsIgnored(path)) {
             continue;
         }
 
         changedPaths.insert(path);
     }
-
-    if (!_lockedFiles.isEmpty() || !_unlockedFiles.isEmpty()) {
-        if (_lockChangeDebouncingTimer.isActive()) {
-            _lockChangeDebouncingTimer.stop();
-        }
-        _lockChangeDebouncingTimer.setSingleShot(true);
-        _lockChangeDebouncingTimer.start();
-        _lockChangeDebouncingTimer.connect(&_lockChangeDebouncingTimer, &QTimer::timeout, this, &FolderWatcher::lockChangeDebouncingTimerTimedOut, Qt::UniqueConnection);
-    }
-
     if (changedPaths.isEmpty()) {
         return;
     }
 
     qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
-    for (const auto &path : changedPaths) {
+    foreach (const QString &path, changedPaths) {
         emit pathChanged(path);
     }
-}
-
-void FolderWatcher::folderAccountCapabilitiesChanged()
-{
-    _shouldWatchForFileUnlocking = _folder->accountState()->account()->capabilities().filesLockAvailable();
 }
 
 } // namespace OCC

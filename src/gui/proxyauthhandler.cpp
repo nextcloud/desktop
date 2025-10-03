@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2015 by Christian Kamm <kamm@incasoftware.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "proxyauthhandler.h"
@@ -13,7 +21,7 @@
 
 #include <QApplication>
 
-#include <qt6keychain/keychain.h>
+#include <qt5keychain/keychain.h>
 
 using namespace OCC;
 using namespace QKeychain;
@@ -49,8 +57,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         return;
     }
 
-    const auto account = qobject_cast<Account *>(sender());
-    const auto key = QString{proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port())};
+    QString key = proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port());
 
     // If the proxy server has changed, forget what we know.
     if (key != _proxy) {
@@ -62,9 +69,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
 
         // If the user explicitly configured the proxy in the
         // network settings, don't ask about it.
-        if ((account && (account->proxyType() == QNetworkProxy::HttpProxy
-                         || account->proxyType() == QNetworkProxy::Socks5Proxy))
-            || _configFile->proxyType() == QNetworkProxy::HttpProxy
+        if (_configFile->proxyType() == QNetworkProxy::HttpProxy
             || _configFile->proxyType() == QNetworkProxy::Socks5Proxy) {
             _blocked = true;
         }
@@ -76,7 +81,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
 
     // Find the responsible QNAM if possible.
     QPointer<QNetworkAccessManager> sending_qnam = nullptr;
-    if (account) {
+    if (auto account = qobject_cast<Account *>(sender())) {
         // Since we go into an event loop, it's possible for the account's qnam
         // to be destroyed before we get back. We can use this to check for its
         // liveness.

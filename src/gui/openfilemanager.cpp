@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "openfilemanager.h"
@@ -12,7 +21,12 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QApplication>
+
+#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
+
+#if !(QTLEGACY)
 #include <QOperatingSystemVersion>
+#endif
 
 namespace OCC {
 
@@ -51,10 +65,12 @@ static QString findDefaultFileManager()
         return QString();
 
     QFileInfo fi;
-    const QStringList dirs = xdgDataDirs();
-    const QStringList subdirs { "/applications/", "/applications/kde4/" };
-    for (const auto &dir : dirs) {
-        for (const auto &subdir : subdirs) {
+    QStringList dirs = xdgDataDirs();
+    QStringList subdirs;
+    subdirs << "/applications/"
+            << "/applications/kde4/";
+    foreach (QString dir, dirs) {
+        foreach (QString subdir, subdirs) {
             fi.setFile(dir + subdir + fileName);
             if (fi.exists()) {
                 return fi.absoluteFilePath();
@@ -79,11 +95,15 @@ void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
 #ifdef Q_OS_WIN
+        #if QTLEGACY
+            if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+        #else
             if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
+        #endif
                 return;
 #endif
 
-        const QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
+        QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
         QFileInfo fi(localPath);
 
         // canonicalFilePath returns empty if the file does not exist
@@ -103,7 +123,7 @@ void showInFileManager(const QString &localPath)
             // only around the path. Use setNativeArguments to bypass this logic.
             p.setNativeArguments(nativeArgs);
 #endif
-            p.start(explorer, QStringList {});
+            p.start(explorer);
             p.waitForFinished(5000);
         }
     } else if (Utility::isMac()) {

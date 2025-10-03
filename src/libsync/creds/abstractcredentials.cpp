@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QLoggingCategory>
@@ -42,7 +50,6 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
     QString key = user + QLatin1Char(':') + u;
     if (!accountId.isEmpty()) {
         key += QLatin1Char(':') + accountId;
-    }
 #ifdef Q_OS_WIN
         // On Windows the credential keys aren't namespaced properly
         // by qtkeychain. To work around that we manually add namespacing
@@ -52,6 +59,7 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
         // migrated to new namespaced keys on windows for 2.4.
         key.prepend(QCoreApplication::applicationName() + "_");
 #endif
+    }
     return key;
 }
 } // namespace OCC

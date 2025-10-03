@@ -1,7 +1,5 @@
 ; fileassoc.nsh
 ; File association helper macros
-; SPDX-FileCopyrightText: 1999-2025 NSIS Contributors, Saivert
-; SPDX-License-Identifier: Zlib
 ; Written by Saivert
 ; See http://nsis.sourceforge.net/FileAssoc
 ;
@@ -16,7 +14,7 @@
 ;   !insertmacro APP_ASSOCIATE "txt" "myapp.textfile" "Description of txt files" \
 ;     "$INSTDIR\myapp.exe,0" "Open with myapp" "$INSTDIR\myapp.exe $\"%1$\""
 ;
-; Never insert the APP_ASSOCIATE macro multiple times, it is only meant
+; Never insert the APP_ASSOCIATE macro multiple times, it is only ment
 ; to associate an application with a single file and using the
 ; the "open" verb as default. To add more verbs (actions) to a file
 ; use the APP_ASSOCIATE_ADDVERB macro.

@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "ocssharejob.h"
@@ -16,21 +24,16 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath(_pathForSharesRequest);
+    setPath("ocs/v2.php/apps/files_sharing/api/v1/shares");
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 
-void OcsShareJob::getShares(const QString &path, const QMap<QString, QString> &params)
+void OcsShareJob::getShares(const QString &path)
 {
     setVerb("GET");
 
     addParam(QString::fromLatin1("path"), path);
-    addParam(QString::fromLatin1("reshares"), QStringLiteral("true"));
-
-    for (auto it = std::cbegin(params); it != std::cend(params); ++it) {
-        addParam(it.key(), it.value());
-    }
-
+    addParam(QString::fromLatin1("reshares"), QString("true"));
     addPassStatusCode(404);
 
     start();
@@ -115,29 +118,6 @@ void OcsShareJob::setPermissions(const QString &shareId,
     start();
 }
 
-void OcsShareJob::setLabel(const QString &shareId, const QString &label)
-{
-    appendPath(shareId);
-    setVerb("PUT");
-    
-    addParam(QStringLiteral("label"), label);
-    _value = label;
-    
-    start();
-}
-
-void OcsShareJob::setHideDownload(const QString &shareId, const bool hideDownload)
-{
-    appendPath(shareId);
-    setVerb("PUT");
-
-    const auto value = QString::fromLatin1(hideDownload ? QByteArrayLiteral("true") : QByteArrayLiteral("false"));
-    addParam(QStringLiteral("hideDownload"), value);
-    _value = hideDownload;
-
-    start();
-}
-
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
     const QString &password)
@@ -146,26 +126,6 @@ void OcsShareJob::createLinkShare(const QString &path,
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
-
-    if (!name.isEmpty()) {
-        addParam(QString::fromLatin1("name"), name);
-    }
-    if (!password.isEmpty()) {
-        addParam(QString::fromLatin1("password"), password);
-    }
-
-    addPassStatusCode(403);
-
-    start();
-}
-
-void OcsShareJob::createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password)
-{
-    setVerb("POST");
-
-    addParam(QString::fromLatin1("path"), path);
-    addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
-    addParam(QString::fromLatin1("permissions"), QString::number(4));
 
     if (!name.isEmpty()) {
         addParam(QString::fromLatin1("name"), name);
@@ -199,13 +159,10 @@ void OcsShareJob::createShare(const QString &path,
     start();
 }
 
-void OcsShareJob::getSharedWithMe(const QString &path)
+void OcsShareJob::getSharedWithMe()
 {
     setVerb("GET");
-
-    addParam(QString::fromLatin1("path"), path);
-    addParam(QString::fromLatin1("shared_with_me"), QStringLiteral("true"));
-
+    addParam(QLatin1String("shared_with_me"), QLatin1String("true"));
     start();
 }
 
@@ -213,6 +170,4 @@ void OcsShareJob::jobDone(QJsonDocument reply)
 {
     emit shareJobFinished(reply, _value);
 }
-
-QString const OcsShareJob::_pathForSharesRequest = QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/shares");
 }

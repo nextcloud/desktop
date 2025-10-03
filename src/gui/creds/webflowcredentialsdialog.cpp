@@ -1,46 +1,37 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #include "webflowcredentialsdialog.h"
-
-#include "config.h"
-
-#include "theme.h"
-#include "application.h"
-#include "owncloudgui.h"
-#include "wizard/owncloudwizardcommon.h"
-
-#ifdef WITH_WEBENGINE
-#include "wizard/webview.h"
-#endif // WITH_WEBENGINE
-
-#include "wizard/flow2authwidget.h"
 
 #include <QVBoxLayout>
 #include <QLabel>
 
+#include "theme.h"
+#include "application.h"
+#include "owncloudgui.h"
+#include "headerbanner.h"
+#include "wizard/owncloudwizardcommon.h"
+#include "wizard/webview.h"
+#include "wizard/flow2authwidget.h"
+
 namespace OCC {
 
 WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlow2, QWidget *parent)
-    : QDialog(parent)
-    , _useFlow2(useFlow2)
+    : QDialog(parent),
+      _useFlow2(useFlow2),
+      _flow2AuthWidget(nullptr),
+      _webView(nullptr)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     _layout = new QVBoxLayout(this);
     int spacing = _layout->spacing();
-    auto margin = _layout->contentsMargins();
+    int margin = _layout->margin();
     _layout->setSpacing(0);
-    _layout->setContentsMargins(0, 0, 0, 0);
+    _layout->setMargin(0);
 
     _containerLayout = new QVBoxLayout(this);
     _containerLayout->setSpacing(spacing);
-    _containerLayout->setContentsMargins(margin);
+    _containerLayout->setMargin(margin);
 
     _infoLabel = new QLabel();
-    _infoLabel->setTextFormat(Qt::PlainText);
     _infoLabel->setAlignment(Qt::AlignCenter);
     _containerLayout->addWidget(_infoLabel);
 
@@ -58,19 +49,16 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 
         _flow2AuthWidget->startAuth(account);
     } else {
-#ifdef WITH_WEBENGINE
         _webView = new WebView();
-        _containerLayout->addWidget(_webView, 1);
+        _containerLayout->addWidget(_webView);
 
         connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
-#endif // WITH_WEBENGINE
     }
 
-    auto app = dynamic_cast<Application *>(qApp);
+    auto app = static_cast<Application *>(qApp);
     connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
     _errorLabel = new QLabel();
-    _errorLabel->setTextFormat(Qt::PlainText);
     _errorLabel->hide();
     _containerLayout->addWidget(_errorLabel);
 
@@ -85,14 +73,12 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
     Q_UNUSED(e)
 
-#ifdef WITH_WEBENGINE
     if (_webView) {
         // Force calling WebView::~WebView() earlier so that _profile and _page are
         // deleted in the correct order.
         _webView->deleteLater();
         _webView = nullptr;
     }
-#endif // WITH_WEBENGINE
 
     if (_flow2AuthWidget) {
         _flow2AuthWidget->resetAuth();
@@ -103,14 +89,9 @@ void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
     emit onClose();
 }
 
-void WebFlowCredentialsDialog::setUrl(const QUrl &url)
-{
-#ifdef WITH_WEBENGINE
+void WebFlowCredentialsDialog::setUrl(const QUrl &url) {
     if (_webView)
         _webView->setUrl(url);
-#else // WITH_WEBENGINE
-    Q_UNUSED(url);
-#endif // WITH_WEBENGINE
 }
 
 void WebFlowCredentialsDialog::setInfo(const QString &msg) {

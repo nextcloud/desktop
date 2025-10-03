@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -35,7 +43,7 @@ public:
     /** Returns the oldBlackList passed into setFolderInfo(), except that
      *  a "/" entry is expanded to all top-level folder names.
      */
-    [[nodiscard]] QStringList oldBlackList() const;
+    QStringList oldBlackList() const;
 
     // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
@@ -44,11 +52,10 @@ public:
     void setFolderInfo(const QString &folderPath, const QString &rootName,
         const QStringList &oldBlackList = QStringList());
 
-    [[nodiscard]] QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
 private slots:
     void slotUpdateDirectories(QStringList);
-    void slotUpdateRootFolderFilesSize(const QStringList &subfolders);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem *, int);
     void slotLscolFinishedWithError(QNetworkReply *);
@@ -64,7 +71,7 @@ private:
     QString _rootName;
     QStringList _oldBlackList;
 
-    bool _inserting = false; // set to true when we are inserting new items on the list
+    bool _inserting; // set to true when we are inserting new items on the list
     QLabel *_loading;
 
     QTreeWidget *_folderTree;
@@ -74,8 +81,6 @@ private:
     ExcludedFiles _excludedFiles;
 
     QStringList _encryptedPaths;
-
-    qint64 _rootFilesSize = 0;
 };
 
 /**
@@ -94,8 +99,8 @@ public:
 
     void accept() override;
 
-    [[nodiscard]] QStringList createBlackList() const;
-    [[nodiscard]] QStringList oldBlackList() const;
+    QStringList createBlackList() const;
+    QStringList oldBlackList() const;
 
     // Estimate the size of the total of sync'ed files from the server
     qint64 estimatedSize();
@@ -103,9 +108,9 @@ public:
 private:
     void init(const AccountPtr &account);
 
-    SelectiveSyncWidget *_selectiveSync = nullptr;
+    SelectiveSyncWidget *_selectiveSync;
 
     Folder *_folder;
-    QPushButton *_okButton = nullptr;
+    QPushButton *_okButton;
 };
 }

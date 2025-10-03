@@ -1,27 +1,19 @@
-/*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #ifndef WEBFLOWCREDENTIALSDIALOG_H
 #define WEBFLOWCREDENTIALSDIALOG_H
 
-#include "config.h"
+#include <QDialog>
+#include <QUrl>
 
 #include "accountfwd.h"
 #include "creds/flow2auth.h"
-
-#include <QDialog>
-#include <QUrl>
 
 class QLabel;
 class QVBoxLayout;
 
 namespace OCC {
 
-#ifdef WITH_WEBENGINE
+class HeaderBanner;
 class WebView;
-#endif // WITH_WEBENGINE
 class Flow2AuthWidget;
 
 class WebFlowCredentialsDialog : public QDialog
@@ -34,7 +26,7 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
-    [[nodiscard]] bool isUsingFlow2() const {
+    bool isUsingFlow2() const {
         return _useFlow2;
     }
 
@@ -57,15 +49,14 @@ private:
 
     bool _useFlow2;
 
-    Flow2AuthWidget *_flow2AuthWidget = nullptr;
-#ifdef WITH_WEBENGINE
-    WebView *_webView = nullptr;
-#endif // WITH_WEBENGINE
+    Flow2AuthWidget *_flow2AuthWidget;
+    WebView *_webView;
 
     QLabel *_errorLabel;
     QLabel *_infoLabel;
     QVBoxLayout *_layout;
     QVBoxLayout *_containerLayout;
+    HeaderBanner *_headerBanner;
 };
 
 } // namespace OCC

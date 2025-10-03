@@ -1,12 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
- *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+ *    This software is in the public domain, furnished "as is", without technical
+ *       support, and with no warranty, express or implied, as to its usefulness for
+ *          any purpose.
+ *          */
 
 #include <QtTest>
 
@@ -23,9 +19,10 @@ private:
     QString _root;
 
 private slots:
-    void initTestCase()
-    {
-        _root = QDir::tempPath() + "/" + "test_" + QString::number(OCC::Utility::rand());
+    void initTestCase() {
+        qsrand(QTime::currentTime().msec());
+
+        _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
         qDebug() << "creating test directory tree in " << _root;
         QDir rootDir(_root);
 
@@ -34,6 +31,7 @@ private slots:
         rootDir.mkpath(_root + "/a1/b2/c1");
         rootDir.mkpath(_root + "/a1/b3/c3");
         rootDir.mkpath(_root + "/a2/b3/c3");
+
     }
 
     // Test the recursive path listing function findFoldersBelow
@@ -66,7 +64,7 @@ private slots:
 
     void cleanupTestCase() {
         if( _root.startsWith(QDir::tempPath() )) {
-           system( QStringLiteral("rm -rf %1").arg(_root).toLocal8Bit() );
+           system( QString("rm -rf %1").arg(_root).toLocal8Bit() );
         }
     }
 };

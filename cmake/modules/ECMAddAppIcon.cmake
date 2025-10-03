@@ -41,7 +41,7 @@
 #      target does not have the ``WIN32_EXECUTABLE`` property set.
 #    * One of the tools png2ico (See :find-module:`FindPng2Ico`) or
 #      icotool (see :find-module:`FindIcoTool`) is required.
-#    * Supported sizes: 16, 20, 24, 32, 40, 48, 64, 128, 256, 512 and 1024.
+#    * Supported sizes: 16, 24, 32, 48, 64, 128, 256, 512 and 1024.
 #
 # Mac OS X notes
 #    * The executable target must have the ``MACOSX_BUNDLE`` property set.
@@ -69,13 +69,6 @@
 
 
 #=============================================================================
-# SPDX-FileCopyrightText: 2014 Alex Merry <alex.merry@kde.org>
-# SPDX-FileCopyrightText: 2014 Ralf Habacker <ralf.habacker@freenet.de>
-# SPDX-FileCopyrightText: 2006-2009 Alexander Neundorf, <neundorf@kde.org>
-# SPDX-FileCopyrightText: 2006, 2007, Laurent Montel, <montel@kde.org>
-# SPDX-FileCopyrightText: 2007 Matthias Kretz <kretz@kde.org>
-# SPDX-License-Identifier: BSD-3-Clause
-#
 # Copyright 2014 Alex Merry <alex.merry@kde.org>
 # Copyright 2014 Ralf Habacker <ralf.habacker@freenet.de>
 # Copyright 2006-2009 Alexander Neundorf, <neundorf@kde.org>
@@ -109,14 +102,9 @@ include(CMakeParseArguments)
 
 function(ecm_add_app_icon appsources)
     set(options)
-    set(oneValueArgs OUTFILE_BASENAME ICON_INDEX DO_NOT_GENERATE_RC_FILE)
-    set(multiValueArgs ICONS SIDEBAR_ICONS RC_DEPENDENCIES)
+    set(oneValueArgs OUTFILE_BASENAME)
+    set(multiValueArgs ICONS SIDEBAR_ICONS)
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-    if (ARG_DO_NOT_GENERATE_RC_FILE)
-        set (_do_not_generate_rc_file TRUE)
-    else()
-        set (_do_not_generate_rc_file FALSE)
-    endif()
 
     if(NOT ARG_ICONS)
         message(FATAL_ERROR "No ICONS argument given to ecm_add_app_icon")
@@ -150,11 +138,8 @@ function(ecm_add_app_icon appsources)
         endforeach()
     endif()
 
-    if (WIN32)
-        _ecm_add_app_icon_categorize_icons("${ARG_ICONS}" "icons" "16;20;24;32;40;48;64;128;256;512;1024")
-    else()
-        _ecm_add_app_icon_categorize_icons("${ARG_ICONS}" "icons" "16;24;32;48;64;128;256;512;1024")
-    endif()
+
+    _ecm_add_app_icon_categorize_icons("${ARG_ICONS}" "icons" "16;24;32;48;64;128;256;512;1024")
     if(ARG_SIDEBAR_ICONS)
         _ecm_add_app_icon_categorize_icons("${ARG_SIDEBAR_ICONS}" "sidebar_icons" "16;32;64;128;256")
     endif()
@@ -183,10 +168,8 @@ function(ecm_add_app_icon appsources)
 
 
     set(windows_icons   ${icons_at_16px}
-                        ${icons_at_20px}
                         ${icons_at_24px}
                         ${icons_at_32px}
-                        ${icons_at_40px}
                         ${icons_at_48px}
                         ${icons_at_64px}
                         ${icons_at_128px}
@@ -220,17 +203,15 @@ function(ecm_add_app_icon appsources)
                     DEPENDS ${deps}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                 )
-                if (NOT _do_not_generate_rc_file)
-                    # this bit's a little hacky to make the dependency stuff work
-                    file(WRITE "${_outfilename}.rc.in" "IDI_ICON${ARG_ICON_INDEX}        ICON        DISCARDABLE    \"${_outfilename}.ico\"\n")
-                    add_custom_command(
-                        OUTPUT "${_outfilename}.rc"
-                        COMMAND ${CMAKE_COMMAND}
-                        ARGS -E copy "${_outfilename}.rc.in" "${_outfilename}.rc"
-                        DEPENDS ${ARG_RC_DEPENDENCIES} "${_outfilename}.ico"
-                        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-                    )
-                endif()
+                # this bit's a little hacky to make the dependency stuff work
+                file(WRITE "${_outfilename}.rc.in" "IDI_ICON1        ICON        DISCARDABLE    \"${_outfilename}.ico\"\n")
+                add_custom_command(
+                    OUTPUT "${_outfilename}.rc"
+                    COMMAND ${CMAKE_COMMAND}
+                    ARGS -E copy "${_outfilename}.rc.in" "${_outfilename}.rc"
+                    DEPENDS "${_outfilename}.ico"
+                    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+                )
         endfunction()
 
         if (IcoTool_FOUND)
@@ -245,7 +226,7 @@ function(ecm_add_app_icon appsources)
                 endif()
             endforeach()
 
-            foreach(size 16 20 24 32 40 48 64 128 ${maxSize})
+            foreach(size 16 24 32 48 64 128 ${maxSize})
                 if(NOT icons_at_${size}px)
                     continue()
                 endif()
@@ -412,7 +393,7 @@ macro(_ecm_add_app_icon_categorize_icons icons type known_sizes)
 
                     if (offset GREATER -1)
                         list(APPEND ${type}_at_${size}px "${icon_full}")
-                    else()
+                    elseif()
                         message(STATUS "not found ${type}_at_${size}px ${icon_full}")
                     endif()
                 endif()

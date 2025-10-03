@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2020 ownCloud GmbH
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
 // stub to prevent linker error
 #include "accountmanager.h"
 #include "accountstate.h"

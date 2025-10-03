@@ -1,13 +1,11 @@
-# SPDX-FileCopyrightText: 2014 ownCloud GmbH
-# SPDX-License-Identifier: BSD-3-Clause
-#
+# (c) 2014 Copyright ownCloud GmbH
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
     # Use this only for Clang
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if (CMAKE_CXX_COMPILER MATCHES "Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-gnu-zero-variadic-macro-arguments")
     endif()
 
@@ -21,7 +19,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
                         OUTPUT_VARIABLE GCC_VERSION)
         if(GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic")
         else(GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
         endif(GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)
@@ -29,4 +27,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     endif()
 
+    if(DEFINED MIRALL_FATAL_WARNINGS)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+    endif(DEFINED MIRALL_FATAL_WARNINGS)
 endif()

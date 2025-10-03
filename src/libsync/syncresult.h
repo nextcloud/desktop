@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_SYNCRESULT_H
@@ -42,40 +50,40 @@ public:
     void reset();
 
     void appendErrorString(const QString &);
-    [[nodiscard]] QString errorString() const;
-    [[nodiscard]] QStringList errorStrings() const;
+    QString errorString() const;
+    QStringList errorStrings() const;
     void clearErrors();
 
     void setStatus(Status);
-    [[nodiscard]] Status status() const;
-    [[nodiscard]] QString statusString() const;
-    [[nodiscard]] QDateTime syncTime() const;
+    Status status() const;
+    QString statusString() const;
+    QDateTime syncTime() const;
     void setFolder(const QString &folder);
-    [[nodiscard]] QString folder() const;
+    QString folder() const;
 
-    [[nodiscard]] bool foundFilesNotSynced() const { return _foundFilesNotSynced; }
-    [[nodiscard]] bool folderStructureWasChanged() const { return _folderStructureWasChanged; }
+    bool foundFilesNotSynced() const { return _foundFilesNotSynced; }
+    bool folderStructureWasChanged() const { return _folderStructureWasChanged; }
 
-    [[nodiscard]] int numNewItems() const { return _numNewItems; }
-    [[nodiscard]] int numRemovedItems() const { return _numRemovedItems; }
-    [[nodiscard]] int numUpdatedItems() const { return _numUpdatedItems; }
-    [[nodiscard]] int numRenamedItems() const { return _numRenamedItems; }
-    [[nodiscard]] int numNewConflictItems() const { return _numNewConflictItems; }
-    [[nodiscard]] int numOldConflictItems() const { return _numOldConflictItems; }
+    int numNewItems() const { return _numNewItems; }
+    int numRemovedItems() const { return _numRemovedItems; }
+    int numUpdatedItems() const { return _numUpdatedItems; }
+    int numRenamedItems() const { return _numRenamedItems; }
+    int numNewConflictItems() const { return _numNewConflictItems; }
+    int numOldConflictItems() const { return _numOldConflictItems; }
     void setNumOldConflictItems(int n) { _numOldConflictItems = n; }
-    [[nodiscard]] int numErrorItems() const { return _numErrorItems; }
-    [[nodiscard]] bool hasUnresolvedConflicts() const { return _numNewConflictItems + _numOldConflictItems > 0; }
+    int numErrorItems() const { return _numErrorItems; }
+    bool hasUnresolvedConflicts() const { return _numNewConflictItems + _numOldConflictItems > 0; }
 
-    [[nodiscard]] int numLockedItems() const { return _numLockedItems; }
-    [[nodiscard]] bool hasLockedFiles() const { return _numLockedItems > 0; }
+    int numLockedItems() const { return _numLockedItems; }
+    bool hasLockedFiles() const { return _numLockedItems > 0; }
 
-    [[nodiscard]] const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }
-    [[nodiscard]] const SyncFileItemPtr &firstItemDeleted() const { return _firstItemDeleted; }
-    [[nodiscard]] const SyncFileItemPtr &firstItemUpdated() const { return _firstItemUpdated; }
-    [[nodiscard]] const SyncFileItemPtr &firstItemRenamed() const { return _firstItemRenamed; }
-    [[nodiscard]] const SyncFileItemPtr &firstNewConflictItem() const { return _firstNewConflictItem; }
-    [[nodiscard]] const SyncFileItemPtr &firstItemError() const { return _firstItemError; }
-    [[nodiscard]] const SyncFileItemPtr &firstItemLocked() const { return _firstItemLocked; }
+    const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }
+    const SyncFileItemPtr &firstItemDeleted() const { return _firstItemDeleted; }
+    const SyncFileItemPtr &firstItemUpdated() const { return _firstItemUpdated; }
+    const SyncFileItemPtr &firstItemRenamed() const { return _firstItemRenamed; }
+    const SyncFileItemPtr &firstNewConflictItem() const { return _firstNewConflictItem; }
+    const SyncFileItemPtr &firstItemError() const { return _firstItemError; }
+    const SyncFileItemPtr &firstItemLocked() const { return _firstItemLocked; }
 
     void processCompletedItem(const SyncFileItemPtr &item);
 

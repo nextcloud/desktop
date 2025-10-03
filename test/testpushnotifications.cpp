@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QTest>
@@ -11,9 +20,6 @@
 #include "accountfwd.h"
 #include "pushnotifications.h"
 #include "pushnotificationstestutils.h"
-#include "logger.h"
-
-#include <QStandardPaths>
 
 #define RETURN_FALSE_ON_FAIL(expr) \
     if (!(expr)) {                 \
@@ -59,32 +65,6 @@ class TestPushNotifications : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
-    void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
-    {
-        FakeWebSocketServer fakeServer;
-        auto account = FakeWebSocketServer::createAccount();
-
-        // Let if fail a few times
-        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
-        account->pushNotifications()->setup();
-        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
-
-        account->setPushNotificationsReconnectInterval(0);
-
-        // Push notifications should try to reconnect
-        QVERIFY(fakeServer.authenticateAccount(account));
-
-        account->setPushNotificationsReconnectInterval(1000 * 60 * 2);
-    }
-
     void testSetup_correctCredentials_authenticateAndEmitReady()
     {
         FakeWebSocketServer fakeServer;
@@ -216,7 +196,7 @@ private slots:
 
         QVERIFY(fakeServer.waitForTextMessages());
         // FIXME: This a little bit ugly but I had no better idea how to trigger a error on the websocket client.
-        // The websocket that is retrieved through the server is not connected to the ssl error signal.
+        // The websocket that is retrived through the server is not connected to the ssl error signal.
         auto pushNotificationsWebSocketChildren = account->pushNotifications()->findChildren<QWebSocket *>();
         QVERIFY(pushNotificationsWebSocketChildren.size() == 1);
         emit pushNotificationsWebSocketChildren[0]->sslErrors(QList<QSslError>());
@@ -248,14 +228,15 @@ private slots:
 
         QCOMPARE(connectionLostSpy.count(), 1);
 
-        const auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::AccountPtr>();
-        QCOMPARE(accountSent.data(), account.data());
+        auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
+        QCOMPARE(accountSent, account.data());
     }
 
     void testAccount_web_socket_authenticationFailed_emitNotificationsDisabled()
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
+        account->setPushNotificationsReconnectInterval(0);
         QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
         QVERIFY(pushNotificationsDisabledSpy.isValid());
 
@@ -263,8 +244,8 @@ private slots:
 
         // Now the pushNotificationsDisabled Signal should be emitted
         QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
-        const auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::AccountPtr>();
-        QCOMPARE(accountSent.data(), account.data());
+        auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
+        QCOMPARE(accountSent, account.data());
     }
 
     void testPingTimeout_pingTimedOut_reconnect()
@@ -276,7 +257,7 @@ private slots:
         auto account = FakeWebSocketServer::createAccount();
         QVERIFY(fakeServer.authenticateAccount(account));
 
-        // Set the ping timeout interval to zero and check if the server attempts to authenticate again
+        // Set the ping timeout interval to zero and check if the server attemps to authenticate again
         fakeServer.clearTextMessages();
         account->pushNotifications()->setPingInterval(0);
         QVERIFY(fakeServer.authenticateAccount(
@@ -290,6 +271,20 @@ private slots:
                 QVERIFY(verifyCalledOnceWithAccount(*notificationsChangedSpy, account));
                 QVERIFY(verifyCalledOnceWithAccount(*activitiesChangedSpy, account));
             }));
+    }
+
+    void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
+    {
+        FakeWebSocketServer fakeServer;
+        auto account = FakeWebSocketServer::createAccount();
+        account->setPushNotificationsReconnectInterval(0);
+
+        // Let if fail a few times
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+        QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+
+        // Push notifications should try to reconnect
+        QVERIFY(fakeServer.authenticateAccount(account));
     }
 };
 

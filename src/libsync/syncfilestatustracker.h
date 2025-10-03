@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Jocelyn Turcotte <jturcotte@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef SYNCFILESTATUSTRACKER_H
@@ -33,14 +42,13 @@ public slots:
     void slotPathTouched(const QString &fileName);
     // path relative to folder
     void slotAddSilentlyExcluded(const QString &folderPath);
-    void slotCheckAndRemoveSilentlyExcluded(const QString &folderPath);
 
 signals:
-    void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus);
+    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus);
 
 private slots:
-    void slotAboutToPropagate(OCC::SyncFileItemVector &items);
-    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
+    void slotAboutToPropagate(SyncFileItemVector &items);
+    void slotItemCompleted(const SyncFileItemPtr &item);
     void slotSyncFinished();
     void slotSyncEngineRunningChanged();
 
@@ -66,7 +74,6 @@ private:
     SyncEngine *_syncEngine;
 
     ProblemsMap _syncProblems;
-    ProblemsMap _syncSilentExcludes;
     QSet<QString> _dirtyPaths;
     // Counts the number direct children currently being synced (has unfinished propagation jobs).
     // We'll show a file/directory as SYNC as long as its sync count is > 0.

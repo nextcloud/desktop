@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #pragma once
 
 #include <QWidget>
@@ -21,14 +16,14 @@ class IgnoreListTableWidget : public QWidget
 
 public:
     IgnoreListTableWidget(QWidget *parent = nullptr);
-    ~IgnoreListTableWidget() override;
+    ~IgnoreListTableWidget();
 
     void readIgnoreFile(const QString &file, bool readOnly = false);
     int addPattern(const QString &pattern, bool deletable, bool readOnly);
 
 public slots:
     void slotRemoveAllItems();
-    void slotWriteIgnoreFile(const QString &file);
+    void slotWriteIgnoreFile(const QString & file);
 
 private slots:
     void slotItemSelectionChanged();

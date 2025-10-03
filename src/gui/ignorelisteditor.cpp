@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "configfile.h"
@@ -29,7 +37,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
 
     ConfigFile cfgFile;
     //FIXME This is not true. The entries are hardcoded below in setupTableReadOnlyItems
-    readOnlyTooltip = tr("This entry is provided by the system at \"%1\" "
+    readOnlyTooltip = tr("This entry is provided by the system at '%1' "
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
@@ -37,7 +45,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     const auto userConfig = cfgFile.excludeFile(ConfigFile::Scope::UserScope);
     ui->ignoreTableWidget->readIgnoreFile(userConfig);
 
-    connect(this, &QDialog::accepted, [=, this]() {
+    connect(this, &QDialog::accepted, [=]() {
         ui->ignoreTableWidget->slotWriteIgnoreFile(userConfig);
         /* handle the hidden file checkbox */
 

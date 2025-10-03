@@ -1,17 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2016 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
- *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+ *    This software is in the public domain, furnished "as is", without technical
+ *       support, and with no warranty, express or implied, as to its usefulness for
+ *          any purpose.
+ *          */
 
 #include <QtTest>
 
 #include "cmd/netrcparser.h"
-#include "logger.h"
 
 using namespace OCC;
 
@@ -28,13 +23,7 @@ class TestNetrcParser : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-
+    void initTestCase() {
        QFile netrc(testfileC);
        QVERIFY(netrc.open(QIODevice::WriteOnly));
        netrc.write("machine foo login bar password baz\n");
@@ -58,11 +47,10 @@ private slots:
     void testValidNetrc() {
        NetrcParser parser(testfileC);
        QVERIFY(parser.parse());
-       QCOMPARE(parser.find("foo"), qMakePair(QStringLiteral("bar"), QStringLiteral("baz")));
-       QCOMPARE(parser.find("broken"), qMakePair(QStringLiteral("bar2"), QString()));
-       QCOMPARE(parser.find("funnysplit"), qMakePair(QStringLiteral("bar3"), QStringLiteral("baz3")));
-       QEXPECT_FAIL("", "Current implementation do not support spaces in username or password", Continue);
-       QCOMPARE(parser.find("frob"), qMakePair(QStringLiteral("user with spaces"), QStringLiteral("space pwd")));
+       QCOMPARE(parser.find("foo"), qMakePair(QString("bar"), QString("baz")));
+       QCOMPARE(parser.find("broken"), qMakePair(QString("bar2"), QString()));
+       QCOMPARE(parser.find("funnysplit"), qMakePair(QString("bar3"), QString("baz3")));
+       QCOMPARE(parser.find("frob"), qMakePair(QString("user with spaces"), QString("space pwd")));
     }
 
     void testEmptyNetrc() {
@@ -74,8 +62,8 @@ private slots:
     void testValidNetrcWithDefault() {
        NetrcParser parser(testfileWithDefaultC);
        QVERIFY(parser.parse());
-       QCOMPARE(parser.find("foo"), qMakePair(QStringLiteral("bar"), QStringLiteral("baz")));
-       QCOMPARE(parser.find("dontknow"), qMakePair(QStringLiteral("user"), QStringLiteral("pass")));
+       QCOMPARE(parser.find("foo"), qMakePair(QString("bar"), QString("baz")));
+       QCOMPARE(parser.find("dontknow"), qMakePair(QString("user"), QString("pass")));
     }
 
     void testInvalidNetrc() {

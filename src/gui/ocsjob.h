@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef OCSJOB_H
@@ -11,14 +19,13 @@
 #include "abstractnetworkjob.h"
 
 #include <QVector>
-#include <QHash>
+#include <QList>
+#include <QPair>
 #include <QUrl>
 
 #define OCS_SUCCESS_STATUS_CODE 100
-// Apparently the v2.php URLs can return that
+// Apparantly the v2.php URLs can return that
 #define OCS_SUCCESS_STATUS_CODE_V2 200
-// Two factor auth notification returns Accepted 202
-#define OCS_ACCEPTED_STATUS_CODE 202
 // not modified when using  ETag
 #define OCS_NOT_MODIFIED_STATUS_CODE_V2 304
 
@@ -101,8 +108,6 @@ public:
      */
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
-    [[nodiscard]] QString getParamValue(const QString &key) const;
-
 
 protected slots:
 
@@ -142,7 +147,7 @@ private slots:
 
 private:
     QByteArray _verb;
-    QHash<QString, QString> _params;
+    QList<QPair<QString, QString>> _params;
     QVector<int> _passStatusCodes;
     QNetworkRequest _request;
 };

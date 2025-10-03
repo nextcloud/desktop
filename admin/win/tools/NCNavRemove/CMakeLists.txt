@@ -1,5 +1,3 @@
-# SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
-# SPDX-License-Identifier: GPL-2.0-or-later
 project(NCNavRemove)
 
 set(MUTEX_NAME "NCNavRemove")

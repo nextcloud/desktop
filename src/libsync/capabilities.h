@@ -1,8 +1,17 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
+
 
 #ifndef CAPABILITIES_H
 #define CAPABILITIES_H
@@ -12,7 +21,6 @@
 #include <QVariantMap>
 #include <QStringList>
 #include <QMimeDatabase>
-#include <QColor>
 
 namespace OCC {
 
@@ -37,63 +45,44 @@ class OWNCLOUDSYNC_EXPORT Capabilities
 public:
     Capabilities(const QVariantMap &capabilities);
 
-    [[nodiscard]] bool shareAPI() const;
-    [[nodiscard]] bool shareEmailPasswordEnabled() const;
-    [[nodiscard]] bool shareEmailPasswordEnforced() const;
-    [[nodiscard]] bool sharePublicLink() const;
-    [[nodiscard]] bool sharePublicLinkAllowUpload() const;
-    [[nodiscard]] bool sharePublicLinkSupportsUploadOnly() const;
-    [[nodiscard]] bool sharePublicLinkAskOptionalPassword() const;
-    [[nodiscard]] bool sharePublicLinkEnforcePassword() const;
-    [[nodiscard]] bool sharePublicLinkEnforceExpireDate() const;
-    [[nodiscard]] int sharePublicLinkExpireDateDays() const;
-    [[nodiscard]] bool shareInternalEnforceExpireDate() const;
-    [[nodiscard]] int shareInternalExpireDateDays() const;
-    [[nodiscard]] bool shareRemoteEnforceExpireDate() const;
-    [[nodiscard]] int shareRemoteExpireDateDays() const;
-    [[nodiscard]] bool sharePublicLinkMultiple() const;
-    [[nodiscard]] bool shareResharing() const;
-    [[nodiscard]] int shareDefaultPermissions() const;
-    [[nodiscard]] bool chunkingNg() const;
-    [[nodiscard]] qint64 maxChunkSize() const;
-    [[nodiscard]] int maxConcurrentChunkUploads() const;
-    [[nodiscard]] bool bulkUpload() const;
-    [[nodiscard]] bool filesLockAvailable() const;
-    [[nodiscard]] bool filesLockTypeAvailable() const;
-    [[nodiscard]] bool userStatus() const;
-    [[nodiscard]] bool userStatusSupportsEmoji() const;
-    [[nodiscard]] bool userStatusSupportsBusy() const;
-    [[nodiscard]] bool ncAssistantEnabled() const;
-    [[nodiscard]] QColor serverColor() const;
-    [[nodiscard]] QColor serverTextColor() const;
+    bool shareAPI() const;
+    bool shareEmailPasswordEnabled() const;
+    bool shareEmailPasswordEnforced() const;
+    bool sharePublicLink() const;
+    bool sharePublicLinkAllowUpload() const;
+    bool sharePublicLinkSupportsUploadOnly() const;
+    bool sharePublicLinkAskOptionalPassword() const;
+    bool sharePublicLinkEnforcePassword() const;
+    bool sharePublicLinkEnforceExpireDate() const;
+    int sharePublicLinkExpireDateDays() const;
+    bool sharePublicLinkMultiple() const;
+    bool shareResharing() const;
+    bool chunkingNg() const;
+    bool userStatus() const;
 
-    /// Returns which kind of push notifications are available
-    [[nodiscard]] PushNotificationTypes availablePushNotifications() const;
+    /// Returns which kind of push notfications are available
+    PushNotificationTypes availablePushNotifications() const;
 
     /// Websocket url for files push notifications if available
-    [[nodiscard]] QUrl pushNotificationsWebSocketUrl() const;
+    QUrl pushNotificationsWebSocketUrl() const;
 
     /// disable parallel upload in chunking
-    [[nodiscard]] bool chunkingParallelUploadDisabled() const;
+    bool chunkingParallelUploadDisabled() const;
 
     /// Whether the "privatelink" DAV property is available
-    [[nodiscard]] bool privateLinkPropertyAvailable() const;
+    bool privateLinkPropertyAvailable() const;
 
     /// returns true if the capabilities report notifications
-    [[nodiscard]] bool notificationsAvailable() const;
+    bool notificationsAvailable() const;
 
     /// returns true if the server supports client side encryption
-    [[nodiscard]] bool clientSideEncryptionAvailable() const;
-
-    [[nodiscard]] double clientSideEncryptionVersion() const;
+    bool clientSideEncryptionAvailable() const;
 
     /// returns true if the capabilities are loaded already.
-    [[nodiscard]] bool isValid() const;
+    bool isValid() const;
 
     /// return true if the activity app is enabled
-    [[nodiscard]] bool hasActivities() const;
-
-    [[nodiscard]] bool isClientStatusReportingEnabled() const;
+    bool hasActivities() const;
 
     /**
      * Returns the checksum types the server understands.
@@ -106,7 +95,7 @@ public:
      * Default: []
      * Possible entries: "Adler32", "MD5", "SHA1"
      */
-    [[nodiscard]] QList<QByteArray> supportedChecksumTypes() const;
+    QList<QByteArray> supportedChecksumTypes() const;
 
     /**
      * The checksum algorithm that the server recommends for file uploads.
@@ -116,14 +105,14 @@ public:
      * Default: empty, meaning "no preference"
      * Possible values: empty or any of the supportedTypes
      */
-    [[nodiscard]] QByteArray preferredUploadChecksumType() const;
+    QByteArray preferredUploadChecksumType() const;
 
     /**
      * Helper that returns the preferredUploadChecksumType() if set, or one
      * of the supportedChecksumTypes() if it isn't. May return an empty
      * QByteArray if no checksum types are supported.
      */
-    [[nodiscard]] QByteArray uploadChecksumType() const;
+    QByteArray uploadChecksumType() const;
 
     /**
      * List of HTTP error codes should be guaranteed to eventually reset
@@ -142,7 +131,7 @@ public:
      * Default: []
      * Example: [503, 500]
      */
-    [[nodiscard]] QList<int> httpErrorCodesThatResetFailingChunkedUploads() const;
+    QList<int> httpErrorCodesThatResetFailingChunkedUploads() const;
 
     /**
      * Regex that, if contained in a filename, will result in it not being uploaded.
@@ -153,27 +142,17 @@ public:
      *
      * Note that it just needs to be contained. The regex [ab] is contained in "car".
      */
-    [[nodiscard]] QString invalidFilenameRegex() const;
+    QString invalidFilenameRegex() const;
 
     /**
      * return the list of filename that should not be uploaded
      */
-    [[nodiscard]] QStringList blacklistedFiles() const;
-
-    [[nodiscard]] QStringList forbiddenFilenameCharacters() const;
-    [[nodiscard]] QStringList forbiddenFilenameBasenames() const;
-    [[nodiscard]] QStringList forbiddenFilenameExtensions() const;
-    [[nodiscard]] QStringList forbiddenFilenames() const;
+    QStringList blacklistedFiles() const;
 
     /**
      * Whether conflict files should remain local (default) or should be uploaded.
      */
-    [[nodiscard]] bool uploadConflictFiles() const;
-
-    [[nodiscard]] bool groupFoldersAvailable() const;
-
-    [[nodiscard]] bool serverHasValidSubscription() const;
-    [[nodiscard]] QString desktopEnterpriseChannel() const;
+    bool uploadConflictFiles() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
@@ -181,8 +160,6 @@ public:
     DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
 
 private:
-    [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
-
     QVariantMap _capabilities;
 
     QList<DirectEditor*> _directEditors;
@@ -202,11 +179,11 @@ public:
     bool hasMimetype(const QMimeType &mimeType);
     bool hasOptionalMimetype(const QMimeType &mimeType);
 
-    [[nodiscard]] QString id() const;
-    [[nodiscard]] QString name() const;
+    QString id() const;
+    QString name() const;
 
-    [[nodiscard]] QList<QByteArray> mimeTypes() const;
-    [[nodiscard]] QList<QByteArray> optionalMimeTypes() const;
+    QList<QByteArray> mimeTypes() const;
+    QList<QByteArray> optionalMimeTypes() const;
 
 private:
     QString _id;

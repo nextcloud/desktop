@@ -1,14 +1,27 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef UTILITY_H
 #define UTILITY_H
 
 
-#include "csync/ocsynclib.h"
+#include "ocsynclib.h"
 #include <QString>
 #include <QByteArray>
 #include <QDateTime>
@@ -37,61 +50,12 @@ Q_DECLARE_LOGGING_CATEGORY(lcUtility)
  *  @{
  */
 namespace Utility {
-    struct ProcessInfosForOpenFile {
-        ulong processId;
-        QString processName;
-    };
-    /**
-     * @brief Queries the OS for processes that are keeping the file open(using it)
-     *
-     * @param filePath absolute file path
-     * @return list of ProcessInfosForOpenFile
-     */
-    OCSYNC_EXPORT QVector<ProcessInfosForOpenFile> queryProcessInfosKeepingFileOpen(const QString &filePath);
-
-    OCSYNC_EXPORT int rand();
     OCSYNC_EXPORT void sleep(int sec);
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
-    /**
-     * @brief Create favorite link for sync folder with application name and icon
-     *
-     * @param folder absolute file path to folder
-     */
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
-    /**
-     * @brief Migrate favorite link for sync folder with new application name and icon
-     *
-     * @param folder absolute file path to folder
-     */
-    OCSYNC_EXPORT void migrateFavLink(const QString &folder);
-    /**
-     * @brief Creates or overwrite the Desktop.ini file to use new folder IconResource shown as a favorite link
-     *
-     * @param folder absolute file path to folder
-     * @param localizedResourceName new folder name to be used as display name (migration)
-     */
-    OCSYNC_EXPORT void setupDesktopIni(const QString &folder, const QString localizedResourceName = {});
-    /**
-     * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
-     *
-     * @param folder absolute file path to folder
-     */
-    OCSYNC_EXPORT void removeFavLink(const QString &folder);
-    /**
-     * @brief Return the display name of a folder - to be used in fav links and sync root name (VFS).x
-     * e.g. Nextcloud1 will become NewAppName1, NewAppName2 or FolderName will be kept as is.
-     *
-     * @param currentDisplayName current folder display name string
-     * @param newName new name to be used for the folder
-     */
-    OCSYNC_EXPORT QString syncFolderDisplayName(const QString &currentDisplayName, const QString &newName);
-
-    // convenience system path to links folder
-    OCSYNC_EXPORT QString systemPathToLinks();
-
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
-    OCSYNC_EXPORT QString octetsToString(const qint64 octets);
+    OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
     /**
@@ -104,7 +68,7 @@ namespace Utility {
       */
     OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
-    OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, const bool launch);
+    OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
     OCSYNC_EXPORT int convertSizeToInt(size_t &convertVar);
 
@@ -163,11 +127,11 @@ namespace Utility {
     OCSYNC_EXPORT bool hasDarkSystray();
 
     // convenience OS detection methods
-    constexpr bool isWindows();
-    constexpr bool isMac();
-    constexpr bool isUnix();
-    constexpr bool isLinux(); // use with care
-    constexpr bool isBSD(); // use with care, does not match OS X
+    inline bool isWindows();
+    inline bool isMac();
+    inline bool isUnix();
+    inline bool isLinux(); // use with care
+    inline bool isBSD(); // use with care, does not match OS X
 
     OCSYNC_EXPORT QString platformName();
     // crash helper for --debug
@@ -179,7 +143,7 @@ namespace Utility {
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
 
-    // Check if two paths that MUST exist are equal. This function
+    // Check if two pathes that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
@@ -201,7 +165,7 @@ namespace Utility {
      * Use this to get a string that describes the timespan between the first and
      * the second timestamp in a human readable and understandable form.
      *
-     * If the second parameter is omitted, the current time is used.
+     * If the second parameter is ommitted, the current time is used.
      */
     OCSYNC_EXPORT QString timeAgoInWords(const QDateTime &dt, const QDateTime &from = QDateTime());
 
@@ -219,9 +183,9 @@ namespace Utility {
         void reset();
 
         // out helpers, return the measured times.
-        [[nodiscard]] QDateTime startTime() const;
-        [[nodiscard]] QDateTime timeOfLap(const QString &lapName) const;
-        [[nodiscard]] quint64 durationOfLap(const QString &lapName) const;
+        QDateTime startTime() const;
+        QDateTime timeOfLap(const QString &lapName) const;
+        quint64 durationOfLap(const QString &lapName) const;
     };
 
     /**
@@ -257,13 +221,10 @@ namespace Utility {
     OCSYNC_EXPORT QString makeConflictFileName(
         const QString &fn, const QDateTime &dt, const QString &user);
 
-    OCSYNC_EXPORT QString makeCaseClashConflictFileName(const QString &filename, const QDateTime &datetime);
-
     /** Returns whether a file name indicates a conflict file
      */
-    bool isConflictFile(const char *name) = delete;
+    OCSYNC_EXPORT bool isConflictFile(const char *name);
     OCSYNC_EXPORT bool isConflictFile(const QString &name);
-    OCSYNC_EXPORT bool isCaseClashConflictFile(const QString &name);
 
     /** Find the base name for a conflict file name, using name pattern only
      *
@@ -274,27 +235,6 @@ namespace Utility {
      */
     OCSYNC_EXPORT QByteArray conflictFileBaseNameFromPattern(const QByteArray &conflictName);
 
-    /**
-     * @brief Check whether the path is a root of a Windows drive partition ([c:/, d:/, e:/, etc.)
-     */
-    OCSYNC_EXPORT bool isPathWindowsDrivePartitionRoot(const QString &path);
-
-    /**
-     * @brief Retrieves current logged-in user name from the OS
-     */
-    OCSYNC_EXPORT QString getCurrentUserName();
-
-    /**
-     * @brief Registers the desktop app as a handler for a custom URI to enable local editing
-     */
-    OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
-    
-    OCSYNC_EXPORT QString leadingSlashPath(const QString &path);
-    OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
-    OCSYNC_EXPORT QString noLeadingSlashPath(const QString &path);
-    OCSYNC_EXPORT QString noTrailingSlashPath(const QString &path);
-    OCSYNC_EXPORT QString fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot);
-
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
@@ -302,20 +242,20 @@ namespace Utility {
     OCSYNC_EXPORT bool registryDeleteKeyTree(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
     OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
-    OCSYNC_EXPORT bool registryWalkValues(HKEY hRootKey, const QString &subKey, const std::function<void(const QString &, bool *)> &callback);
     OCSYNC_EXPORT QRect getTaskbarDimensions();
 
+    // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c
+    OCSYNC_EXPORT void UnixTimeToFiletime(time_t t, FILETIME *filetime);
+    OCSYNC_EXPORT void FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs);
     OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
 
     OCSYNC_EXPORT QString formatWinError(long error);
-
-    OCSYNC_EXPORT bool canCreateFileInPath(const QString &path);
 
     class OCSYNC_EXPORT NtfsPermissionLookupRAII
     {
     public:
         /**
-         * NTFS permissions lookup is disabled by default for performance reasons
+         * NTFS permissions lookup is diabled by default for performance reasons
          * Enable it and disable it again once we leave the scope
          * https://doc.qt.io/Qt-5/qfileinfo.html#ntfs-permissions
          */
@@ -330,7 +270,7 @@ namespace Utility {
 }
 /** @} */ // \addtogroup
 
-inline constexpr bool Utility::isWindows()
+inline bool Utility::isWindows()
 {
 #ifdef Q_OS_WIN
     return true;
@@ -339,16 +279,16 @@ inline constexpr bool Utility::isWindows()
 #endif
 }
 
-inline constexpr bool Utility::isMac()
+inline bool Utility::isMac()
 {
-#ifdef Q_OS_MACOS
+#ifdef Q_OS_MAC
     return true;
 #else
     return false;
 #endif
 }
 
-inline constexpr bool Utility::isUnix()
+inline bool Utility::isUnix()
 {
 #ifdef Q_OS_UNIX
     return true;
@@ -357,7 +297,7 @@ inline constexpr bool Utility::isUnix()
 #endif
 }
 
-inline constexpr bool Utility::isLinux()
+inline bool Utility::isLinux()
 {
 #if defined(Q_OS_LINUX)
     return true;
@@ -366,7 +306,7 @@ inline constexpr bool Utility::isLinux()
 #endif
 }
 
-inline constexpr bool Utility::isBSD()
+inline bool Utility::isBSD()
 {
 #if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
     return true;
@@ -374,5 +314,6 @@ inline constexpr bool Utility::isBSD()
     return false;
 #endif
 }
+
 }
 #endif // UTILITY_H

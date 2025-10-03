@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_OWNCLOUD_ADVANCED_SETUP_PAGE_H
@@ -11,10 +20,8 @@
 
 #include "wizard/owncloudwizardcommon.h"
 #include "ui_owncloudadvancedsetuppage.h"
-#include "elidedlabel.h"
 
 class QProgressIndicator;
-class QNetworkReply;
 
 namespace OCC {
 
@@ -30,14 +37,14 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 public:
     OwncloudAdvancedSetupPage(OwncloudWizard *wizard);
 
-    [[nodiscard]] bool isComplete() const override;
+    bool isComplete() const override;
     void initializePage() override;
-    [[nodiscard]] int nextId() const override;
+    int nextId() const override;
     bool validatePage() override;
-    [[nodiscard]] QString localFolder() const;
-    [[nodiscard]] QStringList selectiveSyncBlacklist() const;
-    [[nodiscard]] bool useVirtualFileSync() const;
-    [[nodiscard]] bool isConfirmBigFolderChecked() const;
+    QString localFolder() const;
+    QStringList selectiveSyncBlacklist() const;
+    bool useVirtualFileSync() const;
+    bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void directoriesCreated();
@@ -55,47 +62,38 @@ private slots:
     void slotSelectiveSyncClicked();
     void slotVirtualFileSyncClicked();
     void slotQuotaRetrieved(const QVariantMap &result);
-    void slotQuotaRetrievedWithError(QNetworkReply *reply);
 
 private:
     void setRadioChecked(QRadioButton *radio);
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    void updateMacOsFileProviderRelatedViews();
-#endif
 
     void setupCustomization();
     void updateStatus();
     bool dataChanged();
     void startSpinner();
     void stopSpinner();
-    [[nodiscard]] QUrl serverUrl() const;
-    [[nodiscard]] qint64 availableLocalSpace() const;
-    [[nodiscard]] QString checkLocalSpace(qint64 remoteSize) const;
+    QUrl serverUrl() const;
+    qint64 availableLocalSpace() const;
+    QString checkLocalSpace(qint64 remoteSize) const;
     void customizeStyle();
     void setServerAddressLabelUrl(const QUrl &url);
+    void setLocalFolderPushButtonPath(const QString &path);
     void styleSyncLogo();
     void styleLocalFolderLabel();
     void setResolutionGuiVisible(bool value);
     void setupResoultionWidget();
     void fetchUserAvatar();
-    void setUserInformation();
+    void fetchUserData();
 
-    // TODO: remove when UX decision is made
-    void refreshVirtualFilesAvailibility(const QString &path);
-
-    Ui_OwncloudAdvancedSetupPage _ui{};
+    Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking = false;
     bool _created = false;
     bool _localFolderValid = false;
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
-    QString _localPath;
     QStringList _selectiveSyncBlacklist;
     qint64 _rSize = -1;
     qint64 _rSelectedSize = -1;
     OwncloudWizard *_ocWizard;
-    QScopedPointer<ElidedLabel> _filePathLabel;
 };
 
 } // namespace OCC

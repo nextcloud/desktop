@@ -1,197 +1,232 @@
-/*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
-import QtQuick
-import QtQuick.Window
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.9
+import QtQuick.Window 2.3
+import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.2
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style
-import com.nextcloud.desktopclient
+import Style 1.0
+import com.nextcloud.desktopclient 1.0
 
-AbstractButton {
+MenuItem {
     id: userLine
-
-    signal showUserStatusSelector(int id)
-    signal showUserStatusMessageSelector(int id)
-
-
-    Accessible.role: Accessible.MenuItem
-    Accessible.name: qsTr("Switch to account") + " " + model.name
-
     height: Style.trayWindowHeaderHeight
 
-    contentItem: RowLayout {
-        id: userLineLayout
-        spacing: Style.userLineSpacing
+    Accessible.role: Accessible.MenuItem
+    Accessible.name: qsTr("Account entry")
 
-        Image {
-            id: accountAvatar
-            Layout.leftMargin: Style.accountIconsMenuMargin
-            verticalAlignment: Qt.AlignCenter
-            cache: false
-            source: model.avatar !== "" ? model.avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
-            Layout.preferredHeight: Style.accountAvatarSize
-            Layout.preferredWidth: Style.accountAvatarSize
+        RowLayout {
+            id: userLineLayout
+            spacing: 0
+            width: Style.currentAccountButtonWidth
+            height: parent.height
 
-            Rectangle {
-                id: accountStatusIndicatorBackground
-                visible: model.isConnected && model.serverHasUserStatus
-                width: accountStatusIndicator.sourceSize.width + Style.trayFolderStatusIndicatorSizeOffset
-                height: width
-                color: "white"
-                anchors.bottom: accountAvatar.bottom
-                anchors.right: accountAvatar.right
-                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-            }
+            Button {
+                id: accountButton
+                Layout.preferredWidth: (userLineLayout.width * (5/6))
+                Layout.preferredHeight: (userLineLayout.height)
+                display: AbstractButton.IconOnly
+                hoverEnabled: true
+                flat: true
 
-            Image {
-                id: accountStatusIndicator
-                visible: model.isConnected && model.serverHasUserStatus
-                source: model.statusIcon
-                cache: false
-                x: accountStatusIndicatorBackground.x + Style.trayFolderStatusIndicatorSizeOffset / 2
-                y: accountStatusIndicatorBackground.y + Style.trayFolderStatusIndicatorSizeOffset / 2
-                sourceSize.width: Style.accountAvatarStateIndicatorSize
-                sourceSize.height: Style.accountAvatarStateIndicatorSize
+                Accessible.role: Accessible.Button
+                Accessible.name: qsTr("Switch to account") + " " + name
 
-                Accessible.role: Accessible.Indicator
-                Accessible.name: model.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
-            }
-        }
-
-        ColumnLayout {
-            id: accountLabels
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: Style.extraExtraSmallSpacing
-
-            EnforcedPlainTextLabel {
-                id: accountUser
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                verticalAlignment: Text.AlignBottom
-                text: name
-                elide: Text.ElideRight
-                font.pixelSize: Style.topLinePixelSize
-                font.bold: true
-            }
-
-            RowLayout {
-                id: statusLayout
-                Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
-                visible: model.isConnected &&
-                         model.serverHasUserStatus &&
-                         (model.statusEmoji !== "" || model.statusMessage !== "")
-
-                EnforcedPlainTextLabel {
-                    id: emoji
-                    visible: model.statusEmoji !== ""
-                    text: statusEmoji
-                }
-
-                EnforcedPlainTextLabel {
-                    id: message
-                    Layout.fillWidth: true
-                    visible: model.statusMessage !== ""
-                    text: statusMessage
-                    elide: Text.ElideRight
-                    font.pixelSize: Style.subLinePixelSize
-                }
-            }
-
-            EnforcedPlainTextLabel {
-                id: accountServer
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                verticalAlignment: Text.AlignTop
-                text: server
-                elide: Text.ElideRight
-                font.pixelSize: Style.subLinePixelSize
-            }
-        }
-
-        Button {
-            id: userMoreButton
-            Layout.preferredWidth: Style.headerButtonIconSize
-            Layout.fillHeight: true
-            flat: true
-
-            Accessible.role: Accessible.ButtonMenu
-            Accessible.name: qsTr("Account actions")
-            Accessible.onPressAction: userMoreButtonMouseArea.clicked()
-
-            onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
-
-            icon.source: "image://svgimage-custom-color/more.svg/" + palette.windowText
-
-            AutoSizingMenu {
-                id: userMoreButtonMenu
-                closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                MenuItem {
-                    visible: model.isConnected && model.serverHasUserStatus
-                    height: visible ? implicitHeight : 0
-                    text: qsTr("Set status")
-                    font.pixelSize: Style.topLinePixelSize
+                MouseArea {
+                    anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: showUserStatusSelector(index)
-               }
-
-                MenuItem {
-                    visible: model.isConnected && model.serverHasUserStatus
-                    height: visible ? implicitHeight : 0
-                    text: qsTr("Status message")
-                    font.pixelSize: Style.topLinePixelSize
-                    hoverEnabled: true
-                    onClicked: showUserStatusMessageSelector(index)
-               }
-
-                MenuItem {
-                    text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-                    visible: model.canLogout
-                    height: visible ? implicitHeight : 0
-                    width: parent.width
-                    font.pixelSize: Style.topLinePixelSize
-                    hoverEnabled: true
-                    onClicked: {
-                        model.isConnected ? UserModel.logout(index) : UserModel.login(index)
-                        accountMenu.close()
+                    onContainsMouseChanged: {
+                        accountStatusIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
                     }
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-
-                    onPressed: {
-                        if (model.isConnected) {
-                            UserModel.logout(index)
+                    onClicked: {
+                        if (!isCurrentUser) {
+                            UserModel.switchCurrentUser(id)
                         } else {
-                            UserModel.login(index)
+                            accountMenu.close()
                         }
-                        accountMenu.close()
                     }
-               }
+                }
 
-                MenuItem {
-                    id: removeAccountButton
-                    text: model.removeAccountText
-                    font.pixelSize: Style.topLinePixelSize
+
+                background: Item {
+                    height: parent.height
+                    width: userLine.menu ? userLine.menu.width : 0
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                    }
+                }
+
+                RowLayout {
+                    id: accountControlRowLayout
+                    height: accountButton.height
+                    width: accountButton.width
+                    spacing: 0
+                    Image {
+                        id: accountAvatar
+                        Layout.leftMargin: 4
+                        verticalAlignment: Qt.AlignCenter
+                        cache: false
+                        source: model.avatar != "" ? model.avatar : "image://avatars/fallbackBlack"
+                        Layout.preferredHeight: (userLineLayout.height -16)
+                        Layout.preferredWidth: (userLineLayout.height -16)
+                        Rectangle {
+                            id: accountStatusIndicatorBackground
+                            width: accountStatusIndicator.sourceSize.width + 2
+                            height: width
+                            anchors.bottom: accountAvatar.bottom
+                            anchors.right: accountAvatar.right
+                            color: "white"
+                            radius: width*0.5
+                        }
+                        Image {
+                            id: accountStatusIndicator
+                            source: model.statusIcon
+                            cache: false
+                            x: accountStatusIndicatorBackground.x + 1
+                            y: accountStatusIndicatorBackground.y + 1
+                            sourceSize.width: Style.accountAvatarStateIndicatorSize
+                            sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                            Accessible.role: Accessible.Indicator
+                            Accessible.name: model.isStatusOnline ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                        }
+                    }
+
+                    Column {
+                        id: accountLabels
+                        spacing: 4
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.leftMargin: 6
+                        Label {
+                            id: accountUser
+                            width: 128
+                            text: name
+                            elide: Text.ElideRight
+                            color: "black"
+                            font.pixelSize: 12
+                            font.bold: true
+                        }
+                        Label {
+                            id: userStatusMessage
+                            width: 128
+                            text: statusMessage
+                            elide: Text.ElideRight
+                            color: "black"
+                            font.pixelSize: 10
+                        }
+                        Label {
+                            id: accountServer
+                            width: 128
+                            text: server
+                            elide: Text.ElideRight
+                            color: "black"
+                            font.pixelSize: 10
+                        }
+                    }
+                }
+            } // accountButton
+
+            Button {
+                id: userMoreButton
+                Layout.preferredWidth: (userLineLayout.width * (1/6))
+                Layout.preferredHeight: userLineLayout.height
+                flat: true
+
+                icon.source: "qrc:///client/theme/more.svg"
+                icon.color: "transparent"
+
+                Accessible.role: Accessible.ButtonMenu
+                Accessible.name: qsTr("Account actions")
+                Accessible.onPressAction: userMoreButtonMouseArea.clicked()
+
+                MouseArea {
+                    id: userMoreButtonMouseArea
+                    anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {
-                        UserModel.removeAccount(index)
-                        accountMenu.close()
+                        if (userMoreButtonMenu.visible) {
+                            userMoreButtonMenu.close()
+                        } else {
+                            userMoreButtonMenu.popup()
+                        }
+                    }
+                }
+                background:
+                    Rectangle {
+                    color: userMoreButtonMouseArea.containsMouse ? "grey" : "transparent"
+                    opacity: 0.2
+                    height: userMoreButton.height - 2
+                    y: userMoreButton.y + 1
+                }
+
+                Menu {
+                    id: userMoreButtonMenu
+                    width: 120
+                    closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                    background: Rectangle {
+                        border.color: Style.menuBorder
+                        radius: 2
                     }
 
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    Accessible.onPressAction: removeAccountButton.clicked()
-               }
+                    MenuItem {
+                        text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
+                        font.pixelSize: Style.topLinePixelSize
+                        hoverEnabled: true
+                        onClicked: {
+                            model.isConnected ? UserModel.logout(index) : UserModel.login(index)
+                            accountMenu.close()
+                        }
+
+                        background: Item {
+                            height: parent.height
+                            width: parent.menu.width
+                            Rectangle {
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            }
+                        }
+
+                        Accessible.role: Accessible.Button
+                        Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
+
+                        onPressed: {
+                            if (model.isConnected) {
+                                UserModel.logout(index)
+                            } else {
+                                UserModel.login(index)
+                            }
+                            accountMenu.close()
+                        }
+                    }
+
+                    MenuItem {
+                        id: removeAccountButton
+                        text: qsTr("Remove account")
+                        font.pixelSize: Style.topLinePixelSize
+                        hoverEnabled: true
+                        onClicked: {
+                            UserModel.removeAccount(index)
+                            accountMenu.close()
+                        }
+
+                        background: Item {
+                            height: parent.height
+                            width: parent.menu.width
+                            Rectangle {
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            }
+                        }
+
+                        Accessible.role: Accessible.Button
+                        Accessible.name: text
+                        Accessible.onPressAction: removeAccountButton.clicked()
+                    }
+                }
             }
         }
-    }
 }   // MenuItem userLine
-

@@ -1,12 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2020 ownCloud GmbH
- * SPDX-License-Identifier: CC0-1.0
- *
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+   This software is in the public domain, furnished "as is", without technical
+   support, and with no warranty, express or implied, as to its usefulness for
+   any purpose.
+*/
 
 #include <QtTest>
 
@@ -25,7 +21,7 @@ private slots:
         const QString nonexistingPath = tmp.filePath("someNonexistingDir/test.db");
         QNetworkCookie cookieA = QNetworkCookie("foo", "bar");
         // tomorrow rounded
-        cookieA.setExpirationDate(QDateTime::currentDateTimeUtc().addDays(1).date().startOfDay());
+        cookieA.setExpirationDate(QDateTime(QDateTime::currentDateTimeUtc().addDays(1).date()));
         const QList<QNetworkCookie> cookies = {cookieA, QNetworkCookie("foo2", "bar")};
         CookieJar jar;
         jar.setAllCookies(cookies);

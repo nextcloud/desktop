@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Markus Goetz <markus@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef BANDWIDTHMANAGER_H
@@ -27,7 +35,7 @@ class BandwidthManager : public QObject
     Q_OBJECT
 public:
     BandwidthManager(OwncloudPropagator *p);
-    ~BandwidthManager() override;
+    ~BandwidthManager();
 
     bool usingAbsoluteUploadLimit() { return _currentUploadLimit > 0; }
     bool usingRelativeUploadLimit() { return _currentUploadLimit < 0; }
@@ -36,10 +44,10 @@ public:
 
 
 public slots:
-    void registerUploadDevice(OCC::UploadDevice *);
+    void registerUploadDevice(UploadDevice *);
     void unregisterUploadDevice(QObject *);
 
-    void registerDownloadJob(OCC::GETFileJob *);
+    void registerDownloadJob(GETFileJob *);
     void unregisterDownloadJob(QObject *);
 
     void absoluteLimitTimerExpired();
@@ -72,11 +80,11 @@ private:
     QTimer _relativeUploadDelayTimer;
 
     // the device measured
-    UploadDevice *_relativeLimitCurrentMeasuredDevice = nullptr;
+    UploadDevice *_relativeLimitCurrentMeasuredDevice;
 
     // for measuring how much progress we made at start
-    qint64 _relativeUploadLimitProgressAtMeasuringRestart = 0;
-    qint64 _currentUploadLimit = 0;
+    qint64 _relativeUploadLimitProgressAtMeasuringRestart;
+    qint64 _currentUploadLimit;
 
     std::list<GETFileJob *> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
@@ -85,12 +93,12 @@ private:
     QTimer _relativeDownloadDelayTimer;
 
     // the device measured
-    GETFileJob *_relativeLimitCurrentMeasuredJob = nullptr;
+    GETFileJob *_relativeLimitCurrentMeasuredJob;
 
     // for measuring how much progress we made at start
-    qint64 _relativeDownloadLimitProgressAtMeasuringRestart = 0LL;
+    qint64 _relativeDownloadLimitProgressAtMeasuringRestart;
 
-    qint64 _currentDownloadLimit = 0;
+    qint64 _currentDownloadLimit;
 };
 
 } // namespace OCC

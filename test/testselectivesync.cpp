@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
  */
 
 #include <QtTest>
@@ -20,13 +17,7 @@ class TestSelectiveSync : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase()
-    {
-        Logger::instance()->setLogFlush(true);
-        Logger::instance()->setLogDebug(true);
 
-        QStandardPaths::setTestModeEnabled(true);
-    }
 
     void testSelectiveSyncBigFolders()
     {
@@ -39,7 +30,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &req, QIODevice *device)
                                          -> QNetworkReply * {
             // Record what path we are querying for the size
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND") {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND") {
                 if (device->readAll().contains("<size "))
                     sizeRequests << req.url().path();
             }
@@ -68,7 +59,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(newBigFolder.count(), 1);
-        QCOMPARE(newBigFolder.first()[0].toString(), QStringLiteral("A/newBigDir"));
+        QCOMPARE(newBigFolder.first()[0].toString(), QString("A/newBigDir"));
         QCOMPARE(newBigFolder.first()[1].toBool(), false);
         newBigFolder.clear();
 
@@ -78,7 +69,7 @@ private slots:
 
         auto oldSync = fakeFolder.currentLocalState();
         // syncing again should do the same
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), oldSync);
         QCOMPARE(newBigFolder.count(), 1); // (since we don't have a real Folder, the files were not added to any list)
@@ -86,46 +77,14 @@ private slots:
         QCOMPARE(sizeRequests.count(), 1); // "A/newBigDir";
         sizeRequests.clear();
 
-        // Simulate that we accept all files by setting a wildcard white list
+        // Simulate that we accept all files by seting a wildcard white list
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(newBigFolder.count(), 0);
         QCOMPARE(sizeRequests.count(), 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    void testRestoreSubFolderForDataFingerPrint()
-    {
-        const auto mkcolVerb = QByteArray{"MKCOL"};
-        FakeFolder fakeFolder{{}};
-        fakeFolder.localModifier().mkdir("topFolder");
-        fakeFolder.localModifier().mkdir("topFolder/subFolder");
-        fakeFolder.localModifier().insert("topFolder/subFolder/a");
-        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        auto mkdirRequestsCounter = 0;
-        fakeFolder.setServerOverride([&mkdirRequestsCounter, mkcolVerb](QNetworkAccessManager::Operation, const QNetworkRequest &req, QIODevice *device)
-                                         -> QNetworkReply * {
-            Q_UNUSED(device)
-
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == mkcolVerb) {
-                ++mkdirRequestsCounter;
-            }
-            qDebug() << req.attribute(QNetworkRequest::CustomVerbAttribute);
-
-            return nullptr;
-        });
-
-        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                                                                QStringList() << QLatin1String("topFolder"));
-        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>changed_finger_print</oc:data-fingerprint>";
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(mkdirRequestsCounter, 0);
     }
 };
 

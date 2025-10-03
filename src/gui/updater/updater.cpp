@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QUrl>
@@ -48,14 +56,10 @@ QUrl Updater::updateUrl()
 
     auto urlQuery = getQueryParams();
 
-#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE)
-    if (SparkleUpdater::autoUpdaterAllowed()) {
-        urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
-    }
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    urlQuery.addQueryItem(QLatin1String("fileprovider"), QLatin1String("true"));
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
 #endif
-#endif
+
 #if defined(Q_OS_WIN)
     urlQuery.addQueryItem(QLatin1String("msi"), QLatin1String("true"));
 #endif
@@ -67,7 +71,9 @@ QUrl Updater::updateUrl()
 
 QUrlQuery Updater::getQueryParams()
 {
-    auto platform = QStringLiteral("stranger");
+    QUrlQuery query;
+    Theme *theme = Theme::instance();
+    QString platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
         platform = QStringLiteral("linux");
     } else if (Utility::isBSD()) {
@@ -78,8 +84,8 @@ QUrlQuery Updater::getQueryParams()
         platform = QStringLiteral("macos");
     }
 
-    QUrlQuery query;
-    if (const auto sysInfo = getSystemInfo(); !sysInfo.isEmpty()) {
+    QString sysInfo = getSystemInfo();
+    if (!sysInfo.isEmpty()) {
         query.addQueryItem(QStringLiteral("client"), sysInfo);
     }
     query.addQueryItem(QStringLiteral("version"), clientVersion());
@@ -87,20 +93,32 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("osRelease"), QSysInfo::productType());
     query.addQueryItem(QStringLiteral("osVersion"), QSysInfo::productVersion());
     query.addQueryItem(QStringLiteral("kernelVersion"), QSysInfo::kernelVersion());
-    query.addQueryItem(QStringLiteral("oem"), Theme::instance()->appName());
+    query.addQueryItem(QStringLiteral("oem"), theme->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
-    query.addQueryItem(QStringLiteral("versionsuffix"), Theme::instance()->versionSuffix());
-    query.addQueryItem(QStringLiteral("channel"), ConfigFile().currentUpdateChannel());
+
+    QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
+
+    auto channel = ConfigFile().updateChannel();
+    if (channel != QLatin1String("stable")) {
+        query.addQueryItem(QStringLiteral("channel"), channel);
+    }
+
+    // updateSegment (see configfile.h)
+    ConfigFile cfg;
+    auto updateSegment = cfg.updateSegment();
+    query.addQueryItem(QLatin1String("updatesegment"), QString::number(updateSegment));
 
     return query;
 }
+
 
 QString Updater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
-    process.start(QLatin1String("lsb_release"), { QStringLiteral("-a") });
+    process.start(QLatin1String("lsb_release -a"));
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qCDebug(lcUpdater) << "Sys Info size: " << output.length();
@@ -123,12 +141,8 @@ Updater *Updater::create()
         return nullptr;
     }
 
-#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    if (SparkleUpdater::autoUpdaterAllowed()) {
-        return new SparkleUpdater(url);
-    }
-
-    return new PassiveUpdateNotifier(url);
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
     // Also for MSI
     return new NSISUpdater(url);

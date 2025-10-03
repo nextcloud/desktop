@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef FOLDERSTATUSMODEL_H
@@ -13,7 +21,6 @@
 #include <QVector>
 #include <QElapsedTimer>
 #include <QPointer>
-#include <QFileIconProvider>
 
 class QNetworkReply;
 namespace OCC {
@@ -35,20 +42,20 @@ public:
     enum {FileIdRole = Qt::UserRole+1};
 
     FolderStatusModel(QObject *parent = nullptr);
-    ~FolderStatusModel() override;
+    ~FolderStatusModel();
     void setAccountState(const AccountState *accountState);
 
-    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &) const override;
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    Qt::ItemFlags flags(const QModelIndex &) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    [[nodiscard]] int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    [[nodiscard]] QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
-    [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
-    [[nodiscard]] bool canFetchMore(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
+    bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex &parent) override;
     void resetAndFetch(const QModelIndex &parent);
-    [[nodiscard]] bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
 
     struct SubFolderInfo
     {
@@ -73,19 +80,15 @@ public:
 
         Qt::CheckState _checked = Qt::Checked;
 
-        bool _isNonDecryptable = false;
-
         // Whether this has a FetchLabel subrow
-        [[nodiscard]] bool hasLabel() const;
-
-        [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
+        bool hasLabel() const;
 
         // Reset all subfolders and fetch status
         void resetSubs(FolderStatusModel *model, QModelIndex index);
 
         struct Progress
         {
-            [[nodiscard]] bool isNull() const
+            bool isNull() const
             {
                 return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty();
             }
@@ -103,9 +106,9 @@ public:
         SubFolder,
         AddButton,
         FetchLabel };
-    [[nodiscard]] ItemType classify(const QModelIndex &index) const;
-    [[nodiscard]] SubFolderInfo *infoForIndex(const QModelIndex &index) const;
-    [[nodiscard]] bool isAnyAncestorEncrypted(const QModelIndex &index) const;
+    ItemType classify(const QModelIndex &index) const;
+    SubFolderInfo *infoForIndex(const QModelIndex &index) const;
+    bool isAnyAncestorEncrypted(const QModelIndex &index) const;
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 
@@ -116,20 +119,19 @@ public:
     QModelIndex indexForPath(Folder *f, const QString &path) const;
 
 public slots:
-    void slotUpdateFolderState(OCC::Folder *);
+    void slotUpdateFolderState(Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();
-    void slotSetProgress(const OCC::ProgressInfo &progress);
-    void e2eInitializationFinished(bool isNewMnemonicGenerated);
+    void slotSetProgress(const ProgressInfo &progress);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
-    void slotFolderSyncStateChange(OCC::Folder *f);
+    void slotFolderSyncStateChange(Folder *f);
     void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 
@@ -140,12 +142,10 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    [[nodiscard]] QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
+    QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
     const AccountState *_accountState = nullptr;
     bool _dirty = false; // If the selective sync checkboxes were changed
-
-    bool _isSyncRunningForAwhile = false;
 
     /**
      * Keeps track of items that are fetching data from the server.
@@ -153,8 +153,6 @@ private:
      * See slotShowPendingFetchProgress()
      */
     QMap<QPersistentModelIndex, QElapsedTimer> _fetchingItems;
-
-    QFileIconProvider _fileIconProvider;
 
 signals:
     void dirtyChanged();

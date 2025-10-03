@@ -1,9 +1,17 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2011 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * Copyright (C) by Duncan Mac-Vicar P. <duncan@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
 #include <QtGlobal>
 
 #include <cmath>
@@ -15,9 +23,9 @@
 #endif
 
 #include "application.h"
-#include "cocoainitializer.h"
 #include "theme.h"
 #include "common/utility.h"
+#include "cocoainitializer.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -27,80 +35,50 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QQuickStyle>
-#include <QStyle>
-#include <QStyleFactory>
 #include <QQuickWindow>
-#include <QSurfaceFormat>
-#include <QOperatingSystemVersion>
 
 using namespace OCC;
 
 void warnSystray()
 {
-    QMessageBox::critical(
-        nullptr,
-        qApp->translate("main.cpp", "System Tray not available"),
+    QMessageBox::critical(nullptr, qApp->translate("main.cpp", "System Tray not available"),
         qApp->translate("main.cpp", "%1 requires on a working system tray. "
                                     "If you are running XFCE, please follow "
                                     "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
-                                    "Otherwise, please install a system tray application such as \"trayer\" and try again.")
-            .arg(Theme::instance()->appNameGUI()),
-        QMessageBox::Ok
-    );
+                                    "Otherwise, please install a system tray application such as 'trayer' and try again.")
+            .arg(Theme::instance()->appNameGUI()));
 }
 
 int main(int argc, char **argv)
 {
-#ifdef Q_OS_WIN
-    SetDllDirectory(L"");
-    qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
-#endif
-
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
+    // Work around a bug in KDE's qqc2-desktop-style which breaks
+    // buttons with icons not based on a name, by forcing a style name
+    // the platformtheme plugin won't try to force qqc2-desktops-style
+    // anymore.
+    // Can be removed once the bug in qqc2-desktop-style is gone.
+    QQuickStyle::setStyle("Default");
+
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
-#ifdef Q_OS_MACOS
+
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
-
-    auto surfaceFormat = QSurfaceFormat::defaultFormat();
-    surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
-    QSurfaceFormat::setDefaultFormat(surfaceFormat);
-
-    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
-
-    auto qmlStyle = QStringLiteral("Fusion");
-    auto widgetsStyle = QStringLiteral("");
-
-#if defined Q_OS_MACOS
-    qmlStyle = QStringLiteral("macOS");
-#elif defined Q_OS_WIN
-    if (const auto osVersion = QOperatingSystemVersion::current().version(); osVersion < QOperatingSystemVersion::Windows11.version()) {
-        qmlStyle = QStringLiteral("Universal");
-        widgetsStyle = QStringLiteral("Fusion");
-        if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_UNIVERSAL_THEME")) {
-            // initialise theme with the light/dark mode setting from the OS
-            qputenv("QT_QUICK_CONTROLS_UNIVERSAL_THEME", "System");
-        }
-
-        if (osVersion < QOperatingSystemVersion::Windows10_1809.version() && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-            // for Windows Server 2016 to display text as expected, see #8064
-            qputenv("QT_QPA_PLATFORM", "windows:nodirectwrite");
-        }
-    } else {
-        qmlStyle = QStringLiteral("FluentWinUI3");
-        widgetsStyle = QStringLiteral("windows11");
-    }
-#endif
-
-    QQuickStyle::setStyle(qmlStyle);
-
     OCC::Application app(argc, argv);
 
-    if (!widgetsStyle.isEmpty()) {
-        QApplication::setStyle(QStyleFactory::create(widgetsStyle));
-    }
+#ifdef Q_OS_WIN
+    // The Windows style still has pixelated elements with Qt 5.6,
+    // it's recommended to use the Fusion style in this case, even
+    // though it looks slightly less native. Check here after the
+    // QApplication was constructed, but before any QWidget is
+    // constructed.
+    if (app.devicePixelRatio() > 1)
+        QApplication::setStyle(QStringLiteral("fusion"));
+#endif // Q_OS_WIN
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
@@ -114,10 +92,19 @@ int main(int argc, char **argv)
         return 0;
     }
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+#else
+    // See https://bugreports.qt.io/browse/QTBUG-70481
+    if (std::fmod(app.devicePixelRatio(), 1) == 0) {
+        QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+    }
+#endif
+
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX
     if (!qEnvironmentVariableIsEmpty("OWNCLOUD_CORE_DUMP")) {
-        struct rlimit core_limit{};
+        struct rlimit core_limit;
         core_limit.rlim_cur = RLIM_INFINITY;
         core_limit.rlim_max = RLIM_INFINITY;
 
@@ -189,7 +176,7 @@ int main(int argc, char **argv)
 
             if (QSystemTrayIcon::isSystemTrayAvailable()) {
                 app.tryTrayAgain();
-            } else if (!app.backgroundMode() && !AccountManager::instance()->accounts().isEmpty()) {
+            } else if (!app.backgroundMode()) {
                 if (desktopSession != "ubuntu") {
                     qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
                     app.showMainDialog();

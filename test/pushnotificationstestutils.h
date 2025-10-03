@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -20,20 +29,20 @@ class FakeWebSocketServer : public QObject
 public:
     explicit FakeWebSocketServer(quint16 port = 12345, QObject *parent = nullptr);
 
-    ~FakeWebSocketServer() override;
+    ~FakeWebSocketServer();
 
     QWebSocket *authenticateAccount(
         const OCC::AccountPtr account, std::function<void(OCC::PushNotifications *pushNotifications)> beforeAuthentication = [](OCC::PushNotifications *) {}, std::function<void(void)> afterAuthentication = [] {});
 
     void close();
 
-    [[nodiscard]] bool waitForTextMessages() const;
+    bool waitForTextMessages() const;
 
-    [[nodiscard]] uint32_t textMessagesCount() const;
+    uint32_t textMessagesCount() const;
 
-    [[nodiscard]] QString textMessage(int messageNumber) const;
+    QString textMessage(uint32_t messageNumber) const;
 
-    [[nodiscard]] QWebSocket *socketForTextMessage(int messageNumber) const;
+    QWebSocket *socketForTextMessage(uint32_t messageNumber) const;
 
     void clearTextMessages();
 
@@ -61,18 +70,18 @@ class CredentialsStub : public OCC::AbstractCredentials
 
 public:
     CredentialsStub(const QString &user, const QString &password);
-    [[nodiscard]] QString authType() const override;
-    [[nodiscard]] QString user() const override;
-    [[nodiscard]] QString password() const override;
-    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
-    [[nodiscard]] bool ready() const override;
-    void fetchFromKeychain() override;
-    void askFromUser() override;
+    virtual QString authType() const;
+    virtual QString user() const;
+    virtual QString password() const;
+    virtual QNetworkAccessManager *createQNAM() const;
+    virtual bool ready() const;
+    virtual void fetchFromKeychain();
+    virtual void askFromUser();
 
-    bool stillValid(QNetworkReply *reply) override;
-    void persist() override;
-    void invalidateToken() override;
-    void forgetSensitiveData() override;
+    virtual bool stillValid(QNetworkReply *reply);
+    virtual void persist();
+    virtual void invalidateToken();
+    virtual void forgetSensitiveData();
 
 private:
     QString _user;

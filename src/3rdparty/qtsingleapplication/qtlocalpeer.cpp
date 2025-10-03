@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** SPDX-FileCopyrightText: 2014 Digia Plc and/or its subsidiary(-ies)
-** SPDX-License-Identifier: (LGPL-2.0-or-later AND LicenseRef-DigiaQtLGPLException-1.1) OR LicenseRef-DigiaCommercialUsage
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of Qt Creator.
@@ -38,7 +37,7 @@
 #include <QLibrary>
 #include <qt_windows.h>
 using PProcessIdToSessionId = BOOL (WINAPI*)(DWORD, DWORD*);
-static PProcessIdToSessionId pProcessIdToSessionId = nullptr;
+static PProcessIdToSessionId pProcessIdToSessionId = 0;
 #endif
 
 #if defined(Q_OS_UNIX)
@@ -52,8 +51,8 @@ static const char ack[] = "ack";
 
 QString QtLocalPeer::appSessionId(const QString &appId)
 {
-    const auto idc = appId.toUtf8();
-    const auto idNum = qChecksum(idc);
+    QByteArray idc = appId.toUtf8();
+    quint16 idNum = qChecksum(idc.constData(), idc.size());
     //### could do: two 16bit checksums over separate halves of id, for a 32bit result - improved uniqeness probability. Every-other-char split would be best.
 
     QString res = QLatin1String("qtsingleapplication-")

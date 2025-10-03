@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QDir>
@@ -16,16 +25,13 @@
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
 #include <QBuffer>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QMetaObject>
 
 #include "QProgressIndicator.h"
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "wizard/wizardproxysettingsdialog.h"
+#include "wizard/slideshow.h"
 #include "theme.h"
 #include "account.h"
 #include "config.h"
@@ -41,28 +47,14 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     setupServerAddressDescriptionLabel();
 
-    const auto theme = Theme::instance();
+    Theme *theme = Theme::instance();
     if (theme->overrideServerUrl().isEmpty()) {
-        _ui.comboBox->hide();
         _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
-    } else if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
-        _ui.leUrl->hide();
-        const auto overrideJsonUtf8 = theme->overrideServerUrl().toUtf8();
-        const auto serversJsonArray = QJsonDocument::fromJson(overrideJsonUtf8).array();
-
-        for (const auto &serverJson : serversJsonArray) {
-            const auto serverObject = serverJson.toObject();
-            const auto serverName = serverObject.value("name").toString();
-            const auto serverUrl = serverObject.value("url").toString();
-            _ui.comboBox->addItem(serverName, serverUrl);
-        }
-    } else if (theme->forceOverrideServerUrl()) {
-        _ui.comboBox->hide();
+    } else if (Theme::instance()->forceOverrideServerUrl()) {
         _ui.leUrl->setEnabled(false);
-    } else {
-        _ui.comboBox->hide();
     }
+
 
     registerField(QLatin1String("OCUrl*"), _ui.leUrl);
 
@@ -81,7 +73,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
-
 }
 
 void OwncloudSetupPage::setLogo()
@@ -93,41 +84,6 @@ void OwncloudSetupPage::setupServerAddressDescriptionLabel()
 {
     const auto appName = Theme::instance()->appNameGUI();
     _ui.serverAddressDescriptionLabel->setText(tr("The link to your %1 web interface when you open it in the browser.", "%1 will be replaced with the application name").arg(appName));
-}
-
-void OwncloudSetupPage::setProxySettingsButtonEnabled(bool enable)
-{
-    const auto proxySettingsButton = getProxySettingsButton();
-
-    if (!proxySettingsButton) {
-        return;
-    }
-
-    proxySettingsButton->setEnabled(enable);
-}
-
-void OwncloudSetupPage::setProxySettingsButtonVisible(bool visible)
-{
-    const auto proxySettingsButton = getProxySettingsButton();
-
-    if (!proxySettingsButton) {
-        return;
-    }
-
-    proxySettingsButton->setVisible(visible);
-}
-
-QAbstractButton *OwncloudSetupPage::getProxySettingsButton() const
-{
-    auto result = static_cast<QAbstractButton *>(nullptr);
-
-    if (!wizard()) {
-        return result;
-    }
-
-    result = wizard()->button(QWizard::CustomButton3);
-
-    return result;
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -163,6 +119,21 @@ void OwncloudSetupPage::setupCustomization()
     _ui.leUrl->setPalette(leUrlPalette);
 }
 
+#ifdef WITH_PROVIDERS
+void OwncloudSetupPage::slotLogin()
+{
+    _ocWizard->setRegistration(false);
+}
+void OwncloudSetupPage::slotGotoProviderList()
+{
+    _ocWizard->setRegistration(true);
+    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
+    _authTypeKnown = true;
+    _checking = false;
+    emit completeChanged();
+}
+#endif
+
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
 {
@@ -195,7 +166,6 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
     }
-    setProxySettingsButtonEnabled(!_ui.leUrl->fullText().isEmpty());
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
@@ -208,23 +178,9 @@ void OwncloudSetupPage::slotUrlEditFinished()
     }
 }
 
-void OwncloudSetupPage::slotSetProxySettings()
-{
-    if (!_proxySettingsDialog) {
-        _proxySettingsDialog = new WizardProxySettingsDialog{QUrl::fromUserInput(_ui.leUrl->fullText()), _proxySettings, this};
-
-        connect(_proxySettingsDialog, &WizardProxySettingsDialog::proxySettingsAccepted, this, [this] (const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings) { _proxySettings = proxySettings;});
-    } else {
-        _proxySettingsDialog->setServerUrl(QUrl::fromUserInput(_ui.leUrl->fullText()));
-        _proxySettingsDialog->setProxySettings(_proxySettings);
-    }
-
-    _proxySettingsDialog->open();
-}
-
 bool OwncloudSetupPage::isComplete() const
 {
-    return (!_ui.leUrl->text().isEmpty() || !_ui.comboBox->currentData().toString().isEmpty()) && !_checking;
+    return !_ui.leUrl->text().isEmpty() && !_checking;
 }
 
 void OwncloudSetupPage::initializePage()
@@ -251,7 +207,7 @@ void OwncloudSetupPage::initializePage()
         if (nextButton) {
             nextButton->setFocus();
         }
-    } else if (isServerUrlOverridden && !Theme::instance()->multipleOverrideServers()) {
+    } else if (isServerUrlOverridden) {
         // If the overwritten url is not empty and we force this overwritten url
         // we just check the server type and switch to next page
         // immediately.
@@ -261,23 +217,6 @@ void OwncloudSetupPage::initializePage()
         validatePage();
         setVisible(false);
     }
-
-    setProxySettingsButtonEnabled(false);
-    ensureProxySettingsButtonIsConnected();
-}
-
-void OwncloudSetupPage::ensureProxySettingsButtonIsConnected()
-{
-    const auto proxySettingsButton = getProxySettingsButton();
-
-    if (!proxySettingsButton) {
-        return;
-    }
-
-    disconnect(_proxyButtonIsConnected);
-
-    _proxyButtonIsConnected = connect(proxySettingsButton, &QPushButton::clicked,
-                                      this, &OwncloudSetupPage::slotSetProxySettings);
 }
 
 int OwncloudSetupPage::nextId() const
@@ -285,37 +224,28 @@ int OwncloudSetupPage::nextId() const
     switch (_authType) {
     case DetermineAuthTypeJob::Basic:
         return WizardCommon::Page_HttpCreds;
+    case DetermineAuthTypeJob::OAuth:
+        return WizardCommon::Page_OAuthCreds;
     case DetermineAuthTypeJob::LoginFlowV2:
         return WizardCommon::Page_Flow2AuthCreds;
-#ifdef WITH_WEBENGINE
     case DetermineAuthTypeJob::WebViewFlow:
-        if (this->useFlow2) {
-            return WizardCommon::Page_Flow2AuthCreds;
-        }
         return WizardCommon::Page_WebView;
-#endif // WITH_WEBENGINE
-    case DetermineAuthTypeJob::NoAuthType:
-        return WizardCommon::Page_HttpCreds;
     }
-    Q_UNREACHABLE();
+    return WizardCommon::Page_HttpCreds;
 }
 
 QString OwncloudSetupPage::url() const
 {
-    const auto theme = Theme::instance();
-    if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
-        return _ui.comboBox->currentData().toString();
-    } else {
-        return _ui.leUrl->fullText().simplified();
-    }
+    QString url = _ui.leUrl->fullText().simplified();
+    return url;
 }
 
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
         slotUrlEditFinished();
-        const auto urlString = url();
-        const auto qurl = QUrl::fromUserInput(urlString);
+        QString u = url();
+        QUrl qurl(u);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
             setErrorString(tr("Server address does not seem to be valid"), false);
             return false;
@@ -326,7 +256,7 @@ bool OwncloudSetupPage::validatePage()
         startSpinner();
         emit completeChanged();
 
-        Q_EMIT determineAuthType(qurl, _proxySettings);
+        emit determineAuthType(u);
         return false;
     } else {
         // connecting is running
@@ -350,8 +280,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
         _ui.errorLabel->setVisible(false);
     } else {
         if (retryHTTPonly) {
-            const auto urlString = url();
-            auto url = QUrl::fromUserInput(urlString);
+            QUrl url(_ui.leUrl->fullText());
             if (url.scheme() == "https") {
                 // Ask the user how to proceed when connecting to a https:// URL fails.
                 // It is possible that the server is secured with client-side TLS certificates,

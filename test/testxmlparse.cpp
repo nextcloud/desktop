@@ -1,17 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud, Inc.
- * SPDX-License-Identifier: CC0-1.0
- * 
- * This software is in the public domain, furnished "as is", without technical
- * support, and with no warranty, express or implied, as to its usefulness for
- * any purpose.
- */
+ *    This software is in the public domain, furnished "as is", without technical
+ *       support, and with no warranty, express or implied, as to its usefulness for
+ *          any purpose.
+ *          */
 
 #include <QtTest>
 
 #include "networkjobs.h"
-#include "logger.h"
 
 using namespace OCC;
 
@@ -20,7 +15,7 @@ class TestXmlParse : public QObject
     Q_OBJECT
 
 private:
-  bool _success = false;
+  bool _success;
   QStringList _subdirs;
   QStringList _items;
 
@@ -43,14 +38,6 @@ public slots:
   }
 
 private slots:
-    void initTestCase()
-    {
-        OCC::Logger::instance()->setLogFlush(true);
-        OCC::Logger::instance()->setLogDebug(true);
-
-        QStandardPaths::setTestModeEnabled(true);
-    }
-
     void init() {
         qDebug() << Q_FUNC_INFO;
       _success = false;
@@ -66,7 +53,7 @@ private slots:
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -90,7 +77,7 @@ private slots:
               "</d:propstat>"
               "</d:response>"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/quitte.pdf</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/quitte.pdf</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004215ocobzus5kn6s</oc:id>"
@@ -115,24 +102,24 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
 
         QVERIFY(_success);
         QCOMPARE(sizes.size(), 1 ); // Quota info in the XML
 
-        QVERIFY(_items.contains("/oc/remote.php/dav/sharefolder/quitte.pdf"));
-        QVERIFY(_items.contains("/oc/remote.php/dav/sharefolder"));
+        QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder/quitte.pdf"));
+        QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder"));
         QVERIFY(_items.size() == 2 );
 
-        QVERIFY(_subdirs.contains("/oc/remote.php/dav/sharefolder/"));
+        QVERIFY(_subdirs.contains("/oc/remote.php/webdav/sharefolder/"));
         QVERIFY(_subdirs.size() == 1);
     }
 
@@ -140,7 +127,7 @@ private slots:
         const QByteArray testXml = "X<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -164,7 +151,7 @@ private slots:
               "</d:propstat>"
               "</d:response>"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/quitte.pdf</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/quitte.pdf</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004215ocobzus5kn6s</oc:id>"
@@ -189,15 +176,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" )); // verify false
+        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
         QVERIFY(sizes.size() == 0 ); // No quota info in the XML
@@ -212,15 +199,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" )); // verify false
+        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
         QVERIFY(sizes.size() == 0 ); // No quota info in the XML
@@ -234,15 +221,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" )); // verify false
+        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
         QVERIFY(sizes.size() == 0 ); // No quota info in the XML
@@ -255,7 +242,7 @@ private slots:
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -273,15 +260,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
 
@@ -289,7 +276,7 @@ private slots:
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>http://127.0.0.1:81/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>http://127.0.0.1:81/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -313,7 +300,7 @@ private slots:
               "</d:propstat>"
               "</d:response>"
               "<d:response>"
-              "<d:href>http://127.0.0.1:81/oc/remote.php/dav/sharefolder/quitte.pdf</d:href>"
+              "<d:href>http://127.0.0.1:81/oc/remote.php/webdav/sharefolder/quitte.pdf</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004215ocobzus5kn6s</oc:id>"
@@ -338,15 +325,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
 
@@ -403,15 +390,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
 
@@ -419,7 +406,7 @@ private slots:
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -443,7 +430,7 @@ private slots:
               "</d:propstat>"
               "</d:response>"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/../sharefolder/quitte.pdf</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/../sharefolder/quitte.pdf</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004215ocobzus5kn6s</oc:id>"
@@ -468,24 +455,24 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
 
         QVERIFY(_success);
         QCOMPARE(sizes.size(), 1 ); // Quota info in the XML
 
-        QVERIFY(_items.contains("/oc/remote.php/dav/sharefolder/quitte.pdf"));
-        QVERIFY(_items.contains("/oc/remote.php/dav/sharefolder"));
+        QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder/quitte.pdf"));
+        QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder"));
         QVERIFY(_items.size() == 2 );
 
-        QVERIFY(_subdirs.contains("/oc/remote.php/dav/sharefolder/"));
+        QVERIFY(_subdirs.contains("/oc/remote.php/webdav/sharefolder/"));
         QVERIFY(_subdirs.size() == 1);
     }
 
@@ -493,7 +480,7 @@ private slots:
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004213ocobzus5kn6s</oc:id>"
@@ -517,7 +504,7 @@ private slots:
               "</d:propstat>"
               "</d:response>"
               "<d:response>"
-              "<d:href>/oc/remote.php/dav/sharefolder/../quitte.pdf</d:href>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/../quitte.pdf</d:href>"
               "<d:propstat>"
               "<d:prop>"
               "<oc:id>00004215ocobzus5kn6s</oc:id>"
@@ -542,15 +529,15 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
-        QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/dav/sharefolder" ));
+        QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
 
         QVERIFY(!_success);
     }
@@ -607,12 +594,12 @@ private slots:
 
         LsColXMLParser parser;
 
-        connect( &parser, &LsColXMLParser::directoryListingSubfolders,
-                 this, &TestXmlParse::slotDirectoryListingSubFolders );
-        connect( &parser, &LsColXMLParser::directoryListingIterated,
-                 this, &TestXmlParse::slotDirectoryListingIterated );
-        connect( &parser, &LsColXMLParser::finishedWithoutError,
-                 this, &TestXmlParse::slotFinishedSuccessfully );
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(parser.parse( testXml, &sizes, QString::fromUtf8("/ä") ));

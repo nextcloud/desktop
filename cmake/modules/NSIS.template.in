@@ -1,7 +1,4 @@
 ;ownCloud installer script.
-;SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributor
-;SPDX-FileCopyrightText: 2012 ownCloud GmbH
-;SPDX-License-Identifier: GPL-2.0-or-later
 
 !define APPLICATION_SHORTNAME "@APPLICATION_EXECUTABLE@"
 !define APPLICATION_NAME "@APPLICATION_NAME@"
@@ -13,6 +10,8 @@
 !define APPLICATION_VIRTUALFILE_SUFFIX "@APPLICATION_VIRTUALFILE_SUFFIX@"
 !define APPLICATION_VIRTUALFILE_FILECLASS "@APPLICATION_EXECUTABLE@.@APPLICATION_VIRTUALFILE_SUFFIX@"
 !define WIN_SETUP_BITMAP_PATH "@WIN_SETUP_BITMAP_PATH@"
+
+!define CRASHREPORTER_EXECUTABLE "@CRASHREPORTER_EXECUTABLE@"
 
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
@@ -399,6 +398,9 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_SHARE}\qt5\translations\qtbase_*.qm"
    File "${MING_SHARE}\qt5\translations\qtkeychain_*.qm"
 
+   ;Add crash reporter if it was built
+   File /nonfatal "${BUILD_PATH}/bin/${CRASHREPORTER_EXECUTABLE}.exe"
+
    SetOutPath "$INSTDIR\platforms"
    File "${PLATFORMS_DLL_PATH}\qwindows.dll"
    SetOutPath "$INSTDIR\imageformats"
@@ -484,19 +486,20 @@ SectionEnd
       File "${BUILD_PATH}\vcredist_x86.exe"
       File "${BUILD_PATH}\vcredist_x64.exe"
       Call InstallRedistributables
+      CreateDirectory "$INSTDIR\shellext"
       !define LIBRARY_COM
       !define LIBRARY_SHELL_EXTENSION
       !define LIBRARY_IGNORE_VERSION
       ${If} ${RunningX64}
          !define LIBRARY_X64
-         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\OCUtil_x64.dll" "$INSTDIR"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll" "$INSTDIR\OCOverlays_x64.dll" "$INSTDIR"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCContextMenu_x64.dll" "$INSTDIR\OCContextMenu_x64.dll" "$INSTDIR"
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll" "$INSTDIR\shellext\OCOverlays_x64.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCContextMenu_x64.dll" "$INSTDIR\shellext\OCContextMenu_x64.dll" "$INSTDIR\shellext"
          !undef LIBRARY_X64
      ${Else}
-         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll" "$INSTDIR\OCUtil_x86.dll" "$INSTDIR"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll" "$INSTDIR\OCOverlays_x86.dll" "$INSTDIR"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCContextMenu_x86.dll" "$INSTDIR\OCContextMenu_x86.dll" "$INSTDIR"
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll" "$INSTDIR\shellext\OCUtil_x86.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll" "$INSTDIR\shellext\OCOverlays_x86.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCContextMenu_x86.dll" "$INSTDIR\shellext\OCContextMenu_x86.dll" "$INSTDIR\shellext"
       ${Endif}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION
@@ -661,14 +664,14 @@ Section Uninstall
       ${If} ${HasSection} SEC_SHELL_EXT
         DetailPrint "Uninstalling x64 overlay DLLs"
         !define LIBRARY_X64
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCContextMenu_x64.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCOverlays_x64.dll"
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCUtil_x64.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu_x64.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x64.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x64.dll"
         !undef LIBRARY_X64
         DetailPrint "Uninstalling x86 overlay DLLs"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCContextMenu_x86.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCOverlays_x86.dll"
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\OCUtil_x86.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu_x86.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x86.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x86.dll"
       ${EndIf}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION

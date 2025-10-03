@@ -10,8 +10,7 @@
 #  CMOCKA_DEFINITIONS - Compiler switches required for using CMocka
 #
 #=============================================================================
-#  SPDX-FileCopyrightText: 2011-2012 Andreas Schneider <asn@cryptomilk.org>
-#  SPDX-License-Identifier: BSD-3-Clause
+#  Copyright (c) 2011-2012 Andreas Schneider <asn@cryptomilk.org>
 #
 #  Distributed under the OSI-approved BSD License (the "License");
 #  see accompanying file Copyright.txt for details.

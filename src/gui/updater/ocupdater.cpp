@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "theme.h"
@@ -21,12 +29,12 @@
 
 namespace OCC {
 
-namespace {
-const auto updateAvailableC = QStringLiteral("Updater/updateAvailable");
-const auto updateTargetVersionC = QStringLiteral("Updater/updateTargetVersion");
-const auto updateTargetVersionStringC = QStringLiteral("Updater/updateTargetVersionString");
-const auto autoUpdateAttemptedC = QStringLiteral("Updater/autoUpdateAttempted");
-}
+static const char updateAvailableC[] = "Updater/updateAvailable";
+static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
+static const char updateTargetVersionStringC[] = "Updater/updateTargetVersionString";
+static const char seenVersionC[] = "Updater/seenVersion";
+static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
+
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
@@ -78,6 +86,7 @@ void UpdaterScheduler::slotTimerFired()
 OCUpdater::OCUpdater(const QUrl &url)
     : Updater()
     , _updateUrl(url)
+    , _state(Unknown)
     , _accessManager(new AccessManager(this))
     , _timeoutWatchdog(new QTimer(this))
 {
@@ -95,20 +104,15 @@ bool OCUpdater::performUpdate()
     QString updateFile = settings.value(updateAvailableC).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
-        const auto messageBoxStartInstaller = new QMessageBox(QMessageBox::Information,
-            tr("New %1 update ready").arg(Theme::instance()->appNameGUI()),
-            tr("A new update for %1 is about to be installed. The updater may ask "
-               "for additional privileges during the process. Your computer may reboot to complete the installation.")
-                .arg(Theme::instance()->appNameGUI()),
-            QMessageBox::Ok,
-            nullptr);
-
-        messageBoxStartInstaller->setAttribute(Qt::WA_DeleteOnClose);
-
-        connect(messageBoxStartInstaller, &QMessageBox::finished, this, [this] {
+        const QString name = Theme::instance()->appNameGUI();
+        if (QMessageBox::information(nullptr, tr("New %1 Update Ready").arg(name),
+                tr("A new update for %1 is about to be installed. The updater may ask\n"
+                   "for additional privileges during the process.")
+                    .arg(name),
+                QMessageBox::Ok)) {
             slotStartInstaller();
-        });
-        messageBoxStartInstaller->open();
+            return true;
+        }
     }
     return false;
 }
@@ -135,44 +139,29 @@ void OCUpdater::backgroundCheckForUpdate()
     }
 }
 
-QString OCUpdater::statusString(UpdateStatusStringFormat format) const
+QString OCUpdater::statusString() const
 {
     QString updateVersion = _updateInfo.versionString();
 
     switch (downloadState()) {
     case Downloading:
-        return tr("Downloading %1 …").arg(updateVersion);
+        return tr("Downloading %1. Please wait …").arg(updateVersion);
     case DownloadComplete:
         return tr("%1 available. Restart application to start the update.").arg(updateVersion);
-    case DownloadFailed: {
-        if (format == UpdateStatusStringFormat::Html) {
-            return tr("Could not download update. Please open <a href='%1'>%1</a> to download the update manually.").arg(_updateInfo.web());
-        }
+    case DownloadFailed:
         return tr("Could not download update. Please open %1 to download the update manually.").arg(_updateInfo.web());
-    }
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
-    case UpdateOnlyAvailableThroughSystem: {
-        if (format == UpdateStatusStringFormat::Html) {
-            return tr("New %1 is available. Please open <a href='%2'>%2</a> to download the update.").arg(updateVersion, _updateInfo.web());
-        }
+    case UpdateOnlyAvailableThroughSystem:
         return tr("New %1 is available. Please open %2 to download the update.").arg(updateVersion, _updateInfo.web());
-    }
     case CheckingServer:
         return tr("Checking update server …");
     case Unknown:
         return tr("Update status is unknown: Did not check for new updates.");
     case UpToDate:
     // fall through
-    default: {
-        ConfigFile configFile;
-        if (configFile.serverHasValidSubscription()) {
-            return tr("You are using the %1 update channel. Your installation is the latest version.")
-                .arg(configFile.currentUpdateChannel());
-        }
-
-        return tr("No updates available. Your installation is the latest version.");
-    }
+    default:
+        return tr("No updates available. Your installation is at the latest version.");
     }
 }
 
@@ -191,7 +180,7 @@ void OCUpdater::setDownloadState(DownloadState state)
     // or once for system based updates.
     if (_state == OCUpdater::DownloadComplete || (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem
                                                      && _state == OCUpdater::UpdateOnlyAvailableThroughSystem)) {
-        emit newUpdateAvailable(tr("Update Check"), statusString(), _updateInfo.web());
+        emit newUpdateAvailable(tr("Update Check"), statusString());
     }
 }
 
@@ -220,14 +209,13 @@ void OCUpdater::slotStartInstaller()
         };
 
         QString msiLogFile = cfg.configPath() + "msi.log";
-        QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
              .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }
-    qApp->quit();
 }
 
 void OCUpdater::checkForUpdate()
@@ -257,7 +245,6 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
-    qCDebug(lcUpdater) << "received a reply";
     _timeoutWatchdog->stop();
     auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
@@ -346,9 +333,12 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
+    auto seenString = settings.value(seenVersionC).toString();
+    qint64 seenVersion = Helper::stringVersionToInt(seenString);
     qint64 currVersion = Helper::currentVersionToInt();
     qCInfo(lcUpdater) << "Version info arrived:"
             << "Your version:" << currVersion
+            << "Skipped version:" << seenVersion << seenString
             << "Available version:" << infoVersion << info.version()
             << "Available version string:" << info.versionString()
             << "Web url:" << info.web()
@@ -357,32 +347,28 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     {
         qCInfo(lcUpdater) << "No version information available at the moment";
         setDownloadState(UpToDate);
+    } else if (infoVersion <= currVersion
+               || infoVersion <= seenVersion) {
+        qCInfo(lcUpdater) << "Client is on latest version!";
+        setDownloadState(UpToDate);
     } else {
-        const auto currentVer = Helper::currentVersionToInt();
-        const auto remoteVer = Helper::stringVersionToInt(info.version());
-
-        if (info.version().isEmpty() || currentVer >= remoteVer) {
-            qCInfo(lcUpdater) << "Client is on latest version!";
-            setDownloadState(UpToDate);
+        QString url = info.downloadUrl();
+        if (url.isEmpty()) {
+            showNoUrlDialog(info);
         } else {
-            const auto url = info.downloadUrl();
-            if (url.isEmpty()) {
-                showNoUrlDialog(info);
+            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
+            if (QFile(_targetFile).exists()) {
+                setDownloadState(DownloadComplete);
             } else {
-                _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
-                if (QFile(_targetFile).exists()) {
-                    setDownloadState(DownloadComplete);
-                } else {
-                    auto request = QNetworkRequest(QUrl(url));
-                    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
-                    QNetworkReply *reply = qnam()->get(request);
-                    connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
-                    connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
-                    setDownloadState(Downloading);
-                    _file.reset(new QTemporaryFile);
-                    _file->setAutoRemove(true);
-                    _file->open();
-                }
+                auto request = QNetworkRequest(QUrl(url));
+                request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+                QNetworkReply *reply = qnam()->get(request);
+                connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
+                connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
+                setDownloadState(Downloading);
+                _file.reset(new QTemporaryFile);
+                _file->setAutoRemove(true);
+                _file->open();
             }
         }
     }
@@ -423,12 +409,15 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     hlayout->addWidget(lbl);
 
     auto *bb = new QDialogButtonBox;
+    QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
     QPushButton *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
 
+    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
+    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetSeenVersion);
     connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
@@ -458,7 +447,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     ico->setPixmap(infoIcon.pixmap(iconSize));
     auto lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
-                     "<p><b>%2</b> has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.</p>")
+                     "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(targetVersion), Utility::escape(clientVersion()));
 
@@ -470,17 +459,24 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     hlayout->addWidget(lbl);
 
     auto bb = new QDialogButtonBox;
+    auto skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     auto askagain = bb->addButton(tr("Ask again later"), QDialogButtonBox::ResetRole);
     auto retry = bb->addButton(tr("Restart and update"), QDialogButtonBox::AcceptRole);
     auto getupdate = bb->addButton(tr("Update manually"), QDialogButtonBox::AcceptRole);
 
+    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(askagain, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(retry, &QAbstractButton::clicked, msgBox, &QDialog::accept);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
+    connect(skip, &QAbstractButton::clicked, this, [this]() {
+        wipeUpdateData();
+        slotSetSeenVersion();
+    });
     // askagain: do nothing
     connect(retry, &QAbstractButton::clicked, this, [this]() {
         slotStartInstaller();
+        qApp->quit();
     });
     connect(getupdate, &QAbstractButton::clicked, this, [this]() {
         slotOpenUpdateUrl();
@@ -495,13 +491,6 @@ bool NSISUpdater::handleStartup()
 {
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
-
-    // no need to try to install a previously fetched update when the user doesn't want automated updates
-    if (cfg.skipUpdateCheck() || !cfg.autoUpdateCheck()) {
-        qCInfo(lcUpdater) << "Skipping installation of update due to config settings";
-        return false;
-    }
-
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
@@ -527,6 +516,13 @@ bool NSISUpdater::handleStartup()
         }
     }
     return false;
+}
+
+void NSISUpdater::slotSetSeenVersion()
+{
+    ConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    settings.setValue(seenVersionC, updateInfo().version());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -564,7 +560,6 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
-        qCInfo(lcUpdater) << "Client is on older version. We will update!";
         setDownloadState(UpdateOnlyAvailableThroughSystem);
     }
 }

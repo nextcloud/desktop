@@ -1,18 +1,13 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
-import QtQml
-import QtQml.Models
-import QtQuick
-import QtQuick.Window
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQml 2.1
+import QtQml.Models 2.1
+import QtQuick 2.9
+import QtQuick.Window 2.3
+import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.2
+import QtGraphicalEffects 1.0
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style
-import com.nextcloud.desktopclient
+import Style 1.0
 
 Button {
     id: root
@@ -23,16 +18,14 @@ Button {
 
     icon.width: Style.headerButtonIconSize
     icon.height: Style.headerButtonIconSize
-    icon.color: "transparent"
-
-    palette {
-        text: Style.currentUserHeaderTextColor
-        windowText: Style.currentUserHeaderTextColor
-        buttonText: Style.currentUserHeaderTextColor
-        button: Style.adjustedCurrentUserHeaderColor
-    }
+    icon.color: Style.ncTextColor
 
     Layout.alignment: Qt.AlignRight
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
     Layout.preferredHeight: Style.trayWindowHeaderHeight
+
+    background: Rectangle {
+        color: root.hovered ? "white" : "transparent"
+        opacity: 0.2
+    }
 }

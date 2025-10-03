@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2017 ownCloud GmbH
-# SPDX-License-Identifier: LGPL-2.1-or-later
 include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CheckFunctionExists)
@@ -10,6 +7,7 @@ include(CheckCXXSourceCompiles)
 
 set(PACKAGE ${APPLICATION_NAME})
 set(VERSION ${APPLICATION_VERSION})
+set(DATADIR ${DATA_INSTALL_DIR})
 set(LIBDIR ${LIB_INSTALL_DIR})
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 
@@ -25,16 +23,10 @@ if (NOT LINUX)
     check_library_exists(rt nanosleep "" HAVE_LIBRT)
 
     set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} )
-
-    # Systems not using glibc require linker flag for argp
-    check_library_exists(argp argp_parse "" HAVE_LIBARGP)
-    if(HAVE_ARGP_H AND HAVE_LIBARGP)
-        set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} argp)
-    endif()
 endif (NOT LINUX)
 
 if(WIN32)
-  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32 Rstrtmgr)
+  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32)
 endif()
 
 check_function_exists(utimes HAVE_UTIMES)

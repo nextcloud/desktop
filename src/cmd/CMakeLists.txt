@@ -1,21 +1,20 @@
-# SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2014 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 project(cmd)
 set(CMAKE_AUTOMOC TRUE)
 
-add_library(cmdCore STATIC
-    simplesslerrorhandler.h
-    simplesslerrorhandler.cpp
-    netrcparser.h
-    netrcparser.cpp)
+set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
+
+add_library(cmdCore STATIC simplesslerrorhandler.cpp netrcparser.cpp)
 
 target_link_libraries(cmdCore
   PUBLIC
-  Nextcloud::sync
-  Qt::Core
-  Qt::Network
+  "${csync_NAME}"
+  "${synclib_NAME}"
+  Qt5::Core
+  Qt5::Network
   )
+
+# Need tokenizer for netrc parser
+target_include_directories(cmdCore PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -28,27 +27,24 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
-  add_executable(nextcloudcmd
-      cmd.h
-      cmd.cpp)
-  set_target_properties(nextcloudcmd PROPERTIES
-    RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
+    add_executable(${cmd_NAME} cmd.cpp)
+    set_target_properties(${cmd_NAME} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 
-  target_link_libraries(nextcloudcmd cmdCore)
+    target_link_libraries(${cmd_NAME} cmdCore)
+endif()
 
-  if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    set_target_properties(nextcloudcmd PROPERTIES
-      RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS")
-  else()
-    set_target_properties(nextcloudcmd PROPERTIES
-      RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
-
-    install(TARGETS nextcloudcmd
-	  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-    if (WIN32)
-      install(FILES $<TARGET_PDB_FILE:nextcloudcmd> DESTINATION bin OPTIONAL)
-    endif()
-  endif()
+# OSX: Copy nextcloudcmd to app bundle, src/gui will run macdeployqt
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+    add_custom_command(TARGET ${cmd_NAME} POST_BUILD
+        COMMAND "cp"
+            "$<TARGET_FILE:${cmd_NAME}>"
+            "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS"
+        COMMENT "Copying nextcloudcmd..."
+    )
+elseif(NOT BUILD_LIBRARIES_ONLY)
+    install(TARGETS ${cmd_NAME}
+	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()

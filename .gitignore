@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
-# SPDX-FileCopyrightText: 2011 ownCloud GmbH
-# SPDX-License-Identifier: GPL-2.0-or-later
 .gitmodules
 *build*/
 *flymake*
@@ -12,7 +9,6 @@ doc/_build/*
 *.kdev4
 admin/win/nsi/l10n/pofiles/*.po
 *.swp
-*.swo
 *~$
 build*
 cscope.*
@@ -92,7 +88,6 @@ dlldata.c
 # macOS specific
 xcuserdata/
 **/.DS_Store
-**/Carthage/
 
 # Visual C++ cache files
 ipch/
@@ -149,7 +144,7 @@ AppPackages/
 
 # Others
 sql/
-*.[Cc]ache
+*.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
 ~$*
@@ -188,10 +183,3 @@ CPackSourceConfig.cmake
 compile_commands.json
 convert.exe
 .dir-locals.el
-*-icon.png
-*-icon-win-folder.png
-*-sidebar.png
-*-w10startmenu.png
-*state-*.png
-theme.qrc
-*.AppImage

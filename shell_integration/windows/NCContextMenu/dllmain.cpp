@@ -1,8 +1,16 @@
-/*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: LGPL-2.1-or-later
- */
+/**
+* Copyright (c) 2015 Daniel Molkentin <danimo@owncloud.com>. All rights reserved.
+*
+* This library is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Lesser General Public License as published by the Free
+* Software Foundation; either version 2.1 of the License, or (at your option)
+* any later version.
+*
+* This library is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+* details.
+*/
 
 #include <windows.h>
 #include <Guiddef.h>
@@ -33,7 +41,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
 {
-    HRESULT hr = 0;
+    HRESULT hr;
     GUID guid;
 
     hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
@@ -46,7 +54,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
     if (IsEqualCLSID(guid, rclsid))	{
         hr = E_OUTOFMEMORY;
 
-        auto pClassFactory = new NCContextMenuFactory();
+        NCContextMenuFactory *pClassFactory = new NCContextMenuFactory();
         if (pClassFactory) {
             hr = pClassFactory->QueryInterface(riid, ppv);
             pClassFactory->Release();
@@ -63,7 +71,7 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllRegisterServer(void)
 {
-    HRESULT hr = 0;
+    HRESULT hr;
     GUID guid;
 
     hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);

@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2018 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Christian Kamm <mail@ckamm.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef LOCALDISCOVERYTRACKER_H
@@ -58,14 +66,14 @@ public:
     void startSyncPartialDiscovery();
 
     /** Access list of files that shall be locally rediscovered. */
-    [[nodiscard]] const std::set<QString> &localDiscoveryPaths() const;
+    const std::set<QString> &localDiscoveryPaths() const;
 
 public slots:
     /**
      * Success and failure of sync items adjust what the next sync is
      * supposed to do.
      */
-    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
+    void slotItemCompleted(const SyncFileItemPtr &item);
 
     /**
      * When a sync finishes, the lists must be updated

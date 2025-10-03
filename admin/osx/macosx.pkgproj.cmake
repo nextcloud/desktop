@@ -22,7 +22,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>@APPLICATION_NAME@.app</string>
+									<string>@APPLICATION_EXECUTABLE@.app</string>
 									<key>PATH_TYPE</key>
 									<integer>3</integer>
 									<key>PERMISSIONS</key>
@@ -682,31 +682,7 @@
 		<key>PROJECT_REQUIREMENTS</key>
 		<dict>
 			<key>LIST</key>
-			<array>
-				<dict>
-					<key>BEHAVIOR</key>
-					<integer>3</integer>
-					<key>DICTIONARY</key>
-					<dict>
-						<key>IC_REQUIREMENT_OS_DISK_TYPE</key>
-						<integer>0</integer>
-						<key>IC_REQUIREMENT_OS_DISTRIBUTION_TYPE</key>
-						<integer>0</integer>
-						<key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
-						<integer>120000</integer>
-					</dict>
-					<key>IC_REQUIREMENT_CHECK_TYPE</key>
-					<integer>1</integer>
-					<key>IDENTIFIER</key>
-					<string>fr.whitebox.Packages.requirement.os</string>
-					<key>MESSAGE</key>
-					<array/>
-					<key>NAME</key>
-					<string>Operating System</string>
-					<key>STATE</key>
-					<true/>
-				</dict>
-			</array>
+			<array/>
 			<key>POSTINSTALL_PATH</key>
 			<dict/>
 			<key>PREINSTALL_PATH</key>
@@ -719,12 +695,7 @@
 		<key>PROJECT_SETTINGS</key>
 		<dict>
 			<key>ADVANCED_OPTIONS</key>
-            <dict>
-                    <key>installer-script.options:hostArchitectures</key>
-                    <array>
-                            <string>x86_64,arm64</string>
-                    </array>
-			</dict>
+			<dict/>
 			<key>BUILD_FORMAT</key>
 			<integer>0</integer>
 			<key>BUILD_PATH</key>

@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
- */
-
 #ifndef REMOTEWIPE_H
 #define REMOTEWIPE_H
 
@@ -24,7 +19,7 @@ signals:
     /**
      * Notify if wipe was requested
      */
-    void authorized(OCC::AccountState*);
+    void authorized(AccountState*);
 
     /**
      * Notify if user only needs to login again
@@ -43,28 +38,22 @@ private slots:
      * If wipe is requested, delete account and data, if not continue by asking
      * the user to login again
      */
-    void slotCheckJob();
-
-    /**
-     * Local sync folders were wiped, this will now remove the account.
-     */
-    void slotWipeDone(OCC::AccountState *accountState, bool);
+    void checkJobSlot();
 
     /**
      * Once the client has wiped all the required data a POST to
      * <server>/index.php/core/wipe/success
      */
-    void notifyServerSuccess();
-    void slotNotifyServerSuccessFinished();
-
+    void notifyServerSuccessJob(AccountState *accountState, bool);
+    void notifyServerSuccessJobSlot();
 
 private:
     AccountPtr _account;
     QString _appPassword;
-    bool _canWipeLocalFiles = false;
-    QNetworkAccessManager *_networkManager = nullptr;
-    QNetworkReply *_networkReplyCheck = nullptr;
-    QNetworkReply *_networkReplySuccess = nullptr;
+    bool _accountRemoved;
+    QNetworkAccessManager _networkManager;
+    QNetworkReply *_networkReplyCheck;
+    QNetworkReply *_networkReplySuccess;
 
     friend class ::TestRemoteWipe;
 };

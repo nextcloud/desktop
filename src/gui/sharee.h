@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2015 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Roeland Jago Douma <roeland@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef SHAREE_H
@@ -27,47 +35,73 @@ Q_DECLARE_LOGGING_CATEGORY(lcSharing)
 
 class Sharee
 {
-    Q_GADGET
-    Q_PROPERTY(QString format READ format)
-    Q_PROPERTY(QString shareWith MEMBER _shareWith)
-    Q_PROPERTY(QString displayName MEMBER _displayName)
-    Q_PROPERTY(QString iconUrlColoured MEMBER _iconUrlColoured)
-    Q_PROPERTY(Type type MEMBER _type)
-
 public:
     // Keep in sync with Share::ShareType
-    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Team = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
-    Q_ENUM(Type);
-    explicit Sharee() = default;
-    explicit Sharee(const QString &shareWith, const QString &displayName, const Type type, const QString &iconUrl = {});
+    enum Type {
+        User = 0,
+        Group = 1,
+        Email = 4,
+        Federated = 6,
+        Circle = 7,
+        Room = 10
+    };
 
-    [[nodiscard]] QString format() const;
-    [[nodiscard]] QString shareWith() const;
-    [[nodiscard]] QString displayName() const;
-    [[nodiscard]] QString iconUrl() const;
-    [[nodiscard]] QString iconUrlColoured() const;
-    [[nodiscard]] Type type() const;
-    bool updateIconUrl();
+    explicit Sharee(const QString shareWith,
+        const QString displayName,
+        const Type type);
 
-    void setDisplayName(const QString &displayName);
-    void setType(const Type &type);
-    void setIsIconColourful(const bool isColourful);
-    void setIconUrl(const QString &iconUrl);
+    QString format() const;
+    QString shareWith() const;
+    QString displayName() const;
+    Type type() const;
 
 private:
     QString _shareWith;
     QString _displayName;
-    QString _iconUrlColoured;
-    QString _iconColor;
-    Type _type = Type::Invalid;
-    QString _iconUrl;
-    bool _isIconColourful = false;
+    Type _type;
 };
 
-using ShareePtr = QSharedPointer<OCC::Sharee>;
+
+class ShareeModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    enum LookupMode {
+        LocalSearch = 0,
+        GlobalSearch = 1
+    };
+
+    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);
+
+    using ShareeSet = QVector<QSharedPointer<Sharee>>; // FIXME: make it a QSet<Sharee> when Sharee can be compared
+    void fetch(const QString &search, const ShareeSet &blacklist, LookupMode lookupMode);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+
+    QSharedPointer<Sharee> getSharee(int at);
+
+    QString currentSearch() const { return _search; }
+
+signals:
+    void shareesReady();
+    void displayErrorMessage(int code, const QString &);
+
+private slots:
+    void shareesFetched(const QJsonDocument &reply);
+
+private:
+    QSharedPointer<Sharee> parseSharee(const QJsonObject &data);
+    void setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees);
+
+    AccountPtr _account;
+    QString _search;
+    QString _type;
+
+    QVector<QSharedPointer<Sharee>> _sharees;
+    QVector<QSharedPointer<Sharee>> _shareeBlacklist;
+};
 }
 
-Q_DECLARE_METATYPE(OCC::ShareePtr)
-Q_DECLARE_METATYPE(OCC::Sharee)
+Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>)
 
 #endif //SHAREE_H

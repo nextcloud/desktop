@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "sslbutton.h"
@@ -165,7 +173,7 @@ void SslButton::updateAccountState(AccountState *accountState)
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
     } else {
-        setIcon(QIcon(QLatin1String(":/client/theme/lock-broken.svg")));
+        setIcon(QIcon(QLatin1String(":/client/theme/lock-http.svg")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }
@@ -209,7 +217,7 @@ void SslButton::slotUpdateMenu()
         const auto systemCerts = QSslConfiguration::systemCaCertificates();
 
         QList<QSslCertificate> tmpChain;
-        for (const auto &cert : chain) {
+        foreach (QSslCertificate cert, chain) {
             tmpChain << cert;
             if (systemCerts.contains(cert))
                 break;
@@ -217,7 +225,7 @@ void SslButton::slotUpdateMenu()
         chain = tmpChain;
 
         // find trust anchor (informational only, verification is done by QSslSocket!)
-        for (const auto &rootCA : systemCerts) {
+        for (const QSslCertificate &rootCA : systemCerts) {
             if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName)
                 && rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain.append(rootCA);

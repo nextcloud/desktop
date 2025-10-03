@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 #pragma once
 
@@ -31,17 +39,17 @@ class UploadDevice : public QIODevice
     Q_OBJECT
 public:
     UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm);
-    ~UploadDevice() override;
+    ~UploadDevice();
 
     bool open(QIODevice::OpenMode mode) override;
     void close() override;
 
     qint64 writeData(const char *, qint64) override;
     qint64 readData(char *data, qint64 maxlen) override;
-    [[nodiscard]] bool atEnd() const override;
-    [[nodiscard]] qint64 size() const override;
-    [[nodiscard]] qint64 bytesAvailable() const override;
-    [[nodiscard]] bool isSequential() const override;
+    bool atEnd() const override;
+    qint64 size() const override;
+    qint64 bytesAvailable() const override;
+    bool isSequential() const override;
     bool seek(qint64 pos) override;
 
     void setBandwidthLimited(bool);
@@ -110,7 +118,7 @@ public:
     {
         _device->setParent(this);
     }
-    ~PUTFileJob() override;
+    ~PUTFileJob();
 
     int _chunk;
 
@@ -123,12 +131,12 @@ public:
         return _device;
     }
 
-    [[nodiscard]] QString errorString() const override
+    QString errorString()
     {
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }
 
-    [[nodiscard]] std::chrono::milliseconds msSinceStart() const
+    std::chrono::milliseconds msSinceStart() const
     {
         return std::chrono::milliseconds(_requestTimer.elapsed());
     }
@@ -224,7 +232,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      qint64 _size = 0LL;
+      qint64 _size;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -256,7 +264,7 @@ private slots:
     void slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum);
     // invoked when encrypted folder lock has been released
     void slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode);
-    // invoked on internal error to unlock a folder and failed
+    // invoked on internal error to unlock a folder and faile
     void slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString);
 
 public:
@@ -273,7 +281,7 @@ private slots:
     void slotPollFinished();
 
 protected:
-    void done(const SyncFileItem::Status status, const QString &errorString = QString(), const ErrorCategory category = ErrorCategory::NoError) override;
+    void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
 
     /**
      * Aborts all running network jobs, except for the ones that mayAbortJob
@@ -309,15 +317,15 @@ protected:
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
 private:
-  PropagateUploadEncrypted *_uploadEncryptedHelper = nullptr;
-  bool _uploadingEncrypted = false;
+  PropagateUploadEncrypted *_uploadEncryptedHelper;
+  bool _uploadingEncrypted;
   UploadStatus _uploadStatus;
 };
 
 /**
  * @ingroup libsync
  *
- * Propagation job, implementing the old chunking algorithm
+ * Propagation job, impementing the old chunking agorithm
  *
  */
 class PropagateUploadFileV1 : public PropagateUploadFileCommon
@@ -340,7 +348,7 @@ private:
     int _chunkCount = 0; /// Total number of chunks for this file
     uint _transferId = 0; /// transfer id (part of the url)
 
-    [[nodiscard]] qint64 chunkSize() const {
+    qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;
@@ -354,7 +362,7 @@ public:
 
     void doStartUpload() override;
 public slots:
-    void abort(OCC::PropagatorJob::AbortType abortType) override;
+    void abort(PropagatorJob::AbortType abortType) override;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -364,12 +372,33 @@ private slots:
 /**
  * @ingroup libsync
  *
- * Propagation job, implementing the new chunking algorithm
+ * Propagation job, impementing the new chunking agorithm
  *
  */
 class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
+private:
+    qint64 _sent = 0; /// amount of data (bytes) that was already sent
+    uint _transferId = 0; /// transfer id (part of the url)
+    int _currentChunk = 0; /// Id of the next chunk that will be sent
+    qint64 _currentChunkSize = 0; /// current chunk size
+    bool _removeJobError = false; /// If not null, there was an error removing the job
+
+    // Map chunk number with its size  from the PROPFIND on resume.
+    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
+    struct ServerChunkInfo
+    {
+        qint64 size;
+        QString originalName;
+    };
+    QMap<qint64, ServerChunkInfo> _serverChunks;
+
+    /**
+     * Return the URL of a chunk.
+     * If chunk == -1, returns the URL of the parent folder containing the chunks
+     */
+    QUrl chunkUrl(int chunk = -1);
 
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
@@ -379,41 +408,19 @@ public:
 
     void doStartUpload() override;
 
+private:
+    void startNewUpload();
+    void startNextChunk();
 public slots:
-    void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
-
+    void abort(AbortType abortType) override;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
     void slotPropfindIterate(const QString &name, const QMap<QString, QString> &properties);
     void slotDeleteJobFinished();
-    void slotMkColFinished();
+    void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
     void slotMoveJobFinished();
     void slotUploadProgress(qint64, qint64);
-
-private:
-    // Map chunk number with its size  from the PROPFIND on resume.
-    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
-    struct ServerChunkInfo {
-        qint64 size = 0LL;
-        QString originalName;
-    };
-
-    [[nodiscard]] QUrl chunkUploadFolderUrl() const;
-    [[nodiscard]] QUrl chunkUrl(const int chunk) const;
-    [[nodiscard]] QByteArray destinationHeader() const;
-
-    void startNewUpload();
-    void startNextChunk();
-    void finishUpload();
-
-    QMap<qint64, ServerChunkInfo> _serverChunks;
-
-    qint64 _sent = 0; /// amount of data (bytes) that was already sent
-    uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunk = 1; /// Id of the next chunk that will be sent
-    qint64 _currentChunkSize = 0; /// current chunk size
-    bool _removeJobError = false; /// If not null, there was an error removing the job
 };
 }

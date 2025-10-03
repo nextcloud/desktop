@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #ifndef MIRALL_OWNCLOUD_SETUP_PAGE_H
@@ -9,12 +18,15 @@
 
 #include <QWizard>
 
+#include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 
 #include "../addcertificatedialog.h"
-#include "wizard/wizardproxysettingsdialog.h"
+#include "wizard/owncloudconnectionmethoddialog.h"
 
 #include "ui_owncloudsetupnocredspage.h"
+
+#include "config.h"
 
 class QLabel;
 class QVariant;
@@ -31,16 +43,16 @@ class OwncloudSetupPage : public QWizardPage
     Q_OBJECT
 public:
     OwncloudSetupPage(QWidget *parent = nullptr);
-    ~OwncloudSetupPage() override;
+    ~OwncloudSetupPage();
 
-    [[nodiscard]] bool isComplete() const override;
+    bool isComplete() const override;
     void initializePage() override;
-    [[nodiscard]] int nextId() const override;
+    int nextId() const override;
     void setServerUrl(const QString &);
     void setAllowPasswordStorage(bool);
     bool validatePage() override;
-    [[nodiscard]] QString url() const;
-    [[nodiscard]] QString localFolder() const;
+    QString url() const;
+    QString localFolder() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void setAuthType(DetermineAuthTypeJob::AuthType type);
@@ -55,25 +67,22 @@ public slots:
 protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
-
-    void slotSetProxySettings();
+#ifdef WITH_PROVIDERS
+    void slotLogin();
+    void slotGotoProviderList();
+#endif
 
     void setupCustomization();
 
 signals:
-    void determineAuthType(const QUrl &serverURL, const OCC::WizardProxySettingsDialog::WizardProxySettings &proxySettings);
+    void determineAuthType(const QString &);
 
 private:
     void setLogo();
     void customizeStyle();
     void setupServerAddressDescriptionLabel();
 
-    void setProxySettingsButtonEnabled(bool enable);
-    void setProxySettingsButtonVisible(bool visible);
-    [[nodiscard]] QAbstractButton* getProxySettingsButton() const;
-    void ensureProxySettingsButtonIsConnected();
-
-    Ui_OwncloudSetupPage _ui{};
+    Ui_OwncloudSetupPage _ui;
 
     QString _oCUrl;
     QString _ocUser;
@@ -84,13 +93,6 @@ private:
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
     AddCertificateDialog *addCertDial = nullptr;
-
-    WizardProxySettingsDialog *_proxySettingsDialog = nullptr;
-    WizardProxySettingsDialog::WizardProxySettings _proxySettings;
-    QMetaObject::Connection _proxyButtonIsConnected;
-
-    // Grab the forceLoginV2-setting from the wizard
-    bool useFlow2 = _ocWizard->useFlow2();
 };
 
 } // namespace OCC

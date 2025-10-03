@@ -1,7 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) 2014 by Daniel Molkentin <danimo@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include "authenticationdialog.h"
@@ -21,12 +29,12 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
 {
     setWindowTitle(tr("Authentication Required"));
     auto *lay = new QVBoxLayout(this);
-    auto *label = new QLabel(tr("Enter username and password for \"%1\" at %2.").arg(realm, domain));
+    auto *label = new QLabel(tr("Enter username and password for '%1' at %2.").arg(realm, domain));
     label->setTextFormat(Qt::PlainText);
     lay->addWidget(label);
 
     auto *form = new QFormLayout;
-    form->addRow(tr("&Username:"), _user);
+    form->addRow(tr("&User:"), _user);
     form->addRow(tr("&Password:"), _password);
     lay->addLayout(form);
     _password->setEchoMode(QLineEdit::Password);

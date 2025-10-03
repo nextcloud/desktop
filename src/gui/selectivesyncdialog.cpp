@@ -1,27 +1,34 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
 #include "selectivesyncdialog.h"
-#include "account.h"
-#include "common/utility.h"
-#include "configfile.h"
 #include "folder.h"
-#include "folderman.h"
+#include "account.h"
 #include "networkjobs.h"
 #include "theme.h"
+#include "folderman.h"
+#include "configfile.h"
 #include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <QTreeWidget>
+#include <qpushbutton.h>
 #include <QFileIconProvider>
 #include <QHeaderView>
-#include <QLabel>
-#include <QScopedValueRollback>
 #include <QSettings>
-#include <QTreeWidget>
+#include <QScopedValueRollback>
 #include <QTreeWidgetItem>
+#include <QLabel>
 #include <QVBoxLayout>
-#include <qpushbutton.h>
 
 namespace OCC {
 
@@ -60,6 +67,7 @@ private:
 SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     : QWidget(parent)
     , _account(account)
+    , _inserting(false)
     , _folderTree(new QTreeWidget(this))
 {
     _loading = new QLabel(tr("Loading …"), _folderTree);
@@ -100,15 +108,15 @@ void SelectiveSyncWidget::refreshFolders()
 {
     _encryptedPaths.clear();
 
-    auto *job = new LsColJob(_account, _folderPath);
+    auto *job = new LsColJob(_account, _folderPath, this);
     auto props = QList<QByteArray>() << "resourcetype"
-                                     << "http://owncloud.org/ns:size"
-                                     << "http://nextcloud.org/ns:is-encrypted";
+                                     << "http://owncloud.org/ns:size";
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        props << "http://nextcloud.org/ns:is-encrypted";
+    }
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);
-    connect(job, &LsColJob::directoryListingSubfolders,
-        this, &SelectiveSyncWidget::slotUpdateRootFolderFilesSize);
     connect(job, &LsColJob::finishedWithError,
         this, &SelectiveSyncWidget::slotLscolFinishedWithError);
     connect(job, &LsColJob::directoryListingIterated,
@@ -153,13 +161,13 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
     } else {
-        auto *item = dynamic_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
+        auto *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
             item = new SelectiveSyncTreeViewItem(parent);
             if (parent->checkState(0) == Qt::Checked
                 || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
-                for (const auto &str : std::as_const(_oldBlackList)) {
+                foreach (const QString &str, _oldBlackList) {
                     if (str == path || str == QLatin1String("/")) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
@@ -191,10 +199,13 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    auto *root = dynamic_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
+    auto *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
     QUrl url = _account->davUrl();
-    auto pathToRemove = Utility::trailingSlashPath(url.path());
+    QString pathToRemove = url.path();
+    if (!pathToRemove.endsWith('/')) {
+        pathToRemove.append('/');
+    }
     pathToRemove.append(_folderPath);
     if (!_folderPath.isEmpty())
         pathToRemove.append('/');
@@ -211,7 +222,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     // list of top-level folders as soon as possible.
     if (_oldBlackList == QStringList("/")) {
         _oldBlackList.clear();
-        for (auto path : std::as_const(list)) {
+        foreach (QString path, list) {
             path.remove(pathToRemove);
             if (path.isEmpty()) {
                 continue;
@@ -242,7 +253,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     }
 
     Utility::sortFilenames(list);
-    for (auto path : std::as_const(list)) {
+    foreach (QString path, list) {
         auto size = job ? job->_folderInfos[path].size : 0;
         path.remove(pathToRemove);
 
@@ -277,24 +288,6 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     root->setExpanded(true);
 }
 
-void SelectiveSyncWidget::slotUpdateRootFolderFilesSize(const QStringList &subfolders)
-{
-    const auto job = qobject_cast<LsColJob *>(sender());
-    
-    if (!job) {
-        qWarning() << "slotUpdateRootFolderFilesSize must have a valid sender";
-        return;
-    }
-
-    _rootFilesSize = 0;
-
-    for (auto it = std::cbegin(job->_folderInfos); it != std::cend(job->_folderInfos); ++it) {
-        if (!subfolders.contains(it.key())) {
-            _rootFilesSize += it.value().size;
-        }
-    }
-}
-
 void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
 {
     if (r->error() == QNetworkReply::ContentNotFoundError) {
@@ -327,7 +320,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
     }
-    auto *job = new LsColJob(_account, prefix + dir);
+    auto *job = new LsColJob(_account, prefix + dir, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -416,9 +409,9 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
             result += createBlackList(root->child(i));
         }
     } else {
-        // We did not load from the server so we reuse the one from the old black list
+        // We did not load from the server so we re-use the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
-        for (const auto &it : _oldBlackList) {
+        foreach (const QString &it, _oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -461,13 +454,14 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
         // We did not load from the server so we have no idea how much we will sync from this branch
         return -1;
     }
-    return result + _rootFilesSize;
+    return result;
 }
 
 
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , _folder(folder)
+    , _okButton(nullptr) // defined in init()
 {
     bool ok = false;
     init(account);
@@ -509,8 +503,7 @@ void SelectiveSyncDialog::accept()
 {
     if (_folder) {
         bool ok = false;
-        auto oldBlackList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        auto oldBlackListSet = QSet<QString>{oldBlackList.begin(), oldBlackList.end()};
+        auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
         if (!ok) {
             return;
         }
@@ -524,14 +517,14 @@ void SelectiveSyncDialog::accept()
 
         //The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
-        auto blackListSet = QSet<QString>{blackList.begin(), blackList.end()};
+        auto blackListSet = blackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        for (const auto &it : changes) {
+        foreach (const auto &it, changes) {
             _folder->journalDb()->schedulePathForRemoteDiscovery(it);
             _folder->schedulePathForLocalDiscovery(it);
         }
 
-        folderMan->scheduleFolderForImmediateSync(_folder);
+        folderMan->scheduleFolder(_folder);
     }
     QDialog::accept();
 }

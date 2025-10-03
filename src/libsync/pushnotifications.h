@@ -1,6 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
@@ -22,7 +31,7 @@ class OWNCLOUDSYNC_EXPORT PushNotifications : public QObject
 public:
     explicit PushNotifications(Account *account, QObject *parent = nullptr);
 
-    ~PushNotifications() override;
+    ~PushNotifications();
 
     /**
      * Setup push notifications
@@ -43,7 +52,7 @@ public:
      *
      * Ready to use means connected and authenticated.
      */
-    [[nodiscard]] bool isReady() const;
+    bool isReady() const;
 
     /**
      * Set the interval in which the websocket will ping the server if it is still alive.
@@ -63,17 +72,17 @@ signals:
     /**
      * Will be emitted if files on the server changed
      */
-    void filesChanged(OCC::Account *account);
+    void filesChanged(Account *account);
 
     /**
      * Will be emitted if activities have been changed on the server
      */
-    void activitiesChanged(OCC::Account *account);
+    void activitiesChanged(Account *account);
 
     /**
      * Will be emitted if notifications have been changed on the server
      */
-    void notificationsChanged(OCC::Account *account);
+    void notificationsChanged(Account *account);
 
     /**
      * Will be emitted if push notifications are unable to authenticate

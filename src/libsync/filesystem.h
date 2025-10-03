@@ -1,22 +1,28 @@
 /*
- * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2014 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Olivier Goffart <ogoffart@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #pragma once
 
 #include "config.h"
 
-#include "owncloudlib.h"
-#include "common/filesystembase.h"
-
 #include <QString>
-#include <QStringList>
-
 #include <ctime>
 #include <functional>
-#include <functional>
+
+#include <owncloudlib.h>
+// Chain in the base include and extend the namespace
+#include "common/filesystembase.h"
 
 class QFile;
 
@@ -33,33 +39,6 @@ class SyncJournal;
  * @brief This file contains file system helper
  */
 namespace FileSystem {
-    class OWNCLOUDSYNC_EXPORT FilePermissionsRestore {
-    public:
-        explicit FilePermissionsRestore(const QString &path,
-                                        FileSystem::FolderPermissions temporaryPermissions);
-
-        ~FilePermissionsRestore();
-
-    private:
-        QString _path;
-        FileSystem::FolderPermissions _initialPermissions;
-        bool _rollbackNeeded = false;
-    };
-
-    struct OWNCLOUDSYNC_EXPORT FileLockingInfo {
-        enum class Type { Unset = -1, Locked, Unlocked };
-        QString path;
-        Type type = Type::Unset;
-    };
-
-    // match file path with lock pattern
-    QString OWNCLOUDSYNC_EXPORT filePathLockFilePatternMatch(const QString &path);
-    // check if it is an office file (by extension), ONLY call it for files
-    bool OWNCLOUDSYNC_EXPORT isMatchingOfficeFileExtension(const QString &path);
-    // finds and fetches FileLockingInfo for the corresponding file that we are locking/unlocking
-    FileLockingInfo OWNCLOUDSYNC_EXPORT lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern);
-    // lists all files matching a lockfile pattern in dirPath
-    QStringList OWNCLOUDSYNC_EXPORT findAllLockFilesInDir(const QString &dirPath);
 
     /**
      * @brief compare two files with given filename and return true if they have the same content
@@ -99,6 +78,7 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT fileChanged(const QString &fileName,
         qint64 previousSize,
         time_t previousMtime);
+
     /**
      * @brief Like !fileChanged() but with verbose logging if the file *did* change.
      */
@@ -114,23 +94,8 @@ namespace FileSystem {
      * errors are collected in errors.
      */
     bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
-                                               const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
-                                               QStringList *errors = nullptr,
-                                               const std::function<void(const QString &path, bool isDir)> &onError = nullptr);
-
-    bool OWNCLOUDSYNC_EXPORT setFolderPermissions(const QString &path,
-                                                  FileSystem::FolderPermissions permissions,
-                                                  bool *permissionsChanged = nullptr) noexcept;
-
-    bool OWNCLOUDSYNC_EXPORT isFolderReadOnly(const std::filesystem::path &path) noexcept;
-
-    /**
-     * Rename the file \a originFileName to \a destinationFileName, and
-     * overwrite the destination if it already exists - without extra checks.
-     */
-    bool OWNCLOUDSYNC_EXPORT uncheckedRenameReplace(const QString &originFileName,
-                                                    const QString &destinationFileName,
-                                                    QString *errorString);
+        const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
+        QStringList *errors = nullptr);
 }
 
 /** @} */

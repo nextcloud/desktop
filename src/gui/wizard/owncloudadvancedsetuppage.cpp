@@ -1,7 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2018 Nextcloud GmbH and Nextcloud contributors
- * SPDX-FileCopyrightText: 2013 ownCloud GmbH
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Krzesimir Nowak <krzesimir@endocode.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
 
 #include <QDir>
@@ -26,12 +35,7 @@
 #include "networkjobs.h"
 #include "wizard/owncloudwizard.h"
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "gui/macOS/fileprovider.h"
-#endif
-
-namespace OCC
-{
+namespace OCC {
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     : QWizardPage()
@@ -39,18 +43,8 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     , _ocWizard(wizard)
 {
     _ui.setupUi(this);
+
     setupResoultionWidget();
-
-    _filePathLabel.reset(new ElidedLabel);
-    _filePathLabel->setElideMode(Qt::ElideMiddle);
-    _filePathLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    _filePathLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-    _ui.locationsGridLayout->addWidget(_filePathLabel.data(), 3, 3);
-
-    _filePathLabel->setTextFormat(Qt::PlainText);
-    _ui.userNameLabel->setTextFormat(Qt::PlainText);
-    _ui.serverAddressLabel->setTextFormat(Qt::PlainText);
-    _ui.localFolderDescriptionLabel->setTextFormat(Qt::PlainText);
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
@@ -63,25 +57,16 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
-    setButtonText(QWizard::FinishButton, tr("Connect"));
-
-    if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
-        _ui.rSyncEverything->setDisabled(true);
-        _ui.rSelectiveSync->setDisabled(true);
-        _ui.bSelectiveSync->setDisabled(true);
-    }
+    setButtonText(QWizard::NextButton, tr("Connect"));
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
-    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](const bool checked) {
+    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) {
             _ui.lSelectiveSyncSizeLabel->clear();
             _selectiveSyncBlacklist.clear();
         }
-#ifdef BUILD_FILE_PROVIDER_MODULE
-        updateMacOsFileProviderRelatedViews();
-#endif
     });
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
 
@@ -100,22 +85,14 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
         _ui.confTraillingSizeLabel->hide();
     }
 
-    QString vfsExperimentalText = tr("(experimental)");
+    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
 
-    if (
 #ifdef Q_OS_WIN
-        bestAvailableVfsMode() == Vfs::WindowsCfApi
-#elif defined(BUILD_FILE_PROVIDER_MODULE)
-        Mac::FileProvider::fileProviderAvailable()
-#else
-        false
-#endif
-    ) {
-        _ui.wSyncStrategy->addLayout(_ui.lVirtualFileSync);
+    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
         setRadioChecked(_ui.rVirtualFileSync);
-        vfsExperimentalText = "";
     }
-    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(vfsExperimentalText));
+#endif
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -133,7 +110,6 @@ void OwncloudAdvancedSetupPage::setupCustomization()
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 
-    WizardCommon::customizeHintLabel(_filePathLabel.data());
     WizardCommon::customizeHintLabel(_ui.lFreeSpace);
     WizardCommon::customizeHintLabel(_ui.lSyncEverythingSizeLabel);
     WizardCommon::customizeHintLabel(_ui.lSelectiveSyncSizeLabel);
@@ -149,14 +125,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (Theme::instance()->disableVirtualFilesSyncFolder()
-            || !(Theme::instance()->showVirtualFilesOption()
-#ifdef BUILD_FILE_PROVIDER_MODULE
-                 || Mac::FileProvider::fileProviderAvailable()
-#else
-                 && bestAvailableVfsMode() != Vfs::Off
-#endif
-    )) {
+    if (!Theme::instance()->showVirtualFilesOption() || bestAvailableVfsMode() == Vfs::Off) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
@@ -165,33 +134,26 @@ void OwncloudAdvancedSetupPage::initializePage()
     }
 
     _checking = false;
-    _ui.lSelectiveSyncSizeLabel->clear();
-    _ui.lSyncEverythingSizeLabel->clear();
+    _ui.lSelectiveSyncSizeLabel->setText(QString());
+    _ui.lSyncEverythingSizeLabel->setText(QString());
 
     // Update the local folder - this is not guaranteed to find a good one
-    ConfigFile cfg;
-    const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
-
-    auto goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl(), FolderMan::GoodPathStrategy::AllowOnlyNewPath);
-    if (overrideLocalDir) {
-        ConfigFile cfg;
-        goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(cfg.overrideLocalDir(), serverUrl(), FolderMan::GoodPathStrategy::AllowOverrideExistingPath);
-    }
+    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
     wizard()->setProperty("localFolder", goodLocalFolder);
 
     // call to init label
     updateStatus();
 
     // ensure "next" gets the focus, not obSelectLocalFolder
-    QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
+    QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
 
-    auto acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
+    auto acc = static_cast<OwncloudWizard *>(wizard())->account();
     auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
-    connect(quotaJob, &PropfindJob::finishedWithError, this, &OwncloudAdvancedSetupPage::slotQuotaRetrievedWithError);
     quotaJob->start();
+
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
@@ -206,7 +168,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
 
     fetchUserAvatar();
-    setUserInformation();
+    fetchUserData();
 
     customizeStyle();
 
@@ -214,37 +176,19 @@ void OwncloudAdvancedSetupPage::initializePage()
     if (nextButton) {
         nextButton->setDefault(true);
     }
-    if (Theme::instance()->forceOverrideServerUrl()) {
-        QTimer::singleShot(0, this, [this]() {
-            ConfigFile cfg;
-            connect(_ocWizard, &QDialog::accepted, [&]() {
-                cfg.setOverrideServerUrl({});
-                cfg.setOverrideLocalDir({});
-            });
-            if (!cfg.overrideLocalDir().isEmpty()) {
-                _ocWizard->accept();
-            }
-        });
-    }
 }
 
 void OwncloudAdvancedSetupPage::fetchUserAvatar()
 {
     // Reset user avatar
     const auto appIcon = Theme::instance()->applicationIcon();
-    // To match the folder icon opposite the avatar -- that is 60x60, minus padding
-    _ui.lServerIcon->setPixmap(appIcon.pixmap(32));
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     // Fetch user avatar
     const auto account = _ocWizard->account();
-    auto avatarSize = 32;
+    auto avatarSize = 64;
     if (Theme::isHidpi()) {
         avatarSize *= 2;
     }
-
-    if (account->isPublicShareLink()) {
-        return;
-    }
-
     const auto avatarJob = new AvatarJob(account, account->davUser(), avatarSize, this);
     avatarJob->setTimeout(20 * 1000);
     QObject::connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QImage &avatarImage) {
@@ -257,35 +201,24 @@ void OwncloudAdvancedSetupPage::fetchUserAvatar()
     avatarJob->start();
 }
 
-void OwncloudAdvancedSetupPage::setUserInformation()
+void OwncloudAdvancedSetupPage::fetchUserData()
 {
     const auto account = _ocWizard->account();
+
+    // Fetch user data
+    const auto userJob = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), this);
+    userJob->setTimeout(20 * 1000);
+    connect(userJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json) {
+        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+        const auto displayName = objData.value("display-name").toString();
+        _ui.userNameLabel->setText(displayName);
+    });
+    userJob->start();
+
     const auto serverUrl = account->url().toString();
     setServerAddressLabelUrl(serverUrl);
     const auto userName = account->davDisplayName();
     _ui.userNameLabel->setText(userName);
-}
-
-void OwncloudAdvancedSetupPage::refreshVirtualFilesAvailibility(const QString &path)
-{
-    // TODO: remove when UX decision is made
-    if (!_ui.rVirtualFileSync->isVisible()) {
-        return;
-    }
-
-    if (Utility::isPathWindowsDrivePartitionRoot(path)) {
-        _ui.rVirtualFileSync->setText(tr("Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter."));
-        setRadioChecked(_ui.rSyncEverything);
-        _ui.rVirtualFileSync->setEnabled(false);
-    } else {
-        QString textArg;
-#ifndef BUILD_FILE_PROVIDER_MODULE
-        textArg = bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)");
-#endif
-        _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(textArg));
-        _ui.rVirtualFileSync->setEnabled(true);
-    }
-    //
 }
 
 void OwncloudAdvancedSetupPage::setServerAddressLabelUrl(const QUrl &url)
@@ -305,20 +238,21 @@ void OwncloudAdvancedSetupPage::updateStatus()
     const QString locFolder = localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    const auto pathValidityCheckResult = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
-    auto errorStr = pathValidityCheckResult.second;
-    _localFolderValid = errorStr.isEmpty() || pathValidityCheckResult.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+    _localFolderValid = errorStr.isEmpty();
 
     QString t;
+
+    setLocalFolderPushButtonPath(locFolder);
 
     if (dataChanged()) {
         if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
         } else {
-            t = Utility::escape(tr(R"(%1 folder "%2" is synced to local folder "%3")")
+            t = Utility::escape(tr("%1 folder '%2' is synced to local folder '%3'")
                                     .arg(Theme::instance()->appName(), _remoteFolder,
                                         QDir::toNativeSeparators(locFolder)));
-            _ui.rSyncEverything->setText(tr("Sync the folder \"%1\"").arg(_remoteFolder));
+            _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
         }
 
         const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
@@ -330,14 +264,8 @@ void OwncloudAdvancedSetupPage::updateStatus()
         setResolutionGuiVisible(false);
     }
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    updateMacOsFileProviderRelatedViews();
-#else
-    _filePathLabel->setText(QDir::toNativeSeparators(locFolder));
-
     QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
     _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
-#endif
 
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
@@ -382,8 +310,8 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 
 QUrl OwncloudAdvancedSetupPage::serverUrl() const
 {
-    const auto urlString = dynamic_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const auto user = dynamic_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
+    const QString urlString = static_cast<OwncloudWizard *>(wizard())->ocUrl();
+    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
 
     QUrl url(urlString);
     url.setUserName(user);
@@ -392,8 +320,7 @@ QUrl OwncloudAdvancedSetupPage::serverUrl() const
 
 int OwncloudAdvancedSetupPage::nextId() const
 {
-    // tells the caller that this is the last dialog page
-    return -1;
+    return WizardCommon::Page_Result;
 }
 
 QString OwncloudAdvancedSetupPage::localFolder() const
@@ -419,20 +346,15 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
-#ifndef BUILD_FILE_PROVIDER_MODULE
     if (useVirtualFileSync()) {
-        const auto availability = Vfs::checkAvailability(localFolder(), bestAvailableVfsMode());
+        const auto availability = Vfs::checkAvailability(localFolder());
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning,
-                                       tr("Virtual files are not supported at the selected location"),
-                                       availability.error(),
-                                       QMessageBox::Ok, this);
+            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
         }
     }
-#endif
 
     if (!_created) {
         setErrorString(QString());
@@ -489,9 +411,7 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 {
     QString dir = QFileDialog::getExistingDirectory(nullptr, tr("Local Sync Folder"), QDir::homePath());
     if (!dir.isEmpty()) {
-        // TODO: remove when UX decision is made
-        refreshVirtualFilesAvailibility(dir);
-
+        setLocalFolderPushButtonPath(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();
     }
@@ -501,9 +421,25 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
     setErrorString(errorStr);
 }
 
+
+void OwncloudAdvancedSetupPage::setLocalFolderPushButtonPath(const QString &path)
+{
+    const auto homeDir = QDir::homePath().endsWith('/') ? QDir::homePath() : QDir::homePath() + QLatin1Char('/');
+
+    if (!path.startsWith(homeDir)) {
+        _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(path));
+        return;
+    }
+
+    auto prettyPath = path;
+    prettyPath.remove(0, homeDir.size());
+
+    _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(prettyPath));
+}
+
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    AccountPtr acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
+    AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -576,15 +512,6 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
     updateStatus();
 }
 
-void OwncloudAdvancedSetupPage::slotQuotaRetrievedWithError(QNetworkReply *reply)
-{
-    Q_UNUSED(reply)
-    _rSize = -1;
-    _ui.lSyncEverythingSizeLabel->setText({});
-
-    updateStatus();
-}
-
 qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
 {
     QString localDir = localFolder();
@@ -641,28 +568,6 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
 }
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-void OwncloudAdvancedSetupPage::updateMacOsFileProviderRelatedViews()
-{
-    if (!Mac::FileProvider::fileProviderAvailable()) {
-        return;
-    }
-
-    const auto freeSpaceHidden = _ui.rVirtualFileSync->isChecked();
-    const auto folderSelectionButtonHidden = _ui.rVirtualFileSync->isChecked();
-    const auto filePathLabelText =
-        _ui.rVirtualFileSync->isChecked() ? tr("In Finder's \"Locations\" sidebar section") : QDir::toNativeSeparators(localFolder());
-    const auto freeSpaceString = freeSpaceHidden ? QString() : Utility::octetsToString(availableLocalSpace());
-    const auto freeSpaceText = freeSpaceHidden ? QString() : QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(freeSpaceString);
-
-    _ui.lFreeSpace->setHidden(freeSpaceHidden);
-    _ui.lFreeSpace->setText(freeSpaceText);
-    _ui.pbSelectLocalFolder->setHidden(folderSelectionButtonHidden);
-    _ui.pbSelectLocalFolder->setEnabled(!folderSelectionButtonHidden);
-    _filePathLabel->setText(filePathLabelText);
-}
-#endif
 
 void OwncloudAdvancedSetupPage::styleSyncLogo()
 {
