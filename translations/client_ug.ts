@@ -643,6 +643,11 @@ Should the account be imported?</source>
 &lt;b&gt; بۇ جەرياننى ئەسلىگە كەلتۈرگىلى بولمايدۇ. داۋاملاشتۇرۇشنى خالامسىز؟ &lt;/b&gt;</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="280"/>
+        <source>End-to-end encryption has not been initialized on this account.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
         <translation type="unfinished"/>
@@ -5629,15 +5634,8 @@ Server replied with error: %2</source>
         <translation>ھۆججەتنىڭ نامىنى ئۆزگەرتىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1083"/>
-        <source>Open %1 Assistant in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <source>Public Share Link</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5651,12 +5649,24 @@ Server replied with error: %2</source>
         <translation>توركۆرگۈدە Nextcloud پاراڭنى ئېچىڭ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
-        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1103"/>
+        <source>Open %1 Assistant in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1104"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
@@ -5682,6 +5692,16 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="1498"/>
         <source>Cancel</source>
         <translation>بىكار قىلىش</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <source>Leave share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <source>Remove account</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6814,6 +6834,11 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <source>Remove account</source>
+        <translation>ھېساباتنى ئۆچۈرۈڭ</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log out</source>
@@ -6824,11 +6849,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log in</source>
         <translation>كىرىڭ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
-        <source>Remove account</source>
-        <translation>ھېساباتنى ئۆچۈرۈڭ</translation>
     </message>
 </context>
 <context>
