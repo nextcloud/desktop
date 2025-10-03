@@ -144,6 +144,9 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
         }
     }
 
+    ConfigFile().cleanupGlobalNetworkConfiguration();
+    ClientProxy().cleanupGlobalNetworkConfiguration();   
+
     return result;
 }
 
@@ -308,6 +311,8 @@ bool AccountManager::restoreFromLegacySettings()
             settings->endGroup();
             moveNetworkSettingsFromGlobalToAccount(acc);
         }
+        configFile.cleanupGlobalNetworkConfiguration();
+        ClientProxy().cleanupGlobalNetworkConfiguration();   
         return true;
     }
 
@@ -483,7 +488,6 @@ void AccountManager::moveNetworkSettingsFromGlobalToAccount(const AccountPtr &ac
                                   configFile.proxyNeedsAuth(),
                                   configFile.proxyUser(),
                                   configFile.proxyPassword());
-        ClientProxy().cleanupGlobalNetworkConfiguration();
     }
 
     const auto useUploadLimit = configFile.useUploadLimit();
@@ -496,7 +500,6 @@ void AccountManager::moveNetworkSettingsFromGlobalToAccount(const AccountPtr &ac
     account->setUploadLimit(configFile.uploadLimit());
     account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
     account->setDownloadLimit(configFile.downloadLimit());
-    configFile.cleanupGlobalNetworkConfiguration();
 }
 
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
