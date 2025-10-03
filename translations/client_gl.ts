@@ -645,6 +645,11 @@ Debería importarse a conta?</translation>
 &lt;b&gt;Este proceso non é reversíbel. Confirma que quere continuar?&lt;/b&gt;</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="280"/>
+        <source>End-to-end encryption has not been initialized on this account.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Forget encryption setup</source>
         <translation>Esquecer a configuración do cifrado</translation>
@@ -5634,16 +5639,9 @@ O servidor respondeu co erro: %2</translation>
         <translation>Cambiar o nome do ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1083"/>
-        <source>Open %1 Assistant in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Abrir o Asistente de %1 no navegador</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1084"/>
-        <source>Open %1 Talk in browser</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Abrir Parladoiro de %1 no navegador</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -5656,12 +5654,24 @@ O servidor respondeu co erro: %2</translation>
         <translation>Abrir Parladoiro de Nextcloud no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1207"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1103"/>
+        <source>Open %1 Assistant in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Abrir o Asistente de %1 no navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1104"/>
+        <source>Open %1 Talk in browser</source>
+        <comment>The placeholder will be the application name. Please keep it</comment>
+        <translation>Abrir Parladoiro de %1 no navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>A cota foi actualízada; está a empregarse o %1 por cento do espazo total utilizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Advertencia de cota: está a empregarse o %1 por cento ou máis do almacenamento</translation>
     </message>
@@ -5687,6 +5697,16 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1498"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <source>Leave share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
+        <source>Remove account</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6819,6 +6839,11 @@ O servidor respondeu co erro: %2</translation>
         <translation>Mensaxe de estado</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <source>Remove account</source>
+        <translation>Retirar a conta</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="145"/>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log out</source>
@@ -6829,11 +6854,6 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/UserLine.qml" line="154"/>
         <source>Log in</source>
         <translation>Acceder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
-        <source>Remove account</source>
-        <translation>Retirar a conta</translation>
     </message>
 </context>
 <context>
