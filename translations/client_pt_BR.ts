@@ -502,17 +502,17 @@ O macOS pode ignorar ou atrasar essa solicitação.</translation>
     <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>Arquivo %1 já está bloqueado por %2.</translation>
+        <translation>Arquivo %1 já está trancado por %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1062"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>A operação de bloqueio em %1 falhou com o erro %2</translation>
+        <translation>A operação de trancamento em %1 falhou com o erro %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1064"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>A operação de desbloqueio em %1 falhou com o erro %2</translation>
+        <translation>A operação de destrancamento em %1 falhou com o erro %2</translation>
     </message>
 </context>
 <context>
@@ -1236,7 +1236,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="85"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 Falha ao desbloquear a pasta criptografada %2&quot;.</translation>
+        <translation>&quot;%1 Falha ao destrancar a pasta criptografada %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="127"/>
@@ -1851,23 +1851,23 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="521"/>
         <source>File %1 already locked.</source>
-        <translation>Arquivo %1 já está bloqueado.</translation>
+        <translation>Arquivo %1 já está trancado.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>O bloqueio terá duração de %1 minutos. Você também pode desbloquear esse arquivo manualmente quando terminar de editá-lo.</translation>
+        <translation>O trancamento terá duração de %1 minutos. Você também pode destrancar este arquivo manualmente quando terminar de editá-lo.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="532"/>
         <source>File %1 now locked.</source>
-        <translation>Arquivo %1 agora está bloqueado.</translation>
+        <translation>Arquivo %1 agora está trancado.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 could not be locked.</source>
-        <translation>Não foi possível bloquear o arquivo %1</translation>
+        <translation>Não foi possível trancar o arquivo %1</translation>
     </message>
 </context>
 <context>
@@ -1924,7 +1924,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Não foi possível gerar os metadados para criptografia, desbloqueando a pasta.
+        <translation>Não foi possível gerar os metadados para criptografia, destrancando a pasta.
 Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     </message>
 </context>
@@ -1945,7 +1945,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="129"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="222"/>
         <source>Error locking folder.</source>
-        <translation>Erro ao bloquear pasta.</translation>
+        <translation>Erro ao trancar pasta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="156"/>
@@ -2005,7 +2005,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Expira em %2 minuto</numerusform><numerusform>Bloqueado por %1 - Expira em %2 de minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
+        <translation><numerusform>Trancado por %1 - Expira em %2 minuto</numerusform><numerusform>Trancado por %1 - Expira em %2 de minutos</numerusform><numerusform>Trancado por %1 - Expira em %2 minutos</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2168,12 +2168,12 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo estão atualmente trancado.</numerusform><numerusform>%1 e %n de outros arquivos estão atualmente trancados.</numerusform><numerusform>%1 e %n outros arquivos estão atualmente trancados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 is currently locked.</source>
-        <translation>%1 está atualmente bloqueado.</translation>
+        <translation>%1 está atualmente trancado.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="510"/>
@@ -4632,7 +4632,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="454"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Falha ao desbloquear a pasta criptografada.</translation>
+        <translation>Falha ao destrancar a pasta criptografada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="727"/>
@@ -5001,17 +5001,17 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1227"/>
         <source>Lock file</source>
-        <translation>Bloquear arquivo</translation>
+        <translation>Trancar arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
         <source>Unlock file</source>
-        <translation>Desbloquear arquivo</translation>
+        <translation>Destrancar arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
         <source>Locked by %1</source>
-        <translation>Bloqueado por %1</translation>
+        <translation>Trancado por %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
@@ -5563,7 +5563,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="146"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Falha ao desbloquear a pasta criptografada.</translation>
+        <translation>Falha ao destrancar a pasta criptografada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="156"/>
@@ -5604,7 +5604,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="229"/>
         <source>Failed to unlock a folder.</source>
-        <translation>Falha ao desbloquear uma pasta.</translation>
+        <translation>Falha ao destrancar uma pasta.</translation>
     </message>
 </context>
 <context>
@@ -6389,7 +6389,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation>O recurso que você está tentando acessar está bloqueado no momento e não pode ser modificado. Tente alterá-lo mais tarde ou entre em contato com a administração do seu servidor para obter ajuda.</translation>
+        <translation>O recurso que você está tentando acessar está trancado no momento e não pode ser modificado. Tente alterá-lo mais tarde ou entre em contato com a administração do seu servidor para obter ajuda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
