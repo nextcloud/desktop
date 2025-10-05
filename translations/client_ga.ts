@@ -647,7 +647,7 @@ Ar cheart an cuntas a allmhairiú?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>Níl criptiú ó cheann ceann tosaithe ar an gcuntas seo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
@@ -5643,7 +5643,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Nasc Comhroinnte Poiblí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -5703,12 +5703,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Fág an comhroinnt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Bain cuntas</translation>
     </message>
 </context>
 <context>

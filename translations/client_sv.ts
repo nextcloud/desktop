@@ -647,7 +647,7 @@ Ska kontot importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>End‑to‑end‑kryptering har inte aktiverats på detta konto.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
@@ -5643,7 +5643,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Offentlig delningslänk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -5703,12 +5703,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Lämna delning</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort konto</translation>
     </message>
 </context>
 <context>
