@@ -647,7 +647,7 @@ Je, akaunti inapaswa kuingizwa?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>Usimbaji fiche kutoka mwanzo hadi mwisho haujaanzishwa kwenye akaunti hii.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
@@ -5643,7 +5643,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Kiungo cha Kushiriki kwa Umma</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -5703,12 +5703,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>Acha kushiriki</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Ondoa akaunti</translation>
     </message>
 </context>
 <context>
