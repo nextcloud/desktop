@@ -5269,7 +5269,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (saltatua zena aurreko errore batengatik, berriro saiatzen hemen: %2)</translation>
+        <translation>%1 (aurreko errore batengatik saltatua, berriro saiatzen: %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="554"/>
