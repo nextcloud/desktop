@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d306001c9..6627f8399 100644
+index 5575c1e57..8a9924e7b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -413,6 +413,31 @@ index a9491e5be..b80e79fd7 100644
 +    set(QML_ACCEPTTHISOBJECT_PRAGMA "")
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
+diff --git a/src/gui/UserStatusSelector.qml b/src/gui/UserStatusSelector.qml
+index 3df79512a..c9934ed19 100644
+--- a/src/gui/UserStatusSelector.qml
++++ b/src/gui/UserStatusSelector.qml
+@@ -156,10 +156,16 @@ ColumnLayout {
+ 
+             Binding {
+                 when: userStatusSelectorModel.userStatusEmoji.length > 0
+-                fieldButton {
+-                    text: userStatusSelectorModel.userStatusEmoji
+-                    contentItem.opacity: 1.0
+-                }
++                target: fieldButton
++                property: text
++                value: userStatusSelectorModel.userStatusEmoji
++            }
++
++            Binding {
++                when: userStatusSelectorModel.userStatusEmoji.length > 0
++                target: fieldButton
++                property: contentItem.opacity
++                value: 1.0
+             }
+ 
+             Popup {
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
 index 8303e4cd5..9ab09009a 100644
 --- a/src/gui/application.cpp
@@ -550,6 +575,19 @@ index 9b85245ae..76e9012fd 100644
  	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
          msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
      }
+diff --git a/src/gui/tray/ActivityItemContent.qml b/src/gui/tray/ActivityItemContent.qml
+index 9f365b609..2c761678f 100644
+--- a/src/gui/tray/ActivityItemContent.qml
++++ b/src/gui/tray/ActivityItemContent.qml
+@@ -14,7 +14,7 @@ import com.nextcloud.desktopclient
+ RowLayout {
+     id: root
+ 
+-    required property color adaptiveTextColor
++    property color adaptiveTextColor
+ 
+     property variant activityData: {{}}
+ 
 diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMenuButton.qml.in
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
@@ -953,7 +991,7 @@ index c7c259ab0..e7ab6d6ad 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 8541f81ed..4924f2215 100644
+index b93a68810..234d29868 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -9,6 +9,7 @@
@@ -964,7 +1002,7 @@ index 8541f81ed..4924f2215 100644
  
  #include <QtCore>
  #ifndef TOKEN_AUTH_ONLY
-@@ -847,14 +848,12 @@ QString Theme::versionSwitchOutput() const
+@@ -842,14 +843,12 @@ QString Theme::versionSwitchOutput() const
  
  double Theme::getColorDarkness(const QColor &color)
  {
@@ -981,7 +1019,7 @@ index 8541f81ed..4924f2215 100644
  }
  
  QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
-@@ -962,7 +961,7 @@ QColor Theme::defaultColor()
+@@ -957,7 +956,7 @@ QColor Theme::defaultColor()
  void Theme::connectToPaletteSignal() const
  {
      if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
@@ -990,7 +1028,7 @@ index 8541f81ed..4924f2215 100644
      }
  }
  
-@@ -1005,19 +1004,6 @@ QVariantMap Theme::systemPalette() const
+@@ -1000,19 +999,6 @@ QVariantMap Theme::systemPalette() const
  bool Theme::darkMode() const
  {
      connectToPaletteSignal();
@@ -1010,7 +1048,7 @@ index 8541f81ed..4924f2215 100644
  
  #ifdef Q_OS_WIN
      static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-@@ -1028,7 +1014,8 @@ bool Theme::darkMode() const
+@@ -1023,7 +1009,8 @@ bool Theme::darkMode() const
          }
      }
  #endif
