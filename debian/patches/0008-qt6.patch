@@ -34,10 +34,10 @@ index f584246eb..efa56ae18 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/common/common.cmake b/src/common/common.cmake
-index 42dd5a0f6..3c79af8d2 100644
+index 5a19933dc..6f5dabcb7 100644
 --- a/src/common/common.cmake
 +++ b/src/common/common.cmake
-@@ -36,3 +36,5 @@ elseif(UNIX AND NOT APPLE)
+@@ -39,3 +39,5 @@ elseif(UNIX AND NOT APPLE)
  endif()
  
  configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
@@ -52,10 +52,10 @@ index 000000000..ccded5d62
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..08f327baa
+index 000000000..4a4c59b35
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,281 @@
+@@ -0,0 +1,290 @@
 +
 +#pragma once
 +
@@ -169,6 +169,15 @@ index 000000000..08f327baa
 +#if QT_VERSION<QT_VERSION_CHECK(6, 5, 0)
 +#include <QDebug>
 +#define qCFatal(category) QDebug(QtFatalMsg)
++#endif
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 6, 0)
++#define QPromiseEmplaceResult(promise, type, ...) promise->addResult(type(__VA_ARGS__))
++#else
++#define QPromiseEmplaceResult(promise, type, ...) promise->emplaceResult(__VA_ARGS__)
 +#endif
 +
 +//-----------------------------------------------------------------------------
@@ -550,6 +559,19 @@ index 9b85245ae..76e9012fd 100644
  	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
          msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
      }
+diff --git a/src/gui/tray/ActivityItemContent.qml b/src/gui/tray/ActivityItemContent.qml
+index 9f365b609..2c761678f 100644
+--- a/src/gui/tray/ActivityItemContent.qml
++++ b/src/gui/tray/ActivityItemContent.qml
+@@ -14,7 +14,7 @@ import com.nextcloud.desktopclient
+ RowLayout {
+     id: root
+ 
+-    required property color adaptiveTextColor
++    property color adaptiveTextColor
+ 
+     property variant activityData: {{}}
+ 
 diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMenuButton.qml.in
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
@@ -605,8 +627,30 @@ index 5820fc0c8..a70abc9c8 100644
  target_compile_features(nextcloudsync
      PRIVATE
          cxx_std_17
+diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
+index 6f42b1425..400b51576 100644
+--- a/src/libsync/account.cpp
++++ b/src/libsync/account.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include "common/syncjournaldb.h"
+ #include "common/asserts.h"
++#include "common/qtcompat.h"
+ #include "clientsideencryption.h"
+ #include "ocsuserstatusconnector.h"
+ 
+@@ -1238,7 +1239,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+                                           serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                           newEntry);
+ 
+-        promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
++        QPromiseEmplaceResult(promise, OCC::PlaceholderCreateInfo,
++                              itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
+     });
+ 
+     promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 370a1a30a..4ba1db6ee 100644
+index 2e32527f6..be2e695a7 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -618,7 +662,7 @@ index 370a1a30a..4ba1db6ee 100644
  
  #include <QDebug>
  #include <QLoggingCategory>
-@@ -2702,26 +2702,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
+@@ -2750,26 +2750,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
  
  QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
  {
@@ -648,7 +692,7 @@ index 370a1a30a..4ba1db6ee 100644
      return outputData;
  }
  
-@@ -2733,23 +2719,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
+@@ -2781,23 +2767,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
          return {};
      }
  
@@ -674,7 +718,7 @@ index 370a1a30a..4ba1db6ee 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index a5e53ce32..49d99a7c7 100644
+index 1046e5587..78e6fe969 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -893,18 +937,18 @@ index 000000000..ba7eb4406
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index e7a1dc4de..b6a663ab5 100644
+index b5b7a0968..c32e58051 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
-@@ -33,6 +33,7 @@
+@@ -10,6 +10,7 @@
  #include "owncloudpropagator.h"
  #include "clientsideencryption.h"
- 
+ #include "common/checksums.h"
 +#include "common/qtcompat.h"
+ 
  #include "creds/abstractcredentials.h"
  #include "creds/httpcredentials.h"
- #include "configfile.h"
-@@ -655,7 +656,7 @@ bool PropfindJob::finished()
+@@ -811,7 +812,7 @@ bool PropfindJob::finished()
          // Parse DAV response
          auto domDocument = QDomDocument();
  
@@ -1072,7 +1116,7 @@ index c7be00218..59b832146 100644
  #include <QFile>
  #include <QtTest>
 diff --git a/test/testsyncjournaldb.cpp b/test/testsyncjournaldb.cpp
-index 424b439af..de20acf5c 100644
+index 1e71e25ff..7bb62edcd 100644
 --- a/test/testsyncjournaldb.cpp
 +++ b/test/testsyncjournaldb.cpp
 @@ -14,6 +14,7 @@
@@ -1084,7 +1128,7 @@ index 424b439af..de20acf5c 100644
  
  using namespace OCC;
 diff --git a/test/testsyncvirtualfiles.cpp b/test/testsyncvirtualfiles.cpp
-index e7eb0b196..7a4d22838 100644
+index c4840c030..c531e0424 100644
 --- a/test/testsyncvirtualfiles.cpp
 +++ b/test/testsyncvirtualfiles.cpp
 @@ -11,6 +11,7 @@
