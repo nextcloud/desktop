@@ -218,7 +218,7 @@ void Account::setDavDisplayName(const QString &newDisplayName)
 QString Account::prettyName() const
 {
     // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
-    auto name = davDisplayName();
+    auto name = isPublicShareLink() ? tr("Public Share Link") : davDisplayName();
 
     if (name.isEmpty()) {
         name = davUser();
