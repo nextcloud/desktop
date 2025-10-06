@@ -26,14 +26,13 @@ extension NKFile {
 
         // Don't ask me why, NextcloudKit renames and moves the root folder details
         // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
-        let rootRequiresFixup = serverUrl == ".." && fileName == "."
+        let rootServerUrl = urlBase + Account.webDavFilesUrlSuffix + userId
+        let rootRequiresFixup = serverUrl == rootServerUrl && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
         let ocId = rootRequiresFixup
             ? NSFileProviderItemIdentifier.rootContainer.rawValue
             : self.ocId
         let directory = rootRequiresFixup ? true : self.directory
-        let serverUrl = rootRequiresFixup
-            ? urlBase + Account.webDavFilesUrlSuffix + userId
-            : self.serverUrl
+        let serverUrl = rootRequiresFixup ? rootServerUrl : self.serverUrl
         let fileName = rootRequiresFixup ? "" : self.fileName
 
         return SendableItemMetadata(

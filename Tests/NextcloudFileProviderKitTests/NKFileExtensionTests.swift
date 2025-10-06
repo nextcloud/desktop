@@ -46,8 +46,8 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         // which has a special serverUrl and fileName.
         let rootNKFile = createNKFile(
             ocId: "rootId",
-            serverUrl: "..", // Special root value
-            fileName: ".",   // Special root value
+            serverUrl: "https://mock.nc.com/remote.php/dav/files/testUserId", // Special root value
+            fileName: "__NC_ROOT__",   // Special root value
             directory: false // NextcloudKit sometimes marks the root as not a directory
         )
 
@@ -99,8 +99,8 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         // 1. Arrange: Create an array of NKFiles where the first item is the special root.
         let rootNKFile = createNKFile(
             ocId: "rootId", // This will be overridden by the logic
-            serverUrl: "..",
-            fileName: ".",
+            serverUrl: "https://mock.nc.com/remote.php/dav/files/testUserId",
+            fileName: "__NC_ROOT__",
             directory: false // Mimic NextcloudKit behavior
         )
         let childNKFile = createNKFile(

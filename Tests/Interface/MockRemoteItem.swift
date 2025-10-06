@@ -140,7 +140,7 @@ public class MockRemoteItem: Equatable {
         let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()
         file.fileName = isRoot
-            ? "."
+            ? "__NC_ROOT__"
             : trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
         file.date = creationDate
@@ -149,7 +149,7 @@ public class MockRemoteItem: Equatable {
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         file.serverUrl = isRoot
-            ? ".."
+            ? serverUrl + "/remote.php/dav/files/" + userId
             : parent?.remotePath ?? remotePath
         file.account = account
         file.user = username

@@ -183,7 +183,7 @@ extension Enumerator {
             guard receivedFile.directory ||
                   serverUrl == dbManager.account.davFilesUrl ||
                   receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
-                  (receivedFile.fileName == "." && receivedFile.serverUrl == "..")
+                  (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 var metadata = receivedFile.toItemMetadata()
