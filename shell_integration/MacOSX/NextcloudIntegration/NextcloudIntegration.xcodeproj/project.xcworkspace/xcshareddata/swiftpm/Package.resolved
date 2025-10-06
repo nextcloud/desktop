@@ -25,7 +25,7 @@
       "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
       "state" : {
         "branch" : "main",
-        "revision" : "b87926142d8bc474c95acc29f66fce102ed27942"
+        "revision" : "ed5deb764451888723ec3412dc3f7bf272d2c4a2"
       }
     },
     {

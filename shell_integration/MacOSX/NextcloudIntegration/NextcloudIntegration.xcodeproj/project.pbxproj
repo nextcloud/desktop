@@ -196,9 +196,13 @@
 		53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewDataSourceUIDelegate.swift; sourceTree = "<group>"; };
 		53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareOptionsView.swift; sourceTree = "<group>"; };
 		AA02B2AA2E7048C600C72B34 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		AA0A6B1D2E8EA94F007F4A7A /* Craft.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Craft.sh; sourceTree = "<group>"; };
+		AA1191B52E8EAFF900E21C7B /* Build.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text; path = Build.xcconfig.template; sourceTree = "<group>"; };
+		AA27A4E32E93C0D700665051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AA7F17E02E7017230000E928 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		AA7F17E22E70173E0000E928 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		AA7F17E62E7038340000E928 /* NSError+FileProviderErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+FileProviderErrorCode.swift"; sourceTree = "<group>"; };
+		AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
 		AA9987852E72B6DB00B2C428 /* NextcloudKit+clearAccountErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudKit+clearAccountErrorState.swift"; sourceTree = "<group>"; };
 		AAA69D922E3BB09900BBD44D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AAC00D292E37B29D006010FE /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -373,6 +377,16 @@
 			path = FileProviderUIExt;
 			sourceTree = "<group>";
 		};
+		AA0A6B1C2E8EA948007F4A7A /* NextcloudDev */ = {
+			isa = PBXGroup;
+			children = (
+				AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */,
+				AA1191B52E8EAFF900E21C7B /* Build.xcconfig.template */,
+				AA0A6B1D2E8EA94F007F4A7A /* Craft.sh */,
+			);
+			path = NextcloudDev;
+			sourceTree = "<group>";
+		};
 		AA7F17DF2E70171A0000E928 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,7 +399,9 @@
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
+				AA27A4E32E93C0D700665051 /* README.md */,
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
+				AA0A6B1C2E8EA948007F4A7A /* NextcloudDev */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
 				53B9797F2B84C81F002DA742 /* FileProviderUIExt */,
@@ -465,6 +481,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		AA0A62F22E8EA929007F4A7A /* NextcloudDev */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"$(SOURCE_ROOT)/NextcloudDev/Craft.sh\"";
+			buildConfigurationList = AA0A62F52E8EA929007F4A7A /* Build configuration list for PBXLegacyTarget "NextcloudDev" */;
+			buildPhases = (
+			);
+			buildToolPath = /bin/zsh;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = NextcloudDev;
+			packageProductDependencies = (
+			);
+			passBuildSettingsInEnvironment = 1;
+			productName = NextcloudDev;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		538E396627F4765000FA63D5 /* FileProviderExt */ = {
@@ -592,6 +627,9 @@
 					};
 					53B9797D2B84C81F002DA742 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					AA0A62F22E8EA929007F4A7A = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 					C2B573B01B1CD91E00303B36 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -739,6 +777,7 @@
 				538E396627F4765000FA63D5 /* FileProviderExt */,
 				53B9797D2B84C81F002DA742 /* FileProviderUIExt */,
 				53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */,
+				AA0A62F22E8EA929007F4A7A /* NextcloudDev */,
 			);
 		};
 /* End PBXProject section */
@@ -928,7 +967,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -985,7 +1023,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
@@ -1162,7 +1199,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1227,7 +1263,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1267,6 +1302,80 @@
 			};
 			name = Release;
 		};
+		AA0A62F32E8EA929007F4A7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AA0A62F42E8EA929007F4A7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		C2B573991B1CD88000303B36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1288,6 +1397,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
@@ -1323,6 +1433,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1359,7 +1470,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1416,7 +1526,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1464,7 +1573,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1524,7 +1632,6 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1580,6 +1687,15 @@
 			buildConfigurations = (
 				53B979862B84C81F002DA742 /* Debug */,
 				53B979872B84C81F002DA742 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA0A62F52E8EA929007F4A7A /* Build configuration list for PBXLegacyTarget "NextcloudDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0A62F32E8EA929007F4A7A /* Debug */,
+				AA0A62F42E8EA929007F4A7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
