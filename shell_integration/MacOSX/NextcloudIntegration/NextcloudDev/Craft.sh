@@ -10,9 +10,9 @@ for f in /etc/paths.d/*; do
     done < "$f"
 done
 
-if [ -f "~/.zprofile" ]; then
-    echo "Sourcing ~/.zprofile to include possible PATH definitions..."
-    source "~/.zprofile"
+if [ -f "$HOME/.zprofile" ]; then
+    echo "Sourcing $HOME/.zprofile to include possible PATH definitions..."
+    source "$HOME/.zprofile"
 fi
 
 if [ -z "${CODE_SIGN_IDENTITY}" ]; then
@@ -30,7 +30,7 @@ else
 fi
 
 swift run mac-crafter \
-    --build-path="$DERIVED_SOURCES_DIR" \
+    --build-path="$SOURCE_ROOT/DerivedData" \
     --product-path="/Applications" \
     --build-type="Debug" \
     --dev \
