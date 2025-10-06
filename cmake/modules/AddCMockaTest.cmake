@@ -19,6 +19,7 @@ endif(CMAKE_COMPILER_IS_GNUCC AND NOT MINGW)
 
 function (ADD_CMOCKA_TEST _testName _testSource)
     add_executable(${_testName} ${_testSource})
+    set_target_properties(${_testName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
     target_link_libraries(${_testName} ${ARGN})
-    add_test(${_testName} ${CMAKE_CURRENT_BINARY_DIR}/${_testName})
+    add_test(${_testName} ${BIN_OUTPUT_DIRECTORY}/${_testName})
 endfunction (ADD_CMOCKA_TEST)
