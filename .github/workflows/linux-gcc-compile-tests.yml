@@ -8,7 +8,7 @@ jobs:
   build:
     name: Linux GCC compilation and tests
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-trixie-6.8.2-1
+    container: ghcr.io/nextcloud/continuous-integration-client-qt6:client-trixie-6.8.2-2
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
