@@ -222,7 +222,7 @@ void Account::setDavDisplayName(const QString &newDisplayName)
 QString Account::prettyName() const
 {
     // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
-    auto name = davDisplayName();
+    auto name = isPublicShareLink() ? tr("Public Share Link") : davDisplayName();
 
     if (name.isEmpty()) {
         name = davUser();
@@ -557,12 +557,12 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 
 void Account::setUrl(const QUrl &url)
 {
-    const QRegularExpression discoverPublicLinks(R"((https?://[^/]*).*/s/([^/]*))");
+    const QRegularExpression discoverPublicLinks(R"(((https|http)://[^/]*).*/s/([^/]*))");
     const auto isPublicLink = discoverPublicLinks.match(url.toString());
     if (isPublicLink.hasMatch()) {
         _url = QUrl::fromUserInput(isPublicLink.captured(1));
-        _url.setUserName(isPublicLink.captured(2));
-        setDavUser(isPublicLink.captured(2));
+        _url.setUserName(isPublicLink.captured(3));
+        setDavUser(isPublicLink.captured(3));
         _isPublicLink = true;
         _publicShareLinkUrl = url;
     } else {
