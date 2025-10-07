@@ -500,6 +500,11 @@ macOS inaweza kupuuza au kuchelewesha ombi hili.</translation>
 <context>
     <name>OCC::Account</name>
     <message>
+        <location filename="../src/libsync/account.cpp" line="225"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Faili %1 tayari imefungwa kwa %2.</translation>
