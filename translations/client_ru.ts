@@ -499,6 +499,11 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>OCC::Account</name>
     <message>
+        <location filename="../src/libsync/account.cpp" line="225"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Файл «%1» уже заблокирован пользователем %2.</translation>
@@ -3317,7 +3322,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Выберите учетные записи для импорта из устаревшей конфигурации:</translation>
     </message>
 </context>
 <context>

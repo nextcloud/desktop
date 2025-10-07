@@ -500,6 +500,11 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
 <context>
     <name>OCC::Account</name>
     <message>
+        <location filename="../src/libsync/account.cpp" line="225"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Tá comhad % 1 faoi ghlas cheana féin ag % 2.</translation>
