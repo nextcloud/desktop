@@ -3095,7 +3095,8 @@ QList<QSslError> CertificateInformation::verify() const
     auto result = QSslCertificate::verify({_certificate});
 
     auto hasNeededExtendedKeyUsageExtension = false;
-    for (const auto &oneExtension : _certificate.extensions()) {
+    const auto &allExtensions = _certificate.extensions();
+    for (const auto &oneExtension : allExtensions) {
         if (oneExtension.oid() == QStringLiteral("2.5.29.37")) {
             const auto extendedKeyUsageList = oneExtension.value().toList();
             for (const auto &oneExtendedKeyUsageValue : extendedKeyUsageList) {

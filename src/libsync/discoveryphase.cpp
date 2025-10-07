@@ -24,6 +24,7 @@
 #include <QLoggingCategory>
 #include <QUrl>
 #include <QFile>
+#include <QDir>
 #include <QFileInfo>
 #include <QTextCodec>
 #include <cstring>
@@ -220,11 +221,38 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
     }
 }
 
+bool DiscoveryPhase::recursiveCheckForDeletedParents(const QString &itemPath) const
+{
+    const auto &allKeys = _deletedItem.keys();
+    qCDebug(lcDiscovery()) << allKeys.join(", ");
+
+    auto result = false;
+    const auto &pathElements = itemPath.split('/');
+    auto currentParentFolder = QString{};
+    for (const auto &onePathComponent : pathElements) {
+        if (!currentParentFolder.isEmpty()) {
+            currentParentFolder += '/';
+        }
+        currentParentFolder += onePathComponent;
+
+        qCDebug(lcDiscovery()) << "checks" << currentParentFolder << "for" << allKeys.join(", ");
+        if (_deletedItem.find(currentParentFolder) == _deletedItem.end()) {
+            continue;
+        }
+
+        qCDebug(lcDiscovery()) << "deleted parent found";
+        result = true;
+        break;
+    }
+
+    return result;
+}
+
 void DiscoveryPhase::markPermanentDeletionRequests()
 {
     // since we don't know in advance which files/directories need to be permanently deleted,
     // we have to look through all of them at the end of the run
-    for (const auto &originalPath : _permanentDeletionRequests) {
+    for (const auto &originalPath : std::as_const(_permanentDeletionRequests)) {
         const auto it = _deletedItem.find(originalPath);
         if (it == _deletedItem.end()) {
             qCWarning(lcDiscovery) << "didn't find an item for" << originalPath << "(yet)";
@@ -233,12 +261,12 @@ void DiscoveryPhase::markPermanentDeletionRequests()
 
         auto item = *it;
         if (!(item->_instruction == CSYNC_INSTRUCTION_REMOVE || item->_direction == SyncFileItem::Up)) {
-            qCWarning(lcDiscovery) << "will not request permanent deletion for" << originalPath << "as the instruction is not CSYNC_INSTRUCTION_REMOVE, or the direction is not Up";
+            qCInfo(lcDiscovery) << "will not request permanent deletion for" << originalPath << "as the instruction is not CSYNC_INSTRUCTION_REMOVE, or the direction is not Up";
             continue;
         }
 
-        qCInfo(lcDiscovery) << "requested permanent server-side deletion for" << originalPath;
-        item->_wantsPermanentDeletion = true;
+        qCDebug(lcDiscovery) << "requested permanent server-side deletion for" << originalPath;
+        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::WantsPermanentDeletion;
     }
 }
 
@@ -591,7 +619,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     // hence, we need to find its path and pass to any subfolder's metadata, so it will fetch the top level metadata when needed
     // see https://github.com/nextcloud/end_to_end_encryption_rfc/blob/v2.1/RFC.md
     auto topLevelFolderPath = QStringLiteral("/");
-    for (const QString &topLevelPath : _topLevelE2eeFolderPaths) {
+    for (const QString &topLevelPath : std::as_const(_topLevelE2eeFolderPaths)) {
         if (_subPath == topLevelPath) {
             topLevelFolderPath = QStringLiteral("/");
             break;

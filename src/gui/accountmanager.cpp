@@ -217,7 +217,7 @@ bool AccountManager::restoreFromLegacySettings()
             legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
         }
 
-        for (const auto &configFile : legacyLocations) {
+        for (const auto &configFile : std::as_const(legacyLocations)) {
             auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
             if (oCSettings->status() != QSettings::Status::NoError) {
                 qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
@@ -699,7 +699,7 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
 void AccountManager::updateServerHasValidSubscriptionConfig()
 {
     auto serverHasValidSubscription = false;
-    for (const auto &account : _accounts) {
+    for (const auto &account : std::as_const(_accounts)) {
         if (!account->account()->serverHasValidSubscription()) {
             continue;
         }

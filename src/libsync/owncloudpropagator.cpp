@@ -562,6 +562,10 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                 // aborted while uploading this directory (which is now removed).  We can ignore it.
 
                 // increase the number of subjobs that would be there.
+                if (item->_wantsSpecificActions == SyncFileItem::SynchronizationOptions::MoveToClientTrashBin) {
+                    qCInfo(lcPropagator()) << "special handling for delete/new conflict";
+                    delDirJob->willDeleteItemToClientTrashBin(item);
+                }
                 if (delDirJob) {
                     delDirJob->increaseAffectedCount();
                 }
@@ -749,7 +753,7 @@ void OwncloudPropagator::processE2eeMetadataMigration(const SyncFileItemPtr &ite
         if (foundDirectory.second) {
             topLevelitem = foundDirectory.second->_item;
             if (!foundDirectory.second->_subJobs._jobsToDo.isEmpty()) {
-                for (const auto jobToDo : foundDirectory.second->_subJobs._jobsToDo) {
+                for (const auto jobToDo : std::as_const(foundDirectory.second->_subJobs._jobsToDo)) {
                     if (const auto foundExistingUpdateMigratedE2eeMetadataJob = qobject_cast<UpdateMigratedE2eeMetadataJob *>(jobToDo)) {
                         existingUpdateJob = foundExistingUpdateMigratedE2eeMetadataJob;
                         break;
@@ -1375,6 +1379,16 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
         _firstJob->setAssociatedComposite(&_subJobs);
     }
     connect(&_subJobs, &PropagatorJob::finished, this, &PropagateDirectory::slotSubJobsFinished);
+}
+
+void PropagateDirectory::willDeleteItemToClientTrashBin(const SyncFileItemPtr &item)
+{
+    auto deleteFolderJob = dynamic_cast<PropagateLocalRemove*>(_firstJob.get());
+    if (!deleteFolderJob) {
+        return;
+    }
+
+    deleteFolderJob->willDeleteItemToClientTrashBin(propagator()->fullLocalPath(item->_file));
 }
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism() const

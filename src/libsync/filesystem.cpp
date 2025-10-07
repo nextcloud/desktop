@@ -246,7 +246,11 @@ qint64 FileSystem::getSize(const QString &filename)
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
-bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors, const std::function<void(const QString &path, bool isDir)> &onError)
+bool FileSystem::removeRecursively(const QString &path,
+                                   const std::function<void(const QString &path, bool isDir)> &onDeleted,
+                                   QStringList *errors,
+                                   const std::function<void(const QString &path, bool isDir)> &onError,
+                                   const std::function<bool (const QString &, QString*)> &customDeleteFunction)
 {
     if (!FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite)) {
         if (onError) {
@@ -265,14 +269,18 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         // we never want to go into this branch for .lnk files
         bool isDir = FileSystem::isDir(fi.absoluteFilePath()) && !FileSystem::isSymLink(fi.absoluteFilePath()) && !FileSystem::isJunction(fi.absoluteFilePath());
         if (isDir) {
-            removeOk = removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError); // recursive
+            removeOk = removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError, customDeleteFunction); // recursive
         } else {
             QString removeError;
 
             const auto fileInfo = QFileInfo{di.filePath()};
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-            removeOk = FileSystem::remove(di.filePath(), &removeError);
+            if (customDeleteFunction) {
+                removeOk = customDeleteFunction(di.filePath(), &removeError);
+            } else {
+                removeOk = FileSystem::remove(di.filePath(), &removeError);
+            }
             qCInfo(lcFileSystem()) << "delete" << di.filePath();
             if (removeOk) {
                 if (onDeleted)
