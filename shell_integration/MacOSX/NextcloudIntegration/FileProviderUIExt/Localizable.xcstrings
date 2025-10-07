@@ -2,239 +2,4045 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Account data is unavailable, cannot reload data!" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontodaten sind nicht verfügbar, Daten können nicht neu geladen werden!"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontodaten sind nicht verfügbar, Daten können nicht erneut geladen werden!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account data is unavailable, cannot reload data!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los datos de la cuenta no están disponibles, ¡no se pueden recargar los datos!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compte non disponible, rechargement des données impossible !"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os datos da conta non están dispoñíbeis, non é posíbel recargar os datos."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os dados da conta não estão disponíveis, não é possível recarregar os dados!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap verileri kullanılamıyor. Veriler yüklenemedi!"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帳戶數據不可用，無法重新加載數據！"
+          }
+        }
+      }
     },
     "Allow upload and editing" : {
       "comment" : "Checkbox title",
-      "extractionState" : "manual"
-    },
-    "Authenticating…" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hochladen und Bearbeiten erlauben"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hochladen und Bearbeiten erlauben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow upload and editing"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir la subida y edición"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser le téléversement et la modification"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir o envío e a edición"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir upload e edição"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yüklemeye ve düzenlemeye izin ver"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允許上傳和編輯"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annullér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
     },
     "Cancel create icon" : {
-      "comment" : "Accessibility description for delete button"
+      "comment" : "Accessibility description for delete button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol-Erstellung abbrechen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol-Erstellung abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel create icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de cancelar creación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler création icône"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona para cancelar a creación"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de cancelamento de criação"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eklemeyi iptal et simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消創建圖標"
+          }
+        }
+      }
     },
     "Checkmark in a circle" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Häkchen in einem Kreis"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Häkchen in einem Kreis"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checkmark in a circle"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casilla de verificación en un círculo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coche dans un cercle"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marca de verificación nun círculo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marca de verificação em um círculo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daire içinde tamam işareti"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圓圈中的勾號"
+          }
+        }
+      }
+    },
+    "Circle share (%@)" : {
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kreis teilen (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kreis-Freigabe (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circle share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de Círculo (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage Cercle (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de círculo (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de círculo (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takım paylaşımı (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圓形共享 (%@)"
+          }
+        }
+      }
+    },
+    "Circle share icon" : {
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kreisförmiges Freigabesymbol"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Kreis-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circle share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de compartir con el círculo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de partage Cercle"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición de círculo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de círculo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takım paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "圓形共享圖標"
+          }
+        }
+      }
     },
     "Close" : {
       "comment" : "Button title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechar"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapat"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
+          }
+        }
+      }
     },
     "Communicating with server, locking file…" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, sperre Datei…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, sperre Datei…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communicating with server, locking file…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicándose con el servidor, bloqueando archivo…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion au serveur, verrouillage du fichier ..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicando co servidor, bloqueando o ficheiro…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicando com o servidor, trancando o arquivo…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu ile iletişim kuruluyor. Dosya kilitleniyor…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在與伺服器通訊，鎖定檔案…"
+          }
+        }
+      }
     },
     "Communicating with server, unlocking file…" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, entsperre Datei…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommuniziere mit Server, entsperre Datei…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communicating with server, unlocking file…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicándose con el servidor, desbloqueando archivo…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion au serveur, déverrouillage du fichier ..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicando co servidor, desbloqueando o ficheiro…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comunicando com o servidor, destrancando o arquivo…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu ile iletişim kuruluyor. Dosyanın kilidi açılıyor…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在與伺服器通訊，解鎖檔案…"
+          }
+        }
+      }
     },
     "Could not fetch capabilities as account is invalid." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Funktionen konnten nicht abgerufen werden, da das Konto ungültig ist."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Funktionen konnten nicht abgerufen werden, da das Konto ungültig ist."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not fetch capabilities as account is invalid."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron obtener las capacidades, ya que la cuenta es inválida."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec de la récupération des capacités car le compte est invalide."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non foi posíbel obter as funcionalidades xa que a conta non é válida."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível obter as capacidades, pois a conta é inválida."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap geçersiz olduğundan yeterlilikler alınamadı."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法獲取功能，因為帳戶無效。"
+          }
+        }
+      }
     },
     "Could not get identifier for item, no shares can be acquired." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kennung für den Artikel konnte nicht abgerufen werden. Es können keine Anteile erworben werden."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kennung für den Artikel konnte nicht abgerufen werden. Es können keine Anteile erworben werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not get identifier for item, no shares can be acquired."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo obtener el identificador para el ítem, no se pueden obtener los recursos compartidos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible d'obtenir l'identifiant de l'élément, aucun partage ne peut être acquis."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non foi posíbel obter o identificador do elemento, non é posíbel obter comparticións"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível obter o identificador do item, não é possível adquirir compartilhamentos."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ögenin tanımlayıcısı alınamadı, herhangi bir paylaşım alınamadı."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法獲取項目的標識符，無法獲得共享。"
+          }
+        }
+      }
     },
     "Could not lock unknown item…" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Element konnte nicht gesperrt werden…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Element konnte nicht gesperrt werden…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not lock unknown item…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo bloquear ítem desconocido…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de verrouiller l'élément inconnu..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non foi posíbel bloquear un elemento descoñecido…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível trancar item desconhecido…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinmeyen öge kilitlenemedi…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法鎖定未知項目…"
+          }
+        }
+      }
     },
     "Could not reload data: %@, will try again." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten konnten nicht neu geladen werden: %@, werde es erneut versuchen."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten konnten nicht erneut geladen werden: %@, es erfolgt ein neuer Versuch."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not reload data: %@, will try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron recargar los datos: %@, se intentará de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de recharger les données : %@ essayera plus tard."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non foi posíbel recargar os datos: %@, tentarase de novo."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível recarregar os dados: %@, tentaremos novamente."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veriler yeniden yüklenemedi: %@, yeniden deneyecek."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法重新加載數據：%@，將重試。"
+          }
+        }
+      }
     },
     "Create new share" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Freigabe erstellen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Freigabe erstellen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear nuevo recurso compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un nouveau partage"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear unha nova compartición"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar novo compartilhamento"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni paylaşım ekle"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "創建新共享"
+          }
+        }
+      }
     },
     "Delete" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sil"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除"
+          }
+        }
+      }
     },
     "Delete trash icon" : {
-      "comment" : "Accessibility description for image on delete button"
+      "comment" : "Accessibility description for image on delete button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Papierkorbsymbol löschen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Papierkorb leeren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete trash icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de eliminar recurso compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer l’icône de la poubelle"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de eliminación do lixo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de exclusão da lixeira"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çöpü boşalt simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除垃圾圖標"
+          }
+        }
+      }
     },
     "Dismiss" : {
       "comment" : "Button title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwerfen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejeter"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbotar"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispensar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yok say"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "忽略"
+          }
+        }
+      }
     },
     "Document symbol" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumentsymbol"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Dokumente"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document symbol"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolo de documento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbole de document"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolo de documento"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolo de documento"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belge simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文檔符號"
+          }
+        }
+      }
     },
     "Email share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar recurso compartido por correo electrónico"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage par mail"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir por correo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento por e-mail"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta ile paylaş"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電子郵件共享"
+          }
+        }
+      }
     },
     "Email share (%@)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Freigabe (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Freigabe (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar recurso compartido por correo electrónico (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage par mail (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir por correo (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento por e-mail (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta ile paylaş (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電子郵件共享 (%@)"
+          }
+        }
+      }
     },
     "Email share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen per E-Mail"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen per E-Mail"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de enviar recurso compartido por correo electrónico"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de partage Email"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición por correo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento por e-mail"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta ile paylaş simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電子郵件共享圖標"
+          }
+        }
+      }
     },
     "Enter a new password" : {
       "comment" : "Text field placeholder",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein neues Passwort eingeben"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein neues Passwort eingeben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a new password"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingrese una nueva contraseña"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saisir un nouveau mot de passe"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduza un novo contrasinal"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Digite uma nova senha"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni parolayı yazın"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入新密碼"
+          }
+        }
+      }
     },
     "Error creating: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Erstellen: %@"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Erstellen: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error creating: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al crear: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur lors de la création : %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produciuse un erro ao crear: %@"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao criar: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eklenirken sorun çıktı: %@"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "創建錯誤：%@"
+          }
+        }
+      }
     },
     "Error fetching shares: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Abrufen der Freigaben: %@"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Abrufen der Freigaben: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error fetching shares: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al obtener los recursos compartidos: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur dans la récupération des partages : %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produciuse un erro ao recuperar as comparticións: %@"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao obter compartilhamentos: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşımlar alınırken sorun çıktı: %@"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "擷取共享錯誤：%@"
+          }
+        }
+      }
     },
     "Error getting server caps: %@" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Abrufen der Server-Eigenschaften: %@"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Abrufen der Server-Eigenschaften: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error getting server caps: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al obtener las capacidades del servidor: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur lors de l'obtention des capacités du serveur : %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produciuse un erro ao obter s límites do servidor: %@"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao obter limites do servidor: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu kapasitesi alınırken sorun çıktı: %@"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "獲取伺服器功能錯誤：%@"
+          }
+        }
+      }
     },
     "Expiration date" : {
       "comment" : "Checkbox title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ablaufdatum"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ablaufdatum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiration date"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de caducidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date d’expiration"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de caducidade"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de expiração"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerlilik sonu tarihi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "到期日"
+          }
+        }
+      }
     },
     "Failed to get details from File Provider Extension. Retrying." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details konnten nicht von der Dateianbietererweiterung abgerufen werden. Erneuter Versuch."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details konnten nicht von der Dateianbietererweiterung abgerufen werden. Erneuter Versuch."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to get details from File Provider Extension. Retrying."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fallo al obtener detalles desde la extensión File Provider. Volviendo a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec lors de l'obtention des détails depuis l'extension du fournisseur de fichiers. Nouvelle tentative."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produciuse un fallo ao obter detalles da extensión do provedor de ficheiros. Reintentando."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falha ao obter detalhes da Extensão Provedor de Arquivos. Tentando novamente."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya hizmeti sağlayıcısı eklentisinden ayrıntılar alınamadı. Yeniden deneniyor."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法從檔案提供者擴展獲取詳細信息。正在重試。"
+          }
+        }
+      }
     },
     "Federated cloud share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated-Cloud-Feigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated-Cloud-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated cloud share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de nube federada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage Cloud Fédéré"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de nube federada"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de nuvem federada"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birleşik bulut paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聯邦雲共享"
+          }
+        }
+      }
     },
     "Federated cloud share (%@)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated-Cloud--Freigabe (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated-Cloud--Freigabe (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated cloud share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de nube federada (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage Cloud Fédéré (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de nube federada (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de nuvem federado (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birleşik bulut paylaşımı (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聯邦雲共享 (%@)"
+          }
+        }
+      }
     },
     "Federated cloud share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Federated-Cloud-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für Federated-Cloud-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Federated cloud share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de recurso compartido de nube federada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partage Cloud Fédéré"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición de nube federada"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de nuvem federada"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birleşik bulut paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "聯邦雲共享圖標"
+          }
+        }
+      }
     },
     "File \"%@\" locked!" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei \"%@\" gesperrt!"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei \"%@\" gesperrt!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File \"%@\" locked!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Archivo \"%@\" bloqueado!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fichier \"%@\" est verrouillé !"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficheiro «%@» bloqueado!"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arquivo \"%@\" trancado!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" dosyası kilitlendi!"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案 \"%@\" 已上鎖！"
+          }
+        }
+      }
     },
     "File \"%@\" unlocked!" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei \"%@\" entsperrt"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei \"%@\" entsperrt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File \"%@\" unlocked!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Archivo \"%@\" desbloqueado!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fichier \"%@\" est déverrouillé !"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ficheiro «%@» desbloqueado!"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arquivo \"%@\" destrancado!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" dosyasının kilidi açıldı!"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檔案 \"%@\" 已解鎖！"
+          }
+        }
+      }
     },
     "Group share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppen-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de grupo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage de Groupe"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de grupo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de grupo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grup paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "群組共享"
+          }
+        }
+      }
     },
     "Group share (%@)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenfreigabe (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppenfreigabe (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de grupo (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage de Groupe (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de grupo (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de grupo (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grup paylaşımı (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "群組共享 (%@)"
+          }
+        }
+      }
     },
     "Group share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Gruppenfreigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Gruppenfreigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Group share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de recurso compartido de grupo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partage de Groupe"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición de grupo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de grupo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grup paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "群組共享圖標"
+          }
+        }
+      }
     },
     "Hide download" : {
       "comment" : "Checkbox title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download verbergen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download verbergen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide download"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar descarga"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer le téléchargement"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agochar a descarga"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar download"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirme gizlensin"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隱藏下載"
+          }
+        }
+      }
     },
     "Internal link share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen interner Links"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen interner Links"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internal link share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de compartir recurso compartido vía enlace interno"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partages internes"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona para compartir ligazóns internas"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de link interno"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İç bağlantı paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "內部鏈接共享圖標"
+          }
+        }
+      }
     },
     "Internal share (requires access to file)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interne Freigabe (erfordert Zugriff auf die Datei)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interne Freigabe (erfordert Zugriff auf die Datei)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internal share (requires access to file)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido interno (requiere acceso al archivo)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage interne (requiert un accès à votre fichier)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición interna (require acceso ao ficheiro)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento interno (requer acesso ao arquivo)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İç paylaşım (dosyaya erişme izni gereklidir)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "內部共享（需要存取檔案）"
+          }
+        }
+      }
     },
     "Last modified: %@" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt geändert: %@"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt geändert: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last modified: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última modificación: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière modification : %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última modificación: %@"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última modificação: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son değişiklik: %@"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最後修改：%@"
+          }
+        }
+      }
     },
     "Locking file \"%@\"…" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperre Datei „%@“…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperre Datei „%@“…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locking file \"%@\"…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueando archivo \"%@\"…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verrouillage du fichier \"%@\" ..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueando o ficheiro «%@»…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trancando o arquivo \"%@\"…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" dosyası kilitleniyor…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鎖定檔案 \"%@\"……"
+          }
+        }
+      }
     },
     "NextcloudKit instance or account is unavailable, cannot fetch shares!" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die NextcloudKit-Instanz oder das NextcloudKit-Konto ist nicht verfügbar. Freigaben können nicht abgerufen werden!"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die NextcloudKit-Instanz oder das -Konto ist nicht verfügbar. Freigaben können nicht abgerufen werden!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit instance or account is unavailable, cannot fetch shares!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La instancia o cuenta NextcloudKit no está disponible. ¡no se pueden obtener los recursos compartidos!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instance NextcloudKit ou compte indisponible, récupération des partages impossible."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A instancia ou conta de NextcloudKit non está dispoñíbel, non é posíbel obter comparticións!"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A instância ou conta NextcloudKit não está disponível, não é possível obter compartilhamentos!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit kopyası ya da hesap kullanılamıyor. Paylaşımlar alınamadı!"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NextcloudKit 實例或帳戶不可用，無法獲取共享！"
+          }
+        }
+      }
     },
     "No item URL, cannot reload data!" : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Artikel-URL, Daten können nicht neu geladen werden!"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Element-URL, Daten können nicht erneut geladen werden!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No item URL, cannot reload data!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay URL de ítem, ¡no se pueden recargar los datos!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune URL d'élément, rechargement impossible !"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai URL do elemento, non é posíbel recargar os datos."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem URL do item, não é possível recarregar os dados!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge adresi yok. Veriler yeniden yüklenemedi!"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有項目 URL，無法重新加載數據！"
+          }
+        }
+      }
     },
     "Note for the recipient" : {
       "comment" : "Checkbox title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz für den Empfänger"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz für den Empfänger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note for the recipient"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nota para el destinatario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note au destinataire"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nota para o destinatario"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nota para o destinatário"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alıcıya not"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收件人備註"
+          }
+        }
+      }
     },
     "Password protect" : {
       "comment" : "Checkbox title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwortschutz"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwortschutz"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password protect"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteger con contraseña"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protéger par mot de passe"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protexer con contrasinal"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteção por senha"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola koruması"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密碼保護"
+          }
+        }
+      }
     },
     "Public link has been copied icon" : {
-      "comment" : "Accessibility description for button"
+      "comment" : "Accessibility description for button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für \"Öffentlicher Link wurde kopiert\""
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für öffentlicher Link wurde kopiert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public link has been copied icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de enlace público se ha copiado al portapapeles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lien public copié !"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A icona da ligazón pública foi copiada"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de link público copiado"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herkese açık bağlantı kopyalandı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公共鏈接已被複製圖標"
+          }
+        }
+      }
     },
     "Public link share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffentliche Link-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffentliche Link-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public link share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de enlace público"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage par lien public"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir ligazón pública"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de link público"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herkese açık bağlantı paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公共鏈接共享"
+          }
+        }
+      }
     },
     "Public link share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen öffentlicher Links"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol zum Teilen öffentlicher Links"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public link share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de compartir recurso compartido vía enlace público"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partage par lien public"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona para compartir ligazóns públicas"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de link público"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herkese açık bağlantı paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公共鏈接共享圖標"
+          }
+        }
+      }
     },
     "Save" : {
       "comment" : "Button title",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardar"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaydet"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
     },
     "Server does not support shares." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Server unterstützt keine Freigaben."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Server unterstützt keine Freigaben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server does not support shares."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El servidor no soporta recursos compartidos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'instance ne supporte pas les partages."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O servidor non admite comparticións."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O servidor não suporta compartilhamentos."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucu paylaşımları desteklemiyor."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "伺服器不支持共享。"
+          }
+        }
+      }
     },
     "Share label" : {
       "comment" : "Text field placeholder",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe-Label"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe-Label"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share label"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiqueta del recurso compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Libellé du partage"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etiqueta de compartición"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rótulo de compartilhamento"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım etiketi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享標籤"
+          }
+        }
+      }
     },
     "Share options" : {
       "comment" : "Text label; Context menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeoptionen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeoptionen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share options"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opciones del recurso compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options de partage"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcións da compartición"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opções de compartilhamento"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım seçenekleri"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享選項"
+          }
+        }
+      }
     },
     "Share recipient" : {
       "comment" : "Text field placeholder",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeempfänger"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabeempfänger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share recipient"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatario del recurso compartido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinataire du partage"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatario da compartición"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatário de compartilhamento"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşım alıcısı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享接收者"
+          }
+        }
+      }
     },
     "Talk conversation share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe für Talk-Unterhaltungen"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe für Talk-Unterhaltungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk conversation share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de conversación Talk"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage de conversation Talk"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de conversas de Parladoiro"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de conversa do Talk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuş görüşmesi paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "對話共享"
+          }
+        }
+      }
     },
     "Talk conversation share (%@)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe für Talk-Unterhaltung (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigabe für Talk-Unterhaltung (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk conversation share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de conversación Talk (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage de conversation Talk (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de conversas de Parladoiro (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de conversa do Talk (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuş görüşmesi paylaşımı (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "對話共享 (%@)"
+          }
+        }
+      }
     },
     "Talk conversation share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Talk-Unterhaltung-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Talk-Unterhaltungs-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk conversation share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de recurso compartido de conversación Talk"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partage de conversation Talk"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición de conversas de Parladoiro"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento de conversa do Talk"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuş görüşmesi paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "對話共享圖標"
+          }
+        }
+      }
     },
     "Team share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
-    },
-    "Team share (%@)" : {
-      "comment" : "Text label"
-    },
-    "Team share icon" : {
-      "comment" : "Accessibility description for image"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Team-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Team-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Team share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de equipo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage d'équipe"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de equipo"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de equipe"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takım paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "團隊共享"
+          }
+        }
+      }
     },
     "This file cannot be shared." : {
-      "comment" : "Error message"
+      "comment" : "Error message",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datei kann nicht freigegeben werden."
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Datei kann nicht freigegeben werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file cannot be shared."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este archivo no puede ser compartido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'élément ne peut pas être partagé."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non é posíbel compartir este ficheiro."
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este arquivo não pode ser compartilhado."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu dosya paylaşılamaz."
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此文件無法共享。"
+          }
+        }
+      }
     },
     "Unable to retrieve file metadata…" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateimetadaten konnten nicht abgerufen werden…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateimetadaten konnten nicht abgerufen werden…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to retrieve file metadata…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron obtener los metadatos del archivo…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de retrouver les métadonnées du fichier ..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non é posíbel recuperar os metadatos do ficheiro…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não é possível recuperar os metadados do arquivo…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya üst verileri alınamadı…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法檢索檔案元數據…"
+          }
+        }
+      }
     },
     "Unknown item" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Element"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Element"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ítem desconocido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément inconnu"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario descoñecido"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item desconhecido"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge bilinmiyor"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不詳項目"
+          }
+        }
+      }
     },
     "Unknown modification date" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Bearbeitungsdatum"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Änderungsdatum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown modification date"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de modificación desconocida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date de modification inconnue"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de modificación descoñecida"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data de modificação desconhecida"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son değişiklik tarihi bilinmiyor"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不詳修改日期"
+          }
+        }
+      }
     },
     "Unknown share" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido desconocido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage inconnu"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición descoñecida"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento desconhecido"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinmeyen paylaşım"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不詳共享"
+          }
+        }
+      }
     },
     "Unknown size" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Größe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannte Größe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown size"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño desconocido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille inconnue"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamaño descoñecido"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamanho desconhecido"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boyut bilinmiyor"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不詳大小"
+          }
+        }
+      }
     },
     "Unlock file" : {
       "comment" : "Context menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei entsperren"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei entsperren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock file"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear archivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déverrouiller le fichier"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear ficheiro"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destrancar arquivo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyanın kilidini aç"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖檔案"
+          }
+        }
+      }
     },
     "Unlocking file \"%@\"…" : {
       "comment" : "Text label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entsperre Datei „%@“…"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entsperre Datei „%@“…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocking file \"%@\"…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueando archivo \"%@\"…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déverrouillage du fichier \"%@\" ..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueando o ficheiro «%@»…"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destrancando o arquivo \"%@\"…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" dosyasının kilidi açılıyor…"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解鎖檔案 \"%@\"……"
+          }
+        }
+      }
     },
     "User share" : {
       "comment" : "Menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzer-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzer-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User share"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de usuario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage utilisateur"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de usuario"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento de usuário"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı paylaşımı"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用戶共享"
+          }
+        }
+      }
     },
     "User share (%@)" : {
-      "comment" : "Text label"
+      "comment" : "Text label",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzer-Freigabe (%@)"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzer-Freigabe (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User share (%@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recurso compartido de usuario (%@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage utilisateur (%@)"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartición de usuario (%@)"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhamento do usuário (%@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı paylaşımı (%@)"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用戶共享 (%@)"
+          }
+        }
+      }
     },
     "User share icon" : {
-      "comment" : "Accessibility description for image"
+      "comment" : "Accessibility description for image",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Nutzer-Freigabe"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbol für die Benutzer-Freigabe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User share icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de recurso compartido de usuario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de Partage utilisateur"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de compartición de usuario"
+          }
+        },
+        "pt_BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone de compartilhamento do usuário"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanıcı paylaşımı simgesi"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用戶共享圖標"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

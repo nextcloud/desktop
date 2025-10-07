@@ -3,6 +3,38 @@
 This is an Xcode project to build platform-specific components for the Nextcloud desktop client.
 As an example, this includes the file provider extension.
 
+## Localization
+
+Transifex is used for localization.
+Currently, [the file provider extension](https://app.transifex.com/nextcloud/nextcloud/client-fileprovider/) and [file provider UI extension](https://app.transifex.com/nextcloud/nextcloud/client-fileproviderui/) both have a resource there.
+These localizations are excluded from our usual and automated translation flow due to how Transifex synchronizes Xcode string catalogs and the danger of data loss.
+To pull updated localizations from Transifex into the Xcode project manually, follow the steps below.
+
+### Configuration
+
+The dedicated [`.tx/config`](.tx/config) file is used.
+
+## Pull Translations
+
+Run this in the "NextcloudIntegration" project folder of your repository clone:
+
+```sh
+tx pull --force --all --mode=reviewed --minimum-perc=50
+```
+
+### Sanitize Translations
+
+Transifex returns empty strings for keys with untranslated localizations.
+To remove them, we use the Swift command-line utility [TransifexStringCatalogSanitizer](../../../admin/osx/TransifexStringCatalogSanitizer/).
+See its dedicated README for usage instructions.
+Use it for all updated Xcode string catalogs.
+
+### Cleanup
+
+1. Revert your changes to the Transifex configuration.
+2. Review the updated Xcode string catalogs.
+3. Commit the updated Xcode string catalogs.
+
 ## Nextcloud Developer Build
 
 There is a special target in the Xcode project which integrates the `mac-crafter` command-line tool as an external build system in form of a scheme.
