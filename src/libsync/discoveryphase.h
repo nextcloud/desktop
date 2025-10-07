@@ -272,6 +272,8 @@ class DiscoveryPhase : public QObject
 
     void enqueueDirectoryToDelete(const QString &path, ProcessDirectoryJob* const directoryJob);
 
+    bool recursiveCheckForDeletedParents(const QString &itemPath) const;
+
     /// contains files/folder names that are requested to be deleted permanently
     QSet<QString> _permanentDeletionRequests;
 

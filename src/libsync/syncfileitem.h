@@ -39,6 +39,13 @@ public:
     };
     Q_ENUM(Direction)
 
+    enum class SynchronizationOptions {
+        NormalSynchronization,
+        WantsPermanentDeletion,
+        MoveToClientTrashBin,
+    };
+    Q_ENUM(SynchronizationOptions)
+
     using EncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus;
 
     // Note: the order of these statuses is used for ordering in the SortedActivityListModel
@@ -329,9 +336,7 @@ public:
 
     QString _discoveryResult;
 
-    /// if true, requests the file to be permanently deleted instead of moved to the trashbin
-    /// only relevant for when `_instruction` is set to `CSYNC_INSTRUCTION_REMOVE`
-    bool _wantsPermanentDeletion = false;
+    SynchronizationOptions _wantsSpecificActions = SynchronizationOptions::NormalSynchronization;
 
     struct FolderQuota {
         int64_t bytesUsed = -1;

@@ -913,6 +913,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     // Unknown in db: new file on the server
     Q_ASSERT(!dbEntry.isValid());
 
+    if (checkNewDeleteConflict(item)) {
+        return;
+    }
+
     item->_instruction = CSYNC_INSTRUCTION_NEW;
     item->_direction = SyncFileItem::Down;
     item->_modtime = serverEntry.modtime;
@@ -1425,6 +1429,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     }
 
+    if (checkNewDeleteConflict(item)) {
+        return;
+    }
+
     // New local file or rename
     item->_instruction = CSYNC_INSTRUCTION_NEW;
     item->_direction = SyncFileItem::Up;
@@ -1527,7 +1535,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
     if (isE2eeMove) {
-        qCInfo(lcDisco) << "requesting permanent deletion for" << originalPath;
+        qCDebug(lcDisco) << "requesting permanent deletion for" << originalPath;
         _discoveryData->_permanentDeletionRequests.insert(originalPath);
     }
 
@@ -2155,25 +2163,6 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
     if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
         _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
         if (_dirItem) {
-            if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                // re-create directory that has modified contents
-                _dirItem->_instruction = CSYNC_INSTRUCTION_NEW;
-
-                const auto perms = !_rootPermissions.isNull() ? _rootPermissions
-                    : _dirParentItem ? _dirParentItem->_remotePerm : _rootPermissions;
-
-                if (perms.isNull()) {
-                    // No permissions set
-                } else if (_dirItem->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-                    qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add subfolders to that folder: " << _dirItem->_file;
-                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
-                    const auto localPath = QString{_discoveryData->_localDir + _dirItem->_file};
-                    emit _discoveryData->remnantReadOnlyFolderDiscovered(_dirItem);
-                }
-
-                _dirItem->_direction = _dirItem->_direction == SyncFileItem::Up ? SyncFileItem::Down : SyncFileItem::Up;
-            }
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE && !_dirItem->isDirectory()) {
                 // Replacing a directory by a file is a conflict, if the directory had modified children
                 _dirItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
@@ -2469,4 +2458,19 @@ bool ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &abso
     }
     return result;
 }
+
+bool ProcessDirectoryJob::checkNewDeleteConflict(const SyncFileItemPtr &item) const
+{
+    if (_discoveryData->recursiveCheckForDeletedParents(item->_file)) {
+        qCWarning(lcDisco) << "Removing local file inside a remotely deleted folder" << item->_file;
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+        item->_wantsSpecificActions = SyncFileItem::SynchronizationOptions::MoveToClientTrashBin;
+        emit _discoveryData->itemDiscovered(item);
+        return true;
+    }
+
+    return false;
+}
+
 }

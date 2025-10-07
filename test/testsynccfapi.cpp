@@ -1553,6 +1553,35 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
     }
+
+    void testSyncFolderNewDeleteConflictExpectDeletion()
+    {
+        QSKIP("folders on-demand breaks existing tests");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().insert("directory/file1");
+        fakeFolder.remoteModifier().insert("directory/file2");
+        fakeFolder.remoteModifier().insert("directory/file3");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt1.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt2.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt3.txt");
+
+        // perform an initial sync to ensure local and remote have the same state
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("directory");
+        fakeFolder.localModifier().mkdir("directory/subFolder");
+        fakeFolder.localModifier().insert("directory/file4");
+        fakeFolder.localModifier().insert("directory/subdir/fileTxt4.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        const auto directoryItem = fakeFolder.remoteModifier().find("directory");
+        QCOMPARE(directoryItem, nullptr);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)

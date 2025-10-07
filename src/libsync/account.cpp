@@ -666,7 +666,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
             return;
 
         // Mark all involved certificates as rejected, so we don't ask the user again.
-        for (const auto &error : errors) {
+        for (const auto &error : std::as_const(errors)) {
             if (!_rejectedCertificates.contains(error.certificate())) {
                 _rejectedCertificates.append(error.certificate());
             }
@@ -986,7 +986,8 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
     auto data = json.object().value("ocs").toObject().value("data").toObject();
     const auto editors = data.value("editors").toObject();
 
-    for (const auto &editorKey : editors.keys()) {
+    const auto &allKeys = editors.keys();
+    for (const auto &editorKey : allKeys) {
         auto editor = editors.value(editorKey).toObject();
 
         const QString id = editor.value("id").toString();
@@ -998,11 +999,11 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
 
             auto *directEditor = new DirectEditor(id, name);
 
-            for (const auto &mimeType : mimeTypes) {
+            for (const auto &mimeType : std::as_const(mimeTypes)) {
                 directEditor->addMimetype(mimeType.toString().toLatin1());
             }
 
-            for (const auto &optionalMimeType : optionalMimeTypes) {
+            for (const auto &optionalMimeType : std::as_const(optionalMimeTypes)) {
                 directEditor->addOptionalMimetype(optionalMimeType.toString().toLatin1());
             }
 

@@ -335,7 +335,8 @@ void SettingsDialog::customizeStyle()
     QString background(palette().base().color().name());
     _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
-    for (const auto a : _actionGroup->actions()) {
+    const auto &allActions = _actionGroup->actions();
+    for (const auto a : allActions) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
