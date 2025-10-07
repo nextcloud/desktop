@@ -806,7 +806,7 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto newState = manager->addAccount(newAccount);
 
     if (newAccount->isPublicShareLink()) {
-        qCInfo(lcWizard()) << "seeting up public share link account";
+        qCInfo(lcWizard()) << "setting up public share link account";
     }
 
     manager->saveAccount(newAccount);
