@@ -500,6 +500,11 @@ macOS pode ignorar ou atrasar esta solicitude.</translation>
 <context>
     <name>OCC::Account</name>
     <message>
+        <location filename="../src/libsync/account.cpp" line="225"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
         <translation>O ficheiro %1 xa está bloqueado por %2</translation>

@@ -500,6 +500,11 @@ A macOS figyelmen kívül hagyhatja vagy késleltetheti ezt a kérést.</transla
 <context>
     <name>OCC::Account</name>
     <message>
+        <location filename="../src/libsync/account.cpp" line="225"/>
+        <source>Public Share Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/account.cpp" line="1060"/>
         <source>File %1 is already locked by %2.</source>
         <translation>A(z) %1 fájlt %2 már zárolta.</translation>
