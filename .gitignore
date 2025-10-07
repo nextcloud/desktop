@@ -195,3 +195,9 @@ convert.exe
 *state-*.png
 theme.qrc
 *.AppImage
+
+# Xcode Build Artifacts
+DerivedData
+
+# Swift Package Manager Build Artifacts
+.swiftpm
