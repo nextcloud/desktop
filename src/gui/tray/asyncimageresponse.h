@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QQuickImageProvider>
 #include <QFileIconProvider>
+#include <QNetworkReply>
 
 class AsyncImageResponse : public QQuickImageResponse
 {
@@ -18,9 +19,7 @@ public:
 
 private:
     void processNextImage();
-
-private slots:
-    void slotProcessNetworkReply();
+    void processNetworkReply(QNetworkReply *reply);
 
     QImage _image;
     QStringList _imagePaths;
