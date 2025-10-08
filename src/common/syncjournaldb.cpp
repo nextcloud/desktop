@@ -1769,6 +1769,40 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     return true;
 }
 
+bool SyncJournalDb::hasFileIds(const QList<qint64> &fileIds)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (!checkConnect()) {
+        return false;
+    }
+
+    QStringList fileIdStrings = {};
+    for (const auto &fileId : fileIds) {
+        fileIdStrings.append(QString::number(fileId));
+    }
+
+    // quick workaround for looking up pure numeric file IDs: simply `round()` that field!
+    // this will return the file ID as e.g. 12345.0, but that's still good enough to use it
+    // with the IN operator -- e.g. (12345, 1337, 29001)
+    SqlQuery query(
+        QLatin1String{"SELECT 1 FROM metadata WHERE ROUND(fileid) IN (%1) LIMIT 1;"}
+            .arg(fileIdStrings.join(QLatin1String{", "})).toLocal8Bit(),
+        _db
+    );
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "file id query failed:" << query.error();
+        return false;
+    }
+
+    if (query.next().hasData && query.intValue(0) == 1) {
+        return true;
+    }
+
+    return false;
+}
+
 Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehydratedFiles(const QByteArray &filename)
 {
     QMutexLocker locker(&_mutex);
