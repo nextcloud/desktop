@@ -21,6 +21,8 @@ using namespace std;
 
 namespace {
 
+constexpr DWORD timeoutC = 100;
+
 std::wstring getUserName() {
     DWORD  len = DEFAULT_BUFLEN;
     TCHAR  buf[DEFAULT_BUFLEN];
@@ -45,6 +47,7 @@ std::wstring CommunicationSocket::DefaultPipePath()
 CommunicationSocket::CommunicationSocket()
     : _pipe(INVALID_HANDLE_VALUE)
 {
+    _overlapped.hEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
 }
 
 CommunicationSocket::~CommunicationSocket()
@@ -65,7 +68,7 @@ bool CommunicationSocket::Close()
 
 bool CommunicationSocket::Connect(const std::wstring &pipename)
 {
-    _pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+    _pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr);
 
     if (_pipe == INVALID_HANDLE_VALUE) {
         return false;
@@ -74,28 +77,36 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
     return true;
 }
 
-bool CommunicationSocket::SendMsg(const wchar_t* message) const
+bool CommunicationSocket::SendMsg(const wchar_t* message, std::ofstream &logger) const
 {
+    logger << "CommunicationSocket::SendMsg: " << (*message) << std::endl;
+
     auto utf8_msg = StringUtil::toUtf8(message);
 
     DWORD numBytesWritten = 0;
-    auto result = WriteFile( _pipe, utf8_msg.c_str(), DWORD(utf8_msg.size()), &numBytesWritten, nullptr);
 
-    if (result) {
-        return true;
-    } else {
-        const_cast<CommunicationSocket*>(this)->Close();
+    if (!WriteFile(_pipe, utf8_msg.c_str(), static_cast<DWORD>(utf8_msg.size()), &numBytesWritten, &_overlapped)) {
+        if (GetLastError() == ERROR_IO_PENDING) {
 
-        return false;
+            if (WaitForSingleObject(_overlapped.hEvent, timeoutC) != WAIT_OBJECT_0) {
+                logger << "SendMsg timed out" << std::endl;
+                return false;
+            }
+
+            if (!GetOverlappedResult(_pipe, &_overlapped, &numBytesWritten, FALSE)) {
+                logger << "GetOverlappedResult failed" << std::endl;
+                return false;
+            }
+
+        }
     }
+
+    return true;
 }
 
-bool CommunicationSocket::ReadLine(wstring* response)
+bool CommunicationSocket::ReadLine(wstring* response, std::ofstream &logger) const
 {
-    if (!response) {
-        return false;
-    }
-
+    assert(response);
     response->clear();
 
     if (_pipe == INVALID_HANDLE_VALUE) {
@@ -111,26 +122,34 @@ bool CommunicationSocket::ReadLine(wstring* response)
             return true;
         }
 
-        std::array<char, 128> resp_utf8 = {};
+        std::array<char, 128> resp_utf8;
         DWORD numBytesRead = 0;
         DWORD totalBytesAvailable = 0;
 
-        if (!PeekNamedPipe(_pipe, nullptr, 0, nullptr, &totalBytesAvailable, nullptr)) {
-            Close();
+        if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
             return false;
         }
         if (totalBytesAvailable == 0) {
-            return false;
+            return true;
         }
 
-        if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, nullptr)) {
-            Close();
-            return false;
+        if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, &_overlapped)) {
+            if (GetLastError() == ERROR_IO_PENDING) {
+                if (WaitForSingleObject(_overlapped.hEvent, timeoutC) != WAIT_OBJECT_0) {
+                    logger << "ReadLine timed out" << std::endl;
+                }
+                if (!GetOverlappedResult(_pipe, &_overlapped, &numBytesRead, FALSE)) {
+                    logger << "GetOverlappedResult failedt" << std::endl;
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
         if (numBytesRead <= 0) {
             return false;
         }
-        _buffer.insert(_buffer.end(), resp_utf8.begin(), resp_utf8.begin()+numBytesRead);
+        _buffer.insert(_buffer.end(), resp_utf8.begin(), resp_utf8.begin() + numBytesRead);
         continue;
     }
 }
