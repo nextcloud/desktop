@@ -102,8 +102,6 @@ Button {
             icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
             icon.width: addAccountIconSize
             icon.height: addAccountIconSize
-            icon.sourceSize.width: addAccountIconSize
-            icon.sourceSize.height: addAccountIconSize
             leftPadding: Style.accountIconsMenuMargin + addAccountHorizontalOffset
             spacing: Style.userLineSpacing + addAccountHorizontalOffset
             text: qsTr("Add account")
