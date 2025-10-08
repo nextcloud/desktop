@@ -386,12 +386,12 @@ macOS may ignore or delay this request.</source>
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="282"/>
+        <location filename="../src/libsync/filesystem.cpp" line="290"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Errorea &quot;%1&quot; kentzen: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="325"/>
+        <location filename="../src/libsync/filesystem.cpp" line="333"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Ezin izan da kendu &quot;%1&quot; karpeta</translation>
     </message>
@@ -504,17 +504,17 @@ macOS may ignore or delay this request.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1060"/>
+        <location filename="../src/libsync/account.cpp" line="1061"/>
         <source>File %1 is already locked by %2.</source>
         <translation>%1 fitxategia %2-(e)k blokeatuta du dagoeneko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1063"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>%1 blokeatze eragiketak huts egin du %2 errorearekin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1065"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>%1 desblokeatze eragiketak huts egin du %2 errorearekin</translation>
     </message>
@@ -832,77 +832,77 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1196"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1197"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1197"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1282"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1283"/>
         <source>%1 in use</source>
         <translation>%1 erabiltzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Migrate certificate to a new one</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1643"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1644"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Badira %1MB baino gehiago handitu diren karpetak: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1694"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1695"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1751"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1753"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1755"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1757"/>
         <source>Set up encryption</source>
         <translation>Konfiguratu zifratzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1318"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1319"/>
         <source>Connected to %1.</source>
         <translation>%1 konektatuta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1322"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>%1 zerbitzaria ez dago orain eskuragarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>%1 zerbitzaria une honetan mantentze lanetan dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1331"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1332"/>
         <source>Signed out from %1.</source>
         <translation>%1etik saioa itxita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1630"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1631"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu handiegiak direlako:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1631"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1632"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu kanpoko biltegietan daudelako:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1632"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1633"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu handiegiak direlako edo kanpoko biltegietan daudelako:</translation>
     </message>
@@ -933,57 +933,57 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt;karpetaren sinkronizazioa gelditu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1269"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2-tik %1 (%3%) erabiltzen ari da. Zenbait karpetek, sarean muntatutako edo partekatutako karpetak barne, muga desberdinak izan ditzakete.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1271"/>
         <source>%1 of %2 in use</source>
         <translation>%2tik %1 erabilita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1279"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1280"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Orain ez dago eskuragarri biltegiratze erabileraren informazioa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>%1 as %2</source>
         <translation>%1 %2 gisa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Zerbitzariko %1 bertsioa ez da onartzen! Zure ardurapean jarraitu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1328"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1329"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Une honetan %1 zerbitzaria birbideratzen ari da, edo zure konexioa atari gatibu baten atzean dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1335"/>
         <source>Connecting to %1 …</source>
         <translation>%1(e)ra konektatzen …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1338"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1339"/>
         <source>Unable to connect to %1.</source>
         <translation>Ezin izan da %1(e)ra konektatu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1343"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1344"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Zerbitzariaren konfigurazio errorea: %1 %2-n.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1352"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1358"/>
         <source>No %1 connection configured.</source>
         <translation>Ez dago %1 konexiorik konfiguratuta.</translation>
     </message>
@@ -1165,34 +1165,34 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Jarraitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="506"/>
+        <location filename="../src/gui/application.cpp" line="508"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 kontu</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="509"/>
         <source>1 account</source>
         <translation>Kontu 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="509"/>
+        <location filename="../src/gui/application.cpp" line="511"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="512"/>
         <source>1 folder</source>
         <translation>Karpeta 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="512"/>
+        <location filename="../src/gui/application.cpp" line="514"/>
         <source>Legacy import</source>
         <translation>Zaharkitutako inportazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="513"/>
+        <location filename="../src/gui/application.cpp" line="515"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1200,12 +1200,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Error accessing the configuration file</source>
         <translation>Errorea ezarpen fitxategia atzitzean</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Errorea gertatu da %1 konfigurazio fitxategian sartzean. Egiaztatu zure sistemaren kontuak fitxategi hau atzitzeko baimena duela.</translation>
     </message>
@@ -1513,7 +1513,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1762"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1776"/>
         <source>Error writing metadata to the database</source>
         <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
@@ -1716,12 +1716,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Errore bat gertatu da fitxategi baten ezabatzea bertan behera uztean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="195"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Errore bat gertatu da %1 ezabatzea bertan behera uztean</translation>
     </message>
@@ -1729,23 +1729,23 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="524"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="552"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Zerbitzariko errorea: PROPFINDaren erantzunak ez du XML formaturik!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="554"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="582"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="585"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="622"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="650"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Zifratutako metadatuen konfigurazio errorea!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="609"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Enkriptatutako metadatuen konfigurazio-errorea: zerbitzariaren hasierako sinadura hutsik dago.</translation>
     </message>
@@ -1753,27 +1753,27 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="348"/>
         <source>Error while opening directory %1</source>
         <translation>%1 direktorioaren irekitzeak huts egin du</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="322"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="350"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Direktorioa ez dago eskuragarri bezeroan, baimena ukatua</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="326"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="354"/>
         <source>Directory not found: %1</source>
         <translation>Direktorioa ez da aurkitu: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="385"/>
         <source>Filename encoding is not valid</source>
         <translation>Fitxategiaren kodeketa baliogabea da</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="406"/>
         <source>Error while reading directory %1</source>
         <translation>Errorea gertatu da %1 direktorioa irakurtzean</translation>
     </message>
@@ -2331,136 +2331,136 @@ Bestela, ezabatutako fitxategi guztiak leheneratu ditzakezu zerbitzaritik deskar
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="419"/>
+        <location filename="../src/gui/folderman.cpp" line="420"/>
         <source>Could not reset folder state</source>
         <translation>Ezin izan da karpetaren egoera berrezarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <location filename="../src/gui/folderman.cpp" line="1453"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1457"/>
+        <location filename="../src/gui/folderman.cpp" line="1458"/>
         <source> (backup %1)</source>
         <translation> (backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="420"/>
+        <location filename="../src/gui/folderman.cpp" line="421"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>&quot;% 1&quot; sinkronizazio egunkari zahar bat aurkitu da, baina ezin izan da kendu. Ziurtatu ez dela aplikaziorik erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1796"/>
+        <location filename="../src/gui/folderman.cpp" line="1797"/>
         <source>Undefined state.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1799"/>
+        <location filename="../src/gui/folderman.cpp" line="1800"/>
         <source>Waiting to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1802"/>
+        <location filename="../src/gui/folderman.cpp" line="1803"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1812"/>
+        <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Sinkronizatzen %2-tik %1 (segundo batzuk falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1815"/>
+        <location filename="../src/gui/folderman.cpp" line="1816"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinkronizatzen %2-tik %1 (%3 segundo falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1818"/>
+        <location filename="../src/gui/folderman.cpp" line="1819"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronizatzen %2-tik %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1824"/>
+        <location filename="../src/gui/folderman.cpp" line="1825"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Sinkronizatzen %1 (segundo batzuk falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1826"/>
+        <location filename="../src/gui/folderman.cpp" line="1827"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronizatzen %1 (%2 segundo falta dira)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1829"/>
+        <location filename="../src/gui/folderman.cpp" line="1830"/>
         <source>Syncing %1</source>
         <translation>Sinkronizatzen %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1834"/>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1839"/>
+        <location filename="../src/gui/folderman.cpp" line="1840"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1841"/>
+        <location filename="../src/gui/folderman.cpp" line="1842"/>
         <source>Last sync was successful.</source>
         <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1847"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Setup error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1850"/>
+        <location filename="../src/gui/folderman.cpp" line="1851"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinkronizazio eskaera bertan behera utzi da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1867"/>
+        <location filename="../src/gui/folderman.cpp" line="1868"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1875"/>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1876"/>
+        <location filename="../src/gui/folderman.cpp" line="1955"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1884"/>
+        <location filename="../src/gui/folderman.cpp" line="1885"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1897"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1961"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1976"/>
+        <location filename="../src/gui/folderman.cpp" line="1977"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2113"/>
+        <location filename="../src/gui/folderman.cpp" line="2114"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -2468,12 +2468,12 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1853"/>
+        <location filename="../src/gui/folderman.cpp" line="1854"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1859"/>
+        <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
@@ -3786,8 +3786,8 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="962"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1039"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="966"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Ezin izan da lortu %1 gatazkan dagoen fitxategiaren aldatze-denbora</translation>
     </message>
@@ -4209,69 +4209,68 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1178"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1194"/>
+        <location filename="../src/libsync/discovery.cpp" line="1198"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1201"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1213"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Ezin izan da fitxategia kargatu, &quot;%1&quot;(e)n irekita dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1263"/>
+        <location filename="../src/libsync/discovery.cpp" line="1267"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errorea %1 fitxategi erregistroa datu-basetik ezabatzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1538"/>
-        <location filename="../src/libsync/discovery.cpp" line="2009"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
+        <location filename="../src/libsync/discovery.cpp" line="2017"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Baliogabeko helburura mugitu da, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1866"/>
+        <location filename="../src/libsync/discovery.cpp" line="1874"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1933"/>
+        <location filename="../src/libsync/discovery.cpp" line="1941"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ez ikusi egin zaio, &quot;aukeratu zer sinkronizatu&quot; zerrenda beltzagatik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1967"/>
-        <location filename="../src/libsync/discovery.cpp" line="2170"/>
+        <location filename="../src/libsync/discovery.cpp" line="1975"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan azpikarpetak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1973"/>
+        <location filename="../src/libsync/discovery.cpp" line="1981"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan fitxategiak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1987"/>
+        <location filename="../src/libsync/discovery.cpp" line="1995"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ez dago baimenik fitxategi hau igotzeko zerbitzarian irakurtzeko soilik delako, leheneratzen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2023"/>
+        <location filename="../src/libsync/discovery.cpp" line="2031"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2213"/>
+        <location filename="../src/libsync/discovery.cpp" line="2202"/>
         <source>Error while reading the database</source>
         <translation>Errorea datu-basea irakurtzean</translation>
     </message>
@@ -4279,38 +4278,38 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1465"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategia datu-base lokaletik ezabatu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Errorea metadatuak eguneratzen aldaketa-data baliogabeagatik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1512"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1518"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1547"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1553"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1561"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 karpeta ezin da irakurtzeko soilik bihurtu: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
         <source>unknown exception</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1570"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1584"/>
         <source>File is currently in use</source>
         <translation>Fitxategia erabiltzen ari da</translation>
     </message>
@@ -4407,39 +4406,39 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="196"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="213"/>
         <source>could not delete file %1, error: %2</source>
         <translation>ezin izan da %1 fitxategia ezabatu, errorea: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="211"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Ezin da % 1 karpeta sortu fitxategi lokalaren edo karpetaren izen-talka dela eta!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
         <source>Could not create folder %1</source>
         <translation>Ezin da %1 karpeta sortu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="256"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 karpeta ezin da irakurtzeko soilik bihurtu: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>unknown exception</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="301"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="318"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="304"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
     </message>
@@ -4447,19 +4446,19 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="96"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Ezin izan da %1 kendu fitxategi lokal baten izen gatazka dela eta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="136"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="145"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="153"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="172"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="164"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
     </message>
@@ -4467,49 +4466,49 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="361"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="378"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Ezin da % 1 karpeta berrizendatu fitxategi lokalaren edo karpetaren izen-talka dela eta!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="369"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="386"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>%1 fitxategia deskargatu da, baina fitxategi lokal batekin gatazka du!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="469"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="486"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="573"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategia datu-base lokaletik lortu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="482"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="543"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="560"/>
         <source>Error setting pin state</source>
         <translation>Errorea pin egoera ezartzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="495"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="512"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="498"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="550"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Ezin izan da direktorioen berrizendatzea hedatu hierarkiatik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="538"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="555"/>
         <source>Failed to rename file</source>
         <translation>Fitxategia berrizendatzeak huts egin du</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="578"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
     </message>
@@ -4825,7 +4824,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="708"/>
+        <location filename="../src/gui/sharemanager.cpp" line="711"/>
         <source>Error</source>
         <translation>Errorea</translation>
     </message>
@@ -5970,17 +5969,17 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="379"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Please sign in</source>
         <translation>Mesedez saioa hasi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="465"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
         <source>There are no sync folders configured.</source>
         <translation>Ez dago sinkronizazio karpetarik definituta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
         <source>Disconnected from %1</source>
         <translation>%1etik deskonektatuta</translation>
     </message>
@@ -6005,53 +6004,53 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Zure %1 kontuak zure zerbitzariaren zerbitzuaren baldintzak onartzea eskatzen du. %2-ra birbideratuko zaituzte irakurri duzula eta horrekin ados zaudela aitortzeko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="454"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1-rako macOS VFS: Sinkronizazioa abian da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS % 1erako: Azken sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="458"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS % 1erako: arazo bat aurkitu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Urruneko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="527"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="529"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Tokiko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>Disconnected from accounts:</source>
         <translation>Kontuetatik deskonektatuta:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>Account %1: %2</source>
         <translation>%1 Kontua: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>Account synchronization is disabled</source>
         <translation>Kontuen sinkronizazioa desgaituta dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="544"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="546"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6310,7 +6309,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>%1 sinkronizatuta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="314"/>
+        <location filename="../src/libsync/filesystem.cpp" line="322"/>
         <source>Error deleting the file</source>
         <translation type="unfinished"/>
     </message>

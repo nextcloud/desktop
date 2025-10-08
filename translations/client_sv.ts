@@ -387,12 +387,12 @@ macOS kan ignorera eller fördröja denna begäran.</translation>
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="282"/>
+        <location filename="../src/libsync/filesystem.cpp" line="290"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Kunde inte radera &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="325"/>
+        <location filename="../src/libsync/filesystem.cpp" line="333"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Kunde inte ta bort mappen &quot;%1&quot;</translation>
     </message>
@@ -505,17 +505,17 @@ macOS kan ignorera eller fördröja denna begäran.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1060"/>
+        <location filename="../src/libsync/account.cpp" line="1061"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Filen %1 är redan låst av %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1063"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Låsning av %1 misslyckades med felet %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1065"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Upplåsning av %1 misslyckades med felet %2</translation>
     </message>
@@ -835,77 +835,77 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Att glömma end-to-end-kryptering kommer att ta bort känslig data och alla krypterade filer från den här enheten.&lt;br&gt;Filerna kommer dock att finnas kvar på servern och på alla dina andra enheter, om de är konfigurerade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1196"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1197"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1197"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1282"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1283"/>
         <source>%1 in use</source>
         <translation>%1 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Migrate certificate to a new one</source>
         <translation>Migrera certifikat till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1643"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1644"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Det finns mappar som har vuxit i storlek större än %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1694"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1695"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>End-to-end-kryptering har initierats på det här kontot med en annan enhet.&lt;br&gt;Ange den unika minnesfrasen för att synkronisera de krypterade mapparna även på den här enheten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1751"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1753"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Det här kontot stöder end-to-end-kryptering, men det måste konfigureras först.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1755"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1757"/>
         <source>Set up encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1318"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1319"/>
         <source>Connected to %1.</source>
         <translation>Ansluten till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1322"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servern %1 är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Servern %1 är för närvarande i underhållsläge.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1331"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1332"/>
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1630"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1631"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Dessa mappar har inte synkroniserats för att de är för stora:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1631"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1632"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Det finns mappar som inte synkroniserats för att de är externa lagringsytor:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1632"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1633"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Det finns mappar som inte blivit synkroniserade på grund av att de är för stora eller är externa lagringsytor: </translation>
     </message>
@@ -936,57 +936,57 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>&lt;p&gt;Vill du verkligen avbryta synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1269"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) av %2 används. Vissa mappar, inklusive nätverks- eller delade mappar, kan ha andra begränsningar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1271"/>
         <source>%1 of %2 in use</source>
         <translation>%1 av %2 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1279"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1280"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>För närvarande finns ingen information om lagringsanvändning tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>%1 as %2</source>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1317"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serverversion %1 stöds! Fortsätt på egen risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1328"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1329"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Server %1 omdirigeras för närvarande, eller så ligger din anslutning bakom en inloggningsportal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1335"/>
         <source>Connecting to %1 …</source>
         <translation>Ansluter till %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1338"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1339"/>
         <source>Unable to connect to %1.</source>
         <translation>Kan inte ansluta till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1343"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1344"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Felaktig serverkonfiguration: %1 vid %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1352"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Du måste acceptera användarvillkoren på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1358"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
@@ -1168,34 +1168,34 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="506"/>
+        <location filename="../src/gui/application.cpp" line="508"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="509"/>
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="509"/>
+        <location filename="../src/gui/application.cpp" line="511"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="512"/>
         <source>1 folder</source>
         <translation>1 mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="512"/>
+        <location filename="../src/gui/application.cpp" line="514"/>
         <source>Legacy import</source>
         <translation>Legacyimport</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="513"/>
+        <location filename="../src/gui/application.cpp" line="515"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1203,12 +1203,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Error accessing the configuration file</source>
         <translation>Kunde inte komma åt konfigurationsfilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
     </message>
@@ -1516,7 +1516,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1762"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1776"/>
         <source>Error writing metadata to the database</source>
         <translation>Fel vid skrivning av metadata till databasen</translation>
     </message>
@@ -1719,12 +1719,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Ett fel uppstod när radering av en fil skulle avbrytas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="195"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Ett fel uppstod när radering av %1 skulle avbrytas</translation>
     </message>
@@ -1732,23 +1732,23 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="524"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="552"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfel: PROPFIND-svar är inte XML-formaterat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="554"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="582"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Servern returnerade ett oväntat svar som inte kunde läsas. Kontakta din serveradministratör.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="585"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="622"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="650"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Inställningsfel för krypterad metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="609"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Inställningsfel för krypterad metadata: initial signatur från servern är tom.</translation>
     </message>
@@ -1756,27 +1756,27 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="320"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="348"/>
         <source>Error while opening directory %1</source>
         <translation>Fel uppstod när mappen %1 öppnades</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="322"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="350"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Mappen kan inte öppnas av klienten, åtkomst nekad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="326"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="354"/>
         <source>Directory not found: %1</source>
         <translation>Mappen hittades inte: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="385"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnamnets teckenuppsättning är ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="406"/>
         <source>Error while reading directory %1</source>
         <translation>Ett fel uppstod när mappen %1 skulle öppnas</translation>
     </message>
@@ -2334,136 +2334,136 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="419"/>
+        <location filename="../src/gui/folderman.cpp" line="420"/>
         <source>Could not reset folder state</source>
         <translation>Kunde inte återställa mappens skick</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <location filename="../src/gui/folderman.cpp" line="1453"/>
         <source> (backup)</source>
         <translation>(säkerhetskopia)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1457"/>
+        <location filename="../src/gui/folderman.cpp" line="1458"/>
         <source> (backup %1)</source>
         <translation>(säkerhetkopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="420"/>
+        <location filename="../src/gui/folderman.cpp" line="421"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammal synkroniseringsjournal &quot;%1&quot; hittades, men kunde inte tas bort. Kontrollera att inget program använder den för närvarande.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1796"/>
+        <location filename="../src/gui/folderman.cpp" line="1797"/>
         <source>Undefined state.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1799"/>
+        <location filename="../src/gui/folderman.cpp" line="1800"/>
         <source>Waiting to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1802"/>
+        <location filename="../src/gui/folderman.cpp" line="1803"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1812"/>
+        <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Synkroniserar %1 av %2 (några sekunder kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1815"/>
+        <location filename="../src/gui/folderman.cpp" line="1816"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1818"/>
+        <location filename="../src/gui/folderman.cpp" line="1819"/>
         <source>Syncing %1 of %2</source>
         <translation>Synkroniserar %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1824"/>
+        <location filename="../src/gui/folderman.cpp" line="1825"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Synkroniserar %1 (några sekunder kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1826"/>
+        <location filename="../src/gui/folderman.cpp" line="1827"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1829"/>
+        <location filename="../src/gui/folderman.cpp" line="1830"/>
         <source>Syncing %1</source>
         <translation>Synkroniserar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1834"/>
+        <location filename="../src/gui/folderman.cpp" line="1835"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1839"/>
+        <location filename="../src/gui/folderman.cpp" line="1840"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synkroniseringen lyckades, men olösta konflikter uppstod.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1841"/>
+        <location filename="../src/gui/folderman.cpp" line="1842"/>
         <source>Last sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1847"/>
+        <location filename="../src/gui/folderman.cpp" line="1848"/>
         <source>Setup error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1850"/>
+        <location filename="../src/gui/folderman.cpp" line="1851"/>
         <source>Sync request was cancelled.</source>
         <translation>Synkroniseringsbegäran avbröts.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1867"/>
+        <location filename="../src/gui/folderman.cpp" line="1868"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
         <translation>Välj en annan plats. Den valda mappen är inte giltig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1875"/>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1876"/>
+        <location filename="../src/gui/folderman.cpp" line="1955"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
         <translation>Välj en annan plats. %1 används redan som en synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1884"/>
+        <location filename="../src/gui/folderman.cpp" line="1885"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
         <translation>Välj en annan plats. Sökvägen %1 finns inte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1888"/>
+        <location filename="../src/gui/folderman.cpp" line="1889"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
         <translation>Välj en annan plats. Sökvägen %1 är inte en mapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1896"/>
-        <location filename="../src/gui/folderman.cpp" line="1901"/>
+        <location filename="../src/gui/folderman.cpp" line="1897"/>
+        <location filename="../src/gui/folderman.cpp" line="1902"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
         <translation>Välj en annan plats. Du har inte tillräckliga behörigheter för att skriva till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1961"/>
+        <location filename="../src/gui/folderman.cpp" line="1962"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
         <translation>Välj en annan plats. %1 finns redan i en mapp som används som en synkroniseringsmapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1976"/>
+        <location filename="../src/gui/folderman.cpp" line="1977"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
         <translation>Välj en annan plats.. %1 används redan som en synkroniseringsmapp för %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2113"/>
+        <location filename="../src/gui/folderman.cpp" line="2114"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
@@ -2474,12 +2474,12 @@ För att lösa problemet: ta bort %1 från ett av kontona och skapa en ny synkro
 För avancerade användare: det här problemet kan vara relaterat till flera synkdatabasfiler i en mapp. Kontrollera %1 om det finns föråldrade och oanvända .sync_*.db-filer och ta bort dem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1853"/>
+        <location filename="../src/gui/folderman.cpp" line="1854"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1859"/>
+        <location filename="../src/gui/folderman.cpp" line="1860"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (synkronisering pausad)</translation>
     </message>
@@ -3793,8 +3793,8 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="962"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1039"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="966"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1043"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Omöjligt att få ändringstid för filen i konflikten %1</translation>
     </message>
@@ -4216,69 +4216,68 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Servern svarade inte %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1178"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1194"/>
+        <location filename="../src/libsync/discovery.cpp" line="1198"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i personliga filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1197"/>
+        <location filename="../src/libsync/discovery.cpp" line="1201"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Uppladdningen av %1 överskrider %2 av återstående utrymme i mappen %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1213"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1263"/>
+        <location filename="../src/libsync/discovery.cpp" line="1267"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1538"/>
-        <location filename="../src/libsync/discovery.cpp" line="2009"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
+        <location filename="../src/libsync/discovery.cpp" line="2017"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttade till ogiltigt mål, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1866"/>
+        <location filename="../src/libsync/discovery.cpp" line="1874"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Det går inte att ändra det krypterade objektet eftersom det valda certifikatet är ogiltigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1933"/>
+        <location filename="../src/libsync/discovery.cpp" line="1941"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1967"/>
-        <location filename="../src/libsync/discovery.cpp" line="2170"/>
+        <location filename="../src/libsync/discovery.cpp" line="1975"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1973"/>
+        <location filename="../src/libsync/discovery.cpp" line="1981"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1987"/>
+        <location filename="../src/libsync/discovery.cpp" line="1995"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2023"/>
+        <location filename="../src/libsync/discovery.cpp" line="2031"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Borttagning tillåts ej, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2213"/>
+        <location filename="../src/libsync/discovery.cpp" line="2202"/>
         <source>Error while reading the database</source>
         <translation>Fel uppstod när databasen skulle läsas</translation>
     </message>
@@ -4286,38 +4285,38 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1465"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
         <source>Could not delete file %1 from local DB</source>
         <translation>Kunde inte ta bort filen %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Fel vid uppdatering av metadata på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1512"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1518"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1547"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1553"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1526"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1532"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1561"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan inte göras skrivskyddad: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1559"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1538"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1573"/>
         <source>unknown exception</source>
         <translation>okänt fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1566"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1580"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1570"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1584"/>
         <source>File is currently in use</source>
         <translation>Filen används</translation>
     </message>
@@ -4414,39 +4413,39 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="196"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="213"/>
         <source>could not delete file %1, error: %2</source>
         <translation>kunde inte ta bort fil %1, fel: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="211"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Mapp %1 kan inte skapas på grund av en konflikt med ett lokalt fil- eller mappnamn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
         <source>Could not create folder %1</source>
         <translation>Kunde inte skapa mappen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="256"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan inte göras skrivskyddad: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="268"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>unknown exception</source>
         <translation>okänt fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="301"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="318"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="304"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för tillfället</translation>
     </message>
@@ -4454,19 +4453,19 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="96"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Det gick inte att ta bort %1 på grund av ett lokalt filnamn</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="136"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="145"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="153"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="172"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Tillfälligt fel vid borttagning av lokalt objekt som tagits bort från servern.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="164"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunde inte ta bort filposten %1 från lokal DB</translation>
     </message>
@@ -4474,49 +4473,49 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="361"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="378"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Mapp %1 kan inte byta namn på grund av en konflikt med ett lokalt fil- eller mappnamn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="369"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="386"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Fil %1 har laddats ner men det resulterade i en konflikt med ett lokalt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="469"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="556"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="486"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="573"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Kunde inte hämta filen %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="482"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="543"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="560"/>
         <source>Error setting pin state</source>
         <translation>Kunde inte sätta pin-status</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="495"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="512"/>
         <source>Error updating metadata: %1</source>
         <translation>Fel vid uppdatering av metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="498"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="515"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för tillfället</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="550"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Kunde inte propagera namnbyte på katalogen i hierarkin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="538"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="555"/>
         <source>Failed to rename file</source>
         <translation>Kunde inte döpa om filen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="561"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="578"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunde inte ta bort filposten %1 från lokal DB</translation>
     </message>
@@ -4832,7 +4831,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="708"/>
+        <location filename="../src/gui/sharemanager.cpp" line="711"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
@@ -5977,17 +5976,17 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="379"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Please sign in</source>
         <translation>Vänliga logga in</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="465"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
         <source>There are no sync folders configured.</source>
         <translation>Det finns inga synkroniseringsmappar konfigurerade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
         <source>Disconnected from %1</source>
         <translation>Koppla från %1</translation>
     </message>
@@ -6012,53 +6011,53 @@ Servern svarade med fel: %2</translation>
         <translation>Ditt konto %1 kräver att du accepterar din servers användarvillkor. Du kommer bli omdirigerad till %2 för att bekräfta att du har läst och håller med om villkoren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="454"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS för %1: Synkronisering körs.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS för %1: Senaste synkroniseringen lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="458"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS för %1: Ett problem påträffades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Söker efter ändringar i fjärrmappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="527"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="529"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Söker efter ändringar i lokala &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>Disconnected from accounts:</source>
         <translation>Bortkopplad från dessa konton:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>Account synchronization is disabled</source>
         <translation>Synkronisering för konto är avstängd</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="544"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="546"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6317,7 +6316,7 @@ Servern svarade med fel: %2</translation>
         <translation>Synkroniserade %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="314"/>
+        <location filename="../src/libsync/filesystem.cpp" line="322"/>
         <source>Error deleting the file</source>
         <translation>Kunde inte ta bort filen</translation>
     </message>
