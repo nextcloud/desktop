@@ -96,9 +96,17 @@ Button {
             hoverEnabled: true
             visible: Systray.enableAddAccount
 
+            readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
+            readonly property real addAccountHorizontalOffset: (Style.accountAvatarSize - addAccountIconSize) / 2
+
             icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
-            icon.width: Style.accountAvatarSize
-            text: qsTr("Add account") 
+            icon.width: addAccountIconSize
+            icon.height: addAccountIconSize
+            icon.sourceSize.width: addAccountIconSize
+            icon.sourceSize.height: addAccountIconSize
+            leftPadding: Style.accountIconsMenuMargin + addAccountHorizontalOffset
+            spacing: Style.userLineSpacing + addAccountHorizontalOffset
+            text: qsTr("Add account")
             onClicked: UserModel.addAccount()
 
             Accessible.role: Accessible.MenuItem
