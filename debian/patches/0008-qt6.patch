@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d306001c9..6627f8399 100644
+index 800e56144..2ebc72d23 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -11,7 +11,22 @@ index d306001c9..6627f8399 100644
  
  # CfAPI Shell Extensions
  set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
-@@ -139,7 +139,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+@@ -84,13 +84,11 @@ endif()
+ 
+ set(APPLE_SUPPRESS_X11_WARNING ON)
+ 
+-find_package(ECM 6.0.0 REQUIRED NO_MODULE)
++find_package(ECM 5.0.0 REQUIRED NO_MODULE)
+ set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://invent.kde.org/frameworks/extra-cmake-modules")
+ 
+ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH})
+ 
+-include(KDEInstallDirs)
+-include(KDECMakeSettings)
+ include(ECMMarkNonGuiExecutable)
+ include(ECMSetupVersion)
+ 
+@@ -152,7 +150,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
      add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
  endif()
  
@@ -347,7 +362,7 @@ index 000000000..4a4c59b35
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index 0855b028d..5c5ec1f6a 100644
+index fa3c97c48..c0505b76f 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
 @@ -21,6 +21,7 @@
@@ -381,7 +396,7 @@ index 0855b028d..5c5ec1f6a 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 01bbae79a..96b4848b0 100644
+index 9ce24e95a..9e8723203 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -393,7 +408,7 @@ index 01bbae79a..96b4848b0 100644
  find_package(KF6GuiAddons)
  
  if(CMAKE_BUILD_TYPE MATCHES Debug)
-@@ -581,9 +581,16 @@ target_link_libraries(nextcloudCore
+@@ -551,9 +551,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -411,7 +426,7 @@ index 01bbae79a..96b4848b0 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -792,3 +799,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -762,3 +769,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -423,7 +438,7 @@ index 01bbae79a..96b4848b0 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index d2951a1f1..bb345934a 100644
+index f2f6a0503..cc972dd67 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -434,7 +449,7 @@ index d2951a1f1..bb345934a 100644
  
  #include "config.h"
  
-@@ -1017,7 +1018,7 @@ void Application::setupTranslations()
+@@ -1019,7 +1020,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -444,7 +459,7 @@ index d2951a1f1..bb345934a 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 3ea264172..999f139f8 100644
+index 17d693bf7..f7105f131 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -456,7 +471,7 @@ index 3ea264172..999f139f8 100644
  #include <pushnotifications.h>
  #include <syncengine.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 29301107a..442a52a84 100644
+index 3dc10ad19..637b58acf 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -539,7 +554,7 @@ index b62a7b3c0..85de6f00a 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
-index 9b85245ae..76e9012fd 100644
+index cc0397f29..c4753ab48 100644
 --- a/src/gui/sslerrordialog.cpp
 +++ b/src/gui/sslerrordialog.cpp
 @@ -7,6 +7,7 @@
@@ -628,7 +643,7 @@ index 5820fc0c8..a70abc9c8 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index 6f42b1425..400b51576 100644
+index e7bde80a8..b37b5831b 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -22,6 +22,7 @@
@@ -639,7 +654,7 @@ index 6f42b1425..400b51576 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1238,7 +1239,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1239,7 +1240,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -650,7 +665,7 @@ index 6f42b1425..400b51576 100644
  
      promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 2e32527f6..be2e695a7 100644
+index 9ce1b567f..ef19a9518 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -718,7 +733,7 @@ index 2e32527f6..be2e695a7 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 1046e5587..78e6fe969 100644
+index 1832fc904..c6e3c1088 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -730,7 +745,7 @@ index 1046e5587..78e6fe969 100644
  #include "csync.h"
  
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index 32f8db83b..5f773c409 100644
+index b6a870849..4e4f991c5 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -1065,10 +1080,10 @@ index 81342a629..c0507f205 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index 589e190bb..5fc8d24c5 100644
+index f6cac3374..8520969d2 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
-@@ -416,8 +416,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
+@@ -417,8 +417,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
          xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
          xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
          xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
@@ -1104,7 +1119,7 @@ index b45cf4911..060f9aca0 100644
  
  #include "account.h"
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index c7be00218..59b832146 100644
+index 503454e4d..5f073a2a9 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
