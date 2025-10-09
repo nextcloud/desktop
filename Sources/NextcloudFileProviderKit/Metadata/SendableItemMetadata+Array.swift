@@ -13,19 +13,19 @@ extension Array<SendableItemMetadata> {
 
         let result: [Item] = try await self.concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
             guard !itemMetadata.e2eEncrypted else {
-                logger.info("Skipping encrypted metadata in enumeration.", [.ocId: itemMetadata.ocId, .name: itemMetadata.fileName])
+                logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
             }
 
             guard !isLockFileName(itemMetadata.fileName) else {
-                logger.info("Skipping remote lock file item metadata in enumeration.", [.ocId: itemMetadata.ocId, .name: itemMetadata.fileName])
+                logger.info("Skipping remote lock file item metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
             }
 
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
                 itemMetadata
             ) else {
-                logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.ocId: itemMetadata.ocId, .name: itemMetadata.fileName])
+                logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 let targetUrl = itemMetadata.serverUrl
                 throw FilesDatabaseManager.parentMetadataNotFoundError(itemUrl: targetUrl)
             }
@@ -40,7 +40,7 @@ extension Array<SendableItemMetadata> {
                 log: log
             )
 
-            logger.debug("Will enumerate item.", [.ocId: itemMetadata.ocId, .name: itemMetadata.fileName])
+            logger.debug("Will enumerate item.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
 
             return item
         }

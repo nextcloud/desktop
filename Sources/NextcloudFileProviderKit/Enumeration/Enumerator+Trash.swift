@@ -77,7 +77,7 @@ extension Enumerator {
             )
             newTrashedItems.append(item)
 
-            logger.debug("Will enumerate changed trash item.", [.ocId: metadata.ocId, .name: metadata.fileName])
+            logger.debug("Will enumerate changed trash item.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
         let deletedTrashedItemsIdentifiers = existingTrashedItems.map {

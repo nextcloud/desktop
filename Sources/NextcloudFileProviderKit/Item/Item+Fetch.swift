@@ -211,7 +211,7 @@ public extension Item {
                     progress: progress
                 )
             } catch {
-                logger.error("Could not fetch directory contents.", [.ocId: ocId, .error: error])
+                logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
 
                 updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.localizedDescription

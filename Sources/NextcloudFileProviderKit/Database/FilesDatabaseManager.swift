@@ -267,7 +267,7 @@ public final class FilesDatabaseManager: Sendable {
 
             deletedMetadatas.append(metadataToDelete)
 
-            logger.debug("Deleting item metadata during update.", [.metadata: existingMetadata])
+            logger.debug("Deleting item metadata during update.", [.item: existingMetadata.ocId])
         }
 
         return deletedMetadatas
@@ -309,14 +309,14 @@ public final class FilesDatabaseManager: Sendable {
                     returningUpdatedMetadatas.append(updatedMetadata)
 
                     logger.debug("Updated existing item metadata.", [
-                        .ocId: updatedMetadata.ocId,
+                        .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
                         .name: updatedMetadata.fileName,
                         .syncTime: updatedMetadata.syncTime.description,
                     ])
                 } else {
                     logger.debug("Skipping item metadata update; same as existing, or still in transit.", [
-                        .ocId: updatedMetadata.ocId,
+                        .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
                         .name: updatedMetadata.fileName,
                         .syncTime: updatedMetadata.syncTime.description,
@@ -326,7 +326,7 @@ public final class FilesDatabaseManager: Sendable {
             } else { // This is a new metadata
                 returningNewMetadatas.append(updatedMetadata)
 
-                logger.debug("Created new item metadata during update.", [.metadata: updatedMetadata])
+                logger.debug("Created new item metadata during update.", [.item: updatedMetadata.ocId])
             }
         }
 
@@ -469,7 +469,7 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 logger.debug("Updated status for item metadata.", [
-                        .ocId: metadata.ocId,
+                        .item: metadata.ocId,
                         .eTag: metadata.etag,
                         .name: metadata.fileName,
                         .syncTime: metadata.syncTime,
@@ -478,7 +478,7 @@ public final class FilesDatabaseManager: Sendable {
             return SendableItemMetadata(value: result)
         } catch {
             logger.error("Could not update status for item metadata.", [
-                    .ocId: metadata.ocId,
+                    .item: metadata.ocId,
                     .eTag: metadata.etag,
                     .error: error,
                     .name: metadata.fileName
@@ -494,10 +494,10 @@ public final class FilesDatabaseManager: Sendable {
         do {
             try database.write {
                 database.add(RealmItemMetadata(value: metadata), update: .all)
-                logger.debug("Added item metadata.", [.metadata: metadata])
+                logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl])
             }
         } catch {
-            logger.error("Failed to add item metadata.", [.metadata: metadata, .error: error])
+            logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.name, .url: metadata.serverUrl, .error: error])
         }
     }
 
@@ -554,7 +554,7 @@ public final class FilesDatabaseManager: Sendable {
         }
 
         guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
-            logger.error("Could not get item parent directory item metadata for metadata.", [.metadata: metadata])
+            logger.error("Could not get item parent directory item metadata for metadata.", [.item: metadata.ocId])
 
             return nil
         }
@@ -583,7 +583,7 @@ public final class FilesDatabaseManager: Sendable {
         guard error == nil, let parentMetadata = metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [
                 .error: error,
-                .ocId: metadata.ocId,
+                .item: metadata.ocId,
                 .name: metadata.fileName
             ])
 

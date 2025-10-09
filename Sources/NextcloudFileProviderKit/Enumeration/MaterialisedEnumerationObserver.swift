@@ -90,18 +90,18 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                     metadata.downloaded = true
                 }
 
-                logger.info("Updating materialisation state for item to MATERIALISED with id \(enumeratedId) with filename \(metadata.fileName)", [.ocId: enumeratedId, .name: metadata.fileName])
+                logger.info("Updating materialisation state for item to MATERIALISED with id \(enumeratedId) with filename \(metadata.fileName)", [.item: enumeratedId, .name: metadata.fileName])
                 dbManager.addItemMetadata(metadata)
             }
         }
 
         for unmaterialisedId in unmaterialisedIds {
             guard var metadata = materialisedMetadatasMap[unmaterialisedId] else {
-                logger.error("No materialised for \(unmaterialisedId) found.", [.ocId: unmaterialisedId])
+                logger.error("No materialised for \(unmaterialisedId) found.", [.item: unmaterialisedId])
                 continue
             }
 
-            logger.info("Updating materialisation state for item to DATALESS with id \(unmaterialisedId) with filename \(metadata.fileName).", [.name: metadata.fileName, .ocId: unmaterialisedId])
+            logger.info("Updating materialisation state for item to DATALESS with id \(unmaterialisedId) with filename \(metadata.fileName).", [.name: metadata.fileName, .item: unmaterialisedId])
 
             metadata.downloaded = false
             metadata.visitedDirectory = false

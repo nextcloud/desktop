@@ -52,7 +52,7 @@ extension FilesDatabaseManager {
             .where({ $0.ocId == ocId && $0.directory })
             .first
         else {
-            logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.ocId: ocId])
+            logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.item: ocId])
             return nil
         }
 
@@ -62,13 +62,13 @@ extension FilesDatabaseManager {
         let directoryAccount = directoryMetadata.account
         let directoryEtag = directoryMetadata.etag
 
-        logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .ocId: directoryMetadata.ocId, .url: directoryUrlPath])
+        logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
 
         let database = ncDatabase()
         do {
             try database.write { directoryMetadata.deleted = true }
         } catch let error {
-            logger.error("Failure to delete root directory metadata in recursive delete.", [.error: error, .eTag: directoryEtag, .ocId: directoryOcId, .url: directoryUrlPath])
+            logger.error("Failure to delete root directory metadata in recursive delete.", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
             return nil
         }
 
@@ -84,11 +84,11 @@ extension FilesDatabaseManager {
                 try database.write { result.deleted = true }
                 deletedMetadatas.append(inactiveItemMetadata)
             } catch let error {
-                logger.error("Failure to delete directory metadata child in recursive delete", [.error: error, .eTag: directoryEtag, .ocId: directoryOcId, .url: directoryUrlPath])
+                logger.error("Failure to delete directory metadata child in recursive delete", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
             }
         }
 
-        logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .ocId: directoryOcId, .url: directoryUrlPath])
+        logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
 
         return deletedMetadatas
     }
@@ -100,7 +100,7 @@ extension FilesDatabaseManager {
             .where({ $0.ocId == ocId && $0.directory })
             .first
         else {
-            logger.error("Could not find a directory with ocID \(ocId), cannot proceed with recursive renaming.", [.ocId: ocId])
+            logger.error("Could not find a directory with ocID \(ocId), cannot proceed with recursive renaming.", [.item: ocId])
             return nil
         }
 
@@ -114,7 +114,7 @@ extension FilesDatabaseManager {
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
-        logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.ocId: ocId])
+        logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
 
         do {
             let database = ncDatabase()
@@ -133,7 +133,7 @@ extension FilesDatabaseManager {
                 }
             }
         } catch {
-            logger.error("Could not rename directory metadata.", [.error: error, .ocId: ocId, .url: newServerUrl])
+            logger.error("Could not rename directory metadata.", [.error: error, .item: ocId, .url: newServerUrl])
             return nil
         }
 

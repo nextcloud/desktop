@@ -757,7 +757,7 @@ public extension Item {
                 )
 
                 guard renameError == nil, let renameModifiedItem else {
-                    logger.error("Could not rename pre-trash item.", [.ocId: ocId, .name: modifiedItem.filename, .error: error])
+                    logger.error("Could not rename pre-trash item.", [.item: modifiedItem.filename, .error: error])
                     return (nil, renameError)
                 }
 
@@ -875,7 +875,7 @@ public extension Item {
             }
 
             guard contentError == nil, let contentModifiedItem else {
-                logger.error("Could not modify contents.", [.ocId: ocId, .name: modifiedItem.filename, .error: contentError])
+                logger.error("Could not modify contents.", [.item: modifiedItem, .error: contentError])
                 return (nil, contentError)
             }
 

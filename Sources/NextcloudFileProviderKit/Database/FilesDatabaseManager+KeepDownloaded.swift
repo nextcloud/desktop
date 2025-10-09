@@ -8,7 +8,7 @@ public extension FilesDatabaseManager {
     func set(keepDownloaded: Bool, for metadata: SendableItemMetadata) throws -> SendableItemMetadata? {
         guard #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) else {
             let error = "Could not update keepDownloaded status for item because the system does not support this state."
-            logger.error(error, [.ocId: metadata.ocId, .name: metadata.fileName])
+            logger.error(error, [.item: metadata.ocId, .name: metadata.fileName])
 
             throw NSError(
                 domain: Self.errorDomain,
@@ -19,7 +19,7 @@ public extension FilesDatabaseManager {
 
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             let error = "Did not update keepDownloaded for item metadata as it was not found."
-            logger.error(error, [.ocId: metadata.ocId, .name: metadata.fileName])
+            logger.error(error, [.item: metadata.ocId, .name: metadata.fileName])
 
             throw NSError(
                 domain: Self.errorDomain,
@@ -31,7 +31,7 @@ public extension FilesDatabaseManager {
         try ncDatabase().write {
             result.keepDownloaded = keepDownloaded
 
-            logger.debug("Updated keepDownloaded status for item metadata.", [.ocId: metadata.ocId, .name: metadata.fileName])
+            logger.debug("Updated keepDownloaded status for item metadata.", [.item: metadata.ocId, .name: metadata.fileName])
         }
         return SendableItemMetadata(value: result)
     }

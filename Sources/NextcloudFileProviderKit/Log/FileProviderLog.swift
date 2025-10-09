@@ -1,5 +1,6 @@
 import FileProvider
 import Foundation
+import NextcloudKit
 import os
 
 ///
@@ -212,29 +213,37 @@ public actor FileProviderLog: FileProviderLogging {
             logger.log(level: level, "\(message, privacy: .public)")
             return
         }
-        
-        let detailsDescription = details.map { key, value in
+
+        let sortedKeys = details.keys.sorted()
+
+        let detailDescriptions: [String] = sortedKeys.compactMap { key in
+            guard let value = details[key] else {
+                return nil
+            }
+
             let valueDescription: String?
-            
+
             switch value {
                 case let account as Account:
                     valueDescription = account.ncKitAccount
+                case let lock as NKLock:
+                    valueDescription = lock.token
                 case let item as NSFileProviderItem:
                     valueDescription = item.itemIdentifier.rawValue
                 case let identifier as NSFileProviderItemIdentifier:
                     valueDescription = identifier.rawValue
-                case let item as any ItemMetadata:
-                    valueDescription = item.ocId
+                case let url as URL:
+                    valueDescription = url.absoluteString
                 case let text as String:
                     valueDescription = text
                 default:
                     valueDescription = String(describing: value)
             }
-            
+
             return "- \(key.rawValue): \(valueDescription ?? "nil")"
-        }.joined(separator: "\n")
+        }
         
-        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailsDescription, privacy: .public)")
+        logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)")
     }
 
     public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?]) {

@@ -28,6 +28,7 @@ public enum FileProviderLogDetailKey: String {
 
     ///
     /// The raw value of an `NSFileProviderItemIdentifier`.
+    /// Also known and used as `ocId`.
     ///
     case item
 
@@ -37,22 +38,9 @@ public enum FileProviderLogDetailKey: String {
     case lock
 
     ///
-    /// A ``SendableItemMetadata`` object.
-    ///
-    /// This will automatically encode all important properties as a dictionary in the log.
-    /// Always prefer this over individual log detail arguments to keep the call points concise.
-    ///
-    case metadata
-
-    ///
     /// The name of a file or directory in the file system.
     ///
     case name
-
-    ///
-    /// The server-side item identifier.
-    ///
-    case ocId
 
     ///
     /// The last time item metadata was synchronized with the server.
@@ -63,4 +51,10 @@ public enum FileProviderLogDetailKey: String {
     /// Any relevant URL, in example in context of a network request.
     ///
     case url
+}
+
+extension FileProviderLogDetailKey: Comparable {
+    public static func < (lhs: FileProviderLogDetailKey, rhs: FileProviderLogDetailKey) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
 }
