@@ -104,22 +104,12 @@ public extension Item {
         let ocId = itemIdentifier.rawValue
 
         guard let newContents else {
-            logger.error(
-                """
-                ERROR. Could not upload modified contents as was provided nil contents url.
-                    ocId: \(ocId) filename: \(self.filename)
-                """
-            )
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
-            )
+            logger.error("Cannot upload modified content because a nil URL was provided.", [.item: itemIdentifier])
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.error(
-                "Could not acquire metadata of item with identifier: \(ocId)"
-            )
+            logger.error("Could not acquire metadata of item.", [.item: itemIdentifier])
             return (
                 nil,
                 NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
@@ -127,16 +117,8 @@ public extension Item {
         }
 
         guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
-            logger.info(
-                """
-                Could not acquire updated metadata of item: \(ocId),
-                unable to update item status to uploading
-                """
-            )
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
-            )
+            logger.info("Could not acquire updated metadata of item. Unable to update item status to uploading.", [.item: itemIdentifier])
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
 
         let (_, _, etag, date, size, error) = await upload(
@@ -565,17 +547,11 @@ public extension Item {
             )
         }
 
-        let relativePath = (
-            metadata.serverUrl + "/" + metadata.fileName
-        ).replacingOccurrences(of: account.davFilesUrl, with: "")
+        let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: account.davFilesUrl, with: "")
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            logger.info(
-                """
-                File \(modifiedItem.filename) is in the ignore list.
-                    Will delete locally with no remote effect.
-                """
-            )
+            logger.info("File is in the ignore list. Will delete locally with no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
+            
             guard let modifiedIgnored = await modifyUnuploaded(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
@@ -589,12 +565,12 @@ public extension Item {
                 progress: progress,
                 dbManager: dbManager
             ) else {
-                logger.error(
-                    "Unable to modify ignored file, got nil item: \(relativePath)"
-                )
+                logger.error("Unable to modify ignored file, got nil item: \(relativePath)")
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
+            
             modifiedItem = modifiedIgnored
+            
             if #available(macOS 13.0, *) {
                 return (modifiedItem, NSFileProviderError(.excludedFromSync))
             } else {
@@ -620,32 +596,19 @@ public extension Item {
             )
         }
 
-        let ocId = modifiedItem.itemIdentifier.rawValue
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
-            logger.error(
-                """
-                Could not modify item: \(ocId), different identifier to the
-                    item the modification was targeting
-                    (\(itemTarget.itemIdentifier.rawValue))
-                """
-            )
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
-            )
+            logger.error("Could not modify item, different identifier to the item the modification was targeting (\(itemTarget.itemIdentifier.rawValue)).", [.item: modifiedItem])
+            
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
-        let bundleOrPackage =
-            modifiedItem.contentType.conforms(to: .bundle) ||
-            modifiedItem.contentType.conforms(to: .package)
+        let bundleOrPackage = modifiedItem.contentType.conforms(to: .bundle) || modifiedItem.contentType.conforms(to: .package)
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            logger.info(
-                "Modification for item: \(ocId) may already exist"
-            )
+            logger.info("Modification for item may already exist.", [.item: modifiedItem])
         }
 
         var newParentItemRemoteUrl: String
@@ -658,16 +621,8 @@ public extension Item {
         } else if newParentItemIdentifier == .trashContainer {
             newParentItemRemoteUrl = account.trashUrl
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(
-                ocId: newParentItemIdentifier.rawValue
-            ) else {
-                logger.error(
-                    """
-                    Not modifying item: \(ocId),
-                        could not find metadata for target parentItemIdentifier
-                        \(newParentItemIdentifier.rawValue)
-                    """
-                )
+            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: newParentItemIdentifier.rawValue) else {
+                logger.error("Not modifying item, could not find metadata for target parentItemIdentifier \"\(newParentItemIdentifier.rawValue)\"!", [.item: modifiedItem])
                 return (
                     nil,
                     NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
@@ -679,66 +634,29 @@ public extension Item {
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
 
-        logger.debug("About to modify item.", [.ocId: ocId])
-        
-        logger.debug(
-            """
-            About to modify item with identifier: \(ocId)
-            of type: \(modifiedItem.contentType.identifier)
-            (is folder: \(isFolder ? "yes" : "no")
-            with filename: \(modifiedItem.filename)
-            to filename: \(itemTarget.filename)
-            from old server url:
-                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.metadata.fileName)
-            to server url: \(newServerUrlFileName)
-            old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue)
-            new parent identifier: \(itemTarget.parentItemIdentifier.rawValue)
-            with contents located at: \(newContents?.path ?? "")
-            """
-        )
+        logger.debug("About to modify item.", [.item: modifiedItem])
 
         if changedFields.contains(.parentItemIdentifier)
             && newParentItemIdentifier == .trashContainer
             && modifiedItem.metadata.isTrashed {
 
             if (changedFields.contains(.filename)) {
-                logger.info(
-                    """
-                    Tried to modify filename of already trashed item. This is not supported.
-                        ocId: \(modifiedItem.itemIdentifier.rawValue)
-                        filename: \(modifiedItem.metadata.fileName)
-                        new filename: \(itemTarget.filename)
-                    """
-                )
+                logger.error("Tried to modify filename of already trashed item. This is not supported.", [.item: modifiedItem])
             }
 
-            logger.info(
-                """
-                Tried to trash item that is in fact already trashed.
-                    ocId: \(modifiedItem.itemIdentifier.rawValue)
-                    filename: \(modifiedItem.metadata.fileName)
-                    serverUrl: \(modifiedItem.metadata.serverUrl)
-                """
-            )
+            logger.info("Tried to trash item that is in fact already trashed.", [.item: modifiedItem])
+            
             return (modifiedItem, nil)
         } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
                 account: account, options: .init(), taskHandler: { _ in }
             )
             guard let capabilities, error == .success else {
-                logger.error(
-                    """
-                    Could not acquire capabilities during item move to trash, won't proceed.
-                        Error: \(error.errorDescription)
-                        Item: \(modifiedItem.filename)
-                    """
-                )
+                logger.error("Could not acquire capabilities during item move to trash, won't proceed.", [.item: modifiedItem, .error: error])
                 return (nil, error.fileProviderError)
             }
             guard capabilities.files?.undelete == true else {
-                logger.error(
-                    "Cannot delete \(modifiedItem.filename) as server does not support trashing."
-                )
+                logger.error("Cannot delete item as server does not support trashing.", [.item: modifiedItem])
                 return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
             }
 
@@ -812,35 +730,17 @@ public extension Item {
         }
 
         guard !isFolder || bundleOrPackage else {
-            logger.debug(
-                """
-                System requested modification for folder with ocID \(ocId)
-                (\(newServerUrlFileName)) of something other than folder name.
-                This is not supported.
-                """
-            )
+            logger.debug("System requested modification for folder of something other than folder name. This is not supported.", [.item: modifiedItem])
             return (modifiedItem, nil)
         }
 
         guard newParentItemIdentifier != .trashContainer else {
-            logger.debug(
-                """
-                System requested modification in trash for item with ocID \(ocId)
-                (\(newServerUrlFileName))
-                This is not supported.
-                """
-            )
+            logger.debug("System requested modification of item in trash. This is not supported.", [.item: modifiedItem])
             return (modifiedItem, nil)
         }
 
         if changedFields.contains(.contents) {
-            logger.debug(
-                """
-                Item modification for \(ocId)
-                \(modifiedItem.filename)
-                includes contents. Will begin upload.
-                """
-            )
+            logger.debug("Item content modified.", [.item: modifiedItem])
 
             let newCreationDate = itemTarget.creationDate ?? creationDate
             let newContentModificationDate =
@@ -882,12 +782,7 @@ public extension Item {
             modifiedItem = contentModifiedItem
         }
 
-        logger.debug(
-            """
-            Nothing more to do with \(ocId)
-            \(modifiedItem.filename), modifications complete
-            """
-        )
+        logger.debug("All modifications processed.", [.item: modifiedItem])
         return (modifiedItem, nil)
     }
 }
