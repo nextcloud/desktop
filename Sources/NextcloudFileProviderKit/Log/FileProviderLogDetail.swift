@@ -135,7 +135,7 @@ public enum FileProviderLogDetail: Encodable {
                 self = .dictionary([
                     "owner": .string(lock.owner),
                     "ownerDisplayName": .string(lock.ownerDisplayName),
-                    "ownerEditor": .string(lock.ownerEditor),
+                    "ownerEditor": lock.ownerEditor == nil ? .null : .string(lock.ownerEditor!),
                     "ownerType": .int(lock.ownerType.rawValue),
                     "time": lock.time == nil ? .null : .date(lock.time!),
                     "timeOut": lock.timeOut == nil ? .null : .date(lock.timeOut!),
