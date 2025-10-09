@@ -192,6 +192,7 @@ extension Enumerator {
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
                 metadata.keepDownloaded = existing?.keepDownloaded == true
+                metadata.lockToken = existing?.lockToken
                 dbManager.addItemMetadata(metadata)
                 return ([metadata], newItems, updatedItems, nil, nextPage, nil)
             }
