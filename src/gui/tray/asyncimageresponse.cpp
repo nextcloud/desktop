@@ -66,21 +66,31 @@ void AsyncImageResponse::processNextImage()
         return;
     }
 
-    OCC::AccountPtr accountInRequestedServer;
+    OCC::AccountPtr accountInRequestedServer = nullptr;
 
     const auto accountsList = OCC::AccountManager::instance()->accounts();
     for (const auto &account : accountsList) {
         if (account && account->account() && imagePath.startsWith(account->account()->url().toString())) {
            accountInRequestedServer = account->account();
+           break;
         }
     }
 
     if (accountInRequestedServer) {
         const QUrl iconUrl(_imagePaths.at(_index));
         if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
-            // fetch the remote resource
-            const auto reply = accountInRequestedServer->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
-            connect(reply, &QNetworkReply::finished, this, &AsyncImageResponse::slotProcessNetworkReply);
+            // fetch the remote resource in the thread of the account (or rather its QNAM)
+            // for some reason trying to use `accountInRequestedServer` causes clang 21 to crash for me :(
+            const auto accountQnam = accountInRequestedServer->networkAccessManager();
+            QMetaObject::invokeMethod(accountQnam, [this, accountInRequestedServer, iconUrl]() -> void {
+                const auto reply = accountInRequestedServer->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
+                connect(reply, &QNetworkReply::finished, this, [this, reply]() -> void {
+                    QMetaObject::invokeMethod(this, [this, reply]() -> void {
+                        processNetworkReply(reply);
+                    });
+                });
+            });
+
             ++_index;
             return;
         }
@@ -89,9 +99,8 @@ void AsyncImageResponse::processNextImage()
     setImageAndEmitFinished();
 }
 
-void AsyncImageResponse::slotProcessNetworkReply()
+void AsyncImageResponse::processNetworkReply(QNetworkReply *reply)
 {
-    const auto reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply) {
         setImageAndEmitFinished();
         return;
