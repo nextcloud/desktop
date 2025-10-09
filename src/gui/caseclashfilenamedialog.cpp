@@ -9,6 +9,7 @@
 #include "account.h"
 #include "folder.h"
 #include "common/filesystembase.h"
+#include "common/utility.h"
 
 #include <QPushButton>
 #include <QDir>
@@ -202,7 +203,7 @@ void CaseClashFilenameDialog::updateFileWidgetGroup(const QString &filePath,
     const auto lastModifiedString = filePathFileInfo.lastModified().toString();
     const auto fileSizeString = locale().formattedDataSize(filePathFileInfo.size());
     const auto fileUrl = QUrl::fromLocalFile(filePath).toString();
-    const auto linkString = QStringLiteral("<a href='%1'>%2</a>").arg(fileUrl, linkText);
+    const auto linkString = QStringLiteral("<a href=\"%1\">%2</a>").arg(Utility::escape(fileUrl), linkText);
     const auto mime = QMimeDatabase().mimeTypeForFile(_filePath, QMimeDatabase::MatchExtension);
     QIcon fileTypeIcon;
 
