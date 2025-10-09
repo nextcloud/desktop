@@ -137,6 +137,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
@@ -160,6 +161,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
@@ -183,6 +185,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
