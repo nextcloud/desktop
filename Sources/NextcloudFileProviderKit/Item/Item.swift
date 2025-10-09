@@ -36,7 +36,7 @@ public class Item: NSObject, NSFileProviderItem {
             capabilities.insert(.allowsReading)
         }
         
-        if !metadata.lock {
+        if metadata.lock == false || (metadata.lock == true && metadata.lockOwnerType == NKLockType.token.rawValue && metadata.ownerId == metadata.lockOwner && metadata.lockToken != nil) {
             if permissions.contains("D") { // Deletable
                 capabilities.insert(.allowsDeleting)
             }
@@ -57,6 +57,7 @@ public class Item: NSObject, NSFileProviderItem {
                 capabilities.insert(.allowsWriting)
             }
         }
+
         // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
         if #unavailable(macOS 13.0), !metadata.keepDownloaded {
             capabilities.insert(.allowsEvicting)
@@ -171,13 +172,24 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var fileSystemFlags: NSFileProviderFileSystemFlags {
-        if metadata.lock,
-           (metadata.lockOwnerType != 0 || metadata.lockOwner != account.username),
-           metadata.lockTimeOut ?? Date() > Date()
-        {
-            return [.userReadable]
+        if metadata.isLockFileOfLocalOrigin {
+            return [
+                .hidden,
+                .userReadable,
+                .userWritable
+            ]
         }
-        return [.userReadable, .userWritable]
+
+        if metadata.lock, (metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username), metadata.lockTimeOut ?? Date() > Date() {
+            return [
+                .userReadable
+            ]
+        }
+
+        return [
+            .userReadable,
+            .userWritable
+        ]
     }
 
     public var userInfo: [AnyHashable : Any]? {
