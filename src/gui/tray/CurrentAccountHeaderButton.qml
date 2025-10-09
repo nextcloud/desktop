@@ -58,7 +58,7 @@ Button {
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
         onClosed: {
-            // HACK: reload account Instantiator immediately by restting it - could be done better I guess
+            // HACK: reload account Instantiator immediately by resetting it - could be done better I guess
             // see also onVisibleChanged above
             userLineInstantiator.active = false;
             userLineInstantiator.active = true;
@@ -68,7 +68,7 @@ Button {
             id: userLineInstantiator
             model: UserModel
             delegate: MenuItem {
-                implicitHeight: instantiatedUserLine.height + Style.standardSpacing
+                implicitHeight: instantiatedUserLine.height
                 UserLine {
                     id: instantiatedUserLine
                     width: parent.width
@@ -95,10 +95,22 @@ Button {
             id: addAccountButton
             hoverEnabled: true
             visible: Systray.enableAddAccount
+            implicitHeight: Style.accountAvatarSize
 
-            icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
-            icon.width: Style.accountAvatarSize
-            text: qsTr("Add account") 
+            readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
+            readonly property real addAccountHorizontalOffset: (Style.accountAvatarSize - addAccountIconSize) / 2
+            property var iconColor: !addAccountButton.enabled
+                                    ? addAccountButton.palette.mid
+                                    : (addAccountButton.highlighted || addAccountButton.down
+                                        ? addAccountButton.palette.highlightedText
+                                        : addAccountButton.palette.text)
+
+            icon.source: "image://svgimage-custom-color/add.svg/" + iconColor
+            icon.width: addAccountIconSize
+            icon.height: addAccountIconSize
+            leftPadding: Style.accountIconsMenuMargin + addAccountHorizontalOffset
+            spacing: Style.userLineSpacing + addAccountHorizontalOffset
+            text: qsTr("Add account")
             onClicked: UserModel.addAccount()
 
             Accessible.role: Accessible.MenuItem
@@ -119,6 +131,18 @@ Button {
             Accessible.role: Accessible.MenuItem
             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
             Accessible.onPressAction: syncPauseButton.clicked()
+
+            contentItem: Text {
+                text: parent.text
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                leftPadding: Style.userLineSpacing
+                color: !parent.enabled
+                    ? parent.palette.mid
+                    : (parent.highlighted || parent.down
+                        ? parent.palette.highlightedText
+                        : parent.palette.text)
+            }
         }
 
         MenuItem {
@@ -130,6 +154,18 @@ Button {
             Accessible.role: Accessible.MenuItem
             Accessible.name: text
             Accessible.onPressAction: settingsButton.clicked()
+
+            contentItem: Text {
+                text: parent.text
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                leftPadding: Style.userLineSpacing
+                color: !parent.enabled
+                    ? parent.palette.mid
+                    : (parent.highlighted || parent.down
+                        ? parent.palette.highlightedText
+                        : parent.palette.text)
+            }
         }
 
         MenuItem {
@@ -140,7 +176,19 @@ Button {
             onClicked: Systray.shutdown()
             Accessible.role: Accessible.MenuItem
             Accessible.name: text
-            Accessible.onPressAction: exitButton.clicked() 
+            Accessible.onPressAction: exitButton.clicked()
+
+            contentItem: Text {
+                text: parent.text
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                leftPadding: Style.userLineSpacing
+                color: !parent.enabled
+                    ? parent.palette.mid
+                    : (parent.highlighted || parent.down
+                        ? parent.palette.highlightedText
+                        : parent.palette.text)
+            }
         }
     }
 
