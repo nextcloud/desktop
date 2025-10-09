@@ -87,10 +87,10 @@ extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
         }
-        
+
         logger.debug("Derived target file name for lock file.", [.name: targetFileName])
         let targetFileRemotePath = parentItemRemotePath + "/" + targetFileName
-        
+
         let metadata = SendableItemMetadata(
             ocId: itemTemplate.itemIdentifier.rawValue,
             account: account.ncKitAccount,
@@ -136,7 +136,22 @@ extension Item {
             })
 
             if let lock {
-                logger.info("Locked file and received lock.", [.name: targetFileName, .lock: lock])
+                logger.info("Locked file and received lock, will update target item.", [.name: targetFileName, .lock: lock])
+
+                if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(targetFileName) }).where({ $0.serverUrl.equals(parentItemRemotePath) }).first {
+                    try dbManager.ncDatabase().write {
+                        targetMetadata.lock = true
+                        targetMetadata.lockOwner = lock.owner
+                        targetMetadata.lockOwnerDisplayName = lock.ownerDisplayName
+                        targetMetadata.lockOwnerEditor = lock.ownerEditor
+                        targetMetadata.lockOwnerType = lock.ownerType.rawValue
+                        targetMetadata.lockTime = lock.time
+                        targetMetadata.lockTimeOut = lock.timeOut
+                        targetMetadata.lockToken = lock.token
+                    }
+                } else {
+                    logger.error("Failed to find target item for acquired lock.", [.lock: lock])
+                }
             } else {
                 logger.info("Locked file but did not receive lock information.", [.name: targetFileName])
             }
@@ -269,6 +284,22 @@ extension Item {
                 logger.info("Unlocked file but did not receive lock information.", [.name: originalFileName])
             }
 
+            logger.info("Removing lock from locally stored target item.", [.name: originalFileName])
+
+            if let targetMetadata = dbManager.itemMetadatas.where({ $0.fileName.equals(originalFileName) }).where({ $0.serverUrl.equals(metadata.serverUrl) }).first {
+                try dbManager.ncDatabase().write {
+                    targetMetadata.lock = false
+                    targetMetadata.lockOwner = nil
+                    targetMetadata.lockOwnerDisplayName = nil
+                    targetMetadata.lockOwnerEditor = nil
+                    targetMetadata.lockOwnerType = nil
+                    targetMetadata.lockTime = nil
+                    targetMetadata.lockTimeOut = nil
+                    targetMetadata.lockToken = nil
+                }
+            } else {
+                logger.error("Failed to find target item for released lock.", [.lock: lock])
+            }
         } catch {
             logger.error("Could not unlock item.", [.name: self.filename, .error: error])
 
