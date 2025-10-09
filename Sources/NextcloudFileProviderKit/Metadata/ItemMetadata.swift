@@ -51,7 +51,12 @@ public protocol ItemMetadata: Equatable {
     var hidden: Bool { get set }
     var iconName: String { get set }
     var iconUrl: String { get set }
+    
+    ///
+    /// This is a lock file which was created on the local device and not introduced through synchronization with the server.
+    ///
     var isLockFileOfLocalOrigin: Bool { get set }
+    
     var mountType: String { get set }
     var name: String { get set }  // for unifiedSearch is the provider.id
     var note: String { get set }

@@ -35,12 +35,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var hidden: Bool
     public var iconName: String
     public var iconUrl: String
-    
-    ///
-    /// This is a lock file which was created on the local device and not introduced through synchronization with the server.
-    ///
     public var isLockFileOfLocalOrigin: Bool
-
     public var mountType: String
     public var name: String
     public var note: String
@@ -189,7 +184,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.lockOwnerDisplayName = lockOwnerDisplayName
         self.lockTime = lockTime
         self.lockTimeOut = lockTimeOut
-        self.lockToken = lockToken
         self.path = path
         self.permissions = permissions
         self.quotaUsedBytes = quotaUsedBytes
