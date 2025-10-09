@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
         <source>Resume sync for all</source>
         <translation>Berrekin sinkronizazioa guztientzat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
         <source>Pause sync for all</source>
         <translation>Pausatu sinkronizazioa guztientzat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="113"/>
         <source>Add account</source>
         <translation>Gehitu kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
         <source>Add new account</source>
         <translation>Gehitu kontu berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="150"/>
         <source>Settings</source>
         <translation>Ezarpenak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="173"/>
         <source>Exit</source>
         <translation>Irten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="213"/>
         <source>Current account avatar</source>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
         <source>Current account status is online</source>
         <translation>Uneko kontuaren egoera: aktibo dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
         <source>Current account status is do not disturb</source>
         <translation>Uneko kontuaren egoera: ez molestatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="318"/>
         <source>Account switcher and settings menu</source>
         <translation>Kontu aldatzailea eta ezarpenen menua</translation>
     </message>
@@ -1439,7 +1439,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="98"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>Open existing file</source>
         <translation>Ireki lehendik dagoen fitxategia</translation>
     </message>
@@ -1455,7 +1455,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="106"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="107"/>
         <source>Open clashing file</source>
         <translation>Ireki talka fitxategia</translation>
     </message>
@@ -1470,42 +1470,42 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Fitxategi-izen berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="90"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="91"/>
         <source>Rename file</source>
         <translation>Berrizendatu fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="93"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
         <translation>&quot;%1&quot; fitxategia ezin izan da sinkronizatu sistema honetan dagoen fitxategi batekin kasu-talka bat dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="93"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="94"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
         <translation>% 1ek ez ditu fitxategi-izen berdinak onartzen letra maiuskula/minuskula ezberdintasunarekin bakarrik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="238"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="239"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Fitxategi-izenak hasierako eta amaierako zuriuneak dauzka.</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="241"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="242"/>
         <source>Filename contains leading spaces.</source>
         <translation>Fitxategi-izenak hasierako zuriunea dauka.</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="244"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Fitxategi-izenak amaierako zuriunea dauka.</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
         <source>Use invalid name</source>
         <translation>Erabili izen baliogabea</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="273"/>
+        <location filename="../src/gui/caseclashfilenamedialog.cpp" line="274"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>Fitxategiak karaktere ilegalak dauzka: %1</translation>
     </message>
@@ -1561,7 +1561,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="87"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="88"/>
         <source>Conflicting versions of %1.</source>
         <translation>% 1 bertsio gatazkatsuak.</translation>
     </message>
@@ -1609,33 +1609,33 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>&lt;a href=&quot;%1&quot;&gt;Ireki zerbitzariko bertsioa&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="45"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="170"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="46"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="171"/>
         <source>Keep selected version</source>
         <translation>Hautatutako bertsioa mantendu</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="141"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="142"/>
         <source>Open local version</source>
         <translation>Ireki bertsio lokala</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="149"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open server version</source>
         <translation>ireki zerbitzariko bertsioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="167"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="168"/>
         <source>Keep both versions</source>
         <translation>Mantendu bi bertsioak</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="168"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="169"/>
         <source>Keep local version</source>
         <translation>Mantendu bertsio lokala</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="169"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="170"/>
         <source>Keep server version</source>
         <translation>Mantendu zerbitzariko bertsioa</translation>
     </message>
@@ -4666,32 +4666,32 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="450"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="451"/>
         <source>The local file was removed during sync.</source>
         <translation>Fitxategi lokala ezabatu da sinkronizazioan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="465"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Local file changed during sync.</source>
         <translation>Fitxategi lokala aldatu da sinkronizazioan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="507"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="508"/>
         <source>Poll URL missing</source>
         <translation>Galdeketa URLa falta da</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Espero ez zen erantzuna (%1) zerbitzaritik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="523"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Missing File ID from server</source>
         <translation>Fitxategiaren IDa falta da zerbitzarian</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="543"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Missing ETag from server</source>
         <translation>ETag-a falta da zerbitzarian</translation>
     </message>
@@ -6823,19 +6823,14 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Erabiltzailea ez molestatu egoeran dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Account actions</source>
         <translation>Kontuaren ekintzak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
         <source>Set status</source>
         <translation>Ezarri egoera</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
-        <source>Status message</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="168"/>
@@ -6843,14 +6838,19 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Kendu kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <source>Status message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
         <source>Log out</source>
         <translation>Amaitu saioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
         <source>Log in</source>
         <translation>Hasi saioa</translation>
     </message>
