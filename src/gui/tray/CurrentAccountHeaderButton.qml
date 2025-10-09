@@ -164,6 +164,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
@@ -187,6 +188,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
@@ -210,6 +212,7 @@ Button {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 leftPadding: Style.userLineSpacing
+                elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
                     : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
