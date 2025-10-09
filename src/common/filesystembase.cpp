@@ -779,14 +779,14 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     if (!GetFileSecurityW(path.toStdWString().c_str(), info, nullptr, 0, &neededLength)) {
         const auto lastError = GetLastError();
         if (lastError != ERROR_INSUFFICIENT_BUFFER) {
-            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << lastError;
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << Utility::formatWinError(lastError);
             return false;
         }
 
         securityDescriptor.reset(new char[neededLength]);
 
         if (!GetFileSecurityW(path.toStdWString().c_str(), info, securityDescriptor.get(), neededLength, &neededLength)) {
-            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << GetLastError();
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << Utility::formatWinError(GetLastError());
             return false;
         }
     }
@@ -794,7 +794,7 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     int daclPresent = false, daclDefault = false;
     PACL resultDacl = nullptr;
     if (!GetSecurityDescriptorDacl(securityDescriptor.get(), &daclPresent, &resultDacl, &daclDefault)) {
-        qCWarning(lcFileSystem) << "error when calling GetSecurityDescriptorDacl" << path << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling GetSecurityDescriptorDacl" << path << Utility::formatWinError(GetLastError());
         return false;
     }
     if (!daclPresent || !resultDacl) {
@@ -805,13 +805,13 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     PSID sid = nullptr;
     if (!ConvertStringSidToSidW(L"S-1-5-32-545", &sid))
     {
-        qCWarning(lcFileSystem) << "error when calling ConvertStringSidToSidA" << path << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling ConvertStringSidToSidA" << path << Utility::formatWinError(GetLastError());
         return false;
     }
 
     ACL_SIZE_INFORMATION aclSize;
     if (!GetAclInformation(resultDacl, &aclSize, sizeof(aclSize), AclSizeInformation)) {
-        qCWarning(lcFileSystem) << "error when calling GetAclInformation" << path << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling GetAclInformation" << path << Utility::formatWinError(GetLastError());
         return false;
     }
 
@@ -821,19 +821,19 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     std::unique_ptr<ACL> newDacl{reinterpret_cast<PACL>(new char[newAclSize])};
     if (!InitializeAcl(newDacl.get(), newAclSize, ACL_REVISION)) {
         const auto lastError = GetLastError();
-        if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+        if (lastError == ERROR_INSUFFICIENT_BUFFER) {
             qCWarning(lcFileSystem) << "insufficient memory error when calling InitializeAcl" << path;
             return false;
         }
 
-        qCWarning(lcFileSystem) << "error when calling InitializeAcl" << path << lastError;
+        qCWarning(lcFileSystem) << "error when calling InitializeAcl" << path << Utility::formatWinError(lastError);
         return false;
     }
 
     if (permissions == FileSystem::FolderPermissions::ReadOnly) {
         if (!AddAccessDeniedAceEx(newDacl.get(), ACL_REVISION, OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE,
                                   FILE_DELETE_CHILD | DELETE | FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA, sid)) {
-            qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce << path" << GetLastError();
+            qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce" << path << Utility::formatWinError(GetLastError());
             return false;
         }
     }
@@ -841,7 +841,7 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
     for (int i = 0; i < aclSize.AceCount; ++i) {
         void *currentAce = nullptr;
         if (!GetAce(resultDacl, i, &currentAce)) {
-            qCWarning(lcFileSystem) << "error when calling GetAce" << path << GetLastError();
+            qCWarning(lcFileSystem) << "error when calling GetAce" << path << Utility::formatWinError(GetLastError());
             return false;
         }
 
@@ -854,29 +854,29 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
 
         if (!AddAce(newDacl.get(), ACL_REVISION, i + 1, currentAce, currentAceHeader->AceSize)) {
             const auto lastError = GetLastError();
-            if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+            if (lastError == ERROR_INSUFFICIENT_BUFFER) {
                 qCWarning(lcFileSystem) << "insufficient memory error when calling AddAce" << path;
                 return false;
             }
 
-            if (lastError != ERROR_INVALID_PARAMETER) {
+            if (lastError == ERROR_INVALID_PARAMETER) {
                 qCWarning(lcFileSystem) << "invalid parameter error when calling AddAce" << path << "ACL size" << newAclSize;
                 return false;
             }
 
-            qCWarning(lcFileSystem) << "error when calling AddAce" << path << lastError << "acl index" << (i + 1);
+            qCWarning(lcFileSystem) << "error when calling AddAce" << path << Utility::formatWinError(lastError) << "acl index" << (i + 1);
             return false;
         }
     }
 
     SECURITY_DESCRIPTOR newSecurityDescriptor;
     if (!InitializeSecurityDescriptor(&newSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION)) {
-        qCWarning(lcFileSystem) << "error when calling InitializeSecurityDescriptor" << path << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling InitializeSecurityDescriptor" << path << Utility::formatWinError(GetLastError());
         return false;
     }
 
     if (!SetSecurityDescriptorDacl(&newSecurityDescriptor, true, newDacl.get(), false)) {
-        qCWarning(lcFileSystem) << "error when calling SetSecurityDescriptorDacl" << path << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling SetSecurityDescriptorDacl" << path << Utility::formatWinError(GetLastError());
         return false;
     }
 
@@ -896,14 +896,14 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
             }
 
             if (!SetFileSecurityW(childFileStdWString.c_str(), info, &newSecurityDescriptor)) {
-                qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << childFile << GetLastError();
+                qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << childFile << Utility::formatWinError(GetLastError());
                 return false;
             }
         }
     }
 
     if (!SetFileSecurityW(QDir::toNativeSeparators(path).toStdWString().c_str(), info, &newSecurityDescriptor)) {
-        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << QDir::toNativeSeparators(path) << GetLastError();
+        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << QDir::toNativeSeparators(path) << Utility::formatWinError(GetLastError());
         return false;
     }
 
