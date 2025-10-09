@@ -120,7 +120,15 @@ public extension Item {
             logger.info("Could not acquire updated metadata of item. Unable to update item status to uploading.", [.item: itemIdentifier])
             return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
-
+        
+        var headers = [String: String]()
+        
+        if let token = metadata.lockToken {
+            headers["If"] = "<\(remotePath)> (<opaquelocktoken:\(token)>)"
+        }
+        
+        let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
+        
         let (_, _, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
@@ -131,6 +139,7 @@ public extension Item {
             dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
+            options: options,
             log: logger.log,
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
