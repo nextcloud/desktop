@@ -11,8 +11,8 @@
 #include <QDir>
 #include <QRegularExpression>
 #include <QStringList>
-#include <QtGlobal>
 #include <QTextCodec>
+#include <QtGlobal>
 #include <qmetaobject.h>
 
 #include <iostream>
@@ -61,7 +61,8 @@ static bool compressLog(const QString &originalName, const QString &targetName)
 
 }
 
-namespace OCC {
+namespace OCC
+{
 
 Q_LOGGING_CATEGORY(lcPermanentLog, "nextcloud.log.permanent")
 
@@ -74,8 +75,7 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
 {
-    qSetMessagePattern(QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} %{file}:%{line} "
-                                      "]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
+    qSetMessagePattern(QStringLiteral("%{time yyyy-MM-dd hh:mm:ss:zzz} [%{type} %{category}]:\t%{message}; %{function} %{if-debug}%{file}%{endif}:%{line}"));
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     s_originalMessageHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
@@ -93,7 +93,6 @@ Logger::~Logger()
     qInstallMessageHandler(nullptr);
 #endif
 }
-
 
 void Logger::postGuiLog(const QString &title, const QString &message)
 {
@@ -114,7 +113,8 @@ bool Logger::isLoggingToFile() const
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     static long long int linesCounter = 0;
-    const auto &msg = qFormatLogMessage(type, ctx, message);
+    QString msg = qFormatLogMessage(type, ctx, message);
+
 #if defined Q_OS_WIN && ((defined NEXTCLOUD_DEV && NEXTCLOUD_DEV) || defined QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
@@ -146,9 +146,8 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         if (_logstream) {
             (*_logstream) << msg << "\n";
             ++_linesCounter;
-            if (_doFileFlush ||
-                _linesCounter >= MaxLogLinesBeforeFlush ||
-                type == QtMsgType::QtWarningMsg || type == QtMsgType::QtCriticalMsg || type == QtMsgType::QtFatalMsg) {
+            if (_doFileFlush || _linesCounter >= MaxLogLinesBeforeFlush || type == QtMsgType::QtWarningMsg || type == QtMsgType::QtCriticalMsg
+                || type == QtMsgType::QtFatalMsg) {
                 _logstream->flush();
                 _linesCounter = 0;
             }
@@ -171,8 +170,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
 void Logger::closeNoLock()
 {
-    if (_logstream)
-    {
+    if (_logstream) {
         _logstream->flush();
         _logFile.close();
         _logstream.reset();
@@ -244,7 +242,7 @@ void Logger::setupTemporaryFolderLogDir()
     QFile::Permissions perm = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
     QFile file(dir);
     file.setPermissions(perm);
-    
+
     setLogDebug(true);
     setLogExpire(4 /*hours*/);
     setLogDir(dir);
@@ -287,7 +285,6 @@ void Logger::dumpCrashLog()
 void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
 {
     if (!_logDirectory.isEmpty()) {
-
         QDir dir(_logDirectory);
         if (!dir.exists()) {
             dir.mkpath(".");
@@ -314,7 +311,7 @@ void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
         const QRegularExpression rx(regexpText);
         int maxNumber = -1;
         const auto collidingFileNames = dir.entryList({QStringLiteral("%1.*").arg(newLogName)}, QDir::Files, QDir::Name);
-        for(const auto &fileName : collidingFileNames) {
+        for (const auto &fileName : collidingFileNames) {
             const auto rxMatch = rx.match(fileName);
             if (rxMatch.hasMatch()) {
                 maxNumber = qMax(maxNumber, rxMatch.captured(1).toInt());
@@ -323,8 +320,7 @@ void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
         newLogName.append("." + QString::number(maxNumber + 1));
 
         auto previousLog = QString{};
-        switch (type)
-        {
+        switch (type) {
         case OCC::Logger::LogType::Log:
             previousLog = _logFile.fileName();
             setLogFileNoLock(dir.filePath(newLogName));
