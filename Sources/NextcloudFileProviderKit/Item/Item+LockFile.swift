@@ -237,13 +237,7 @@ extension Item {
             )
         }
 
-        var returnError: Error? = nil
-
-        if #available(macOS 13.0, *) {
-            returnError = NSFileProviderError(.excludedFromSync)
-        }
-
-        return (modifiedItem, returnError)
+        return (modifiedItem, nil)
     }
 
     func deleteLockFile(domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager) async -> Error? {
