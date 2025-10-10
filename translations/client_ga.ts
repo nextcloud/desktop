@@ -502,7 +502,7 @@ féadfaidh macOS neamhaird a dhéanamh den iarratas seo nó moill a chur air.</t
     <message>
         <location filename="../src/libsync/account.cpp" line="225"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Nasc Comhroinnte Poiblí</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1061"/>
