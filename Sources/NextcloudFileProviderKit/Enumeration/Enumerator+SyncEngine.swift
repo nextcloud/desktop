@@ -56,19 +56,19 @@ extension Enumerator {
             return (metadatas, nil, nil, nil, error)
         }
 
-        guard var (directoryMetadata, _, metadatas) =
-            await files.toDirectoryReadMetadatas(account: account)
-        else {
+        guard var (directoryMetadata, _, metadatas) = await files.toDirectoryReadMetadatas(account: account) else {
             logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
             return (nil, nil, nil, nil, .invalidData)
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         assert(directoryMetadata.directory)
+
         if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
             directoryMetadata.downloaded = existingMetadata.downloaded
             directoryMetadata.keepDownloaded = existingMetadata.keepDownloaded
         }
+        
         directoryMetadata.visitedDirectory = true
 
         metadatas.insert(directoryMetadata, at: 0)

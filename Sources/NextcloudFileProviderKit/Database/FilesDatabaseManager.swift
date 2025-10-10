@@ -273,26 +273,14 @@ public final class FilesDatabaseManager: Sendable {
         return deletedMetadatas
     }
 
-    private func processItemMetadatasToUpdate(
-        existingMetadatas: Results<RealmItemMetadata>,
-        updatedMetadatas: [SendableItemMetadata],
-        keepExistingDownloadState: Bool
-    ) -> (
-        newMetadatas: [SendableItemMetadata],
-        updatedMetadatas: [SendableItemMetadata],
-        directoriesNeedingRename: [SendableItemMetadata]
-    ) {
+    private func processItemMetadatasToUpdate(existingMetadatas: Results<RealmItemMetadata>, updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool) -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
 
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingMetadatas.first(where: {
-                $0.ocId == updatedMetadata.ocId
-            }) {
-                if existingMetadata.status == Status.normal.rawValue,
-                    !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
-                {
+            if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     if updatedMetadata.directory,
                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
                         updatedMetadata.fileName != existingMetadata.fileName
@@ -303,6 +291,7 @@ public final class FilesDatabaseManager: Sendable {
                     if keepExistingDownloadState {
                         updatedMetadata.downloaded = existingMetadata.downloaded
                     }
+
                     updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
                     updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
 

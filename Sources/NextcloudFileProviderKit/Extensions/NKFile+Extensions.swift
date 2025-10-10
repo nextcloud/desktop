@@ -69,6 +69,7 @@ extension NKFile {
             lockOwnerDisplayName: lockOwnerDisplayName,
             lockTime: lockTime,
             lockTimeOut: lockTimeOut,
+            lockToken: nil, // This is not available at this point and must be fetched from the local persistence later.
             path: path,
             permissions: permissions,
             quotaUsedBytes: quotaUsedBytes,
