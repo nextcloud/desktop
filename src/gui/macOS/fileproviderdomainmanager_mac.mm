@@ -72,6 +72,20 @@ inline QString uuidDomainIdentifierForAccount(const OCC::AccountPtr account)
 inline QString domainDisplayNameForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
+    
+    // Check if there's a custom folder name set for this account
+    const auto accountId = account->userIdAtHostWithPort();
+    const auto controller = OCC::Mac::FileProviderSettingsController::instance();
+    const auto customFolderName = controller->customFolderNameForAccount(accountId);
+    
+    if (!customFolderName.isEmpty()) {
+        qCDebug(OCC::lcMacFileProviderDomainManager) << "Using custom folder name"
+                                                     << customFolderName
+                                                     << "for account"
+                                                     << accountId;
+        return customFolderName;
+    }
+    
     return account->displayName();
 }
 

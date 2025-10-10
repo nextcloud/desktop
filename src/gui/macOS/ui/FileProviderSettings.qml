@@ -54,6 +54,35 @@ Page {
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
 
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Style.standardSpacing
+
+            EnforcedPlainTextLabel {
+                text: qsTr("Custom folder name:")
+                Layout.preferredWidth: 150
+            }
+
+            TextField {
+                id: customFolderNameField
+                Layout.fillWidth: true
+                placeholderText: qsTr("Enter custom folder name (leave empty for default)")
+                text: root.controller.customFolderNameForAccount(root.accountUserIdAtHost)
+                onEditingFinished: root.controller.setCustomFolderNameForAccount(root.accountUserIdAtHost, text)
+                
+                Connections {
+                    target: root.controller
+                    
+                    function onCustomFolderNameForAccountChanged(accountUserIdAtHost) {
+                        if (root.accountUserIdAtHost !== accountUserIdAtHost) {
+                            return;
+                        }
+                        customFolderNameField.text = root.controller.customFolderNameForAccount(root.accountUserIdAtHost);
+                    }
+                }
+            }
+        }
+
         Loader {
             id: vfsSettingsLoader
 
