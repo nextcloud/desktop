@@ -756,13 +756,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isLivePhoto = serverEntry.isLivePhoto;
     item->_livePhotoFile = serverEntry.livePhotoFile;
 
-    if (serverEntry.isValid()) {
-        item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
-        item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
-    } else {
-        item->_folderQuota.bytesUsed = -1;
-        item->_folderQuota.bytesAvailable = -1;
-    }
+    item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
 
     // Check for missing server data
     {
