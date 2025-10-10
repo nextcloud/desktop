@@ -29,6 +29,30 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileprovide
 // are consistent throughout these classes
 namespace {
 
+// Helper function to get custom folder name directly from NSUserDefaults
+// without going through FileProviderSettingsController singleton to avoid
+// circular dependency during initialization
+QString customFolderNameFromUserDefaults(const QString &accountId)
+{
+    NSUserDefaults *userDefaults = NSUserDefaults.standardUserDefaults;
+    NSString *customFolderNamesKey = @"customFolderNames";
+
+    NSDictionary<NSString *, NSString *> *customFolderNames =
+        (NSDictionary<NSString *, NSString *> *)[userDefaults objectForKey:customFolderNamesKey];
+
+    if (customFolderNames == nil) {
+        return QString();
+    }
+
+    NSString *folderName = [customFolderNames objectForKey:accountId.toNSString()];
+
+    if (folderName == nil) {
+        return QString();
+    }
+
+    return QString::fromNSString(folderName);
+}
+
 QString uuidDomainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
@@ -72,12 +96,12 @@ inline QString uuidDomainIdentifierForAccount(const OCC::AccountPtr account)
 inline QString domainDisplayNameForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
-    
-    // Check if there's a custom folder name set for this account
     const auto accountId = account->userIdAtHostWithPort();
-    const auto controller = OCC::Mac::FileProviderSettingsController::instance();
-    const auto customFolderName = controller->customFolderNameForAccount(accountId);
-    
+
+    // Access custom folder name directly from NSUserDefaults to avoid circular dependency
+    // with FileProviderSettingsController singleton during initialization
+    const auto customFolderName = customFolderNameFromUserDefaults(accountId);
+
     if (!customFolderName.isEmpty()) {
         qCDebug(OCC::lcMacFileProviderDomainManager) << "Using custom folder name"
                                                      << customFolderName
@@ -85,7 +109,7 @@ inline QString domainDisplayNameForAccount(const OCC::Account * const account)
                                                      << accountId;
         return customFolderName;
     }
-    
+
     return account->displayName();
 }
 
