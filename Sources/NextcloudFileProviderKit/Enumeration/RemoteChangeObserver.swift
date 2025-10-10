@@ -591,9 +591,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         }
         _ = await task.result
 
-        logger.info("Finished change checking of working set for user: \(self.accountId)")
-        logger.debug("Examined item ids: \(examinedItemIds)")
-        logger.debug("Materialised item ids: \(materialisedItems.map(\.ocId))")
+        logger.info("Finished change enumeration of working set. Examined item IDs: \(examinedItemIds), materialized item IDs: \(materialisedItems.map(\.ocId))")
 
         if allUpdatedMetadatas.isEmpty, allDeletedMetadatas.isEmpty {
             logger.info("No changes found.")

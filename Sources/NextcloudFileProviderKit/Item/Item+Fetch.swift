@@ -32,28 +32,15 @@ public extension Item {
             )
 
             if let readError, readError != .success {
-                logger.error(
-                    """
-                    Could not enumerate directory contents for
-                    \(self.metadata.fileName)
-                    at \(remoteDirectoryPath)
-                    error: \(readError.errorCode)
-                    \(readError.errorDescription)
-                    """
-                )
+                logger.error("Could not enumerate directory contents.", [.name: self.metadata.fileName, .url: remoteDirectoryPath, .error: readError])
+
                 throw readError.fileProviderError(
                     handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                 ) ??  NSFileProviderError(.cannotSynchronize)
             }
 
             guard var metadatas else {
-                logger.error(
-                    """
-                    Could not fetch directory contents for
-                        \(self.metadata.fileName)
-                        at \(remoteDirectoryPath), received nil metadatas
-                    """
-                )
+                logger.error("Could not fetch directory contents.", [.name: self.metadata.fileName, .url: remoteDirectoryPath])
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
@@ -96,14 +83,7 @@ public extension Item {
                     )
 
                     guard error == .success else {
-                        logger.error(
-                        """
-                        Could not acquire contents of item: \(metadata.fileName)
-                        at \(remotePath)
-                        error: \(error.errorCode)
-                        \(error.errorDescription)
-                        """
-                        )
+                        logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
                         metadata.status = Status.downloadError.rawValue
                         metadata.sessionError = error.errorDescription
                         dbManager.addItemMetadata(metadata)
@@ -136,40 +116,27 @@ public extension Item {
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         guard metadata.classFile != "lock", !isLockFileName(filename) else {
-            logger.info(
-                """
-                System requested fetch of lock file \(self.filename)
-                    will just provide local contents URL if possible.
-                """
-            )
+            logger.info("System requested fetch of lock file, will just provide local contents URL if possible.", [.name: self.filename])
+
             if let domain, let localUrl = await localUrlForContents(domain: domain) {
                 return (localUrl, self, nil)
             } else if #available(macOS 13.0, *) {
-                logger.error("Could not get local contents URL for lock file, erroring")
+                logger.error("Could not get local contents URL for lock file, erroring.")
                 return (nil, self, NSFileProviderError(.excludedFromSync))
             } else {
-                logger.error("Could not get local contents URL for lock file, nilling")
+                logger.error("Could not get local contents URL for lock file, nilling.")
                 return (nil, self, nil)
             }
         }
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-        logger.debug(
-            """
-            Fetching item with name \(self.metadata.fileName)
-                at URL: \(serverUrlFileName)
-            """
-        )
+        logger.debug("Fetching item.", [.name: self.metadata.fileName, .url: serverUrlFileName])
 
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
         guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
-            logger.error(
-                """
-                Could not acquire updated metadata of item \(ocId),
-                unable to update item status to downloading
-                """
-            )
+            logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
+
             return (
                 nil,
                 nil,
@@ -179,13 +146,7 @@ public extension Item {
 
         let isDirectory = contentType.conforms(to: .directory)
         if isDirectory {
-            logger.debug(
-                """
-                Item with identifier: \(ocId)
-                and filename: \(updatedMetadata.fileName)
-                is a directory, creating dir locally and fetching its contents
-                """
-            )
+            logger.debug("is a directory, creating directory locally and fetching its contents.", [.item: ocId, .name: updatedMetadata.fileName])
 
             do {
                 try FileManager.default.createDirectory(
@@ -231,15 +192,7 @@ public extension Item {
             )
 
             if error != .success {
-                logger.error(
-                    """
-                    Could not acquire contents of item with identifier: \(ocId)
-                        and fileName: \(updatedMetadata.fileName)
-                        at \(serverUrlFileName)
-                        error: \(error.errorCode)
-                        \(error.errorDescription)
-                    """
-                )
+                logger.error("Could not acquire contents of item.", [.item: ocId, .name: updatedMetadata.fileName, .error: error])
 
                 updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.errorDescription
@@ -250,12 +203,7 @@ public extension Item {
             }
         }
 
-        logger.debug(
-            """
-            Acquired contents of item with identifier: \(ocId)
-            and filename: \(updatedMetadata.fileName)
-            """
-        )
+        logger.debug("Acquired contents of item.", [.item: ocId, .name: updatedMetadata.fileName])
 
         updatedMetadata.status = Status.normal.rawValue
         updatedMetadata.downloaded = true
@@ -272,16 +220,9 @@ public extension Item {
             remoteInterface: remoteInterface,
             account: account
         ) else {
-            logger.error(
-                """
-                Could not find parent item id for file \(self.metadata.fileName)
-                """
-            )
-            return (
-                nil,
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
-            )
+            logger.error("Could not find parent item id for file.", [.name: self.metadata.fileName])
+
+            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
         }
 
         let fpItem = Item(

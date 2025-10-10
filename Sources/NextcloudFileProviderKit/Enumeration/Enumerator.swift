@@ -13,8 +13,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
 
-    private let currentAnchor =
-        NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
+    private let currentAnchor = NSFileProviderSyncAnchor(ISO8601DateFormatter().string(from: Date()).data(using: .utf8)!)
     private let pageItemCount: Int
     let logger: FileProviderLogger
     let account: Account
@@ -235,17 +234,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    public func enumerateChanges(
-        for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor
-    ) {
-        logger.debug(
-            """
-            Received enumerate changes request for enumerator
-                for user: \(self.account.ncKitAccount)
-                with serverUrl: \(self.serverUrl)
-                with sync anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")
-            """
-        )
+    public func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
+        logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: self.serverUrl])
+
         /*
          - query the server for updates since the passed-in sync anchor (TODO)
 
@@ -257,7 +248,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .workingSet {
-            logger.debug("Enumerating working set changes.", [.account: self.account])
+            logger.debug("Enumerating changes in working set.", [.account: self.account])
 
             let formatter = ISO8601DateFormatter()
             
@@ -292,11 +283,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account, options: .init(), taskHandler: { _ in }
                 )
                 guard let capabilities, error == .success else {
-                    logger.error(
-                        """
-                        Could not acquire capabilities, cannot check trash.
-                            Error: \(error.errorDescription)
-                        """)
+                    logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
                 }
@@ -341,15 +328,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     log: logger.log
                 )
             }
+
             return
         }
 
-        logger.info(
-            """
-            Enumerating changes for user: \(self.account.ncKitAccount)
-            with serverUrl: \(self.serverUrl)
-            """
-        )
+        logger.info("Enumerating changes in item.", [.url: self.serverUrl])
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
@@ -372,51 +355,24 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             guard readError == nil else {
-                logger.error(
-                    """
-                    Finishing enumeration of changes for: \(self.account.ncKitAccount)
-                    with serverUrl: \(self.serverUrl)
-                    with error: \(readError!.errorDescription)
-                    """
-                )
+                logger.error("Finished enumerating changes.", [.url: self.serverUrl, .error: readError])
 
-                let error = readError?.fileProviderError(
-                    handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                ) ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError!.isNotFoundError {
-                    logger.info(
-                        """
-                        404 error means item no longer exists.
-                        Deleting metadata and reporting \(self.serverUrl)
-                        as deletion without error
-                        """
-                    )
+                    logger.info("404 error means item no longer exists. Deleting metadata and reporting deletion without error.", [.url: self.serverUrl])
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
-                        logger.error(
-                            """
-                            Invalid enumeratedItemMetadata.
-                            Could not delete metadata nor report deletion.
-                            """
-                        )
+                        logger.error("Invalid enumeratedItemMetadata. Could not delete metadata nor report deletion.")
                         observer.finishEnumeratingWithError(error)
                         return
                     }
 
                     if itemMetadata.directory {
-                        if let deletedDirectoryMetadatas =
-                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(
-                                ocId: itemMetadata.ocId)
-                        {
+                        if let deletedDirectoryMetadatas = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) {
                             currentDeletedMetadatas += deletedDirectoryMetadatas
                         } else {
-                            logger.error(
-                                """
-                                Something went wrong when recursively deleting directory.
-                                It's metadata was not found. Cannot report it as deleted.
-                                """
-                            )
+                            logger.error("Something went wrong when recursively deleting directory. It's metadata was not found. Cannot report it as deleted.")
                         }
                     } else {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
@@ -485,8 +441,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 Task { @MainActor in
                     observer.didEnumerate(items)
-                    logger.info("Did enumerate \(items.count) items.")
-                    logger.info("Next page is nil: \(nextPage == nil)")
+                    logger.info("Did enumerate \(items.count) items. Next page is nil: \(nextPage == nil)")
 
                     if let nextPage, let nextPageData = try? JSONEncoder().encode(nextPage) {
                         logger.info(
@@ -538,13 +493,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         handleInvalidParent: Bool = true
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
-            logger.error(
-                """
-                Received invalid newMetadatas, updatedMetadatas or deletedMetadatas.
-                    Finished enumeration of changes with error.
-                """
-            )
-            
+            logger.error("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+
             observer.finishEnumeratingWithError(
                 NSError.fileProviderErrorForNonExistentItem(
                     withIdentifier: enumeratedItemIdentifier
@@ -587,13 +537,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         observer.didUpdate(updatedItems)
                     }
 
-                    logger.info(
-                    """
-                    Processed \(updatedItems.count) new or updated metadatas.
-                        \(allDeletedMetadatas.count) deleted metadatas.
-                    """
-                    )
-                    
+                    logger.info("Processed \(updatedItems.count) new or updated metadatas. \(allDeletedMetadatas.count) deleted metadatas.")
+
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
@@ -649,9 +594,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             throw NSError()
         }
 
-        logger.info(
-            "Recovering from invalid parent identifier at \(urlToEnumerate)"
-        )
+        logger.info("Recovering from invalid parent identifier at \(urlToEnumerate)")
+
         let (metadatas, _, _, _, _, error) = await Enumerator.readServerUrl(
             urlToEnumerate,
             account: account,
@@ -668,6 +612,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Metadatas: \(metadatas?.count ?? -1)
                 """
             )
+
             throw error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
         // Provide it to the caller method so it can ingest it into the database and fix future errs
