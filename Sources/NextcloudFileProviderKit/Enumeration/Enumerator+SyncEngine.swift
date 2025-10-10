@@ -189,10 +189,10 @@ extension Enumerator {
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                 let isNew = existing == nil
                 let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                metadata.lockToken = existing?.lockToken
                 let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
                 metadata.downloaded = existing?.downloaded == true
                 metadata.keepDownloaded = existing?.keepDownloaded == true
-                metadata.lockToken = existing?.lockToken
                 dbManager.addItemMetadata(metadata)
                 return ([metadata], newItems, updatedItems, nil, nextPage, nil)
             }

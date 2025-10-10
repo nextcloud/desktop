@@ -294,6 +294,7 @@ public final class FilesDatabaseManager: Sendable {
 
                     updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
                     updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
+                    updatedMetadata.lockToken = existingMetadata.lockToken
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
