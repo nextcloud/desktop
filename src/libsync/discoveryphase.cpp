@@ -635,9 +635,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             quotaValue = static_cast<int64_t>(map.value(FolderQuota::availableBytesC).toDouble(&ok));
             _folderQuota.bytesAvailable = ok ? quotaValue : -1;
 
-            qCWarning(lcDiscovery) << "Setting quota for" << file
-                                   << "bytesUsed:" << _folderQuota.bytesUsed
-                                   << "bytesAvailable:" << _folderQuota.bytesAvailable;
+            qCDebug(lcDiscovery) << "Setting quota for" << file
+                                 << "bytesUsed:" << _folderQuota.bytesUsed
+                                 << "bytesAvailable:" << _folderQuota.bytesAvailable
+                                 << "ok:" << ok;
             emit setfolderQuota(_folderQuota);
         }
     } else {
