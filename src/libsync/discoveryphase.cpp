@@ -512,8 +512,14 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
 
         // all folders will contain both
         if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {          
-            _folderQuota = {map.value(FolderQuota::usedBytesC).toLongLong(),
-                            map.value(FolderQuota::availableBytesC).toLongLong()};
+            // The server can respond with e.g. "2.58440798353E+12" for the quota
+            // therefore: parse the string as a double and cast it to i64
+            auto ok = false;
+            auto quotaValue = static_cast<int64_t>(map.value(FolderQuota::usedBytesC).toDouble(&ok));
+            _folderQuota.bytesUsed = ok ? quotaValue : -1;
+            quotaValue = static_cast<int64_t>(map.value(FolderQuota::availableBytesC).toDouble(&ok));
+            _folderQuota.bytesAvailable = ok ? quotaValue : -1;
+
             qCWarning(lcDiscovery) << "Setting quota for" << file
                                    << "bytesUsed:" << _folderQuota.bytesUsed
                                    << "bytesAvailable:" << _folderQuota.bytesAvailable;

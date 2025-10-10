@@ -199,6 +199,28 @@ private slots:
         QVERIFY(completeSpy.findItem("nofileid")->_errorString.contains("file id"));
         QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("permission"));
     }
+
+    void testQuotaReportedAsDouble()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        fakeFolder.remoteModifier().mkdir("doubleValue");
+        fakeFolder.remoteModifier().find("doubleValue")->folderQuota.setBytesAvailableString("2.345E+12");
+        fakeFolder.remoteModifier().mkdir("intValue");
+        fakeFolder.remoteModifier().find("intValue")->folderQuota.setBytesAvailableString("2345000000000");
+        fakeFolder.remoteModifier().mkdir("unlimited");
+        fakeFolder.remoteModifier().find("unlimited")->folderQuota.setBytesAvailableString("-3");
+        fakeFolder.remoteModifier().mkdir("invalidValue");
+        fakeFolder.remoteModifier().find("invalidValue")->folderQuota.setBytesAvailableString("maybe like, 3 GB");
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        int64_t expectedValue = 2345000000000;
+        QCOMPARE(completeSpy.findItem("doubleValue")->_folderQuota.bytesAvailable, expectedValue);
+        QCOMPARE(completeSpy.findItem("intValue")->_folderQuota.bytesAvailable, expectedValue);
+        QCOMPARE(completeSpy.findItem("unlimited")->_folderQuota.bytesAvailable, -3);
+        QCOMPARE(completeSpy.findItem("invalidValue")->_folderQuota.bytesAvailable, -1);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestRemoteDiscovery)
