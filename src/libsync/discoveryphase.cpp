@@ -511,9 +511,19 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
 
         // all folders will contain both
-        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
-            _folderQuota = {map.value(FolderQuota::usedBytesC).toLongLong(),
-                            map.value(FolderQuota::availableBytesC).toLongLong()};
+        if (map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {          
+            // The server can respond with e.g. "2.58440798353E+12" for the quota
+            // therefore: parse the string as a double and cast it to i64
+            auto ok = false;
+            auto quotaValue = static_cast<int64_t>(map.value(FolderQuota::usedBytesC).toDouble(&ok));
+            _folderQuota.bytesUsed = ok ? quotaValue : -1;
+            quotaValue = static_cast<int64_t>(map.value(FolderQuota::availableBytesC).toDouble(&ok));
+            _folderQuota.bytesAvailable = ok ? quotaValue : -1;
+
+            qCDebug(lcDiscovery) << "Setting quota for" << file
+                                 << "bytesUsed:" << _folderQuota.bytesUsed
+                                 << "bytesAvailable:" << _folderQuota.bytesAvailable
+                                 << "ok:" << ok;
             emit setfolderQuota(_folderQuota);
         }
     } else {
@@ -521,12 +531,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        if (map.contains(FolderQuota::usedBytesC)) {
-            result.folderQuota.bytesUsed = map.value(FolderQuota::usedBytesC).toLongLong();
-        }
-        if (map.contains(FolderQuota::availableBytesC))     {
-            result.folderQuota.bytesAvailable = map.value(FolderQuota::availableBytesC).toLongLong();
-        }
         LsColJob::propertyMapToRemoteInfo(map,
                                           _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                           result);
