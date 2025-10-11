@@ -502,7 +502,7 @@ macOSはこの要求を無視したり、遅らせたりすることがありま
     <message>
         <location filename="../src/libsync/account.cpp" line="225"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>公開共有リンク</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1061"/>
