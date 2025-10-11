@@ -225,7 +225,9 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
 
     item->_lockToken = properties.value(QStringLiteral("lock-token"));
 
-    const auto date = QDateTime::fromString(properties.value(QStringLiteral("getlastmodified")), Qt::RFC2822Date);
+    auto getlastmodifiedValue = properties.value(QStringLiteral("getlastmodified"));
+    getlastmodifiedValue.replace("GMT", "+0000");
+    const auto date = QDateTime::fromString(getlastmodifiedValue, Qt::RFC2822Date);
     Q_ASSERT(date.isValid());
     if (date.toSecsSinceEpoch() > 0) {
         item->_modtime = date.toSecsSinceEpoch();
