@@ -531,7 +531,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountmanager.cpp" line="241"/>
         <location filename="../src/gui/accountmanager.cpp" line="322"/>
         <source>Legacy import</source>
-        <translation>Zaharraren inportazioa</translation>
+        <translation>Inportazio zaharkitua</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="242"/>
@@ -3321,12 +3321,12 @@ Ezabatu daitezkeen elementuak ezabatu egingo dira karpeta bat ezabatzea ekiditen
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Zaharkitutako inportazioa</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation type="unfinished"/>
+        <translation>Hautatu zaharkitutako konfiguraziotik importatzeko kontuak:</translation>
     </message>
 </context>
 <context>
