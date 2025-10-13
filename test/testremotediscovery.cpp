@@ -68,7 +68,7 @@ private slots:
         QTest::addColumn<QString>("expectedErrorString");
         QTest::addColumn<bool>("syncSucceeds");
 
-        const auto itemErrorMessage = "An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.";
+        const auto itemErrorMessage = "An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.";
 
         QTest::newRow("400") << 400 << QStringLiteral("We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.") << false;
         QTest::newRow("401") << 401 << QStringLiteral("You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.") << false;
