@@ -6451,9 +6451,14 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Huna ruhusa ya kufikia nyenzo hii. Ikiwa unaamini kuwa hii ni hitilafu, wasiliana na msimamizi wa seva yako ili uombe usaidizi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Hitilafu isiyotarajiwa imetokea. Tafadhali jaribu kusawazisha tena au wasiliana na msimamizi wa seva yako ikiwa suala litaendelea.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

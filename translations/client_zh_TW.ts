@@ -502,7 +502,7 @@ macOS 可能會忽略或延遲此請求。</translation>
     <message>
         <location filename="../src/libsync/account.cpp" line="225"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>公開分享連結</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1061"/>
@@ -6452,9 +6452,14 @@ Server replied with error: %2</source>
         <translation>您無權存取此資源。如果您認為這是一個錯誤，請向您的伺服器管理員尋求協助。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>發生意外錯誤。請再次嘗試同步，若問題持續，請聯絡您的伺服器管理員。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

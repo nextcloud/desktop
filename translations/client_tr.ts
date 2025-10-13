@@ -6449,9 +6449,14 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Bu kaynağa erişme izniniz yok. Bir yanlışlık olduğunu düşünüyorsanız, yardım almak için sunucu yöneticiniz ile görüşün.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Beklenmeyen bir sorun çıktı. Lütfen yeniden eşitlemeyi deneyin. Sorun sürüyorsa sunucu yöneticiniz ile görüşün.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

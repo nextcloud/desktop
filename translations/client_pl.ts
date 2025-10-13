@@ -6451,9 +6451,14 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Nie masz uprawnień do tego zasobu. Jeśli uważasz, że to błąd, skontaktuj się z administratorem serwera.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Wystąpił nieoczekiwany błąd. Spróbuj ponownie zsynchronizować lub skontaktuj się z administratorem serwera, jeśli problem będzie się powtarzał.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
