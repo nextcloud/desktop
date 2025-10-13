@@ -6451,9 +6451,14 @@ Server replied with error: %2</source>
         <translation>Немате дозволу да приступите овом ресурсу. Ако верујете да је ово грешка, обратите се администратору сервера за помоћ.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Дошло је до неочекиване грешке. Ако се проблем настави, молимо вас да поново покушате синхронизацију или да се обратите администратору сервера.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

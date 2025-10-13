@@ -6451,9 +6451,14 @@ Servern svarade med fel: %2</translation>
         <translation>Du har inte behörighet att komma åt denna resurs. Om du tror att detta är ett misstag, kontakta din serveradministratör för hjälp.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Ett oväntat fel uppstod. Försök att synkronisera igen eller kontakta din serveradministratör om problemet kvarstår.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -6450,9 +6450,14 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Sul puuduvad õigused ligipääsuks sellele ressursile. Kui arvad, et see on viga, siis palun küsi abi serveri haldajalt või peakasutajalt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Tekkis ootamatu viga. Proovi uuesti andmeid sünkroonida ja kui probleem kordub, siis võta ühendust oma serveri haldajaga.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
