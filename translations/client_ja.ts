@@ -6450,9 +6450,14 @@ Server replied with error: %2</source>
         <translation>このリソースへのアクセス権限がありません。誤りと思われる場合は、サーバー管理者に連絡して支援を依頼してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>予期せぬエラーが発生しました。再度同期を試みるか、問題が解決しない場合はサーバー管理者にお問い合わせください。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

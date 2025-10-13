@@ -6432,9 +6432,14 @@ Server replied with error: %2</source>
         <translation>Δεν έχετε άδεια πρόσβασης σε αυτόν τον πόρο. Εάν πιστεύετε ότι αυτό είναι λάθος, επικοινωνήστε με τον διαχειριστή του διακομιστή σας για να ζητήσετε βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
         <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation>Προέκυψε απρόσμενο σφάλμα. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν το πρόβλημα συνεχίζεται.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
