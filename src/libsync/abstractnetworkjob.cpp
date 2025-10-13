@@ -551,7 +551,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
             userFriendlyMessage = QObject::tr("You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.");
             break;
         default:
-            userFriendlyMessage = QObject::tr("An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.");
+            userFriendlyMessage = QObject::tr("An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.");
             break;
     }
 
