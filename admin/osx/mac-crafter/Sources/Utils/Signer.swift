@@ -141,13 +141,21 @@ enum Signer: Signing {
     ///
     static func sign(at location: URL, with codeSignIdentity: String, entitlements: URL?) async {
         print("Signing: \(location.path)")
-        
-        var command = "codesign --force --sign \"\(codeSignIdentity)\" \"\(location.path)\""
-        
+
+        var command = [
+            "codesign",
+            location.path,
+            "--timestamp",
+            "--verbose=4",
+            "--preserve-metadata=entitlements",
+            "--force",
+            "--sign=\"\(codeSignIdentity)\""
+        ]
+
         if let entitlements {
             command.append(" --entitlements=\"\(entitlements.path)\"")
         }
         
-        await shell(command)
+        await shell(command.joined(separator: " "))
     }
 }
