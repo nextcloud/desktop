@@ -313,18 +313,17 @@ import OSLog
         insertSyncAction(actionId)
 
         let identifier = item.itemIdentifier
-        let ocId = identifier.rawValue
         logger.debug("Received request to modify item.", [.item: item])
 
         guard let ncAccount else {
-            logger.error("Not modifying item: \(ocId) as account not set up yet.")
+            logger.error("Not modifying item because account not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         guard let ignoredFiles else {
-            logger.error("Not modifying item: \(ocId) as ignore list not set up yet.")
+            logger.error("Not modifying item because ignore list not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
@@ -332,13 +331,14 @@ import OSLog
 
 
         guard let dbManager else {
-            logger.error("Not modifying item because database is unavailable.")
+            logger.error("Not modifying item because the database is unavailable.")
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
 
         let progress = Progress()
+        
         Task {
             guard let existingItem = await Item.storedItem(
                 identifier: identifier,
@@ -347,16 +347,19 @@ import OSLog
                 dbManager: dbManager,
                 log: log
             ) else {
-                logger.error("Not modifying item: \(ocId) as item not found.")
+                logger.error("Not modifying item because it was not found.", [.item: identifier])
                 insertErrorAction(actionId)
+                
                 completionHandler(
                     item,
                     [],
                     false,
                     NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
                 )
+                
                 return
             }
+            
             let (modifiedItem, error) = await existingItem.modify(
                 itemTarget: item,
                 baseVersion: baseVersion,
@@ -380,6 +383,7 @@ import OSLog
             logger.debug("Calling item modification completion handler.", [.item: item.itemIdentifier, .name: item.filename, .error: error])
             completionHandler(modifiedItem ?? item, [], false, error)
         }
+        
         return progress
     }
 
@@ -387,13 +391,13 @@ import OSLog
         identifier: NSFileProviderItemIdentifier, 
         baseVersion _: NSFileProviderItemVersion,
         options _: NSFileProviderDeleteItemOptions = [], 
-        request _: NSFileProviderRequest,
+        request: NSFileProviderRequest,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
 
-        logger.debug("Received request to delete item.", [.item: identifier])
+        logger.debug("Received request (isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest), requestingExecutable: \(request.requestingExecutable?.absoluteString ?? "nil")) to delete item.", [.item: identifier])
 
         guard let ncAccount else {
             logger.error("Not deleting item \(identifier.rawValue), account not set up yet")
