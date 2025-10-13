@@ -221,7 +221,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().insert("A/resendme", 300);
 
-        QByteArray serverMessage = "An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.";
+        QByteArray serverMessage = "An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.";
         int resendActual = 0;
         int resendExpected = 2;
 
