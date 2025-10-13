@@ -13,18 +13,23 @@ let AccountDictTrashUrlKey = "trashUrlKey"
 let AccountDictTrashRestoreUrlKey = "trashRestoreUrlKey"
 let AccountDictFileNameKey = "fileNameKey"
 
-public struct Account: Equatable, Sendable {
+public struct Account: CustomStringConvertible, Equatable, Sendable {
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
     public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
-    public let username,
-               id,
-               password,
-               ncKitAccount,
-               serverUrl,
-               davFilesUrl,
-               trashUrl,
-               trashRestoreUrl,
-               fileName: String
+
+    public let username: String
+    public let id: String
+    public let password: String
+    public let ncKitAccount: String
+    public let serverUrl: String
+    public let davFilesUrl: String
+    public let trashUrl: String
+    public let trashRestoreUrl: String
+    public let fileName: String
+
+    public var description: String {
+        ncKitAccount // Custom textual representation to avoid password leakage.
+    }
 
     public static func ncKitAccountString(from username: String, serverUrl: String) -> String {
         username + " " + serverUrl
@@ -83,4 +88,3 @@ public struct Account: Equatable, Sendable {
         ]
     }
 }
-

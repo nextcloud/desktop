@@ -90,6 +90,8 @@ public enum FileProviderLogDetail: Encodable {
         if let someValue = anyOptional {
             if someValue.self is String {
                 self = .string(someValue as! String)
+            } else if let account = someValue as? Account {
+                self = .string(account.ncKitAccount)
             } else if let error = someValue as? NSFileProviderError {
                 self = .string("NSFileProviderError.Code: \(error.code)")
             } else if let error = someValue as? NSError {
