@@ -171,7 +171,6 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
         // The key optimization we want: the same folder with unchanged etag shouldn't be
         // enumerated repeatedly. Ideally, it should be enumerated only once.
         // However, without optimization, it might be enumerated 3 times (once per working set check)
-        XCTAssertLessThanOrEqual(customersEnumerateCount, 1, 
-                                "Customers folder with unchanged etag should not be enumerated repeatedly")
+        XCTAssertLessThanOrEqual(customersEnumerateCount, 1, "Customers folder with unchanged etag should not be enumerated repeatedly")
     }
 }

@@ -1453,11 +1453,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        if #available(macOS 13.0, *) {
-            XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
-        } else {
-            XCTAssertNil(error)
-        }
+        XCTAssertNil(error)
         XCTAssertEqual(modifiedItem?.itemIdentifier, lockItem.itemIdentifier)
         XCTAssertEqual(modifiedItem?.filename, modifiedMetadata.fileName)
         XCTAssertEqual(modifiedItem?.documentSize?.intValue, tempData.count)

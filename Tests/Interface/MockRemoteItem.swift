@@ -23,12 +23,7 @@ public class MockRemoteItem: Equatable {
     public var data: Data?
     public var locked: Bool
     public var lockOwner: String
-    public var lockOwnerEditor: String
-    public var lockOwnerType: Int
-    public var lockOwnerDisplayName: String
-    public var lockTime: Date?
     public var lockTimeOut: Date?
-    public var lockToken: String?
     public var size: Int64 { Int64(data?.count ?? 0) }
     public var account: String
     public var username: String
@@ -45,12 +40,7 @@ public class MockRemoteItem: Equatable {
         lhs.directory == rhs.directory &&
         lhs.locked == rhs.locked &&
         lhs.lockOwner == rhs.lockOwner &&
-        lhs.lockOwnerEditor == rhs.lockOwnerEditor &&
-        lhs.lockOwnerType == rhs.lockOwnerType &&
-        lhs.lockOwnerDisplayName == rhs.lockOwnerDisplayName &&
-        lhs.lockTime == rhs.lockTime &&
         lhs.lockTimeOut == rhs.lockTimeOut &&
-        lhs.lockToken == rhs.lockToken &&
         lhs.data == rhs.data &&
         lhs.size == rhs.size &&
         lhs.creationDate == rhs.creationDate &&
@@ -101,12 +91,7 @@ public class MockRemoteItem: Equatable {
         data: Data? = nil,
         locked: Bool = false,
         lockOwner: String = "",
-        lockOwnerEditor: String = "",
-        lockOwnerDisplayName: String = "",
-        lockOwnerType: Int = 0,
-        lockTime: Date? = nil,
         lockTimeOut: Date? = nil,
-        lockToken: String? = nil,
         account: String,
         username: String,
         userId: String,
@@ -123,12 +108,7 @@ public class MockRemoteItem: Equatable {
         self.data = data
         self.locked = locked
         self.lockOwner = lockOwner
-        self.lockOwnerEditor = lockOwnerEditor
-        self.lockOwnerDisplayName = lockOwnerDisplayName
-        self.lockOwnerType = lockOwnerType
-        self.lockTime = lockTime
         self.lockTimeOut = lockTimeOut
-        self.lockToken = lockToken
         self.account = account
         self.username = username
         self.userId = userId
@@ -155,7 +135,9 @@ public class MockRemoteItem: Equatable {
         file.user = username
         file.userId = userId
         file.urlBase = serverUrl
-        file.lock = NKLock(owner: lockOwner, ownerEditor: lockOwnerEditor, ownerType: NKLockType(rawValue: lockOwnerType)!, ownerDisplayName: lockOwnerDisplayName, time: lockTime, timeOut: lockTimeOut, token: lockToken)
+        file.lock = locked
+        file.lockOwner = lockOwner
+        file.lockTimeOut = lockTimeOut
         file.trashbinFileName = name
         file.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
         return file
@@ -211,7 +193,7 @@ public class MockRemoteItem: Equatable {
             lockOwner: lockOwner,
             lockOwnerType: lockOwner.isEmpty ? 0 : 1,
             lockOwnerDisplayName: lockOwner == account.username ? account.username : "other user",
-            lockTime: lockTime, // Default as not set in original code
+            lockTime: nil, // Default as not set in original code
             lockTimeOut: lockTimeOut,
             path: "", // Placeholder as not set in original code
             serverUrl: trimmedServerUrl,

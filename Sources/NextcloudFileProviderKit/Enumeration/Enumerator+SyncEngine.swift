@@ -62,13 +62,16 @@ extension Enumerator {
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        assert(directoryMetadata.directory)
+        guard directoryMetadata.directory else {
+            logger.error("Expected directory metadata but received file metadata for serverUrl: \(serverUrl)")
+            return (nil, nil, nil, nil, .invalidData)
+        }
 
         if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
             directoryMetadata.downloaded = existingMetadata.downloaded
             directoryMetadata.keepDownloaded = existingMetadata.keepDownloaded
         }
-        
+
         directoryMetadata.visitedDirectory = true
 
         metadatas.insert(directoryMetadata, at: 0)
@@ -214,7 +217,7 @@ extension Enumerator {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await handleDepth1ReadFileOrFolder(
-                serverUrl: serverUrl, 
+                serverUrl: serverUrl,
                 account: account,
                 dbManager: dbManager,
                 files: files,
