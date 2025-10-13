@@ -1,0 +1,8 @@
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: GPL-2.0-or-later
+
+//
+// The common name of the signing certificate to use for code signing.
+// It must be present in your keychain and a development certificate.
+//
+CODE_SIGN_IDENTITY=
