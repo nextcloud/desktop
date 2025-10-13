@@ -684,7 +684,7 @@ public extension Item {
                 )
 
                 guard renameError == nil, let renameModifiedItem else {
-                    logger.error("Could not rename pre-trash item.", [.item: modifiedItem.filename, .error: error])
+                    logger.error("Could not rename pre-trash item.", [.item: modifiedItem.itemIdentifier, .error: error])
                     return (nil, renameError)
                 }
 
