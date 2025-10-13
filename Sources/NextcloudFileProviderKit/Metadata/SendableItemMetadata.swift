@@ -184,6 +184,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.lockOwnerDisplayName = lockOwnerDisplayName
         self.lockTime = lockTime
         self.lockTimeOut = lockTimeOut
+        self.lockToken = lockToken
         self.path = path
         self.permissions = permissions
         self.quotaUsedBytes = quotaUsedBytes
