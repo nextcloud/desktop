@@ -633,19 +633,7 @@ void SyncEngine::startSync()
     _remnantReadOnlyFolders.clear();
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
-
-#if defined Q_OS_LINUX
-    const auto fileSystemInfo = QStorageInfo{_localPath};
-    qCInfo(lcEngine()) << "File system type for current sync folder:" << fileSystemInfo.fileSystemType();
-    if (fileSystemInfo.fileSystemType() == "NTFS") {
-        _discoveryPhase->_fileSystemReliablePermissions = false;
-    } else {
-        _discoveryPhase->_fileSystemReliablePermissions = true;
-    }
-#else
-    _discoveryPhase->_fileSystemReliablePermissions = true;
-#endif
-
+    _discoveryPhase->_fileSystemReliablePermissions = _filesystemPermissionsReliable;
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
@@ -1305,6 +1293,11 @@ void SyncEngine::setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions 
 const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOptions() const
 {
     return _singleItemDiscoveryOptions;
+}
+
+void SyncEngine::setFilesystemPermissionsReliable(bool reliable)
+{
+    _filesystemPermissionsReliable = reliable;
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const
