@@ -215,7 +215,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
+            serverUrl: Self.account.davFilesUrl
         )
         rootItem.children.append(serverRootFile)
 
@@ -229,7 +229,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
+            serverUrl: Self.account.davFilesUrl
         )
         rootItem.children.append(serverFolderA)
 
@@ -241,7 +241,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
+            serverUrl: serverFolderA.remotePath
         )
         serverFolderA.children.append(newFileInA)
 
@@ -249,7 +249,10 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
         let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified")
         let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { changeNotifiedExpectation.fulfill() }
+
+        notificationInterface.changeHandler = {
+            changeNotifiedExpectation.fulfill()
+        }
 
         remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,

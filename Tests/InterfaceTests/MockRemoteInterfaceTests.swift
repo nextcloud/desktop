@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import XCTest
+import NextcloudKit
 @testable import NextcloudFileProviderKit
 @testable import NextcloudFileProviderKitMocks
 @testable import TestInterface
@@ -503,8 +504,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let targetRootFile = result.files.first
         let expectedRoot = remoteInterface.rootItem
         XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
-        XCTAssertEqual(targetRootFile?.fileName, "__NC_ROOT__") // NextcloudKit gives the root dir this name
-        XCTAssertNotEqual(targetRootFile?.fileName, expectedRoot?.name)
+        XCTAssertEqual(targetRootFile?.fileName, NextcloudKit.shared.nkCommonInstance.rootFileName) // NextcloudKit gives the root dir this name
         XCTAssertEqual(targetRootFile?.serverUrl, "https://mock.nc.com/remote.php/dav/files/testUserId") // NextcloudKit gives the root dir this url
         XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate)
         XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)

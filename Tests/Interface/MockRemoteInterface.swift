@@ -614,6 +614,7 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         let sanitisedPath = sanitisedPath(remotePath, account: account)
+
         guard sanitisedPath != "/" else {
             return remotePath.hasPrefix(account.trashUrl) ? rootTrashItem : rootItem
         }
@@ -624,11 +625,15 @@ public class MockRemoteInterface: RemoteInterface {
 
         while pathComponents?.isEmpty == false {
             let component = pathComponents?.removeFirst()
-            guard component?.isEmpty == false,
-                  let nextNode = currentNode?.children.first(where: { $0.name == component })
-            else { return nil }
 
-            guard pathComponents?.isEmpty == false else { return nextNode } // This is the target
+            guard component?.isEmpty == false, let nextNode = currentNode?.children.first(where: { $0.name == component }) else {
+                return nil
+            }
+
+            guard pathComponents?.isEmpty == false else {
+                return nextNode // This is the target
+            }
+            
             currentNode = nextNode
         }
 
@@ -1031,12 +1036,15 @@ public class MockRemoteInterface: RemoteInterface {
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
         var remotePath = remotePath
+
         if remotePath.last == "." {
             remotePath.removeLast()
         }
+
         if remotePath.last == "/" {
             remotePath.removeLast()
         }
+
         print("Enumerating \(remotePath)")
         
         // Call the enumerate call handler if it exists

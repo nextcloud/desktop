@@ -18,22 +18,21 @@ extension NKFile {
     func toItemMetadata(uploaded: Bool = true) -> SendableItemMetadata {
         let creationDate = creationDate ?? date
         let uploadDate = uploadDate ?? date
-        let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown")
-            && classFile == NKTypeClassFile.unknow.rawValue
+
+        let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown") && classFile == NKTypeClassFile.unknow.rawValue
                 ? NKTypeClassFile.document.rawValue
                 : classFile
+
         // Support for finding the correct filename for e2ee files should go here
 
         // Don't ask me why, NextcloudKit renames and moves the root folder details
         // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
         let rootServerUrl = urlBase + Account.webDavFilesUrlSuffix + userId
         let rootRequiresFixup = serverUrl == rootServerUrl && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
-        let ocId = rootRequiresFixup
-            ? NSFileProviderItemIdentifier.rootContainer.rawValue
-            : self.ocId
+        let ocId = rootRequiresFixup ? NSFileProviderItemIdentifier.rootContainer.rawValue : self.ocId
         let directory = rootRequiresFixup ? true : self.directory
         let serverUrl = rootRequiresFixup ? rootServerUrl : self.serverUrl
-        let fileName = rootRequiresFixup ? "" : self.fileName
+        let fileName = rootRequiresFixup ? NextcloudKit.shared.nkCommonInstance.rootFileName : self.fileName
 
         return SendableItemMetadata(
             ocId: ocId,
@@ -94,46 +93,79 @@ extension NKFile {
     }
 }
 
+///
+/// Data container intended for use in combination with `concurrentChunkedForEach` to safely and concurrently convert a lot of metadata objects.
+///
+private final actor DirectoryMetadataContainer: Sendable {
+    let root: SendableItemMetadata
+    var directories: [SendableItemMetadata] = []
+    var files: [SendableItemMetadata] = []
 
+    init(for root: SendableItemMetadata) {
+        self.root = root
+    }
 
-extension Array<NKFile> {
-    private final actor DirectoryReadConversionActor: Sendable {
-        let directoryMetadata: SendableItemMetadata
-        var childDirectoriesMetadatas: [SendableItemMetadata] = []
-        var metadatas: [SendableItemMetadata] = []
+    ///
+    /// Insert a new item into the container.
+    ///
+    func add(_ item: SendableItemMetadata) {
+        files.append(item)
 
-        func convertedMetadatas() -> (
-            SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]
-        ) {
-            (directoryMetadata, childDirectoriesMetadatas, metadatas)
-        }
-
-        init(target: SendableItemMetadata) {
-            self.directoryMetadata = target
-        }
-
-        func add(metadata: SendableItemMetadata) {
-            metadatas.append(metadata)
-            if metadata.directory {
-                childDirectoriesMetadatas.append(metadata)
-            }
+        if item.directory {
+            directories.append(item)
         }
     }
 
-    func toDirectoryReadMetadatas(account: Account) async -> (
-        directoryMetadata: SendableItemMetadata,
-        childDirectoriesMetadatas: [SendableItemMetadata],
-        metadatas: [SendableItemMetadata]
-    )? {
-        guard var targetDirectoryMetadata = first?.toItemMetadata() else {
+    ///
+    /// Return a tuple of the total current content.
+    ///
+    func content() -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) {
+        (root, directories, files)
+    }
+}
+
+extension Array<NKFile> {
+    ///
+    /// Determine whether the given `NKFile` is the metadata object for the read remote directory.
+    ///
+    func isDirectoryToRead(_ file: NKFile, directoryToRead: String) -> Bool {
+        if file.serverUrl == directoryToRead && file.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName {
+            return true
+        }
+
+        if file.directory, "\(file.serverUrl)/\(file.fileName)" == directoryToRead {
+            return true
+        }
+
+        return false
+    }
+
+    ///
+    /// Convert an array of `NKFile` to `SendableItemMetadata`.
+    ///
+    /// - Parameters:
+    ///     - account: The account which the metadata belongs to.
+    ///     - directoryToRead: The root path of the directory which this metadata comes from. This is required to distinguish the correct item for the metadata of the read directory itself from its children.
+    ///
+    /// - Returns: A tuple consisting of the metadata for the read directory itself (`root`), any child directories (`directories`) and separately any directly containted files (`files`).
+    ///
+    func toSendableDirectoryMetadata(account: Account, directoryToRead: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
+        guard let root = first(where: { isDirectoryToRead($0, directoryToRead: directoryToRead) })?.toItemMetadata() else {
             return nil
         }
-        let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
+
+        let container = DirectoryMetadataContainer(for: root)
+
         if self.count > 1 {
-            await self[1...].concurrentChunkedForEach { file in
-                await conversionActor.add(metadata: file.toItemMetadata())
+            await concurrentChunkedForEach { file in
+                guard isDirectoryToRead(file, directoryToRead: directoryToRead) == false else {
+                    return
+                }
+
+                await container.add(file.toItemMetadata())
             }
         }
-        return await conversionActor.convertedMetadatas()
+
+        return await container.content()
     }
 }

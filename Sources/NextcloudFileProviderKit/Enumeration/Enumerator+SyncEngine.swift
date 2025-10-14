@@ -56,35 +56,35 @@ extension Enumerator {
             return (metadatas, nil, nil, nil, error)
         }
 
-        guard var (directoryMetadata, _, metadatas) = await files.toDirectoryReadMetadatas(account: account) else {
-            logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
+        guard var (directory, _, files) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl) else {
+            logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
             return (nil, nil, nil, nil, .invalidData)
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-        guard directoryMetadata.directory else {
-            logger.error("Expected directory metadata but received file metadata for serverUrl: \(serverUrl)")
+        guard directory.directory else {
+            logger.error("Expected directory metadata but received file metadata!", [.url: serverUrl])
             return (nil, nil, nil, nil, .invalidData)
         }
 
-        if let existingMetadata = dbManager.itemMetadata(ocId: directoryMetadata.ocId) {
-            directoryMetadata.downloaded = existingMetadata.downloaded
-            directoryMetadata.keepDownloaded = existingMetadata.keepDownloaded
+        if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
+            directory.downloaded = existingMetadata.downloaded
+            directory.keepDownloaded = existingMetadata.keepDownloaded
         }
 
-        directoryMetadata.visitedDirectory = true
+        directory.visitedDirectory = true
 
-        metadatas.insert(directoryMetadata, at: 0)
+        files.insert(directory, at: 0)
 
         let changedMetadatas = dbManager.depth1ReadUpdateItemMetadatas(
             account: account.ncKitAccount,
             serverUrl: serverUrl,
-            updatedMetadatas: metadatas,
+            updatedMetadatas: files,
             keepExistingDownloadState: true
         )
 
         return (
-            metadatas,
+            files,
             changedMetadatas.newMetadatas,
             changedMetadatas.updatedMetadatas,
             changedMetadatas.deletedMetadatas,
@@ -214,9 +214,7 @@ extension Enumerator {
 
             return ([metadata], newMetadatas, updatedMetadatas, nil, nextPage, nil)
         } else if depth == .targetAndDirectChildren {
-            let (
-                allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
-            ) = await handleDepth1ReadFileOrFolder(
+            let (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError) = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
                 account: account,
                 dbManager: dbManager,

@@ -87,16 +87,16 @@ public extension Item {
             ))
         }
         
-        guard var (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
-        else {
-            logger.error("Received nil directory read metadatas during conversion")
+        guard var (directory, _, _) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: remotePath) else {
+            logger.error("Failed to resolve directory metadata on item conversion!")
             return (nil, NSFileProviderError(.cannotSynchronize))
         }
-        directoryMetadata.downloaded = true
-        dbManager.addItemMetadata(directoryMetadata)
+
+        directory.downloaded = true
+        dbManager.addItemMetadata(directory)
 
         let fpItem = Item(
-            metadata: directoryMetadata,
+            metadata: directory,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,

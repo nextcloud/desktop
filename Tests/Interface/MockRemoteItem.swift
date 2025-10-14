@@ -56,7 +56,7 @@ public class MockRemoteItem: Equatable {
         MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
             versionIdentifier: "root",
-            name: "",
+            name: NextcloudKit.shared.nkCommonInstance.rootFileName,
             remotePath: account.davFilesUrl,
             directory: true,
             account: account.ncKitAccount,
@@ -120,7 +120,7 @@ public class MockRemoteItem: Equatable {
         let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()
         file.fileName = isRoot
-            ? "__NC_ROOT__"
+            ? NextcloudKit.shared.nkCommonInstance.rootFileName
             : trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
         file.date = creationDate
@@ -128,9 +128,7 @@ public class MockRemoteItem: Equatable {
         file.etag = versionIdentifier
         file.ocId = identifier
         file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
-        file.serverUrl = isRoot
-            ? serverUrl + "/remote.php/dav/files/" + userId
-            : parent?.remotePath ?? remotePath
+        file.serverUrl = isRoot ? "\(serverUrl)/remote.php/dav/files/\(userId)" : parent?.remotePath ?? serverUrl
         file.account = account
         file.user = username
         file.userId = userId

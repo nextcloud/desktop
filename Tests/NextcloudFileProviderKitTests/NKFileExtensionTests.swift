@@ -7,23 +7,12 @@ import NextcloudKit
 @testable import NextcloudFileProviderKit
 
 final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
+    static let account = Account(user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd")
 
-    static let account = Account(
-        user: "testUser",
-        id: "testUserId",
-        serverUrl: "https://mock.nc.com",
-        password: "abcd"
-    )
-
-    /// Creates a mock NKFile.
-    private func createNKFile(
-        ocId: String = "id1",
-        serverUrl: String? = nil,
-        fileName: String = "file.txt",
-        directory: Bool = false,
-        userId: String? = nil,
-        urlBase: String? = nil
-    ) -> NKFile {
+    ///
+    /// Mock an `NKFile` for the tests in here.
+    ///
+    private func createNKFile(ocId: String = "id1", serverUrl: String? = nil, fileName: String = "file.txt", directory: Bool = false, userId: String? = nil, urlBase: String? = nil) -> NKFile {
         var file = NKFile()
         file.ocId = ocId
         file.serverUrl = serverUrl ?? Self.account.davFilesUrl
@@ -36,6 +25,7 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         file.date = Date()
         file.creationDate = Date()
         file.etag = "etag"
+
         return file
     }
 
@@ -47,7 +37,7 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         let rootNKFile = createNKFile(
             ocId: "rootId",
             serverUrl: "https://mock.nc.com/remote.php/dav/files/testUserId", // Special root value
-            fileName: "__NC_ROOT__",   // Special root value
+            fileName: NextcloudKit.shared.nkCommonInstance.rootFileName, // Special root value
             directory: false // NextcloudKit sometimes marks the root as not a directory
         )
 
@@ -56,16 +46,8 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
 
         // 3. Assert
         // The `rootRequiresFixup` logic should trigger.
-        XCTAssertEqual(
-            metadata.serverUrl,
-            Self.account.davFilesUrl,
-            "The serverUrl for the root should be corrected to the full WebDAV path."
-        )
-        XCTAssertEqual(
-            metadata.fileName,
-            "",
-            "The fileName for the root should be corrected to an empty string."
-        )
+        XCTAssertEqual(metadata.serverUrl, Self.account.davFilesUrl, "The serverUrl for the root should be corrected to the full WebDAV path.")
+        XCTAssertEqual(metadata.ocId, NSFileProviderItemIdentifier.rootContainer.rawValue, "The ocId for the root should be mapped to a file provider root container.")
     }
 
     func testToItemMetadataHandlesStandardFileCorrectly() {
@@ -93,49 +75,73 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    // MARK: - toDirectoryReadMetadatas(account:) Tests
+    // MARK: - isDirectoryToRead(_:directoryToRead:)
 
-    func testToDirectoryReadMetadatasHandlesRootAsTargetCorrectly() async {
+    func testIsDirectoryToReadForRoot() {
+        let item = createNKFile(ocId: NextcloudKit.shared.nkCommonInstance.rootFileName, serverUrl: Self.account.davFilesUrl, fileName: NextcloudKit.shared.nkCommonInstance.rootFileName)
+        let items = [NKFile]()
+        let result = items.isDirectoryToRead(item, directoryToRead: Self.account.davFilesUrl)
+        XCTAssertTrue(result)
+    }
+
+    func testIsDirectoryToReadForDirectoryInRoot() {
+        let item = createNKFile(ocId: "some", serverUrl: Self.account.davFilesUrl, fileName: "Subdirectory", directory: true)
+        let items = [NKFile]()
+        let result = items.isDirectoryToRead(item, directoryToRead: "\(Self.account.davFilesUrl)/Subdirectory")
+        XCTAssertTrue(result)
+    }
+
+    func testIsDirectoryToReadForFileInRoot() {
+        let item = createNKFile(ocId: "some", serverUrl: Self.account.davFilesUrl, fileName: "File", directory: false)
+        let items = [NKFile]()
+        let result = items.isDirectoryToRead(item, directoryToRead: Self.account.davFilesUrl)
+        XCTAssertFalse(result)
+    }
+
+    func testIsDirectoryToReadForFileInSubdirectory() {
+        let subdirectoryURL = "\(Self.account.davFilesUrl)/Subdirectory"
+        let item = createNKFile(ocId: "some", serverUrl: "\(subdirectoryURL)/File", fileName: "File", directory: false)
+        let items = [NKFile]()
+        let result = items.isDirectoryToRead(item, directoryToRead: subdirectoryURL)
+        XCTAssertFalse(result)
+    }
+
+    // MARK: - toSendableDirectoryMetadata(account:directoryToRead:) Tests
+
+    func testToSendableDirectoryMetadataHandlesRootAsTargetCorrectly() async throws {
         // 1. Arrange: Create an array of NKFiles where the first item is the special root.
         let rootNKFile = createNKFile(
             ocId: "rootId", // This will be overridden by the logic
-            serverUrl: "https://mock.nc.com/remote.php/dav/files/testUserId",
-            fileName: "__NC_ROOT__",
+            serverUrl: Self.account.davFilesUrl,
+            fileName: NextcloudKit.shared.nkCommonInstance.rootFileName,
             directory: false // Mimic NextcloudKit behavior
         )
+
         let childNKFile = createNKFile(
             ocId: "child1",
-            serverUrl: Self.account.davFilesUrl,
+            serverUrl: "\(Self.account.davFilesUrl)/document.txt",
             fileName: "document.txt"
         )
 
         let files = [rootNKFile, childNKFile]
 
         // 2. Act
-        let result = await files.toDirectoryReadMetadatas(account: Self.account)
+        let result = await files.toSendableDirectoryMetadata(account: Self.account, directoryToRead: Self.account.davFilesUrl)
 
         // 3. Assert
-        XCTAssertNotNil(result, "The conversion should succeed.")
-        guard let result else { return }
+        let unwrappedResult = try XCTUnwrap(result)
 
         // The logic should identify the first item as the root and fix its properties.
-        XCTAssertEqual(
-            result.directoryMetadata.ocId,
-            NSFileProviderItemIdentifier.rootContainer.rawValue,
-            "The target directory's ocId should be corrected to the root container identifier."
-        )
-        XCTAssertTrue(
-            result.directoryMetadata.directory,
-            "The target directory should be correctly marked as a directory, even if the NKFile was not."
-        )
+        XCTAssertEqual(unwrappedResult.root.ocId, NSFileProviderItemIdentifier.rootContainer.rawValue, "The target directory's ocId should be corrected to the root container identifier.")
+        XCTAssertTrue(unwrappedResult.root.directory, "The target directory should be correctly marked as a directory, even if the NKFile was not.")
 
         // Ensure the child item is processed correctly.
-        XCTAssertEqual(result.metadatas.count, 1, "There should be one child metadata object.")
-        XCTAssertEqual(result.metadatas.first?.ocId, "child1")
-        XCTAssertTrue(result.childDirectoriesMetadatas.isEmpty, "The child is a file, so child directories should be empty.")
+        XCTAssertEqual(unwrappedResult.files.count, 1, "There should be one file metadata object.")
+        XCTAssertEqual(unwrappedResult.files.first?.ocId, "child1")
+        XCTAssertTrue(unwrappedResult.directories.isEmpty, "The child is a file, so child directories should be empty.")
     }
 
-    func testToDirectoryReadMetadatasHandlesNormalFolderAsTarget() async {
+    func testToSendableDirectoryMetadataHandlesNormalFolderAsTarget() async throws {
         // 1. Arrange: Create an array for a normal folder and its children.
         let parentFolderNKFile = createNKFile(
             ocId: "folder1",
@@ -143,14 +149,16 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
             fileName: "MyFolder",
             directory: true
         )
+
         let childFileNKFile = createNKFile(
             ocId: "file1",
-            serverUrl: Self.account.davFilesUrl + "/MyFolder",
+            serverUrl: "\(Self.account.davFilesUrl)/MyFolder",
             fileName: "report.docx"
         )
+
         let childDirNKFile = createNKFile(
             ocId: "dir2",
-            serverUrl: Self.account.davFilesUrl + "/MyFolder",
+            serverUrl: "\(Self.account.davFilesUrl)/MyFolder",
             fileName: "Subfolder",
             directory: true
         )
@@ -158,21 +166,20 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         let files = [parentFolderNKFile, childFileNKFile, childDirNKFile]
 
         // 2. Act
-        let result = await files.toDirectoryReadMetadatas(account: Self.account)
+        let result = await files.toSendableDirectoryMetadata(account: Self.account, directoryToRead: "\(Self.account.davFilesUrl)/MyFolder")
 
         // 3. Assert
-        XCTAssertNotNil(result)
-        guard let result else { return }
+        let unwrappedResult = try XCTUnwrap(result)
 
         // The root fixup logic should NOT trigger for a normal folder.
-        XCTAssertEqual(result.directoryMetadata.ocId, "folder1")
-        XCTAssertEqual(result.directoryMetadata.fileName, "MyFolder")
-        XCTAssertTrue(result.directoryMetadata.directory)
+        XCTAssertEqual(unwrappedResult.root.ocId, "folder1")
+        XCTAssertEqual(unwrappedResult.root.fileName, "MyFolder")
+        XCTAssertTrue(unwrappedResult.root.directory)
 
         // Check children processing
-        XCTAssertEqual(result.metadatas.count, 2, "Should have two child metadata objects.")
-        XCTAssertEqual(result.childDirectoriesMetadatas.count, 1, "Should identify one child directory.")
-        XCTAssertEqual(result.childDirectoriesMetadatas.first?.ocId, "dir2")
+        XCTAssertEqual(unwrappedResult.files.count, 2, "Should have two child metadata objects.")
+        XCTAssertEqual(unwrappedResult.directories.count, 1, "Should identify one child directory.")
+        XCTAssertEqual(unwrappedResult.directories.first?.ocId, "dir2")
     }
 }
 
