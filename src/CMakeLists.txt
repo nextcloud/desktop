@@ -72,6 +72,7 @@ if(NOT MSVC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-gnu-zero-variadic-macro-arguments")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-gnu-zero-variadic-macro-arguments")
   endif()
+  add_compile_options(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
 endif()
 
 if(WIN32)
