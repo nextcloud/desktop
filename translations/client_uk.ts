@@ -6455,7 +6455,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Неочікувана помилка. Спробуйте синхронізувати знову або сконтактуйте з адміністратором сервера, якщо помилка не зникне.</translation>
     </message>
 </context>
 <context>
