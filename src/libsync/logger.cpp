@@ -118,8 +118,8 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     static long long int linesCounter = 0;
     QString msg = qFormatLogMessage(type, ctx, message);
 
-    // We want to change the full path of the source file to relative,
-    // to reduce log size and also, to not leak paths into logs.
+    // We want to change the full path of the source file to relative on, to
+    // reduce log size and also, to not leak paths into logs.
     // To help with this, there is a placeholder in the message pattern
     // for the file path ("<file-path-here>").
     QString filePath;
