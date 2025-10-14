@@ -61,6 +61,8 @@ public:
      */
     [[nodiscard]] bool isReliable() const;
 
+    [[nodiscard]] bool canSetPermissions() const;
+
     /**
      * Triggers a change in the path and verifies a notification arrives.
      *
@@ -68,6 +70,13 @@ public:
      * The path must be ignored by the watcher.
      */
     void startNotificatonTest(const QString &path);
+
+    /**
+     * Attempts to set a file's permissions to read-only.
+     *
+     * If that fails, the folderwatcher marsk itself as not able to set permissions reliably.
+     */
+    void performSetPermissionsTest(const QString &path);
 
     /// For testing linux behavior only
     [[nodiscard]] int testLinuxWatchCount() const;
@@ -83,8 +92,8 @@ signals:
     void pathChanged(const QString &path);
 
     /*
-    * Emitted when lock files were removed
-    */
+     * Emitted when lock files were removed
+     */
     void filesLockReleased(const QSet<QString> &files);
 
     /*
@@ -129,6 +138,7 @@ private:
     QSet<QString> _lastPaths;
     Folder *_folder;
     bool _isReliable = true;
+    bool _canSetPermissions = true;
 
     bool _shouldWatchForFileUnlocking = false;
 
