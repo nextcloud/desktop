@@ -147,7 +147,7 @@ Button {
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
-                        ? parent.palette.highlightedText
+                        ? Style.contrastingColor( parent.palette.highlight )
                         : parent.palette.text)
             }
         }
@@ -171,7 +171,7 @@ Button {
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
-                        ? parent.palette.highlightedText
+                        ? Style.contrastingColor( parent.palette.highlight )
                         : parent.palette.text)
             }
         }
@@ -195,7 +195,7 @@ Button {
                 color: !parent.enabled
                     ? parent.palette.mid
                     : (parent.highlighted || parent.down
-                        ? parent.palette.highlightedText
+                        ? Style.contrastingColor( parent.palette.highlight )
                         : parent.palette.text)
             }
         }
