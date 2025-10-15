@@ -226,6 +226,8 @@ public actor FileProviderLog: FileProviderLogging {
             switch value {
                 case let account as Account:
                     valueDescription = account.ncKitAccount
+                case let date as Date:
+                    valueDescription = messageDateFormatter.string(from: date)
                 case let lock as NKLock:
                     valueDescription = lock.token
                 case let item as NSFileProviderItem:
