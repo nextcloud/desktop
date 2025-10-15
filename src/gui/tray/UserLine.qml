@@ -102,7 +102,7 @@ AbstractButton {
 
                     color: !userLine.parent.enabled
                         ? userLine.parent.palette.mid
-                        : (userLine.parent.highlighted || userLine.parent.down
+                        : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
                             ? Style.contrastingColor( parent.palette.highlight )
                             : userLine.parent.palette.text)
                 }
@@ -117,7 +117,7 @@ AbstractButton {
 
                     color: !userLine.parent.enabled
                         ? userLine.parent.palette.mid
-                        : (userLine.parent.highlighted || userLine.parent.down
+                        : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
                             ? userLine.parent.palette.highlightedText
                             : userLine.parent.palette.text)
                 }
@@ -134,7 +134,7 @@ AbstractButton {
 
                 color: !userLine.parent.enabled
                     ? userLine.parent.palette.mid
-                    : (userLine.parent.highlighted || userLine.parent.down
+                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
                         ? Style.contrastingColor( parent.palette.highlight )
                         : userLine.parent.palette.text)
             }
@@ -158,7 +158,7 @@ AbstractButton {
 
             property var iconColor: !userLine.parent.enabled
                 ? userLine.parent.palette.mid
-                : (!hovered && (userLine.parent.highlighted || userLine.parent.down)
+                : (!hovered && ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows")
                     ? Style.contrastingColor( parent.palette.highlight )
                     : userLine.parent.palette.text)
             icon.source: "image://svgimage-custom-color/more.svg/" + iconColor
