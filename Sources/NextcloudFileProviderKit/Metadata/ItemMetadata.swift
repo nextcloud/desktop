@@ -3,6 +3,9 @@
 
 import Foundation
 
+///
+/// Used as a semantic mapping for ``ItemMetadata/status``.
+///
 public enum Status: Int {
     case downloadError = -4
     case downloading = -3
@@ -26,6 +29,9 @@ public enum SharePermissions: Int {
     case maxFolderShare = 31
 }
 
+///
+/// Requirements for the data model implementations of file provider items.
+///
 public protocol ItemMetadata: Equatable {
     var ocId: String { get set }
     var account: String { get set }

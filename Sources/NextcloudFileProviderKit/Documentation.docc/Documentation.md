@@ -3,7 +3,13 @@
 NextcloudFileProviderKit is a Swift package designed to simplify the development of Nextcloud synchronization applications on Apple devices using the File Provider Framework. This package provides the core functionality for virtual files in the macOS Nextcloud client, making it easier for developers to integrate Nextcloud syncing capabilities into their applications.
 
 
-## Features
+## Topics
+
+### File Provider
+
+- ``Enumerator``
+- ``Item``
+- ``MaterialisedEnumerationObserver``
 
 ### Lock File Support
 
@@ -13,7 +19,7 @@ These are recognized by the file provider extension and not synchronized to the 
 However, the capabilities of the `files_lock` server app are used to lock the file for editing remotely on the server.
 
 - ``isLockFileName(_:)``
-- ``originalFileName(fromLockFileName:)``
+- ``originalFileName(fromLockFileName:dbManager:)``
 
 ### Logging
 
@@ -26,3 +32,9 @@ It is designed specifically for the implementation of this file provider extensi
 - ``FileProviderLogger``
 - ``FileProviderLogging``
 - ``FileProviderLogMessage``
+
+### Persistence
+
+- ``FilesDatabaseManager``
+- ``ItemMetadata``
+- ``SendableItemMetadata``

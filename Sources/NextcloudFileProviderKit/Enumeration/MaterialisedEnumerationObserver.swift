@@ -5,6 +5,9 @@ import FileProvider
 import Foundation
 import RealmSwift
 
+///
+/// The custom `NSFileProviderEnumerationObserver` implementation to process materialized items enumerated by the system.
+///
 public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     let logger: FileProviderLogger
     public let ncKitAccount: String

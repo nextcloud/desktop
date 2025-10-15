@@ -4,6 +4,9 @@
 import FileProvider
 import NextcloudKit
 
+///
+/// The `NSFileProviderEnumerator` implementation to enumerate file provider items and related change sets.
+///
 public class Enumerator: NSObject, NSFileProviderEnumerator {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private var enumeratedItemMetadata: SendableItemMetadata?

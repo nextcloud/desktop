@@ -13,6 +13,9 @@ let AccountDictTrashUrlKey = "trashUrlKey"
 let AccountDictTrashRestoreUrlKey = "trashRestoreUrlKey"
 let AccountDictFileNameKey = "fileNameKey"
 
+///
+/// Ephemeral data model which provides account information associated with a file provider domain.
+///
 public struct Account: CustomStringConvertible, Equatable, Sendable {
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
     public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
