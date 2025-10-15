@@ -49,7 +49,6 @@
         <file>src/gui/tray/EncryptionTokenDiscoveryDialog.qml</file>
         <file>src/gui/tray/NCBusyIndicator.qml</file>
         <file>src/gui/tray/NCIconWithBackgroundImage.qml</file>
-        <file>src/gui/tray/NCToolTip.qml</file>
         <file>src/gui/tray/NCProgressBar.qml</file>
         <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
         <file>theme/Style/Style.qml</file>
