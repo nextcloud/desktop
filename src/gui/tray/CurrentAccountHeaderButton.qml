@@ -95,10 +95,10 @@ Button {
             id: addAccountButton
             hoverEnabled: true
             visible: Systray.enableAddAccount
-            implicitHeight: Style.accountAvatarSize
+            implicitHeight: Style.trayWindowHeaderHeight
 
             readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
-            readonly property real addAccountHorizontalOffset: (Style.accountAvatarSize - addAccountIconSize) / 2
+            readonly property real addAccountHorizontalOffset: ( (Style.accountAvatarSize - addAccountIconSize) / 2 ) + Style.accountIconsMenuMargin
             property var iconColor: !addAccountButton.enabled
                                     ? addAccountButton.palette.mid
                                     : (addAccountButton.highlighted || addAccountButton.down
@@ -108,8 +108,8 @@ Button {
             icon.source: "image://svgimage-custom-color/add.svg/" + iconColor
             icon.width: addAccountIconSize
             icon.height: addAccountIconSize
-            leftPadding: Style.accountIconsMenuMargin + addAccountHorizontalOffset
-            spacing: Style.userLineSpacing + addAccountHorizontalOffset
+            leftPadding: addAccountHorizontalOffset
+            spacing: Style.userLineSpacing
             text: qsTr("Add account")
             onClicked: UserModel.addAccount()
 
