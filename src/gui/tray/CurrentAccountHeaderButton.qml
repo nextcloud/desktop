@@ -107,7 +107,7 @@ Button {
             readonly property real addAccountHorizontalOffset: ( (Style.accountAvatarSize - addAccountIconSize) / 2 ) + Style.accountIconsMenuMargin
             property var iconColor: !addAccountButton.enabled
                                     ? addAccountButton.palette.mid
-                                    : (addAccountButton.highlighted || addAccountButton.down
+                                    : ((addAccountButton.highlighted || addAccountButton.down) && Qt.platform.os !== "windows"
                                         ? addAccountButton.palette.highlightedText
                                         : addAccountButton.palette.text)
 
@@ -146,8 +146,8 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
-                        ? Style.contrastingColor( parent.palette.highlight )
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
+                        ? parent.palette.highlightedText
                         : parent.palette.text)
             }
         }
@@ -170,8 +170,8 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
-                        ? Style.contrastingColor( parent.palette.highlight )
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
+                        ? parent.palette.highlightedText
                         : parent.palette.text)
             }
         }
@@ -194,8 +194,8 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
-                        ? Style.contrastingColor( parent.palette.highlight )
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
+                        ? parent.palette.highlightedText
                         : parent.palette.text)
             }
         }
