@@ -130,7 +130,7 @@ import OSLog
         
         guard let dbManager else {
             logger.error("Not fetching item because database is unavailable.", [.item: identifier])
-            completionHandler(nil, NSFileProviderError(.cannotSynchronize))
+            completionHandler(nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
