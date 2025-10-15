@@ -52,6 +52,7 @@ TextField {
         }
 
         ToolTip {
+            popupType: Popup.Native
             visible: sendReplyMessageButton.hovered
             text:  qsTr("Send reply to chat message")
         }

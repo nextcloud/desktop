@@ -196,6 +196,7 @@ Page {
                     }
 
                     ToolTip {
+                        popupType: Popup.Native
                         visible: hoverHandler.hovered
                         text: tagRepeater.fileTagModel.overflowTagsString
                     }
