@@ -52,6 +52,7 @@ TextField {
         }
 
         ToolTip {
+            popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
             visible: sendReplyMessageButton.hovered
             text:  qsTr("Send reply to chat message")
         }

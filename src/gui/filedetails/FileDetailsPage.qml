@@ -196,6 +196,7 @@ Page {
                     }
 
                     ToolTip {
+                        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         visible: hoverHandler.hovered
                         text: tagRepeater.fileTagModel.overflowTagsString
                     }

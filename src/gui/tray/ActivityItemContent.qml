@@ -178,6 +178,7 @@ RowLayout {
                     icon.height: Style.activityListButtonIconSize
 
                     ToolTip {
+                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         text: qsTr("Open file details")
                         visible: parent.hovered
                     }
@@ -200,6 +201,7 @@ RowLayout {
                     display: Button.IconOnly
 
                     ToolTip {
+                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                         text: qsTr("Dismiss")
                         visible: parent.hovered
                     }
