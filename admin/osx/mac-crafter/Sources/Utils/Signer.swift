@@ -68,7 +68,36 @@ enum Signer: Signing {
         
         return items
     }
-    
+
+    ///
+    /// Extract the associated entitlements of a bundle into an XML file.
+    ///
+    /// - Parameters:
+    ///     - location: An app or extension bundle.
+    ///
+    /// - Returns: The location of the entitlements file for the given source bundle.
+    ///
+    private static func saveEntitlements(of location: URL) async throws -> URL {
+        let destination = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("entitlements")
+        print("Saving entitlements of \"\(location.path)\" to \"\(destination.path)\"…")
+
+        guard await shell("codesign -d --entitlements '\(destination.path)' --xml '\(location.path)'") == 0 else {
+            throw MacCrafterError.signing("Failed to save entitlements of \"\(location.path)\" to \"\(destination.path)\"!")
+        }
+
+        guard let data = try? Data(contentsOf: destination) else {
+            throw MacCrafterError.signing("Failed to read data of entitlements file!")
+        }
+
+        guard let string = String(data: data, encoding: .utf8) else {
+            throw MacCrafterError.signing("Failed to convert entitlements data to string!")
+        }
+
+        print("Saved entitlements: \(string)")
+
+        return destination
+    }
+
     ///
     /// Find all framework bundles in the bundle at the given location.
     ///
@@ -103,32 +132,34 @@ enum Signer: Signing {
     ///
     /// Entry point for signing a whole desktop client app bundle.
     ///
-    static func signMainBundle(at location: URL, codeSignIdentity: String, entitlements: URL?, developerBuild: Bool) async throws {
+    static func signMainBundle(at location: URL, codeSignIdentity: String, developerBuild: Bool) async throws {
         let extensions = try findExtensions(at: location)
         
         for extensionInMainBundle in extensions {
             let frameworksInsideExtension = try findFrameworks(at: extensionInMainBundle)
             
             for frameworkInExtension in frameworksInsideExtension {
-                await sign(at: frameworkInExtension, with: codeSignIdentity, entitlements: entitlements)
+                await sign(at: frameworkInExtension, with: codeSignIdentity, entitlements: nil)
             }
-            
-            await sign(at: extensionInMainBundle, with: codeSignIdentity, entitlements: entitlements)
+
+            let extensionEntitlements = try await saveEntitlements(of: extensionInMainBundle)
+            await sign(at: extensionInMainBundle, with: codeSignIdentity, entitlements: extensionEntitlements)
         }
         
         let frameworksInsideMainBundle = try findFrameworks(at: location)
         
         for frameworkInMainBundle in frameworksInsideMainBundle {
-            await sign(at: frameworkInMainBundle, with: codeSignIdentity, entitlements: entitlements)
+            await sign(at: frameworkInMainBundle, with: codeSignIdentity, entitlements: nil)
         }
         
         let dynamicLibraries = try findDynamicLibraries(at: location)
         
         for dynamicLibrary in dynamicLibraries {
-            await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: entitlements)
+            await sign(at: dynamicLibrary, with: codeSignIdentity, entitlements: nil)
         }
-        
-        await sign(at: location, with: codeSignIdentity, entitlements: entitlements)
+
+        let mainAppEntitlements = try await saveEntitlements(of: location)
+        await sign(at: location, with: codeSignIdentity, entitlements: mainAppEntitlements)
         await verify(at: location)
     }
     

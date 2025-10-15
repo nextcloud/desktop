@@ -274,8 +274,7 @@ struct Build: AsyncParsableCommand {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
             stopwatch.record("Code Signing")
 
-            let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
-            try await Signer.signMainBundle(at: URL(fileURLWithPath: clientAppDir), codeSignIdentity: codeSignIdentity, entitlements: URL(fileURLWithPath: entitlementsPath), developerBuild: dev)
+            try await Signer.signMainBundle(at: URL(fileURLWithPath: clientAppDir), codeSignIdentity: codeSignIdentity, developerBuild: dev)
         }
         
         print("Placing Nextcloud Desktop Client in \(productPath)...")

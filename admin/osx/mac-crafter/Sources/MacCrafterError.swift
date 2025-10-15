@@ -8,6 +8,7 @@ enum MacCrafterError: Error, CustomStringConvertible {
     case environmentError(String)
     case failedEnumeration(String)
     case gitError(String)
+    case signing(String)
 
     var description: String {
         switch self {
@@ -21,6 +22,8 @@ enum MacCrafterError: Error, CustomStringConvertible {
                 return "Failed enumeration: \(message)"
             case .gitError(let message):
                 return "Git: \(message)"
+            case .signing(let message):
+                return "Signing: \(message)"
         }
     }
 }

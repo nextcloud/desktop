@@ -18,19 +18,9 @@ struct Codesign: AsyncParsableCommand {
     @Flag(help: "Produce a developer build.")
     var developerBuild = false
     
-    @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
-    var entitlementsPath: String?
-    
     mutating func run() async throws {
         let absolutePath = appBundlePath.hasPrefix("/") ? appBundlePath : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
         let url = URL(fileURLWithPath: absolutePath)
-        
-        var entitlements: URL?
-        
-        if let entitlementsPath {
-            entitlements = URL(fileURLWithPath: entitlementsPath)
-        }
-        
-        try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, entitlements: entitlements, developerBuild: developerBuild)
+        try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, developerBuild: developerBuild)
     }
 }
