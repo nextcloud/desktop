@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Resume sync for all</source>
         <translation>Riprendi la sincronizzazione per tutti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Pause sync for all</source>
         <translation>Sospendi la sincronizzazione per tutti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="113"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
         <source>Add account</source>
         <translation>Aggiungi account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
         <source>Add new account</source>
         <translation>Aggiungi nuovo account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="150"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="173"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
         <source>Exit</source>
         <translation>Uscita</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="213"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
         <source>Current account avatar</source>
         <translation>Avatar dell&apos;account corrente</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is online</source>
         <translation>Lo stato attuale dell&apos;account è online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is do not disturb</source>
         <translation>Lo stato attuale dell&apos;account è &quot;non disturbare&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="318"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
         <source>Account switcher and settings menu</source>
         <translation>Menu di cambio account e impostazioni</translation>
     </message>
@@ -6829,12 +6829,12 @@ Il server ha risposto con errore: %2</translation>
         <translation>Lo stato attuale dell&apos;account è non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
         <source>Account actions</source>
         <translation>Azioni account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
         <source>Set status</source>
         <translation>Imposta stato</translation>
     </message>
@@ -6844,19 +6844,19 @@ Il server ha risposto con errore: %2</translation>
         <translation>Rimuovi account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Status message</source>
         <translation>Messaggio di stato</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log out</source>
         <translation>Esci</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log in</source>
         <translation>Accedi</translation>
     </message>

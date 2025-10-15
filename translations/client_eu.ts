@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Resume sync for all</source>
         <translation>Berrekin sinkronizazioa guztientzat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Pause sync for all</source>
         <translation>Pausatu sinkronizazioa guztientzat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="113"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
         <source>Add account</source>
         <translation>Gehitu kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
         <source>Add new account</source>
         <translation>Gehitu kontu berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="150"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
         <source>Settings</source>
         <translation>Ezarpenak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="173"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
         <source>Exit</source>
         <translation>Irten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="213"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
         <source>Current account avatar</source>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is online</source>
         <translation>Uneko kontuaren egoera: aktibo dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is do not disturb</source>
         <translation>Uneko kontuaren egoera: ez molestatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="318"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
         <source>Account switcher and settings menu</source>
         <translation>Kontu aldatzailea eta ezarpenen menua</translation>
     </message>
@@ -6828,12 +6828,12 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Erabiltzailea ez molestatu egoeran dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
         <source>Account actions</source>
         <translation>Kontuaren ekintzak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
         <source>Set status</source>
         <translation>Ezarri egoera</translation>
     </message>
@@ -6843,19 +6843,19 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Kendu kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Status message</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log out</source>
         <translation>Amaitu saioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log in</source>
         <translation>Hasi saioa</translation>
     </message>

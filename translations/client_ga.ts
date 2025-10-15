@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Resume sync for all</source>
         <translation>Lean an sioncronú do chách</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Pause sync for all</source>
         <translation>Cuir sioncrónú ar sos do chách</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="113"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
         <source>Add account</source>
         <translation>Cuir cuntas leis</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
         <source>Add new account</source>
         <translation>Cuir cuntas nua leis</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="150"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
         <source>Settings</source>
         <translation>Socruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="173"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
         <source>Exit</source>
         <translation>Scoir</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="213"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
         <source>Current account avatar</source>
         <translation>Avatar cuntas reatha</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is online</source>
         <translation>Tá stádas cuntais reatha ar líne</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is do not disturb</source>
         <translation>Níl aon chur isteach ar stádas an chuntais reatha</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="318"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
         <source>Account switcher and settings menu</source>
         <translation>Malartóir cuntais agus roghchlár socruithe</translation>
     </message>
@@ -6835,12 +6835,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Níl aon chur isteach ar stádas an chuntais reatha</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
         <source>Account actions</source>
         <translation>Gníomhartha cuntais</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
         <source>Set status</source>
         <translation>Socraigh stádas</translation>
     </message>
@@ -6850,19 +6850,19 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Bain cuntas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Status message</source>
         <translation>Teachtaireacht stádais</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log out</source>
         <translation>Logáil Amach</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log in</source>
         <translation>Logáil isteach</translation>
     </message>
