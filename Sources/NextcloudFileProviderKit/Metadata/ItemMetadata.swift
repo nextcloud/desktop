@@ -18,17 +18,6 @@ public enum Status: Int {
     case uploadError = 4
 }
 
-public enum SharePermissions: Int {
-    case readShare = 1
-    case updateShare = 2
-    case createShare = 4
-    case deleteShare = 8
-    case shareShare = 16
-
-    case maxFileShare = 19
-    case maxFolderShare = 31
-}
-
 ///
 /// Requirements for the data model implementations of file provider items.
 ///

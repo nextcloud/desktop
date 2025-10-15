@@ -21,16 +21,6 @@ public func pathForAppGroupContainer() -> URL? {
     return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
-public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
-    guard let fpManager = NSFileProviderManager(for: domain) else {
-        lfuLogger.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)")
-        throw NSFileProviderError(.providerNotFound)
-    }
-
-    let fileProviderDataUrl = try fpManager.temporaryDirectoryURL()
-    return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles")
-}
-
 /// 
 /// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office or LibreOffice.
 /// 
