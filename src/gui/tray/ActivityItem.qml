@@ -30,6 +30,7 @@ ItemDelegate {
     Accessible.onPressAction: root.clicked()
 
     ToolTip {
+        popupType: Popup.Native
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
     }

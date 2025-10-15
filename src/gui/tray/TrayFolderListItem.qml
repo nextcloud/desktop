@@ -17,6 +17,7 @@ MenuItem {
     property string toolTipText: root.text
 
     ToolTip {
+        popupType: Popup.Native
         visible: root.hovered && root.toolTipText !== ""
         text: root.toolTipText
     }
