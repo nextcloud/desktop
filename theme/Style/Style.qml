@@ -211,10 +211,4 @@ QtObject {
     function colorWithoutTransparency(color) {
         return Qt.rgba(color.r, color.g, color.b, 1)
     }
-
-    function contrastingColor(color) {
-        // sRGB relative luminance formula
-        const luminance = 0.299 * color.r + 0.587 * color.g + 0.114 * color.b
-        return luminance > 0.5 ? Qt.darker( color, 2.0 ) : Qt.lighter( color, 2.0 )
-    }
 }
