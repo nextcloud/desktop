@@ -26,189 +26,23 @@ dependencies: [
 
 ## Usage
 
-To use NextcloudFileProviderKit in your application, you can refer to the following example code that demonstrates how to implement various functionalities of the `FileProviderExtension` class.
-
-### Initialization
-
-```swift
-import NextcloudKit
-import NextcloudFileProviderKit
-
-let ncKit = NextcloudKit()
-ncKit.setup(
-    account: "username https://cloud.mycloud.com",
-    user: "username",
-    userId: "username",
-    password: "password",
-    urlBase: "https://cloud.mycloud.com"
-)
-
-```
-
-### Fetching Item
-
-```swift
-func item(
-    for identifier: NSFileProviderItemIdentifier,
-    request _: NSFileProviderRequest,
-    completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
-) -> Progress {
-    if let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) {
-        completionHandler(item, nil)
-    } else {
-        completionHandler(
-            nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-        )
-    }
-    return Progress()
-}
-```
-
-### Fetching Contents
-
-```swift
-func fetchContents(
-    for itemIdentifier: NSFileProviderItemIdentifier,
-    version requestedVersion: NSFileProviderItemVersion?,
-    request: NSFileProviderRequest,
-    completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void
-) -> Progress {
-    guard requestedVersion == nil else {
-        completionHandler(
-            nil,
-            nil,
-            NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
-        )
-        return Progress()
-    }
-
-    guard let item = Item.storedItem(identifier: itemIdentifier, remoteInterface: ncKit) else {
-        completionHandler(
-            nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-        )
-        return Progress()
-    }
-
-    let progress = Progress()
-    Task {
-        let (localUrl, updatedItem, error) = await item.fetchContents(domain: self.domain, progress: progress)
-        completionHandler(localUrl, updatedItem, error)
-    }
-    return progress
-}
-```
-
-### Creating Item
-
-```swift
-func createItem(
-    basedOn itemTemplate: NSFileProviderItem,
-    fields: NSFileProviderItemFields,
-    contents url: URL?,
-    options: NSFileProviderCreateItemOptions = [],
-    request: NSFileProviderRequest,
-    completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void
-) -> Progress {
-    let progress = Progress()
-    Task {
-        let (item, error) = await Item.create(
-            basedOn: itemTemplate,
-            fields: fields,
-            contents: url,
-            request: request,
-            domain: self.domain,
-            remoteInterface: ncKit,
-            progress: progress
-        )
-        completionHandler(item ?? itemTemplate, NSFileProviderItemFields(), false, error)
-    }
-    return progress
-}
-```
-
-### Modifying Item
-
-```swift
-func modifyItem(
-    _ item: NSFileProviderItem,
-    baseVersion: NSFileProviderItemVersion,
-    changedFields: NSFileProviderItemFields,
-    contents newContents: URL?,
-    options: NSFileProviderModifyItemOptions = [],
-    request: NSFileProviderRequest,
-    completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void
-) -> Progress {
-    guard let existingItem = Item.storedItem(identifier: item.itemIdentifier, remoteInterface: ncKit) else {
-        completionHandler(
-            item,
-            [],
-            false,
-            NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
-        )
-        return Progress()
-    }
-
-    let progress = Progress()
-    Task {
-        let (modifiedItem, error) = await existingItem.modify(
-            itemTarget: item,
-            baseVersion: baseVersion,
-            changedFields: changedFields,
-            contents: newContents,
-            options: options,
-            request: request,
-            domain: domain,
-            progress: progress
-        )
-        completionHandler(modifiedItem ?? item, [], false, error)
-    }
-    return progress
-}
-```
-
-### Deleting Item
-
-```swift
-func deleteItem(
-    identifier: NSFileProviderItemIdentifier,
-    baseVersion _: NSFileProviderItemVersion,
-    options _: NSFileProviderDeleteItemOptions = [],
-    request _: NSFileProviderRequest,
-    completionHandler: @escaping (Error?) -> Void
-) -> Progress {
-    guard let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) else {
-        completionHandler(NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier))
-        return Progress()
-    }
-
-    let progress = Progress(totalUnitCount: 1)
-    Task {
-        let error = await item.delete()
-        progress.completedUnitCount = 1
-        completionHandler(await item.delete())
-    }
-    return progress
-}
-```
-
-### Enumerator
-
-```swift
-func enumerator(
-    for containerItemIdentifier: NSFileProviderItemIdentifier,
-    request _: NSFileProviderRequest
-) throws -> NSFileProviderEnumerator {
-    return Enumerator(
-        enumeratedItemIdentifier: containerItemIdentifier,
-        remoteInterface: ncKit,
-        domain: domain
-    )
-}
-```
+This section has been removed due to being out of dated and frequent changes to the code.
+As a reference, you can have a look at [this Xcode project](https://github.com/nextcloud/desktop/tree/master/shell_integration/MacOSX/NextcloudIntegration) in the Nextcloud desktop client.
+There are also plans to make this package more self-contained than it currently is and some code will be migrated from the other project to this one.
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue if you encounter any problems or have suggestions for improvements.
+
+### Code Style
+
+[SwiftFormat](https://github.com/nicklockwood/SwiftFormat) was introduced into this project.
+Before submitting a pull request, please ensure that your code changes comply with the currently configured code style.
+You can run the following command in the root of the package repository clone:
+
+```bash
+swift package plugin --allow-writing-to-package-directory swiftformat --verbose --cache ignore --swift-version 5.9
+```
 
 ## License
 
