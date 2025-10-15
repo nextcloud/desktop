@@ -27,6 +27,7 @@ AbstractButton {
     contentItem: RowLayout {
         id: userLineLayout
         spacing: Style.userLineSpacing
+        width: parent.width
 
         Image {
             id: accountAvatar
@@ -137,6 +138,10 @@ AbstractButton {
                         ? userLine.parent.palette.highlightedText
                         : userLine.parent.palette.text)
             }
+        }
+
+        Item { // Spacer
+            Layout.fillWidth: true
         }
 
         Button {

@@ -53,7 +53,8 @@ Button {
         x: (root.x + 2)
         y: (root.y + Style.trayWindowHeaderHeight + 2)
 
-        width: (Style.rootWidth - 2)
+        property real widestMenuItemWidth: 0
+        width: widestMenuItemWidth + leftPadding + rightPadding
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
@@ -71,7 +72,12 @@ Button {
                 implicitHeight: instantiatedUserLine.height
                 UserLine {
                     id: instantiatedUserLine
-                    width: parent.width
+                    width: accountMenu.widestMenuItemWidth
+
+                    Component.onCompleted: {
+                        accountMenu.widestMenuItemWidth = Math.max( instantiatedUserLine.implicitWidth, accountMenu.widestMenuItemWidth )
+                    }
+
                     onShowUserStatusSelector: {
                         userStatusDrawer.openUserStatusDrawer(model.index);
                         accountMenu.close();
