@@ -116,7 +116,7 @@ ColumnLayout {
                 }
 
                 ToolTip {
-                    popupType: Popup.Native
+                    popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
                     text: modelData === undefined ? "" : modelData.shortname
                     visible: emojiDelegate.hovered
                     delay: Qt.styleHints.mousePressAndHoldInterval
