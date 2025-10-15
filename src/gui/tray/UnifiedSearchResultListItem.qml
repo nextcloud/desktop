@@ -30,7 +30,7 @@ MouseArea {
     height: Style.unifiedSearchItemHeight
 
     ToolTip {
-        popupType: Popup.Native
+        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
     }
