@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Resume sync for all</source>
         <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="132"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
         <source>Pause sync for all</source>
         <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="113"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
         <source>Add account</source>
         <translation>Lägg till konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="117"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
         <source>Add new account</source>
         <translation>Lägg till nytt konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="150"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="173"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
         <source>Exit</source>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="213"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
         <source>Current account avatar</source>
         <translation>Avatar för aktuellt konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is online</source>
         <translation>Aktuell kontostatus är online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
         <source>Current account status is do not disturb</source>
         <translation>Aktuell kontostatus är stör ej</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="318"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
         <source>Account switcher and settings menu</source>
         <translation>Kontobytare och inställningsmeny</translation>
     </message>
@@ -6835,12 +6835,12 @@ Servern svarade med fel: %2</translation>
         <translation>Aktuell kontostatus är stör ej</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
         <source>Account actions</source>
         <translation>Kontoåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="168"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
         <source>Set status</source>
         <translation>Välj status</translation>
     </message>
@@ -6850,19 +6850,19 @@ Servern svarade med fel: %2</translation>
         <translation>Ta bort konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Status message</source>
         <translation>Statusmeddelande</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log out</source>
         <translation>Logga ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="184"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="196"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
