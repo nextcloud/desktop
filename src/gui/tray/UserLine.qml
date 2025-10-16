@@ -81,7 +81,7 @@ AbstractButton {
 
                 color: !userLine.parent.enabled
                     ? userLine.parent.palette.mid
-                    : (userLine.parent.highlighted || userLine.parent.down
+                    : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
                         ? userLine.parent.palette.highlightedText
                         : userLine.parent.palette.text)
             }
