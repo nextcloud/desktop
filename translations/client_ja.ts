@@ -7,7 +7,7 @@
         <translation>ローカルで %1 を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="34"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
         <source>In %1</source>
         <translation>%1 内</translation>
     </message>
@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
         <translation>ファイル詳細を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
         <translation>閉じる</translation>
     </message>
@@ -245,7 +245,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="135"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>最近の絵文字はありません</translation>
     </message>
@@ -269,12 +269,12 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="217"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
         <source>Activity</source>
         <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="226"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
         <source>Sharing</source>
         <translation>共有</translation>
     </message>
@@ -6676,7 +6676,7 @@ Server replied with error: %2</source>
         <translation>返信...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="56"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
         <translation>チャットメッセージに返信</translation>
     </message>
@@ -6702,12 +6702,12 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or group folders</source>
         <translation>ローカルまたはグループフォルダを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local folder</source>
         <translation>ローカルフォルダを開く</translation>
     </message>
@@ -6722,22 +6722,22 @@ Server replied with error: %2</source>
         <translation>切断しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>ローカルフォルダ &quot;%1&quot; を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open group folder &quot;%1&quot;</source>
         <translation>グループフォルダ &quot;%1&quot; を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="186"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
         <source>Open %1 in file explorer</source>
         <translation>ファイルエクスプローラーで %1 を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="191"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="192"/>
         <source>User group and local folders menu</source>
         <translation>ユーザグループとローカルフォルダメニュー</translation>
     </message>
@@ -6795,7 +6795,7 @@ Server replied with error: %2</source>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="34"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>結果をさらに読み込む</translation>
     </message>

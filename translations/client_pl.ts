@@ -7,7 +7,7 @@
         <translation>Otwórz lokalnie %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="34"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
         <source>In %1</source>
         <translation>W %1</translation>
     </message>
@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
         <translation>Otwórz szczegóły pliku</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
         <translation>Odrzuć</translation>
     </message>
@@ -245,7 +245,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="135"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>Brak najnowszych emoji</translation>
     </message>
@@ -269,12 +269,12 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="217"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
         <source>Activity</source>
         <translation>Aktywność</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="226"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
         <source>Sharing</source>
         <translation>Udostępnianie</translation>
     </message>
@@ -6677,7 +6677,7 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Odpowiedź na…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="56"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
         <translation>Wyślij odpowiedź w wiadomości na czacie</translation>
     </message>
@@ -6703,12 +6703,12 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or group folders</source>
         <translation>Otwórz katalogi lokalne lub grupowe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local folder</source>
         <translation>Otwórz katalog lokalny</translation>
     </message>
@@ -6723,22 +6723,22 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Rozłączony</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>Otwórz katalog lokalny &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open group folder &quot;%1&quot;</source>
         <translation>Otwórz katalog grupy &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="186"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
         <source>Open %1 in file explorer</source>
         <translation>Otwórz %1 w eksploratorze plików</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="191"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="192"/>
         <source>User group and local folders menu</source>
         <translation>Menu grupy użytkowników i katalogów lokalnych</translation>
     </message>
@@ -6796,7 +6796,7 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="34"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>Wczytaj więcej wyników</translation>
     </message>

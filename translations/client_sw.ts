@@ -7,7 +7,7 @@
         <translation>Fungua %1 kikawaida</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="34"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="35"/>
         <source>In %1</source>
         <translation>Katika %1</translation>
     </message>
@@ -15,12 +15,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="181"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
         <source>Open file details</source>
         <translation>Fungua maelezo ya faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Dismiss</source>
         <translation>Ondoa</translation>
     </message>
@@ -245,7 +245,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="135"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>Hakuna emoji za hivi karibuni</translation>
     </message>
@@ -269,12 +269,12 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="217"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
         <source>Activity</source>
         <translation>Shughuli</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="226"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
         <source>Sharing</source>
         <translation>Shiriki</translation>
     </message>
@@ -6677,7 +6677,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Jibu kwa…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="56"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="57"/>
         <source>Send reply to chat message</source>
         <translation>Tuma jibu kwa ujumbe wa gumzo</translation>
     </message>
@@ -6703,12 +6703,12 @@ Seva ilijibu kwa hitilafu: %2</translation>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local or group folders</source>
         <translation>Fungua folda za ndani au za kikundi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="57"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
         <source>Open local folder</source>
         <translation>Fungua folda ya ndani</translation>
     </message>
@@ -6723,22 +6723,22 @@ Seva ilijibu kwa hitilafu: %2</translation>
         <translation>Imetenganishwa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation>Fungua folda ya ndani &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="171"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
         <source>Open group folder &quot;%1&quot;</source>
         <translation>Fungua folda ya kikundi &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="186"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
         <source>Open %1 in file explorer</source>
         <translation>Fungua %1 katika kichunguzi cha faili</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="191"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="192"/>
         <source>User group and local folders menu</source>
         <translation>Kikundi cha watumiaji na menyu ya folda za ndani</translation>
     </message>
@@ -6796,7 +6796,7 @@ Seva ilijibu kwa hitilafu: %2</translation>
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="34"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="35"/>
         <source>Load more results</source>
         <translation>Pakia matokeo zaidi</translation>
     </message>
