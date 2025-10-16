@@ -1,3 +1,6 @@
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: LGPL-3.0-or-later
+
 ///
 /// A predefined set of detail keys to avoid having multiple keys for the same type of information accidentally while still leaving the possibility to define arbitrary keys.
 ///

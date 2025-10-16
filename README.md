@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
 <div align="center">
     <img src="NextcloudFileProviderKit.svg" alt="Logo of NextcloudFileProviderKit" width="256" height="256" />
 </div>

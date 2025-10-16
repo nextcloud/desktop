@@ -1,5 +1,6 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+# SPDX-FileCopyrightText: Nextcloud GmbH
+# SPDX-FileCopyrightText: 2025 Iva Horn
+# SPDX-License-Identifier: LGPL-3.0-or-later
 
 name: Xcode
 
