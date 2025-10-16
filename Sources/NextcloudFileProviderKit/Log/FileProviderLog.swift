@@ -238,6 +238,8 @@ public actor FileProviderLog: FileProviderLogging {
                     valueDescription = url.absoluteString
                 case let text as String:
                     valueDescription = text
+                case let request as NSFileProviderRequest:
+                    valueDescription = "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
                 default:
                     valueDescription = String(describing: value)
             }

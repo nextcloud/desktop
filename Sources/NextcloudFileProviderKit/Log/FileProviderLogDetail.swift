@@ -135,7 +135,13 @@ public enum FileProviderLogDetail: Encodable {
                     "trashbinFileName": .string(metadata.trashbinFileName),
                     "uploaded": .bool(metadata.uploaded),
                     "visitedDirectory": .bool(metadata.visitedDirectory)
-                    
+
+                ])
+            } else if let request = someValue as? NSFileProviderRequest {
+                self = .dictionary([
+                    "requestingExecutable": .string(request.requestingExecutable?.path ?? "nil"),
+                    "isFileViewerRequest": .bool(request.isFileViewerRequest),
+                    "isSystemRequest": .bool(request.isSystemRequest)
                 ])
             } else if let lock = someValue as? NKLock {
                 self = .dictionary([

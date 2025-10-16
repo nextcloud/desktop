@@ -43,6 +43,11 @@ public enum FileProviderLogDetailKey: String {
     case name
 
     ///
+    /// An `NSFileProviderRequest`.
+    ///
+    case request
+
+    ///
     /// The last time item metadata was synchronized with the server.
     ///
     case syncTime
