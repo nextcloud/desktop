@@ -30,7 +30,5 @@ struct EnumeratorPageResponse: Sendable, Codable {
         } else {
             total = nil
         }
-
-        let totalString = total != nil ? String(total ?? -1) : "nil"
     }
 }

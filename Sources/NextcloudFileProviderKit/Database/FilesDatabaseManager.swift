@@ -260,7 +260,7 @@ public final class FilesDatabaseManager: Sendable {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  var metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
+                  let metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -627,7 +627,7 @@ public final class FilesDatabaseManager: Sendable {
                     }
             }
 
-        var handledDeleteOcIds = Set(deleted.map(\.ocId))
+        let handledDeleteOcIds = Set(deleted.map(\.ocId))
 
         deleted
             .map { // assemble remote location

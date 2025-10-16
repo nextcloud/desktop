@@ -9,7 +9,7 @@ public extension Item {
     }
 
     func set(keepDownloaded: Bool, domain: NSFileProviderDomain) async throws {
-        try dbManager.set(keepDownloaded: keepDownloaded, for: metadata)
+        _ = try dbManager.set(keepDownloaded: keepDownloaded, for: metadata)
 
         guard let manager = NSFileProviderManager(for: domain) else {
             if #available(iOS 17.1, macOS 14.1, *) {

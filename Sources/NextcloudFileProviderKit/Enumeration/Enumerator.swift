@@ -161,23 +161,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         logger.debug("Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")", [.account: account.ncKitAccount, .url: serverUrl])
 
         Task {
-            var providedPage: NSFileProviderPage? = nil // Used for pagination token sent to server
             // Do not pass in the NSFileProviderPage default pages, these are not valid Nextcloud
             // pagination tokens
-            var pageIndex = 0
             var pageTotal: Int? = nil
 
             if page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage, page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage {
                 if let enumPageResponse = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) {
-                    if let token = enumPageResponse.token?.data(using: .utf8) {
-                        providedPage = NSFileProviderPage(token)
-                    }
-
                     if let total = enumPageResponse.total {
                         pageTotal = total
                     }
-
-                    pageIndex = enumPageResponse.index
                 } else {
                     logger.error("Could not parse page")
                 }

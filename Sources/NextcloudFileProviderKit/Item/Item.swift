@@ -378,7 +378,7 @@ public class Item: NSObject, NSFileProviderItem {
             return nil
         }
 
-        var parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
+        let parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
             .trashContainer
         } else {
             await dbManager.parentItemIdentifierWithRemoteFallback(
