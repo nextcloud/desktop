@@ -168,39 +168,42 @@ AbstractButton {
                 height: implicitHeight
 
                 MenuItem {
-                    visible: model.isConnected && model.serverHasUserStatus
-                    height: visible ? implicitHeight : 0
+                    id: setStatusButton
+                    enabled: model.isConnected && model.serverHasUserStatus
                     text: qsTr("Set status")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
+
                     onClicked: showUserStatusSelector(index)
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    Accessible.onPressAction: setStatusButton.clicked()
                }
 
                 MenuItem {
-                    visible: model.isConnected && model.serverHasUserStatus
-                    height: visible ? implicitHeight : 0
+                    id: statusMessageButton
+                    enabled: model.isConnected && model.serverHasUserStatus
                     text: qsTr("Status message")
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
+
                     onClicked: showUserStatusMessageSelector(index)
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    Accessible.onPressAction: statusMessageButton.clicked()
                }
 
                 MenuItem {
+                    id: logInOutButton
+                    enabled: model.canLogout
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-                    visible: model.canLogout
-                    height: visible ? implicitHeight : 0
                     width: parent.width
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
+
                     onClicked: {
-                        model.isConnected ? UserModel.logout(index) : UserModel.login(index)
-                        accountMenu.close()
-                    }
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
-
-                    onPressed: {
                         if (model.isConnected) {
                             UserModel.logout(index)
                         } else {
@@ -208,12 +211,15 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    Accessible.onPressAction: logInOutButton.clicked()
                }
 
                 MenuItem {
                     id: removeAccountButton
                     text: model.removeAccountText
-                    height: implicitHeight
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: {
