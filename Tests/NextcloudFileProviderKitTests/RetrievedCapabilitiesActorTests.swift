@@ -3,13 +3,12 @@
 
 import Foundation
 import NextcloudCapabilitiesKit
-import Testing
 @testable import NextcloudFileProviderKit
+import Testing
 @testable import TestInterface
 
 @Suite("RetrievedCapabilitiesActor tests")
 struct RetrievedCapabilitiesActorTests {
-
     let account1 = "acc1"
     let account2 = "acc2"
 
@@ -17,7 +16,7 @@ struct RetrievedCapabilitiesActorTests {
         let actor = RetrievedCapabilitiesActor() // New instance for the test
         let capsData = mockCapabilities.data(using: .utf8)!
         let caps = Capabilities(data: capsData)!
-        let specificDate = Date(timeIntervalSince1970: 1234567890)
+        let specificDate = Date(timeIntervalSince1970: 1_234_567_890)
 
         // We call the public API.
         await actor.setCapabilities(forAccount: account1, capabilities: caps, retrievedAt: specificDate)

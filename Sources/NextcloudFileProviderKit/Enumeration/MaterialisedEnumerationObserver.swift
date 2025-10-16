@@ -27,7 +27,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     ) {
         self.ncKitAccount = ncKitAccount
         self.dbManager = dbManager
-        self.logger = FileProviderLogger(category: "MaterialisedEnumerationObserver", log: log)
+        logger = FileProviderLogger(category: "MaterialisedEnumerationObserver", log: log)
         self.completionHandler = completionHandler
         super.init()
     }
@@ -71,9 +71,9 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         var unmaterialisedIds = Set<String>()
         var newMaterialisedIds = Set<String>()
 
-        materialisedMetadatas.forEach {
-            materialisedMetadatasMap[$0.ocId] = $0
-            unmaterialisedIds.insert($0.ocId)
+        for materialisedMetadata in materialisedMetadatas {
+            materialisedMetadatasMap[materialisedMetadata.ocId] = materialisedMetadata
+            unmaterialisedIds.insert(materialisedMetadata.ocId)
         }
 
         for enumeratedId in itemIds {

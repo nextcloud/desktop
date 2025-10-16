@@ -33,13 +33,13 @@ extension Item {
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
         let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
-        let dirtyItem = Item(
+        let dirtyItem = await Item(
             metadata: dirtyMetadata,
             parentItemIdentifier: .trashContainer,
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
 
@@ -72,7 +72,9 @@ extension Item {
             // It seems the server likes to return a fileId as the ocId for trash files, so let's
             // check for the fileId too
             where: { $0.ocId == modifiedItem.metadata.ocId ||
-                     $0.fileId == modifiedItem.metadata.fileId })
+                $0.fileId == modifiedItem.metadata.fileId
+            }
+        )
         else {
             logger.error(
                 """
@@ -96,13 +98,13 @@ extension Item {
         postDeleteMetadata.ocId = modifiedItem.itemIdentifier.rawValue
         dbManager.addItemMetadata(postDeleteMetadata)
 
-        let postDeleteItem = Item(
+        let postDeleteItem = await Item(
             metadata: postDeleteMetadata,
             parentItemIdentifier: .trashContainer,
             account: account,
             remoteInterface: modifiedItem.remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
             log: log
         )
 
@@ -166,7 +168,7 @@ extension Item {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        domain: NSFileProviderDomain?,
+        domain _: NSFileProviderDomain?,
         log: any FileProviderLogging
     ) async -> (Item, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
@@ -191,13 +193,13 @@ extension Item {
             }
             dbManager.addItemMetadata(restoredItemMetadata)
 
-            return (Item(
+            return await (Item(
                 metadata: restoredItemMetadata,
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: modifiedItem.remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: await modifiedItem.remoteInterface.supportsTrash(account: account),
+                remoteSupportsTrash: modifiedItem.remoteInterface.supportsTrash(account: account),
                 log: log
             ), nil)
         }
@@ -269,7 +271,7 @@ extension Item {
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
             }
             var parentDirectoryRemotePath = originalLocation
-            parentDirectoryRemotePath.removeSubrange(finalSlashIndex..<originalLocation.endIndex)
+            parentDirectoryRemotePath.removeSubrange(finalSlashIndex ..< originalLocation.endIndex)
 
             logger.info(
                 """

@@ -1,10 +1,10 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import XCTest
 import FileProvider
-import NextcloudKit
 @testable import NextcloudFileProviderKit
+import NextcloudKit
+import XCTest
 
 final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd")
@@ -182,4 +182,3 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(unwrappedResult.directories.first?.ocId, "dir2")
     }
 }
-

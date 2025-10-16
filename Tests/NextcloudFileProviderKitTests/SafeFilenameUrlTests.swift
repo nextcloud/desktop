@@ -2,8 +2,8 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
-import Testing
 @testable import NextcloudFileProviderKit
+import Testing
 
 struct SafeFilenameUrlTests {
     @Test func safeFilenameFull() {

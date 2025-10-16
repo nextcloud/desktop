@@ -9,7 +9,7 @@ import NextcloudKit
 
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
-final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
+public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
@@ -31,7 +31,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     private var webSocketUrlSession: URLSession?
     private var webSocketTask: URLSessionWebSocketTask?
     private var webSocketOperationQueue = OperationQueue()
-    private var webSocketPingTask: Task<(), Never>?
+    private var webSocketPingTask: Task<Void, Never>?
     private(set) var webSocketPingFailCount = 0
     private(set) var webSocketAuthenticationFailCount = 0
 
@@ -44,6 +44,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
             }
         }
     }
+
     public var pollingActive: Bool { pollingTimer != nil }
 
     private(set) var networkReachability: NKTypeReachability = .unknown {
@@ -73,7 +74,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
         self.dbManager = dbManager
-        self.logger = FileProviderLogger(category: "RemoteChangeObserver", log: log)
+        logger = FileProviderLogger(category: "RemoteChangeObserver", log: log)
         super.init()
         connect()
     }
@@ -83,7 +84,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         Task { @MainActor in
             pollingTimer = Timer.scheduledTimer(
                 withTimeInterval: pollInterval, repeats: true
-            ) { [weak self] timer in
+            ) { [weak self] _ in
                 self?.logger.info("Polling timer timeout, notifying change.")
                 self?.startWorkingSetCheck()
             }
@@ -158,7 +159,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         )
 
         guard error == .success else {
-            self.logger.error("Could not get capabilities: \(error.errorCode) \(error.errorDescription)", [.account: accountId])
+            logger.error("Could not get capabilities: \(error.errorCode) \(error.errorDescription)", [.account: accountId])
             reconnectWebSocket()
             return
         }
@@ -166,7 +167,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         guard let capabilities,
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
-            logger.error("Could not get notifyPush websocket \(self.accountId), polling.", [.account: accountId])
+            logger.error("Could not get notifyPush websocket \(accountId), polling.", [.account: accountId])
             startPollingTimer()
             return
         }
@@ -188,7 +189,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     }
 
     public func authenticationChallenge(
-        _ session: URLSession,
+        _: URLSession,
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
@@ -219,9 +220,9 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     }
 
     public func urlSession(
-        _ session: URLSession,
-        webSocketTask: URLSessionWebSocketTask,
-        didOpenWithProtocol protocol: String?
+        _: URLSession,
+        webSocketTask _: URLSessionWebSocketTask,
+        didOpenWithProtocol _: String?
     ) {
         guard !invalidated else { return }
         logger.debug("Websocket connected \(accountId) sending auth details", [.account: accountId])
@@ -229,9 +230,9 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     }
 
     public func urlSession(
-        _ session: URLSession,
+        _: URLSession,
         webSocketTask: URLSessionWebSocketTask,
-        didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
+        didCloseWith _: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
         guard !invalidated else { return }
@@ -244,7 +245,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
 
         logger.debug("Socket connection closed for \(accountId).", [.account: accountId])
 
-        if let reason = reason {
+        if let reason {
             logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "")")
         }
 
@@ -260,7 +261,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         do {
             try await webSocketTask?.send(.string(account.username))
             try await webSocketTask?.send(.string(account.password))
-        } catch let error {
+        } catch {
             logger.error("Error authenticating websocket.", [.account: accountId, .error: error])
         }
 
@@ -277,7 +278,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         webSocketPingTask = Task.detached(priority: .background) {
             do {
                 try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
-            } catch let error {
+            } catch {
                 self.logger.error("Could not sleep websocket ping.", [.account: self.accountId, .error: error])
             }
             guard !Task.isCancelled else { return }
@@ -285,27 +286,27 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         }
     }
 
-    private func pingWebSocket() {  // Keep the socket connection alive
+    private func pingWebSocket() { // Keep the socket connection alive
         guard !invalidated else { return }
         guard networkReachability != .notReachable else {
-            logger.error("Not pinging because network is unreachable.", [.account: self.accountId])
+            logger.error("Not pinging because network is unreachable.", [.account: accountId])
             return
         }
 
         webSocketTask?.sendPing { [weak self] error in
             guard let self, !self.invalidated else { return }
             guard error == nil else {
-                self.logger.error("Websocket ping failed.", [.error: error])
-                self.webSocketPingFailCount += 1
-                if self.webSocketPingFailCount > self.webSocketPingFailLimit {
+                logger.error("Websocket ping failed.", [.error: error])
+                webSocketPingFailCount += 1
+                if webSocketPingFailCount > webSocketPingFailLimit {
                     Task.detached(priority: .medium) { self.reconnectWebSocket() }
                 } else {
-                    self.startNewWebSocketPingTask()
+                    startNewWebSocketPingTask()
                 }
                 return
             }
 
-            self.startNewWebSocketPingTask()
+            startNewWebSocketPingTask()
         }
     }
 
@@ -313,19 +314,19 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         guard !invalidated else { return }
         webSocketTask?.receive { result in
             switch result {
-            case .failure:
+                case .failure:
                     self.logger.debug("Failed to read websocket \(self.accountId)", [.account: self.accountId])
                 // Do not reconnect here, delegate methods will handle reconnecting
-            case .success(let message):
-                switch message {
-                case .data(let data):
-                    self.processWebsocket(data: data)
-                case .string(let string):
-                    self.processWebsocket(string: string)
-                @unknown default:
-                    self.logger.error("Unknown case encountered while reading websocket!")
-                }
-                self.readWebSocket()
+                case let .success(message):
+                    switch message {
+                        case let .data(data):
+                            self.processWebsocket(data: data)
+                        case let .string(string):
+                            self.processWebsocket(string: string)
+                        @unknown default:
+                            self.logger.error("Unknown case encountered while reading websocket!")
+                    }
+                    self.readWebSocket()
             }
         }
     }
@@ -357,7 +358,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         } else if string == "err: Invalid credentials" {
             logger.debug(
                 """
-                Invalid creds for websocket for \(self.accountId),
+                Invalid creds for websocket for \(accountId),
                 reattempting auth.
                 """
             )
@@ -374,59 +375,59 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         networkReachability = typeReachability
     }
 
-    public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) { }
+    public func urlSessionDidFinishEvents(forBackgroundURLSession _: URLSession) {}
 
     public func downloadProgress(
-        _ progress: Float,
-        totalBytes: Int64,
-        totalBytesExpected: Int64,
-        fileName: String,
-        serverUrl: String,
-        session: URLSession,
-        task: URLSessionTask
-    ) { }
+        _: Float,
+        totalBytes _: Int64,
+        totalBytesExpected _: Int64,
+        fileName _: String,
+        serverUrl _: String,
+        session _: URLSession,
+        task _: URLSessionTask
+    ) {}
 
     public func uploadProgress(
-        _ progress: Float,
-        totalBytes: Int64,
-        totalBytesExpected: Int64,
-        fileName: String,
-        serverUrl: String,
-        session: URLSession,
-        task: URLSessionTask
-    ) { }
+        _: Float,
+        totalBytes _: Int64,
+        totalBytesExpected _: Int64,
+        fileName _: String,
+        serverUrl _: String,
+        session _: URLSession,
+        task _: URLSessionTask
+    ) {}
 
     public func downloadingFinish(
-        _ session: URLSession,
-        downloadTask: URLSessionDownloadTask,
-        didFinishDownloadingTo location: URL
-    ) { }
+        _: URLSession,
+        downloadTask _: URLSessionDownloadTask,
+        didFinishDownloadingTo _: URL
+    ) {}
 
     public func downloadComplete(
-        fileName: String,
-        serverUrl: String,
-        etag: String?,
-        date: Date?,
-        dateLastModified: Date?,
-        length: Int64,
-        task: URLSessionTask,
-        error: NKError
-    ) { }
+        fileName _: String,
+        serverUrl _: String,
+        etag _: String?,
+        date _: Date?,
+        dateLastModified _: Date?,
+        length _: Int64,
+        task _: URLSessionTask,
+        error _: NKError
+    ) {}
 
     public func uploadComplete(
-        fileName: String,
-        serverUrl: String,
-        ocId: String?,
-        etag: String?,
-        date: Date?,
-        size: Int64,
-        task: URLSessionTask,
-        error: NKError
-    ) { }
+        fileName _: String,
+        serverUrl _: String,
+        ocId _: String?,
+        etag _: String?,
+        date _: Date?,
+        size _: Int64,
+        task _: URLSessionTask,
+        error _: NKError
+    ) {}
 
-    public func request<Value>(
-        _ request: Alamofire.DataRequest, didParseResponse response: Alamofire.AFDataResponse<Value>
-    ) { }
+    public func request(
+        _: Alamofire.DataRequest, didParseResponse _: Alamofire.AFDataResponse<some Any>
+    ) {}
 
     ///
     /// Dispatches the asynchronous working set check.
@@ -444,7 +445,7 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
 
     private func checkWorkingSet() async {
         workingSetCheckOngoing = true
-        
+
         defer {
             workingSetCheckOngoing = false
         }
@@ -460,17 +461,16 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                     ($1.serverUrl + "/" + $1.fileName).count
             }
 
-
         var allNewMetadatas = [SendableItemMetadata]()
         var allUpdatedMetadatas = [SendableItemMetadata]()
         var allDeletedMetadatas = [SendableItemMetadata]()
         var examinedItemIds = Set<String>()
-        
+
         for item in materialisedItems where !examinedItemIds.contains(item.ocId) {
             guard !invalidated else {
                 return
             }
-            
+
             guard isLockFileName(item.fileName) == false else {
                 // Skip server requests for locally created lock files.
                 // They are not synchronized to the server for real.
@@ -479,9 +479,9 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                 logger.debug("Skipping materialized item in working set check because the name hints a lock file.", [.item: item, .name: item.name])
                 continue
             }
-            
+
             let itemRemoteUrl = item.serverUrl + "/" + item.fileName
-            
+
             let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(
                 itemRemoteUrl,
                 account: account,
@@ -490,11 +490,11 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                 depth: item.directory ? .targetAndDirectChildren : .target,
                 log: logger.log
             )
-            
+
             guard !invalidated else {
                 return
             }
-            
+
             if readError?.errorCode == 404 {
                 allDeletedMetadatas.append(item)
                 examinedItemIds.insert(item.ocId)
@@ -538,15 +538,16 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                     // if they haven't changed (etag matches database), mark them as examined
                     // so we don't enumerate them separately later
                     if metadatas.count > 1 {
-                        let childDirectories = metadatas[1...].filter { $0.directory }
+                        let childDirectories = metadatas[1...].filter(\.directory)
                         for childDir in childDirectories {
                             // Check if this directory is in our materialized items list
                             if let localItem = materialisedItems.first(where: { $0.ocId == childDir.ocId }),
-                               localItem.etag == childDir.etag {
+                               localItem.etag == childDir.etag
+                            {
                                 // Directory hasn't changed, mark as examined to skip separate enumeration
                                 logger.debug("Child directory \(childDir.fileName) etag unchanged (\(childDir.etag)), marking as examined")
                                 examinedChildFilesAndDeletedItems.insert(childDir.ocId)
-                                
+
                                 // Also mark any materialized children of this directory as examined
                                 let grandChildren = materialisedItems.filter {
                                     $0.serverUrl.hasPrefix(localItem.serverUrl + "/" + localItem.fileName)
@@ -582,8 +583,8 @@ final public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
 
         allDeletedMetadatas = checkedDeletedMetadatas
         let task = Task { @MainActor in
-            allDeletedMetadatas.forEach {
-                var deleteMarked = $0
+            for deletedMetadata in allDeletedMetadatas {
+                var deleteMarked = deletedMetadata
                 deleteMarked.deleted = true
                 deleteMarked.syncTime = Date()
                 dbManager.addItemMetadata(deleteMarked)

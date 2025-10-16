@@ -52,7 +52,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         fileName = sanitise(string: id) + "_" + sanitisedUrl
     }
 
-    public init?(dictionary: Dictionary<String, String>) {
+    public init?(dictionary: [String: String]) {
         guard let username = dictionary[AccountDictUsernameKey],
               let id = dictionary[AccountDictIdKey],
               let password = dictionary[AccountDictPasswordKey],
@@ -77,8 +77,8 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         self.fileName = fileName
     }
 
-    public func dictionary() -> Dictionary<String, String> {
-        return [
+    public func dictionary() -> [String: String] {
+        [
             AccountDictUsernameKey: username,
             AccountDictIdKey: id,
             AccountDictPasswordKey: password,
@@ -87,7 +87,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             AccountDictDavFilesUrlKey: davFilesUrl,
             AccountDictTrashUrlKey: trashUrl,
             AccountDictTrashRestoreUrlKey: trashRestoreUrl,
-            AccountDictFileNameKey: fileName
+            AccountDictFileNameKey: fileName,
         ]
     }
 }

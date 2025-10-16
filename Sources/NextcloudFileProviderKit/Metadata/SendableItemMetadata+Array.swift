@@ -3,7 +3,7 @@
 
 import Foundation
 
-extension Array<SendableItemMetadata> {
+extension [SendableItemMetadata] {
     ///
     /// Concurrently compact chunks of an array of ``SendableItemMetadata`` to an array of ``Item``.
     ///
@@ -11,7 +11,7 @@ extension Array<SendableItemMetadata> {
         let logger = FileProviderLogger(category: "toFileProviderItems", log: log)
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
 
-        let result: [Item] = try await self.concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
+        let result: [Item] = try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil

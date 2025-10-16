@@ -44,12 +44,12 @@ public actor FileProviderLog: FileProviderLogging {
     /// Used for the file name part of the log files.
     ///
     let fileDateFormatter: DateFormatter
-    
+
     ///
     /// Used for for the date strings in encoded ``FileProviderLogMessage``.
     ///
     let messageDateFormatter: DateFormatter
-    
+
     ///
     /// The handle used for writing to the file located by ``url``.
     ///
@@ -84,26 +84,26 @@ public actor FileProviderLog: FileProviderLogging {
     ///     - fileProviderDomainIdentifier: The raw string value of the file provider domain which this file provider extension process is managing.
     ///
     public init(fileProviderDomainIdentifier identifier: NSFileProviderDomainIdentifier) {
-        self.domainIdentifier = identifier
-        self.encoder = JSONEncoder()
-        self.encoder.outputFormatting = [.sortedKeys]
-        self.fileManager = FileManager.default
+        domainIdentifier = identifier
+        encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        fileManager = FileManager.default
 
-        self.fileDateFormatter = DateFormatter()
-        self.fileDateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        self.fileDateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
-        
-        self.messageDateFormatter = DateFormatter()
-        self.messageDateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        self.messageDateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss.SSS"
+        fileDateFormatter = DateFormatter()
+        fileDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        fileDateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
 
-        self.subsystem = Bundle.main.bundleIdentifier ?? ""
-        self.logger = Logger(subsystem: self.subsystem, category: "FileProviderLog")
+        messageDateFormatter = DateFormatter()
+        messageDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        messageDateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss.SSS"
+
+        subsystem = Bundle.main.bundleIdentifier ?? ""
+        logger = Logger(subsystem: subsystem, category: "FileProviderLog")
 
         guard let logsDirectory = fileManager.fileProviderDomainLogDirectory(for: identifier) else {
             logger.error("Failed to get URL for file provider domain logs!")
-            self.file = nil
-            self.handle = nil
+            file = nil
+            handle = nil
             self.logsDirectory = nil
             return
         }
@@ -115,7 +115,7 @@ public actor FileProviderLog: FileProviderLogging {
     /// Rotates the log file by creating a new one when the current file becomes too large.
     ///
     func rotateLogFileIfNeeded() {
-        guard let logsDirectory = logsDirectory else {
+        guard let logsDirectory else {
             logger.error("Cancelling log file rotation due to the lack of a logs directory!")
             return
         }
@@ -129,11 +129,12 @@ public actor FileProviderLog: FileProviderLogging {
                     handle?.closeFile()
                     logger.debug("Closed current log file at \"\(currentFile.path, privacy: .public)\" because it exceeds the size limit.")
 
-                    self.file = nil
-                    self.handle = nil
+                    file = nil
+                    handle = nil
                 }
             }
         } catch {
+            // swiftformat:disable:next redundantSelf
             logger.error("Failed to close open log file at \"\(self.file?.path ?? "nil")\": \(error.localizedDescription, privacy: .public)")
         }
 
@@ -156,8 +157,8 @@ public actor FileProviderLog: FileProviderLogging {
         }
 
         do {
-            self.file = newFile
-            self.handle = try FileHandle(forWritingTo: newFile)
+            file = newFile
+            handle = try FileHandle(forWritingTo: newFile)
             logger.debug("Opened new log file for writing at: \"\(newFile.path)\".")
         } catch {
             logger.error("Failed to open new log file at \"\(newFile.path)\" for writing: \(error.localizedDescription, privacy: .public)")
@@ -171,7 +172,7 @@ public actor FileProviderLog: FileProviderLogging {
     /// Removes log files that are older than 24 hours, excluding the current active log file.
     ///
     private func cleanupOldLogFiles() {
-        guard let logsDirectory = logsDirectory else {
+        guard let logsDirectory else {
             logger.error("Cannot cleanup old log files: logs directory is nil")
             return
         }
@@ -207,7 +208,7 @@ public actor FileProviderLog: FileProviderLogging {
             logger.error("Failed to enumerate log files for cleanup: \(error.localizedDescription, privacy: .public)")
         }
     }
-    
+
     private func writeToUnifiedLoggingSystem(level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?]) {
         if details.isEmpty {
             logger.log(level: level, "\(message, privacy: .public)")
@@ -221,46 +222,44 @@ public actor FileProviderLog: FileProviderLogging {
                 return nil
             }
 
-            let valueDescription: String?
-
-            switch value {
+            let valueDescription: String? = switch value {
                 case let account as Account:
-                    valueDescription = account.ncKitAccount
+                    account.ncKitAccount
                 case let date as Date:
-                    valueDescription = messageDateFormatter.string(from: date)
+                    messageDateFormatter.string(from: date)
                 case let lock as NKLock:
-                    valueDescription = lock.token
+                    lock.token ?? "nil"
                 case let item as NSFileProviderItem:
-                    valueDescription = item.itemIdentifier.rawValue
+                    item.itemIdentifier.rawValue
                 case let identifier as NSFileProviderItemIdentifier:
-                    valueDescription = identifier.rawValue
+                    identifier.rawValue
                 case let url as URL:
-                    valueDescription = url.absoluteString
+                    url.absoluteString
                 case let text as String:
-                    valueDescription = text
+                    text
                 case let request as NSFileProviderRequest:
-                    valueDescription = "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
+                    "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
                 default:
-                    valueDescription = String(describing: value)
+                    String(describing: value)
             }
 
             return "- \(key.rawValue): \(valueDescription ?? "nil")"
         }
-        
+
         logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)")
     }
 
     public func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?]) {
         #if DEBUG
-        
-        writeToUnifiedLoggingSystem(level: level, message: message, details: details)
-        
+
+            writeToUnifiedLoggingSystem(level: level, message: message, details: details)
+
         #else
-        
-        if level == .debug {
-            return // We want debug messages only in debug builds.
-        }
-        
+
+            if level == .debug {
+                return // We want debug messages only in debug builds.
+            }
+
         #endif
 
         rotateLogFileIfNeeded() // Check if log file needs rotation before writing anything.
@@ -269,22 +268,19 @@ public actor FileProviderLog: FileProviderLogging {
             return
         }
 
-        let levelDescription: String
-
-        switch level {
+        let levelDescription = switch level {
             case .debug:
-                levelDescription = "debug"
+                "debug"
             case .info:
-                levelDescription = "info"
+                "info"
             case .default:
-                levelDescription = "default"
+                "default"
             case .error:
-                levelDescription = "error"
+                "error"
             case .fault:
-                levelDescription = "fault"
+                "fault"
             default:
-                levelDescription = "default"
-                break
+                "default"
         }
 
         let date = Date()

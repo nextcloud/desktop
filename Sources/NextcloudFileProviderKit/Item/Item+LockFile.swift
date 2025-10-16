@@ -2,8 +2,8 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NextcloudKit
 import NextcloudCapabilitiesKit
+import NextcloudKit
 
 extension Item {
     ///
@@ -169,14 +169,14 @@ extension Item {
 
         progress.completedUnitCount = 1
 
-        return (
+        return await (
             Item(
                 metadata: metadata,
                 parentItemIdentifier: parentItemIdentifier,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+                remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                 log: log
             ),
             errorToReturn
@@ -196,7 +196,7 @@ extension Item {
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
-        logger.info("System requested modification of lock file. Marking as complete without syncing to server.", [.name: self.filename])
+        logger.info("System requested modification of lock file. Marking as complete without syncing to server.", [.name: filename])
 
         if isLockFileName(filename) == false {
             logger.fault("Should not handle non-lock files here.", [.name: filename])
@@ -215,12 +215,12 @@ extension Item {
             progress: progress,
             dbManager: dbManager
         ) else {
-            logger.info("Cannot modify lock file because received a nil modified item.", [.name: self.filename])
+            logger.info("Cannot modify lock file because received a nil modified item.", [.name: filename])
             return (nil, NSFileProviderError(.cannotSynchronize))
         }
 
         if !isLockFileName(modifiedItem.filename) {
-            logger.info("After modification, lock file: \(self.filename) is no longer a lock file (it is now named: \(modifiedItem.filename)) Will proceed with creating item on server (if possible).")
+            logger.info("After modification, lock file: \(filename) is no longer a lock file (it is now named: \(modifiedItem.filename)) Will proceed with creating item on server (if possible).")
 
             return await modifiedItem.createUnuploaded(
                 itemTarget: itemTarget,
@@ -241,14 +241,14 @@ extension Item {
     }
 
     func deleteLockFile(domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager) async -> Error? {
-        guard await Self.assertRequiredCapabilities(domain: domain, itemIdentifier: self.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
+        guard await Self.assertRequiredCapabilities(domain: domain, itemIdentifier: itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
             return nil
         }
 
         dbManager.deleteItemMetadata(ocId: metadata.ocId)
 
         guard let originalFileName = originalFileName(fromLockFileName: metadata.fileName, dbManager: dbManager) else {
-            logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: self.metadata.fileName])
+            logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: metadata.fileName])
             return nil
         }
 
@@ -295,7 +295,7 @@ extension Item {
                 logger.error("Failed to find target item for released lock.", [.lock: lock])
             }
         } catch {
-            logger.error("Could not unlock item.", [.name: self.filename, .error: error])
+            logger.error("Could not unlock item.", [.name: filename, .error: error])
 
             if let error = error as? NKError {
                 return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)

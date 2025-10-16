@@ -64,22 +64,22 @@ public enum FileProviderLogDetail: Encodable {
 
     var value: Any {
         switch self {
-            case .date(let v):
-                return Self.dateFormatter.string(from: v)
-            case .string(let v):
-                return v
-            case .int(let v):
-                return v
-            case .double(let v):
-                return v
-            case .bool(let v):
-                return v
-            case .array(let v):
-                return v.map { $0.value }
-            case .dictionary(let v):
-                return v.mapValues { $0.value }
+            case let .date(v):
+                Self.dateFormatter.string(from: v)
+            case let .string(v):
+                v
+            case let .int(v):
+                v
+            case let .double(v):
+                v
+            case let .bool(v):
+                v
+            case let .array(v):
+                v.map(\.value)
+            case let .dictionary(v):
+                v.mapValues { $0.value }
             case .null:
-                return NSNull()
+                NSNull()
         }
     }
 
@@ -102,7 +102,7 @@ public enum FileProviderLogDetail: Encodable {
                 self = .dictionary([
                     "code": .int(error.code),
                     "domain": .string(error.domain),
-                    "localizedDescription": .string(error.localizedDescription)
+                    "localizedDescription": .string(error.localizedDescription),
                 ])
             } else if let error = someValue as? Error {
                 self = .string(error.localizedDescription)
@@ -134,14 +134,13 @@ public enum FileProviderLogDetail: Encodable {
                     "syncTime": .date(metadata.syncTime),
                     "trashbinFileName": .string(metadata.trashbinFileName),
                     "uploaded": .bool(metadata.uploaded),
-                    "visitedDirectory": .bool(metadata.visitedDirectory)
-
+                    "visitedDirectory": .bool(metadata.visitedDirectory),
                 ])
             } else if let request = someValue as? NSFileProviderRequest {
                 self = .dictionary([
                     "requestingExecutable": .string(request.requestingExecutable?.path ?? "nil"),
                     "isFileViewerRequest": .bool(request.isFileViewerRequest),
-                    "isSystemRequest": .bool(request.isSystemRequest)
+                    "isSystemRequest": .bool(request.isSystemRequest),
                 ])
             } else if let lock = someValue as? NKLock {
                 self = .dictionary([
@@ -151,7 +150,7 @@ public enum FileProviderLogDetail: Encodable {
                     "ownerType": .int(lock.ownerType.rawValue),
                     "time": lock.time == nil ? .null : .date(lock.time!),
                     "timeOut": lock.timeOut == nil ? .null : .date(lock.timeOut!),
-                    "token": lock.token == nil ? .null : .string(lock.token!)
+                    "token": lock.token == nil ? .null : .string(lock.token!),
                 ])
             } else {
                 self = .string("Unsupported log detail type: \(String(describing: someValue.self))")
@@ -167,19 +166,19 @@ public enum FileProviderLogDetail: Encodable {
         var container = encoder.singleValueContainer()
 
         switch self {
-            case .date(let v):
+            case let .date(v):
                 try container.encode(v)
-            case .string(let v):
+            case let .string(v):
                 try container.encode(v)
-            case .int(let v):
+            case let .int(v):
                 try container.encode(v)
-            case .double(let v):
+            case let .double(v):
                 try container.encode(v)
-            case .bool(let v):
+            case let .bool(v):
                 try container.encode(v)
-            case .array(let v):
+            case let .array(v):
                 try container.encode(v)
-            case .dictionary(let v):
+            case let .dictionary(v):
                 try container.encode(v)
             case .null:
                 try container.encodeNil()

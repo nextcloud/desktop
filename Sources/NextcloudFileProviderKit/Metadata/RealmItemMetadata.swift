@@ -10,98 +10,101 @@ import RealmSwift
 /// > Warning: **Do not pass instances across the boundaries of different concurrency domains because they are not sendable!**
 /// Use ``SendableItemMetadata`` as a representation instead.
 ///
-internal class RealmItemMetadata: Object, ItemMetadata {
-    @Persisted(primaryKey: true) public var ocId: String
-    @Persisted public var account = ""
-    @Persisted public var checksums = ""
-    @Persisted public var chunkUploadId: String?
-    @Persisted public var classFile = ""
-    @Persisted public var commentsUnread: Bool = false
-    @Persisted public var contentType = ""
-    @Persisted public var creationDate = Date()
-    @Persisted public var dataFingerprint = ""
-    @Persisted public var date = Date()
-    @Persisted public var syncTime = Date()
-    @Persisted public var deleted = false
-    @Persisted public var directory: Bool = false
-    @Persisted public var downloadURL = ""
-    @Persisted public var e2eEncrypted: Bool = false
-    @Persisted public var etag = ""
-    @Persisted public var favorite: Bool = false
-    @Persisted public var fileId = ""
-    @Persisted public var fileName = "" // What the file's real file name is
-    @Persisted public var fileNameView = "" // What the user sees (usually same as fileName)
-    @Persisted public var hasPreview: Bool = false
-    @Persisted public var hidden = false
-    @Persisted public var iconName = ""
-    @Persisted public var iconUrl = ""
-    @Persisted public var isLockFileOfLocalOrigin: Bool = false
-    @Persisted public var livePhotoFile: String?
-    @Persisted public var mountType = ""
-    @Persisted public var name = ""  // for unifiedSearch is the provider.id
-    @Persisted public var note = ""
-    @Persisted public var ownerId = ""
-    @Persisted public var ownerDisplayName = ""
-    @Persisted public var lock: Bool = false
-    @Persisted public var lockOwner: String?
-    @Persisted public var lockOwnerEditor: String?
-    @Persisted public var lockOwnerType: Int?
-    @Persisted public var lockOwnerDisplayName: String?
-    @Persisted public var lockTime: Date? // Time the file was locked
-    @Persisted public var lockTimeOut: Date? // Time the file's lock will expire
-    @Persisted public var lockToken: String? // Token identifier for token-based locks
-    @Persisted public var path = ""
-    @Persisted public var permissions = ""
-    @Persisted public var quotaUsedBytes: Int64 = 0
-    @Persisted public var quotaAvailableBytes: Int64 = 0
-    @Persisted public var resourceType = ""
-    @Persisted public var richWorkspace: String?
-    @Persisted public var serverUrl = ""  // For parent folder! Build remote url by adding fileName
-    @Persisted public var session: String?
-    @Persisted public var sessionError: String?
-    @Persisted public var sessionTaskIdentifier: Int?
-    @Persisted public var storedShareType = List<Int>()
-    public var shareType: [Int] {
+class RealmItemMetadata: Object, ItemMetadata {
+    @Persisted(primaryKey: true) var ocId: String
+    @Persisted var account = ""
+    @Persisted var checksums = ""
+    @Persisted var chunkUploadId: String?
+    @Persisted var classFile = ""
+    @Persisted var commentsUnread: Bool = false
+    @Persisted var contentType = ""
+    @Persisted var creationDate = Date()
+    @Persisted var dataFingerprint = ""
+    @Persisted var date = Date()
+    @Persisted var syncTime = Date()
+    @Persisted var deleted = false
+    @Persisted var directory: Bool = false
+    @Persisted var downloadURL = ""
+    @Persisted var e2eEncrypted: Bool = false
+    @Persisted var etag = ""
+    @Persisted var favorite: Bool = false
+    @Persisted var fileId = ""
+    @Persisted var fileName = "" // What the file's real file name is
+    @Persisted var fileNameView = "" // What the user sees (usually same as fileName)
+    @Persisted var hasPreview: Bool = false
+    @Persisted var hidden = false
+    @Persisted var iconName = ""
+    @Persisted var iconUrl = ""
+    @Persisted var isLockFileOfLocalOrigin: Bool = false
+    @Persisted var livePhotoFile: String?
+    @Persisted var mountType = ""
+    @Persisted var name = "" // for unifiedSearch is the provider.id
+    @Persisted var note = ""
+    @Persisted var ownerId = ""
+    @Persisted var ownerDisplayName = ""
+    @Persisted var lock: Bool = false
+    @Persisted var lockOwner: String?
+    @Persisted var lockOwnerEditor: String?
+    @Persisted var lockOwnerType: Int?
+    @Persisted var lockOwnerDisplayName: String?
+    @Persisted var lockTime: Date? // Time the file was locked
+    @Persisted var lockTimeOut: Date? // Time the file's lock will expire
+    @Persisted var lockToken: String? // Token identifier for token-based locks
+    @Persisted var path = ""
+    @Persisted var permissions = ""
+    @Persisted var quotaUsedBytes: Int64 = 0
+    @Persisted var quotaAvailableBytes: Int64 = 0
+    @Persisted var resourceType = ""
+    @Persisted var richWorkspace: String?
+    @Persisted var serverUrl = "" // For parent folder! Build remote url by adding fileName
+    @Persisted var session: String?
+    @Persisted var sessionError: String?
+    @Persisted var sessionTaskIdentifier: Int?
+    @Persisted var storedShareType = List<Int>()
+    var shareType: [Int] {
         get { storedShareType.map { $0 } }
         set {
             storedShareType = List<Int>()
             storedShareType.append(objectsIn: newValue)
         }
     }
-    @Persisted public var sharePermissionsCollaborationServices: Int = 0
+
+    @Persisted var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
-    @Persisted public var storedSharePermissionsCloudMesh = List<String>()
-    public var sharePermissionsCloudMesh: [String] {
+    @Persisted var storedSharePermissionsCloudMesh = List<String>()
+    var sharePermissionsCloudMesh: [String] {
         get { storedSharePermissionsCloudMesh.map { $0 } }
         set {
             storedSharePermissionsCloudMesh = List<String>()
             storedSharePermissionsCloudMesh.append(objectsIn: newValue)
         }
     }
-    @Persisted public var size: Int64 = 0
-    @Persisted public var status: Int = 0
-    @Persisted public var storedTags = List<String>()
-    public var tags: [String] {
+
+    @Persisted var size: Int64 = 0
+    @Persisted var status: Int = 0
+    @Persisted var storedTags = List<String>()
+    var tags: [String] {
         get { storedTags.map { $0 } }
         set {
             storedTags = List<String>()
             storedTags.append(objectsIn: newValue)
         }
     }
-    @Persisted public var downloaded = false
-    @Persisted public var uploaded = false
-    @Persisted public var keepDownloaded = false
-    @Persisted public var visitedDirectory = false
-    @Persisted public var trashbinFileName = ""
-    @Persisted public var trashbinOriginalLocation = ""
-    @Persisted public var trashbinDeletionTime = Date()
-    @Persisted public var uploadDate = Date()
-    @Persisted public var urlBase = ""
-    @Persisted public var user = "" // The user who owns the file (Nextcloud username)
-    @Persisted public var userId = "" // The user who owns the file (backend user id)
-                                      // (relevant for alt. backends like LDAP)
 
-    public override func isEqual(_ object: Any?) -> Bool {
+    @Persisted var downloaded = false
+    @Persisted var uploaded = false
+    @Persisted var keepDownloaded = false
+    @Persisted var visitedDirectory = false
+    @Persisted var trashbinFileName = ""
+    @Persisted var trashbinOriginalLocation = ""
+    @Persisted var trashbinDeletionTime = Date()
+    @Persisted var uploadDate = Date()
+    @Persisted var urlBase = ""
+    @Persisted var user = "" // The user who owns the file (Nextcloud username)
+    @Persisted var userId = "" // The user who owns the file (backend user id)
+    // (relevant for alt. backends like LDAP)
+
+    override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
                 && fileName == object.fileName
@@ -112,71 +115,71 @@ internal class RealmItemMetadata: Object, ItemMetadata {
 
     convenience init(value: any ItemMetadata) {
         self.init()
-        self.ocId = value.ocId
-        self.account = value.account
-        self.checksums = value.checksums
-        self.chunkUploadId = value.chunkUploadId
-        self.classFile = value.classFile
-        self.commentsUnread = value.commentsUnread
-        self.contentType = value.contentType
-        self.creationDate = value.creationDate
-        self.dataFingerprint = value.dataFingerprint
-        self.date = value.date
-        self.syncTime = value.syncTime
-        self.deleted = value.deleted
-        self.directory = value.directory
-        self.downloadURL = value.downloadURL
-        self.e2eEncrypted = value.e2eEncrypted
-        self.etag = value.etag
-        self.favorite = value.favorite
-        self.fileId = value.fileId
-        self.fileName = value.fileName
-        self.fileNameView = value.fileNameView
-        self.hasPreview = value.hasPreview
-        self.hidden = value.hidden
-        self.iconName = value.iconName
-        self.iconUrl = value.iconUrl
-        self.isLockFileOfLocalOrigin = value.isLockFileOfLocalOrigin
-        self.livePhotoFile = value.livePhotoFile
-        self.mountType = value.mountType
-        self.name = value.name
-        self.note = value.note
-        self.ownerId = value.ownerId
-        self.ownerDisplayName = value.ownerDisplayName
-        self.lock = value.lock
-        self.lockOwner = value.lockOwner
-        self.lockOwnerEditor = value.lockOwnerEditor
-        self.lockOwnerType = value.lockOwnerType
-        self.lockOwnerDisplayName = value.lockOwnerDisplayName
-        self.lockTime = value.lockTime
-        self.lockTimeOut = value.lockTimeOut
-        self.lockToken = value.lockToken
-        self.path = value.path
-        self.permissions = value.permissions
-        self.quotaUsedBytes = value.quotaUsedBytes
-        self.quotaAvailableBytes = value.quotaAvailableBytes
-        self.resourceType = value.resourceType
-        self.richWorkspace = value.richWorkspace
-        self.serverUrl = value.serverUrl
-        self.session = value.session
-        self.sessionError = value.sessionError
-        self.sessionTaskIdentifier = value.sessionTaskIdentifier
-        self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
-        self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
-        self.size = value.size
-        self.status = value.status
-        self.shareType = value.shareType
-        self.tags = value.tags
-        self.downloaded = value.downloaded
-        self.uploaded = value.uploaded
-        self.keepDownloaded = value.keepDownloaded
-        self.visitedDirectory = value.visitedDirectory
-        self.trashbinFileName = value.trashbinFileName
-        self.trashbinOriginalLocation = value.trashbinOriginalLocation
-        self.trashbinDeletionTime = value.trashbinDeletionTime
-        self.uploadDate = value.uploadDate
-        self.urlBase = value.urlBase
-        self.user = value.user
-        self.userId = value.userId
+        ocId = value.ocId
+        account = value.account
+        checksums = value.checksums
+        chunkUploadId = value.chunkUploadId
+        classFile = value.classFile
+        commentsUnread = value.commentsUnread
+        contentType = value.contentType
+        creationDate = value.creationDate
+        dataFingerprint = value.dataFingerprint
+        date = value.date
+        syncTime = value.syncTime
+        deleted = value.deleted
+        directory = value.directory
+        downloadURL = value.downloadURL
+        e2eEncrypted = value.e2eEncrypted
+        etag = value.etag
+        favorite = value.favorite
+        fileId = value.fileId
+        fileName = value.fileName
+        fileNameView = value.fileNameView
+        hasPreview = value.hasPreview
+        hidden = value.hidden
+        iconName = value.iconName
+        iconUrl = value.iconUrl
+        isLockFileOfLocalOrigin = value.isLockFileOfLocalOrigin
+        livePhotoFile = value.livePhotoFile
+        mountType = value.mountType
+        name = value.name
+        note = value.note
+        ownerId = value.ownerId
+        ownerDisplayName = value.ownerDisplayName
+        lock = value.lock
+        lockOwner = value.lockOwner
+        lockOwnerEditor = value.lockOwnerEditor
+        lockOwnerType = value.lockOwnerType
+        lockOwnerDisplayName = value.lockOwnerDisplayName
+        lockTime = value.lockTime
+        lockTimeOut = value.lockTimeOut
+        lockToken = value.lockToken
+        path = value.path
+        permissions = value.permissions
+        quotaUsedBytes = value.quotaUsedBytes
+        quotaAvailableBytes = value.quotaAvailableBytes
+        resourceType = value.resourceType
+        richWorkspace = value.richWorkspace
+        serverUrl = value.serverUrl
+        session = value.session
+        sessionError = value.sessionError
+        sessionTaskIdentifier = value.sessionTaskIdentifier
+        sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
+        sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
+        size = value.size
+        status = value.status
+        shareType = value.shareType
+        tags = value.tags
+        downloaded = value.downloaded
+        uploaded = value.uploaded
+        keepDownloaded = value.keepDownloaded
+        visitedDirectory = value.visitedDirectory
+        trashbinFileName = value.trashbinFileName
+        trashbinOriginalLocation = value.trashbinOriginalLocation
+        trashbinDeletionTime = value.trashbinDeletionTime
+        uploadDate = value.uploadDate
+        urlBase = value.urlBase
+        user = value.user
+        userId = value.userId
     }
 }

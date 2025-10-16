@@ -127,15 +127,14 @@ extension Enumerator {
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 
-        let options: NKRequestOptions
-        if let pageSettings {
-            options = .init(
+        let options: NKRequestOptions = if let pageSettings {
+            .init(
                 page: pageSettings.page,
                 offset: pageSettings.index * pageSettings.size,
                 count: pageSettings.size
             )
         } else {
-            options = .init()
+            .init()
         }
 
         let (_, files, data, error) = await remoteInterface.enumerate(
@@ -183,9 +182,9 @@ extension Enumerator {
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
-                  serverUrl == dbManager.account.davFilesUrl ||
-                  receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
-                  (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
+                serverUrl == dbManager.account.davFilesUrl ||
+                receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
+                (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 var metadata = receivedFile.toItemMetadata()

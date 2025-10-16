@@ -35,7 +35,7 @@ public class Item: NSObject, NSFileProviderItem {
         } else if permissions.contains("G") {
             capabilities.insert(.allowsReading)
         }
-        
+
         if metadata.lock == false || (metadata.lock == true && metadata.lockOwnerType == NKLockType.token.rawValue && metadata.ownerId == metadata.lockOwner && metadata.lockToken != nil) {
             if permissions.contains("D") { // Deletable
                 capabilities.insert(.allowsDeleting)
@@ -62,24 +62,25 @@ public class Item: NSObject, NSFileProviderItem {
         if #unavailable(macOS 13.0), !metadata.keepDownloaded {
             capabilities.insert(.allowsEvicting)
         }
-#if os(macOS)
-        if #available(macOS 11.3, *) {
-            capabilities.insert(.allowsExcludingFromSync)
-        }
-#endif
+        #if os(macOS)
+            if #available(macOS 11.3, *) {
+                capabilities.insert(.allowsExcludingFromSync)
+            }
+        #endif
         return capabilities
     }
 
     public var itemVersion: NSFileProviderItemVersion {
         NSFileProviderItemVersion(
             contentVersion: metadata.etag.data(using: .utf8)!,
-            metadataVersion: metadata.etag.data(using: .utf8)!)
+            metadataVersion: metadata.etag.data(using: .utf8)!
+        )
     }
 
     public var filename: String {
         metadata.isTrashed && !metadata.trashbinFileName.isEmpty ?
             metadata.trashbinFileName : !metadata.fileName.isEmpty ?
-                metadata.fileName : "unnamed file"
+            metadata.fileName : "unnamed file"
     }
 
     public var contentType: UTType {
@@ -176,24 +177,24 @@ public class Item: NSObject, NSFileProviderItem {
             return [
                 .hidden,
                 .userReadable,
-                .userWritable
+                .userWritable,
             ]
         }
 
-        if metadata.lock, (metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username), metadata.lockTimeOut ?? Date() > Date() {
+        if metadata.lock, metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username, metadata.lockTimeOut ?? Date() > Date() {
             return [
-                .userReadable
+                .userReadable,
             ]
         }
 
         return [
             .userReadable,
-            .userWritable
+            .userWritable,
         ]
     }
 
-    public var userInfo: [AnyHashable : Any]? {
-        var userInfoDict = [AnyHashable : Any]()
+    public var userInfo: [AnyHashable: Any]? {
+        var userInfoDict = [AnyHashable: Any]()
         if metadata.lock {
             // Can be used to display lock/unlock context menu entries for FPUIActions
             // Note that only files, not folders, should be lockable/unlockable
@@ -218,9 +219,9 @@ public class Item: NSObject, NSFileProviderItem {
     @available(macOS 13.0, iOS 16.0, visionOS 1.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
         #if os(macOS)
-        if metadata.keepDownloaded {
-            return .downloadEagerlyAndKeepDownloaded // Unavailable in iOS.
-        }
+            if metadata.keepDownloaded {
+                return .downloadEagerlyAndKeepDownloaded // Unavailable in iOS.
+            }
         #endif
 
         return .inherited
@@ -267,7 +268,6 @@ public class Item: NSObject, NSFileProviderItem {
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code
-
         )
         return Item(
             metadata: metadata,
@@ -337,7 +337,7 @@ public class Item: NSObject, NSFileProviderItem {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
-        self.logger = FileProviderLogger(category: "Item", log: log)
+        logger = FileProviderLogger(category: "Item", log: log)
         self.remoteInterface = remoteInterface
         self.dbManager = dbManager
         self.remoteSupportsTrash = remoteSupportsTrash
@@ -378,12 +378,10 @@ public class Item: NSObject, NSFileProviderItem {
             return nil
         }
 
-        var parentItemIdentifier: NSFileProviderItemIdentifier?
-
-        if metadata.isTrashed {
-            parentItemIdentifier = .trashContainer
+        var parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
+            .trashContainer
         } else {
-            parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
+            await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
                 remoteInterface: remoteInterface,
                 account: account
@@ -417,7 +415,7 @@ public class Item: NSObject, NSFileProviderItem {
 
             return nil
         }
-        
+
         let fm = FileManager.default
         let tempLocation = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let coordinator = NSFileCoordinator()
@@ -433,7 +431,7 @@ public class Item: NSObject, NSFileProviderItem {
 
         do {
             try readData.write(to: tempLocation)
-        } catch let error {
+        } catch {
             logger.error("Unable to write file item contents to temporary URL.", [.name: filename, .error: error])
         }
 

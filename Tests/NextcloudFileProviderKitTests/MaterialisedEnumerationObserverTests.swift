@@ -3,9 +3,9 @@
 
 import FileProvider
 import Foundation
-import NextcloudKit
 import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+import NextcloudKit
 import RealmSwift
 import TestInterface
 import XCTest

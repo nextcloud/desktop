@@ -5,11 +5,11 @@ import Alamofire
 import Foundation
 
 struct EnumeratorPageResponse: Sendable, Codable {
-    let token: String?   // Required by server to serve the next page of items
-    let index: Int      // Needed to calculate the offset for the next paginated request
-    var total: Int?     // Total item count, provided in the first non-offset paginated response
+    let token: String? // Required by server to serve the next page of items
+    let index: Int // Needed to calculate the offset for the next paginated request
+    var total: Int? // Total item count, provided in the first non-offset paginated response
 
-    init?(nkResponseData: AFDataResponse<Data>?, index: Int, log: any FileProviderLogging) {
+    init?(nkResponseData: AFDataResponse<Data>?, index: Int, log _: any FileProviderLogging) {
         guard let headers = nkResponseData?.response?.allHeaderFields as? [String: String] else {
             return nil
         }
@@ -30,7 +30,7 @@ struct EnumeratorPageResponse: Sendable, Codable {
         } else {
             total = nil
         }
-        
+
         let totalString = total != nil ? String(total ?? -1) : "nil"
     }
 }

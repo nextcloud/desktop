@@ -35,7 +35,7 @@ public struct FileProviderLogMessage: Encodable {
     ///
     /// Custom initializer to support arbitrary types as detail values.
     ///
-    init(category: String, date: String, details: [FileProviderLogDetailKey : Any?], level: String, message: String) {
+    init(category: String, date: String, details: [FileProviderLogDetailKey: Any?], level: String, message: String) {
         self.category = category
         self.date = date
 

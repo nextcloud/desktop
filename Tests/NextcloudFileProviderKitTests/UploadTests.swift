@@ -2,11 +2,11 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import RealmSwift
 import TestInterface
 import XCTest
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
@@ -117,7 +117,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
                     remoteChunkStoreFolderName: uploadUuid
-                )
+                ),
             ])
         }
 

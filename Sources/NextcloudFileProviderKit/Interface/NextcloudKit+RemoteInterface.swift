@@ -18,7 +18,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             createFolder(
                 serverUrlFileName: remotePath,
                 account: account.ncKitAccount,
@@ -32,7 +32,7 @@ extension NextcloudKit: RemoteInterface {
 
     public func upload(
         remotePath: String,
-        localPath: String, 
+        localPath: String,
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
         account: Account,
@@ -49,7 +49,7 @@ extension NextcloudKit: RemoteInterface {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
@@ -110,7 +110,7 @@ extension NextcloudKit: RemoteInterface {
             fm.temporaryDirectory.appendingPathComponent(remoteChunkStoreFolderName)
         do {
             try fm.createDirectory(at: chunksOutputDirectoryUrl, withIntermediateDirectories: true)
-        } catch let error {
+        } catch {
             logger.error(
                 """
                 Could not create temporary directory for chunked files: \(error)
@@ -178,7 +178,7 @@ extension NextcloudKit: RemoteInterface {
                 },
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
-                progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
+                progressHandler: { totalBytesExpected, totalBytes, _ in
                     let currentProgress = Progress(totalUnitCount: totalBytesExpected)
                     currentProgress.completedUnitCount = totalBytes
                     progressHandler(currentProgress)
@@ -207,7 +207,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             moveFileOrFolder(
                 serverUrlFileNameSource: remotePathSource,
                 serverUrlFileNameDestination: remotePathDestination,
@@ -238,7 +238,7 @@ extension NextcloudKit: RemoteInterface {
         afError: AFError?,
         nkError: NKError
     ) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             download(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
@@ -249,7 +249,7 @@ extension NextcloudKit: RemoteInterface {
                 progressHandler: progressHandler
             ) { account, etag, date, length, headers, afError, nkError in
                 continuation.resume(returning: (
-                    account, 
+                    account,
                     etag,
                     date as NSDate?,
                     length,
@@ -273,7 +273,7 @@ extension NextcloudKit: RemoteInterface {
     ) async -> (
         account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError
     ) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             readFileOrFolder(
                 serverUrlFileName: remotePath,
                 depth: depth.rawValue,
@@ -292,10 +292,10 @@ extension NextcloudKit: RemoteInterface {
     public func delete(
         remotePath: String,
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             deleteFileOrFolder(
                 serverUrlFileName: remotePath, account: account.ncKitAccount
             ) { account, response, error in
@@ -305,15 +305,15 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
-        return try await lockUnlockFile(serverUrlFileName: serverUrlFileName, type: type, shouldLock: shouldLock, account: account.ncKitAccount, options: options, taskHandler: taskHandler)
+        try await lockUnlockFile(serverUrlFileName: serverUrlFileName, type: type, shouldLock: shouldLock, account: account.ncKitAccount, options: options, taskHandler: taskHandler)
     }
 
     public func trashedItems(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             listingTrash(
                 showHiddenFiles: true, account: account.ncKitAccount
             ) { account, items, data, error in
@@ -390,7 +390,7 @@ extension NextcloudKit: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             getUserProfile(
                 account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, userProfile, data, error in
@@ -401,8 +401,8 @@ extension NextcloudKit: RemoteInterface {
 
     public func tryAuthenticationAttempt(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
         // Test by trying to fetch user profile
         let (_, _, _, error) =

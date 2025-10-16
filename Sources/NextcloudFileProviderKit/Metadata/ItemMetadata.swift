@@ -46,14 +46,14 @@ public protocol ItemMetadata: Equatable {
     var hidden: Bool { get set }
     var iconName: String { get set }
     var iconUrl: String { get set }
-    
+
     ///
     /// This is a lock file which was created on the local device and not introduced through synchronization with the server.
     ///
     var isLockFileOfLocalOrigin: Bool { get set }
-    
+
     var mountType: String { get set }
-    var name: String { get set }  // for unifiedSearch is the provider.id
+    var name: String { get set } // for unifiedSearch is the provider.id
     var note: String { get set }
     var ownerId: String { get set }
     var ownerDisplayName: String { get set }
@@ -73,7 +73,7 @@ public protocol ItemMetadata: Equatable {
     var quotaAvailableBytes: Int64 { get set }
     var resourceType: String { get set }
     var richWorkspace: String? { get set }
-    var serverUrl: String { get set }  // For parent folder! Build remote url by adding fileName
+    var serverUrl: String { get set } // For parent folder! Build remote url by adding fileName
     var session: String? { get set }
     var sessionError: String? { get set }
     var sessionTaskIdentifier: Int? { get set }
@@ -94,7 +94,7 @@ public protocol ItemMetadata: Equatable {
     var urlBase: String { get set }
     var user: String { get set } // The user who owns the file (Nextcloud username)
     var userId: String { get set } // The user who owns the file (backend user id)
-                                   // (relevant for alt. backends like LDAP)
+    // (relevant for alt. backends like LDAP)
 }
 
 public extension ItemMetadata {
@@ -143,7 +143,7 @@ public extension ItemMetadata {
             && comparingMetadata.note == note
             && comparingMetadata.lock == lock
             && comparingMetadata.sharePermissionsCollaborationServices
-                == sharePermissionsCollaborationServices
+            == sharePermissionsCollaborationServices
             && comparingMetadata.favorite == favorite
     }
 
@@ -167,7 +167,7 @@ public extension ItemMetadata {
                 .init(name: "fileId", value: fileId),
                 .init(name: "x", value: "\(size.width)"),
                 .init(name: "y", value: "\(size.height)"),
-                .init(name: "a", value: "true")
+                .init(name: "a", value: "true"),
             ])
     }
 }

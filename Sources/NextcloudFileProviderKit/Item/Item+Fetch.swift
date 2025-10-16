@@ -32,15 +32,15 @@ public extension Item {
             )
 
             if let readError, readError != .success {
-                logger.error("Could not enumerate directory contents.", [.name: self.metadata.fileName, .url: remoteDirectoryPath, .error: readError])
+                logger.error("Could not enumerate directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
 
                 throw readError.fileProviderError(
                     handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-                ) ??  NSFileProviderError(.cannotSynchronize)
+                ) ?? NSFileProviderError(.cannotSynchronize)
             }
 
             guard var metadatas else {
-                logger.error("Could not fetch directory contents.", [.name: self.metadata.fileName, .url: remoteDirectoryPath])
+                logger.error("Could not fetch directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath])
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
@@ -73,8 +73,8 @@ public extension Item {
                             if let domain {
                                 NSFileProviderManager(for: domain)?.register(
                                     task,
-                                    forItemWithIdentifier: 
-                                        NSFileProviderItemIdentifier(metadata.ocId),
+                                    forItemWithIdentifier:
+                                    NSFileProviderItemIdentifier(metadata.ocId),
                                     completionHandler: { _ in }
                                 )
                             }
@@ -89,7 +89,7 @@ public extension Item {
                         dbManager.addItemMetadata(metadata)
                         throw error.fileProviderError(
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-                        ) ??  NSFileProviderError(.cannotSynchronize)
+                        ) ?? NSFileProviderError(.cannotSynchronize)
                     }
                 }
 
@@ -116,7 +116,7 @@ public extension Item {
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         guard metadata.classFile != "lock", !isLockFileName(filename) else {
-            logger.info("System requested fetch of lock file, will just provide local contents URL if possible.", [.name: self.filename])
+            logger.info("System requested fetch of lock file, will just provide local contents URL if possible.", [.name: filename])
 
             if let domain, let localUrl = await localUrlForContents(domain: domain) {
                 return (localUrl, self, nil)
@@ -131,7 +131,7 @@ public extension Item {
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-        logger.debug("Fetching item.", [.name: self.metadata.fileName, .url: serverUrlFileName])
+        logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
 
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
         guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
@@ -140,7 +140,7 @@ public extension Item {
             return (
                 nil,
                 nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
             )
         }
 
@@ -154,7 +154,7 @@ public extension Item {
                     withIntermediateDirectories: true,
                     attributes: nil
                 )
-            } catch let error {
+            } catch {
                 logger.error("Could not create directory for item.", [.name: updatedMetadata.fileName, .error: error, .url: localPath])
 
                 updatedMetadata.status = Status.downloadError.rawValue
@@ -220,19 +220,19 @@ public extension Item {
             remoteInterface: remoteInterface,
             account: account
         ) else {
-            logger.error("Could not find parent item id for file.", [.name: self.metadata.fileName])
+            logger.error("Could not find parent item id for file.", [.name: metadata.fileName])
 
-            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
+            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
-        let fpItem = Item(
+        let fpItem = await Item(
             metadata: updatedMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
-            log: self.logger.log
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
+            log: logger.log
         )
 
         return (localPath, fpItem, nil)
@@ -240,11 +240,11 @@ public extension Item {
 
     func fetchThumbnail(size: CGSize, domain: NSFileProviderDomain? = nil) async -> (Data?, Error?) {
         guard let thumbnailUrl = metadata.thumbnailUrl(size: size) else {
-            logger.debug("Unknown thumbnail URL.", [.item: self.itemIdentifier, .name: self.filename])
-            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
+            logger.debug("Unknown thumbnail URL.", [.item: itemIdentifier, .name: filename])
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
-        logger.debug("Fetching thumbnail.", [.name: self.filename, .url: thumbnailUrl])
+        logger.debug("Fetching thumbnail.", [.name: filename, .url: thumbnailUrl])
 
         let (_, data, error) = await remoteInterface.downloadThumbnail(
             url: thumbnailUrl, account: account, options: .init(), taskHandler: { task in
@@ -259,7 +259,7 @@ public extension Item {
         )
 
         if error != .success {
-            logger.error("Could not acquire thumbnail.", [.item: self.itemIdentifier, .name: self.filename, .url: thumbnailUrl, .error: error])
+            logger.error("Could not acquire thumbnail.", [.item: itemIdentifier, .name: filename, .url: thumbnailUrl, .error: error])
         }
 
         return (data, error.fileProviderError(

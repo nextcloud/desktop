@@ -18,7 +18,7 @@ public extension Item {
         dbManager: FilesDatabaseManager
     ) async -> Error? {
         let isEmptyDirOrIsFile = childItemCount == nil || childItemCount == 0
-        
+
         guard trashing || isEmptyDirOrIsFile || options.contains(.recursive) else {
             return NSFileProviderError(.directoryNotEmpty)
         }
@@ -29,17 +29,17 @@ public extension Item {
         guard metadata.isLockFileOfLocalOrigin == false else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
-        
+
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
-            logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: self.filename])
+            logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
             dbManager.deleteItemMetadata(ocId: ocId)
             return nil
         }
 
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
-        
+
         guard serverFileNameUrl != "" else {
-            return NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            return NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
         }
 
         guard metadata.classFile != "lock", !isLockFileName(metadata.fileName) else {
@@ -58,7 +58,8 @@ public extension Item {
                         completionHandler: { _ in }
                     )
                 }
-        })
+            }
+        )
 
         guard error == .success else {
             logger.error("Could not delete item.", [.item: ocId, .url: serverFileNameUrl, .error: error])
@@ -78,7 +79,7 @@ public extension Item {
     private func handleMetadataDeletion() {
         let ocId = metadata.ocId
 
-        if self.metadata.directory {
+        if metadata.directory {
             _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
         } else {
             dbManager.deleteItemMetadata(ocId: ocId)
@@ -92,7 +93,7 @@ public extension Item {
     // the newly-trashed target item
     private func handleMetadataTrashModification() -> Error? {
         let ocId = metadata.ocId
-        
+
         if metadata.directory {
             _ = dbManager.renameDirectoryAndPropagateToChildren(
                 ocId: ocId,
@@ -104,15 +105,15 @@ public extension Item {
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.error("Could not find item metadata! Cannot finish trashing procedure!", [.item: self.itemIdentifier, .name: self.filename])
+            logger.error("Could not find item metadata! Cannot finish trashing procedure!", [.item: itemIdentifier, .name: filename])
             return NSFileProviderError(.cannotSynchronize)
         }
-        
+
         metadata.trashbinFileName = filename
         metadata.trashbinDeletionTime = Date()
         metadata.trashbinOriginalLocation = String(self.metadata.serverUrl + "/" + filename).replacingOccurrences(of: account.davFilesUrl + "/", with: "")
         dbManager.addItemMetadata(metadata)
-        
+
         return nil
     }
 }

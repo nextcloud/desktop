@@ -11,6 +11,7 @@ actor RetrievedCapabilitiesActor {
         let instance = RetrievedCapabilitiesActor()
         return instance
     }()
+
     var ongoingFetches: Set<String> = []
     var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
 
@@ -21,7 +22,7 @@ actor RetrievedCapabilitiesActor {
         capabilities: Capabilities,
         retrievedAt: Date = Date()
     ) {
-        self.data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
+        data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
     }
 
     func setOngoingFetch(forAccount account: String, ongoing: Bool) {

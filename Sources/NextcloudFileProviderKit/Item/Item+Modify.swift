@@ -6,7 +6,6 @@ import Foundation
 import NextcloudKit
 
 public extension Item {
-
     func move(
         newFileName: String,
         newRemotePath: String,
@@ -44,7 +43,7 @@ public extension Item {
                     \(moveError.errorDescription)
                 """
             )
-            return (nil, await moveError.fileProviderError(
+            return await (nil, moveError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: newRemotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface,
@@ -75,17 +74,17 @@ public extension Item {
             )
             return (
                 nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
             )
         }
 
-        let modifiedItem = Item(
+        let modifiedItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: newParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
         return (modifiedItem, nil)
@@ -105,30 +104,30 @@ public extension Item {
 
         guard let newContents else {
             logger.error("Cannot upload modified content because a nil URL was provided.", [.item: itemIdentifier])
-            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
         guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
             logger.error("Could not acquire metadata of item.", [.item: itemIdentifier])
             return (
                 nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
             )
         }
 
         guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
             logger.info("Could not acquire updated metadata of item. Unable to update item status to uploading.", [.item: itemIdentifier])
-            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
-        
+
         var headers = [String: String]()
-        
+
         if let token = metadata.lockToken {
             headers["If"] = "<\(remotePath)> (<opaquelocktoken:\(token)>)"
         }
-        
+
         let options = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
-        
+
         let (_, _, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
@@ -158,7 +157,7 @@ public extension Item {
             logger.error(
                 """
                 Could not upload item \(ocId)
-                with filename: \(self.filename),
+                with filename: \(filename),
                 received error: \(error.errorCode),
                 \(error.errorDescription)
                 """
@@ -169,7 +168,7 @@ public extension Item {
             dbManager.addItemMetadata(metadata)
             // Moving should be done before uploading and should catch collisions already, but,
             // it is painless to check here too just in case
-            return (nil, await error.fileProviderError(
+            return await (nil, error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface,
@@ -180,7 +179,7 @@ public extension Item {
         logger.info(
             """
             Successfully uploaded item with identifier: \(ocId)
-            and filename: \(self.filename)
+            and filename: \(filename)
             """
         )
 
@@ -190,7 +189,7 @@ public extension Item {
                 """
                 Item content modification upload reported as successful,
                 but there are differences between the received file size (\(size ?? -1))
-                and the original file size (\(self.documentSize?.int64Value ?? 0))
+                and the original file size (\(documentSize?.int64Value ?? 0))
                 """
             )
         }
@@ -210,13 +209,13 @@ public extension Item {
 
         dbManager.addItemMetadata(newMetadata)
 
-        let modifiedItem = Item(
+        let modifiedItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
 
@@ -235,8 +234,8 @@ public extension Item {
             logger.error(
                 """
                 Could not modify bundle or package contents as was provided nil contents url
-                    for item with ocID \(self.itemIdentifier.rawValue)
-                    (\(self.filename))
+                    for item with ocID \(itemIdentifier.rawValue)
+                    (\(filename))
                 """
             )
             throw NSFileProviderError(.cannotSynchronize)
@@ -250,7 +249,7 @@ public extension Item {
         )
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            return error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+            error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
 
         // 1. Scan the remote contents of the bundle (recursively)
@@ -277,8 +276,8 @@ public extension Item {
                 logger.error(
                     """
                     Could not read server url for item with ocID
-                    \(self.itemIdentifier.rawValue)
-                    (\(self.filename)),
+                    \(itemIdentifier.rawValue)
+                    (\(filename)),
                     received error: \(readError.errorDescription)
                     """
                 )
@@ -288,8 +287,8 @@ public extension Item {
                 logger.error(
                     """
                     Could not read server url for item with ocID
-                        \(self.itemIdentifier.rawValue)
-                        (\(self.filename)),
+                        \(itemIdentifier.rawValue)
+                        (\(filename)),
                         received nil metadatas
                     """
                 )
@@ -304,7 +303,7 @@ public extension Item {
             var childDirPaths = [String]()
             for metadata in metadatas {
                 guard metadata.directory,
-                      metadata.ocId != self.itemIdentifier.rawValue
+                      metadata.ocId != itemIdentifier.rawValue
                 else { continue }
                 childDirPaths.append(remoteDirectoryPath + "/" + metadata.fileName)
             }
@@ -319,7 +318,7 @@ public extension Item {
         }
 
         let attributesToFetch: Set<URLResourceKey> = [
-            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey,
         ]
         let fm = FileManager.default
         guard let enumerator = fm.enumerator(
@@ -499,7 +498,7 @@ public extension Item {
         }
 
         guard let bundleRootMetadata = dbManager.itemMetadata(
-            ocId: self.itemIdentifier.rawValue
+            ocId: itemIdentifier.rawValue
         ) else {
             logger.error(
                 """
@@ -507,18 +506,18 @@ public extension Item {
                     \(contentsPath)
                 """
             )
-            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
         }
 
         progress.completedUnitCount += 1
 
-        return Item(
+        return await Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
     }
@@ -560,7 +559,7 @@ public extension Item {
 
         guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
             logger.info("File is in the ignore list. Will delete locally with no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
-            
+
             guard let modifiedIgnored = await modifyUnuploaded(
                 itemTarget: itemTarget,
                 baseVersion: baseVersion,
@@ -577,9 +576,9 @@ public extension Item {
                 logger.error("Unable to modify ignored file, got nil item: \(relativePath)")
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
-            
+
             modifiedItem = modifiedIgnored
-            
+
             if #available(macOS 13.0, *) {
                 return (modifiedItem, NSFileProviderError(.excludedFromSync))
             } else {
@@ -607,8 +606,8 @@ public extension Item {
 
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
             logger.error("Could not modify item, different identifier to the item the modification was targeting (\(itemTarget.itemIdentifier.rawValue)).", [.item: modifiedItem])
-            
-            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier))
+
+            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
         let newParentItemIdentifier = itemTarget.parentItemIdentifier
@@ -634,7 +633,7 @@ public extension Item {
                 logger.error("Not modifying item, could not find metadata for target parentItemIdentifier \"\(newParentItemIdentifier.rawValue)\"!", [.item: modifiedItem])
                 return (
                     nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: self.itemIdentifier)
+                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
                 )
             }
 
@@ -647,14 +646,14 @@ public extension Item {
 
         if changedFields.contains(.parentItemIdentifier)
             && newParentItemIdentifier == .trashContainer
-            && modifiedItem.metadata.isTrashed {
-
-            if (changedFields.contains(.filename)) {
+            && modifiedItem.metadata.isTrashed
+        {
+            if changedFields.contains(.filename) {
                 logger.error("Tried to modify filename of already trashed item. This is not supported.", [.item: modifiedItem])
             }
 
             logger.info("Tried to trash item that is in fact already trashed.", [.item: modifiedItem])
-            
+
             return (modifiedItem, nil)
         } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
@@ -671,7 +670,7 @@ public extension Item {
 
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
             // Rename the item if necessary before doing the trashing procedures
-            if (changedFields.contains(.filename)) {
+            if changedFields.contains(.filename) {
                 let currentParentItemRemotePath = modifiedItem.metadata.serverUrl
                 let preTrashingRenamedRemotePath =
                     currentParentItemRemotePath + "/" + itemTarget.filename
@@ -720,7 +719,7 @@ public extension Item {
             // If not the case, or the item modification does not involve untrashing, move/rename.
             if (changedFields.contains(.filename) && modifiedItem.filename != itemTarget.filename) ||
                 (changedFields.contains(.parentItemIdentifier) &&
-                 modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier)
+                    modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier)
             {
                 let (renameModifiedItem, renameError) = await modifiedItem.move(
                     newFileName: itemTarget.filename,
@@ -767,7 +766,7 @@ public extension Item {
                         progress: progress,
                         dbManager: dbManager
                     )
-                } catch let error {
+                } catch {
                     contentError = error
                 }
             } else {

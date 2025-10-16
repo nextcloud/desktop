@@ -5,7 +5,7 @@ import FileProvider
 import Foundation
 import OSLog
 
-fileprivate let lfuLogger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "localfileutils")
+private let lfuLogger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "localfileutils")
 
 ///
 /// Resolve the path of the shared container for the app group of the file provider extension.
@@ -21,17 +21,17 @@ public func pathForAppGroupContainer() -> URL? {
     return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
-/// 
+///
 /// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office or LibreOffice.
-/// 
+///
 /// - Parameters:
 ///     - filename: The filename to check.
-/// 
+///
 /// - Returns: `true` if the filename is a lock file, `false` otherwise.
-/// 
+///
 public func isLockFileName(_ filename: String) -> Bool {
     // Microsoft Office lock files
-    return filename.hasPrefix("~$") ||
+    filename.hasPrefix("~$") ||
         // LibreOffice lock files
         (filename.hasPrefix(".~lock.") && filename.hasSuffix("#"))
 }
@@ -50,36 +50,36 @@ public func isLockFileName(_ filename: String) -> Bool {
 public func originalFileName(fromLockFileName lockFilename: String, dbManager: FilesDatabaseManager) -> String? {
     let logger = FileProviderLogger(category: "LocalFiles", log: dbManager.logger.log)
     var targetFileSuffix = lockFilename
-    
+
     if lockFilename.hasPrefix("~$") {
         let index = lockFilename.index(lockFilename.startIndex, offsetBy: 2)
         targetFileSuffix = String(lockFilename[index...])
     }
 
-    if lockFilename.hasPrefix(".~lock.") && lockFilename.hasSuffix("#") {
+    if lockFilename.hasPrefix(".~lock."), lockFilename.hasSuffix("#") {
         let start = lockFilename.index(lockFilename.startIndex, offsetBy: 7)
         let end = lockFilename.index(before: lockFilename.endIndex)
-        targetFileSuffix = String(lockFilename[start..<end])
+        targetFileSuffix = String(lockFilename[start ..< end])
     }
-    
+
     if let sbRange = lockFilename.range(of: ".sb-") {
         targetFileSuffix = String(lockFilename[..<sbRange.lowerBound])
     }
 
     logger.debug("Target suffix is \"\(targetFileSuffix)\".")
     let itemsMatchingMetadata = dbManager.itemsMetadataByFileNameSuffix(suffix: targetFileSuffix)
-    
+
     for file in itemsMatchingMetadata {
         let potentialOriginalFile = file.fileName
-        
+
         if lockFilename == potentialOriginalFile {
             logger.debug("Lock filename \"\(lockFilename)\" is the same as filename found in database: \"\(potentialOriginalFile)\".")
-            continue;
+            continue
         }
 
         logger.debug("Matched lock filename \"\(lockFilename)\" to original filename \"\(potentialOriginalFile)\".")
         return potentialOriginalFile
     }
-    
+
     return nil
 }

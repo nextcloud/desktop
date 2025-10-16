@@ -2,13 +2,13 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -771,15 +771,15 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsTrashing,
             .allowsWriting,
             .allowsRenaming,
-            .allowsReparenting
+            .allowsReparenting,
         ]
 
         // Excluding from sync is macOS-specific and always added if available
         var platformExpected = expected
         #if os(macOS)
-        if #available(macOS 11.3, *) {
-            platformExpected.insert(.allowsExcludingFromSync)
-        }
+            if #available(macOS 11.3, *) {
+                platformExpected.insert(.allowsExcludingFromSync)
+            }
         #endif
 
         XCTAssertEqual(item.capabilities, platformExpected)
@@ -807,14 +807,14 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsTrashing,
             .allowsRenaming,
             .allowsReparenting,
-            .allowsAddingSubItems
+            .allowsAddingSubItems,
         ]
 
         var platformExpected = expected
         #if os(macOS)
-        if #available(macOS 11.3, *) {
-            platformExpected.insert(.allowsExcludingFromSync)
-        }
+            if #available(macOS 11.3, *) {
+                platformExpected.insert(.allowsExcludingFromSync)
+            }
         #endif
 
         XCTAssertEqual(item.capabilities, platformExpected)
@@ -839,37 +839,37 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         var expected: NSFileProviderItemCapabilities = [.allowsTrashing]
 
         #if os(macOS)
-        if #available(macOS 11.3, *) {
-            expected.insert(.allowsExcludingFromSync)
-        }
+            if #available(macOS 11.3, *) {
+                expected.insert(.allowsExcludingFromSync)
+            }
         #endif
 
         XCTAssertEqual(item.capabilities, expected)
     }
 
     #if os(macOS)
-    func testCapabilitiesMacOSExclusion() {
-        if #available(macOS 11.3, *) {
-            var metadata = SendableItemMetadata(
-                ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
-            )
-            metadata.permissions = ""
-            let item = Item(
-                metadata: metadata,
-                parentItemIdentifier: .rootContainer,
-                account: Self.account,
-                remoteInterface: MockRemoteInterface(),
-                dbManager: Self.dbManager,
-                remoteSupportsTrash: true,
-                log: FileProviderLogMock()
-            )
+        func testCapabilitiesMacOSExclusion() {
+            if #available(macOS 11.3, *) {
+                var metadata = SendableItemMetadata(
+                    ocId: "macos-exclusion", fileName: "file.txt", account: Self.account
+                )
+                metadata.permissions = ""
+                let item = Item(
+                    metadata: metadata,
+                    parentItemIdentifier: .rootContainer,
+                    account: Self.account,
+                    remoteInterface: MockRemoteInterface(),
+                    dbManager: Self.dbManager,
+                    remoteSupportsTrash: true,
+                    log: FileProviderLogMock()
+                )
 
-            XCTAssertTrue(
-                item.capabilities.contains(.allowsExcludingFromSync),
-                "Should allow excluding from sync on supported macOS versions."
-            )
+                XCTAssertTrue(
+                    item.capabilities.contains(.allowsExcludingFromSync),
+                    "Should allow excluding from sync on supported macOS versions."
+                )
+            }
         }
-    }
     #endif
 
     func testItemShared() {

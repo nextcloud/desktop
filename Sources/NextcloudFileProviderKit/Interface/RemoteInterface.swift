@@ -7,7 +7,6 @@ import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
-
 public enum EnumerateDepth: String {
     case target = "0"
     case targetAndDirectChildren = "1"
@@ -25,7 +24,6 @@ public enum AuthenticationAttemptResultState: Int {
 /// NextcloudKit is not mockable as of writing, hence this protocol was defined to enable testing.
 ///
 public protocol RemoteInterface {
-
     func setDelegate(_ delegate: NextcloudKitDelegate)
 
     func createFolder(
@@ -186,11 +184,11 @@ public extension RemoteInterface {
 
     func supportsTrash(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> Bool {
         var remoteSupportsTrash = false
-        
+
         let (_, capabilities, _, _) = await currentCapabilities(
             account: account, options: .init(), taskHandler: { _ in }
         )

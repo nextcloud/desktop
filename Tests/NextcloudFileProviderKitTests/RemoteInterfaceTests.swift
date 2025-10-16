@@ -4,15 +4,14 @@
 import Alamofire
 import Foundation
 import NextcloudCapabilitiesKit
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import NextcloudKit
 import Testing
 @testable import TestInterface
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 @Suite("RemoteInterface Extension Tests", .serialized)
 struct RemoteInterfaceExtensionTests {
-
     let testAccount = Account(user: "a1", id: "1", serverUrl: "example.com", password: "pass")
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
 
@@ -27,7 +26,7 @@ struct RemoteInterfaceExtensionTests {
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { _, _, _ in
             Issue.record("fetchCapabilities should NOT be called when cache is fresh.")
-            return (self.testAccount.ncKitAccount, nil, nil, .invalidResponseError)
+            return (testAccount.ncKitAccount, nil, nil, .invalidResponseError)
         }
 
         let (freshCaps, _) = capabilitiesFromMockJSON()
@@ -56,7 +55,7 @@ struct RemoteInterfaceExtensionTests {
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
             fetcherCalled = true
-            #expect(acc.ncKitAccount == self.testAccount.ncKitAccount)
+            #expect(acc.ncKitAccount == testAccount.ncKitAccount)
             return (acc.ncKitAccount, fetchedCaps, fetchedData, .success)
         }
 
@@ -182,7 +181,7 @@ struct RemoteInterfaceExtensionTests {
 
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            return (acc.ncKitAccount, capsWithTrash, dataWithTrash, .success)
+            (acc.ncKitAccount, capsWithTrash, dataWithTrash, .success)
         }
         await RetrievedCapabilitiesActor.shared.setCapabilities(
             forAccount: testAccount.ncKitAccount,
@@ -219,7 +218,7 @@ struct RemoteInterfaceExtensionTests {
 
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-             await RetrievedCapabilitiesActor.shared.setCapabilities(
+            await RetrievedCapabilitiesActor.shared.setCapabilities(
                 forAccount: acc.ncKitAccount, capabilities: capsNoTrash, retrievedAt: Date()
             )
             return (acc.ncKitAccount, capsNoTrash, dataNoTrash, .success)
@@ -238,7 +237,7 @@ struct RemoteInterfaceExtensionTests {
         await RetrievedCapabilitiesActor.shared.reset()
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            return (acc.ncKitAccount, nil, nil, .invalidResponseError)
+            (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }
         await RetrievedCapabilitiesActor.shared.setCapabilities(
             forAccount: testAccount.ncKitAccount,
@@ -292,7 +291,7 @@ struct RemoteInterfaceExtensionTests {
         await RetrievedCapabilitiesActor.shared.reset()
         var remoteInterface = TestableRemoteInterface()
         remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            return (acc.ncKitAccount, nil, nil, .invalidResponseError)
+            (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }
         // Ensure fetch is triggered
         // (e.g., actor has no data or stale data for testAccount.ncKitAccount)

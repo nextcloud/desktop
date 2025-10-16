@@ -5,7 +5,7 @@ import FileProvider
 import Foundation
 import RealmSwift
 
-extension FilesDatabaseManager {
+public extension FilesDatabaseManager {
     private func fullServerPathUrl(for metadata: any ItemMetadata) -> String {
         if metadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
             metadata.serverUrl
@@ -14,21 +14,21 @@ extension FilesDatabaseManager {
         }
     }
 
-    public func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
+    func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where({ $0.serverUrl.starts(with: directoryServerUrl) })
+            .where { $0.serverUrl.starts(with: directoryServerUrl) }
             .toUnmanagedResults()
     }
 
-    public func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
+    func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
         return itemMetadatas
-            .where({ $0.serverUrl.starts(with: directoryServerUrl) })
+            .where { $0.serverUrl.starts(with: directoryServerUrl) }
             .count
     }
 
-    public func parentDirectoryMetadataForItem(
+    func parentDirectoryMetadataForItem(
         _ itemMetadata: SendableItemMetadata
     ) -> SendableItemMetadata? {
         self.itemMetadata(
@@ -36,7 +36,7 @@ extension FilesDatabaseManager {
         )
     }
 
-    public func directoryMetadata(ocId: String) -> SendableItemMetadata? {
+    func directoryMetadata(ocId: String) -> SendableItemMetadata? {
         if let metadata = itemMetadatas.where({ $0.ocId == ocId && $0.directory }).first {
             return SendableItemMetadata(value: metadata)
         }
@@ -45,7 +45,7 @@ extension FilesDatabaseManager {
     }
 
     // Deletes all metadatas related to the info of the directory provided
-    public func deleteDirectoryAndSubdirectoriesMetadata(
+    func deleteDirectoryAndSubdirectoriesMetadata(
         ocId: String
     ) -> [SendableItemMetadata]? {
         guard let directoryMetadata = itemMetadatas
@@ -67,7 +67,7 @@ extension FilesDatabaseManager {
         let database = ncDatabase()
         do {
             try database.write { directoryMetadata.deleted = true }
-        } catch let error {
+        } catch {
             logger.error("Failure to delete root directory metadata in recursive delete.", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
             return nil
         }
@@ -83,7 +83,7 @@ extension FilesDatabaseManager {
             do {
                 try database.write { result.deleted = true }
                 deletedMetadatas.append(inactiveItemMetadata)
-            } catch let error {
+            } catch {
                 logger.error("Failure to delete directory metadata child in recursive delete", [.error: error, .eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
             }
         }
@@ -93,7 +93,7 @@ extension FilesDatabaseManager {
         return deletedMetadatas
     }
 
-    public func renameDirectoryAndPropagateToChildren(
+    func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
     ) -> [SendableItemMetadata]? {
         guard let directoryMetadata = itemMetadatas
@@ -110,7 +110,7 @@ extension FilesDatabaseManager {
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = itemMetadatas.where {
             $0.account == directoryMetadata.account &&
-            $0.serverUrl.starts(with: oldDirectoryServerUrl)
+                $0.serverUrl.starts(with: oldDirectoryServerUrl)
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
@@ -122,7 +122,8 @@ extension FilesDatabaseManager {
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
                     let movedServerUrl = oldServerUrl.replacingOccurrences(
-                        of: oldDirectoryServerUrl, with: newDirectoryServerUrl)
+                        of: oldDirectoryServerUrl, with: newDirectoryServerUrl
+                    )
                     childItem.serverUrl = movedServerUrl
                     database.add(childItem, update: .all)
                     logger.debug(
@@ -140,7 +141,7 @@ extension FilesDatabaseManager {
         return itemMetadatas
             .where {
                 $0.account == directoryMetadata.account &&
-                $0.serverUrl.starts(with: newDirectoryServerUrl)
+                    $0.serverUrl.starts(with: newDirectoryServerUrl)
             }
             .toUnmanagedResults()
     }

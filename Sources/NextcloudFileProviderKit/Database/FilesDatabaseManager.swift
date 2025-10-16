@@ -26,11 +26,11 @@ public final class FilesDatabaseManager: Sendable {
     public enum ErrorUserInfoKey: String {
         case missingParentServerUrlAndFileName = "MissingParentServerUrlAndFileName"
     }
-    
+
     static let errorDomain = "FilesDatabaseManager"
 
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
-        NSError(domain: Self.errorDomain, code: code.rawValue, userInfo: userInfo)
+        NSError(domain: errorDomain, code: code.rawValue, userInfo: userInfo)
     }
 
     static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
@@ -100,12 +100,10 @@ public final class FilesDatabaseManager: Sendable {
         logger.info("Initializing for account: \(account.ncKitAccount)")
 
         let databaseDirectory = customDatabaseDirectory ?? assertDatabaseDirectory(for: fileProviderDomainIdentifier)
-        let accountDatabaseFilename: String
-
-        if UUID(uuidString: fileProviderDomainIdentifier.rawValue) != nil {
-            accountDatabaseFilename = "\(fileProviderDomainIdentifier.rawValue).realm"
+        let accountDatabaseFilename: String = if UUID(uuidString: fileProviderDomainIdentifier.rawValue) != nil {
+            "\(fileProviderDomainIdentifier.rawValue).realm"
         } else {
-            accountDatabaseFilename = account.fileName + "-" + Self.databaseFilename
+            account.fileName + "-" + Self.databaseFilename
         }
 
         let databaseLocation = databaseDirectory.appendingPathComponent(accountDatabaseFilename)
@@ -149,7 +147,7 @@ public final class FilesDatabaseManager: Sendable {
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
-        } catch let error {
+        } catch {
             logger.fault("Error creating Realm: \(error)")
         }
 
@@ -187,7 +185,7 @@ public final class FilesDatabaseManager: Sendable {
                 itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
                 remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
             }
-        } catch let error {
+        } catch {
             logger.error("Error migrating shared legacy database to account-specific database for: \(account.ncKitAccount) because of error: \(error)")
         }
     }
@@ -199,7 +197,7 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !itemMetadatas.where({ $0.account == account }).isEmpty
+        !itemMetadatas.where { $0.account == account }.isEmpty
     }
 
     public func itemMetadata(ocId: String) -> SendableItemMetadata? {
@@ -283,7 +281,7 @@ public final class FilesDatabaseManager: Sendable {
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     if updatedMetadata.directory,
                        updatedMetadata.serverUrl != existingMetadata.serverUrl ||
-                        updatedMetadata.fileName != existingMetadata.fileName
+                       updatedMetadata.fileName != existingMetadata.fileName
                     {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
@@ -352,22 +350,21 @@ public final class FilesDatabaseManager: Sendable {
                 .where {
                     // Don't worry — root will be updated at the end of this method if is the target
                     $0.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue &&
-                    $0.account == account &&
-                    $0.serverUrl == cleanServerUrl &&
-                    $0.uploaded
+                        $0.account == account &&
+                        $0.serverUrl == cleanServerUrl &&
+                        $0.uploaded
                 }
 
             var updatedChildMetadatas = updatedMetadatas
 
-            let readTargetMetadata: SendableItemMetadata?
-            if let targetMetadata = updatedMetadatas.first {
+            let readTargetMetadata: SendableItemMetadata? = if let targetMetadata = updatedMetadatas.first {
                 if targetMetadata.directory {
-                    readTargetMetadata = updatedChildMetadatas.removeFirst()
+                    updatedChildMetadatas.removeFirst()
                 } else {
-                    readTargetMetadata = targetMetadata
+                    targetMetadata
                 }
             } else {
-                readTargetMetadata = nil
+                nil
             }
 
             let metadatasToDelete = processItemMetadatasToDelete(
@@ -391,10 +388,10 @@ public final class FilesDatabaseManager: Sendable {
 
             for metadata in directoriesNeedingRename {
                 if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(
-                    ocId: metadata.ocId, 
+                    ocId: metadata.ocId,
                     newServerUrl: metadata.serverUrl,
-                    newFileName: metadata.fileName)
-                {
+                    newFileName: metadata.fileName
+                ) {
                     metadatasToUpdate += updatedDirectoryChildren
                 }
             }
@@ -444,7 +441,7 @@ public final class FilesDatabaseManager: Sendable {
             logger.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId)")
             return nil
         }
-        
+
         do {
             let database = ncDatabase()
             try database.write {
@@ -459,22 +456,22 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 logger.debug("Updated status for item metadata.", [
-                        .item: metadata.ocId,
-                        .eTag: metadata.etag,
-                        .name: metadata.fileName,
-                        .syncTime: metadata.syncTime,
+                    .item: metadata.ocId,
+                    .eTag: metadata.etag,
+                    .name: metadata.fileName,
+                    .syncTime: metadata.syncTime,
                 ])
             }
             return SendableItemMetadata(value: result)
         } catch {
             logger.error("Could not update status for item metadata.", [
-                    .item: metadata.ocId,
-                    .eTag: metadata.etag,
-                    .error: error,
-                    .name: metadata.fileName
+                .item: metadata.ocId,
+                .eTag: metadata.etag,
+                .error: error,
+                .name: metadata.fileName,
             ])
         }
-        
+
         return nil
     }
 
@@ -548,7 +545,7 @@ public final class FilesDatabaseManager: Sendable {
 
             return nil
         }
-        
+
         return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
     }
 
@@ -569,12 +566,12 @@ public final class FilesDatabaseManager: Sendable {
             depth: .target,
             log: logger.log
         )
-        
+
         guard error == nil, let parentMetadata = metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [
                 .error: error,
                 .item: metadata.ocId,
-                .name: metadata.fileName
+                .name: metadata.fileName,
             ])
 
             return nil
@@ -586,7 +583,7 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadatas
             .where {
                 $0.account == account &&
-                (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
+                    (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
             }
     }
 
@@ -600,7 +597,7 @@ public final class FilesDatabaseManager: Sendable {
         var updated = pending.where { !$0.deleted }.toUnmanagedResults()
         var deleted = pending.where { $0.deleted }.toUnmanagedResults()
         var handledUpdateOcIds = Set(updated.map(\.ocId))
-        
+
         updated
             .map {
                 var serverUrl = $0.serverUrl + "/" + $0.fileName
@@ -631,15 +628,15 @@ public final class FilesDatabaseManager: Sendable {
             }
 
         var handledDeleteOcIds = Set(deleted.map(\.ocId))
-        
+
         deleted
             .map { // assemble remote location
                 var serverUrl = $0.serverUrl + "/" + $0.fileName
-                
+
                 if serverUrl.last == "/" {
                     serverUrl.removeLast()
                 }
-                
+
                 return serverUrl
             }
             .forEach { serverUrl in
@@ -652,11 +649,11 @@ public final class FilesDatabaseManager: Sendable {
                         logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: metadata])
                         return
                     }
-                    
+
                     guard !handledDeleteOcIds.contains(metadata.ocId) else {
                         return
                     }
-                    
+
                     deleted.append(SendableItemMetadata(value: metadata))
                     logger.debug("Appended deleted item to working set changes.", [.item: metadata.ocId, .url: serverUrl])
                 }
@@ -664,23 +661,22 @@ public final class FilesDatabaseManager: Sendable {
 
         return (updated, deleted)
     }
-    
+
     public func itemsMetadataByFileNameSuffix(suffix: String) -> [SendableItemMetadata] {
         logger.debug("Trying to find files matching pattern \"\(suffix)\".")
-        
-        let results = itemMetadatas.where { 
+
+        let results = itemMetadatas.where {
             $0.fileName.ends(with: suffix) && !$0.directory
         }
-        
+
         guard !results.isEmpty else {
             logger.debug("Could not find files matching pattern \"\(suffix)\".")
             return []
         }
-        
+
         let filesMetadata = results.toUnmanagedResults()
         logger.debug("Found \(filesMetadata.count) file(s) that match \"\(suffix)\" metadata: \(filesMetadata)")
 
         return filesMetadata
     }
-    
 }

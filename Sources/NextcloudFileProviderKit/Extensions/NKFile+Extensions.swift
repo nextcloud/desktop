@@ -20,8 +20,8 @@ extension NKFile {
         let uploadDate = uploadDate ?? date
 
         let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown") && classFile == NKTypeClassFile.unknow.rawValue
-                ? NKTypeClassFile.document.rawValue
-                : classFile
+            ? NKTypeClassFile.document.rawValue
+            : classFile
 
         // Support for finding the correct filename for e2ee files should go here
 
@@ -29,10 +29,10 @@ extension NKFile {
         // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
         let rootServerUrl = urlBase + Account.webDavFilesUrlSuffix + userId
         let rootRequiresFixup = serverUrl == rootServerUrl && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
-        let ocId = rootRequiresFixup ? NSFileProviderItemIdentifier.rootContainer.rawValue : self.ocId
-        let directory = rootRequiresFixup ? true : self.directory
-        let serverUrl = rootRequiresFixup ? rootServerUrl : self.serverUrl
-        let fileName = rootRequiresFixup ? NextcloudKit.shared.nkCommonInstance.rootFileName : self.fileName
+        let ocId = rootRequiresFixup ? NSFileProviderItemIdentifier.rootContainer.rawValue : ocId
+        let directory = rootRequiresFixup ? true : directory
+        let serverUrl = rootRequiresFixup ? rootServerUrl : serverUrl
+        let fileName = rootRequiresFixup ? NextcloudKit.shared.nkCommonInstance.rootFileName : fileName
 
         return SendableItemMetadata(
             ocId: ocId,
@@ -124,16 +124,16 @@ private final actor DirectoryMetadataContainer: Sendable {
     }
 }
 
-extension Array<NKFile> {
+extension [NKFile] {
     ///
     /// Determine whether the given `NKFile` is the metadata object for the read remote directory.
     ///
     func isDirectoryToRead(_ file: NKFile, directoryToRead: String) -> Bool {
-        if file.serverUrl == directoryToRead && file.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName {
+        if file.serverUrl == directoryToRead, file.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName {
             return true
         }
 
-        if file.directory, "\(file.serverUrl)/\(file.fileName)" == directoryToRead {
+        if file.directory, directoryToRead == "\(file.serverUrl)/\(file.fileName)" {
             return true
         }
 
@@ -149,14 +149,14 @@ extension Array<NKFile> {
     ///
     /// - Returns: A tuple consisting of the metadata for the read directory itself (`root`), any child directories (`directories`) and separately any directly containted files (`files`).
     ///
-    func toSendableDirectoryMetadata(account: Account, directoryToRead: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
+    func toSendableDirectoryMetadata(account _: Account, directoryToRead: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
         guard let root = first(where: { isDirectoryToRead($0, directoryToRead: directoryToRead) })?.toItemMetadata() else {
             return nil
         }
 
         let container = DirectoryMetadataContainer(for: root)
 
-        if self.count > 1 {
+        if count > 1 {
             await concurrentChunkedForEach { file in
                 guard isDirectoryToRead(file, directoryToRead: directoryToRead) == false else {
                     return

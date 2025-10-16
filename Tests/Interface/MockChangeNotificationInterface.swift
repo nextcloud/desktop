@@ -9,6 +9,7 @@ public class MockChangeNotificationInterface: ChangeNotificationInterface {
     public init(changeHandler: (() -> Void)? = nil) {
         self.changeHandler = changeHandler
     }
+
     public func notifyChange() {
         changeHandler?()
     }

@@ -17,7 +17,7 @@ public extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
-        progress: Progress,
+        progress _: Progress,
         dbManager: FilesDatabaseManager,
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
@@ -43,14 +43,14 @@ public extension Item {
                     \(createError.errorDescription)
                 """
             )
-            return (nil, await createError.fileProviderError(
+            return await (nil, createError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface,
                 log: log
             ))
         }
-        
+
         // Read contents after creation
         let (_, files, _, readError) = await remoteInterface.enumerate(
             remotePath: remotePath,
@@ -79,14 +79,14 @@ public extension Item {
                     \(readError.errorDescription)
                 """
             )
-            return (nil, await readError.fileProviderError(
+            return await (nil, readError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface,
                 log: log
             ))
         }
-        
+
         guard var (directory, _, _) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: remotePath) else {
             logger.error("Failed to resolve directory metadata on item conversion!")
             return (nil, NSFileProviderError(.cannotSynchronize))
@@ -95,19 +95,19 @@ public extension Item {
         directory.downloaded = true
         dbManager.addItemMetadata(directory)
 
-        let fpItem = Item(
+        let fpItem = await Item(
             metadata: directory,
             parentItemIdentifier: parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
-        
+
         return (fpItem, nil)
     }
-    
+
     private static func createNewFile(
         remotePath: String,
         localPath: String,
@@ -137,7 +137,7 @@ public extension Item {
             log: log,
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
-                if let domain = domain {
+                if let domain {
                     NSFileProviderManager(for: domain)?.register(
                         task,
                         forItemWithIdentifier: itemTemplate.itemIdentifier,
@@ -147,7 +147,7 @@ public extension Item {
             },
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
-        
+
         guard error == .success, let ocId else {
             logger.error(
                 """
@@ -157,14 +157,14 @@ public extension Item {
                     received ocId: \(ocId ?? "empty")
                 """
             )
-            return (nil, await error.fileProviderError(
+            return await (nil, error.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: remotePath,
                 dbManager: dbManager,
                 remoteInterface: remoteInterface,
                 log: log
             ))
         }
-        
+
         logger.info(
             """
             Successfully uploaded item with identifier: \(ocId)
@@ -176,7 +176,7 @@ public extension Item {
             account: \(account.ncKitAccount)
             """
         )
-        
+
         if let expectedSize = itemTemplate.documentSize??.int64Value, size != expectedSize {
             logger.info(
                 """
@@ -186,7 +186,7 @@ public extension Item {
                 """
             )
         }
-        
+
         let newMetadata = SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
@@ -217,17 +217,17 @@ public extension Item {
         )
 
         dbManager.addItemMetadata(newMetadata)
-        
-        let fpItem = Item(
+
+        let fpItem = await Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
-        
+
         return (fpItem, nil)
     }
 
@@ -251,7 +251,7 @@ public extension Item {
             """
         )
         let attributesToFetch: Set<URLResourceKey> = [
-            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey,
         ]
         let fm = FileManager.default
         guard let enumerator = fm.enumerator(
@@ -277,7 +277,7 @@ public extension Item {
         }
 
         func remoteErrorToThrow(_ error: NKError) -> Error {
-            return error.fileProviderError ??  NSFileProviderError(.cannotSynchronize)
+            error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
         }
 
         let contentsPath = contents.path
@@ -422,23 +422,23 @@ public extension Item {
 
         progress.completedUnitCount += 1
 
-        return Item(
+        return await Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
     }
 
     static func create(
         basedOn itemTemplate: NSFileProviderItem,
-        fields: NSFileProviderItemFields = NSFileProviderItemFields(),
+        fields _: NSFileProviderItemFields = NSFileProviderItemFields(),
         contents url: URL?,
         options: NSFileProviderCreateItemOptions = [],
-        request: NSFileProviderRequest = NSFileProviderRequest(),
+        request _: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
@@ -597,13 +597,13 @@ public extension Item {
                     )
                 }
 
-                item = Item(
+                item = await Item(
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+                    remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                     log: log
                 )
             }
@@ -624,7 +624,7 @@ public extension Item {
             logger.debug("Handling bundle or package contents for item.", [.item: tempId])
 
             do {
-                return (try await Self.createBundleOrPackageInternals(
+                return try await (Self.createBundleOrPackageInternals(
                     rootItem: item,
                     contents: url,
                     remotePath: newServerUrlFileName,
@@ -640,8 +640,7 @@ public extension Item {
                 return (nil, error)
             }
         }
-        
-        
+
         return await Self.createNewFile(
             remotePath: newServerUrlFileName,
             localPath: fileNameLocalPath,

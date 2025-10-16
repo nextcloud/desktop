@@ -32,7 +32,7 @@ extension Enumerator {
                     logger.info("Did enumerate \(items.count) trash items.")
                     observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
                 }
-            } catch let error {
+            } catch {
                 logger.error("Finishing enumeration with error.")
                 Task { @MainActor in observer.finishEnumeratingWithError(error) }
             }
@@ -66,13 +66,13 @@ extension Enumerator {
             let metadata = trashItem.toItemMetadata(account: account)
             dbManager.addItemMetadata(metadata)
 
-            let item = Item(
+            let item = await Item(
                 metadata: metadata,
                 parentItemIdentifier: .trashContainer,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
-                remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+                remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
                 log: log
             )
             newTrashedItems.append(item)

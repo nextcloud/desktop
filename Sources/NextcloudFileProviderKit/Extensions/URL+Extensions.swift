@@ -3,9 +3,9 @@
 
 import Foundation
 
-fileprivate let invalidCharacters = CharacterSet(charactersIn: "<>:/\\|?*\" .") // Include " " and .
-fileprivate let invalidCharacterReplacement = "_"
-fileprivate let invalidCharacterReplacementSet =
+private let invalidCharacters = CharacterSet(charactersIn: "<>:/\\|?*\" .") // Include " " and .
+private let invalidCharacterReplacement = "_"
+private let invalidCharacterReplacementSet =
     CharacterSet(charactersIn: invalidCharacterReplacement)
 
 /// Sanitises a string by replacing invalid characters with underscores.
@@ -31,7 +31,7 @@ func sanitise(string: String) -> String {
 
 public extension URL {
     func safeFilenameFromURLString(
-        defaultingTo defaultFilename: String = "default_filename"
+        defaultingTo _: String = "default_filename"
     ) -> String {
         let host = host ?? ""
         let query = query ?? ""

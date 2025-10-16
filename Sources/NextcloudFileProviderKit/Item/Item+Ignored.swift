@@ -8,10 +8,10 @@ extension Item {
     static func createIgnored(
         basedOn itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
-        contents url: URL?,
+        contents _: URL?,
         account: Account,
         remoteInterface: RemoteInterface,
-        progress: Progress,
+        progress _: Progress,
         dbManager: FilesDatabaseManager,
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
@@ -57,13 +57,13 @@ extension Item {
 
         dbManager.addItemMetadata(metadata)
 
-        let item = Item(
+        let item = await Item(
             metadata: metadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: log
         )
 

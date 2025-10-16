@@ -24,7 +24,7 @@ func upload(
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
     taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
     progressHandler: @escaping (Progress) -> Void = { _ in },
-    chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void  = { _ in }
+    chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
 ) async -> (
     ocId: String?,
     chunks: [RemoteFileChunk]?,
@@ -100,7 +100,7 @@ func upload(
     let remainingChunks = dbManager
         .ncDatabase()
         .objects(RemoteFileChunk.self)
-        .where({ $0.remoteChunkStoreFolderName == chunkUploadId })
+        .where { $0.remoteChunkStoreFolderName == chunkUploadId }
         .toUnmanagedResults()
 
     let (_, chunks, file, nkError) = await remoteInterface.chunkedUpload(
@@ -149,9 +149,10 @@ func upload(
                         .objects(RemoteFileChunk.self)
                         .where {
                             $0.remoteChunkStoreFolderName == chunkUploadId &&
-                            $0.fileName == chunk.fileName
+                                $0.fileName == chunk.fileName
                         }
-                        .forEach { db.delete($0) } }
+                        .forEach { db.delete($0) }
+                }
             } catch {
                 uploadLogger.error("Could not delete chunks in db, won't resume upload correctly if transfer stops.", [.error: error])
             }

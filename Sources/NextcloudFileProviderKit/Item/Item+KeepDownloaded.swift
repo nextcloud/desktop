@@ -25,7 +25,7 @@ public extension Item {
         }
 
         if #available(macOS 13.0, iOS 16.0, visionOS 1.0, *) {
-            if keepDownloaded && !isDownloaded {
+            if keepDownloaded, !isDownloaded {
                 try await manager.requestDownloadForItem(withIdentifier: itemIdentifier)
             } else {
                 try await manager.requestModification(

@@ -2,13 +2,13 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -349,15 +349,15 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             name: keynoteVersionPlistFilename,
             remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynoteVersionPlistFilename,
             data: """
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<array>
-    <string>Template: 35_DynamicWavesDark (14.1)</string>
-    <string>M14.1-7040.0.73-4</string>
-</array>
-</plist>
-""".data(using: .utf8),
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+            <array>
+                <string>Template: 35_DynamicWavesDark (14.1)</string>
+                <string>M14.1-7040.0.73-4</string>
+            </array>
+            </plist>
+            """.data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
@@ -369,29 +369,29 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             name: "Properties.plist",
             remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/" + keynoteMetadataFolderName + "/" + keynotePropertiesPlistFilename,
             data: """
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>revision</key>
-    <string>0::5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-    <key>documentUUID</key>
-    <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-    <key>versionUUID</key>
-    <string>5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
-    <key>privateUUID</key>
-    <string>637C846B-6146-40C2-8EF8-26996E598E49</string>
-    <key>isMultiPage</key>
-    <false/>
-    <key>stableDocumentUUID</key>
-    <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-    <key>fileFormatVersion</key>
-    <string>14.1.1</string>
-    <key>shareUUID</key>
-    <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
-</dict>
-</plist>
-""".data(using: .utf8),
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+            <dict>
+                <key>revision</key>
+                <string>0::5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
+                <key>documentUUID</key>
+                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
+                <key>versionUUID</key>
+                <string>5B42B84E-6F62-4E53-9E71-7DD24FA7E2EA</string>
+                <key>privateUUID</key>
+                <string>637C846B-6146-40C2-8EF8-26996E598E49</string>
+                <key>isMultiPage</key>
+                <false/>
+                <key>stableDocumentUUID</key>
+                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
+                <key>fileFormatVersion</key>
+                <string>14.1.1</string>
+                <key>shareUUID</key>
+                <string>8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01</string>
+            </dict>
+            </plist>
+            """.data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
@@ -406,7 +406,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteKeynoteIndexZip,
             remoteKeynoteRandomFile,
             remoteKeynoteDataFolder,
-            remoteKeynoteMetadataFolder
+            remoteKeynoteMetadataFolder,
         ]
         remoteKeynoteIndexZip.parent = remoteKeynoteBundle
         remoteKeynoteRandomFile.parent = remoteKeynoteBundle
@@ -417,7 +417,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteKeynoteMetadataFolder.children = [
             remoteKeynoteDocIdentifier,
             remoteKeynoteVersionPlist,
-            remoteKeynotePropertiesPlist
+            remoteKeynotePropertiesPlist,
         ]
         remoteKeynoteDocIdentifier.parent = remoteKeynoteMetadataFolder
         remoteKeynoteVersionPlist.parent = remoteKeynoteMetadataFolder
@@ -496,44 +496,44 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let keynoteBuildVersionPlistPath =
             keynoteMetadataDir.appendingPathComponent("BuildVersionHistory.plist")
         try Data(
-"""
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<array>
-    <string>Template: 34_DynamicWaves (15.0)</string>
-    <string>M15.0-7040.0.73-4</string>
-</array>
-</plist>
-"""
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+            <array>
+                <string>Template: 34_DynamicWaves (15.0)</string>
+                <string>M15.0-7040.0.73-4</string>
+            </array>
+            </plist>
+            """
             .utf8).write(to: keynoteBuildVersionPlistPath)
         let keynotePropertiesPlistPath =
             keynoteMetadataDir.appendingPathComponent("Properties.plist")
         try Data(
-"""
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>revision</key>
-    <string>SOME-RANDOM-REVISION-STRING</string>
-    <key>documentUUID</key>
-    <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-    <key>versionUUID</key>
-    <string>VERSION-BEEP-BOOP-HEHE</string>
-    <key>privateUUID</key>
-    <string>PRIVATE-UUID-BEEP-BOOP-HEHE</string>
-    <key>isMultiPage</key>
-    <false/>
-    <key>stableDocumentUUID</key>
-    <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-    <key>fileFormatVersion</key>
-    <string>15.0</string>
-    <key>shareUUID</key>
-    <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
-</dict>
-</plist>
-"""
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+            <dict>
+                <key>revision</key>
+                <string>SOME-RANDOM-REVISION-STRING</string>
+                <key>documentUUID</key>
+                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
+                <key>versionUUID</key>
+                <string>VERSION-BEEP-BOOP-HEHE</string>
+                <key>privateUUID</key>
+                <string>PRIVATE-UUID-BEEP-BOOP-HEHE</string>
+                <key>isMultiPage</key>
+                <false/>
+                <key>stableDocumentUUID</key>
+                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
+                <key>fileFormatVersion</key>
+                <string>15.0</string>
+                <key>shareUUID</key>
+                <string>82LQN84b-12JF-BV90-13F0-149UFRN241B</string>
+            </dict>
+            </plist>
+            """
             .utf8).write(to: keynotePropertiesPlistPath)
 
         var targetBundleMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
@@ -1034,7 +1034,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
-        
+
         let modifiedUntrashedItem = try XCTUnwrap(modifiedUntrashedItemMaybe)
 
         XCTAssertEqual(modifiedUntrashedItem.parentItemIdentifier, .rootContainer)
@@ -1264,7 +1264,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(chunkSize),
                     remoteChunkStoreFolderName: chunkUploadId
-                )
+                ),
             ])
         }
 
@@ -1447,7 +1447,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let (modifiedItem, error) = await lockItem.modify(
             itemTarget: modifyTemplateItem,
             changedFields: [
-                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate,
             ],
             contents: tempUrl,
             dbManager: Self.dbManager
@@ -1505,7 +1505,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let (modifiedItem, error) = await lockItem.modify(
             itemTarget: modifyTemplateItem,
             changedFields: [
-                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate,
             ],
             contents: tempUrl,
             dbManager: Self.dbManager

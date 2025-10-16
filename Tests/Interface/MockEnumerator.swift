@@ -1,8 +1,8 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import Foundation
 import FileProvider
+import Foundation
 import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 
@@ -21,7 +21,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     public func enumerateItems(
-        for observer: any NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
+        for observer: any NSFileProviderEnumerationObserver, startingAt _: NSFileProviderPage
     ) {
         let remoteSupportsTrash = remoteInterface.directMockCapabilities()?.files?.undelete ?? false
         var items: [Item] = []

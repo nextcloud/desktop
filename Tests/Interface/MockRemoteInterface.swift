@@ -564,7 +564,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
-    
+
     // Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
@@ -633,7 +633,7 @@ public class MockRemoteInterface: RemoteInterface {
             guard pathComponents?.isEmpty == false else {
                 return nextNode // This is the target
             }
-            
+
             currentNode = nextNode
         }
 
@@ -677,8 +677,8 @@ public class MockRemoteInterface: RemoteInterface {
     public func createFolder(
         remotePath: String,
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
         var itemName: String
         do {
@@ -712,10 +712,10 @@ public class MockRemoteInterface: RemoteInterface {
         creationDate: Date? = .init(),
         modificationDate: Date? = .init(),
         account: Account,
-        options: NKRequestOptions = .init(),
-        requestHandler: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
-        progressHandler: @escaping (Progress) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        requestHandler _: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler _: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         ocId: String?,
@@ -793,9 +793,9 @@ public class MockRemoteInterface: RemoteInterface {
         modificationDate: Date?,
         account: Account,
         options: NKRequestOptions,
-        currentNumChunksUpdateHandler: @escaping (Int) -> Void = { _ in },
-        chunkCounter: @escaping (Int) -> Void = { _ in },
-        log: any FileProviderLogging,
+        currentNumChunksUpdateHandler _: @escaping (Int) -> Void = { _ in },
+        chunkCounter _: @escaping (Int) -> Void = { _ in },
+        log _: any FileProviderLogging,
         chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
         requestHandler: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
@@ -824,7 +824,7 @@ public class MockRemoteInterface: RemoteInterface {
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         let newChunks = !remainingChunks.isEmpty
             ? remainingChunks
-            : (0..<numChunks).map { chunkIndex in
+            : (0 ..< numChunks).map { chunkIndex in
                 defer { remainingFileSize -= chunkSize }
                 return RemoteFileChunk(
                     fileName: String(chunkIndex + 1),
@@ -875,8 +875,8 @@ public class MockRemoteInterface: RemoteInterface {
         remotePathDestination: String,
         overwrite: Bool = false,
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         print("Moving \(remotePathSource) to \(remotePathDestination)")
 
@@ -930,14 +930,14 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         let matchingNameChildCount =
-            destinationParent.children.filter({ $0.name == sourceItem.name }).count
+            destinationParent.children.filter { $0.name == sourceItem.name }.count
 
-        if !overwrite && matchingNameChildCount > 0 {
+        if !overwrite, matchingNameChildCount > 0 {
             sourceItem.name += " (\(matchingNameChildCount))"
             print("Found conflicting children, renaming file to \(sourceItem.name)")
-        } else if overwrite && matchingNameChildCount > 0 {
+        } else if overwrite, matchingNameChildCount > 0 {
             print("Found conflicting children, removing all due to overwrite.")
-            destinationParent.children.removeAll(where: { $0.name == sourceItem.name} )
+            destinationParent.children.removeAll(where: { $0.name == sourceItem.name })
         }
 
         sourceItem.parent = destinationParent
@@ -982,10 +982,10 @@ public class MockRemoteInterface: RemoteInterface {
         remotePath: String,
         localPath: String,
         account: Account,
-        options: NKRequestOptions = .init(),
-        requestHandler: @escaping (DownloadRequest) -> Void = { _ in },
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
-        progressHandler: @escaping (Progress) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        requestHandler _: @escaping (DownloadRequest) -> Void = { _ in },
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler _: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         etag: String?,
@@ -1009,7 +1009,7 @@ public class MockRemoteInterface: RemoteInterface {
                 print("Writing data to \(localUrl) for item \(item.name)")
                 try item.data?.write(to: localUrl, options: .atomic)
             }
-        } catch let error {
+        } catch {
             print("Could not write item data: \(error)")
             return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
         }
@@ -1046,10 +1046,10 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         print("Enumerating \(remotePath)")
-        
+
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
-        
+
         guard let item = item(remotePath: remotePath, account: account) else {
             print("Item at \(remotePath) not found.")
             return (
@@ -1062,7 +1062,7 @@ public class MockRemoteInterface: RemoteInterface {
 
         func generateResponse(itemCount: Int, finalPage: Bool) -> AFDataResponse<Data>? {
             var responseHeaders: [String: String] = [:]
-            if pagination && options.paginate {
+            if pagination, options.paginate {
                 responseHeaders["X-NC-PAGINATE"] = "true"
                 if options.paginateToken == nil {
                     responseHeaders["X-NC-PAGINATE-TOTAL"] = String(itemCount)
@@ -1098,8 +1098,8 @@ public class MockRemoteInterface: RemoteInterface {
             account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError
         ) {
             if pagination &&
-               options.paginate &&
-               options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
+                options.paginate &&
+                options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
             {
                 return (account.ncKitAccount, [], nil, .invalidData)
             }
@@ -1110,38 +1110,38 @@ public class MockRemoteInterface: RemoteInterface {
             let reachedEnd = firstItem + itemCount >= files.count
             let lastItem = min(firstItem + itemCount, files.count) - 1
             assert(firstItem <= lastItem)
-            let itemsPage = Array(files[firstItem...lastItem])
+            let itemsPage = Array(files[firstItem ... lastItem])
             let responseData = generateResponse(itemCount: files.count, finalPage: reachedEnd)
             return (account.ncKitAccount, itemsPage, responseData, .success)
         }
 
         switch depth {
-        case .target:
-            let responseData = generateResponse(itemCount: 1, finalPage: true)
-            return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
-        case .targetAndDirectChildren:
-            let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }
-            return generateReturn(files: files)
-        case .targetAndAllChildren:
-            var files = [NKFile]()
-            var queue = [item]
-            while !queue.isEmpty {
-                var nextQueue = [MockRemoteItem]()
-                for item in queue {
-                    files.append(item.toNKFile())
-                    nextQueue.append(contentsOf: item.children)
+            case .target:
+                let responseData = generateResponse(itemCount: 1, finalPage: true)
+                return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
+            case .targetAndDirectChildren:
+                let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }
+                return generateReturn(files: files)
+            case .targetAndAllChildren:
+                var files = [NKFile]()
+                var queue = [item]
+                while !queue.isEmpty {
+                    var nextQueue = [MockRemoteItem]()
+                    for item in queue {
+                        files.append(item.toNKFile())
+                        nextQueue.append(contentsOf: item.children)
+                    }
+                    queue = nextQueue
                 }
-                queue = nextQueue
-            }
-            return generateReturn(files: files)
+                return generateReturn(files: files)
         }
     }
 
     public func delete(
         remotePath: String,
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         guard let item = item(remotePath: remotePath, account: account) else {
             return (account.ncKitAccount, nil, .urlError)
@@ -1161,7 +1161,7 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, nil, .success)
     }
 
-    public func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
+    public func lockUnlockFile(serverUrlFileName: String, type _: NKLockType?, shouldLock: Bool, account: Account, options _: NKRequestOptions, taskHandler _: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
         guard let item = item(remotePath: serverUrlFileName, account: account) else {
             throw NKError.urlError
         }
@@ -1173,8 +1173,8 @@ public class MockRemoteInterface: RemoteInterface {
 
     public func trashedItems(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
         guard let rootTrashItem else { return (account.ncKitAccount, [], nil, .invalidData) }
         return (account.ncKitAccount, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
@@ -1183,8 +1183,8 @@ public class MockRemoteInterface: RemoteInterface {
     public func restoreFromTrash(
         filename: String,
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         let fileTrashUrl = account.trashUrl + "/" + filename
         let fileTrashRestoreUrl = account.trashRestoreUrl + "/" + filename
@@ -1201,19 +1201,19 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     public func downloadThumbnail(
-        url: URL,
+        url _: URL,
         account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options _: NKRequestOptions,
+        taskHandler _: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
         // TODO: Implement downloadThumbnail
-        return (account.ncKitAccount, nil, .success)
+        (account.ncKitAccount, nil, .success)
     }
 
     public func fetchCapabilities(
         account: Account,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options _: NKRequestOptions,
+        taskHandler _: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let capsData = capabilities.data(using: .utf8)
         return (account.ncKitAccount, directMockCapabilities(), capsData, .success)
@@ -1226,8 +1226,8 @@ public class MockRemoteInterface: RemoteInterface {
 
     public func fetchUserProfile(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
         let profile = NKUserProfile()
         profile.address = account.serverUrl
@@ -1239,9 +1239,9 @@ public class MockRemoteInterface: RemoteInterface {
 
     public func tryAuthenticationAttempt(
         account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        options _: NKRequestOptions = .init(),
+        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
-        return account.password.isEmpty ? .authenticationError : .success
+        account.password.isEmpty ? .authenticationError : .success
     }
 }

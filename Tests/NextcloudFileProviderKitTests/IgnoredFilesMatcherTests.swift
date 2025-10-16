@@ -1,8 +1,8 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import Testing
 @testable import NextcloudFileProviderKit
+import Testing
 
 struct IgnoredFilesMatcherTests {
     @Test func patternMatchingWorks() {
@@ -11,7 +11,7 @@ struct IgnoredFilesMatcherTests {
             "build/",
             "folder/*",
             "secret.txt",
-            "deep/**"
+            "deep/**",
         ]
 
         let matcher = IgnoredFilesMatcher(ignoreList: patterns)

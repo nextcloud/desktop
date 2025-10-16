@@ -33,23 +33,23 @@ public class MockRemoteItem: Equatable {
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
-        lhs.children == rhs.children &&
-        lhs.identifier == rhs.identifier &&
-        lhs.versionIdentifier == rhs.versionIdentifier &&
-        lhs.name == rhs.name &&
-        lhs.directory == rhs.directory &&
-        lhs.locked == rhs.locked &&
-        lhs.lockOwner == rhs.lockOwner &&
-        lhs.lockTimeOut == rhs.lockTimeOut &&
-        lhs.data == rhs.data &&
-        lhs.size == rhs.size &&
-        lhs.creationDate == rhs.creationDate &&
-        lhs.modificationDate == rhs.modificationDate &&
-        lhs.account == rhs.account &&
-        lhs.username == rhs.username &&
-        lhs.userId == rhs.userId &&
-        lhs.serverUrl == rhs.serverUrl &&
-        lhs.trashbinOriginalLocation == rhs.trashbinOriginalLocation
+            lhs.children == rhs.children &&
+            lhs.identifier == rhs.identifier &&
+            lhs.versionIdentifier == rhs.versionIdentifier &&
+            lhs.name == rhs.name &&
+            lhs.directory == rhs.directory &&
+            lhs.locked == rhs.locked &&
+            lhs.lockOwner == rhs.lockOwner &&
+            lhs.lockTimeOut == rhs.lockTimeOut &&
+            lhs.data == rhs.data &&
+            lhs.size == rhs.size &&
+            lhs.creationDate == rhs.creationDate &&
+            lhs.modificationDate == rhs.modificationDate &&
+            lhs.account == rhs.account &&
+            lhs.username == rhs.username &&
+            lhs.userId == rhs.userId &&
+            lhs.serverUrl == rhs.serverUrl &&
+            lhs.trashbinOriginalLocation == rhs.trashbinOriginalLocation
     }
 
     public static func rootItem(account: Account) -> MockRemoteItem {
@@ -67,7 +67,7 @@ public class MockRemoteItem: Equatable {
     }
 
     public static func rootTrashItem(account: Account) -> MockRemoteItem {
-        return MockRemoteItem(
+        MockRemoteItem(
             identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
             versionIdentifier: "root",
             name: "",
@@ -164,7 +164,7 @@ public class MockRemoteItem: Equatable {
             trimmedServerUrl.removeSubrange(
                 remotePath.index(
                     remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
-                )..<remotePath.endIndex
+                ) ..< remotePath.endIndex
             )
         }
 

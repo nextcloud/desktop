@@ -2,12 +2,12 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
 import XCTest
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -132,7 +132,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         rootItem.children = [remoteDirectory]
         remoteDirectory.parent = rootItem
         remoteDirectory.children = [
-            remoteDirectoryChildFile, remoteDirectoryChildDirA, remoteDirectoryChildDirB
+            remoteDirectoryChildFile, remoteDirectoryChildDirA, remoteDirectoryChildDirB,
         ]
         remoteDirectoryChildFile.parent = remoteDirectory
         remoteDirectoryChildDirA.parent = remoteDirectory

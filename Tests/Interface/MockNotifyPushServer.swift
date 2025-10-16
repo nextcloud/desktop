@@ -2,8 +2,8 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import NIOCore
-import NIOPosix
 import NIOHTTP1
+import NIOPosix
 import NIOWebSocket
 
 @available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
@@ -44,29 +44,29 @@ public class MockNotifyPushServer {
     }
 
     public func resetCredentialsState() {
-        self.usernameReceived = false
-        self.passwordReceived = false
+        usernameReceived = false
+        passwordReceived = false
     }
 
     public func reset() {
         resetCredentialsState()
-        self.delay = nil
-        self.refuse = false
-        self.connectedClients = []
-        self.pingHandler = nil
+        delay = nil
+        refuse = false
+        connectedClients = []
+        pingHandler = nil
     }
 
     /// This method starts the server and handles incoming connections.
     public func run() async throws {
-        let channel: NIOAsyncChannel<EventLoopFuture<UpgradeResult>, Never> = try await ServerBootstrap(group: self.eventLoopGroup)
+        let channel: NIOAsyncChannel<EventLoopFuture<UpgradeResult>, Never> = try await ServerBootstrap(group: eventLoopGroup)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .bind(
-                host: self.host,
-                port: self.port
+                host: host,
+                port: port
             ) { channel in
                 channel.eventLoop.makeCompletedFuture {
                     let upgrader = NIOTypedWebSocketServerUpgrader<UpgradeResult>(
-                        shouldUpgrade: { (channel, head) in
+                        shouldUpgrade: { channel, _ in
                             if self.refuse {
                                 print("Refusing connection upgrade \(channel.localAddress?.description ?? "")")
                                 return channel.eventLoop.makeSucceededFuture(nil)
@@ -74,7 +74,7 @@ public class MockNotifyPushServer {
                                 return channel.eventLoop.makeSucceededFuture(HTTPHeaders())
                             }
                         },
-                        upgradePipelineHandler: { (channel, _) in
+                        upgradePipelineHandler: { channel, _ in
                             channel.eventLoop.makeCompletedFuture {
                                 let asyncChannel = try NIOAsyncChannel<WebSocketFrame, WebSocketFrame>(wrappingChannelSynchronously: channel)
                                 return UpgradeResult.websocket(asyncChannel)
@@ -128,13 +128,13 @@ public class MockNotifyPushServer {
         // encounters an error.
         do {
             switch try await upgradeResult.get() {
-            case .websocket(let websocketChannel):
-                print("Handling websocket connection")
-                self.connectedClients.append(websocketChannel)
-                try await self.handleWebsocketChannel(websocketChannel)
-                print("Done handling websocket connection")
-            case .notUpgraded:
-                print("Done handling HTTP connection")
+                case let .websocket(websocketChannel):
+                    print("Handling websocket connection")
+                    connectedClients.append(websocketChannel)
+                    try await handleWebsocketChannel(websocketChannel)
+                    print("Done handling websocket connection")
+                case .notUpgraded:
+                    print("Done handling HTTP connection")
             }
         } catch {
             print("Hit error: \(error)")
@@ -147,64 +147,63 @@ public class MockNotifyPushServer {
                 group.addTask {
                     for try await frame in inbound {
                         switch frame.opcode {
-                        case .ping:
-                            print("Received ping")
-                            self.pingHandler?()
+                            case .ping:
+                                print("Received ping")
+                                self.pingHandler?()
 
-                            var frameData = frame.data
-                            let maskingKey = frame.maskKey
+                                var frameData = frame.data
+                                let maskingKey = frame.maskKey
 
-                            if let maskingKey = maskingKey {
-                                frameData.webSocketUnmask(maskingKey)
-                            }
-
-                            let responseFrame = WebSocketFrame(fin: true, opcode: .pong, data: frameData)
-                            try await outbound.write(responseFrame)
-
-                        case .connectionClose:
-                            // This is an unsolicited close. We're going to send a response frame and
-                            // then, when we've sent it, close up shop. We should send back the close code the remote
-                            // peer sent us, unless they didn't send one at all.
-                            print("Received close")
-                            var data = frame.unmaskedData
-                            let closeDataCode = data.readSlice(length: 2) ?? ByteBuffer()
-                            let closeFrame = WebSocketFrame(fin: true, opcode: .connectionClose, data: closeDataCode)
-                            try await outbound.write(closeFrame)
-                            return
-                        case .binary, .continuation, .pong:
-                            // We ignore these frames.
-                            break
-                        case .text:
-                            var frameData = frame.unmaskedData
-                            let receivedText = frameData.readString(length: frameData.readableBytes)
-                            print("Received text: \(receivedText ?? "nil")")
-                            print("Username received: \(self.usernameReceived)")
-                            print("Password received: \(self.passwordReceived)")
-                            print("Instance: \(ObjectIdentifier(self))")
-
-                            if !self.usernameReceived {
-                                self.usernameReceived = true
-                            } else if !self.passwordReceived {
-                                let matchingPassword = receivedText == self.password
-                                if matchingPassword {
-                                    print("Correct auth")
-                                    self.passwordReceived = true
-                                    var buffer = channel.channel.allocator.buffer(capacity: 16)
-                                    buffer.writeString("authenticated")
-                                    let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
-                                    try await outbound.write(frame)
-                                } else {
-                                    print("Incorrect auth")
-                                    self.usernameReceived = false
-                                    var buffer = channel.channel.allocator.buffer(capacity: 32)
-                                    buffer.writeString("err: Invalid credentials")
-                                    let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
-                                    try await outbound.write(frame)
+                                if let maskingKey {
+                                    frameData.webSocketUnmask(maskingKey)
                                 }
-                            }
-                        default:
-                            // Unknown frames are errors.
-                            return
+
+                                let responseFrame = WebSocketFrame(fin: true, opcode: .pong, data: frameData)
+                                try await outbound.write(responseFrame)
+                            case .connectionClose:
+                                // This is an unsolicited close. We're going to send a response frame and
+                                // then, when we've sent it, close up shop. We should send back the close code the remote
+                                // peer sent us, unless they didn't send one at all.
+                                print("Received close")
+                                var data = frame.unmaskedData
+                                let closeDataCode = data.readSlice(length: 2) ?? ByteBuffer()
+                                let closeFrame = WebSocketFrame(fin: true, opcode: .connectionClose, data: closeDataCode)
+                                try await outbound.write(closeFrame)
+                                return
+                            case .binary, .continuation, .pong:
+                                // We ignore these frames.
+                                break
+                            case .text:
+                                var frameData = frame.unmaskedData
+                                let receivedText = frameData.readString(length: frameData.readableBytes)
+                                print("Received text: \(receivedText ?? "nil")")
+                                print("Username received: \(self.usernameReceived)")
+                                print("Password received: \(self.passwordReceived)")
+                                print("Instance: \(ObjectIdentifier(self))")
+
+                                if !self.usernameReceived {
+                                    self.usernameReceived = true
+                                } else if !self.passwordReceived {
+                                    let matchingPassword = receivedText == self.password
+                                    if matchingPassword {
+                                        print("Correct auth")
+                                        self.passwordReceived = true
+                                        var buffer = channel.channel.allocator.buffer(capacity: 16)
+                                        buffer.writeString("authenticated")
+                                        let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
+                                        try await outbound.write(frame)
+                                    } else {
+                                        print("Incorrect auth")
+                                        self.usernameReceived = false
+                                        var buffer = channel.channel.allocator.buffer(capacity: 32)
+                                        buffer.writeString("err: Invalid credentials")
+                                        let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
+                                        try await outbound.write(frame)
+                                    }
+                                }
+                            default:
+                                // Unknown frames are errors.
+                                return
                         }
                     }
                 }
@@ -247,14 +246,14 @@ final class HTTPByteBufferResponsePartHandler: ChannelOutboundHandler {
     typealias OutboundOut = HTTPServerResponsePart
 
     func write(context: ChannelHandlerContext, data: NIOAny, promise: EventLoopPromise<Void>?) {
-        let part = self.unwrapOutboundIn(data)
+        let part = unwrapOutboundIn(data)
         switch part {
-        case .head(let head):
-            context.write(self.wrapOutboundOut(.head(head)), promise: promise)
-        case .body(let buffer):
-            context.write(self.wrapOutboundOut(.body(.byteBuffer(buffer))), promise: promise)
-        case .end(let trailers):
-            context.write(self.wrapOutboundOut(.end(trailers)), promise: promise)
+            case let .head(head):
+                context.write(wrapOutboundOut(.head(head)), promise: promise)
+            case let .body(buffer):
+                context.write(wrapOutboundOut(.body(.byteBuffer(buffer))), promise: promise)
+            case let .end(trailers):
+                context.write(wrapOutboundOut(.end(trailers)), promise: promise)
         }
     }
 }

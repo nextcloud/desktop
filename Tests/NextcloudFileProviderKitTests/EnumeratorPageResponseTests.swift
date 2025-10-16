@@ -3,9 +3,9 @@
 
 import Alamofire
 import Foundation
-import Testing
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+import Testing
 
 @Suite struct EnumeratorPageResponseTests {
     private func createMockAFDataResponse(
@@ -41,7 +41,7 @@ import NextcloudFileProviderKitMocks
         let headers = [
             "X-NC-PAGINATE": "true",
             "X-NC-PAGINATE-TOKEN": "nextToken123",
-            "X-NC-PAGINATE-TOTAL": "100"
+            "X-NC-PAGINATE-TOTAL": "100",
         ]
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0
@@ -73,7 +73,7 @@ import NextcloudFileProviderKitMocks
         let headers = [
             "x-nc-paginate": "TRUE", // Lowercase key, uppercase value for boolean
             "x-nc-paginate-token": "mixedCaseToken789",
-            "X-NC-PAGINATE-TOTAL": "50"
+            "X-NC-PAGINATE-TOTAL": "50",
         ]
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 2
@@ -91,7 +91,7 @@ import NextcloudFileProviderKitMocks
         let headers = [
             "X-NC-PAGINATE": "true",
             "X-NC-PAGINATE-TOKEN": "tokenWithInvalidTotal",
-            "X-NC-PAGINATE-TOTAL": "not-an-integer"
+            "X-NC-PAGINATE-TOTAL": "not-an-integer",
         ]
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 3
@@ -152,7 +152,7 @@ import NextcloudFileProviderKitMocks
     func initWithPaginateHeaderFalse() {
         let headers = [
             "X-NC-PAGINATE": "false",
-            "X-NC-PAGINATE-TOKEN": "someToken"
+            "X-NC-PAGINATE-TOKEN": "someToken",
         ]
         let mockResponse = createMockAFDataResponse(headers: headers)
         let index = 0

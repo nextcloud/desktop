@@ -2,12 +2,12 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
-import NextcloudKit
-import RealmSwift
-import XCTest
-@testable import TestInterface
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+import NextcloudKit
+import RealmSwift
+@testable import TestInterface
+import XCTest
 
 final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -282,7 +282,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     func testReadServerUrlFollowUpPagination() async throws {
         // 1. Arrange: Setup a folder with enough children to require multiple pages.
         remoteFolder.children = []
-        for i in 0..<10 {
+        for i in 0 ..< 10 {
             let childItem = MockRemoteItem(
                 identifier: "folderChild\(i)",
                 name: "folderChild\(i).txt",
@@ -391,7 +391,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         debugPrint(db)
 
         let parentNKFile = remoteFolder.toNKFile()
-        let childrenNKFiles = (0..<5).map { i in
+        let childrenNKFiles = (0 ..< 5).map { i in
             MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
@@ -402,7 +402,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 serverUrl: Self.account.serverUrl
             ).toNKFile()
         }
-        let followUpChildrenNKFiles = (5..<10).map { i in
+        let followUpChildrenNKFiles = (5 ..< 10).map { i in
             MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
@@ -870,11 +870,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
 
-        let storedRootItem = Item.rootContainer(
+        let storedRootItem = await Item.rootContainer(
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: Self.account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: Self.account),
             log: FileProviderLogMock()
         )
         print(storedRootItem.metadata.serverUrl)
@@ -1147,7 +1147,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         do {
             try await observer.enumerateItems()
             XCTFail("Item enumeration should have failed!")
-        } catch let error {
+        } catch {
             XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
         }
     }
@@ -1169,7 +1169,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // Simulate server response with updated etag but no keepDownloaded
         remoteFolder.versionIdentifier = "NEW"
         remoteItemA.versionIdentifier = "NEW_ETAG"
-        
+
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
             account: Self.account,
@@ -1208,7 +1208,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         do {
             try await observer.enumerateChanges()
             XCTFail("Item enumeration should have failed!")
-        } catch let error {
+        } catch {
             XCTAssertEqual((error as NSError?)?.code, NSFeatureUnsupportedError)
         }
     }
@@ -1306,7 +1306,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
     func testFolderPaginatedEnumeration() async throws {
         remoteFolder.children = []
-        for i in 0...20 {
+        for i in 0 ... 20 {
             let childItem = MockRemoteItem(
                 identifier: "folderChild\(i)",
                 name: "folderChild\(i).txt",
@@ -1354,7 +1354,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(observer.items.last?.contentType?.conforms(to: .folder) ?? false)
 
         XCTAssertEqual(observer.observedPages.first, NSFileProviderPage.initialPageSortedByName as NSFileProviderPage)
-        //XCTAssertEqual(observer.observedPages.count, 5)
+        // XCTAssertEqual(observer.observedPages.count, 5)
     }
 
     func testEmptyFolderPaginatedEnumeration() async throws {
@@ -1417,7 +1417,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 1. Setup: remoteFolder with 3 children (fewer than pageSize 5).
         // Add folder metadata to DB.
         remoteFolder.children = []
-        for i in 0..<3 {
+        for i in 0 ..< 3 {
             let childItem = MockRemoteItem(
                 identifier: "fewItems-child\(i)",
                 name: "child\(i).txt",
@@ -1458,7 +1458,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             observer.items.contains(where: { $0.itemIdentifier.rawValue == remoteFolder.identifier }),
             "Folder itself should be enumerated."
         )
-        for i in 0..<3 {
+        for i in 0 ..< 3 {
             XCTAssertTrue(
                 observer.items.contains(where: { $0.itemIdentifier.rawValue == "fewItems-child\(i)" }),
                 "Child item fewItems-child\(i) should be enumerated."
@@ -1477,11 +1477,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         // Ensure all children are also in the DB after enumeration
-        for i in 0..<3 {
-             XCTAssertNotNil(
+        for i in 0 ..< 3 {
+            XCTAssertNotNil(
                 Self.dbManager.itemMetadata(ocId: "fewItems-child\(i)"),
                 "Child item fewItems-child\(i) metadata should be in DB."
-             )
+            )
         }
     }
 
@@ -1519,12 +1519,12 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         // 3. Assert: Verify that visitedDirectory state is preserved after update
         let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertTrue(updatedMetadata.visitedDirectory, 
-                     "visitedDirectory state should be preserved during update")
+        XCTAssertTrue(updatedMetadata.visitedDirectory,
+                      "visitedDirectory state should be preserved during update")
         XCTAssertEqual(updatedMetadata.etag, remoteFolder.versionIdentifier,
-                      "ETag should be updated to new value")
+                       "ETag should be updated to new value")
         XCTAssertNotEqual(updatedMetadata.etag, "OLD_ETAG",
-                         "ETag should have changed from old value")
+                          "ETag should have changed from old value")
     }
 
     func testVisitedDirectorySetDuringDirectoryRead() async throws {
@@ -1560,10 +1560,10 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         // 3. Assert: Verify that visitedDirectory is now set to true
         let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
-        XCTAssertTrue(updatedMetadata.visitedDirectory, 
-                     "visitedDirectory should be set to true after directory enumeration")
+        XCTAssertTrue(updatedMetadata.visitedDirectory,
+                      "visitedDirectory should be set to true after directory enumeration")
         XCTAssertEqual(updatedMetadata.etag, remoteFolder.versionIdentifier,
-                      "ETag should be updated")
+                       "ETag should be updated")
     }
 
     func testVisitedDirectoryStateInWorkingSet() async throws {
@@ -1585,7 +1585,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         var notVisitedFolder = MockRemoteItem(
             identifier: "notVisitedFolder",
             versionIdentifier: "V1",
-            name: "NotVisitedFolder", 
+            name: "NotVisitedFolder",
             remotePath: Self.account.davFilesUrl + "/NotVisitedFolder",
             directory: true,
             account: Self.account.ncKitAccount,
@@ -1611,9 +1611,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 3. Assert: Only visited folder should be in working set
         let workingSetIds = Set(workingSetObserver.items.map(\.itemIdentifier.rawValue))
         XCTAssertTrue(workingSetIds.contains(visitedFolder.ocId),
-                     "Visited folder should be in working set")
+                      "Visited folder should be in working set")
         XCTAssertFalse(workingSetIds.contains(notVisitedFolder.ocId),
-                      "Non-visited folder should not be in working set")
+                       "Non-visited folder should not be in working set")
 
         // 4. Act: Now enumerate the not-visited folder to make it visited
         // Add the not-visited folder to the remote structure for enumeration
@@ -1644,7 +1644,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 5. Assert: Verify the folder is now marked as visited
         let updatedNotVisitedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: notVisitedFolder.ocId))
         XCTAssertTrue(updatedNotVisitedMetadata.visitedDirectory,
-                     "Folder should now be marked as visited after enumeration")
+                      "Folder should now be marked as visited after enumeration")
 
         // 6. Act: Enumerate working set again
         let workingSetEnumerator2 = Enumerator(
@@ -1660,8 +1660,8 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 7. Assert: Both folders should now be in working set
         let workingSetIds2 = Set(workingSetObserver2.items.map(\.itemIdentifier.rawValue))
         XCTAssertTrue(workingSetIds2.contains(visitedFolder.ocId),
-                     "Original visited folder should still be in working set")
+                      "Original visited folder should still be in working set")
         XCTAssertTrue(workingSetIds2.contains(notVisitedFolder.ocId),
-                     "Newly visited folder should now be in working set")
+                      "Newly visited folder should now be in working set")
     }
 }

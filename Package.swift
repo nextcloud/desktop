@@ -8,20 +8,21 @@ let package = Package(
     platforms: [
         .iOS(.v16),
         .macOS(.v11),
-        .visionOS(.v1)
+        .visionOS(.v1),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "NextcloudFileProviderKit",
-            targets: ["NextcloudFileProviderKit"]),
+            targets: ["NextcloudFileProviderKit"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/nextcloud/NextcloudCapabilitiesKit.git", from: "2.3.0"),
         .package(url: "https://github.com/nextcloud/NextcloudKit", from: "7.0.0"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.55.0"),
         .package(url: "https://github.com/realm/realm-swift.git", from: "20.0.1"),
-        .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0")
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -31,12 +32,15 @@ let package = Package(
             dependencies: [
                 .product(name: "NextcloudCapabilitiesKit", package: "NextcloudCapabilitiesKit"),
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
-                .product(name: "RealmSwift", package: "realm-swift")]),
+                .product(name: "RealmSwift", package: "realm-swift"),
+            ]
+        ),
         .target(
             name: "NextcloudFileProviderKitMocks",
             dependencies: [
-                "NextcloudFileProviderKit"
-            ]),
+                "NextcloudFileProviderKit",
+            ]
+        ),
         .target(
             name: "TestInterface",
             dependencies: [
@@ -45,9 +49,10 @@ let package = Package(
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "NIOHTTP1", package: "swift-nio"),
-                .product(name: "NIOWebSocket", package: "swift-nio")
+                .product(name: "NIOWebSocket", package: "swift-nio"),
             ],
-            path: "Tests/Interface"),
+            path: "Tests/Interface"
+        ),
         .testTarget(
             name: "TestInterfaceTests",
             dependencies: ["NextcloudFileProviderKit", "TestInterface"],
@@ -55,6 +60,7 @@ let package = Package(
         ),
         .testTarget(
             name: "NextcloudFileProviderKitTests",
-            dependencies: ["NextcloudFileProviderKit", "TestInterface"]),
+            dependencies: ["NextcloudFileProviderKit", "TestInterface"]
+        ),
     ]
 )

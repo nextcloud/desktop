@@ -7,11 +7,11 @@ extension Item {
     // Creates a file that was previously unuploaded (e.g. a previously ignored/lock file) on server
     func createUnuploaded(
         itemTarget: NSFileProviderItem,
-        baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
-        changedFields: NSFileProviderItemFields,
+        baseVersion _: NSFileProviderItemVersion = NSFileProviderItemVersion(),
+        changedFields _: NSFileProviderItemFields,
         contents newContents: URL?,
-        options: NSFileProviderModifyItemOptions = [],
-        request: NSFileProviderRequest = NSFileProviderRequest(),
+        options _: NSFileProviderModifyItemOptions = [],
+        request _: NSFileProviderRequest = NSFileProviderRequest(),
         ignoredFiles: IgnoredFilesMatcher? = nil,
         domain: NSFileProviderDomain? = nil,
         forcedChunkSize: Int? = nil,
@@ -22,7 +22,7 @@ extension Item {
             logger.error(
                 """
                 Unable to upload modified item that was previously unuploaded.
-                    filename: \(self.filename)
+                    filename: \(filename)
                     either the domain is nil, the provided contents are nil, or both.
                 """
             )
@@ -62,15 +62,15 @@ extension Item {
     // Just modifies metadata
     func modifyUnuploaded(
         itemTarget: NSFileProviderItem,
-        baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
+        baseVersion _: NSFileProviderItemVersion = NSFileProviderItemVersion(),
         changedFields: NSFileProviderItemFields,
         contents newContents: URL?,
-        options: NSFileProviderModifyItemOptions = [],
-        request: NSFileProviderRequest = NSFileProviderRequest(),
-        ignoredFiles: IgnoredFilesMatcher? = nil,
-        domain: NSFileProviderDomain? = nil,
-        forcedChunkSize: Int? = nil,
-        progress: Progress = .init(),
+        options _: NSFileProviderModifyItemOptions = [],
+        request _: NSFileProviderRequest = NSFileProviderRequest(),
+        ignoredFiles _: IgnoredFilesMatcher? = nil,
+        domain _: NSFileProviderDomain? = nil,
+        forcedChunkSize _: Int? = nil,
+        progress _: Progress = .init(),
         dbManager: FilesDatabaseManager
     ) async -> Item? {
         var modifiedParentItemIdentifier = parentItemIdentifier
@@ -95,7 +95,7 @@ extension Item {
                 logger.error(
                     """
                     Unable to find new parent item identifier during unuploaded item modification.
-                        Filename: \(self.filename)
+                        Filename: \(filename)
                     """
                 )
                 return nil
@@ -116,13 +116,13 @@ extension Item {
             modifiedMetadata.date = newModificationDate
         }
 
-        return Item(
+        return await Item(
             metadata: modifiedMetadata,
             parentItemIdentifier: modifiedParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
-            remoteSupportsTrash: await remoteInterface.supportsTrash(account: account),
+            remoteSupportsTrash: remoteInterface.supportsTrash(account: account),
             log: logger.log
         )
     }

@@ -23,7 +23,7 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
         self.deletedItemIdentifiers.append(contentsOf: deletedItemIdentifiers)
     }
 
-    public func finishEnumeratingChanges(upTo anchor: NSFileProviderSyncAnchor, moreComing: Bool) {
+    public func finishEnumeratingChanges(upTo _: NSFileProviderSyncAnchor, moreComing _: Bool) {
         isComplete = true
     }
 

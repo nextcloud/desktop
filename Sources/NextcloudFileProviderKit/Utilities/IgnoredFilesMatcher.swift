@@ -18,28 +18,28 @@ public class IgnoredFilesMatcher {
         while i < trimmed.endIndex {
             let c = trimmed[i]
             switch c {
-            case "*":
-                let next = trimmed.index(after: i)
-                if next < trimmed.endIndex && trimmed[next] == "*" {
-                    regex.append(wildcardsMatchSlash ? ".*" : ".*")
-                    i = trimmed.index(after: next)
-                } else {
-                    regex.append(wildcardsMatchSlash ? ".*" : "[^/]*")
-                    i = next
-                }
-            case "?":
-                regex.append(wildcardsMatchSlash ? "." : "[^/]")
-                i = trimmed.index(after: i)
-            case ".", "[", "]", "(", ")", "{", "}", "+", "^", "$", "|", "\\":
-                regex.append("\\\(c)")
-                i = trimmed.index(after: i)
-            default:
-                regex.append(c)
-                i = trimmed.index(after: i)
+                case "*":
+                    let next = trimmed.index(after: i)
+                    if next < trimmed.endIndex, trimmed[next] == "*" {
+                        regex.append(wildcardsMatchSlash ? ".*" : ".*")
+                        i = trimmed.index(after: next)
+                    } else {
+                        regex.append(wildcardsMatchSlash ? ".*" : "[^/]*")
+                        i = next
+                    }
+                case "?":
+                    regex.append(wildcardsMatchSlash ? "." : "[^/]")
+                    i = trimmed.index(after: i)
+                case ".", "[", "]", "(", ")", "{", "}", "+", "^", "$", "|", "\\":
+                    regex.append("\\\(c)")
+                    i = trimmed.index(after: i)
+                default:
+                    regex.append(c)
+                    i = trimmed.index(after: i)
             }
         }
 
-        return hasSlash ? "^\(regex)$" : "(^|/)"+regex+"$"
+        return hasSlash ? "^\(regex)$" : "(^|/)" + regex + "$"
     }
 
     public init(ignoreList: [String], wildcardsMatchSlash: Bool = false) {

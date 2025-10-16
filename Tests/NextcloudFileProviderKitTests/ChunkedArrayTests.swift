@@ -6,6 +6,7 @@ import XCTest
 
 final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     // MARK: - chunked(into:)
+
     func testChunkedEmptyArray() {
         let emptyArray: [Int] = []
         XCTAssertEqual(emptyArray.chunked(into: 3), [])
@@ -33,6 +34,7 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     }
 
     // MARK: - chunkedMap(into:transform:)
+
     func testChunkedMap() {
         let array = [1, 2, 3, 4]
         let transformed = array.chunkedMap(into: 2) { $0 * 2 }
@@ -50,6 +52,7 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     }
 
     // MARK: - concurrentChunkedForEach(into:operation:)
+
     func testConcurrentChunkedForEach() async {
         let array = [1, 2, 3, 4]
         var results = [Int]()
@@ -75,6 +78,7 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     }
 
     // MARK: - concurrentChunkedCompactMap(into:transform:)
+
     func testConcurrentChunkedCompactMap() async throws {
         let array = [1, 2, 3, 4, 5, 6]
         let results = try await array.concurrentChunkedCompactMap(into: 2) { $0 % 2 == 0 ? $0 : nil }

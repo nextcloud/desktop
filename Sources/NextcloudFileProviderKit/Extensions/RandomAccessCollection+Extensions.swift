@@ -3,7 +3,7 @@
 
 import Foundation
 
-fileprivate let defaultChunkSize = 64
+private let defaultChunkSize = 64
 
 extension RandomAccessCollection {
     /// Chunks a collection into an array of its subsequences.
@@ -12,12 +12,12 @@ extension RandomAccessCollection {
     func chunked(into size: Int = defaultChunkSize) -> [SubSequence] {
         guard size > 0 else { return [] } // Avoid invalid chunk sizes
         var chunks: [SubSequence] = []
-        chunks.reserveCapacity(Int(self.count) / size + 1)
+        chunks.reserveCapacity(Int(count) / size + 1)
 
-        var currentIndex = self.startIndex
-        while currentIndex < self.endIndex {
-            let nextIndex = self.index(currentIndex, offsetBy: size, limitedBy: self.endIndex) ?? self.endIndex
-            chunks.append(self[currentIndex..<nextIndex])
+        var currentIndex = startIndex
+        while currentIndex < endIndex {
+            let nextIndex = index(currentIndex, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            chunks.append(self[currentIndex ..< nextIndex])
             currentIndex = nextIndex
         }
         return chunks
@@ -25,7 +25,7 @@ extension RandomAccessCollection {
 
     /// Chunks the collection and applies a transformation to each element.
     func chunkedMap<T>(into size: Int = defaultChunkSize, transform: (Element) -> T) -> [[T]] {
-        return self.chunked(into: size).map { chunk in
+        chunked(into: size).map { chunk in
             chunk.map(transform)
         }
     }
@@ -56,7 +56,7 @@ extension RandomAccessCollection {
 
             for chunk in chunked(into: size) {
                 group.addTask {
-                    return try chunk.compactMap { try transform($0) }
+                    try chunk.compactMap { try transform($0) }
                 }
             }
 

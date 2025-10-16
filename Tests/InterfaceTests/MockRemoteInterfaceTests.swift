@@ -1,11 +1,11 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import XCTest
-import NextcloudKit
 @testable import NextcloudFileProviderKit
 @testable import NextcloudFileProviderKitMocks
+import NextcloudKit
 @testable import TestInterface
+import XCTest
 
 final class MockRemoteInterfaceTests: XCTestCase {
     static let account = Account(
@@ -23,7 +23,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
-            identifier: "a", 
+            identifier: "a",
             versionIdentifier: "a",
             name: "a",
             remotePath: Self.account.davFilesUrl + "/a",
@@ -34,8 +34,8 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
-            identifier: "b", 
-            versionIdentifier: "b", 
+            identifier: "b",
+            versionIdentifier: "b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/b",
             directory: true,
@@ -45,7 +45,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemA_B = MockRemoteItem(
-            identifier: "b", 
+            identifier: "b",
             versionIdentifier: "b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/a/b",
@@ -56,7 +56,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let targetItem = MockRemoteItem(
-            identifier: "target", 
+            identifier: "target",
             versionIdentifier: "target",
             name: "target",
             remotePath: Self.account.davFilesUrl + "/a/b/target",
@@ -283,7 +283,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
                     fileName: String(3),
                     size: Int64(data.count - (chunkSize * 2)),
                     remoteChunkStoreFolderName: uploadUuid
-                )
+                ),
             ],
             creationDate: .init(),
             modificationDate: .init(),
@@ -330,7 +330,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
-            identifier: "b", 
+            identifier: "b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/b",
             directory: true,
@@ -340,7 +340,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemC = MockRemoteItem(
-            identifier: "c", 
+            identifier: "c",
             name: "c",
             remotePath: Self.account.davFilesUrl + "/a/c",
             directory: true,
@@ -350,7 +350,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let targetItem = MockRemoteItem(
-            identifier: "target", 
+            identifier: "target",
             name: "target",
             remotePath: Self.account.davFilesUrl + "/a/c/target",
             account: Self.account.ncKitAccount,
@@ -392,7 +392,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             return
         }
         let fileData = Data("Hello, World!".utf8)
-        let _ = await remoteInterface.upload(
+        _ = await remoteInterface.upload(
             remotePath: Self.account.davFilesUrl + "/file.txt", localPath: fileUrl.path, account: Self.account
         )
 
@@ -411,7 +411,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
-            identifier: "a", 
+            identifier: "a",
             name: "a",
             remotePath: Self.account.davFilesUrl + "/a",
             directory: true,
@@ -421,7 +421,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
-            identifier: "b", 
+            identifier: "b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/b",
             directory: true,
@@ -431,7 +431,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemC = MockRemoteItem(
-            identifier: "c", 
+            identifier: "c",
             name: "c",
             remotePath: Self.account.davFilesUrl + "/c",
             directory: true,
@@ -451,7 +451,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemA_B = MockRemoteItem(
-            identifier: "a_b", 
+            identifier: "a_b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/a/b",
             directory: true,
@@ -461,7 +461,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemC_A = MockRemoteItem(
-            identifier: "c_a", 
+            identifier: "c_a",
             name: "a",
             remotePath: Self.account.davFilesUrl + "/c/a",
             directory: true,
@@ -471,7 +471,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemC_A_A = MockRemoteItem(
-            identifier: "c_a_a", 
+            identifier: "c_a_a",
             name: "a",
             remotePath: Self.account.davFilesUrl + "/c/a/a",
             directory: true,
@@ -567,7 +567,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         debugPrint(remoteInterface)
         let itemA = MockRemoteItem(
-            identifier: "a", 
+            identifier: "a",
             name: "a",
             remotePath: Self.account.davFilesUrl + "/a",
             directory: true,
@@ -577,7 +577,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
-            identifier: "b", 
+            identifier: "b",
             name: "b",
             remotePath: Self.account.davFilesUrl + "/b",
             directory: true,

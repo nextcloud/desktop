@@ -18,7 +18,7 @@ public class FileProviderChangeNotificationInterface: ChangeNotificationInterfac
             if let manager = NSFileProviderManager(for: domain) {
                 do {
                     try await manager.signalEnumerator(for: .workingSet)
-                } catch let error {
+                } catch {
                     self.logger.error("Could not signal enumerator.", [.domain: self.domain.identifier, .error: error])
                 }
             }

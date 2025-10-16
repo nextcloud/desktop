@@ -2,12 +2,12 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import FileProvider
+@testable import NextcloudFileProviderKit
+import NextcloudFileProviderKitMocks
 import NextcloudKit
 import RealmSwift
 import TestInterface
 import XCTest
-@testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 
 final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
@@ -31,7 +31,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
-            identifier: itemIdentifier, 
+            identifier: itemIdentifier,
             name: "file",
             remotePath: Self.account.davFilesUrl + "/file",
             account: Self.account.ncKitAccount,
@@ -56,7 +56,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        let (error) = await item.delete(dbManager: Self.dbManager)
+        let error = await item.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
@@ -76,7 +76,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             serverUrl: Self.account.serverUrl
         )
         let remoteItem = MockRemoteItem(
-            identifier: "file", 
+            identifier: "file",
             name: "file",
             remotePath: Self.account.davFilesUrl + "/folder/file",
             account: Self.account.ncKitAccount,
@@ -107,7 +107,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        let (error) = await folder.delete(dbManager: Self.dbManager)
+        let error = await folder.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
@@ -146,11 +146,11 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        let (error) = await item.delete(trashing: true, dbManager: Self.dbManager)
+        let error = await item.delete(trashing: true, dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
-        let postTrashingMetadata = Self.dbManager.itemMetadata(ocId: itemIdentifier);
+        let postTrashingMetadata = Self.dbManager.itemMetadata(ocId: itemIdentifier)
         XCTAssertNotNil(postTrashingMetadata)
         XCTAssertEqual(postTrashingMetadata?.serverUrl, Self.account.trashUrl)
         XCTAssertEqual(
