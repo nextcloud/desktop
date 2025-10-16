@@ -54,7 +54,8 @@ Button {
         y: (root.y + Style.trayWindowHeaderHeight + 2)
 
         property real widestMenuItemWidth: 0
-        width: widestMenuItemWidth + leftPadding + rightPadding
+        property real maximumWidthAllowed: trayWindowHeader.width - (root.x + 4)
+        width: Math.min( widestMenuItemWidth + leftPadding + rightPadding, maximumWidthAllowed )
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
@@ -72,10 +73,25 @@ Button {
                 implicitHeight: instantiatedUserLine.height
                 UserLine {
                     id: instantiatedUserLine
-                    width: accountMenu.widestMenuItemWidth
+                    width: Math.min(accountMenu.widestMenuItemWidth, accountMenu.maximumWidthAllowed)
 
                     Component.onCompleted: {
-                        accountMenu.widestMenuItemWidth = Math.max( instantiatedUserLine.implicitWidth, accountMenu.widestMenuItemWidth )
+                        instantiatedUserLine.updateMenuWidth()
+                    }
+
+                    onImplicitWidthChanged: {
+                        instantiatedUserLine.updateMenuWidth()
+                    }
+
+                    Connections {
+                        target: model
+                        function onNameChanged() {
+                            instantiatedUserLine.updateMenuWidth()
+                        }
+
+                        function onStatusChanged() {
+                            instantiatedUserLine.updateMenuWidth()
+                        }
                     }
 
                     onShowUserStatusSelector: {
@@ -87,6 +103,11 @@ Button {
                         accountMenu.close();
                     }
                     onClicked: UserModel.currentUserId = model.index;
+
+                    function updateMenuWidth()
+                    {
+                        accountMenu.widestMenuItemWidth = Math.max( instantiatedUserLine.implicitWidth, accountMenu.widestMenuItemWidth )
+                    }
                 }
             }
             onObjectAdded: function(index, object) {

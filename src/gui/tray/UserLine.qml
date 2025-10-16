@@ -27,7 +27,6 @@ AbstractButton {
     contentItem: RowLayout {
         id: userLineLayout
         spacing: Style.userLineSpacing
-        width: parent.width
 
         Image {
             id: accountAvatar
@@ -83,7 +82,7 @@ AbstractButton {
                 color: !userLine.parent.enabled
                     ? userLine.parent.palette.mid
                     : (userLine.parent.highlighted || userLine.parent.down
-                        ? Style.contrastingColor( parent.palette.highlight )
+                        ? userLine.parent.palette.highlightedText
                         : userLine.parent.palette.text)
             }
 
@@ -103,7 +102,7 @@ AbstractButton {
                     color: !userLine.parent.enabled
                         ? userLine.parent.palette.mid
                         : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                            ? Style.contrastingColor( parent.palette.highlight )
+                            ? userLine.parent.palette.highlightedText
                             : userLine.parent.palette.text)
                 }
 
@@ -135,7 +134,7 @@ AbstractButton {
                 color: !userLine.parent.enabled
                     ? userLine.parent.palette.mid
                     : ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows"
-                        ? Style.contrastingColor( parent.palette.highlight )
+                        ? userLine.parent.palette.highlightedText
                         : userLine.parent.palette.text)
             }
         }
@@ -159,7 +158,7 @@ AbstractButton {
             property var iconColor: !userLine.parent.enabled
                 ? userLine.parent.palette.mid
                 : (!hovered && ((userLine.parent.highlighted || userLine.parent.down) && Qt.platform.os !== "windows")
-                    ? Style.contrastingColor( parent.palette.highlight )
+                    ? userLine.parent.palette.highlightedText
                     : userLine.parent.palette.text)
             icon.source: "image://svgimage-custom-color/more.svg/" + iconColor
 
