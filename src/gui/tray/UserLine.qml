@@ -165,6 +165,7 @@ AbstractButton {
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+                height: implicitHeight
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -212,6 +213,7 @@ AbstractButton {
                 MenuItem {
                     id: removeAccountButton
                     text: model.removeAccountText
+                    height: implicitHeight
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: {
