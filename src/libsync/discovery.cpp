@@ -766,13 +766,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isLivePhoto = serverEntry.isLivePhoto;
     item->_livePhotoFile = serverEntry.livePhotoFile;
 
-    if (serverEntry.isValid()) {
-        item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
-        item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
-    } else {
-        item->_folderQuota.bytesUsed = -1;
-        item->_folderQuota.bytesAvailable = -1;
-    }
+    item->_folderQuota.bytesUsed = serverEntry.folderQuota.bytesUsed;
+    item->_folderQuota.bytesAvailable = serverEntry.folderQuota.bytesAvailable;
 
     // Check for missing server data
     {
@@ -1100,23 +1095,45 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 int64_t ProcessDirectoryJob::folderBytesAvailable(const SyncFileItemPtr &item, const FolderQuota::ServerEntry serverEntry) const
 {
     const auto unlimitedFreeSpace = -3;
-    if (item->_size == 0 || item->_direction != SyncFileItem::Up || item->isDirectory() || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+    const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+    const auto isUpdateMetadataOrRename = item->_instruction != CSYNC_INSTRUCTION_SYNC && item->_instruction != CSYNC_INSTRUCTION_NEW;
+    const auto isFileDownloadOrDirectory = item->_direction != SyncFileItem::Up || item->isDirectory();
+
+    qCDebug(lcDisco) << "Checking quota for item:" << item->_file
+                     << "isTypeChange?" << isTypeChange
+                     << "isUpdateMetadataOrRename?" << isUpdateMetadataOrRename
+                     << "isFileDownloadOrDirectory?" << isFileDownloadOrDirectory
+                     << "_dirItem?" << _dirItem
+                     << "_dirParentItem?" << _dirParentItem
+                     << "item->_size:" << item->_size
+                     << "_folderQuota.bytesAvailable:" << _folderQuota.bytesAvailable
+                     << "_folderQuota.bytesUsed:" << _folderQuota.bytesUsed;
+
+    if (item->_size == 0 || isTypeChange || isFileDownloadOrDirectory || isUpdateMetadataOrRename) {
+        qCDebug(lcDisco) << "Returning unlimited free space (-3) for item quota.";
         return unlimitedFreeSpace;
     }
 
-    if (item->_instruction != CSYNC_INSTRUCTION_SYNC && item->_instruction != CSYNC_INSTRUCTION_NEW) {
-        return unlimitedFreeSpace;
-    }
-
-    if (serverEntry == FolderQuota::ServerEntry::Valid || !_dirItem) {
+    if (serverEntry == FolderQuota::ServerEntry::Valid) {
+        qCDebug(lcDisco) << "Returning cached _folderQuota.bytesAvailable for item quota.";
         return _folderQuota.bytesAvailable;
     }
 
-    SyncJournalFileRecord dirItemDbRecord;
-    if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
-        return dirItemDbRecord._folderQuota.bytesAvailable;
+    if (!_dirItem) {
+        qCDebug(lcDisco) << "Returning unlimited free space (-3) for item quota with no _dirItem.";
+        return unlimitedFreeSpace;
     }
 
+    qCDebug(lcDisco) << "_dirItem->_folderQuota.bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
+
+    SyncJournalFileRecord dirItemDbRecord;
+    if (_discoveryData->_statedb->getFileRecord(_dirItem->_file, &dirItemDbRecord) && dirItemDbRecord.isValid()) {
+        const auto dirDbBytesAvailable = dirItemDbRecord._folderQuota.bytesAvailable;
+        qCDebug(lcDisco) << "Returning for item quota db value dirItemDbRecord._folderQuota.bytesAvailable" << dirDbBytesAvailable;
+        return dirDbBytesAvailable;
+    }
+
+    qCDebug(lcDisco) << "Returning _dirItem->_folderQuota.bytesAvailable for item quota.";
     return _dirItem->_folderQuota.bytesAvailable;
 }
 
@@ -2267,7 +2284,9 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 Q_ASSERT(_dirItem->_e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted);
                 _discoveryData->_anotherSyncNeeded = !alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
             }
-            qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected;
+            qCDebug(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << _dirItem->_isFileDropDetected
+                             << "with quota bytesUsed:" << _dirItem->_folderQuota.bytesUsed
+                             << "bytesAvailable:" << _dirItem->_folderQuota.bytesAvailable;
         }
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
@@ -2309,6 +2328,9 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 
 void ProcessDirectoryJob::setFolderQuota(const FolderQuota &folderQuota)
 {
+    qCDebug(lcDisco) << "Setting quota for folder" << _discoveryData->_localDir + _currentFolder._local
+                     << "bytes used:" << folderQuota.bytesUsed
+                     << "bytes available:" << folderQuota.bytesAvailable;
     _folderQuota.bytesUsed = folderQuota.bytesUsed;
     _folderQuota.bytesAvailable = folderQuota.bytesAvailable;
 

@@ -134,6 +134,25 @@ public:
     struct FolderQuota {
         int64_t bytesUsed = 0;
         int64_t bytesAvailable = 5000000000;
+
+        FolderQuota() : bytesUsed{0}, bytesAvailable{5000000000} {};
+        FolderQuota(int64_t bytesUsed, int64_t bytesAvailable)
+            : bytesUsed{bytesUsed}
+            , bytesAvailable{bytesAvailable}
+        {}
+
+        QString bytesAvailableString() const {
+            if (_bytesAvailableString.isEmpty()) {
+                return QString::number(bytesAvailable);
+            }
+
+            return _bytesAvailableString;
+        }
+
+        void setBytesAvailableString(const QString &bytesAvailableString) { _bytesAvailableString = bytesAvailableString; }
+
+    private:
+        QString _bytesAvailableString = QStringLiteral("");
     };
 
     void addChild(const FileInfo &info);
