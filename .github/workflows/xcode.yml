@@ -11,7 +11,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+  Tests:
 
     runs-on: macos-latest
 
@@ -23,13 +23,4 @@ jobs:
         xcode-version: latest-stable
 
     - name: Run Tests
-      run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=My Mac" -enableCodeCoverage YES -derivedDataPath NKFPK/.derivedData
-
-    - name: Gather code coverage
-      run: |
-        cd NKFPK/.derivedData/Build/ProfileData
-        cd $(ls -d */|head -n 1)
-        directory=${PWD##*/}
-        pathCoverage=NKFPK/.derivedData/Build/ProfileData/${directory}/Coverage.profdata
-        cd ../../../../../
-        xcrun llvm-cov export -format="lcov" -instr-profile $pathCoverage NKFPK/.derivedData/Build/Products/Debug/NextcloudFileProviderKitTests.xctest/Contents/MacOS/NextcloudFileProviderKitTests > coverage_report.lcov
+      run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=My Mac"
