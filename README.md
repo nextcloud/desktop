@@ -41,7 +41,7 @@ Before submitting a pull request, please ensure that your code changes comply wi
 You can run the following command in the root of the package repository clone:
 
 ```bash
-swift package plugin --allow-writing-to-package-directory swiftformat --verbose --cache ignore --swift-version 5.9
+swift package plugin --allow-writing-to-package-directory swiftformat --verbose --cache ignore
 ```
 
 ## License
