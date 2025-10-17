@@ -599,11 +599,7 @@ public final class FilesDatabaseManager: Sendable {
         var handledUpdateOcIds = Set(updated.map(\.ocId))
 
         updated
-            .map {
-                var serverUrl = $0.serverUrl + "/" + $0.fileName
-                if serverUrl.last == "/" { serverUrl.removeLast() }
-                return serverUrl
-            }
+            .map { $0.remotePath() }
             .forEach { serverUrl in
                 logger.debug("Checking updated item...", [.url: serverUrl])
 
@@ -630,15 +626,7 @@ public final class FilesDatabaseManager: Sendable {
         let handledDeleteOcIds = Set(deleted.map(\.ocId))
 
         deleted
-            .map { // assemble remote location
-                var serverUrl = $0.serverUrl + "/" + $0.fileName
-
-                if serverUrl.last == "/" {
-                    serverUrl.removeLast()
-                }
-
-                return serverUrl
-            }
+            .map { $0.remotePath() }
             .forEach { serverUrl in
                 logger.debug("Verifying deleted item...", [.url: serverUrl])
 

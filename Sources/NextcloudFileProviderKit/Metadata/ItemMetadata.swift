@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+import FileProvider
 import Foundation
 
 ///
@@ -73,7 +74,7 @@ public protocol ItemMetadata: Equatable {
     var quotaAvailableBytes: Int64 { get set }
     var resourceType: String { get set }
     var richWorkspace: String? { get set }
-    var serverUrl: String { get set } // For parent folder! Build remote url by adding fileName
+    var serverUrl: String { get set } // For parent folder! Retrieve the full remote url via .remotePath()
     var session: String? { get set }
     var sessionError: String? { get set }
     var sessionTaskIdentifier: Int? { get set }
@@ -169,5 +170,15 @@ public extension ItemMetadata {
                 .init(name: "y", value: "\(size.height)"),
                 .init(name: "a", value: "true"),
             ])
+    }
+
+    func remotePath() -> String {
+        if ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
+            // For the root container the fileName is "__NC_ROOT__" (aka NextcloudKit.shared.nkCommonInstance.rootFileName)
+            // --> appending the fileName to that is not correct, as it most likely won't ecist
+            return serverUrl
+        }
+
+        return "\(serverUrl)/\(fileName)"
     }
 }

@@ -24,7 +24,7 @@ public extension Item {
         }
 
         let ocId = itemIdentifier.rawValue
-        let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: metadata.urlBase, with: "")
+        let relativePath = (metadata.remotePath()).replacingOccurrences(of: metadata.urlBase, with: "")
 
         guard metadata.isLockFileOfLocalOrigin == false else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
@@ -36,7 +36,7 @@ public extension Item {
             return nil
         }
 
-        let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
+        let serverFileNameUrl = metadata.remotePath()
 
         guard serverFileNameUrl != "" else {
             return NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)

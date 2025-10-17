@@ -50,7 +50,7 @@ public extension Item {
             progress.totalUnitCount += Int64(metadatas.count)
 
             for var metadata in metadatas {
-                let remotePath = metadata.serverUrl + "/" + metadata.fileName
+                let remotePath = metadata.remotePath()
                 let relativePath =
                     remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
                 let childLocalPath = directoryLocalPath + relativePath
@@ -129,7 +129,7 @@ public extension Item {
             }
         }
 
-        let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
+        let serverUrlFileName = metadata.remotePath()
 
         logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
 

@@ -456,10 +456,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         // This way we ensure we visit parent folders before their children.
         let materialisedItems = dbManager
             .materialisedItemMetadatas(account: accountId)
-            .sorted {
-                ($0.serverUrl + "/" + $0.fileName).count <
-                    ($1.serverUrl + "/" + $1.fileName).count
-            }
+            .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var allNewMetadatas = [SendableItemMetadata]()
         var allUpdatedMetadatas = [SendableItemMetadata]()
@@ -480,7 +477,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                 continue
             }
 
-            let itemRemoteUrl = item.serverUrl + "/" + item.fileName
+            let itemRemoteUrl = item.remotePath()
 
             let (metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError) = await Enumerator.readServerUrl(
                 itemRemoteUrl,
@@ -550,7 +547,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
 
                                 // Also mark any materialized children of this directory as examined
                                 let grandChildren = materialisedItems.filter {
-                                    $0.serverUrl.hasPrefix(localItem.serverUrl + "/" + localItem.fileName)
+                                    $0.serverUrl.hasPrefix(localItem.remotePath())
                                 }
                                 examinedChildFilesAndDeletedItems.formUnion(grandChildren.map(\.ocId))
                             }

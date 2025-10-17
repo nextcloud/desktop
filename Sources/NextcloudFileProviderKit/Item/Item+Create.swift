@@ -490,7 +490,7 @@ public extension Item {
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
-            parentItemRemotePath = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
+            parentItemRemotePath = parentItemMetadata.remotePath()
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
                 of: account.davFilesUrl, with: ""
             )
