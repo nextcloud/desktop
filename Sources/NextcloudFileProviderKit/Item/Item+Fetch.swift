@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudKit
 
@@ -63,6 +63,8 @@ public extension Item {
                         attributes: nil
                     )
                 } else {
+                    let identifier = NSFileProviderItemIdentifier(metadata.ocId)
+
                     let (_, _, _, _, _, _, error) = await remoteInterface.downloadAsync(
                         serverUrlFileName: remotePath,
                         fileNameLocalPath: childLocalPath,
@@ -71,12 +73,7 @@ public extension Item {
                         requestHandler: { progress.setHandlersFromAfRequest($0) },
                         taskHandler: { task in
                             if let domain {
-                                NSFileProviderManager(for: domain)?.register(
-                                    task,
-                                    forItemWithIdentifier:
-                                    NSFileProviderItemIdentifier(metadata.ocId),
-                                    completionHandler: { _ in }
-                                )
+                                NSFileProviderManager(for: domain)?.register(task, forItemWithIdentifier: identifier, completionHandler: { _ in })
                             }
                         },
                         progressHandler: { _ in }

@@ -2,7 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
@@ -221,46 +221,6 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
-    public func downloadAsync(
-        remotePath: String,
-        localPath: String,
-        account: Account,
-        options: NKRequestOptions = .init(),
-        requestHandler: @escaping (DownloadRequest) -> Void = { _ in },
-        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
-        progressHandler: @escaping (Progress) -> Void = { _ in }
-    ) async -> (
-        account: String,
-        etag: String?,
-        date: Date?,
-        length: Int64,
-        headers: [AnyHashable: any Sendable]?,
-        afError: AFError?,
-        nkError: NKError
-    ) {
-        await withCheckedContinuation { continuation in
-            download(
-                serverUrlFileName: remotePath,
-                fileNameLocalPath: localPath,
-                account: account.ncKitAccount,
-                options: options,
-                requestHandler: requestHandler,
-                taskHandler: taskHandler,
-                progressHandler: progressHandler
-            ) { account, etag, date, length, headers, afError, nkError in
-                continuation.resume(returning: (
-                    account,
-                    etag,
-                    date,
-                    length,
-                    headers,
-                    afError,
-                    nkError
-                ))
-            }
-        }
-    }
-
     public func enumerate(
         remotePath: String,
         depth: EnumerateDepth,
@@ -306,20 +266,6 @@ extension NextcloudKit: RemoteInterface {
 
     public func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
         try await lockUnlockFile(serverUrlFileName: serverUrlFileName, type: type, shouldLock: shouldLock, account: account.ncKitAccount, options: options, taskHandler: taskHandler)
-    }
-
-    public func trashedItems(
-        account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
-        await withCheckedContinuation { continuation in
-            listingTrash(
-                showHiddenFiles: true, account: account.ncKitAccount
-            ) { account, items, data, error in
-                continuation.resume(returning: (account, items ?? [], data?.data, error))
-            }
-        }
     }
 
     public func restoreFromTrash(
@@ -383,20 +329,6 @@ extension NextcloudKit: RemoteInterface {
             )
         }
         return result
-    }
-
-    public func fetchUserProfile(
-        account: Account,
-        options: NKRequestOptions = .init(),
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
-        await withCheckedContinuation { continuation in
-            getUserProfile(
-                account: account.ncKitAccount, options: options, taskHandler: taskHandler
-            ) { account, userProfile, data, error in
-                continuation.resume(returning: (account, userProfile, data?.data, error))
-            }
-        }
     }
 
     public func tryAuthenticationAttempt(

@@ -40,7 +40,7 @@ public struct FileProviderLogger: Sendable {
     ///     - message: The main text message of the entry in the logs.
     ///     - details: Additional contextual data.
     ///
-    public func debug(_ message: String, _ details: [FileProviderLogDetailKey: Any?] = [:]) {
+    public func debug(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
         Task {
             await log.write(category: category, level: .debug, message: message, details: details)
         }
@@ -53,7 +53,7 @@ public struct FileProviderLogger: Sendable {
     ///     - message: The main text message of the entry in the logs.
     ///     - details: Additional contextual data.
     ///
-    public func info(_ message: String, _ details: [FileProviderLogDetailKey: Any?] = [:]) {
+    public func info(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
         Task {
             await log.write(category: category, level: .info, message: message, details: details)
         }
@@ -66,7 +66,7 @@ public struct FileProviderLogger: Sendable {
     ///     - message: The main text message of the entry in the logs.
     ///     - details: Additional contextual data.
     ///
-    public func error(_ message: String, _ details: [FileProviderLogDetailKey: Any?] = [:]) {
+    public func error(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
         Task {
             await log.write(category: category, level: .error, message: message, details: details)
         }
@@ -79,7 +79,7 @@ public struct FileProviderLogger: Sendable {
     ///     - message: The main text message of the entry in the logs.
     ///     - details: Additional contextual data.
     ///
-    public func fault(_ message: String, _ details: [FileProviderLogDetailKey: Any?] = [:]) {
+    public func fault(_ message: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:]) {
         Task {
             await log.write(category: category, level: .fault, message: message, details: details)
         }

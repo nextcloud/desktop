@@ -2,20 +2,10 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
-
-public enum EnumerateDepth: String {
-    case target = "0"
-    case targetAndDirectChildren = "1"
-    case targetAndAllChildren = "infinity"
-}
-
-public enum AuthenticationAttemptResultState: Int {
-    case authenticationError, connectionError, success
-}
 
 ///
 /// Abstraction of the Nextcloud server APIs to call from the file provider extension.
@@ -30,7 +20,7 @@ public protocol RemoteInterface: Sendable {
         remotePath: String,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError)
 
     func upload(
@@ -41,7 +31,7 @@ public protocol RemoteInterface: Sendable {
         account: Account,
         options: NKRequestOptions,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
@@ -68,7 +58,7 @@ public protocol RemoteInterface: Sendable {
         log: any FileProviderLogging,
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (Progress) -> Void,
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
     ) async -> (
@@ -84,7 +74,7 @@ public protocol RemoteInterface: Sendable {
         overwrite: Bool,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
     func downloadAsync(
@@ -93,7 +83,7 @@ public protocol RemoteInterface: Sendable {
         account: String,
         options: NKRequestOptions,
         requestHandler: @escaping (_ request: DownloadRequest) -> Void,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
@@ -113,54 +103,66 @@ public protocol RemoteInterface: Sendable {
         requestBody: Data?,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError)
 
     func delete(
         remotePath: String,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
-    func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void) async throws -> NKLock?
+    func lockUnlockFile(serverUrlFileName: String, type: NKLockType?, shouldLock: Bool, account: Account, options: NKRequestOptions, taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void) async throws -> NKLock?
 
-    func trashedItems(
-        account: Account,
+    func listingTrashAsync(
+        filename: String?,
+        showHiddenFiles: Bool,
+        account: String,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError)
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (
+        account: String,
+        items: [NKTrash]?,
+        responseData: AFDataResponse<Data>?,
+        error: NKError
+    )
 
     func restoreFromTrash(
         filename: String,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
     func downloadThumbnail(
         url: URL,
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
     func fetchCapabilities(
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError)
 
-    func fetchUserProfile(
-        account: Account,
+    func getUserProfileAsync(
+        account: String,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError)
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (
+        account: String,
+        userProfile: NKUserProfile?,
+        responseData: AFDataResponse<Data>?,
+        error: NKError
+    )
 
     func tryAuthenticationAttempt(
         account: Account,
         options: NKRequestOptions,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> AuthenticationAttemptResultState
 }
 
@@ -168,24 +170,23 @@ public extension RemoteInterface {
     func currentCapabilities(
         account: Account,
         options: NKRequestOptions = .init(),
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         let ncKitAccount = account.ncKitAccount
         await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: ncKitAccount)
-        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.data[ncKitAccount],
-              lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
+
+        guard let lastRetrieval = await RetrievedCapabilitiesActor.shared.getCapabilities(for: ncKitAccount), lastRetrieval.retrievedAt.timeIntervalSince(Date()) > -CapabilitiesFetchInterval
         else {
-            return await fetchCapabilities(
-                account: account, options: options, taskHandler: taskHandler
-            )
+            return await fetchCapabilities(account: account, options: options, taskHandler: taskHandler)
         }
+
         return (account.ncKitAccount, lastRetrieval.capabilities, nil, .success)
     }
 
     func supportsTrash(
         account: Account,
         options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> Bool {
         var remoteSupportsTrash = false
 

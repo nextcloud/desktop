@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import RealmSwift
 
@@ -683,7 +683,7 @@ public final class FilesDatabaseManager: Sendable {
                     $0.serverUrl.starts(with: serverUrl) && $0.syncTime > date
                 }.forEach { metadata in
                     guard metadata.isLockFileOfLocalOrigin == false else {
-                        logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: metadata])
+                        logger.info("Excluding item from deletion because it is a lock file from local origin.", [.item: metadata.ocId])
                         return
                     }
 

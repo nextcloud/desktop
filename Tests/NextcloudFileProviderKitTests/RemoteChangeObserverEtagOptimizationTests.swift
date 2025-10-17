@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit

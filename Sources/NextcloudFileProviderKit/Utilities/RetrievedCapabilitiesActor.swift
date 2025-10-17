@@ -7,21 +7,18 @@ import NextcloudCapabilitiesKit
 let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
 actor RetrievedCapabilitiesActor {
-    static let shared: RetrievedCapabilitiesActor = {
-        let instance = RetrievedCapabilitiesActor()
-        return instance
-    }()
+    static let shared = RetrievedCapabilitiesActor()
 
     var ongoingFetches: Set<String> = []
-    var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
+    private var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
 
     private var ongoingFetchContinuations: [String: [CheckedContinuation<Void, Never>]] = [:]
 
-    func setCapabilities(
-        forAccount account: String,
-        capabilities: Capabilities,
-        retrievedAt: Date = Date()
-    ) {
+    func getCapabilities(for account: String) -> (capabilities: Capabilities, retrievedAt: Date)? {
+        data[account]
+    }
+
+    func setCapabilities(forAccount account: String, capabilities: Capabilities, retrievedAt: Date = Date()) {
         data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
     }
 

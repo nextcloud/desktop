@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import NextcloudCapabilitiesKit
 import NextcloudKit
 
@@ -73,7 +73,7 @@ extension Item {
         progress.totalUnitCount = 1
 
         guard await assertRequiredCapabilities(domain: domain, itemIdentifier: itemTemplate.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
-            logger.debug("Excluding lock file from synchronizing due to lack of server-side locking capability.", [.item: itemTemplate, .name: itemTemplate.filename])
+            logger.debug("Excluding lock file from synchronizing due to lack of server-side locking capability.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
 
             let error = if #available(macOS 13.0, *) {
                 NSFileProviderError(.excludedFromSync)

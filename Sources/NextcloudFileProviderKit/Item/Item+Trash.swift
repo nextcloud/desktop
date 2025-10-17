@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import NextcloudKit
 
 extension Item {
@@ -44,8 +44,10 @@ extension Item {
         )
 
         // The server may have renamed the trashed file so we need to scan the entire trash
-        let (_, files, _, error) = await modifiedItem.remoteInterface.trashedItems(
-            account: account,
+        let (_, files, _, error) = await modifiedItem.remoteInterface.listingTrashAsync(
+            filename: nil,
+            showHiddenFiles: true,
+            account: account.ncKitAccount,
             options: .init(),
             taskHandler: { task in
                 if let domain {
@@ -59,16 +61,12 @@ extension Item {
         )
 
         guard error == .success else {
-            logger.error(
-                """
-                Received bad error from post-trashing remote scan:
-                    \(error.errorDescription) \(files)
-                """
-            )
+            logger.error("Received error from post-trashing remote scan.", [.error: error])
+
             return (dirtyItem, error.fileProviderError)
         }
 
-        guard let targetItemNKTrash = files.first(
+        guard let targetItemNKTrash = files?.first(
             // It seems the server likes to return a fileId as the ocId for trash files, so let's
             // check for the fileId too
             where: { $0.ocId == modifiedItem.metadata.ocId ||
@@ -76,17 +74,8 @@ extension Item {
             }
         )
         else {
-            logger.error(
-                """
-                Did not find trashed item:
-                    \(modifiedItem.filename)
-                    \(modifiedItem.itemIdentifier.rawValue)
-                in trash. Asking for a rescan. Found trashed files were:
-                    \(files.map {
-                        ($0.ocId, $0.fileId, $0.fileName, $0.trashbinFileName)
-                    })
-                """
-            )
+            logger.error("Did not find trashed item in trash, asking for a rescan.", [.item: modifiedItem])
+
             if #available(macOS 11.3, *) {
                 return (dirtyItem, NSFileProviderError(.unsyncedEdits))
             } else {
@@ -129,12 +118,7 @@ extension Item {
         )
 
         guard error == .success else {
-            logger.error(
-                """
-                Received bad error or files from post-trashing child items remote scan:
-                \(error.errorDescription) \(files)
-                """
-            )
+            logger.error("Received error or files from post-trashing child items remote scan.", [.error: error])
             return (postDeleteItem, childError.fileProviderError)
         }
 

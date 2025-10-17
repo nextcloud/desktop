@@ -4,7 +4,7 @@
 ///
 /// A predefined set of detail keys to avoid having multiple keys for the same type of information accidentally while still leaving the possibility to define arbitrary keys.
 ///
-public enum FileProviderLogDetailKey: String {
+public enum FileProviderLogDetailKey: String, Sendable {
     ///
     /// The identifier for an account.
     ///

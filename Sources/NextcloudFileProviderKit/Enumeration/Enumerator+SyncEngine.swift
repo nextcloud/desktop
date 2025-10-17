@@ -1,7 +1,7 @@
 //  SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import NextcloudKit
 
 extension Enumerator {

@@ -12,5 +12,5 @@ public protocol FileProviderLogging: Actor {
     ///
     /// Usually, you do not need or want to use this but the methods provided by ``FileProviderLogger`` instead.
     ///
-    func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: Any?])
+    func write(category: String, level: OSLogType, message: String, details: [FileProviderLogDetailKey: (any Sendable)?])
 }

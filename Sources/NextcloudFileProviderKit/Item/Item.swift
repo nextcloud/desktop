@@ -1,14 +1,14 @@
 //  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import NextcloudKit
 import UniformTypeIdentifiers
 
 ///
 /// Data model implementation for file provider items as defined by the file provider framework and `NSFileProviderItemProtocol`.
 ///
-public class Item: NSObject, NSFileProviderItem {
+final public class Item: NSObject, NSFileProviderItem, Sendable {
     public enum FileProviderItemTransferError: Error {
         case downloadError
         case uploadError

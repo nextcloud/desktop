@@ -22,7 +22,7 @@ func upload(
     options: NKRequestOptions = .init(queue: .global(qos: .utility)),
     log: any FileProviderLogging,
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
-    taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
+    taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
     progressHandler: @escaping (Progress) -> Void = { _ in },
     chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
 ) async -> (
@@ -43,9 +43,9 @@ func upload(
             uploadLogger.info("Using provided chunkSize: \(chunkSize)")
             return chunkSize
         }
-        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
-            account: account, options: options, taskHandler: taskHandler
-        )
+
+        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account, options: options, taskHandler: taskHandler)
+
         guard error == .success,
               let capabilities,
               let serverChunkSize = capabilities.files?.chunkedUpload?.maxChunkSize,

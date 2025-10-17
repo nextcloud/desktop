@@ -1,15 +1,19 @@
 //  SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import NextcloudKit
 
 ///
 /// The `NSFileProviderEnumerator` implementation to enumerate file provider items and related change sets.
 ///
-public class Enumerator: NSObject, NSFileProviderEnumerator {
+final public class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    private var enumeratedItemMetadata: SendableItemMetadata?
+    private let enumeratedItemMetadata: SendableItemMetadata?
+
+    private var enumeratingSystemIdentifier: Bool {
+        Self.isSystemIdentifier(enumeratedItemIdentifier)
+    }
 
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
@@ -19,8 +23,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     let logger: FileProviderLogger
     let account: Account
     let remoteInterface: RemoteInterface
-    var isInvalidated = false
-    private(set) var serverUrl: String = ""
+    let serverUrl: String
 
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
@@ -46,6 +49,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])
             serverUrl = account.davFilesUrl
+            enumeratedItemMetadata = nil
         } else {
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
             enumeratedItemMetadata = dbManager.itemMetadata(
@@ -54,6 +58,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             if let enumeratedItemMetadata {
                 serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
             } else {
+                serverUrl = ""
                 logger.error("Could not find itemMetadata for file with identifier.", [.item: enumeratedItemIdentifier])
             }
         }
@@ -64,7 +69,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     public func invalidate() {
         logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier])
-        isInvalidated = true
     }
 
     // MARK: - Protocol methods
@@ -88,8 +92,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         if enumeratedItemIdentifier == .trashContainer {
             logger.info("Enumerating trash.", [.account: account.ncKitAccount, .url: serverUrl])
 
-            Task {
-                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account, options: .init(), taskHandler: { _ in })
+            Task { [weak self] in
+                guard let self else {
+                    return
+                }
+
+                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
                 guard let capabilities, error == .success else {
                     logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
@@ -103,14 +111,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
-                    account: account,
+                let domain = self.domain
+                let enumeratedItemIdentifier = self.enumeratedItemIdentifier
+
+                let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
+                    filename: nil,
+                    showHiddenFiles: true,
+                    account: account.ncKitAccount,
                     options: .init(),
                     taskHandler: { task in
-                        if let domain = self.domain {
+                        if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
-                                forItemWithIdentifier: self.enumeratedItemIdentifier,
+                                forItemWithIdentifier: enumeratedItemIdentifier,
                                 completionHandler: { _ in }
                             )
                         }
@@ -118,9 +131,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 guard trashReadError == .success else {
-                    let error = trashReadError.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
+                    let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -131,10 +142,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     numPage: 1,
-                    trashItems: trashedItems,
+                    trashItems: trashedItems ?? [],
                     log: logger.log
                 )
             }
+
             return
         }
 
@@ -271,15 +283,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         } else if enumeratedItemIdentifier == .trashContainer {
             logger.debug("Enumerating changes in trash.", [.account: account.ncKitAccount])
 
-            Task {
-                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(
-                    account: account, options: .init(), taskHandler: { _ in }
-                )
+            Task { [weak self] in
+                guard let self else {
+                    return
+                }
+
+                let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
+
                 guard let capabilities, error == .success else {
                     logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                     observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                     return
                 }
+
                 guard capabilities.files?.undelete == true else {
                     logger.error("Trash is unsupported on server. Cannot enumerate changes.")
 
@@ -289,14 +305,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
-                    account: account,
+                let domain = self.domain
+                let enumeratedItemIdentifier = self.enumeratedItemIdentifier
+
+                let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
+                    filename: nil,
+                    showHiddenFiles: true,
+                    account: account.ncKitAccount,
                     options: .init(),
                     taskHandler: { task in
-                        if let domain = self.domain {
+                        if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
-                                forItemWithIdentifier: self.enumeratedItemIdentifier,
+                                forItemWithIdentifier: enumeratedItemIdentifier,
                                 completionHandler: { _ in }
                             )
                         }
@@ -304,9 +325,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 guard trashReadError == .success else {
-                    let error = trashReadError.fileProviderError(
-                        handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier
-                    ) ?? NSFileProviderError(.cannotSynchronize)
+                    let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -317,7 +336,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    trashItems: trashedItems,
+                    trashItems: trashedItems ?? [],
                     log: logger.log
                 )
             }
@@ -330,7 +349,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
         // TODO: Move to the sync engine extension
-        Task {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+
             let (
                 _, newMetadatas, updatedMetadatas, deletedMetadatas, _, readError
             ) = await Self.readServerUrl(
