@@ -73,7 +73,15 @@ extension Item {
         progress.totalUnitCount = 1
 
         guard await assertRequiredCapabilities(domain: domain, itemIdentifier: itemTemplate.itemIdentifier, account: account, remoteInterface: remoteInterface, logger: logger) else {
-            return (nil, NSFileProviderError(.cannotSynchronize))
+            logger.debug("Excluding lock file from synchronizing due to lack of server-side locking capability.", [.item: itemTemplate, .name: itemTemplate.filename])
+
+            let error = if #available(macOS 13.0, *) {
+                NSFileProviderError(.excludedFromSync)
+            } else {
+                NSFileProviderError(.cannotSynchronize)
+            }
+
+            return (nil, error)
         }
 
         logger.info("Item to create is a lock file. Will attempt to lock the associated file on the server.", [.name: itemTemplate.filename])
