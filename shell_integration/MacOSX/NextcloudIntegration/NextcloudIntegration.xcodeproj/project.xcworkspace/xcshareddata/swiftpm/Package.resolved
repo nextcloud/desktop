@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
       "state" : {
-        "revision" : "65652beed6b3f0fd1e13f07397b2518b07bf9d13",
-        "version" : "2.4.0"
+        "revision" : "aeb91fa207677e4ea68289c2dee742f8eda50200",
+        "version" : "2.4.1"
       }
     },
     {
