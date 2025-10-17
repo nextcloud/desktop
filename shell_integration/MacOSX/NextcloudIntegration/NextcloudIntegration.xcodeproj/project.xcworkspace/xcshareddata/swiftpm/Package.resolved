@@ -1,5 +1,5 @@
 {
-  "originHash" : "af7b30e0399513f38616bd75821c834208fc3c22e3f5ec7d1765b1dbb03a46cd",
+  "originHash" : "74a3274bff88648671702b7d1dfa0c8ea5acb44280987019f6c5bb7055b848b2",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -13,7 +13,7 @@
     {
       "identity" : "nextcloudcapabilitieskit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
+      "location" : "https://github.com/nextcloud/NextcloudCapabilitiesKit.git",
       "state" : {
         "revision" : "aeb91fa207677e4ea68289c2dee742f8eda50200",
         "version" : "2.4.1"
