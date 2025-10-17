@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
       "state" : {
-        "revision" : "a680e947d6cc2a1c101335797213e4b7d3b22102",
-        "version" : "2.3.0"
+        "revision" : "65652beed6b3f0fd1e13f07397b2518b07bf9d13",
+        "version" : "2.4.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
       "state" : {
-        "revision" : "8403a2c88276d05f05d8dadf35b582da8a21c58d",
-        "version" : "3.2.6"
+        "revision" : "fe662bae895536c7c0a85e37e07a680e86871d8a",
+        "version" : "3.2.7"
       }
     },
     {
