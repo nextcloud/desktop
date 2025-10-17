@@ -1732,23 +1732,23 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="552"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="556"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Errore del server: la risposta PROPFIND non è in formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="582"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="586"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Il server ha restituito una risposta inaspettata che non è stato possibile leggere. Contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="650"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="654"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Eerrore nell&apos;impostazione dei metadati di crittografia!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="641"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Errore di configurazione dei metadati crittografati: la firma iniziale del server è vuota.</translation>
     </message>
@@ -4190,88 +4190,88 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il file ha l&apos;estensione riservata ai file virtuali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="781"/>
+        <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>size</source>
         <translation>dimensione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="783"/>
+        <location filename="../src/libsync/discovery.cpp" line="778"/>
         <source>permission</source>
         <translation>permesso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="787"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>file id</source>
         <translation>ID del file</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="791"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>Server reported no %1</source>
         <translation>Il server non ha restituito alcun %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1182"/>
+        <location filename="../src/libsync/discovery.cpp" line="1199"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1198"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nei file personali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1201"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nella cartella %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1217"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossibile caricare il file, perché è aperto in &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1267"/>
+        <location filename="../src/libsync/discovery.cpp" line="1284"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errore nella rilevazione del record del file %1 dal database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1546"/>
-        <location filename="../src/libsync/discovery.cpp" line="2017"/>
+        <location filename="../src/libsync/discovery.cpp" line="1563"/>
+        <location filename="../src/libsync/discovery.cpp" line="2034"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Spostato su una destinazione non valida, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1874"/>
+        <location filename="../src/libsync/discovery.cpp" line="1891"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Impossibile modificare l&apos;elemento crittografato perché il certificato selezionato non è valido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1941"/>
+        <location filename="../src/libsync/discovery.cpp" line="1958"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorato in base alla lista nera per la scelta di cosa sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1975"/>
+        <location filename="../src/libsync/discovery.cpp" line="1992"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non consentito perché non sei autorizzato ad aggiungere sottocartelle a quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1981"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non ti è consentito perché non hai i permessi per aggiungere file in quella cartella </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1995"/>
+        <location filename="../src/libsync/discovery.cpp" line="2012"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non ti è permesso caricare questo file perché hai l&apos;accesso in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2031"/>
+        <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2202"/>
+        <location filename="../src/libsync/discovery.cpp" line="2219"/>
         <source>Error while reading the database</source>
         <translation>Errore durante la lettura del database</translation>
     </message>

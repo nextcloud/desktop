@@ -1731,23 +1731,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="552"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="556"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Помилка серверу: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="582"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="586"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Сервер повернув несподівану відповідь, яку неможливо прочитати. Зверніться до адміністратора сервера.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="613"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="650"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="654"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Помилка з налаштуванням шифрування метаданих!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="641"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Помилка під час налаштування зашифрованих метаданих: початкова сиґнатура, отримана від сервера, є порожньою.</translation>
     </message>
@@ -4193,88 +4193,88 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Файл має розширення, зарезервоване для віртуальних файлів.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="781"/>
+        <location filename="../src/libsync/discovery.cpp" line="776"/>
         <source>size</source>
         <translation>розмір</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="783"/>
+        <location filename="../src/libsync/discovery.cpp" line="778"/>
         <source>permission</source>
         <translation>дозвіл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="787"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>file id</source>
         <translation>ID файлу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="791"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>Server reported no %1</source>
         <translation>Cервер відповів, що немає %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1182"/>
+        <location filename="../src/libsync/discovery.cpp" line="1199"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Неможливо виконати синхронізацію через неправильний час модифікації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1198"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Завантаження %1 перевищує %2 доступного для вас місця.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1201"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Завантаження %1 перевищує %2 доступного для вам місця для каталогу %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1217"/>
+        <location filename="../src/libsync/discovery.cpp" line="1234"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Не вдалося завантажити файл, оскільки його відкрито у &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1267"/>
+        <location filename="../src/libsync/discovery.cpp" line="1284"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Помилка під час вилучення запису файлу %1 з бази даних</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1546"/>
-        <location filename="../src/libsync/discovery.cpp" line="2017"/>
+        <location filename="../src/libsync/discovery.cpp" line="1563"/>
+        <location filename="../src/libsync/discovery.cpp" line="2034"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Пересунено до недійсного призначення, буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1874"/>
+        <location filename="../src/libsync/discovery.cpp" line="1891"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Не вдалося змінити зашифрованій об&apos;єкт, оскільки вибраний сертифікат недійсний.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1941"/>
+        <location filename="../src/libsync/discovery.cpp" line="1958"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Проігноровано, оскільки те, що вибрано для синхронізації, міститься у чорному списку</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1975"/>
+        <location filename="../src/libsync/discovery.cpp" line="1992"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Не дозволено, оскільки ви не маєте повноважень додавати підкаталоги до цього каталогу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1981"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Не дозволено, оскільки ви не маєте повноважень додавати файли до цього каталогу</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1995"/>
+        <location filename="../src/libsync/discovery.cpp" line="2012"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не дозволено завантажити цей файл, оскільки він має ознаку у хмарі лише для читання, файл буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2031"/>
+        <location filename="../src/libsync/discovery.cpp" line="2048"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Не дозволено вилучати, буде відновлено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2202"/>
+        <location filename="../src/libsync/discovery.cpp" line="2219"/>
         <source>Error while reading the database</source>
         <translation>Помилка під час зчитування бази даних</translation>
     </message>
