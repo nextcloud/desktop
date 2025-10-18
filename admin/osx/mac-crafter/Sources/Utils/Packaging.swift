@@ -124,7 +124,7 @@ func createDmgForAppBundle(
     appleTeamId: String?,
     sparklePackageSignKey: String?
 ) async throws {
-    print("Creating DMG for the client…")
+    print("Creating disk image for the client…")
 
     let dmgFilePath = URL(fileURLWithPath: productPath)
         .appendingPathComponent(appName)
@@ -137,10 +137,11 @@ func createDmgForAppBundle(
 
     if let packageSigningId {
         print("Signing DMG with \(packageSigningId)…")
-        try await codesign(identity: packageSigningId, path: dmgFilePath, options: "--force")
+        await Signer.sign(at: URL(fileURLWithPath: dmgFilePath), with: packageSigningId, entitlements: nil)
 
         if let appleId, let applePassword, let appleTeamId {
             print("Notarising DMG with Apple ID \(appleId)…")
+            
             try await notarisePackage(
                 packagePath: dmgFilePath,
                 appleId: appleId,
@@ -151,11 +152,11 @@ func createDmgForAppBundle(
     }
 
     print("Creating Sparkle TBZ file…")
-    let sparklePackagePath =
-        try await buildSparklePackage(packagePath: dmgFilePath, buildPath: buildPath)
+    let sparklePackagePath = try await buildSparklePackage(packagePath: dmgFilePath, buildPath: buildPath)
 
     if let sparklePackageSignKey {
         print("Signing Sparkle TBZ file…")
+
         try await signSparklePackage(
             sparkleTbzPath: sparklePackagePath,
             buildPath: buildPath,

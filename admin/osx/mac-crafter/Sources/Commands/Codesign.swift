@@ -9,25 +9,18 @@ import Foundation
 struct Codesign: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
     
-    @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
+    @Argument(help: "Path to the Nextcloud desktop client app bundle.")
     var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/Nextcloud.app"
     
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String
     
-    @Option(name: [.short, .long], help: "Entitlements to apply to the app bundle.")
-    var entitlementsPath: String?
+    @Flag(help: "Produce a developer build.")
+    var developerBuild = false
     
     mutating func run() async throws {
-        let absolutePath = appBundlePath.hasPrefix("/")
-        ? appBundlePath
-        : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
-        
-        try await codesignClientAppBundle(
-            at: absolutePath,
-            withCodeSignIdentity: codeSignIdentity,
-            usingEntitlements: entitlementsPath,
-            dev: false
-        )
+        let absolutePath = appBundlePath.hasPrefix("/") ? appBundlePath : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
+        let url = URL(fileURLWithPath: absolutePath)
+        try await Signer.signMainBundle(at: url, codeSignIdentity: codeSignIdentity, developerBuild: developerBuild)
     }
 }

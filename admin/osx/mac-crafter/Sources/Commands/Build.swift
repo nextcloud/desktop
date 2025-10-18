@@ -106,6 +106,20 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Build in developer mode.")
     var dev = false
     
+    ///
+    /// Download the Sparkle framework archive with URLSession.
+    ///
+    private func downloadSparkle() async throws -> URL {
+        guard let url = URL(string: sparkleDownloadUrl) else {
+            throw MacCrafterError.downloadError("Sparkle download URL appears to be invalid: \(sparkleDownloadUrl)")
+        }
+        
+        let request = URLRequest(url: url)
+        let (file, _) = try await URLSession.shared.download(for: request)
+        
+        return file
+    }
+    
     mutating func run() async throws {
         let stopwatch = Stopwatch()
 
@@ -200,31 +214,21 @@ struct Build: AsyncParsableCommand {
             craftOptions.append("\(craftBlueprintName).devMode=True")
         }
         
-        if !disableAutoUpdater {
+        if disableAutoUpdater == false {
             print("Configuring Sparkle auto-updater.")
             
             stopwatch.record("Sparke Configuration")
 
-            let sparkleDownloadResult = await shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz")
-            
+            let downloadedArchive = try await downloadSparkle()
             let fm = FileManager.default
-            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.tar.xz") ||
-                    sparkleDownloadResult == 0
-            else {
-                throw MacCrafterError.environmentError("Error downloading sparkle.")
-            }
             
-            let sparkleUnarchiveResult = await shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)")
+            let sparkleUnarchiveResult = await shell("tar -xvf \(downloadedArchive.path) -C \(buildPath)")
             
-            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") ||
-                    sparkleUnarchiveResult == 0
-            else {
+            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") || sparkleUnarchiveResult == 0 else {
                 throw MacCrafterError.environmentError("Error unpacking sparkle.")
             }
             
-            craftOptions.append(
-                "\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework"
-            )
+            craftOptions.append("\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework")
         }
         
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
@@ -270,13 +274,7 @@ struct Build: AsyncParsableCommand {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
             stopwatch.record("Code Signing")
 
-            let entitlementsPath = "\(clientBuildDir)/work/build/admin/osx/macosx.entitlements"
-            try await codesignClientAppBundle(
-                at: clientAppDir,
-                withCodeSignIdentity: codeSignIdentity,
-                usingEntitlements: entitlementsPath,
-                dev: dev
-            )
+            try await Signer.signMainBundle(at: URL(fileURLWithPath: clientAppDir), codeSignIdentity: codeSignIdentity, developerBuild: dev)
         }
         
         print("Placing Nextcloud Desktop Client in \(productPath)...")
