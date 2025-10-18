@@ -6458,7 +6458,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid gan choinne. Déan iarracht sioncrónú arís nó déan teagmháil le riarthóir do fhreastalaí má leanann an fhadhb ar aghaidh.</translation>
     </message>
 </context>
 <context>
