@@ -125,6 +125,8 @@ public:
     [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
+    void setFilesystemPermissionsReliable(bool reliable);
+
 public slots:
     void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
 
@@ -412,6 +414,8 @@ private:
     SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
 
     QList<SyncFileItemPtr> _remnantReadOnlyFolders;
+
+    bool _filesystemPermissionsReliable = true;
 };
 }
 
