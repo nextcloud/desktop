@@ -53,7 +53,9 @@ Button {
         x: (root.x + 2)
         y: (root.y + Style.trayWindowHeaderHeight + 2)
 
-        width: (Style.rootWidth - 2)
+        property real widestMenuItemWidth: 0
+        property real maximumWidthAllowed: trayWindowHeader.width - (root.x + 4)
+        width: Math.min( widestMenuItemWidth + leftPadding + rightPadding, maximumWidthAllowed )
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
@@ -71,7 +73,27 @@ Button {
                 implicitHeight: instantiatedUserLine.height
                 UserLine {
                     id: instantiatedUserLine
-                    width: parent.width
+                    width: Math.min(accountMenu.widestMenuItemWidth, accountMenu.maximumWidthAllowed)
+
+                    Component.onCompleted: {
+                        instantiatedUserLine.updateMenuWidth()
+                    }
+
+                    onImplicitWidthChanged: {
+                        instantiatedUserLine.updateMenuWidth()
+                    }
+
+                    Connections {
+                        target: model
+                        function onNameChanged() {
+                            instantiatedUserLine.updateMenuWidth()
+                        }
+
+                        function onStatusChanged() {
+                            instantiatedUserLine.updateMenuWidth()
+                        }
+                    }
+
                     onShowUserStatusSelector: {
                         userStatusDrawer.openUserStatusDrawer(model.index);
                         accountMenu.close();
@@ -81,6 +103,11 @@ Button {
                         accountMenu.close();
                     }
                     onClicked: UserModel.currentUserId = model.index;
+
+                    function updateMenuWidth()
+                    {
+                        accountMenu.widestMenuItemWidth = Math.max( instantiatedUserLine.implicitWidth, accountMenu.widestMenuItemWidth )
+                    }
                 }
             }
             onObjectAdded: function(index, object) {
@@ -95,21 +122,21 @@ Button {
             id: addAccountButton
             hoverEnabled: true
             visible: Systray.enableAddAccount
-            implicitHeight: Style.accountAvatarSize
+            implicitHeight: Style.trayWindowHeaderHeight
 
             readonly property real addAccountIconSize: Style.accountAvatarSize * Style.smallIconScaleFactor
-            readonly property real addAccountHorizontalOffset: (Style.accountAvatarSize - addAccountIconSize) / 2
+            readonly property real addAccountHorizontalOffset: ( (Style.accountAvatarSize - addAccountIconSize) / 2 ) + Style.accountIconsMenuMargin
             property var iconColor: !addAccountButton.enabled
                                     ? addAccountButton.palette.mid
-                                    : (addAccountButton.highlighted || addAccountButton.down
+                                    : ((addAccountButton.highlighted || addAccountButton.down) && Qt.platform.os !== "windows"
                                         ? addAccountButton.palette.highlightedText
                                         : addAccountButton.palette.text)
 
             icon.source: "image://svgimage-custom-color/add.svg/" + iconColor
             icon.width: addAccountIconSize
             icon.height: addAccountIconSize
-            leftPadding: Style.accountIconsMenuMargin + addAccountHorizontalOffset
-            spacing: Style.userLineSpacing + addAccountHorizontalOffset
+            leftPadding: addAccountHorizontalOffset
+            spacing: Style.userLineSpacing
             text: qsTr("Add account")
             onClicked: UserModel.addAccount()
 
@@ -140,7 +167,7 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
                         ? parent.palette.highlightedText
                         : parent.palette.text)
             }
@@ -164,7 +191,7 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
                         ? parent.palette.highlightedText
                         : parent.palette.text)
             }
@@ -188,7 +215,7 @@ Button {
                 elide: Text.ElideRight
                 color: !parent.enabled
                     ? parent.palette.mid
-                    : (parent.highlighted || parent.down
+                    : ((parent.highlighted || parent.down) && Qt.platform.os !== "windows"
                         ? parent.palette.highlightedText
                         : parent.palette.text)
             }
