@@ -43,9 +43,9 @@ jobs:
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
         run: sudo ls -1 /Applications | grep "Xcode"
 
-      - name: Select Xcode 16.2
+      - name: Select Xcode 16.3
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app/Contents/Developer
 
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
