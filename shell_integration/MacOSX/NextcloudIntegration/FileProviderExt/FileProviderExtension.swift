@@ -117,11 +117,9 @@ import OSLog
 
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
-    func item(
-        for identifier: NSFileProviderItemIdentifier, 
-        request _: NSFileProviderRequest,
-        completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
-    ) -> Progress {
+    func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
+        logger.debug("Received request for item.", [.item: identifier, .request: request])
+
         guard let ncAccount else {
             logger.error("Not fetching item because account not set up yet.", [.item: identifier])
             completionHandler(nil, NSFileProviderError(.notAuthenticated))
@@ -163,8 +161,7 @@ import OSLog
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
-
-        logger.info("Received request to fetch contents of item.", [.item: itemIdentifier])
+        logger.debug("Received request to fetch contents of item.", [.item: itemIdentifier, .request: request])
 
         guard requestedVersion == nil else {
             // TODO: Add proper support for file versioning
@@ -233,7 +230,7 @@ import OSLog
     ) -> Progress {
         let actionId = UUID()
         insertSyncAction(actionId)
-        logger.debug("Received request to create item.", [.item: itemTemplate, .name: itemTemplate.filename])
+        logger.debug("Received request to create item.", [.item: itemTemplate, .name: itemTemplate.filename, .request: request])
 
         guard let ncAccount else {
             logger.error(
@@ -313,7 +310,7 @@ import OSLog
         insertSyncAction(actionId)
 
         let identifier = item.itemIdentifier
-        logger.debug("Received request to modify item.", [.item: item])
+        logger.debug("Received request to modify item.", [.item: item, .request: request])
 
         guard let ncAccount else {
             logger.error("Not modifying item because account not set up yet.", [.item: identifier])
@@ -397,7 +394,7 @@ import OSLog
         let actionId = UUID()
         insertSyncAction(actionId)
 
-        logger.debug("Received request (isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest), requestingExecutable: \(request.requestingExecutable?.absoluteString ?? "nil")) to delete item.", [.item: identifier])
+        logger.debug("Received request to delete item.", [.item: identifier, .request: request])
 
         guard let ncAccount else {
             logger.error("Not deleting item \(identifier.rawValue), account not set up yet")
@@ -461,8 +458,10 @@ import OSLog
     }
 
     func enumerator(
-        for containerItemIdentifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest
+        for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest
     ) throws -> NSFileProviderEnumerator {
+        logger.debug("System requested enumerator.", [.item: containerItemIdentifier, .request: request])
+
         guard let ncAccount else {
             logger.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue) yet as account not set up")
             throw NSFileProviderError(.notAuthenticated)
