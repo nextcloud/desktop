@@ -254,7 +254,7 @@ void FileProviderDomainSyncStatus::setIcon(const QUrl &icon)
 
 void FileProviderDomainSyncStatus::updateIcon()
 {
-    const auto iconUrl = syncing() ? Theme::instance()->syncStatusRunning() : Theme::instance()->syncStatusOk();
+    const auto iconUrl = syncing() ? Theme::instance()->sync() : Theme::instance()->ok();
     setIcon(iconUrl);
 }
 
