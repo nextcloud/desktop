@@ -166,12 +166,12 @@ bool createDebugArchive(const QString &filename)
 #endif
 
     const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
-    zip.prepareWriting("__nextcloud_client_parameters.txt", {}, {}, clientParameters.size());
+    zip.prepareWriting("_client_parameters.txt", {}, {}, clientParameters.size());
     zip.writeData(clientParameters, clientParameters.size());
     zip.finishWriting(clientParameters.size());
 
     const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
-    zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
+    zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
     return true;
