@@ -38,7 +38,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func getFileProviderDomainIdentifier(completionHandler: @escaping (String?, Error?) -> Void) {
         let identifier = self.fpExtension.domain.identifier.rawValue
-        logger.info("Returning file provider domain identifier.", [.domain: identifier])
+        logger.debug("Returning file provider domain identifier.", [.domain: identifier])
         completionHandler(identifier, nil)
     }
 
