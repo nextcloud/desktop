@@ -318,7 +318,7 @@ public extension Item {
         }
 
         let attributesToFetch: Set<URLResourceKey> = [
-            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey,
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
         ]
         let fm = FileManager.default
         guard let enumerator = fm.enumerator(

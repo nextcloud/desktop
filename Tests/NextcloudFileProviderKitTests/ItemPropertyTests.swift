@@ -771,7 +771,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsTrashing,
             .allowsWriting,
             .allowsRenaming,
-            .allowsReparenting,
+            .allowsReparenting
         ]
 
         // Excluding from sync is macOS-specific and always added if available
@@ -807,7 +807,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             .allowsTrashing,
             .allowsRenaming,
             .allowsReparenting,
-            .allowsAddingSubItems,
+            .allowsAddingSubItems
         ]
 
         var platformExpected = expected

@@ -177,19 +177,19 @@ public class Item: NSObject, NSFileProviderItem {
             return [
                 .hidden,
                 .userReadable,
-                .userWritable,
+                .userWritable
             ]
         }
 
         if metadata.lock, metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username, metadata.lockTimeOut ?? Date() > Date() {
             return [
-                .userReadable,
+                .userReadable
             ]
         }
 
         return [
             .userReadable,
-            .userWritable,
+            .userWritable
         ]
     }
 

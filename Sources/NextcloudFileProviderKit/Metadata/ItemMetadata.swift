@@ -168,7 +168,7 @@ public extension ItemMetadata {
                 .init(name: "fileId", value: fileId),
                 .init(name: "x", value: "\(size.width)"),
                 .init(name: "y", value: "\(size.height)"),
-                .init(name: "a", value: "true"),
+                .init(name: "a", value: "true")
             ])
     }
 

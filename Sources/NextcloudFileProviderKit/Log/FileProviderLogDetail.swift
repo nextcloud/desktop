@@ -102,7 +102,7 @@ public enum FileProviderLogDetail: Encodable {
                 self = .dictionary([
                     "code": .int(error.code),
                     "domain": .string(error.domain),
-                    "localizedDescription": .string(error.localizedDescription),
+                    "localizedDescription": .string(error.localizedDescription)
                 ])
             } else if let error = someValue as? Error {
                 self = .string(error.localizedDescription)
@@ -134,13 +134,13 @@ public enum FileProviderLogDetail: Encodable {
                     "syncTime": .date(metadata.syncTime),
                     "trashbinFileName": .string(metadata.trashbinFileName),
                     "uploaded": .bool(metadata.uploaded),
-                    "visitedDirectory": .bool(metadata.visitedDirectory),
+                    "visitedDirectory": .bool(metadata.visitedDirectory)
                 ])
             } else if let request = someValue as? NSFileProviderRequest {
                 self = .dictionary([
                     "requestingExecutable": .string(request.requestingExecutable?.path ?? "nil"),
                     "isFileViewerRequest": .bool(request.isFileViewerRequest),
-                    "isSystemRequest": .bool(request.isSystemRequest),
+                    "isSystemRequest": .bool(request.isSystemRequest)
                 ])
             } else if let lock = someValue as? NKLock {
                 self = .dictionary([
@@ -150,7 +150,7 @@ public enum FileProviderLogDetail: Encodable {
                     "ownerType": .int(lock.ownerType.rawValue),
                     "time": lock.time == nil ? .null : .date(lock.time!),
                     "timeOut": lock.timeOut == nil ? .null : .date(lock.timeOut!),
-                    "token": lock.token == nil ? .null : .string(lock.token!),
+                    "token": lock.token == nil ? .null : .string(lock.token!)
                 ])
             } else {
                 self = .string("Unsupported log detail type: \(String(describing: someValue.self))")

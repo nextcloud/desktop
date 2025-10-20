@@ -300,14 +300,14 @@ public final class FilesDatabaseManager: Sendable {
                         .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
                         .name: updatedMetadata.fileName,
-                        .syncTime: updatedMetadata.syncTime.description,
+                        .syncTime: updatedMetadata.syncTime.description
                     ])
                 } else {
                     logger.debug("Skipping item metadata update; same as existing, or still in transit.", [
                         .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
                         .name: updatedMetadata.fileName,
-                        .syncTime: updatedMetadata.syncTime.description,
+                        .syncTime: updatedMetadata.syncTime.description
                     ])
                 }
 
@@ -459,7 +459,7 @@ public final class FilesDatabaseManager: Sendable {
                     .item: metadata.ocId,
                     .eTag: metadata.etag,
                     .name: metadata.fileName,
-                    .syncTime: metadata.syncTime,
+                    .syncTime: metadata.syncTime
                 ])
             }
             return SendableItemMetadata(value: result)
@@ -468,7 +468,7 @@ public final class FilesDatabaseManager: Sendable {
                 .item: metadata.ocId,
                 .eTag: metadata.etag,
                 .error: error,
-                .name: metadata.fileName,
+                .name: metadata.fileName
             ])
         }
 
@@ -571,7 +571,7 @@ public final class FilesDatabaseManager: Sendable {
             logger.error("Could not retrieve parent item identifier remotely.", [
                 .error: error,
                 .item: metadata.ocId,
-                .name: metadata.fileName,
+                .name: metadata.fileName
             ])
 
             return nil

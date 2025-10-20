@@ -283,7 +283,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
                     fileName: String(3),
                     size: Int64(data.count - (chunkSize * 2)),
                     remoteChunkStoreFolderName: uploadUuid
-                ),
+                )
             ],
             creationDate: .init(),
             modificationDate: .init(),
@@ -522,7 +522,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
                 remoteInterface.rootItem?.identifier,
                 itemA.identifier,
                 itemB.identifier,
-                itemC.identifier,
+                itemC.identifier
             ]
         )
 

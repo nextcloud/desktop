@@ -36,7 +36,7 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
             AccountDictDavFilesUrlKey: "https://example.com/remote.php/dav/files/user",
             AccountDictTrashUrlKey: "https://example.com/remote.php/dav/trashbin/user/trash",
             AccountDictTrashRestoreUrlKey: "https://example.com/remote.php/dav/trashbin/user/restore",
-            AccountDictFileNameKey: "userId_example_com",
+            AccountDictFileNameKey: "userId_example_com"
         ]
 
         let account = Account(dictionary: dictionary)
@@ -57,7 +57,7 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
 
     func testInitializationFromIncompleteDictionary() {
         let incompleteDictionary: [String: String] = [
-            AccountDictUsernameKey: "user",
+            AccountDictUsernameKey: "user"
             // missing other keys
         ]
 

@@ -448,7 +448,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(chunkSize),
                     remoteChunkStoreFolderName: expectedChunkUploadId
-                ),
+                )
             ])
         }
 

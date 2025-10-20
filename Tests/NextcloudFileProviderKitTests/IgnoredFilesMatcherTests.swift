@@ -11,7 +11,7 @@ struct IgnoredFilesMatcherTests {
             "build/",
             "folder/*",
             "secret.txt",
-            "deep/**",
+            "deep/**"
         ]
 
         let matcher = IgnoredFilesMatcher(ignoreList: patterns)

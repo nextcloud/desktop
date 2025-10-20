@@ -117,7 +117,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
                     remoteChunkStoreFolderName: uploadUuid
-                ),
+                )
             ])
         }
 

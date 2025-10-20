@@ -406,7 +406,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteKeynoteIndexZip,
             remoteKeynoteRandomFile,
             remoteKeynoteDataFolder,
-            remoteKeynoteMetadataFolder,
+            remoteKeynoteMetadataFolder
         ]
         remoteKeynoteIndexZip.parent = remoteKeynoteBundle
         remoteKeynoteRandomFile.parent = remoteKeynoteBundle
@@ -417,7 +417,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteKeynoteMetadataFolder.children = [
             remoteKeynoteDocIdentifier,
             remoteKeynoteVersionPlist,
-            remoteKeynotePropertiesPlist,
+            remoteKeynotePropertiesPlist
         ]
         remoteKeynoteDocIdentifier.parent = remoteKeynoteMetadataFolder
         remoteKeynoteVersionPlist.parent = remoteKeynoteMetadataFolder
@@ -1264,7 +1264,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(chunkSize),
                     remoteChunkStoreFolderName: chunkUploadId
-                ),
+                )
             ])
         }
 
@@ -1447,7 +1447,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let (modifiedItem, error) = await lockItem.modify(
             itemTarget: modifyTemplateItem,
             changedFields: [
-                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate,
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
             ],
             contents: tempUrl,
             dbManager: Self.dbManager
@@ -1505,7 +1505,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let (modifiedItem, error) = await lockItem.modify(
             itemTarget: modifyTemplateItem,
             changedFields: [
-                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate,
+                .filename, .contents, .parentItemIdentifier, .creationDate, .contentModificationDate
             ],
             contents: tempUrl,
             dbManager: Self.dbManager

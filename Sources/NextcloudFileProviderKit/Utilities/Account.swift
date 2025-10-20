@@ -87,7 +87,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             AccountDictDavFilesUrlKey: davFilesUrl,
             AccountDictTrashUrlKey: trashUrl,
             AccountDictTrashRestoreUrlKey: trashRestoreUrl,
-            AccountDictFileNameKey: fileName,
+            AccountDictFileNameKey: fileName
         ]
     }
 }

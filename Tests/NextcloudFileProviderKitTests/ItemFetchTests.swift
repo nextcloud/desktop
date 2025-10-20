@@ -132,7 +132,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         rootItem.children = [remoteDirectory]
         remoteDirectory.parent = rootItem
         remoteDirectory.children = [
-            remoteDirectoryChildFile, remoteDirectoryChildDirA, remoteDirectoryChildDirB,
+            remoteDirectoryChildFile, remoteDirectoryChildDirA, remoteDirectoryChildDirB
         ]
         remoteDirectoryChildFile.parent = remoteDirectory
         remoteDirectoryChildDirA.parent = remoteDirectory
