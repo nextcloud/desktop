@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 800e56144..2ebc72d23 100644
+index 800e561448..2ebc72d236 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -31,7 +31,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -36,7 +36,7 @@ index 800e56144..2ebc72d23 100644
  
  # this option removes Http authentication, keychain, shibboleth etc and is intended for
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index f584246eb..efa56ae18 100644
+index f584246eb7..efa56ae181 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -49,7 +49,7 @@ index f584246eb..efa56ae18 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/common/common.cmake b/src/common/common.cmake
-index 5a19933dc..6f5dabcb7 100644
+index 5a19933dc9..6f5dabcb7c 100644
 --- a/src/common/common.cmake
 +++ b/src/common/common.cmake
 @@ -39,3 +39,5 @@ elseif(UNIX AND NOT APPLE)
@@ -60,14 +60,14 @@ index 5a19933dc..6f5dabcb7 100644
 +find_package(Qt6 REQUIRED COMPONENTS Widgets)
 diff --git a/src/common/qtcompat.cpp b/src/common/qtcompat.cpp
 new file mode 100644
-index 000000000..ccded5d62
+index 0000000000..ccded5d62e
 --- /dev/null
 +++ b/src/common/qtcompat.cpp
 @@ -0,0 +1 @@
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 000000000..4a4c59b35
+index 0000000000..4a4c59b354
 --- /dev/null
 +++ b/src/common/qtcompat.h
 @@ -0,0 +1,290 @@
@@ -362,7 +362,7 @@ index 000000000..4a4c59b35
 +//-----------------------------------------------------------------------------
 +//-----------------------------------------------------------------------------
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
-index fa3c97c48..c0505b76f 100644
+index fa3c97c487..c0505b76f7 100644
 --- a/src/csync/csync_exclude.cpp
 +++ b/src/csync/csync_exclude.cpp
 @@ -21,6 +21,7 @@
@@ -396,7 +396,7 @@ index fa3c97c48..c0505b76f 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 9ce24e95a..9e8723203 100644
+index 9ce24e95a0..9e8723203d 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -438,7 +438,7 @@ index 9ce24e95a..9e8723203 100644
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index f2f6a0503..cc972dd67 100644
+index f2f6a0503e..cc972dd676 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -459,7 +459,7 @@ index f2f6a0503..cc972dd67 100644
  
      auto *translator = new QTranslator(this);
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
-index 17d693bf7..f7105f131 100644
+index 17d693bf71..f7105f131c 100644
 --- a/src/gui/folderman.cpp
 +++ b/src/gui/folderman.cpp
 @@ -16,6 +16,7 @@
@@ -471,7 +471,7 @@ index 17d693bf7..f7105f131 100644
  #include <pushnotifications.h>
  #include <syncengine.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
-index 3dc10ad19..637b58acf 100644
+index 3dc10ad198..637b58acf5 100644
 --- a/src/gui/folderwizard.cpp
 +++ b/src/gui/folderwizard.cpp
 @@ -15,6 +15,7 @@
@@ -492,7 +492,7 @@ index 3dc10ad19..637b58acf 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index c0e833d02..b739e8821 100644
+index de5ed4d049..bb8ffb4585 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -540,7 +540,7 @@ index c0e833d02..b739e8821 100644
  void GeneralSettings::slotShowLegalNotice()
  {
 diff --git a/src/gui/generalsettings.h b/src/gui/generalsettings.h
-index b62a7b3c0..85de6f00a 100644
+index b62a7b3c07..85de6f00a1 100644
 --- a/src/gui/generalsettings.h
 +++ b/src/gui/generalsettings.h
 @@ -52,7 +52,9 @@ private slots:
@@ -554,7 +554,7 @@ index b62a7b3c0..85de6f00a 100644
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
-index cc0397f29..c4753ab48 100644
+index cc0397f295..c4753ab48d 100644
 --- a/src/gui/sslerrordialog.cpp
 +++ b/src/gui/sslerrordialog.cpp
 @@ -7,6 +7,7 @@
@@ -575,7 +575,7 @@ index cc0397f29..c4753ab48 100644
          msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
      }
 diff --git a/src/gui/tray/ActivityItemContent.qml b/src/gui/tray/ActivityItemContent.qml
-index 9f365b609..2c761678f 100644
+index 2260ed8e6e..e36123fd8a 100644
 --- a/src/gui/tray/ActivityItemContent.qml
 +++ b/src/gui/tray/ActivityItemContent.qml
 @@ -14,7 +14,7 @@ import com.nextcloud.desktopclient
@@ -591,7 +591,7 @@ diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMe
 similarity index 99%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
 rename to src/gui/tray/TrayFoldersMenuButton.qml.in
-index 10421db5f..9c09a569a 100644
+index 4ae4d28a58..2193c27219 100644
 --- a/src/gui/tray/TrayFoldersMenuButton.qml
 +++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
 @@ -2,7 +2,7 @@
@@ -604,7 +604,7 @@ index 10421db5f..9c09a569a 100644
  import QtQuick.Controls
  import QtQuick.Layouts
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
-index 5820fc0c8..a70abc9c8 100644
+index 5820fc0c8a..a70abc9c8d 100644
 --- a/src/libsync/CMakeLists.txt
 +++ b/src/libsync/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -643,7 +643,7 @@ index 5820fc0c8..a70abc9c8 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index e7bde80a8..b37b5831b 100644
+index e7bde80a84..b37b5831b3 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -22,6 +22,7 @@
@@ -665,7 +665,7 @@ index e7bde80a8..b37b5831b 100644
  
      promise->start();
 diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
-index 9ce1b567f..ef19a9518 100644
+index 9ce1b567fa..ef19a95180 100644
 --- a/src/libsync/clientsideencryption.cpp
 +++ b/src/libsync/clientsideencryption.cpp
 @@ -18,7 +18,7 @@
@@ -733,7 +733,7 @@ index 9ce1b567f..ef19a9518 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 1832fc904..c6e3c1088 100644
+index 08677e49b6..4a4760b0ff 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -745,7 +745,7 @@ index 1832fc904..c6e3c1088 100644
  #include "csync.h"
  
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
-index b6a870849..4e4f991c5 100644
+index b6a8708498..4e4f991c50 100644
 --- a/src/libsync/filesystem.cpp
 +++ b/src/libsync/filesystem.cpp
 @@ -7,6 +7,7 @@
@@ -758,7 +758,7 @@ index b6a870849..4e4f991c5 100644
  #include "std/c_time.h"
 diff --git a/src/libsync/kfcompat.cpp b/src/libsync/kfcompat.cpp
 new file mode 100644
-index 000000000..09a055288
+index 0000000000..09a0552883
 --- /dev/null
 +++ b/src/libsync/kfcompat.cpp
 @@ -0,0 +1,176 @@
@@ -940,7 +940,7 @@ index 000000000..09a055288
 +#endif // HAVE_KARCHIVE
 diff --git a/src/libsync/kfcompat.h b/src/libsync/kfcompat.h
 new file mode 100644
-index 000000000..ba7eb4406
+index 0000000000..ba7eb44067
 --- /dev/null
 +++ b/src/libsync/kfcompat.h
 @@ -0,0 +1,7 @@
@@ -952,7 +952,7 @@ index 000000000..ba7eb4406
 +
 +QByteArray unGzipData(const QByteArray& inputData);
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index b5b7a0968..c32e58051 100644
+index 572bd3d3c9..3b177d9762 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
 @@ -10,6 +10,7 @@
@@ -963,7 +963,7 @@ index b5b7a0968..c32e58051 100644
  
  #include "creds/abstractcredentials.h"
  #include "creds/httpcredentials.h"
-@@ -811,7 +812,7 @@ bool PropfindJob::finished()
+@@ -813,7 +814,7 @@ bool PropfindJob::finished()
          // Parse DAV response
          auto domDocument = QDomDocument();
  
@@ -973,7 +973,7 @@ index b5b7a0968..c32e58051 100644
              emit finishedWithError(reply());
  
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
-index c7c259ab0..e7ab6d6ad 100644
+index c7c259ab0f..e7ab6d6ad9 100644
 --- a/src/libsync/pushnotifications.cpp
 +++ b/src/libsync/pushnotifications.cpp
 @@ -3,6 +3,7 @@
@@ -1012,7 +1012,7 @@ index c7c259ab0..e7ab6d6ad 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 81342a629..c0507f205 100644
+index 81342a629e..c0507f205c 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -9,6 +9,7 @@
@@ -1080,22 +1080,20 @@ index 81342a629..c0507f205 100644
  
  bool Theme::displayLegacyImportDialog() const
 diff --git a/test/syncenginetestutils.cpp b/test/syncenginetestutils.cpp
-index f6cac3374..8520969d2 100644
+index f319561550..93aacb2545 100644
 --- a/test/syncenginetestutils.cpp
 +++ b/test/syncenginetestutils.cpp
-@@ -417,8 +417,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
-         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
+@@ -418,7 +418,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
          xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
          xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
--        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), std::to_string(fileInfo.folderQuota.bytesAvailable));
+         xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), fileInfo.folderQuota.bytesAvailableString());
 -        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), std::to_string(fileInfo.folderQuota.bytesUsed));
-+        xml.writeTextElement(ocUri, QStringLiteral("quota-available-bytes"), QString::number(fileInfo.folderQuota.bytesAvailable));
 +        xml.writeTextElement(ocUri, QStringLiteral("quota-used-bytes"), QString::number(fileInfo.folderQuota.bytesUsed));
          xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
          if (fileInfo.isShared) {
              if (fileInfo.downloadForbidden) {
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
-index 850e9c919..fc0371170 100644
+index 850e9c919c..fc0371170e 100644
 --- a/test/testdatefieldbackend.cpp
 +++ b/test/testdatefieldbackend.cpp
 @@ -10,6 +10,7 @@
@@ -1107,7 +1105,7 @@ index 850e9c919..fc0371170 100644
  using namespace OCC;
  
 diff --git a/test/testfolder.cpp b/test/testfolder.cpp
-index b45cf4911..060f9aca0 100644
+index b45cf49114..060f9aca0b 100644
 --- a/test/testfolder.cpp
 +++ b/test/testfolder.cpp
 @@ -12,6 +12,7 @@
@@ -1119,7 +1117,7 @@ index b45cf4911..060f9aca0 100644
  
  #include "account.h"
 diff --git a/test/testsyncengine.cpp b/test/testsyncengine.cpp
-index 503454e4d..5f073a2a9 100644
+index 503454e4d7..5f073a2a9e 100644
 --- a/test/testsyncengine.cpp
 +++ b/test/testsyncengine.cpp
 @@ -17,6 +17,7 @@
@@ -1131,7 +1129,7 @@ index 503454e4d..5f073a2a9 100644
  #include <QFile>
  #include <QtTest>
 diff --git a/test/testsyncjournaldb.cpp b/test/testsyncjournaldb.cpp
-index 1e71e25ff..7bb62edcd 100644
+index 1e71e25ff7..7bb62edcd7 100644
 --- a/test/testsyncjournaldb.cpp
 +++ b/test/testsyncjournaldb.cpp
 @@ -14,6 +14,7 @@
@@ -1143,7 +1141,7 @@ index 1e71e25ff..7bb62edcd 100644
  
  using namespace OCC;
 diff --git a/test/testsyncvirtualfiles.cpp b/test/testsyncvirtualfiles.cpp
-index c4840c030..c531e0424 100644
+index c4840c0308..c531e0424e 100644
 --- a/test/testsyncvirtualfiles.cpp
 +++ b/test/testsyncvirtualfiles.cpp
 @@ -11,6 +11,7 @@
