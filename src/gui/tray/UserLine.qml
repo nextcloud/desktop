@@ -78,6 +78,12 @@ AbstractButton {
                 elide: Text.ElideRight
                 font.pixelSize: Style.topLinePixelSize
                 font.bold: true
+
+                color: !userLine.parent.enabled
+                    ? userLine.parent.palette.mid
+                    : (userLine.parent.highlighted || userLine.parent.down
+                        ? userLine.parent.palette.highlightedText
+                        : userLine.parent.palette.text)
             }
 
             RowLayout {
@@ -92,6 +98,12 @@ AbstractButton {
                     id: emoji
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
+
+                    color: !userLine.parent.enabled
+                        ? userLine.parent.palette.mid
+                        : (userLine.parent.highlighted || userLine.parent.down
+                            ? userLine.parent.palette.highlightedText
+                            : userLine.parent.palette.text)
                 }
 
                 EnforcedPlainTextLabel {
@@ -101,6 +113,12 @@ AbstractButton {
                     text: statusMessage
                     elide: Text.ElideRight
                     font.pixelSize: Style.subLinePixelSize
+
+                    color: !userLine.parent.enabled
+                        ? userLine.parent.palette.mid
+                        : (userLine.parent.highlighted || userLine.parent.down
+                            ? userLine.parent.palette.highlightedText
+                            : userLine.parent.palette.text)
                 }
             }
 
@@ -112,6 +130,12 @@ AbstractButton {
                 text: server
                 elide: Text.ElideRight
                 font.pixelSize: Style.subLinePixelSize
+
+                color: !userLine.parent.enabled
+                    ? userLine.parent.palette.mid
+                    : (userLine.parent.highlighted || userLine.parent.down
+                        ? userLine.parent.palette.highlightedText
+                        : userLine.parent.palette.text)
             }
         }
 
@@ -127,7 +151,12 @@ AbstractButton {
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
 
-            icon.source: "image://svgimage-custom-color/more.svg/" + palette.windowText
+            property var iconColor: !userLine.parent.enabled
+                ? userLine.parent.palette.mid
+                : (!hovered && (userLine.parent.highlighted || userLine.parent.down)
+                    ? userLine.parent.palette.highlightedText
+                    : userLine.parent.palette.text)
+            icon.source: "image://svgimage-custom-color/more.svg/" + iconColor
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
