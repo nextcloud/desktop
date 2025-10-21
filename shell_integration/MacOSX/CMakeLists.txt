@@ -4,7 +4,7 @@
 if(APPLE)
     set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/${APPLICATION_ICON_NAME}.icns")
 
-    if (CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
+    if (NEXTCLOUD_DEV)
         set(XCODE_TARGET_CONFIGURATION "Debug")
     else()
         set(XCODE_TARGET_CONFIGURATION "Release")
