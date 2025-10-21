@@ -16,9 +16,9 @@ set(NCEXT_VERSION 3,0,0,${NCEXT_BUILD_NUM})
 
 # ------------------------------------
 # Minimum supported server versions
-# According to: https://docs.nextcloud.com/server/latest/admin_manual/release_schedule.html
+# According to: https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule
 # ------------------------------------
-set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 18)
+set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 20)
 set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR 0)
 set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH 0)
 
