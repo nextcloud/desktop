@@ -183,53 +183,53 @@
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
         <source>Resume sync for all</source>
         <translation>繼續所有同步</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="120"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
         <source>Pause sync for all</source>
         <translation>暫停所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="101"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="140"/>
         <source>Add account</source>
         <translation>新增帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="105"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="144"/>
         <source>Add new account</source>
         <translation>加入新帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="126"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="178"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="137"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="202"/>
         <source>Exit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="165"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
         <source>Current account avatar</source>
         <translation>目前帳號大頭照</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
         <source>Current account status is online</source>
         <translation>目前帳號狀態為在線上</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="195"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
         <source>Current account status is do not disturb</source>
         <translation>目前帳號狀態為請勿打擾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="270"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="348"/>
         <source>Account switcher and settings menu</source>
         <translation>帳號切換器與設定選單</translation>
     </message>
@@ -6836,12 +6836,12 @@ Server replied with error: %2</source>
         <translation>目前帳號狀態為請勿打擾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="125"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Account actions</source>
         <translation>帳號動作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="139"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Set status</source>
         <translation>設定狀態</translation>
     </message>
@@ -6851,19 +6851,17 @@ Server replied with error: %2</source>
         <translation>移除帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="187"/>
         <source>Status message</source>
         <translation>狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
         <source>Log out</source>
         <translation>登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="155"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="167"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>
