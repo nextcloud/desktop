@@ -1213,11 +1213,14 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         promise->finish();
     });
 
-    auto ignoreFirst = true;
-    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [&ignoreFirst, promise, path, journalForFolder, this] (const QString &name, const QMap<QString, QString> &properties) {
-        if (ignoreFirst) {
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, path, journalForFolder, this](const QString &name, const QMap<QString, QString> &properties) {
+        // `name` is e.g. "/remote.php/dav/files/admin" or "/remote.php/dav/files/admin/SomeFolder"; whereas `path` is e.g. "" or "SomeFolder/"
+        // in case these two are equal we are currently iterating the entry for the current directory
+        const auto serverPath = name.mid(this->davPath().size());
+        const auto isRootCollection = serverPath.isEmpty() && path.isEmpty();
+        const auto isCurrentCollection = isRootCollection || serverPath == Utility::noTrailingSlashPath(path);
+        if (isCurrentCollection) {
             qCDebug(lcAccount()) << "skip first item";
-            ignoreFirst = false;
             return;
         }
 
