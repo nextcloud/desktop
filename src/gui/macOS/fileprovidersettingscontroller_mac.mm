@@ -31,6 +31,7 @@ constexpr auto fpMaterialisedItemsModelProp = "materialisedItemsModel";
 
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
+constexpr auto customFolderNamesSettingsKey = "customFolderNames";
 
 float gbFromBytesWithOneDecimal(const unsigned long long bytes)
 {
@@ -182,6 +183,48 @@ public:
         return _fileProviderDomainSyncStatuses.value(userIdAtHost);
     }
 
+    [[nodiscard]] QString customFolderNameForAccount(const QString &userIdAtHost) const
+    {
+        NSDictionary<NSString *, NSString *> *const customFolderNames = nsCustomFolderNames();
+        
+        if (customFolderNames == nil) {
+            return QString();
+        }
+        
+        NSString *const folderName = [customFolderNames objectForKey:userIdAtHost.toNSString()];
+        
+        if (folderName == nil) {
+            return QString();
+        }
+        
+        return QString::fromNSString(folderName);
+    }
+    
+    void setCustomFolderNameForAccount(const QString &userIdAtHost, const QString &folderName)
+    {
+        qCInfo(lcFileProviderSettingsController) << "Setting custom folder name for account"
+                                                 << userIdAtHost
+                                                 << "to"
+                                                 << folderName;
+        
+        NSDictionary<NSString *, NSString *> *customFolderNames = nsCustomFolderNames();
+        
+        if (customFolderNames == nil) {
+            customFolderNames = @{};
+        }
+        
+        NSMutableDictionary<NSString *, NSString *> *const mutableCustomFolderNames = customFolderNames.mutableCopy;
+        
+        if (folderName.isEmpty()) {
+            [mutableCustomFolderNames removeObjectForKey:userIdAtHost.toNSString()];
+        } else {
+            [mutableCustomFolderNames setObject:folderName.toNSString() forKey:userIdAtHost.toNSString()];
+        }
+        
+        [_userDefaults setObject:mutableCustomFolderNames forKey:_customFolderNamesKey];
+        [_userDefaults synchronize];
+    }
+
 public slots:
     // NOTE: This method will release the provided args so make sure to retain them beforehand
     void enumerateMaterialisedFilesForDomainManager(NSFileProviderManager * const managerForDomain,
@@ -253,6 +296,11 @@ private:
     {
         return (NSArray<NSString *> *)[_userDefaults objectForKey:_accountsKey];
     }
+    
+    [[nodiscard]] NSDictionary<NSString *, NSString *> *nsCustomFolderNames() const
+    {
+        return (NSDictionary<NSString *, NSString *> *)[_userDefaults objectForKey:_customFolderNamesKey];
+    }
 
     void fetchMaterialisedFilesStorageUsage()
     {
@@ -313,6 +361,7 @@ private:
     FileProviderSettingsController *q = nullptr;
     NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
+    NSString *_customFolderNamesKey = [NSString stringWithUTF8String:customFolderNamesSettingsKey];
     QHash<QString, QVector<FileProviderItemMetadata>> _materialisedFiles;
     QHash<QString, unsigned long long> _storageUsage;
     QHash<QString, FileProviderDomainSyncStatus*> _fileProviderDomainSyncStatuses;
@@ -512,6 +561,17 @@ void FileProviderSettingsController::signalFileProviderDomain(const QString &use
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
 {
     return d->domainSyncStatusForAccount(userIdAtHost);
+}
+
+QString FileProviderSettingsController::customFolderNameForAccount(const QString &userIdAtHost) const
+{
+    return d->customFolderNameForAccount(userIdAtHost);
+}
+
+void FileProviderSettingsController::setCustomFolderNameForAccount(const QString &userIdAtHost, const QString &folderName)
+{
+    d->setCustomFolderNameForAccount(userIdAtHost, folderName);
+    emit customFolderNameForAccountChanged(userIdAtHost);
 }
 
 void FileProviderSettingsController::resetVfsForAccount(const QString &userIdAtHost)
