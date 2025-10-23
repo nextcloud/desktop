@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -224,6 +224,10 @@
 		C2B573F11B1DAD6400303B36 /* warning.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = warning.iconset; path = ../../icons/nopadding/warning.iconset; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AAD7F6032EAA11670071D385 /* gui */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); name = gui; path = /Users/iva/Projekte/nextcloud/desktop/src/gui; sourceTree = "<absolute>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		538E396427F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -403,6 +407,7 @@
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
+				AAD7F6032EAA11670071D385 /* gui */,
 				AA27A4E32E93C0D700665051 /* README.md */,
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				AA0A6B1C2E8EA948007F4A7A /* NextcloudDev */,
