@@ -40,6 +40,35 @@ private slots:
         AccountPtr account = Account::create();
         [[maybe_unused]] const auto davPath = account->davPath();
     }
+
+    void testAccount_isPublicShareLink_data()
+    {
+        QTest::addColumn<QString>("url");
+        QTest::addColumn<bool>("expectedResult");
+        QTest::addColumn<QString>("expectedDavUser");
+
+        QTest::newRow("plain URL") << "https://example.com" << false << "";
+        QTest::newRow("plain URL, trailing slash") << "https://example.com/" << false << "";
+        QTest::newRow("share link") << "https://example.com/s/rPZLaTKfWct37Nd" << true << "rPZLaTKfWct37Nd";
+        QTest::newRow("share link, trailing slash") << "https://example.com/s/rPZLaTKfWct37Nd/" << false << "";
+        QTest::newRow("subpath containing /s/ (looks like share link)") << "https://example.com/s/nextcloud" << true << "nextcloud";
+        QTest::newRow("subpath containing /s/, trailing slash") << "https://example.com/s/nextcloud/" << false << "";
+        QTest::newRow("subpath containing /s/, share link") << "https://example.com/s/nextcloud/s/rPZLaTKfWct37Nd" << true << "rPZLaTKfWct37Nd";
+        QTest::newRow("subpath containing /s/, share link, trailing slash") << "https://example.com/s/nextcloud/s/rPZLaTKfWct37Nd/" << false << "";
+    }
+
+    void testAccount_isPublicShareLink()
+    {
+        AccountPtr account = Account::create();
+
+        QFETCH(QString, url);
+        QFETCH(bool, expectedResult);
+        QFETCH(QString, expectedDavUser);
+
+        account->setUrl(QUrl{url});
+        QCOMPARE(account->isPublicShareLink(), expectedResult);
+        QCOMPARE(account->davUser(), expectedDavUser);
+    }
 };
 
 QTEST_APPLESS_MAIN(TestAccount)
