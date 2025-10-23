@@ -591,7 +591,7 @@ public:
         }
     }
 
-    QStringList configuredDomainIds() const
+    QStringList getAccountIdsOfFoundFileProviderDomains() const
     {
         return _registeredDomains.keys();
     }
@@ -652,34 +652,36 @@ void FileProviderDomainManager::updateFileProviderDomains()
         return;
     }
 
-    const auto vfsEnabledAccounts = FileProviderSettingsController::instance()->vfsEnabledAccounts();
-    auto configuredDomains = d->configuredDomainIds();
+    const auto fileProviderEnabledAccountIds = FileProviderSettingsController::instance()->vfsEnabledAccounts();
+    auto accountIdsOfFoundFileProviderDomains = d->getAccountIdsOfFoundFileProviderDomains();
 
-    for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
-        // If the domain has already been set up for this account, then don't set it up again
-        if (configuredDomains.contains(accountUserIdAtHost)) {
-            configuredDomains.removeAll(accountUserIdAtHost);
+    for (const auto &fileProviderEnabledAccountId : fileProviderEnabledAccountIds) {
+        // If the domain has already been set up for this account, then don't set it up again.
+        if (accountIdsOfFoundFileProviderDomains.contains(fileProviderEnabledAccountId)) {
+            accountIdsOfFoundFileProviderDomains.removeAll(fileProviderEnabledAccountId);
             continue;
         }
 
-        if (const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost)) {
+        if (const auto accountState = AccountManager::instance()->accountFromUserId(fileProviderEnabledAccountId)) {
             qCDebug(lcMacFileProviderDomainManager) << "Succeed in fetching account state by account id"
-                                                    << accountUserIdAtHost
+                                                    << fileProviderEnabledAccountId
                                                     << ", adding file provider domain for account.";
 
             addFileProviderDomainForAccount(accountState.data());
         } else {
             qCWarning(lcMacFileProviderDomainManager) << "Could not fetch account state by account id"
-                                                      << accountUserIdAtHost
+                                                      << fileProviderEnabledAccountId
                                                       << ", removing account from list of VFS-enabled accounts.";
 
-            FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountUserIdAtHost, false);
+            FileProviderSettingsController::instance()->setVfsEnabledForAccount(fileProviderEnabledAccountId, false);
         }
     }
 
-    for (const auto &remainingDomainUserId : configuredDomains) {
-        const auto accountId = accountIdFromDomainId(remainingDomainUserId);
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountId);
+    for (const auto &remainingAccountId : accountIdsOfFoundFileProviderDomains) {
+        qCDebug(lcMacFileProviderDomainManager) << "Orphaned file provider domain to remove found for account id"
+                                                << remainingAccountId;
+
+        const auto accountState = AccountManager::instance()->accountFromUserId(remainingAccountId);
         removeFileProviderDomainForAccount(accountState.data());
     }
 
@@ -721,9 +723,6 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
     }
 
     Q_ASSERT(accountState);
-    const auto account = accountState->account();
-    Q_ASSERT(account);
-
     d->removeFileProviderDomain(accountState);
 }
 
