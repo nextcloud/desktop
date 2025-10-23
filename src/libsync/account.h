@@ -99,6 +99,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
 
 public:
     enum class AccountNetworkTransferLimitSetting {
+        LegacyGlobalLimit = -2, // Until 3.17.0 a value of -2 was interpreted as "Use global network settings", it's now used to fall back to "No limit".  See also GH#8743
         AutoLimit = -1, // Value under 0 is interpreted as auto in general
         NoLimit,
         ManualLimit,
