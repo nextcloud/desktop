@@ -218,11 +218,7 @@ public actor FileProviderLog: FileProviderLogging {
         let sortedKeys = details.keys.sorted()
 
         let detailDescriptions: [String] = sortedKeys.compactMap { key in
-            guard let value = details[key] else {
-                return nil
-            }
-
-            let valueDescription: String? = switch value {
+            let valueDescription: String = switch details[key] {
                 case let account as Account:
                     account.ncKitAccount
                 case let date as Date:
@@ -239,11 +235,13 @@ public actor FileProviderLog: FileProviderLogging {
                     text
                 case let request as NSFileProviderRequest:
                     "requestingExecutable: \(request.requestingExecutable?.path ?? "nil"), isFileViewerRequest: \(request.isFileViewerRequest), isSystemRequest: \(request.isSystemRequest)"
+                case nil:
+                    "nil"
                 default:
-                    String(describing: value)
+                    "<unsupported log detail value type>"
             }
 
-            return "- \(key.rawValue): \(valueDescription ?? "nil")"
+            return "- \(key.rawValue): \(valueDescription)"
         }
 
         logger.log(level: level, "\(message, privacy: .public)\n\n\(detailDescriptions.joined(separator: "\n"), privacy: .public)")
