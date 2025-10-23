@@ -457,10 +457,8 @@ import OSLog
         return progress
     }
 
-    func enumerator(
-        for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest
-    ) throws -> NSFileProviderEnumerator {
-        logger.debug("System requested enumerator.", [.item: containerItemIdentifier, .request: request])
+    func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
+        logger.debug("System requested enumerator.", [.item: containerItemIdentifier])
 
         guard let ncAccount else {
             logger.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue) yet as account not set up")
