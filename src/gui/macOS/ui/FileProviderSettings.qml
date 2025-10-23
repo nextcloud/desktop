@@ -53,63 +53,11 @@ Page {
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
-
-        Loader {
-            id: vfsSettingsLoader
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            active: vfsEnabledCheckBox.checked
-            sourceComponent: ColumnLayout {
-                Rectangle {
-                    Layout.fillWidth: true
-                    height: Style.normalBorderWidth
-                    color: palette.dark
-                }
-
-                FileProviderSyncStatus {
-                    syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
-                    onDomainSignalRequested: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
-                }
-
-                FileProviderStorageInfo {
-                    id: storageInfo
-                    localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)
-                    remoteUsedStorage: root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost)
-
-                    onEvictDialogRequested: root.controller.createEvictionWindowForAccount(root.accountUserIdAtHost)
-
-                    Connections {
-                        target: root.controller
-
-                        function onLocalStorageUsageForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                                return;
-                            }
-                            storageInfo.localUsedStorage = root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost);
-                        }
-
-                        function onRemoteStorageUsageForAccountChanged(accountUserIdAtHost) {
-                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                                return;
-                            }
-                            storageInfo.remoteUsedStorage = root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost);
-                        }
-                    }
-                }
-
-                CheckBox {
-                    text: qsTr("Allow deletion of items in Trash")
-                    checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
-                    onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
-                }
-
-                Button {
-                    text: qsTr("Reset virtual files environment")
-                    onPressed: root.controller.resetVfsForAccount(root.accountUserIdAtHost);
-                }
-            }
+        
+        CheckBox {
+            text: qsTr("Allow deletion of items in Trash")
+            checked: root.controller.trashDeletionEnabledForAccount(root.accountUserIdAtHost)
+            onClicked: root.controller.setTrashDeletionEnabledForAccount(root.accountUserIdAtHost, checked)
         }
     }
 }

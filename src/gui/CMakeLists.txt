@@ -302,17 +302,12 @@ IF( APPLE )
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager_mac.mm
-            macOS/fileproviderdomainsyncstatus.h
-            macOS/fileproviderdomainsyncstatus_mac.mm
             macOS/fileprovidereditlocallyjob.h
             macOS/fileprovidereditlocallyjob.cpp
             macOS/fileprovidereditlocallyjob_mac.mm
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
             macOS/fileprovideritemmetadata_mac.mm
-            macOS/fileprovidermaterialiseditemsmodel.h
-            macOS/fileprovidermaterialiseditemsmodel.cpp
-            macOS/fileprovidermaterialiseditemsmodel_mac.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
@@ -320,8 +315,6 @@ IF( APPLE )
             macOS/fileprovidersocketserver.h
             macOS/fileprovidersocketserver.cpp
             macOS/fileprovidersocketserver_mac.mm
-            macOS/fileproviderstorageuseenumerationobserver.h
-            macOS/fileproviderstorageuseenumerationobserver.m
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
