@@ -10,7 +10,6 @@ jobs:
     runs-on: windows-2022
     env:
       CRAFT_TARGET: windows-msvc2022_64-cl
-      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
     steps:
@@ -36,28 +35,7 @@ jobs:
           craft craft
           craft --install-deps nextcloud-client
           
-      - name: Cache Install OpenCppCoverage
-        id: cache-install-opencppcoverage
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-        with:
-          path: C:\Program Files\OpenCppCoverage
-          key: ${{ runner.os }}-cache-install-opencppcoverage
-          
-      - name: Install OpenCppCoverage
-        if: steps.cache-install-opencppcoverage.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          choco install opencppcoverage
-
-      #- name: Cache Install inkscape
-      #  id: cache-install-inkscape
-      #  uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-      #  with:
-      #    path: C:\Program Files\inkscape
-      #    key: ${{ runner.os }}-cache-install-inkscape
-
       - name: Install inkscape
-      #  if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           choco install inkscape
@@ -65,7 +43,6 @@ jobs:
       - name: Setup PATH
         shell: pwsh
         run: |
-          echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
    
       - name: Compile
@@ -78,7 +55,7 @@ jobs:
           
           craft --src-dir ${{ github.workspace }} nextcloud-client
           
-      - name: Run tests with coverage
+      - name: Run tests
         shell: pwsh
         run: |
           function runTests() {
