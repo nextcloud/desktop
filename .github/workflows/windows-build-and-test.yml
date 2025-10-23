@@ -65,7 +65,7 @@ jobs:
 
               $binFolder = "$buildFolder\bin"
 
-              & ctest --output-on-failure --timeout 300
+              & ctest --output-on-failure --timeout 300 --parallel 4
           }
           
           runTests

@@ -24,4 +24,4 @@ jobs:
           cd build
           useradd -m -s /bin/bash test
           chown -R test:test .
-          su -c 'xvfb-run ctest --output-on-failure' test
+          su -c 'xvfb-run ctest --output-on-failure --parallel 4' test
