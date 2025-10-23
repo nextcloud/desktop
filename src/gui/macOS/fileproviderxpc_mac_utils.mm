@@ -65,16 +65,19 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
 
         for (NSFileProviderManager *const manager in managers) {
             dispatch_group_enter(group);
+
             [manager getServiceWithName:nsClientCommunicationServiceName
                          itemIdentifier:NSFileProviderRootContainerItemIdentifier
                       completionHandler:^(NSFileProviderService *const service, NSError *const error) {
+
                 if (error != nil) {
-                    qCWarning(lcFileProviderXPCUtils) << "Error getting file provider service" << error;
+                    qCWarning(lcFileProviderXPCUtils) << "Failed to resolve service for file provider domain: " << error;
                 } else if (service == nil) {
-                    qCWarning(lcFileProviderXPCUtils) << "Service is nil";
+                    qCWarning(lcFileProviderXPCUtils) << "Service is nil!";
                 } else {
                     [fpServices addObject:@{service.name: service}];
                 }
+
                 dispatch_group_leave(group);
             }];
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
