@@ -500,7 +500,16 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _localFileId = map.value(QStringLiteral("fileid")).toUtf8();
         }
         if (map.contains("id")) {
+            // this is from the "oc:id" property, the format is e.g. "00000002oc123xyz987e"
             _fileId = map.value("id").toUtf8();
+        }
+        if (map.contains("fileid")) {
+            // this is from the "oc:fileid" property, this is the plain ID without any special format (e.g. "2")
+            bool ok = false;
+            if (qint64 numericFileId = map.value("fileid").toLongLong(&ok); ok) {
+                qCDebug(lcDiscovery).nospace() << "received numericFileId=" << numericFileId;
+                emit rootFileIdReceived(numericFileId);
+            }
         }
         if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
             _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
