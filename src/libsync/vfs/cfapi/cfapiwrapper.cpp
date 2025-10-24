@@ -553,7 +553,8 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
         sendTransferError();
         return;
     }
-    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length() + 1)}.mid(1);
+    const auto remoteSyncRootPath = vfs->params().remotePath; // with leading slash
+    const auto serverPath = QString{remoteSyncRootPath + pathString.mid(rootPath.length() + 1)}.mid(1);
 
     qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
 
@@ -584,7 +585,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
                          qCInfo(lcCfApiWrapper()) << "ls prop started";
                      });
 
-    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, serverPath, vfs->params().journal);
+    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, remoteSyncRootPath, serverPath, vfs->params().journal);
 
     qCInfo(lcCfApiWrapper()) << "ls prop requested" << path << serverPath;
 
