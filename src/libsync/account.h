@@ -425,7 +425,8 @@ public slots:
     void setAskUserForMnemonic(const bool ask);
 
     void listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
-                          const QString &path,
+                          const QString &remoteSyncRootPath,
+                          const QString &subPath,
                           SyncJournalDb *journalForFolder);
 
 signals:
