@@ -291,8 +291,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     if (isDirectory) {
         if (hasCloudTag) {
             ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
-            stat->type = CSyncEnums::ItemTypeVirtualDirectory;
-            return true;
+            // stat->type = CSyncEnums::ItemTypeVirtualDirectory;
+            // return true;
         }
         return false;
     } else if (isSparseFile && isPinned) {
