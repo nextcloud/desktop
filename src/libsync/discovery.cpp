@@ -132,6 +132,10 @@ void ProcessDirectoryJob::process()
             auto &dbEntry = entries[name].dbEntry;
             dbEntry = rec;
             setupDbPinStateActions(dbEntry);
+            if (_discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && dbEntry._type == ItemTypeVirtualDirectory) {
+                // invalidate etag for virtual directories to avoid upsyncing deletions
+                dbEntry._etag = QByteArrayLiteral("_invalid_");
+            }
         })) {
         dbError();
         return;
@@ -671,13 +675,13 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     const auto opts = _discoveryData->_syncOptions;
 
     if (item->isDirectory()) {
-        // Turn new remote folders into virtual folders if the option is enabled.
-        if (!localEntry.isValid() &&
-            opts._vfs->mode() == Vfs::WindowsCfApi &&
-            _pinState != PinState::AlwaysLocal &&
-            !FileSystem::isExcludeFile(item->_file)) {
-            item->_type = ItemTypeVirtualDirectory;
-        }
+        // // Turn new remote folders into virtual folders if the option is enabled.
+        // if (!localEntry.isValid() &&
+        //     opts._vfs->mode() == Vfs::WindowsCfApi &&
+        //     _pinState != PinState::AlwaysLocal &&
+        //     !FileSystem::isExcludeFile(item->_file)) {
+        //     item->_type = ItemTypeVirtualDirectory;
+        // }
 
         _pendingAsyncJobs++;
         _discoveryData->checkSelectiveSyncNewFolder(path._server,
@@ -1456,7 +1460,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    // item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1903,8 +1908,10 @@ void ProcessDirectoryJob::processFileFinalize(
     }
 
     if (item->_type == ItemTypeVirtualDirectory) {
-        qCDebug(lcDisco()) << "do not recurse inside a virtual folder" << item->_file;
-        recurse = false;
+        // qCDebug(lcDisco()) << "do not recurse inside a virtual folder" << item->_file;
+        // recurse = false;
+        qCInfo(lcDisco()).nospace() << "changing virtual directory to normal directory file=" << item->_file;
+        item->_type = ItemTypeDirectory;
     }
 
     if (!(item->isDirectory() ||
