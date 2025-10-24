@@ -22,7 +22,7 @@
 using namespace std;
 
 // This code is run in a thread
-void RemotePathChecker::workerThreadLoop()
+void RemotePathChecker::workerThreadLoop(ofstream &logger)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
     bool connected = false;
@@ -54,14 +54,32 @@ void RemotePathChecker::workerThreadLoop()
                 lock.unlock();
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
-                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data());
+                    if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data(), logger)) {
+                        //MessageBox(nullptr, L"stopping thread - socket.SendMsg RETRIEVE_FILE_STATUS returned false", L"Debugging", MB_OK);
+                        _stop = true;
+                        logger << "stopping thread - socket.SendMsg RETRIEVE_FILE_STATUS returned false" << std::endl;
+                        break;
+                    }
                 }
                 lock.lock();
             }
         }
 
         std::wstring response;
-        while (!_stop && socket.ReadLine(&response)) {
+        while (!_stop) {
+            if (!socket.ReadLine(&response, logger)) {
+                socket.Close();
+                logger << "closing socket, no more data to read" << std::endl;
+                //MessageBox(nullptr, L"closing socket, no more data to read", L"Debugging", MB_OK);
+                break;
+            }
+
+            if (response.empty()) {
+                logger << "closing socket, response is empty" << std::endl;
+                //MessageBox(nullptr, L"closing socket,response is empty", L"Debugging", MB_OK);
+                break;
+            }
+
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
@@ -154,12 +172,12 @@ void RemotePathChecker::workerThreadLoop()
 
 
 
-RemotePathChecker::RemotePathChecker()
+RemotePathChecker::RemotePathChecker(ofstream &logger)
     : _stop(false)
     , _watchedDirectories(make_shared<const vector<wstring>>())
     , _connected(false)
     , _newQueries(CreateEvent(nullptr, FALSE, FALSE, nullptr))
-    , _thread([this]{ this->workerThreadLoop(); })
+    , _thread([this, &logger]{ this->workerThreadLoop(logger); })
 {
 }
 
