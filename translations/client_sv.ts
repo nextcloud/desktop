@@ -288,24 +288,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderEvictionDialog</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
-        <source>Remove local copies</source>
-        <translation>Ta bort lokala kopior</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
-        <source>Local copies</source>
-        <translation>Lokala kopior</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
-        <source>Reload</source>
-        <translation>Ladda om</translation>
-    </message>
-</context>
-<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
@@ -339,49 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
         <translation>Återställ miljön för virtuella filer</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderStorageInfo</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
-        <source>Local storage use</source>
-        <translation>Användning lokal lagring</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
-        <source>%1 GB of %2 GB remote files synced</source>
-        <translation>%1 GB av %2 GB filer synkroniserade</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
-        <translation>Frigör utrymme …</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderSyncStatus</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>Syncing</source>
-        <translation>Synkroniserar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>All synced!</source>
-        <translation>Allt synkroniserat!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
-        <source>Request sync</source>
-        <translation>Begär synkronisering</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
-        <source>Request a sync of changes for the VFS environment.
-macOS may ignore or delay this request.</source>
-        <translation>Begär en synkronisering av ändringar för VFS-miljön.
-macOS kan ignorera eller fördröja denna begäran.</translation>
     </message>
 </context>
 <context>
@@ -7272,6 +7211,67 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>Frigör lokalt utrymme</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderEvictionDialog</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
+        <source>Remove local copies</source>
+        <translation>Ta bort lokala kopior</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
+        <source>Local copies</source>
+        <translation>Lokala kopior</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
+        <source>Reload</source>
+        <translation>Ladda om</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <source>Local storage use</source>
+        <translation>Användning lokal lagring</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <source>%1 GB of %2 GB remote files synced</source>
+        <translation>%1 GB av %2 GB filer synkroniserade</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
+        <source>Free up space …</source>
+        <translation>Frigör utrymme …</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>Syncing</source>
+        <translation>Synkroniserar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>All synced!</source>
+        <translation>Allt synkroniserat!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <source>Request sync</source>
+        <translation>Begär synkronisering</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation>Begär en synkronisering av ändringar för VFS-miljön.
+macOS kan ignorera eller fördröja denna begäran.</translation>
     </message>
 </context>
 <context>

@@ -123,7 +123,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Ouvrir %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
@@ -288,24 +288,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderEvictionDialog</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
-        <source>Remove local copies</source>
-        <translation>Supprimer les copies locales</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
-        <source>Local copies</source>
-        <translation>Copies locales</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
-        <source>Reload</source>
-        <translation>Recharger</translation>
-    </message>
-</context>
-<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
@@ -339,49 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
         <translation>Réinitialiser l&apos;environnement de fichiers virtuels</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderStorageInfo</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
-        <source>Local storage use</source>
-        <translation>Utilisation du stockage local</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
-        <source>%1 GB of %2 GB remote files synced</source>
-        <translation>%1 Go sur %2 Go de fichiers distants synchronisés</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
-        <translation>Libérer de l’espace…</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderSyncStatus</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>Syncing</source>
-        <translation>Synchronisation</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>All synced!</source>
-        <translation>Tout est synchronisé !</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
-        <source>Request sync</source>
-        <translation>Synchroniser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
-        <source>Request a sync of changes for the VFS environment.
-macOS may ignore or delay this request.</source>
-        <translation>Synchroniser les modifications pour l&apos;environnement VFS.
- macOS peut ignorer ou retarder cette demande.</translation>
     </message>
 </context>
 <context>
@@ -502,7 +441,7 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/libsync/account.cpp" line="225"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Lien de partage public</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1061"/>
@@ -2857,7 +2796,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="64"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Afficher les notifications d&apos;avertissement de &amp;quota</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="87"/>
@@ -3085,7 +3024,7 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Impossible de récupérer ou de créer le lien public pour le partage.
+        <translation>Impossible de récupérer ou de créer le partage par lien public.
 
 %1</translation>
     </message>
@@ -5644,7 +5583,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Lien de partage public</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -7269,6 +7208,67 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>Libérer de l&apos;espace local</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderEvictionDialog</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
+        <source>Remove local copies</source>
+        <translation>Supprimer les copies locales</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
+        <source>Local copies</source>
+        <translation>Copies locales</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
+        <source>Reload</source>
+        <translation>Recharger</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <source>Local storage use</source>
+        <translation>Utilisation du stockage local</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <source>%1 GB of %2 GB remote files synced</source>
+        <translation>%1 Go sur %2 Go de fichiers distants synchronisés</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
+        <source>Free up space …</source>
+        <translation>Libérer de l’espace…</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>Syncing</source>
+        <translation>Synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>All synced!</source>
+        <translation>Tout est synchronisé !</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <source>Request sync</source>
+        <translation>Synchroniser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation>Synchroniser les modifications pour l&apos;environnement VFS.
+ macOS peut ignorer ou retarder cette demande.</translation>
     </message>
 </context>
 <context>

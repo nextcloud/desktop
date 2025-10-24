@@ -288,24 +288,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderEvictionDialog</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
-        <source>Remove local copies</source>
-        <translation>Вилучити копії на пристрої</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
-        <source>Local copies</source>
-        <translation>Копії на пристрої</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
-        <source>Reload</source>
-        <translation>Перезавантажити</translation>
-    </message>
-</context>
-<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
@@ -339,49 +321,6 @@
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
         <translation>Скинути оточення віртуальних файлів</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderStorageInfo</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
-        <source>Local storage use</source>
-        <translation>Використання сховища даних на пристрої</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
-        <source>%1 GB of %2 GB remote files synced</source>
-        <translation>Синхронізовано %1 ГБ із %2 ГБ віддалених файлів</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
-        <translation>Звільнити простір ...</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderSyncStatus</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>Syncing</source>
-        <translation>Синхронізація</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>All synced!</source>
-        <translation>Все синхронізовано!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
-        <source>Request sync</source>
-        <translation>Запит на синхронізацію</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
-        <source>Request a sync of changes for the VFS environment.
-macOS may ignore or delay this request.</source>
-        <translation>Запит на синхронізацію змін для середовища віртуальної файлової системи.
-macOS може ігнорувати запит або він виконуватиметься із затримкою.</translation>
     </message>
 </context>
 <context>
@@ -7269,6 +7208,67 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>Звільнити місце на пристрої</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderEvictionDialog</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
+        <source>Remove local copies</source>
+        <translation>Вилучити копії на пристрої</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
+        <source>Local copies</source>
+        <translation>Копії на пристрої</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
+        <source>Reload</source>
+        <translation>Перезавантажити</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <source>Local storage use</source>
+        <translation>Використання сховища даних на пристрої</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <source>%1 GB of %2 GB remote files synced</source>
+        <translation>Синхронізовано %1 ГБ із %2 ГБ віддалених файлів</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
+        <source>Free up space …</source>
+        <translation>Звільнити простір ...</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>Syncing</source>
+        <translation>Синхронізація</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>All synced!</source>
+        <translation>Все синхронізовано!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <source>Request sync</source>
+        <translation>Запит на синхронізацію</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation>Запит на синхронізацію змін для середовища віртуальної файлової системи.
+macOS може ігнорувати запит або він виконуватиметься із затримкою.</translation>
     </message>
 </context>
 <context>

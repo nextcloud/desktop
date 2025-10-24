@@ -288,24 +288,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderEvictionDialog</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
-        <source>Remove local copies</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
-        <source>Local copies</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
-        <source>Reload</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
@@ -338,48 +320,6 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>FileProviderStorageInfo</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
-        <source>Local storage use</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
-        <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>FileProviderSyncStatus</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>Syncing</source>
-        <translation>Sinhronizē</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>All synced!</source>
-        <translation>Viss ir sinhronizēts.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
-        <source>Request sync</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
-        <source>Request a sync of changes for the VFS environment.
-macOS may ignore or delay this request.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -746,7 +686,7 @@ Jāgaida jauna sinhronizēšana, tad tā jāšifrē.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>Restart sync</source>
-        <translation>Restartēt sinronizāciju</translation>
+        <translation>Izpildīt sinhronizēšanu no jauna</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="705"/>
@@ -2869,7 +2809,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="201"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Pārvietot noņemtās datnes uz atkritni</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="212"/>
@@ -2935,12 +2875,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="462"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Atjaunot uz &amp;noklusējumu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="385"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Restartēt &amp;&amp; Atjaunināt</translation>
+        <translation>&amp;Palaist no jauna un atjaunināt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="194"/>
@@ -3131,7 +3071,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation>Šablons</translation>
+        <translation>Paraugs</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
@@ -6393,7 +6333,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
         <source>The server is busy right now. Please try syncing again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris pašlaik ir aizņemts. Lūgums pēc dažām minūtēm vēlreiz mēģināt sinhronizēšanu vai sazināties ar servera pārvaldītāju, ja tas ir steidzami.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
@@ -7242,6 +7182,66 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>Atbrīvot vietējo vietu</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderEvictionDialog</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
+        <source>Remove local copies</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
+        <source>Local copies</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
+        <source>Reload</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <source>Local storage use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <source>%1 GB of %2 GB remote files synced</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
+        <source>Free up space …</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>Syncing</source>
+        <translation>Sinhronizē</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>All synced!</source>
+        <translation>Viss ir sinhronizēts.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <source>Request sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

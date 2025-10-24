@@ -288,24 +288,6 @@
     </message>
 </context>
 <context>
-    <name>FileProviderEvictionDialog</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
-        <source>Remove local copies</source>
-        <translation>로컬 사본 삭제</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
-        <source>Local copies</source>
-        <translation>로컬 사본</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
-        <source>Reload</source>
-        <translation>새로고침</translation>
-    </message>
-</context>
-<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="86"/>
@@ -338,48 +320,6 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="109"/>
         <source>Reset virtual files environment</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>FileProviderStorageInfo</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
-        <source>Local storage use</source>
-        <translation>로컬 저장소 사용</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
-        <source>%1 GB of %2 GB remote files synced</source>
-        <translation>%2GB의 원격 파일 중 %1GB가 동기화 됨</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
-        <source>Free up space …</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>FileProviderSyncStatus</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>Syncing</source>
-        <translation>동기화 중</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
-        <source>All synced!</source>
-        <translation>모두 동기화함!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
-        <source>Request sync</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
-        <source>Request a sync of changes for the VFS environment.
-macOS may ignore or delay this request.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5708,7 +5648,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1645"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>계정 삭제</translation>
     </message>
 </context>
 <context>
@@ -6848,7 +6788,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="187"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>상태 메시지</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="201"/>
@@ -6866,7 +6806,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>상태 메시지</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
@@ -6876,7 +6816,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>이후 상태 메시지 삭제</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
@@ -6939,7 +6879,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>상태 메시지</translation>
     </message>
 </context>
 <context>
@@ -7268,6 +7208,66 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
         <translation>로컬 저장공간 확보</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderEvictionDialog</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="27"/>
+        <source>Remove local copies</source>
+        <translation>로컬 사본 삭제</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="43"/>
+        <source>Local copies</source>
+        <translation>로컬 사본</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="51"/>
+        <source>Reload</source>
+        <translation>새로고침</translation>
+    </message>
+</context>
+<context>
+    <name>FileProviderStorageInfo</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="31"/>
+        <source>Local storage use</source>
+        <translation>로컬 저장소 사용</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
+        <source>%1 GB of %2 GB remote files synced</source>
+        <translation>%2GB의 원격 파일 중 %1GB가 동기화 됨</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="50"/>
+        <source>Free up space …</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>FileProviderSyncStatus</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>Syncing</source>
+        <translation>동기화 중</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="49"/>
+        <source>All synced!</source>
+        <translation>모두 동기화함!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="62"/>
+        <source>Request sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="69"/>
+        <source>Request a sync of changes for the VFS environment.
+macOS may ignore or delay this request.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
