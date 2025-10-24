@@ -213,11 +213,9 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
         emit vfsEnabledAccountsChanged();
 
         if (setEnabled && showInformationDialog) {
-            QMessageBox::information(nullptr,
-                                     tr("macOS virtual files enabled"),
-                                     tr("Virtual files have been enabled for this account.\n"
-                                        "Files are accessible in Finder via an entry under the \"Locations\" section.\n"
-                                        "Please note that on macOS, virtual and classic sync folders are separate.\n"));
+            QMessageBox::information(nullptr, tr("Virtual files enabled"),
+                                     tr("Virtual files have been enabled for this account.\n\n"
+                                        "Your files are now accessible in Finder under the \"Locations\" section."));
         }
     }
 }
