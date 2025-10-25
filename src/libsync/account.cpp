@@ -9,6 +9,7 @@
 #include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryptionjobs.h"
+#include "common/utility.h"
 #include "configfile.h"
 #include "cookiejar.h"
 #include "creds/abstractcredentials.h"
@@ -1174,61 +1175,64 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
-void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &path, SyncJournalDb *journalForFolder)
+void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &remoteSyncRootPath, const QString &subPath, SyncJournalDb *journalForFolder)
 {
-    qCInfo(lcAccount()) << "ls col job requested for" << path;
+    qCInfo(lcAccount()) << "ls col job requested for" << subPath;
 
     if (!credentials()->ready()) {
-        qCWarning(lcAccount()) << "credentials are not ready" << path;
+        qCWarning(lcAccount()) << "credentials are not ready" << subPath;
         promise->finish();
         return;
     }
 
-    auto listFolderJob = new OCC::LsColJob{sharedFromThis(), path};
+    auto listFolderJob = new OCC::LsColJob{sharedFromThis(), subPath};
 
     const auto props = LsColJob::defaultProperties(LsColJob::FolderType::ChildFolder, sharedFromThis());
 
     listFolderJob->setProperties(props);
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::networkError, this, [promise, path] (QNetworkReply *reply) {
+    QObject::connect(listFolderJob, &OCC::LsColJob::networkError, this, [promise, subPath] (QNetworkReply *reply) {
         if (reply) {
-            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+            qCWarning(lcAccount()) << "ls col job" << subPath << "error" << reply->errorString();
         }
 
-        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        qCWarning(lcAccount()) << "ls col job" << subPath << "error without a reply";
         promise->finish();
     });
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithError, this, [promise, path] (QNetworkReply *reply) {
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithError, this, [promise, subPath] (QNetworkReply *reply) {
         if (reply) {
-            qCWarning(lcAccount()) << "ls col job" << path << "error" << reply->errorString();
+            qCWarning(lcAccount()) << "ls col job" << subPath << "error" << reply->errorString();
         }
 
-        qCWarning(lcAccount()) << "ls col job" << path << "error without a reply";
+        qCWarning(lcAccount()) << "ls col job" << subPath << "error without a reply";
         promise->finish();
     });
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, path] () {
-        qCInfo(lcAccount()) << "ls col job" << path << "finished";
+    QObject::connect(listFolderJob, &OCC::LsColJob::finishedWithoutError, this, [promise, subPath] () {
+        qCInfo(lcAccount()) << "ls col job" << subPath << "finished";
         promise->finish();
     });
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, path, journalForFolder, this](const QString &name, const QMap<QString, QString> &properties) {
-        // `name` is e.g. "/remote.php/dav/files/admin" or "/remote.php/dav/files/admin/SomeFolder"; whereas `path` is e.g. "" or "SomeFolder/"
-        // in case these two are equal we are currently iterating the entry for the current directory
-        const auto serverPath = name.mid(this->davPath().size());
-        const auto isRootCollection = serverPath.isEmpty() && path.isEmpty();
-        const auto isCurrentCollection = isRootCollection || serverPath == Utility::noTrailingSlashPath(path);
-        if (isCurrentCollection) {
+    listFolderJob->setProperty("ignoredFirst", false);
+    const auto baseRemotePath = Utility::trailingSlashPath(Utility::noLeadingSlashPath(remoteSyncRootPath));
+    auto syncRootPath = subPath;
+    if (subPath.startsWith(baseRemotePath)) {
+        syncRootPath = syncRootPath.mid(baseRemotePath.size());
+    }
+
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, remoteSyncRootPath, syncRootPath, journalForFolder, this](const QString &completeDavPath, const QMap<QString, QString> &properties) {
+        if (!sender()->property("ignoredFirst").toBool()) {
             qCDebug(lcAccount()) << "skip first item";
+            sender()->setProperty("ignoredFirst", true);
             return;
         }
 
-        qCInfo(lcAccount()) << "ls col job" << path << "new file" << name << properties.count();
+        qCInfo(lcAccount()) << "ls col job" << syncRootPath << "new file" << completeDavPath << properties.count();
 
-        const auto slash = name.lastIndexOf('/');
-        const auto itemFileName = name.mid(slash + 1);
-        const auto absoluteItemPathName = (path.isEmpty() ? itemFileName : path + "/" + itemFileName);
+        const auto slash = completeDavPath.lastIndexOf('/');
+        const auto itemFileName = completeDavPath.mid(slash + 1);
+        const auto absoluteItemPathName = syncRootPath.isEmpty() ? itemFileName : Utility::noTrailingSlashPath(syncRootPath) + '/' + itemFileName;
 
         auto currentItemDbRecord = SyncJournalFileRecord{};
         if (journalForFolder->getFileRecord(absoluteItemPathName, &currentItemDbRecord) && currentItemDbRecord.isValid()) {
