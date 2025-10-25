@@ -418,11 +418,16 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
     OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
 
     qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
-    const auto updateFlags = item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
+    const auto updateFlags = CF_UPDATE_FLAG_MARK_IN_SYNC; // item.isDirectory() ? CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_UPDATE_FLAG_MARK_IN_SYNC;
 
     const auto result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                               fileId.data(), static_cast<DWORD>(fileId.size()),
                                               nullptr, 0, updateFlags, nullptr, nullptr);
+
+    if (result != S_OK) {
+        const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
+        qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
+    }
 
            // Pin state tends to be lost on updates, so restore it every time
     if (!setPinState(path, previousPinState, OCC::CfApiWrapper::NoRecurse)) {
@@ -549,12 +554,18 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     auto rootPath = QFileInfo{vfs->params().filesystemPath}.canonicalFilePath();
 
     if (!pathString.startsWith(rootPath)) {
-        qCCritical(lcCfApiWrapper) << "wrong path" << pathString << rootPath,
+        qCCritical(lcCfApiWrapper) << "wrong path" << pathString << rootPath;
         sendTransferError();
         return;
     }
-    const auto serverPath = QString{vfs->params().remotePath + pathString.mid(rootPath.length() + 1)}.mid(1);
+    const auto remoteSyncRootPath = vfs->params().remotePath; // with leading slash
+    const auto serverPath = QString{remoteSyncRootPath + pathString.mid(rootPath.length() + 1)}.mid(1);
 
+    // to allow navigating to a folder if it's still a virtual directory:
+    qCDebug(lcCfApiWrapper) << "sending empty placeholders for" << path << serverPath << requestId;
+    sendTransferInfo({}, serverPath);
+
+#if 0
     qCDebug(lcCfApiWrapper) << "fetch placeholder:" << path << serverPath << requestId;
 
     QEventLoop localEventLoop;
@@ -584,7 +595,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
                          qCInfo(lcCfApiWrapper()) << "ls prop started";
                      });
 
-    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, serverPath, vfs->params().journal);
+    QMetaObject::invokeMethod(vfs->params().account.data(), &OCC::Account::listRemoteFolder, &lsPropPromise, remoteSyncRootPath, serverPath, vfs->params().journal);
 
     qCInfo(lcCfApiWrapper()) << "ls prop requested" << path << serverPath;
 
@@ -608,6 +619,7 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     if (!newPlaceholdersResult) {
         sendTransferError();
     }
+#endif
     qCInfo(lcCfApiWrapper) << "call for finalizeNewPlaceholders succeeded";
 }
 
@@ -864,7 +876,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::registerSyncRoot(const QString &pa
     policies.StructSize = sizeof(CF_SYNC_POLICIES);
     policies.Hydration.Primary = CF_HYDRATION_POLICY_FULL;
     policies.Hydration.Modifier = CF_HYDRATION_POLICY_MODIFIER_NONE;
-    policies.Population.Primary = CF_POPULATION_POLICY_PARTIAL;
+    policies.Population.Primary = CF_POPULATION_POLICY_ALWAYS_FULL; // CF_POPULATION_POLICY_PARTIAL;
     policies.Population.Modifier = CF_POPULATION_POLICY_MODIFIER_NONE;
     policies.InSync = CF_INSYNC_POLICY_PRESERVE_INSYNC_FOR_SYNC_ENGINE;
     policies.HardLink = CF_HARDLINK_POLICY_NONE;
@@ -1197,7 +1209,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const QByteArray &fileId = item._fileId;
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
-    const auto createPlaceholderFlags = CF_CONVERT_FLAG_MARK_IN_SYNC | (item.isDirectory() ? (item._type == ItemType::ItemTypeVirtualDirectory ? CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_CONVERT_FLAG_ALWAYS_FULL) : CF_CONVERT_FLAG_MARK_IN_SYNC);
+    // const auto createPlaceholderFlags = CF_CONVERT_FLAG_MARK_IN_SYNC | (item.isDirectory() ? (item._type == ItemType::ItemTypeVirtualDirectory ? CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_CONVERT_FLAG_ALWAYS_FULL) : CF_CONVERT_FLAG_MARK_IN_SYNC);
+    const auto directoryPlaceholderFlags = item.isDirectory() ? CF_CONVERT_FLAG_ALWAYS_FULL : CF_CONVERT_FLAG_NONE;
+    const auto createPlaceholderFlags = CF_CONVERT_FLAG_MARK_IN_SYNC | directoryPlaceholderFlags;
 
     const auto result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), createPlaceholderFlags, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
