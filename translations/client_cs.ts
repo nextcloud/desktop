@@ -441,7 +441,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="225"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Odkaz pro veřejné sdílení</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1061"/>
@@ -591,7 +591,7 @@ Chcete ho naimportovat?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>Šifrování mezi koncovými body nebylo na tomto účtu zinicializováno.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
@@ -5585,7 +5585,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>Public Share Link</source>
-        <translation type="unfinished"/>
+        <translation>Odkaz pro veřejné sdílení</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
@@ -6396,7 +6396,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k neočekávané chybě. Zkuste synchronizovat znovu nebo, pokud problém přetrvává, se obraťte na správce vámi využívaného serveru.</translation>
     </message>
 </context>
 <context>
@@ -6813,12 +6813,12 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Jaký je váš stav?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Vyčistit stavovou zprávu po uplynutí</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
@@ -6861,12 +6861,12 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Nerušit</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Ztlumit veškerá upozornění</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
