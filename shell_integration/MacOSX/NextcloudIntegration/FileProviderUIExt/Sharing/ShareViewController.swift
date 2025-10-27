@@ -65,6 +65,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         errorDismissButton.title = String(localized: "Dismiss")
         dismissError(self)
         hideOptions(self)
+        optionsView.applyLocalizedStrings()
     }
 
     @IBAction func closeAction(_ sender: Any) {

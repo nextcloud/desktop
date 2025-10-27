@@ -64,6 +64,12 @@
       "comment" : "Checkbox title",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillad upload og redigering"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1960,6 +1966,10 @@
         }
       }
     },
+    "Free up space" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual"
+    },
     "Group share" : {
       "comment" : "Menu item label",
       "extractionState" : "manual",
@@ -2023,6 +2033,12 @@
     "Group share (%@)" : {
       "comment" : "Text label",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gruppedeling (%@)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2376,6 +2392,10 @@
         }
       }
     },
+    "Lock file" : {
+      "comment" : "Context menu item label",
+      "extractionState" : "manual"
+    },
     "Locking file \"%@\"…" : {
       "comment" : "Text label",
       "localizations" : {
@@ -2676,6 +2696,12 @@
     "Public link has been copied icon" : {
       "comment" : "Accessibility description for button",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentlig link er blevet kopieret-ikon"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3628,6 +3654,12 @@
     "Unknown share" : {
       "comment" : "Text label",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukendt deling"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3927,6 +3959,12 @@
     "User share (%@)" : {
       "comment" : "Text label",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdeling (%@)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
