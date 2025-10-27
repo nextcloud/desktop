@@ -47,10 +47,8 @@ static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInter
 static constexpr char monoIconsC[] = "monoIcons";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
-static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
 static constexpr char updateSegmentC[] = "updateSegment";
-static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
 static constexpr char geometryC[] = "geometry";
@@ -73,14 +71,7 @@ static constexpr char proxyPortC[] = "Proxy/port";
 static constexpr char proxyUserC[] = "Proxy/user";
 static constexpr char proxyPassC[] = "Proxy/pass";
 static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
-
-static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
-static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
-static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
-static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
-static constexpr char moveToTrashC[] = "moveToTrash";
-
 static constexpr char forceLoginV2C[] = "forceLoginV2";
 
 static constexpr char certPath[] = "http_certificatePath";
