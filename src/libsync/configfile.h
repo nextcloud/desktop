@@ -253,7 +253,13 @@ public:
     static constexpr char showCallNotificationsC[] = "showCallNotifications";
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
-
+    static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
+    static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+    static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
+    static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
+    static constexpr char moveToTrashC[] = "moveToTrash";
+    static constexpr char updateChannelC[] = "updateChannel";
+    static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
     static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
     static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
     static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
