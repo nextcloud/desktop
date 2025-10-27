@@ -29,12 +29,6 @@ To remove them, we use the Swift command-line utility [TransifexStringCatalogSan
 See its dedicated README for usage instructions.
 Use it for all updated Xcode string catalogs.
 
-### Cleanup
-
-1. Revert your changes to the Transifex configuration.
-2. Review the updated Xcode string catalogs.
-3. Commit the updated Xcode string catalogs.
-
 ## Nextcloud Developer Build
 
 There is a special target in the Xcode project which integrates the `mac-crafter` command-line tool as an external build system in form of a scheme.

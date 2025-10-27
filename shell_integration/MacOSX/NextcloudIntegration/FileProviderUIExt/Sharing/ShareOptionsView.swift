@@ -106,19 +106,7 @@ class ShareOptionsView: NSView {
     private var suggestionsWindowController = SuggestionsWindowController()
     private var suggestionsTextFieldDelegate = SuggestionsTextFieldDelegate()
 
-    private func update() {
-        guard let controller else {
-            reset()
-            setAllFields(enabled: false)
-            saveButton.isEnabled = false
-            deleteButton.isEnabled = false
-            return
-        }
-
-        logger = FileProviderLogger(category: "ShareOptionsView", log: controller.log)
-        let share = controller.share
-
-        // Programmatically update localizable texts.
+    func applyLocalizedStrings() {
         publicLinkShareMenuItem.title = String(localized: "Public link share")
         userShareMenuItem.title = String(localized: "User share")
         groupShareMenuItem.title = String(localized: "Group share")
@@ -139,6 +127,19 @@ class ShareOptionsView: NSView {
 
         deleteButton.title = String(localized: "Delete")
         saveButton.title = String(localized: "Save")
+    }
+
+    private func update() {
+        guard let controller else {
+            reset()
+            setAllFields(enabled: false)
+            saveButton.isEnabled = false
+            deleteButton.isEnabled = false
+            return
+        }
+
+        logger = FileProviderLogger(category: "ShareOptionsView", log: controller.log)
+        let share = controller.share
 
         deleteButton.isEnabled = share.canDelete
         saveButton.isEnabled = share.canEdit
