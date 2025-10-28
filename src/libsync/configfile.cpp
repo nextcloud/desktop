@@ -152,7 +152,7 @@ ConfigFile::ConfigFile()
 
 
     QSettings settings(config, QSettings::IniFormat);
-    settings.beginGroup(defaultConnection());
+    settings.beginGroup(defaultConnectionGroupName());
 }
 
 bool ConfigFile::setConfDir(const QString &value)
@@ -491,56 +491,53 @@ bool ConfigFile::exists()
     return file.exists();
 }
 
-QString ConfigFile::defaultConnection() const
+QString ConfigFile::defaultConnectionGroupName() const
 {
     return Theme::instance()->appName();
 }
 
 void ConfigFile::storeData(const QString &group, const QString &key, const QVariant &value)
 {
-    const QString con(group.isEmpty() ? defaultConnection() : group);
+    const QString groupName(group.isEmpty() ? defaultConnectionGroupName() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
 
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
     settings.setValue(key, value);
     settings.sync();
 }
 
 QVariant ConfigFile::retrieveData(const QString &group, const QString &key) const
 {
-    const QString con(group.isEmpty() ? defaultConnection() : group);
+    const QString groupName(group.isEmpty() ? defaultConnectionGroupName() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
 
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
     return settings.value(key);
 }
 
 void ConfigFile::removeData(const QString &group, const QString &key)
 {
-    const QString con(group.isEmpty() ? defaultConnection() : group);
+    const QString groupName(group.isEmpty() ? defaultConnectionGroupName() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
 
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
     settings.remove(key);
 }
 
 bool ConfigFile::dataExists(const QString &group, const QString &key) const
 {
-    const QString con(group.isEmpty() ? defaultConnection() : group);
+    const QString groupName(group.isEmpty() ? defaultConnectionGroupName() : group);
     QSettings settings(configFile(), QSettings::IniFormat);
 
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
     return settings.contains(key);
 }
 
-chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::remotePollInterval(const QString &connectionGroupName) const
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
 
     auto defaultPollInterval = chrono::milliseconds(DEFAULT_REMOTE_POLL_INTERVAL);
     auto remoteInterval = millisecondsValue(settings, remotePollIntervalC, defaultPollInterval);
@@ -551,32 +548,25 @@ chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) c
     return remoteInterval;
 }
 
-void ConfigFile::setRemotePollInterval(chrono::milliseconds interval, const QString &connection)
+void ConfigFile::setRemotePollInterval(chrono::milliseconds interval, const QString &connectionGroupName)
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     if (interval < chrono::seconds(5)) {
         qCWarning(lcConfigFile) << "Remote Poll interval of " << interval.count() << " is below five seconds.";
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
     settings.setValue(QLatin1String(remotePollIntervalC), qlonglong(interval.count()));
     settings.sync();
 }
 
-chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connectionGroupName) const
 {
-    auto pollInterval = remotePollInterval(connection);
-
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    auto pollInterval = remotePollInterval(groupName);
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
-
+    settings.beginGroup(groupName);
     auto defaultInterval = chrono::hours(2);
     auto interval = millisecondsValue(settings, forceSyncIntervalC, defaultInterval);
     if (interval < pollInterval) {
@@ -589,17 +579,15 @@ chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) co
 chrono::milliseconds OCC::ConfigFile::fullLocalDiscoveryInterval() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(defaultConnection());
+    settings.beginGroup(defaultConnectionGroupName());
     return millisecondsValue(settings, fullLocalDiscoveryIntervalC, chrono::hours(1));
 }
 
-chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &connectionGroupName) const
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
 
     const auto defaultInterval = chrono::minutes(1);
     auto interval = millisecondsValue(settings, notificationRefreshIntervalC, defaultInterval);
@@ -610,13 +598,11 @@ chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &conn
     return interval;
 }
 
-chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connectionGroupName) const
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
 
     auto defaultInterval = chrono::hours(10);
     auto interval = millisecondsValue(settings, updateCheckIntervalC, defaultInterval);
@@ -629,53 +615,41 @@ chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connection) 
     return interval;
 }
 
-bool ConfigFile::skipUpdateCheck(const QString &connection) const
+bool ConfigFile::skipUpdateCheck(const QString &connectionGroupName) const
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
-    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), con, false);
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    QVariant fallback = getValue(QLatin1String(skipUpdateCheckC), groupName, false);
     fallback = getValue(QLatin1String(skipUpdateCheckC), QString(), fallback);
 
     QVariant value = getPolicySetting(QLatin1String(skipUpdateCheckC), fallback);
     return value.toBool();
 }
 
-void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
+void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connectionGroupName)
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
 
     settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
     settings.sync();
 }
 
-bool ConfigFile::autoUpdateCheck(const QString &connection) const
+bool ConfigFile::autoUpdateCheck(const QString &connectionGroupName) const
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
-    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), con, true);
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
+    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), groupName, true);
     fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
 
     QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
     return value.toBool();
 }
 
-void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connection)
+void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connectionGroupName)
 {
-    QString con(connection);
-    if (connection.isEmpty())
-        con = defaultConnection();
-
+    const auto groupName = connectionGroupName.isEmpty() ? defaultConnectionGroupName() : connectionGroupName;
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.beginGroup(con);
+    settings.beginGroup(groupName);
 
     settings.setValue(QLatin1String(autoUpdateCheckC), QVariant(autoCheck));
     settings.sync();
