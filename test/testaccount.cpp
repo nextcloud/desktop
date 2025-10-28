@@ -40,6 +40,37 @@ private slots:
         AccountPtr account = Account::create();
         [[maybe_unused]] const auto davPath = account->davPath();
     }
+
+    void testAccount_setLimitSettings_globalNetworkLimitFallback()
+    {
+        using LimitSetting = Account::AccountNetworkTransferLimitSetting;
+        AccountPtr account = Account::create();
+
+        const auto setLimitSettings = [account](const LimitSetting setting) -> void {
+            account->setDownloadLimitSetting(setting);
+            account->setUploadLimitSetting(setting);
+        };
+
+        const auto verifyLimitSettings = [account](const LimitSetting expectedSetting) -> void {
+            QCOMPARE_EQ(expectedSetting, account->downloadLimitSetting());
+            QCOMPARE_EQ(expectedSetting, account->uploadLimitSetting());
+        };
+
+        // the default setting should be NoLimit
+        verifyLimitSettings(LimitSetting::NoLimit);
+
+        // changing it to ManualLimit should succeed
+        setLimitSettings(LimitSetting::ManualLimit);
+        verifyLimitSettings(LimitSetting::ManualLimit);
+
+        // changing it to AutoLimit should succeed
+        setLimitSettings(LimitSetting::AutoLimit);
+        verifyLimitSettings(LimitSetting::AutoLimit);
+
+        // changing it to LegacyGlobalLimit (-2) should fall back to NoLimit
+        setLimitSettings(LimitSetting::LegacyGlobalLimit);
+        verifyLimitSettings(LimitSetting::NoLimit);
+    }
 };
 
 QTEST_APPLESS_MAIN(TestAccount)
