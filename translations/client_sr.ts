@@ -439,22 +439,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="225"/>
+        <location filename="../src/libsync/account.cpp" line="226"/>
         <source>Public Share Link</source>
         <translation>Јавни линк дељења</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1061"/>
+        <location filename="../src/libsync/account.cpp" line="1062"/>
         <source>File %1 is already locked by %2.</source>
         <translation>%2 је већ закључао фајл %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1063"/>
+        <location filename="../src/libsync/account.cpp" line="1064"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Операција закључавања %1 није успела услед грешке %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1065"/>
+        <location filename="../src/libsync/account.cpp" line="1066"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Операција откључавања %1 није успела услед грешке %2</translation>
     </message>
@@ -4005,218 +4005,218 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Симболички линкови не могу да се синхронизују.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="388"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>File is listed on the ignore list.</source>
         <translation>Фајл се налази на листи за игнорисање.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Имена фајлова која се завршавају са тачком нису подржана на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="404"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Имена фолдера која садрже карактер „%1” нису подржана на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="405"/>
+        <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Имена фајлова која садрже карактер „%1” нису подржана на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Име фолдера садржи бар један неисправан карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="409"/>
+        <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>File name contains at least one invalid character</source>
         <translation>Име фајла садржи бар један неисправан карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Име фолдера је резервисано име на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Име фајла је резервисано име на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Име фајла садржи размаке на крају.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="422"/>
-        <location filename="../src/libsync/discovery.cpp" line="429"/>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <location filename="../src/libsync/discovery.cpp" line="426"/>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="482"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>Не може да се промени име или отпреми.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="426"/>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
         <source>Filename contains leading spaces.</source>
         <translation>Име фајла садржи размаке на почетку.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Име фајла садржи размаке на почетку и крају.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source>Filename is too long.</source>
         <translation>Име фајла је сувише дугачко.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Фајл/фолдер се игнорише јер је скривен.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Stat failed.</source>
         <translation>Ставка је прескочена јер је искључена или је дошло до грешке.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфликт: преузета је серверска верзија, локалној копији је промењено име и није отпремљена.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Конфликт величине слова: Серверски фајл је преузет и промењено му је име да би се спречило сударање слова.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="462"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Име фајла не може да се кодира на вашем фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Име фајла је на црној листи сервера.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="464"/>
+        <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Разлог: забрањено је комплетно име фајла.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="467"/>
+        <location filename="../src/libsync/discovery.cpp" line="471"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Разлог: име фајла поседује забрањено базно име (почетак имена фајла).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="470"/>
+        <location filename="../src/libsync/discovery.cpp" line="474"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Разлог: име фајла поседује забрањену екстензију (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="473"/>
+        <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Разлог: име фајла поседује забрањени карактер (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="619"/>
+        <location filename="../src/libsync/discovery.cpp" line="623"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Фајл има екстензију која је резервисана за виртуелне фајлове.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="776"/>
+        <location filename="../src/libsync/discovery.cpp" line="780"/>
         <source>size</source>
         <translation>величина</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="778"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>permission</source>
         <translation>дозвола</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>file id</source>
         <translation>фајл id</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
+        <location filename="../src/libsync/discovery.cpp" line="790"/>
         <source>Server reported no %1</source>
         <translation>Сервер је пријавио да нема %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1199"/>
+        <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Отпремање %1 премашује %2 простора преосталог у личним фајловима.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1218"/>
+        <location filename="../src/libsync/discovery.cpp" line="1222"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Отпремање %1 премашује %2 простора преосталог у фолдеру %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1234"/>
+        <location filename="../src/libsync/discovery.cpp" line="1238"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Фајл не може да се отпреми јер је отворен у „%1”.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1284"/>
+        <location filename="../src/libsync/discovery.cpp" line="1288"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка приликом брисања фајл записа %1 из базе података</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1563"/>
-        <location filename="../src/libsync/discovery.cpp" line="2034"/>
+        <location filename="../src/libsync/discovery.cpp" line="1568"/>
+        <location filename="../src/libsync/discovery.cpp" line="2041"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Премештено на неисправан циљ, враћа се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1891"/>
+        <location filename="../src/libsync/discovery.cpp" line="1896"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Шифрована ставка не може да се измени јер изабрани сертификат није исправан.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1958"/>
+        <location filename="../src/libsync/discovery.cpp" line="1965"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорисано јер се не налази на листи за синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1992"/>
+        <location filename="../src/libsync/discovery.cpp" line="1999"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Није дозвољено пошто немате дозволу да додате подфолдере у овај фолдер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1998"/>
+        <location filename="../src/libsync/discovery.cpp" line="2005"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Није дозвољено пошто немате дозволу да додате фајлове у овај фолдер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2012"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Није дозвољено да отпремите овај фајл јер је на серверу означен као само-за-читање. Враћа се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2048"/>
+        <location filename="../src/libsync/discovery.cpp" line="2055"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Није дозвољено брисање, враћа се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2219"/>
+        <location filename="../src/libsync/discovery.cpp" line="2226"/>
         <source>Error while reading the database</source>
         <translation>Грешка приликом читања базе података</translation>
     </message>

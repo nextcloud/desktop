@@ -439,22 +439,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="225"/>
+        <location filename="../src/libsync/account.cpp" line="226"/>
         <source>Public Share Link</source>
         <translation>Nasc Comhroinnte Poiblí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1061"/>
+        <location filename="../src/libsync/account.cpp" line="1062"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Tá comhad % 1 faoi ghlas cheana féin ag % 2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1063"/>
+        <location filename="../src/libsync/account.cpp" line="1064"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Theip ar an oibríocht ghlasála ar % 1 le hearráid % 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1065"/>
+        <location filename="../src/libsync/account.cpp" line="1066"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Theip ar an oibríocht díghlasála ar % 1 le hearráid % 2</translation>
     </message>
@@ -4005,218 +4005,218 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Ní thacaítear le naisc siombalacha le linn sioncronaithe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="388"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>File is listed on the ignore list.</source>
         <translation>Tá an comhad liostaithe ar an liosta neamhaird a dhéanamh.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Ní thacaítear le hainmneacha comhaid a chríochnaíonn le tréimhse ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="404"/>
+        <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha fillteán ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="405"/>
+        <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
         <translation>Ní thacaítear le hainmneacha comhad ina bhfuil an carachtar &quot;%1&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="408"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>Folder name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm an fhillteáin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="409"/>
+        <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>File name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad san ainm comhaid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
+        <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>Folder name is a reserved name on this file system.</source>
         <translation>Is ainm curtha in áirithe ar an gcóras comhad seo é ainm an fhillteáin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="413"/>
+        <location filename="../src/libsync/discovery.cpp" line="417"/>
         <source>File name is a reserved name on this file system.</source>
         <translation>Is ainm in áirithe é ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="423"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Tá spásanna leanúnacha san ainm comhaid.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="422"/>
-        <location filename="../src/libsync/discovery.cpp" line="429"/>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <location filename="../src/libsync/discovery.cpp" line="426"/>
+        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="482"/>
         <source>Cannot be renamed or uploaded.</source>
         <translation>Ní féidir é a athainmniú ná a uaslódáil.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="426"/>
+        <location filename="../src/libsync/discovery.cpp" line="430"/>
         <source>Filename contains leading spaces.</source>
         <translation>Tá spásanna tosaigh san ainm comhaid.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Tá spásanna tosaigh agus spásanna rianaithe sa chomhadainm.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source>Filename is too long.</source>
         <translation>Tá an t-ainm comhaid ró-fhada.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Ní thugtar aird ar Chomhad/Fillteán toisc go bhfuil sé i bhfolach.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Stat failed.</source>
         <translation>Theip ar Stat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
+        <location filename="../src/libsync/discovery.cpp" line="454"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Coimhlint: Íoslódáltar leagan an fhreastalaí, athainmníodh an chóip áitiúil agus níor uaslódáladh é.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="458"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Coimhlint Cásanna: Comhad freastalaí a íoslódáil agus a athainmniú chun coimhlint a sheachaint.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="462"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Ní féidir ainm an chomhaid a ionchódú ar do chóras comhad.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="465"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Tá ainm an chomhaid ar an liosta dubh ar an bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="464"/>
+        <location filename="../src/libsync/discovery.cpp" line="468"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Cúis: tá an comhadainm iomlán toirmiscthe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="467"/>
+        <location filename="../src/libsync/discovery.cpp" line="471"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Cúis: tá bonnainm toirmiscthe ag an gcomhad (tús ainm an chomhaid).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="470"/>
+        <location filename="../src/libsync/discovery.cpp" line="474"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Cúis: tá iarmhír toirmiscthe (.%1 ar an gcomhad.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="473"/>
+        <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation>Cúis: tá carachtar toirmiscthe (%1) san ainm comhaid.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="619"/>
+        <location filename="../src/libsync/discovery.cpp" line="623"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Tá síneadh curtha in áirithe ag an gcomhad do chomhaid fhíorúla.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="776"/>
+        <location filename="../src/libsync/discovery.cpp" line="780"/>
         <source>size</source>
         <translation>méid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="778"/>
+        <location filename="../src/libsync/discovery.cpp" line="782"/>
         <source>permission</source>
         <translation>cead</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
+        <location filename="../src/libsync/discovery.cpp" line="786"/>
         <source>file id</source>
         <translation>ID comhaid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
+        <location filename="../src/libsync/discovery.cpp" line="790"/>
         <source>Server reported no %1</source>
         <translation>Níor thuairiscigh freastalaí % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1199"/>
+        <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i gcomhaid phearsanta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1218"/>
+        <location filename="../src/libsync/discovery.cpp" line="1222"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Tá uaslódáil %1 níos mó ná %2 den spás atá fágtha i bhfillteán %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1234"/>
+        <location filename="../src/libsync/discovery.cpp" line="1238"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Níorbh fhéidir an comhad a uaslódáil toisc go bhfuil sé oscailte i &quot;% 1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1284"/>
+        <location filename="../src/libsync/discovery.cpp" line="1288"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Earráid agus taifead comhaid % 1 á scriosadh ón mbunachar sonraí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1563"/>
-        <location filename="../src/libsync/discovery.cpp" line="2034"/>
+        <location filename="../src/libsync/discovery.cpp" line="1568"/>
+        <location filename="../src/libsync/discovery.cpp" line="2041"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Bogtha go dtí an sprioc neamhbhailí, á athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1891"/>
+        <location filename="../src/libsync/discovery.cpp" line="1896"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Ní féidir an mhír chriptithe a mhionathrú toisc nach bhfuil an teastas roghnaithe bailí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1958"/>
+        <location filename="../src/libsync/discovery.cpp" line="1965"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Rinneadh neamhaird de mar gheall ar an liosta dubh &quot;roghnaigh cad ba cheart a shioncronú&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1992"/>
+        <location filename="../src/libsync/discovery.cpp" line="1999"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ní cheadaítear toisc nach bhfuil cead agat fofhillteáin a chur leis an bhfillteán sin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1998"/>
+        <location filename="../src/libsync/discovery.cpp" line="2005"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ní cheadaítear toisc nach bhfuil cead agat comhaid a chur san fhillteán sin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2012"/>
+        <location filename="../src/libsync/discovery.cpp" line="2019"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ní cheadaítear an comhad seo a uaslódáil toisc go bhfuil sé inléite amháin ar an bhfreastalaí, á athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2048"/>
+        <location filename="../src/libsync/discovery.cpp" line="2055"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ní cheadaítear a bhaint, a athchóiriú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2219"/>
+        <location filename="../src/libsync/discovery.cpp" line="2226"/>
         <source>Error while reading the database</source>
         <translation>Earráid agus an bunachar sonraí á léamh</translation>
     </message>
