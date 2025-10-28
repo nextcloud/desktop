@@ -24,6 +24,7 @@ class AccountManager : public QObject
 public:
     enum AccountsRestoreResult {
         AccountsRestoreFailure = 0,
+        AccountsNotFound,
         AccountsRestoreSuccess,
         AccountsRestoreSuccessFromLegacyVersion,
         AccountsRestoreSuccessWithSkipped
