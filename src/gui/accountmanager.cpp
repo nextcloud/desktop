@@ -72,6 +72,9 @@ constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
+constexpr char unbrandedClientAppNameC[] = "Nextcloud";
+constexpr char legacyClientAppNameC[] = "Owncloud";
+
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
@@ -315,7 +318,9 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
     // Info
     configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
-    configFile.setAutoUpdateCheck(settings->value(ConfigFile::autoUpdateCheckC, configFile.autoUpdateCheck()).toBool(), {});
+    auto legacyAppName = settings->contains(legacyClientAppNameC) ? legacyClientAppNameC : unbrandedClientAppNameC;
+    const auto updaterGroupName = QString("%1/%2").arg(legacyAppName, ConfigFile::autoUpdateCheckC);
+    configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
     // Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
     configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
