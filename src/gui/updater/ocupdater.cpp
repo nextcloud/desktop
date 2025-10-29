@@ -307,8 +307,21 @@ void NSISUpdater::wipeUpdateData()
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFileName = settings.value(updateAvailableC).toString();
-    if (!updateFileName.isEmpty())
-        QFile::remove(updateFileName);
+    if (!updateFileName.isEmpty()) {
+        if (QFile::remove(updateFileName)) {
+            qCInfo(lcUpdater) << "Removed updater file:" << updateFileName;
+        } else {
+            qCWarning(lcUpdater) << "Failed to remove updater file:" << updateFileName;
+        }
+    }
+    // Also try to remove the msi log file (created when running msiexec)
+    QString msiLogFileName = cfg.configPath() + "msi.log";
+    if (QFile::remove(msiLogFileName)) {
+        qCInfo(lcUpdater) << "Removed msi log file:" << msiLogFileName;
+    } else {
+        qCWarning(lcUpdater) << "Failed to remove msi log file:" << msiLogFileName;
+    }
+
     settings.remove(updateAvailableC);
     settings.remove(updateTargetVersionC);
     settings.remove(updateTargetVersionStringC);
@@ -525,6 +538,13 @@ bool NSISUpdater::handleStartup()
                 return false;
             }
         } else {
+            // No internal updater was executed (possible manual install).
+            // If the app has already been upgraded externally, clean up leftover msi and log files.
+            if (updateSucceeded()) {
+                qCInfo(lcUpdater) << "Detected externally installed update - cleaning leftover msi and log files.";
+                wipeUpdateData();
+                return false;
+            }
             qCInfo(lcUpdater) << "Triggering an update";
             return performUpdate();
         }
