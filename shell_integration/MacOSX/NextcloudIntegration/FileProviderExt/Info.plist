@@ -49,6 +49,6 @@
 	<key>SocketApiPrefix</key>
 	<string>$(OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX)$(OC_APPLICATION_REV_DOMAIN)</string>
 	<key>NCFPKAppGroupIdentifier</key>
-	<string>$(OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX)$(OC_APPLICATION_REV_DOMAIN)</string>
+	<string>group.$(OC_APPLICATION_REV_DOMAIN)</string>
 </dict>
 </plist>
