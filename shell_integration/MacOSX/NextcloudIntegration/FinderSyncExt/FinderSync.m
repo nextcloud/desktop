@@ -57,7 +57,9 @@
         // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
 
         NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
-        NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
+        NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
+        NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];
+        NSURL *socketPath = [applicationSupport URLByAppendingPathComponent:@".socket" isDirectory:NO];
 
         NSLog(@"Socket path: %@", socketPath.path);
 
