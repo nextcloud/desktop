@@ -27,49 +27,37 @@ class ShareController: ObservableObject {
         shareWith: String?,
         password: String? = nil,
         expireDate: String? = nil,
-        permissions: Int = 1,
-        publicUpload: Bool = false,
+        permissions: NKShare.Permission,
+        publicUpload: Bool,
         note: String? = nil,
         label: String? = nil,
         hideDownload: Bool,
         attributes: String? = nil,
         options: NKRequestOptions = NKRequestOptions()
     ) async -> NKError? {
-        return await withCheckedContinuation { continuation in
-            if shareType == .publicLink {
-                kit.createShare(
-                    path: itemServerRelativePath,
-                    shareType: ShareType.publicLink.rawValue,
-                    shareWith: nil,
-                    publicUpload: publicUpload,
-                    hideDownload: hideDownload,
-                    password: password,
-                    permissions: permissions,
-                    account: account.ncKitAccount,
-                    options: options
-                ) { account, share, data, error in
-                    continuation.resume(returning: error)
-                }
-            } else {
-                guard let shareWith = shareWith else {
-                    let error = NKError(statusCode: 0, fallbackDescription: "No recipient for share!")
-                    continuation.resume(returning: error)
-                    return
-                }
-
-                kit.createShare(
-                    path: itemServerRelativePath,
-                    shareType: shareType.rawValue,
-                    shareWith: shareWith,
-                    password: password,
-                    permissions: permissions,
-                    attributes: attributes,
-                    account: account.ncKitAccount
-                ) { account, share, data, error in
-                    continuation.resume(returning: error)
-                }
-            }
+        let sharee: String? = if shareType == .publicLink {
+            nil
+        } else {
+            shareWith
         }
+
+        if shareType != .publicLink, sharee == nil {
+            // Any share requires a recipient, except public links.
+            return NKError(statusCode: 0, fallbackDescription: "No recipient for share!")
+        }
+
+        let (_, _, _, error) = await kit.createShareAsync(
+            path: itemServerRelativePath,
+            shareType: shareType.rawValue,
+            shareWith: sharee,
+            hideDownload: hideDownload,
+            password: password,
+            permissions: permissions.rawValue,
+            account: account.ncKitAccount,
+            options: options
+        )
+
+        return error
     }
 
     init(share: NKShare, account: Account, kit: NextcloudKit, log: any FileProviderLogging) {

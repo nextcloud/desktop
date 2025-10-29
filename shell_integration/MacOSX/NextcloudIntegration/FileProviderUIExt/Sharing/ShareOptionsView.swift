@@ -56,13 +56,14 @@ class ShareOptionsView: NSView {
 
             suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(account: account, kit: kit, log: controller.log)
 
-            suggestionsTextFieldDelegate.confirmationHandler = { suggestion in
-                guard let sharee = suggestion?.data as? NKSharee else {
-                    return
+            suggestionsTextFieldDelegate.confirmationHandler = { [weak self] suggestion in
+                Task { @MainActor in
+                    guard let sharee = suggestion?.data as? NKSharee else {
+                        return
+                    }
+                    self?.shareRecipientTextField.stringValue = sharee.shareWith
+                    self?.logger?.debug("Chose sharee \(sharee.shareWith)")
                 }
-
-                self.shareRecipientTextField.stringValue = sharee.shareWith
-                self.logger?.debug("Chose sharee \(sharee.shareWith)")
             }
 
             suggestionsTextFieldDelegate.targetTextField = shareRecipientTextField
@@ -190,7 +191,7 @@ class ShareOptionsView: NSView {
 
         if let caps = dataSource?.capabilities?.filesSharing {
             uploadEditPermissionCheckbox.state =
-                caps.defaultPermissions & NKShare.PermissionValues.updateShare.rawValue != 0
+                caps.defaultPermissions & NKShare.Permission.update.rawValue != 0
                 ? .on : .off
 
             switch type {
@@ -201,7 +202,7 @@ class ShareOptionsView: NSView {
                 expirationDateCheckbox.state = caps.publicLink?.expireDateEnforced == true ? .on : .off
                 expirationDateCheckbox.isEnabled = caps.publicLink?.expireDateEnforced == false
                 expirationDatePicker.dateValue = Date(
-                    timeIntervalSinceNow: 
+                    timeIntervalSinceNow:
                         TimeInterval((caps.publicLink?.expireDateDays ?? 1) * 24 * 60 * 60)
                 )
                 if caps.publicLink?.expireDateEnforced == true {
@@ -281,12 +282,15 @@ class ShareOptionsView: NSView {
             let password = passwordProtectCheckbox.state == .on
                 ? passwordSecureField.stringValue
                 : ""
+
             let expireDate = expirationDateCheckbox.state == .on
                 ? NKShare.formattedDateString(date: expirationDatePicker.dateValue)
                 : ""
+
             let note = noteForRecipientCheckbox.state == .on
                 ? noteTextField.stringValue
                 : ""
+
             let label = labelTextField.stringValue
             let hideDownload = hideDownloadCheckbox.state == .on
             let uploadAndEdit = uploadEditPermissionCheckbox.state == .on
@@ -305,14 +309,17 @@ class ShareOptionsView: NSView {
                 let selectedShareType = pickedShareType()
                 let shareWith = shareRecipientTextField.stringValue
 
-                var permissions = NKShare.PermissionValues.all.rawValue
-                permissions = uploadAndEdit
-                    ? permissions | NKShare.PermissionValues.updateShare.rawValue
-                    : permissions & ~NKShare.PermissionValues.updateShare.rawValue
+                var permissions = NKShare.Permission.defaultPermission(for: selectedShareType)
+
+                if uploadAndEdit {
+                    permissions.formUnion(.create)
+                    permissions.formUnion(.update)
+                }
 
                 setAllFields(enabled: false)
                 deleteButton.isEnabled = false
                 saveButton.isEnabled = false
+
                 let error = await ShareController.create(
                     account: account,
                     kit: kit,
@@ -322,10 +329,12 @@ class ShareOptionsView: NSView {
                     password: password,
                     expireDate: expireDate,
                     permissions: permissions,
+                    publicUpload: permissions.contains(.create),
                     note: note,
                     label: label,
                     hideDownload: hideDownload
                 )
+
                 if let error = error, error != .success {
                     dataSource.uiDelegate?.showError(String(localized: "Error creating: \(error.errorDescription)"))
                     setAllFields(enabled: true)
@@ -333,6 +342,7 @@ class ShareOptionsView: NSView {
                     dataSource.uiDelegate?.hideOptions(self)
                     await dataSource.reload()
                 }
+
                 return
             }
 
@@ -342,14 +352,16 @@ class ShareOptionsView: NSView {
                 logger?.error("No valid share controller, cannot edit share.")
                 return
             }
+
             let share = controller.share
             let permissions = uploadAndEdit
-                ? share.permissions | NKShare.PermissionValues.updateShare.rawValue
-                : share.permissions & ~NKShare.PermissionValues.updateShare.rawValue
+                ? share.permissions | NKShare.Permission.update.rawValue
+                : share.permissions & ~NKShare.Permission.update.rawValue
 
             setAllFields(enabled: false)
             deleteButton.isEnabled = false
             saveButton.isEnabled = false
+
             let error = await controller.save(
                 password: password,
                 expireDate: expireDate,
@@ -358,6 +370,7 @@ class ShareOptionsView: NSView {
                 label: label,
                 hideDownload: hideDownload
             )
+
             if let error = error, error != .success {
                 dataSource?.uiDelegate?.showError("Error updating share: \(error.errorDescription)")
                 setAllFields(enabled: true)
@@ -387,4 +400,3 @@ class ShareOptionsView: NSView {
         }
     }
 }
-
