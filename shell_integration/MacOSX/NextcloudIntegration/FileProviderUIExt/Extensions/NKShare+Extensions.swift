@@ -10,26 +10,6 @@ import AppKit
 import NextcloudKit
 
 extension NKShare {
-    enum ShareType: Int {
-        case internalLink = -1
-        case user = 0
-        case group = 1
-        case publicLink = 3
-        case email = 4
-        case federatedCloud = 6
-        case team = 7
-        case talkConversation = 10
-    }
-
-    enum PermissionValues: Int {
-        case readShare = 1
-        case updateShare = 2
-        case createShare = 4
-        case deleteShare = 8
-        case shareShare = 16
-        case all = 31
-    }
-
     var typeImage: NSImage? {
         var image: NSImage?
         switch shareType {
@@ -121,12 +101,15 @@ extension NKShare {
     }
 
     var shareesCanEdit: Bool {
-        get { (permissions & PermissionValues.updateShare.rawValue) != 0 }
+        get {
+            NKShare.Permission(rawValue: permissions).contains(.update)
+        }
+
         set {
             if newValue {
-                permissions |= NKShare.PermissionValues.updateShare.rawValue
+                permissions = NKShare.Permission(rawValue: permissions).union(.update).rawValue
             } else {
-                permissions &= ~NKShare.PermissionValues.updateShare.rawValue
+                permissions = NKShare.Permission(rawValue: permissions).subtracting(.update).rawValue
             }
         }
     }
