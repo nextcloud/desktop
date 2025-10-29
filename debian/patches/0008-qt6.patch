@@ -67,10 +67,10 @@ index 0000000000..ccded5d62e
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 0000000000..4a4c59b354
+index 0000000000..5fadab7feb
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,290 @@
+@@ -0,0 +1,291 @@
 +
 +#pragma once
 +
@@ -152,6 +152,7 @@ index 0000000000..4a4c59b354
 +//-----------------------------------------------------------------------------
 +
 +#if QT_VERSION<QT_VERSION_CHECK(6, 4, 0)
++#define QCOMPARE_EQ(computed, baseline) QCOMPARE(computed==baseline, true)
 +#define QCOMPARE_GT(computed, baseline) QCOMPARE(computed>baseline, true)
 +#endif
 +
@@ -396,7 +397,7 @@ index fa3c97c487..c0505b76f7 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 9ce24e95a0..9e8723203d 100644
+index 54d32c3580..2d1c6fd8be 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -408,7 +409,7 @@ index 9ce24e95a0..9e8723203d 100644
  find_package(KF6GuiAddons)
  
  if(CMAKE_BUILD_TYPE MATCHES Debug)
-@@ -551,9 +551,16 @@ target_link_libraries(nextcloudCore
+@@ -552,9 +552,16 @@ target_link_libraries(nextcloudCore
    Qt::Quick
    Qt::QuickControls2
    Qt::QuickWidgets
@@ -426,7 +427,7 @@ index 9ce24e95a0..9e8723203d 100644
  if(KF6GuiAddons_FOUND)
    target_link_libraries(nextcloudCore
      PUBLIC
-@@ -762,3 +769,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+@@ -763,3 +770,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
  endif()
  
  configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
@@ -643,10 +644,10 @@ index 5820fc0c8a..a70abc9c8d 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index e7bde80a84..b37b5831b3 100644
+index a1fedb873d..ece9f14fba 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
-@@ -22,6 +22,7 @@
+@@ -23,6 +23,7 @@
  
  #include "common/syncjournaldb.h"
  #include "common/asserts.h"
@@ -654,7 +655,7 @@ index e7bde80a84..b37b5831b3 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1239,7 +1240,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1246,7 +1247,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -733,7 +734,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 08677e49b6..4a4760b0ff 100644
+index 44f7f7e55c..747c3ecb0a 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1092,6 +1093,18 @@ index f319561550..93aacb2545 100644
          xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("GSRDNVCKW") : QStringLiteral("GRDNVCKW"));
          if (fileInfo.isShared) {
              if (fileInfo.downloadForbidden) {
+diff --git a/test/testaccount.cpp b/test/testaccount.cpp
+index e76b158775..4431aee63a 100644
+--- a/test/testaccount.cpp
++++ b/test/testaccount.cpp
+@@ -12,6 +12,7 @@
+ #include <QTemporaryDir>
+ #include <QtTest>
+ 
++#include "common/qtcompat.h"
+ #include "account.h"
+ #include "accountstate.h"
+ #include "logger.h"
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
 index 850e9c919c..fc0371170e 100644
 --- a/test/testdatefieldbackend.cpp
