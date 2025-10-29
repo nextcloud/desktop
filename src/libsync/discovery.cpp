@@ -771,19 +771,18 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
     // Check for missing server data
     {
-        QStringList missingData;
-        if (serverEntry.size == -1)
-            missingData.append(tr("size"));
-        if (serverEntry.remotePerm.isNull())
-            missingData.append(tr("permission"));
-        if (serverEntry.etag.isEmpty())
-            missingData.append("ETag");
-        if (serverEntry.fileId.isEmpty())
-            missingData.append(tr("file id"));
-        if (!missingData.isEmpty()) {
+        if (serverEntry.size == -1 || serverEntry.remotePerm.isNull() || serverEntry.etag.isEmpty() || serverEntry.fileId.isEmpty()) {
+            qCWarning(lcDisco) << "The response provided by the server is missing data:"
+                               << "- serverEntry.name:" << serverEntry.name
+                               << "- serverEntry.size:" << serverEntry.size
+                               << "- serverEntry.remotePerm:" << serverEntry.remotePerm
+                               << "- serverEntry.etag:" << serverEntry.etag
+                               << "- serverEntry.fileId:" << serverEntry.fileId;
+
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             _childIgnored = true;
-            item->_errorString = tr("Server reported no %1").arg(missingData.join(QLatin1String(", ")));
+            item->_errorString = serverEntry.isDirectory ? tr("Folder is not accessible on the server.", "server error")
+                                                         : tr("File is not accessible on the server.", "server error");
             emit _discoveryData->itemDiscovered(item);
             return;
         }
