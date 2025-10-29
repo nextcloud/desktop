@@ -310,7 +310,7 @@ bool AccountManager::restoreFromLegacySettings()
                                                                  configFile.notifyExistingFoldersOverLimit()).toBool());
     const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC,
                                                        configFile.newBigFolderSizeLimit().second).toLongLong();
-    configFile.setNewBigFolderSizeLimit(configFile.notifyExistingFoldersOverLimit(), newBigFolderSizeLimit);
+    configFile.setNewBigFolderSizeLimit(configFile.useNewBigFolderSizeLimit(), newBigFolderSizeLimit);
     configFile.setStopSyncingExistingFoldersOverLimit(settings->value(ConfigFile::stopSyncingExistingFoldersOverLimitC,
                                                                       configFile.stopSyncingExistingFoldersOverLimit()).toBool());
     configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
