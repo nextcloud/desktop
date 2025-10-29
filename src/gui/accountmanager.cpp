@@ -118,6 +118,10 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     }
 #endif
 
+    if (settings->childGroups().isEmpty()) {
+        return AccountsNotFound;
+    }
+
     auto result = AccountsRestoreSuccess;
     const auto settingsChildGroups = settings->childGroups();
     for (const auto &accountId : settingsChildGroups) {
@@ -735,7 +739,7 @@ void AccountManager::shutdown()
 
 QList<AccountStatePtr> AccountManager::accounts() const
 {
-     return _accounts;
+    return _accounts;
 }
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
