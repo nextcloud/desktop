@@ -1101,7 +1101,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.NCDesktopClientSocketKit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nextcloud.NCDesktopClientSocketKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
@@ -1159,7 +1159,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.NCDesktopClientSocketKit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nextcloud.NCDesktopClientSocketKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
@@ -1581,7 +1581,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OC_APPLICATION_NAME = ownCloud;
-				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
+				OC_APPLICATION_REV_DOMAIN = com.nextcloud.desktopclient;
 				OC_OEM_SHARE_ICNS = "";
 				OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1631,7 +1631,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OC_APPLICATION_NAME = ownCloud;
-				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
+				OC_APPLICATION_REV_DOMAIN = com.nextcloud.desktopclient;
 				OC_OEM_SHARE_ICNS = "";
 				OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
