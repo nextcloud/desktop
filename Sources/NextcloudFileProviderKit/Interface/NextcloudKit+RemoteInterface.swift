@@ -232,9 +232,9 @@ extension NextcloudKit: RemoteInterface {
     ) async -> (
         account: String,
         etag: String?,
-        date: NSDate?,
+        date: Date?,
         length: Int64,
-        headers: [AnyHashable: Any]?,
+        headers: [AnyHashable: any Sendable]?,
         afError: AFError?,
         nkError: NKError
     ) {
@@ -251,7 +251,7 @@ extension NextcloudKit: RemoteInterface {
                 continuation.resume(returning: (
                     account,
                     etag,
-                    date as NSDate?,
+                    date,
                     length,
                     headers,
                     afError,
