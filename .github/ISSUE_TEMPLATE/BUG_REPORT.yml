@@ -98,6 +98,7 @@ body:
         - "Official Windows MSI"
         - "Official macOS 12+ universal pkg"
         - "Official macOS Virtual files 12+ universal pkg"
+        - "Official PPA"
         - "Community FlatPak"
         - "Community SNAP package"
         - "Distro package manager"
