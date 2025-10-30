@@ -97,7 +97,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyFile() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
@@ -157,7 +157,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyFolder() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let remoteFolderB = MockRemoteItem(
             identifier: "folder-b",
@@ -243,7 +243,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let keynoteBundleFilename = "test.key"
         let keynoteIndexZipFilename = "Index.zip"
@@ -609,7 +609,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveFileToTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
@@ -658,7 +658,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testRenameMoveFileToTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let (_, _, initMoveError) = await remoteInterface.move(
             remotePathSource: remoteItem.remotePath,
             remotePathDestination: remoteFolder.remotePath + "/" + remoteItem.name,
@@ -723,7 +723,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveFolderToTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -816,7 +816,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveFolderToTrashWithRename() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -912,7 +912,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testTrashAndMoveFileOutOfTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
@@ -953,7 +953,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveTrashedFileOutOfTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashItemMetadata)
@@ -989,7 +989,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveTrashedFileOutOfTrashAndRenameAndModifyContents() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashItemMetadata)
@@ -1049,7 +1049,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     func testMoveFileOutOfTrashWithExistingIdenticallyNamedFile() async throws {
         // Make sure that we properly get the post-untrash state of the target item and not the
         // identically-named file in the location the file has been untrashed to
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         remoteTrashItem.trashbinOriginalLocation =
             remoteItem.remotePath.replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
@@ -1089,7 +1089,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveFolderOutOfTrash() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashFolderMetadata)
 
@@ -1137,7 +1137,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveFolderOutOfTrashAndRename() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashFolderMetadata)
@@ -1195,7 +1195,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyFileContentsChunked() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
@@ -1268,7 +1268,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             ])
         }
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
         var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
@@ -1334,7 +1334,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(rootItem: rootItem),
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
             dbManager: Self.dbManager
         )
         let (resultItem, error) = await item.modify(
@@ -1354,7 +1354,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyCreatesFileThatWasPreviouslyIgnoredWithContentsUrlProvided() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["/logs/"])
 
         let tempFileName = UUID().uuidString
@@ -1404,7 +1404,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyLockFileCompletesWithoutSyncing() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Construct lock file metadata
         let lockFileName = ".~lock.test.doc#"
@@ -1463,7 +1463,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testModifyLockFileToNonLockFileCompletesWithSync() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Construct lock file metadata
         let lockFileName = ".~lock.test.doc#"
@@ -1533,7 +1533,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMoveToTrashFailsWhenNoTrashInCapabilities() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
             remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")

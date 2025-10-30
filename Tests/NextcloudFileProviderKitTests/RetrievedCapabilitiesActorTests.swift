@@ -6,6 +6,7 @@ import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import Testing
 @testable import TestInterface
+import XCTest
 
 @Suite("RetrievedCapabilitiesActor tests")
 struct RetrievedCapabilitiesActorTests {
@@ -20,7 +21,7 @@ struct RetrievedCapabilitiesActorTests {
 
         // We call the public API.
         await actor.setCapabilities(forAccount: account1, capabilities: caps, retrievedAt: specificDate)
-        let setCaps = await actor.data[account1]
+        let setCaps = await actor.getCapabilities(for: account1)
 
         #expect(setCaps?.retrievedAt == specificDate)
         #expect(setCaps?.capabilities != nil)
@@ -28,7 +29,7 @@ struct RetrievedCapabilitiesActorTests {
 
     @Test func setOngoingFetchTrueCausesSuspension() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var awaiterDidProceed = false
+        let awaiterDidProceed = Expectation("awaiterDidProceed")
 
         // 1. Mark fetch as ongoing
         await actor.setOngoingFetch(forAccount: account1, ongoing: true)
@@ -36,61 +37,54 @@ struct RetrievedCapabilitiesActorTests {
         // 2. Attempt to await in a separate task
         let awaitingTask = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            awaiterDidProceed = true // This should only become true after resumption
+            await awaiterDidProceed.fulfill()
         }
 
         // 3. Give the awaitingTask a moment to potentially run and suspend
         try await Task.sleep(for: .milliseconds(100))
-        #expect(!awaiterDidProceed, "`awaitFetchCompletion` should suspend if fetch is ongoing.")
+        #expect(await awaiterDidProceed.isFulfilled == false, "`awaitFetchCompletion` should suspend if fetch is ongoing.")
 
         // 4. Clean up: complete the fetch to allow the task to finish
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
         await awaitingTask.value // Ensure the task fully completes
-        #expect(awaiterDidProceed, "Awaiter should proceed after fetch is no longer ongoing.")
+        #expect(await awaiterDidProceed.isFulfilled, "Awaiter should proceed after fetch is no longer ongoing.")
     }
 
     @Test func setOngoingFetchFalseResumesAwaiter() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var awaiterCompleted = false
+        let awaiterCompleted = Expectation("awaiterCompleted")
 
         // 1. Mark fetch as ongoing and start an awaiter
         await actor.setOngoingFetch(forAccount: account1, ongoing: true)
         let awaitingTask = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            awaiterCompleted = true
+            await awaiterCompleted.fulfill()
         }
 
         // 2. Ensure it's waiting
         try await Task.sleep(for: .milliseconds(100))
-        #expect(awaiterCompleted == false, "Awaiter should be suspended initially.")
+        #expect(await awaiterCompleted.isFulfilled == false, "Awaiter should be suspended initially.")
 
         // 3. Mark fetch as not ongoing, which should resume the awaiter
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
 
         // 4. Await the task's completion and check the flag
         await awaitingTask.value
-        #expect(awaiterCompleted, "Awaiter should complete after `setOngoingFetch(false)`.")
+        #expect(await awaiterCompleted.isFulfilled, "Awaiter should complete after `setOngoingFetch(false)`.")
     }
 
     @Test func awaitFetchCompletionReturnsImmediately() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var didAwaiterCompleteImmediately = false
 
-        let task = Task {
+        await confirmation("did awaiter complete immediately") { didAwaiterCompleteImmediately in
             await actor.awaitFetchCompletion(forAccount: account1)
-            didAwaiterCompleteImmediately = true
+            didAwaiterCompleteImmediately()
         }
-        await task.value
-
-        #expect(
-            didAwaiterCompleteImmediately,
-            "`awaitFetchCompletion` should let the task complete quickly if no fetch is ongoing."
-        )
     }
 
     @Test func awaitFetchCompletion_suspendsAndResumes_behavioral() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var didAwaiterComplete = false
+        let didAwaiterComplete = Expectation("didAwaiterComplete")
 
         // 1. Mark fetch as ongoing
         await actor.setOngoingFetch(forAccount: account1, ongoing: true)
@@ -98,54 +92,57 @@ struct RetrievedCapabilitiesActorTests {
         // 2. Start task that awaits
         let awaitingTask = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            didAwaiterComplete = true
+            await didAwaiterComplete.fulfill()
         }
 
         // 3. Check for suspension (indirectly)
         try await Task.sleep(for: .milliseconds(100))
-        #expect(!didAwaiterComplete, "Awaiter should be suspended while fetch is ongoing.")
+        #expect(await didAwaiterComplete.isFulfilled == false, "Awaiter should be suspended while fetch is ongoing.")
 
         // 4. Mark fetch as completed
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
 
         // 5. Awaiter should complete
         await awaitingTask.value
-        #expect(didAwaiterComplete, "Awaiter should complete after fetch is no longer ongoing.")
+        #expect(await didAwaiterComplete.isFulfilled, "Awaiter should complete after fetch is no longer ongoing.")
     }
 
     @Test func awaitFetchCompletion_multipleAwaiters_behavioral() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var awaiter1Complete = false
-        var awaiter2Complete = false
+        let awaiter1Complete = Expectation("awaiter1Complete")
+        let awaiter2Complete = Expectation("awaiter2Complete")
 
         await actor.setOngoingFetch(forAccount: account1, ongoing: true)
 
         let task1 = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            awaiter1Complete = true
+            await awaiter1Complete.fulfill()
         }
         let task2 = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            awaiter2Complete = true
+            await awaiter2Complete.fulfill()
         }
 
         try await Task.sleep(for: .milliseconds(100))
-        #expect(!awaiter1Complete && !awaiter2Complete, "Both awaiters should be suspended.")
+
+        var firstFulfillment = await awaiter1Complete.isFulfilled
+        var secondFulfillment = await awaiter2Complete.isFulfilled
+        #expect(await firstFulfillment == false && secondFulfillment == false, "Both awaiters should be suspended.")
 
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
 
         await task1.value
         await task2.value
-        #expect(
-            awaiter1Complete && awaiter2Complete,
-            "Both awaiters should complete after fetch is no longer ongoing."
-        )
+
+        firstFulfillment = await awaiter1Complete.isFulfilled
+        secondFulfillment = await awaiter2Complete.isFulfilled
+        #expect(firstFulfillment && secondFulfillment, "Both awaiters should complete after fetch is no longer ongoing.")
     }
 
     @Test func setOngoingFetch_false_isolatesAccountResumption_behavioral() async throws {
         let actor = RetrievedCapabilitiesActor()
-        var acc1AwaiterDone = false
-        var acc2AwaiterDone = false
+        let acc1AwaiterDone = Expectation("acc1AwaiterDone")
+        let acc2AwaiterDone = Expectation("acc2AwaiterDone")
 
         // Start fetches for both accounts
         await actor.setOngoingFetch(forAccount: account1, ongoing: true)
@@ -154,27 +151,30 @@ struct RetrievedCapabilitiesActorTests {
         // Setup awaiters
         let taskAcc1 = Task {
             await actor.awaitFetchCompletion(forAccount: account1)
-            acc1AwaiterDone = true
+            await acc1AwaiterDone.fulfill()
         }
         let taskAcc2 = Task {
             await actor.awaitFetchCompletion(forAccount: account2)
-            acc2AwaiterDone = true
+            await acc2AwaiterDone.fulfill()
         }
 
         try await Task.sleep(for: .milliseconds(100)) // Allow tasks to suspend
-        #expect(!acc1AwaiterDone && !acc2AwaiterDone, "Both awaiters initially suspended.")
+
+        let firstFulfillment = await acc1AwaiterDone.isFulfilled
+        let secondFulfillment = await acc2AwaiterDone.isFulfilled
+        #expect(await firstFulfillment == false && secondFulfillment == false, "Both awaiters initially suspended.")
 
         // Complete fetch for account1 ONLY
         await actor.setOngoingFetch(forAccount: account1, ongoing: false)
         await taskAcc1.value
 
-        #expect(acc1AwaiterDone, "Awaiter for account1 should complete.")
-        #expect(!acc2AwaiterDone, "Awaiter for account2 should still be suspended.")
+        #expect(await acc1AwaiterDone.isFulfilled, "Awaiter for account1 should complete.")
+        #expect(await acc2AwaiterDone.isFulfilled == false, "Awaiter for account2 should still be suspended.")
 
         // Complete fetch for account2
         await actor.setOngoingFetch(forAccount: account2, ongoing: false)
         await taskAcc2.value // Wait for acc2's awaiter to complete
 
-        #expect(acc2AwaiterDone, "Awaiter for account2 should now complete.")
+        #expect(await acc2AwaiterDone.isFulfilled, "Awaiter for account2 should now complete.")
     }
 }

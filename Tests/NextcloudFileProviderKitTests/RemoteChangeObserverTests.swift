@@ -33,9 +33,13 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     )
     var remoteChangeObserver: RemoteChangeObserver?
 
-    override func setUp() {
+    override func setUp() async throws {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-        Task { try await Self.notifyPushServer.run() }
+        let server = Self.notifyPushServer
+
+        Task {
+            try await server.run()
+        }
     }
 
     override func tearDown() async throws {
@@ -53,15 +57,14 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAuthentication() async throws {
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
+        let authenticated = expectation(description: "authenticated")
+        authenticated.assertForOverFulfill = false
 
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            authenticated = true
+        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
+            authenticated.fulfill()
         }
 
         remoteChangeObserver = RemoteChangeObserver(
@@ -73,30 +76,23 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
+        await fulfillment(of: [authenticated])
     }
 
     func testRetryAuthentication() async throws {
         Self.notifyPushServer.delay = 1_000_000
 
-        var authenticated = false
+        let authenticated = expectation(description: "authenticated")
+        authenticated.assertForOverFulfill = false
 
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            authenticated = true
+        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
+            authenticated.fulfill()
         }
 
-        let incorrectAccount =
-            Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
-        let remoteInterface = MockRemoteInterface()
+        let incorrectAccount = Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
+
         remoteChangeObserver = RemoteChangeObserver(
             account: incorrectAccount,
             remoteInterface: remoteInterface,
@@ -105,6 +101,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
+
         let remoteChangeObserver = remoteChangeObserver!
 
         for _ in 0 ... Self.timeout {
@@ -113,23 +110,20 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
                 break
             }
         }
-        XCTAssertTrue(remoteChangeObserver.webSocketAuthenticationFailCount > 0)
-        remoteChangeObserver.account = Self.account
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
+        let count = remoteChangeObserver.webSocketAuthenticationFailCount
+        XCTAssertTrue(count > 0)
+
+        remoteChangeObserver.replaceAccount(with: Self.account)
+
+        await fulfillment(of: [authenticated])
         remoteChangeObserver.resetWebSocket()
     }
 
     func testStopRetryingConnection() async throws {
         let incorrectAccount =
             Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
         let remoteChangeObserver = RemoteChangeObserver(
             account: incorrectAccount,
@@ -148,11 +142,13 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
                 break
             }
         }
-        XCTAssertEqual(
-            remoteChangeObserver.webSocketAuthenticationFailCount,
-            remoteChangeObserver.webSocketAuthenticationFailLimit
-        )
-        XCTAssertFalse(remoteChangeObserver.webSocketTaskActive)
+
+        let count = remoteChangeObserver.webSocketAuthenticationFailCount
+        let limit = remoteChangeObserver.webSocketAuthenticationFailLimit
+        let active = remoteChangeObserver.webSocketTaskActive
+
+        XCTAssertEqual(count, limit)
+        XCTAssertFalse(active)
     }
 
     func testChangeRecognised() async throws {
@@ -161,29 +157,25 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         debugPrint(db)
 
         let testStartDate = Date()
-        let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
         // --- DB State (What the app thinks is true) ---
         // A materialized file in the root that will be updated.
-        var rootFileToUpdate =
-            SendableItemMetadata(ocId: "rootFile", fileName: "root-file.txt", account: Self.account)
+        var rootFileToUpdate = SendableItemMetadata(ocId: "rootFile", fileName: "root-file.txt", account: Self.account)
         rootFileToUpdate.downloaded = true
         rootFileToUpdate.etag = "ETAG_OLD_ROOTFILE"
         Self.dbManager.addItemMetadata(rootFileToUpdate)
 
         // A materialized folder that will have its contents changed.
-        var folderA =
-            SendableItemMetadata(ocId: "folderA", fileName: "FolderA", account: Self.account)
+        var folderA = SendableItemMetadata(ocId: "folderA", fileName: "FolderA", account: Self.account)
         folderA.directory = true
         folderA.visitedDirectory = true
         folderA.etag = "ETAG_OLD_FOLDERA"
         Self.dbManager.addItemMetadata(folderA)
 
         // A materialized file inside FolderA that will be deleted.
-        var fileInAToDelete =
-            SendableItemMetadata(ocId: "fileInA", fileName: "file-in-a.txt", account: Self.account)
+        var fileInAToDelete = SendableItemMetadata(ocId: "fileInA", fileName: "file-in-a.txt", account: Self.account)
         fileInAToDelete.downloaded = true
         fileInAToDelete.serverUrl = Self.account.davFilesUrl + "/FolderA"
         // Set an explicit old sync time to verify it gets updated during deletion
@@ -191,8 +183,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(fileInAToDelete)
 
         // A materialized folder that will be deleted entirely.
-        var folderBToDelete =
-            SendableItemMetadata(ocId: "folderB", fileName: "FolderB", account: Self.account)
+        var folderBToDelete = SendableItemMetadata(ocId: "folderB", fileName: "FolderB", account: Self.account)
         folderBToDelete.directory = true
         folderBToDelete.visitedDirectory = true
         // Set an explicit old sync time to verify it gets updated during deletion
@@ -248,9 +239,8 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         let authExpectation =
             XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
         let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified")
-        let notificationInterface = MockChangeNotificationInterface()
 
-        notificationInterface.changeHandler = {
+        let notificationInterface = MockChangeNotificationInterface {
             changeNotifiedExpectation.fulfill()
         }
 
@@ -304,20 +294,20 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
     }
 
     func testIgnoreNonFileNotifications() async throws {
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
-        var notified = false
+        let authenticated = expectation(description: "authenticated")
+        authenticated.assertForOverFulfill = false
 
-        NotificationCenter.default.addObserver(
-            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
-        ) { _ in
-            authenticated = true
+        NotificationCenter.default.addObserver(forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil) { _ in
+            authenticated.fulfill()
         }
 
-        let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { notified = true }
+        let notificationInterface = MockChangeNotificationInterface {
+            XCTFail("This notification should not happen!")
+        }
+
         remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -327,24 +317,11 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
+        await fulfillment(of: [authenticated])
 
         Self.notifyPushServer.send(message: "random")
         Self.notifyPushServer.send(message: "notify_activity")
         Self.notifyPushServer.send(message: "notify_notification")
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if notified {
-                break
-            }
-        }
-        XCTAssertFalse(notified)
     }
 
     func testPolling() async throws {
@@ -352,7 +329,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         // No capabilities -> will force polling.
         remoteInterface.capabilities = ""
 
@@ -367,8 +344,10 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         remoteInterface.rootItem?.children = [serverItem]
 
         let changeNotifiedExpectation = XCTestExpectation(description: "Change Notified via Polling")
-        let notificationInterface = MockChangeNotificationInterface()
-        notificationInterface.changeHandler = { changeNotifiedExpectation.fulfill() }
+
+        let notificationInterface = MockChangeNotificationInterface {
+            changeNotifiedExpectation.fulfill()
+        }
 
         remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
@@ -376,28 +355,33 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             changeNotificationInterface: notificationInterface,
             domain: nil,
             dbManager: Self.dbManager,
+            pollInterval: 0.5,
             log: FileProviderLogMock()
         )
-        // Set a very short poll interval for the test.
-        remoteChangeObserver?.pollInterval = 0.5
 
         // 2. Act & Assert
         // The observer will fail to connect to websocket and start polling.
         // We just need to wait for the poll to fire and detect the change.
         await wait(for: changeNotifiedExpectation, description: "polling to trigger change")
-        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false, "Polling should be active.")
+
+        let pollingActive = remoteChangeObserver?.pollingActive ?? false
+        XCTAssertTrue(pollingActive, "Polling should be active.")
     }
 
     func testRetryOnRemoteClose() async throws {
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
+        let authenticated = expectation(description: "authenticated")
+        let reauthenticated = expectation(description: "reauthenticated")
+        let fulfillments = ExpectationFulfillmentCounter(authenticated, reauthenticated)
 
         NotificationCenter.default.addObserver(
             forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
         ) { _ in
-            authenticated = true
+            Task {
+                await fulfillments.next()
+            }
         }
 
         remoteChangeObserver = RemoteChangeObserver(
@@ -409,37 +393,35 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
-        authenticated = false
+        await fulfillment(of: [authenticated])
 
         Self.notifyPushServer.resetCredentialsState()
         Self.notifyPushServer.closeConnections()
 
-        for _ in 0 ... Self.timeout {
-            try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
-                break
-            }
-        }
-        XCTAssertTrue(authenticated)
+        await fulfillment(of: [reauthenticated])
     }
 
     func testPinging() async throws {
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         remoteInterface.capabilities = mockCapabilities
 
-        var authenticated = false
+        actor AuthFlag {
+            var value = false
+            func set() {
+                value = true
+            }
+            func get() -> Bool {
+                return value
+            }
+        }
+        let authenticated = AuthFlag()
 
         NotificationCenter.default.addObserver(
             forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
         ) { _ in
-            authenticated = true
+            Task {
+                await authenticated.set()
+            }
         }
 
         remoteChangeObserver = RemoteChangeObserver(
@@ -452,15 +434,16 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         )
 
         let pingIntervalNsecs = 500_000_000
-        remoteChangeObserver?.webSocketPingIntervalNanoseconds = UInt64(pingIntervalNsecs)
+        remoteChangeObserver?.setWebSocketPingInterval(to: UInt64(pingIntervalNsecs))
 
         for _ in 0 ... Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_000)
-            if authenticated {
+            if await authenticated.get() {
                 break
             }
         }
-        XCTAssertTrue(authenticated)
+        let isAuthenticated = await authenticated.get()
+        XCTAssertTrue(isAuthenticated)
 
         let intendedPings = 3
         // Add a bit of buffer to the wait time
@@ -481,7 +464,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         debugPrint(db)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = mockCapabilities
 
         // Setup a change scenario
@@ -502,7 +485,17 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.rootItem?.children = [serverItem]
 
-        let notificationInterface = MockChangeNotificationInterface()
+        let change1 = XCTestExpectation(description: "First change notification")
+        let change2 = XCTestExpectation(description: "Second change notification")
+
+        let fulfillments = ExpectationFulfillmentCounter(change1, change2)
+
+        let notificationInterface = MockChangeNotificationInterface {
+            Task {
+                await fulfillments.next()
+            }
+        }
+
         let remoteChangeObserver = RemoteChangeObserver(
             account: Self.account,
             remoteInterface: remoteInterface,
@@ -514,43 +507,35 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         self.remoteChangeObserver = remoteChangeObserver
 
         // --- Phase 1: Test connection and change notification ---
-        let authExpectation =
-            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
+        let authExpectation = XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
         remoteChangeObserver.networkReachabilityObserver(.reachableEthernetOrWiFi)
         await wait(for: authExpectation, description: "initial authentication")
 
-        let changeExpectation1 = XCTestExpectation(description: "First change notification")
-        notificationInterface.changeHandler = { changeExpectation1.fulfill() }
         Self.notifyPushServer.send(message: "notify_file")
-        await wait(for: changeExpectation1, description: "first change")
+        await wait(for: change1, description: "first change")
 
         // --- Phase 2: Test connection loss ---
         remoteChangeObserver.networkReachabilityObserver(.notReachable)
         // Give it a moment to process the disconnection
         try await Task.sleep(nanoseconds: 200_000_000)
-        XCTAssertFalse(
-            remoteChangeObserver.webSocketTaskActive,
-            "Websocket should be inactive after connection loss."
-        )
+        let webSocketTaskActive = remoteChangeObserver.webSocketTaskActive
+
+        XCTAssertFalse(webSocketTaskActive, "Websocket should be inactive after connection loss.")
         Self.notifyPushServer.reset()
 
         // --- Phase 3: Test reconnection and change notification ---
-        let reauthExpectation =
-            XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
+        let reauthExpectation = XCTNSNotificationExpectation(name: NotifyPushAuthenticatedNotificationName)
 
         // Trigger the reconnection logic.
         remoteChangeObserver.networkReachabilityObserver(.reachableEthernetOrWiFi)
 
         // Now, wait for the expectation to be fulfilled.
         await wait(for: reauthExpectation, description: "re-authentication")
-        XCTAssertTrue(
-            remoteChangeObserver.webSocketTaskActive,
-            "Websocket should be active again after reconnection."
-        )
+        let webSocketTaskActiveAfterReconnect = remoteChangeObserver.webSocketTaskActive
 
-        let changeExpectation2 = XCTestExpectation(description: "Second change notification")
-        notificationInterface.changeHandler = { changeExpectation2.fulfill() }
+        XCTAssertTrue(webSocketTaskActiveAfterReconnect, "Websocket should be active again after reconnection.")
+
         Self.notifyPushServer.send(message: "notify_file")
-        await wait(for: changeExpectation2, description: "second change")
+        await wait(for: change2, description: "second change")
     }
 }

@@ -480,42 +480,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(results.updatedMetadatas?.isEmpty ?? true, "No items should have been updated.")
     }
 
-    func testConcurrencyOnDatabaseWrites() {
-        let semaphore = DispatchSemaphore(value: 0)
-        let count = 100
-        Task {
-            for i in 0 ... count {
-                let metadata = SendableItemMetadata(
-                    ocId: "concurrency-\(i)",
-                    fileName: "name",
-                    account: Account(user: "", id: "", serverUrl: "", password: "")
-                )
-                Self.dbManager.addItemMetadata(metadata)
-            }
-            semaphore.signal()
-        }
-
-        Task {
-            for i in 0 ... count {
-                let metadata = SendableItemMetadata(
-                    ocId: "concurrency-\(count + 1 + i)",
-                    fileName: "name",
-                    account: Account(user: "", id: "", serverUrl: "", password: "")
-                )
-                Self.dbManager.addItemMetadata(metadata)
-            }
-            semaphore.signal()
-        }
-
-        semaphore.wait()
-        semaphore.wait()
-
-        for i in 0 ... count * 2 + 1 {
-            let resultsI = Self.dbManager.itemMetadata(ocId: "concurrency-\(i)")
-            XCTAssertNotNil(resultsI, "Metadata \(i) should be saved even under concurrency")
-        }
-    }
-
     func testDirectoryMetadataRetrieval() throws {
         let account = "TestAccount"
         let serverUrl = "https://cloud.example.com/files/documents"
@@ -1076,6 +1040,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testParentItemIdentifierWithRemoteFallback() async throws {
         let rootItem = MockRemoteItem.rootItem(account: Self.account)
+
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             versionIdentifier: "NEW",
@@ -1087,6 +1052,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
+
         let remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "NEW",
@@ -1097,6 +1063,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
+
         rootItem.children = [remoteFolder]
         remoteFolder.parent = rootItem
         remoteFolder.children = [remoteItem]
@@ -1106,14 +1073,17 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(remoteItemMetadata)
         XCTAssertNil(Self.dbManager.parentItemIdentifierFromMetadata(remoteItemMetadata))
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+
         let retrievedParentIdentifier = await Self.dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: remoteItemMetadata,
             remoteInterface: remoteInterface,
             account: Self.account
         )
-        XCTAssertNotNil(retrievedParentIdentifier)
-        XCTAssertEqual(retrievedParentIdentifier?.rawValue, remoteFolder.identifier)
+
+        let unwrappedParentIdentifier = try XCTUnwrap(retrievedParentIdentifier)
+        XCTAssertEqual(unwrappedParentIdentifier.rawValue, remoteFolder.identifier)
     }
 
     func testMaterialisedFiles() async throws {

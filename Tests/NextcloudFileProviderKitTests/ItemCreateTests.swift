@@ -29,7 +29,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateFolder() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var folderItemMetadata = SendableItemMetadata(
             ocId: "folder-id", fileName: "folder", account: Self.account
         )
@@ -83,7 +83,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateFile() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(
             ocId: "file-id", fileName: "file", account: Self.account
         )
@@ -137,7 +137,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateFileIntoFolder() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         var folderItemMetadata = SendableItemMetadata(
             ocId: "folder-id", fileName: "folder", account: Self.account
@@ -231,7 +231,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         let keynoteBundleFilename = "test.key"
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var bundleItemMetadata = SendableItemMetadata(
             ocId: "keynotebundleid", fileName: keynoteBundleFilename, account: Self.account
         )
@@ -371,7 +371,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateFileChunked() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(
             ocId: "file-id", fileName: "file", account: Self.account
         )
@@ -452,7 +452,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             ])
         }
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.currentChunks = [expectedChunkUploadId: [preexistingChunk]]
 
         // With real new item uploads we do not have an associated ItemMetadata as the template is
@@ -491,6 +491,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
         )
+        
         let createdItem = try XCTUnwrap(createdItemMaybe)
 
         XCTAssertNil(error)
@@ -524,7 +525,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateDoesNotPropagateIgnoredFile() async throws {
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.tmp", "/build/"])
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // We'll create a file that matches the ignored pattern
         let parentIdentifier = NSFileProviderItemIdentifier.rootContainer
@@ -559,7 +560,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateLockFileTriggersRemoteLockInsteadOfUpload() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(
@@ -639,7 +640,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCreateLockFileUnactionableWithoutCapabilities() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =
             remoteInterface.capabilities.replacingOccurrences(of: ##""locking": "1.0","##, with: "")

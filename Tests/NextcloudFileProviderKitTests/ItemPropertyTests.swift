@@ -32,7 +32,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.text)
@@ -49,7 +49,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.pdf)
@@ -66,7 +66,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.folder)
@@ -84,7 +84,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.package)
@@ -102,7 +102,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.bundle)
@@ -120,7 +120,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(item.contentType, UTType.folder)
@@ -138,7 +138,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertTrue(item.contentType.conforms(to: .bundle))
@@ -159,7 +159,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
 
@@ -183,7 +183,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
 
@@ -205,7 +205,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
 
@@ -222,7 +222,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertNotNil(keepDownloadedItem.userInfo?["displayEvict"])
@@ -243,7 +243,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
 
@@ -265,7 +265,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataA,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemA.userInfo?["displayKeepDownloaded"] as? Bool, false)
@@ -278,7 +278,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataB,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertTrue(itemB.userInfo?["displayKeepDownloaded"] as? Bool == true)
@@ -294,7 +294,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataC,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemC.userInfo?["displayKeepDownloaded"] as? Bool, false)
@@ -309,7 +309,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataD,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemD.userInfo?["displayKeepDownloaded"] as? Bool, true)
@@ -326,7 +326,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
 
@@ -347,14 +347,14 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertFalse(item.capabilities.contains(.allowsTrashing))
     }
 
     func testItemTrashabilityAffectedByCapabilities() async {
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: Self.account)
         let metadata =
@@ -375,7 +375,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
             remoteInterface.capabilities.replacingOccurrences(of: ##""undelete": true,"##, with: "")
@@ -396,7 +396,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         let db = Self.dbManager.ncDatabase()
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         let metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
@@ -424,7 +424,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -450,7 +450,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -473,7 +473,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: deletableMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -493,7 +493,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -512,7 +512,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: noPermsMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -532,7 +532,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: trashableMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -547,7 +547,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: trashableMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: false,
             log: FileProviderLogMock()
@@ -566,7 +566,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -584,7 +584,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockFileMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -605,7 +605,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: writableMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -623,7 +623,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -641,7 +641,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: directoryMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -664,7 +664,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: modifiableMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -682,7 +682,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -703,7 +703,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: dirMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -721,7 +721,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: fileMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -739,7 +739,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: lockedDirMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -759,7 +759,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -795,7 +795,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -828,7 +828,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             remoteSupportsTrash: true,
             log: FileProviderLogMock()
@@ -858,7 +858,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
                     metadata: metadata,
                     parentItemIdentifier: .rootContainer,
                     account: Self.account,
-                    remoteInterface: MockRemoteInterface(),
+                    remoteInterface: MockRemoteInterface(account: Self.account),
                     dbManager: Self.dbManager,
                     remoteSupportsTrash: true,
                     log: FileProviderLogMock()
@@ -882,7 +882,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: sharedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertFalse(sharedItem.isShared)
@@ -896,7 +896,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: sharedByOtherMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertFalse(sharedByOtherTime.isShared)
@@ -911,7 +911,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: notSharedMetadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         debugPrint(notSharedMetadata.shareType)
@@ -929,7 +929,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataA,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemA.contentPolicy, .downloadEagerlyAndKeepDownloaded)
@@ -940,7 +940,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             metadata: metadataB,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(),
+            remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager
         )
         XCTAssertEqual(itemB.contentPolicy, .inherited)

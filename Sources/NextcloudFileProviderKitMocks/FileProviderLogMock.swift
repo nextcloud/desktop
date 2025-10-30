@@ -12,7 +12,7 @@ public actor FileProviderLogMock: FileProviderLogging {
         logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FileProviderLogMock")
     }
 
-    public func write(category _: String, level _: OSLogType, message: String, details _: [FileProviderLogDetailKey: Any?]) {
+    public func write(category _: String, level _: OSLogType, message: String, details _: [FileProviderLogDetailKey: (any Sendable)?]) {
         logger.debug("\(message, privacy: .public)")
     }
 }

@@ -24,7 +24,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
         // The database is intentionally left empty.
 
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
 
         let enumeratedFile =
             SendableItemMetadata(ocId: "file1", fileName: "file1.txt", account: Self.account)
@@ -97,7 +97,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         dbManager.addItemMetadata(itemC)
         dbManager.addItemMetadata(dirD)
 
-        let remoteInterface = MockRemoteInterface()
+        let remoteInterface = MockRemoteInterface(account: Self.account)
         let expect = XCTestExpectation(description: "Enumerator completion handler called")
         let enumeratorItemsToReturn = [itemB, itemC]
 

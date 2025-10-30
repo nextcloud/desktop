@@ -9,16 +9,16 @@ import NextcloudKit
 
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
-public actor RemoteChangeObserver: NSObject, Sendable {
+public final class RemoteChangeObserver: NSObject, @unchecked Sendable {
     // @unchecked Sendable is used because 'account' is mutable, but mutation is controlled and safe in this context.
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
     public let dbManager: FilesDatabaseManager
-    public let account: Account
+    public var account: Account
     public var accountId: String { account.ncKitAccount }
 
-    public let webSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
+    public var webSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
     public let webSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
     public let webSocketPingFailLimit = 8
     public let webSocketAuthenticationFailLimit = 3
@@ -40,14 +40,8 @@ public actor RemoteChangeObserver: NSObject, Sendable {
     private(set) var webSocketAuthenticationFailCount = 0
 
     private(set) var pollingTimer: Timer?
-    public var pollInterval: TimeInterval = 60 {
-        didSet {
-            if pollingActive {
-                stopPollingTimer()
-                startPollingTimer()
-            }
-        }
-    }
+
+    let pollInterval: TimeInterval
 
     public var pollingActive: Bool {
         pollingTimer != nil
@@ -73,6 +67,7 @@ public actor RemoteChangeObserver: NSObject, Sendable {
         changeNotificationInterface: ChangeNotificationInterface,
         domain: NSFileProviderDomain?,
         dbManager: FilesDatabaseManager,
+        pollInterval: TimeInterval = 60,
         log: any FileProviderLogging
     ) {
         self.account = account
@@ -80,6 +75,7 @@ public actor RemoteChangeObserver: NSObject, Sendable {
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
         self.dbManager = dbManager
+        self.pollInterval = pollInterval
         logger = FileProviderLogger(category: "RemoteChangeObserver", log: log)
         super.init()
 
@@ -89,22 +85,22 @@ public actor RemoteChangeObserver: NSObject, Sendable {
         webSocketAuthenticationFailCount = 0
 
         Task {
-            await reconnectWebSocket()
+            reconnectWebSocket()
         }
     }
 
     private func startPollingTimer() {
-        guard !invalidated else { return }
-        Task {
-            pollingTimer = Timer.scheduledTimer(
-                withTimeInterval: pollInterval, repeats: true
-            ) { [weak self] _ in
-                self?.logger.info("Polling timer timeout, notifying change.")
+        guard !invalidated else {
+            self.logger.error("Starting polling timer while the current one is not invalidated yet!")
+            return
+        }
 
-                Task {
-                    await self?.startWorkingSetCheck()
-                }
+        Task { @MainActor in
+            pollingTimer = Timer.scheduledTimer(withTimeInterval: pollInterval, repeats: true) { [weak self] _ in
+                self?.logger.info("Polling timer timeout, notifying change.")
+                self?.startWorkingSetCheck()
             }
+
             logger.info("Starting polling timer.")
         }
     }
@@ -118,22 +114,27 @@ public actor RemoteChangeObserver: NSObject, Sendable {
     }
 
     public func invalidate() {
+        logger.debug("Invalidating.")
         invalidated = true
         resetWebSocket()
     }
 
     private func reconnectWebSocket() {
+        logger.debug("Reconnecting web socket...")
         stopPollingTimer()
         resetWebSocket()
+
         guard networkReachability != .notReachable else {
             logger.error("Network unreachable, will retry when reconnected.")
             return
         }
+
         guard webSocketAuthenticationFailCount < webSocketAuthenticationFailLimit else {
             logger.error("Exceeded authentication failures for notify push websocket \(account.ncKitAccount), will poll instead.", [.account: account.ncKitAccount])
             startPollingTimer()
             return
         }
+        
         Task { [weak self] in
             try await Task.sleep(nanoseconds: self?.webSocketReconfigureIntervalNanoseconds ?? 0)
             await self?.configureNotifyPush()
@@ -141,6 +142,7 @@ public actor RemoteChangeObserver: NSObject, Sendable {
     }
 
     public func resetWebSocket() {
+        logger.debug("Resetting web socket...")
         webSocketTask?.cancel()
         webSocketUrlSession = nil
         webSocketTask = nil
@@ -152,7 +154,10 @@ public actor RemoteChangeObserver: NSObject, Sendable {
     }
 
     private func configureNotifyPush() async {
+        logger.debug("Configuring notify push...")
+
         guard !invalidated else {
+            logger.error("Attempt to configure notify push while being invalidated!")
             return
         }
 
@@ -246,7 +251,7 @@ public actor RemoteChangeObserver: NSObject, Sendable {
             }
 
             Task {
-                await self.pingWebSocket()
+                self.pingWebSocket()
             }
         }
     }
@@ -273,20 +278,20 @@ public actor RemoteChangeObserver: NSObject, Sendable {
 
                 guard error == nil else {
                     self.logger.error("Websocket ping failed.", [.error: error])
-                    await self.incrementWebSocketPingFailCount()
+                    self.incrementWebSocketPingFailCount()
 
-                    if await self.webSocketPingFailCount > self.webSocketPingFailLimit {
+                    if self.webSocketPingFailCount > self.webSocketPingFailLimit {
                         Task.detached(priority: .medium) {
-                            await self.reconnectWebSocket()
+                            self.reconnectWebSocket()
                         }
                     } else {
-                        await startNewWebSocketPingTask()
+                        startNewWebSocketPingTask()
                     }
 
                     return
                 }
 
-                await startNewWebSocketPingTask()
+                startNewWebSocketPingTask()
             }
         }
     }
@@ -304,20 +309,20 @@ public actor RemoteChangeObserver: NSObject, Sendable {
 
                 switch result {
                     case .failure:
-                        let accountId = await self.accountId
+                        let accountId = self.accountId
                         self.logger.debug("Failed to read websocket.", [.account: accountId])
                         // Do not reconnect here, delegate methods will handle reconnecting
                     case let .success(message):
                         switch message {
                             case let .data(data):
-                                await self.processWebsocket(data: data)
+                                self.processWebsocket(data: data)
                             case let .string(string):
-                                await self.processWebsocket(string: string)
+                                self.processWebsocket(string: string)
                             @unknown default:
                                 self.logger.error("Unknown case encountered while reading websocket!")
                         }
 
-                        await self.readWebSocket()
+                        self.readWebSocket()
                 }
             }
         }
@@ -360,6 +365,14 @@ public actor RemoteChangeObserver: NSObject, Sendable {
             logger.error("Received unknown string from websocket \(account.ncKitAccount): \(string)", [.account: account.ncKitAccount])
         }
     }
+
+    func replaceAccount(with account: Account) {
+        self.account = account
+    }
+
+    func setWebSocketPingInterval(to nanoseconds: UInt64) {
+        self.webSocketPingIntervalNanoseconds = nanoseconds
+    }
 }
 
 // MARK: - URLSessionWebSocketDelegate
@@ -367,30 +380,30 @@ public actor RemoteChangeObserver: NSObject, Sendable {
 extension RemoteChangeObserver: URLSessionWebSocketDelegate {
     nonisolated public func urlSession(_: URLSession, webSocketTask _: URLSessionWebSocketTask, didOpenWithProtocol _: String?) {
         Task {
-            guard await invalidated == false else {
+            guard invalidated == false else {
                 return
             }
 
-            logger.debug("Websocket connected sending auth details", [.account: await accountId])
+            logger.debug("Websocket connected sending auth details", [.account: accountId])
             await authenticateWebSocket()
         }
     }
 
     nonisolated public func urlSession(_: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith _: URLSessionWebSocketTask.CloseCode, reason: Data?) {
         Task {
-            guard await invalidated == false else {
+            guard invalidated == false else {
                 return
             }
 
             // If the task that closed is not the current active task, it means we have
             // already initiated a reset and this is a stale callback. Ignore it.
-            guard await webSocketTask === self.webSocketTask else {
+            guard webSocketTask === self.webSocketTask else {
                 logger.debug("An old websocket task closed, ignoring.")
                 return
             }
 
-            logger.debug("Socket connection closed: \(String(data: reason ?? Data(), encoding: .utf8) ?? "unknown reason"). Retrying websocket connection.", [.account: await accountId])
-            await reconnectWebSocket()
+            logger.debug("Socket connection closed: \(String(data: reason ?? Data(), encoding: .utf8) ?? "unknown reason"). Retrying websocket connection.", [.account: accountId])
+            reconnectWebSocket()
         }
     }
 
@@ -406,7 +419,7 @@ extension RemoteChangeObserver: NextcloudKitDelegate {
                 return
             }
 
-            guard await !invalidated else {
+            guard !invalidated else {
                 return
             }
 
@@ -440,7 +453,7 @@ extension RemoteChangeObserver: NextcloudKitDelegate {
                 return
             }
 
-            await self.setNetworkReachability(typeReachability)
+            self.setNetworkReachability(typeReachability)
         }
     }
 
@@ -500,8 +513,9 @@ extension RemoteChangeObserver: NextcloudKitDelegate {
     /// - Parameters:
     ///     - completionHandler: An optional closure to call after the working set check completed.
     ///
-    func startWorkingSetCheck(completionHandler: (() -> Void)? = nil) {
+    func startWorkingSetCheck(completionHandler: (@Sendable () -> Void)? = nil) {
         guard !workingSetCheckOngoing, !invalidated else {
+            logger.error("Cancelling dispatch of working set check because it either is already ongoing or this is invalidated!")
             return
         }
 
@@ -512,9 +526,11 @@ extension RemoteChangeObserver: NextcloudKitDelegate {
     }
 
     private func checkWorkingSet() async {
+        logger.debug("Checking working set...")
         workingSetCheckOngoing = true
 
         defer {
+            logger.debug("Working set check no longer ongoing.")
             workingSetCheckOngoing = false
         }
 

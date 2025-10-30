@@ -22,7 +22,7 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
     override func setUp() {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
         dbManager = FilesDatabaseManager(account: Self.account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
-        mockRemoteInterface = MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        mockRemoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
     }
 
     func testUnchangedDirectoryShouldNotBeEnumerated() async throws {
@@ -125,31 +125,31 @@ final class RemoteChangeObserverEtagOptimizationTests: NextcloudFileProviderKitT
         print("\n=== Running multiple working set checks ===")
 
         // First working set check
-        var workingSetCheckCompleted = expectation(description: "First working set check completed.")
+        let firstWorkingSetCheckCompleted = expectation(description: "First working set check completed.")
 
         remoteChangeObserver.startWorkingSetCheck {
-            workingSetCheckCompleted.fulfill()
+            firstWorkingSetCheckCompleted.fulfill()
         }
 
-        await fulfillment(of: [workingSetCheckCompleted])
+        await fulfillment(of: [firstWorkingSetCheckCompleted])
 
         // Second working set check (simulating rapid notify_file messages)
-        workingSetCheckCompleted = expectation(description: "Second working set check completed.")
+        let secondWorkingSetCheckCompleted = expectation(description: "Second working set check completed.")
 
         remoteChangeObserver.startWorkingSetCheck {
-            workingSetCheckCompleted.fulfill()
+            secondWorkingSetCheckCompleted.fulfill()
         }
 
-        await fulfillment(of: [workingSetCheckCompleted])
+        await fulfillment(of: [secondWorkingSetCheckCompleted])
 
         // Third working set check
-        workingSetCheckCompleted = expectation(description: "Third working set check completed.")
+        let thirdWorkingSetCheckCompleted = expectation(description: "Third working set check completed.")
 
         remoteChangeObserver.startWorkingSetCheck {
-            workingSetCheckCompleted.fulfill()
+            thirdWorkingSetCheckCompleted.fulfill()
         }
 
-        await fulfillment(of: [workingSetCheckCompleted])
+        await fulfillment(of: [thirdWorkingSetCheckCompleted])
 
         // Wait for all operations to complete
 

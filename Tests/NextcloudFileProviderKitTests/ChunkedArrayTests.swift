@@ -54,27 +54,52 @@ final class ChunkedArrayTests: NextcloudFileProviderKitTestCase {
     // MARK: - concurrentChunkedForEach(into:operation:)
 
     func testConcurrentChunkedForEach() async {
+        actor ResultsCollector {
+            var results = [Int]()
+
+            func append(_ value: Int) {
+                results.append(value)
+            }
+
+            func getResults() -> [Int] {
+                return results
+            }
+        }
+
         let array = [1, 2, 3, 4]
-        var results = [Int]()
-        let resultsQueue =
-            DispatchQueue(label: "com.claucambra.NextcloudFileProviderKitTests.resultsQueue")
+        let collector = ResultsCollector()
 
         await array.concurrentChunkedForEach(into: 2) { element in
             try? await Task.sleep(nanoseconds: 100_000_000) // Simulate work (100ms)
-            resultsQueue.sync { results.append(element * 2) }
+            await collector.append(element * 2)
         }
-        let sortedResults = results.sorted()
+        let sortedResults = await collector.getResults().sorted()
         let expectedResults = [2, 4, 6, 8]
         XCTAssertEqual(sortedResults, expectedResults)
     }
 
     func testConcurrentChunkedForEachEmptyArray() async {
-        let emptyArray: [Int] = []
-        var results = [Int]()
-        await emptyArray.concurrentChunkedForEach(into: 2) { element in
-            results.append(element)
+        actor ResultsCollector {
+            var results = [Int]()
+
+            func append(_ value: Int) {
+                results.append(value)
+            }
+
+            func isEmpty() -> Bool {
+                return results.isEmpty
+            }
         }
-        XCTAssertTrue(results.isEmpty)
+
+        let emptyArray: [Int] = []
+        let collector = ResultsCollector()
+
+        await emptyArray.concurrentChunkedForEach(into: 2) { element in
+            await collector.append(element)
+        }
+
+        let isEmpty = await collector.isEmpty()
+        XCTAssertTrue(isEmpty)
     }
 
     // MARK: - concurrentChunkedCompactMap(into:transform:)

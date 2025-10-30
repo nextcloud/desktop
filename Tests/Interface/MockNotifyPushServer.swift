@@ -60,10 +60,7 @@ public class MockNotifyPushServer: @unchecked Sendable {
     public func run() async throws {
         let channel: NIOAsyncChannel<EventLoopFuture<UpgradeResult>, Never> = try await ServerBootstrap(group: eventLoopGroup)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
-            .bind(
-                host: host,
-                port: port
-            ) { channel in
+            .bind(host: host, port: port) { channel in
                 channel.eventLoop.makeCompletedFuture {
                     let upgrader = NIOTypedWebSocketServerUpgrader<UpgradeResult>(
                         shouldUpgrade: { channel, _ in

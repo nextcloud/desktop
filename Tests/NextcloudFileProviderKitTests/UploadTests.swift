@@ -24,7 +24,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl.path,
@@ -49,7 +49,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         let chunkSize = 3
         var uploadedChunks = [RemoteFileChunk]()
@@ -93,7 +93,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         let chunkSize = 3
         let uploadUuid = UUID().uuidString
         let previousUploadedChunkNum = 1
@@ -220,7 +220,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
@@ -300,7 +300,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         try data.write(to: fileUrl)
 
         let remoteInterface =
-            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+            MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
         remoteInterface.capabilities = capabilities
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"

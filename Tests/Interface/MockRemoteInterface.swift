@@ -576,10 +576,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
 
     public init(
+        account: Account,
         rootItem: MockRemoteItem? = nil,
         rootTrashItem: MockRemoteItem? = nil,
         pagination: Bool = false
     ) {
+        self.mockedAccounts[account.ncKitAccount] = account
         self.rootItem = rootItem
         self.rootTrashItem = rootTrashItem
         self.pagination = pagination
@@ -621,9 +623,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         return sanitisedPath
     }
 
-    func item(remotePath: String, account: Account) -> MockRemoteItem? {
+    func item(remotePath: String, account: String) -> MockRemoteItem? {
         guard let rootItem, !remotePath.isEmpty else {
             print("Invalid root item or remote path, cannot get item in item tree.")
+            return nil
+        }
+
+        guard let account = mockedAccounts[account] else {
             return nil
         }
 
@@ -666,7 +672,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     func parentItem(path: String, account: Account) -> MockRemoteItem? {
         let parentRemotePath = parentPath(path: path, account: account)
-        return item(remotePath: parentRemotePath, account: account)
+        return item(remotePath: parentRemotePath, account: account.ncKitAccount)
     }
 
     func randomIdentifier() -> String {
@@ -908,7 +914,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, .urlError)
         }
 
-        guard let sourceItem = item(remotePath: remotePathSource, account: account) else {
+        guard let sourceItem = item(remotePath: remotePathSource, account: account.ncKitAccount) else {
             print("Could not get item for remote path source\(remotePathSource)")
             return (account.ncKitAccount, nil, .urlError)
         }
@@ -996,10 +1002,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         serverUrlFileName: Any,
         fileNameLocalPath: String,
         account: String,
-        options _: NKRequestOptions,
-        requestHandler _: @escaping (_ request: DownloadRequest) -> Void = { _ in },
-        taskHandler _: @escaping (_ task: URLSessionTask) -> Void = { _ in },
-        progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
+        options: NKRequestOptions,
+        requestHandler: @escaping (_ request: DownloadRequest) -> Void = { _ in },
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         etag: String?,
@@ -1017,7 +1023,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account, nil, nil, 0, nil, nil, .urlError)
         }
 
-        guard let item = item(remotePath: serverUrlFileName, account: account) else {
+        guard let item = item(remotePath: serverUrlFileName, account: account.ncKitAccount) else {
             return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
         }
 
@@ -1073,7 +1079,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
 
-        guard let item = item(remotePath: remotePath, account: account) else {
+        guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             print("Item at \(remotePath) not found.")
             return (
                 account.ncKitAccount,
@@ -1166,7 +1172,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         options _: NKRequestOptions = .init(),
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
-        guard let item = item(remotePath: remotePath, account: account) else {
+        guard let item = item(remotePath: remotePath, account: account.ncKitAccount) else {
             return (account.ncKitAccount, nil, .urlError)
         }
 
@@ -1185,7 +1191,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func lockUnlockFile(serverUrlFileName: String, type _: NKLockType?, shouldLock: Bool, account: Account, options _: NKRequestOptions, taskHandler _: @escaping (URLSessionTask) -> Void) async throws -> NKLock? {
-        guard let item = item(remotePath: serverUrlFileName, account: account) else {
+        guard let item = item(remotePath: serverUrlFileName, account: account.ncKitAccount) else {
             throw NKError.urlError
         }
 
@@ -1194,13 +1200,23 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         return nil
     }
 
-    public func trashedItems(
-        account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
-        guard let rootTrashItem else { return (account.ncKitAccount, [], nil, .invalidData) }
-        return (account.ncKitAccount, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
+    public func listingTrashAsync(
+        filename: String?,
+        showHiddenFiles: Bool,
+        account: String,
+        options: NKRequestOptions,
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (
+        account: String,
+        items: [NKTrash]?,
+        responseData: AFDataResponse<Data>?,
+        error: NKError
+    ) {
+        guard let rootTrashItem else {
+            return (account, [], nil, .invalidData)
+        }
+
+        return (account, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
     }
 
     public func restoreFromTrash(
@@ -1247,16 +1263,26 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         return Capabilities(data: capsData ?? Data())
     }
 
-    public func fetchUserProfile(
-        account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
+    public func getUserProfileAsync(
+        account: String,
+        options: NKRequestOptions,
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (
+        account: String,
+        userProfile: NKUserProfile?,
+        responseData: AFDataResponse<Data>?,
+        error: NKError
+    ) {
+        guard let account = mockedAccounts[account] else {
+            return (account, nil, nil, .urlError)
+        }
+
         let profile = NKUserProfile()
         profile.address = account.serverUrl
         profile.backend = "mock"
         profile.displayName = account.ncKitAccount
         profile.userId = account.id
+
         return (account.ncKitAccount, profile, nil, .success)
     }
 

@@ -28,7 +28,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteFile() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
             identifier: itemIdentifier,
@@ -64,7 +64,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteFolderAndContents() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -116,7 +116,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteWithTrashing() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
             identifier: itemIdentifier,
@@ -174,7 +174,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
             account: Self.account,
-            remoteInterface: MockRemoteInterface(rootItem: rootItem),
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
             dbManager: Self.dbManager
         )
         let error = await item.delete(
@@ -188,7 +188,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteLockFileUnlocksTargetFile() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         // Setup remote folder and file
         let folderRemote = MockRemoteItem(
@@ -264,7 +264,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDeleteLockFileWithoutCapabilitiesDoesNothing() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         XCTAssert(remoteInterface.capabilities.contains(##""locking": "1.0","##))
         remoteInterface.capabilities =
             remoteInterface.capabilities.replacingOccurrences(of: ##""locking": "1.0","##, with: "")
@@ -338,7 +338,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFailOnNonRecursiveNonEmptyDirDelete() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",

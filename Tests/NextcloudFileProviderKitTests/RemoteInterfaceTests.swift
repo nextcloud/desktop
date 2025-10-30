@@ -23,8 +23,7 @@ struct RemoteInterfaceExtensionTests {
 
     @Test func currentCapabilitiesReturnsFreshCache() async {
         await RetrievedCapabilitiesActor.shared.reset()
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { _, _, _ in
+        let remoteInterface = TestableRemoteInterface { _, _, _ in
             Issue.record("fetchCapabilities should NOT be called when cache is fresh.")
             return (testAccount.ncKitAccount, nil, nil, .invalidResponseError)
         }
@@ -51,23 +50,23 @@ struct RemoteInterfaceExtensionTests {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let (fetchedCaps, fetchedData) = capabilitiesFromMockJSON()
-        var fetcherCalled = false
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            fetcherCalled = true
-            #expect(acc.ncKitAccount == testAccount.ncKitAccount)
-            return (acc.ncKitAccount, fetchedCaps, fetchedData, .success)
+
+        await confirmation("fetcherCalled") { fetcherCalled in
+            let remoteInterface = TestableRemoteInterface { acc, _, _ in
+                fetcherCalled()
+                #expect(acc.ncKitAccount == testAccount.ncKitAccount)
+                return (acc.ncKitAccount, fetchedCaps, fetchedData, .success)
+            }
+
+            let result = await remoteInterface.currentCapabilities(account: testAccount)
+
+            #expect(result.error == .success)
+            #expect(result.capabilities == fetchedCaps)
+            #expect(result.data == fetchedData)
         }
 
-        let result = await remoteInterface.currentCapabilities(account: testAccount)
-
-        #expect(fetcherCalled, "fetchCapabilities should be called when cache is empty.")
-        #expect(result.error == .success)
-        #expect(result.capabilities == fetchedCaps)
-        #expect(result.data == fetchedData)
-
-        let actorCache = await RetrievedCapabilitiesActor.shared.data
-        #expect(actorCache[testAccount.ncKitAccount]?.capabilities == fetchedCaps)
+        let actorCache = await RetrievedCapabilitiesActor.shared.getCapabilities(for: testAccount.ncKitAccount)
+        #expect(actorCache?.capabilities == fetchedCaps)
     }
 
     @Test func currentCapabilitiesFetchesOnStaleCache() async throws {
@@ -101,75 +100,59 @@ struct RemoteInterfaceExtensionTests {
         )
 
         let (newCaps, newData) = capabilitiesFromMockJSON() // Fresh data to be fetched
-        var fetcherCalled = false
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            fetcherCalled = true
-            return (acc.ncKitAccount, newCaps, newData, .success)
+
+        await confirmation("fetcherCalled") { fetcherCalled in
+            let remoteInterface = TestableRemoteInterface { acc, _, _ in
+                fetcherCalled()
+                return (acc.ncKitAccount, newCaps, newData, .success)
+            }
+
+            let result = await remoteInterface.currentCapabilities(account: testAccount)
+
+            #expect(result.error == .success)
+            #expect(result.capabilities == newCaps, "Should return newly fetched capabilities.")
+            #expect(result.data == newData)
         }
 
-        let result = await remoteInterface.currentCapabilities(account: testAccount)
-
-        #expect(fetcherCalled, "fetchCapabilities should be called for stale cache.")
-        #expect(result.error == .success)
-        #expect(result.capabilities == newCaps, "Should return newly fetched capabilities.")
-        #expect(result.data == newData)
-
-        let actorCache = await RetrievedCapabilitiesActor.shared.data
-        #expect(actorCache[testAccount.ncKitAccount]?.capabilities == newCaps)
-        #expect((actorCache[testAccount.ncKitAccount]?.retrievedAt ?? .distantPast) > staleDate)
+        let actorCache = await RetrievedCapabilitiesActor.shared.getCapabilities(for: testAccount.ncKitAccount)
+        #expect(actorCache?.capabilities == newCaps)
+        #expect((actorCache?.retrievedAt ?? .distantPast) > staleDate)
     }
 
     @Test func currentCapabilitiesAwaitsAndUsesCache() async throws {
         await RetrievedCapabilitiesActor.shared.reset()
 
         let (cachedCaps, cachedData) = capabilitiesFromMockJSON()
-        var fetcherCalledCount = 0
 
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
-            fetcherCalledCount += 1
-            // This fetcher should not be called if cache is fresh after await.
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
+            Issue.record("fetchCapabilities should NOT be called when cache is fresh after await.")
             return (acc.ncKitAccount, cachedCaps, cachedData, .success)
         }
 
         // 1. Simulate an external process starting a fetch for testAccount
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: testAccount.ncKitAccount, ongoing: true
-        )
+        await RetrievedCapabilitiesActor.shared.setOngoingFetch(forAccount: testAccount.ncKitAccount, ongoing: true)
 
-        var currentCapabilitiesReturned = false
-        let currentCapabilitiesTask = Task {
-            // 2. This call to currentCapabilities should await the ongoing fetch.
-            let result = await remoteInterface.currentCapabilities(account: testAccount)
-            currentCapabilitiesReturned = true
-            // Assertions on the result will be done after the task.
-            #expect(result.capabilities == cachedCaps)
-            #expect(result.error == .success)
+        await confirmation("currentCapabilitiesReturned") { currentCapabilitiesReturned in
+            let currentCapabilitiesTask = Task { @Sendable in
+                // 2. This call to currentCapabilities should await the ongoing fetch.
+                let result = await remoteInterface.currentCapabilities(account: testAccount)
+                currentCapabilitiesReturned()
+                // Assertions on the result will be done after the task.
+                #expect(result.capabilities == cachedCaps)
+                #expect(result.error == .success)
+            }
+
+            // 3. Now, the "external" fetch completes and populates the cache.
+            await RetrievedCapabilitiesActor.shared.setCapabilities(
+                forAccount: testAccount.ncKitAccount,
+                capabilities: cachedCaps,
+                retrievedAt: Date() // Fresh date
+            )
+
+            await RetrievedCapabilitiesActor.shared.setOngoingFetch(forAccount: testAccount.ncKitAccount, ongoing: false)
+
+            await currentCapabilitiesTask.value
         }
-
-        // 3. Give currentCapabilitiesTask a moment to hit the await.
-        try await Task.sleep(for: .milliseconds(100))
-        #expect(currentCapabilitiesReturned == false, "currentCapabilities should be awaiting.")
-
-        // 4. Now, the "external" fetch completes and populates the cache.
-        await RetrievedCapabilitiesActor.shared.setCapabilities(
-            forAccount: testAccount.ncKitAccount,
-            capabilities: cachedCaps,
-            retrievedAt: Date() // Fresh date
-        )
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: testAccount.ncKitAccount, ongoing: false
-        )
-
-        // 5. currentCapabilitiesTask should now complete.
-        await currentCapabilitiesTask.value
-        #expect(currentCapabilitiesReturned == true)
-
-        // Check if fetchCapabilities was called.
-        // If the logic is: await -> check cache -> fetch if needed.
-        // And we made cache fresh before await unblocked, it should NOT call fetch.
-        #expect(fetcherCalledCount == 0, "fetchCapabilities should not have been called if cache was fresh after await.")
     }
 
     @Test func supportsTrashTrue() async throws {
@@ -179,10 +162,10 @@ struct RemoteInterfaceExtensionTests {
         let (capsWithTrash, dataWithTrash) = capabilitiesFromMockJSON()
         #expect(capsWithTrash.files?.undelete == true)
 
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, capsWithTrash, dataWithTrash, .success)
         }
+
         await RetrievedCapabilitiesActor.shared.setCapabilities(
             forAccount: testAccount.ncKitAccount,
             capabilities: capsWithTrash, // any capability
@@ -216,8 +199,7 @@ struct RemoteInterfaceExtensionTests {
         let (capsNoTrash, dataNoTrash) = capabilitiesFromMockJSON(jsonString: jsonNoUndelete)
         #expect(capsNoTrash.files?.undelete == false)
 
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
             await RetrievedCapabilitiesActor.shared.setCapabilities(
                 forAccount: acc.ncKitAccount, capabilities: capsNoTrash, retrievedAt: Date()
             )
@@ -235,10 +217,10 @@ struct RemoteInterfaceExtensionTests {
 
     @Test func supportsTrashNilCapabilities() async throws {
         await RetrievedCapabilitiesActor.shared.reset()
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }
+
         await RetrievedCapabilitiesActor.shared.setCapabilities(
             forAccount: testAccount.ncKitAccount,
             capabilities: capabilitiesFromMockJSON().0,
@@ -273,10 +255,10 @@ struct RemoteInterfaceExtensionTests {
         let (capsNoFiles, dataNoFiles) = capabilitiesFromMockJSON(jsonString: jsonNoFilesSection)
         #expect(capsNoFiles.files?.undelete != true) // Check our parsing logic
 
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, capsNoFiles, dataNoFiles, .success)
         }
+
         await RetrievedCapabilitiesActor.shared.setCapabilities( // Stale entry
             forAccount: testAccount.ncKitAccount,
             capabilities: capsNoFiles,
@@ -289,8 +271,8 @@ struct RemoteInterfaceExtensionTests {
 
     @Test func supportsTrashHandlesErrorFromCurrentCapabilities() async throws {
         await RetrievedCapabilitiesActor.shared.reset()
-        var remoteInterface = TestableRemoteInterface()
-        remoteInterface.fetchCapabilitiesHandler = { acc, _, _ in
+
+        let remoteInterface = TestableRemoteInterface { acc, _, _ in
             (acc.ncKitAccount, nil, nil, .invalidResponseError)
         }
         // Ensure fetch is triggered

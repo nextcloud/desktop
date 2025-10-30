@@ -6,7 +6,7 @@ import NextcloudCapabilitiesKit
 
 let CapabilitiesFetchInterval: TimeInterval = 30 * 60 // 30mins
 
-actor RetrievedCapabilitiesActor {
+actor RetrievedCapabilitiesActor: Sendable {
     static let shared = RetrievedCapabilitiesActor()
 
     var ongoingFetches: Set<String> = []

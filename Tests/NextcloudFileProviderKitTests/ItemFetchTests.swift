@@ -27,7 +27,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFetchFileContents() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
 
         let remoteItem = MockRemoteItem(
@@ -73,7 +73,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFetchDirectoryContents() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
 
         let remoteDirectory = MockRemoteItem(
