@@ -38,6 +38,8 @@
 #include <QPainterPath>
 #endif
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
@@ -379,9 +381,9 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
-        if (property == QLatin1String("resourcetype")) {
-            result.isDirectory = value.contains(QLatin1String("collection"));
-        } else if (property == QLatin1String("getlastmodified")) {
+        if (property == "resourcetype"_L1) {
+            result.isDirectory = value.contains("collection"_L1);
+        } else if (property == "getlastmodified"_L1) {
             value.replace("GMT", "+0000");
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
             Q_ASSERT(date.isValid());
@@ -389,7 +391,7 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
             if (date.toSecsSinceEpoch() > 0) {
                 result.modtime = date.toSecsSinceEpoch();
             }
-        } else if (property == QLatin1String("getcontentlength")) {
+        } else if (property == "getcontentlength"_L1) {
             // See #4573, sometimes negative size values are returned
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
@@ -398,19 +400,19 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
             } else {
                 result.size = 0;
             }
-        } else if (property == "getetag") {
+        } else if (property == "getetag"_L1) {
             result.etag = Utility::normalizeEtag(value.toUtf8());
-        } else if (property == "id") {
+        } else if (property == "id"_L1) {
             result.fileId = value.toUtf8();
-        } else if (property == "downloadURL") {
+        } else if (property == "downloadURL"_L1) {
             result.directDownloadUrl = value;
-        } else if (property == "dDC") {
+        } else if (property == "dDC"_L1) {
             result.directDownloadCookies = value;
-        } else if (property == "permissions") {
+        } else if (property == "permissions"_L1) {
             result.remotePerm = RemotePermissions::fromServerString(value, algorithm, map);
-        } else if (property == "checksums") {
+        } else if (property == "checksums"_L1) {
             result.checksumHeader = findBestChecksum(value.toUtf8());
-        } else if (property == "share-types" && !value.isEmpty()) {
+        } else if (property == "share-types"_L1 && !value.isEmpty()) {
             // Since QMap is sorted, "share-types" is always after "permissions".
             if (result.remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
@@ -422,18 +424,18 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
                 result.sharedByMe = true;
             }
-        } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
+        } else if (property == "is-encrypted"_L1 && value == "1"_L1) {
             result._isE2eEncrypted = true;
-        } else if (property == "lock") {
-            result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
+        } else if (property == "lock"_L1) {
+            result.locked = (value == "1"_L1 ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
         }
-        if (property == "lock-owner-displayname") {
+        if (property == "lock-owner-displayname"_L1) {
             result.lockOwnerDisplayName = value;
         }
-        if (property == "lock-owner") {
+        if (property == "lock-owner"_L1) {
             result.lockOwnerId = value;
         }
-        if (property == "lock-owner-type") {
+        if (property == "lock-owner-type"_L1) {
             auto ok = false;
             const auto intConvertedValue = value.toULongLong(&ok);
             if (ok) {
@@ -442,10 +444,10 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
                 result.lockOwnerType = SyncFileItem::LockOwnerType::UserLock;
             }
         }
-        if (property == "lock-owner-editor") {
+        if (property == "lock-owner-editor"_L1) {
             result.lockEditorApp = value;
         }
-        if (property == "lock-time") {
+        if (property == "lock-time"_L1) {
             auto ok = false;
             const auto intConvertedValue = value.toULongLong(&ok);
             if (ok) {
@@ -454,7 +456,7 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
                 result.lockTime = 0;
             }
         }
-        if (property == "lock-timeout") {
+        if (property == "lock-timeout"_L1) {
             auto ok = false;
             const auto intConvertedValue = value.toULongLong(&ok);
             if (ok) {
@@ -463,17 +465,17 @@ void LsColJob::propertyMapToRemoteInfo(const QMap<QString, QString> &map, Remote
                 result.lockTimeout = 0;
             }
         }
-        if (property == "lock-token") {
+        if (property == "lock-token"_L1) {
             result.lockToken = value;
         }
-        if (property == "metadata-files-live-photo") {
+        if (property == "metadata-files-live-photo"_L1) {
             result.livePhotoFile = value;
             result.isLivePhoto = true;
         }
     }
 
-    if (result.isDirectory && map.contains("size")) {
-        result.sizeOfFolder = map.value("size").toInt();
+    if (result.isDirectory && map.contains("size"_L1)) {
+        result.sizeOfFolder = map.value("size"_L1).toInt();
     }
 
     if (result.isDirectory && map.contains(FolderQuota::usedBytesC) && map.contains(FolderQuota::availableBytesC)) {
