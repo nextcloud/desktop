@@ -1334,7 +1334,6 @@ UserModel *UserModel::instance()
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    // TODO: Remember selected user from last quit via settings file
     if (AccountManager::instance()->accounts().size() > 0) {
         buildUserList();
     }
@@ -1349,8 +1348,34 @@ void UserModel::buildUserList()
         auto user = AccountManager::instance()->accounts().at(i);
         addUser(user);
     }
-    if (_init) {
-        _users.first()->setCurrentUser(true);
+    if (_init && !_users.isEmpty()) {
+        // Try to restore the last selected account
+        ConfigFile cfg;
+        const auto lastSelectedAccountId = cfg.lastSelectedAccount();
+        
+        if (!lastSelectedAccountId.isEmpty()) {
+            // Find the account by id (more stable than displayName)
+            int foundIndex = -1;
+            for (int i = 0; i < _users.size(); i++) {
+                if (_users[i]->account()->id() == lastSelectedAccountId) {
+                    foundIndex = i;
+                    break;
+                }
+            }
+            
+            if (foundIndex >= 0 && foundIndex < _users.size()) {
+                setCurrentUserId(foundIndex);
+                _init = false;
+                return;
+            }
+        }
+        
+        // Fallback to first account if last selected account not found
+        setCurrentUserId(0);
+        _init = false;
+    } else if (_init && _users.isEmpty()) {
+        // No accounts available - ensure initialization is complete
+        // _currentUserId remains -1 (no account selected)
         _init = false;
     }
 }
@@ -1525,6 +1550,13 @@ void UserModel::setCurrentUserId(const int id)
         emit currentUserChanged();
     } else if (_currentUserId != id) {
         _currentUserId = id;
+        
+        // Save the last selected account identifier (but not during initialization)
+        if (!_init) {
+            ConfigFile cfg;
+            cfg.setLastSelectedAccount(_users[id]->account()->id());
+        }
+        
         emit currentUserChanged();
     }
 }
