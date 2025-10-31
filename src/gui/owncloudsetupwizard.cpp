@@ -36,6 +36,8 @@
 #include <QDesktopServices>
 #include <QApplication>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
@@ -360,9 +362,9 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 
         sender()->deleteLater();
 
-        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
-        const auto userId = objData.value("id").toString("");
-        const auto displayName = objData.value("display-name").toString("");
+        const auto objData = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
+        const auto userId = objData.value("id"_L1).toString(QString());
+        const auto displayName = objData.value("display-name"_L1).toString(QString());
         _ocWizard->account()->setDavUser(userId);
         _ocWizard->account()->setDavDisplayName(displayName);
 
@@ -424,7 +426,7 @@ void OwncloudSetupWizard::slotAuthError()
 
         // strip the expected path
         QString path = redirectUrl.path();
-        static QString expectedPath = "/" + _ocWizard->account()->davPath();
+        static QString expectedPath = u'/' + _ocWizard->account()->davPath();
         if (path.endsWith(expectedPath)) {
             path.chop(expectedPath.size());
             redirectUrl.setPath(path);
@@ -470,7 +472,7 @@ void OwncloudSetupWizard::slotAuthError()
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
 {
-    if (reply->url().scheme() != QLatin1String("https")) {
+    if (reply->url().scheme() != "https"_L1) {
         return false;
     }
 
@@ -485,7 +487,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
     }
 
     // Adhere to HSTS, even though we do not parse it properly
-    if (reply->hasRawHeader("Strict-Transport-Security")) {
+    if (reply->hasRawHeader("Strict-Transport-Security"_L1)) {
         return false;
     }
     return true;

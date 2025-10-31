@@ -12,6 +12,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcTalkReply, "nextcloud.gui.talkreply", QtInfoMsg)
@@ -34,8 +36,8 @@ void TalkReply::sendReplyMessage(const QString &conversationToken, const QString
             qCWarning(lcTalkReply) << "Status code" << statusCode;
         }
 
-        const auto responseObj = response.object().value("ocs").toObject().value("data").toObject();
-        emit replyMessageSent(responseObj.value("message").toString());
+        const auto responseObj = response.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
+        emit replyMessageSent(responseObj.value("message"_L1).toString());
 
         deleteLater();
     });
