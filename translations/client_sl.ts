@@ -423,17 +423,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="311"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Odgovor strežnika je trajal predolgo. Preverite povezavo in poskusite ponovno zagnati usklajevanje. Če še vedno ne bo delovalo, se obrnite na skrbnika strežnika.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="315"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do nepričakovane napake. Poskusite ponovno zagnati usklajevanje. Če še vedno ne bo delovalo, se obrnite na skrbnika strežnika.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="595"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik izvaja strogo varnost prenosa in ne sprejema nezanesljivih potrdil.</translation>
     </message>
 </context>
 <context>
@@ -451,12 +451,12 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="1064"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Opravilo zaklepa %1 je spodletelo z napako %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="1066"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Opravilo odklepa %1 je spodletelo z napako %2</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="243"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>Zaznan je račun, povezan s starejšo različico namiznega odjemalca.
+Ali želite račun uvoziti?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="245"/>
@@ -584,17 +585,18 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Šifrirali boste mapo in vse datoteke v njej. Brez šifrirnega ključa ne dostopa do teh datotek ne bo več mogoč.
+&lt;b&gt;Začetega postopka ni mogoče več povrniti. Ali ste prepričani, da želite nadaljevati?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation type="unfinished"/>
+        <translation>Za ta račun je začet postopek celovitega šifriranja E2E.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <source>Forget encryption setup</source>
-        <translation type="unfinished"/>
+        <translation>Pozabi nastavitev šifriranja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
@@ -614,7 +616,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="398"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Počakajte, da se mapa uskladi, preden jo poskušate šifrirati.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="400"/>
@@ -725,7 +727,7 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>Disable virtual file support?</source>
-        <translation>Ali želite onemogočiti podporo navideznih datotek?</translation>
+        <translation>Ali želite onemogočiti podporo za navidezne datoteke?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
@@ -758,12 +760,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani celovito šifriranje E2E za to napravo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite odstraniti celovito šifriranje E2E za %1 na tej napravi?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1124"/>
@@ -793,7 +795,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1644"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Zaznane so mape, katerih velikost presega %1MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1695"/>
@@ -919,7 +921,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1353"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Pred nadaljevanjem morate sprejeti pogoje uporabe na %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1358"/>
@@ -975,7 +977,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>Zaznana je preusmeritev</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="162"/>
@@ -995,7 +997,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountstate.cpp" line="168"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Pred nadaljevanjem morajo uporabniki sprejeti pogoje uporabe.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="170"/>
@@ -1018,7 +1020,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="602"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake omrežja: začet je poskus ponovnega usklajevanja.</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1071,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nekatere nastavitve so bile nastavljene v različicah programa %1in vključujejo možnosti, ki v trenutni različici niso na voljo. &lt;br&gt;&lt;br&gt;Nadaljevanje pomeni uporabo &lt;b&gt;%2trenutnih nastavitev&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Za trenutno uporabljeno nastavitveno datoteko je varnostna kopija že shranjena na &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="180"/>
@@ -1176,12 +1178,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="85"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>»%1: odklepanje šifrirane mape %2 je spodletelo.«</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 204, prejet pa je bil »%1 %2«.</translation>
     </message>
 </context>
 <context>
@@ -1189,18 +1191,18 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="143"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="151"/>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="152"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je bila spremenjena po usklajevanju seznama datotek</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="164"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče izbrisati zapisa datoteke %1 iz krajevne zbirke.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
@@ -1211,22 +1213,22 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
         <source>File %1 cannot be downloaded because it is non virtual!</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 ni mogoče prejeti, ker ni navidezna datoteka!</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="188"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake posodabljanja metapodatkov: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="191"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je trenutno v uporabi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="229"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče pridobiti datoteke %1 iz krajevne zbirke.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
@@ -1384,7 +1386,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Zadrži datoteko v sporu</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1395,7 +1397,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="107"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Odpri datoteko v sporu</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
@@ -1467,7 +1469,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1193"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Vpišite kodo PIN žetona potrdila USB:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1210"/>
@@ -2196,7 +2198,7 @@ To pomeni, da odjemalec usklajevanja ne pošilja krajevnih sprememb takoj in mor
     <message>
         <location filename="../src/gui/folder.cpp" line="1631"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Prejemanje navidezne datoteke je spodletelo s kodo »%1«, stanjem »%2« in sporočilom o napaki »%3«.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1725"/>
@@ -2699,7 +2701,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="630"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Navidezne datoteke na izbranem mestu niso podprte.</translation>
     </message>
 </context>
 <context>
@@ -3635,7 +3637,7 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="427"/>
         <source>Virtual files are not supported at the selected location</source>
-        <translation type="unfinished"/>
+        <translation>Navidezne datoteke na izbranem mestu niso podprte.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="490"/>
@@ -5724,17 +5726,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="64"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrati je treba drugo mesto. %1 je pogon, ki ne podpira virtualnih datotek.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="68"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrati je treba drugo mesto. %1 ni datotečni sistem NTFS in ne podpira virtualnih datotek.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Izbrati je treba drugo mesto. %1 je omrežni pogon in ne podpira virtualnih datotek.</translation>
     </message>
 </context>
 <context>
@@ -6366,11 +6368,6 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -7032,7 +7029,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Krajevni metapodatki navideznih datotek so posodobljeni</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -7078,7 +7075,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Poteka posodabljanje krajevnih metapodatkov navideznih datotek</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>

@@ -6390,11 +6390,6 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Nincs elegendő jogosultsága az erőforrás eléréséhez. Ha úgy gondolja, hogy ez hiba, akkor segítéségért vegye fel a kapcsolatot a kiszolgáló rendszergazdájával.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation>Váratlan hiba történt. Próbáljon újra szinkronizálni, vagy lépjen kapcsolatba a rendszergazdával, ha a probléma továbbra is fennáll.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"/>

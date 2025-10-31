@@ -6372,7 +6372,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
+        <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
