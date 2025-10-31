@@ -30,6 +30,7 @@
 #include <cstring>
 #include <QDateTime>
 
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -489,25 +490,25 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
-        if (map.contains("data-fingerprint")) {
-            _dataFingerprint = map.value("data-fingerprint").toUtf8();
+        if (map.contains("data-fingerprint"_L1)) {
+            _dataFingerprint = map.value("data-fingerprint"_L1).toUtf8();
             if (_dataFingerprint.isEmpty()) {
                 // Placeholder that means that the server supports the feature even if it did not set one.
                 _dataFingerprint = "[empty]";
             }
         }
-        if (map.contains(QStringLiteral("fileid"))) {
-            _localFileId = map.value(QStringLiteral("fileid")).toUtf8();
+        if (map.contains("fileid"_L1)) {
+            _localFileId = map.value("fileid"_L1).toUtf8();
         }
-        if (map.contains("id")) {
-            _fileId = map.value("id").toUtf8();
+        if (map.contains("id"_L1)) {
+            _fileId = map.value("id"_L1).toUtf8();
         }
-        if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
+        if (map.contains("is-encrypted"_L1) && map.value("is-encrypted"_L1) == "1"_L1) {
             _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::EncryptedMigratedV2_0;
             Q_ASSERT(!_fileId.isEmpty());
         }
-        if (map.contains("size")) {
-            _size = map.value("size").toInt();
+        if (map.contains("size"_L1)) {
+            _size = map.value("size"_L1).toInt();
         }
 
         // all folders will contain both
@@ -528,7 +529,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         }
     } else {
         RemoteInfo result;
-        int slash = file.lastIndexOf('/');
+        int slash = file.lastIndexOf(u'/');
         result.name = file.mid(slash + 1);
         result.size = -1;
         LsColJob::propertyMapToRemoteInfo(map,
@@ -541,9 +542,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
-    if (map.contains("getetag")) {
+    if (map.contains("getetag"_L1)) {
         if (_firstEtag.isEmpty()) {
-            _firstEtag = parseEtag(map.value(QStringLiteral("getetag")).toUtf8()); // for directory itself
+            _firstEtag = parseEtag(map.value("getetag"_L1).toUtf8()); // for directory itself
         }
     }
 }
@@ -608,7 +609,7 @@ void DiscoverySingleDirectoryJob::fetchE2eMetadata()
 void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, int statusCode)
 {
     qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
-    Q_ASSERT(_subPath.startsWith('/'));
+    Q_ASSERT(_subPath.startsWith(u'/'));
 
     const auto job = qobject_cast<GetMetadataApiJob *>(sender());
     Q_ASSERT(job);
@@ -622,15 +623,15 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     // as per E2EE V2, top level folder is the only source of encryption keys and users that have access to it
     // hence, we need to find its path and pass to any subfolder's metadata, so it will fetch the top level metadata when needed
     // see https://github.com/nextcloud/end_to_end_encryption_rfc/blob/v2.1/RFC.md
-    auto topLevelFolderPath = QStringLiteral("/");
+    QString topLevelFolderPath = u"/"_s;
     for (const QString &topLevelPath : std::as_const(_topLevelE2eeFolderPaths)) {
         if (_subPath == topLevelPath) {
-            topLevelFolderPath = QStringLiteral("/");
+            topLevelFolderPath = u"/"_s;
             break;
         }
-        if (_subPath.startsWith(topLevelPath + QLatin1Char('/'))) {
-            const auto topLevelPathSplit = topLevelPath.split(QLatin1Char('/'));
-            topLevelFolderPath = topLevelPathSplit.join(QLatin1Char('/'));
+        if (_subPath.startsWith(topLevelPath + u'/')) {
+            const auto topLevelPathSplit = topLevelPath.split(u'/');
+            topLevelFolderPath = topLevelPathSplit.join(u'/');
             break;
         }
     }
@@ -681,7 +682,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
             const auto encryptedFileInfo = findEncryptedFile(result.name);
             if (encryptedFileInfo) {
                 result._isE2eEncrypted = true;
-                result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
+                result.e2eMangledName = _subPath.mid(1) + u'/' + result.name;
                 result.name = encryptedFileInfo->originalFilename;
             }
             return result;
