@@ -6386,11 +6386,6 @@ Server replied with error: %2</source>
         <translation>У вас нет разрешения на доступ к этому ресурсу. Если вы считаете, что произошла ошибка, обратитесь за помощью к администратору сервера.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="549"/>
-        <source>An unexpected error occurred. Please try syncing again or contact contact your server administrator if the issue continues.</source>
-        <translation>Произошла непредвиденная ошибка. Попробуйте выполнить синхронизацию ещё раз или обратитесь к администратору сервера, если проблема не исчезнет.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation type="unfinished"/>
