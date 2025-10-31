@@ -541,7 +541,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
 
     if (_item->_etag.isEmpty()) {
         qCWarning(lcPropagateUploadNG) << "Server did not return an ETAG" << _item->_file;
-        abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
+        abortWithError(SyncFileItem::NormalError, tr("The server didn't respond correctly to the sync request. Contact your server administrator for help."));
         return;
     }
     finalize();
