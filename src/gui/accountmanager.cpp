@@ -72,6 +72,9 @@ constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
+constexpr char unbrandedClientAppNameC[] = "Nextcloud";
+constexpr char legacyClientAppNameC[] = "Owncloud";
+
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
@@ -288,14 +291,39 @@ bool AccountManager::restoreFromLegacySettings()
     }
 
     ConfigFile configFile;
+    // General settings
     configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
-    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC, configFile.launchOnSystemStartup()).toBool());
-    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC, configFile.optionalServerNotifications()).toBool());
-    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC, configFile.promptDeleteFiles()).toBool());
-    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC, configFile.showCallNotifications()).toBool());
-    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC, configFile.showChatNotifications()).toBool());
-    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC, configFile.showQuotaWarningNotifications()).toBool());
-    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC, configFile.showInExplorerNavigationPane()).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC,
+                                                        configFile.launchOnSystemStartup()).toBool());
+    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC,
+                                                              configFile.optionalServerNotifications()).toBool());
+    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC,
+                                                    configFile.promptDeleteFiles()).toBool());
+    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC,
+                                                        configFile.showCallNotifications()).toBool());
+    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC,
+                                                        configFile.showChatNotifications()).toBool());
+    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC,
+                                                                configFile.showQuotaWarningNotifications()).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
+                                                               configFile.showInExplorerNavigationPane()).toBool());
+    // Advanced
+    configFile.setConfirmExternalStorage(settings->value(ConfigFile::confirmExternalStorageC,
+                                                         configFile.confirmExternalStorage()).toBool());
+    configFile.setNotifyExistingFoldersOverLimit(settings->value(ConfigFile::notifyExistingFoldersOverLimitC,
+                                                                 configFile.notifyExistingFoldersOverLimit()).toBool());
+    const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC,
+                                                       configFile.newBigFolderSizeLimit().second).toLongLong();
+    configFile.setNewBigFolderSizeLimit(configFile.useNewBigFolderSizeLimit(), newBigFolderSizeLimit);
+    configFile.setStopSyncingExistingFoldersOverLimit(settings->value(ConfigFile::stopSyncingExistingFoldersOverLimitC,
+                                                                      configFile.stopSyncingExistingFoldersOverLimit()).toBool());
+    configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
+    // Info
+    configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
+    auto legacyAppName = settings->contains(legacyClientAppNameC) ? legacyClientAppNameC : unbrandedClientAppNameC;
+    const auto updaterGroupName = QString("%1/%2").arg(legacyAppName, ConfigFile::autoUpdateCheckC);
+    configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
+    // Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
     configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
     configFile.setUploadLimit(settings->value(ConfigFile::uploadLimitC, configFile.uploadLimit()).toInt());
@@ -786,7 +814,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
 
 bool AccountManager::forceLegacyImport() const
 {
-    return _forceLegacyImport;
+   return _forceLegacyImport;
 }
 
 void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
