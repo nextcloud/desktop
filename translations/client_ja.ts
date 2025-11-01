@@ -6391,7 +6391,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>予期しないエラーが発生しました。再度同期を試みるか、問題が解決しない場合はサーバー管理者にお問い合わせください。</translation>
     </message>
 </context>
 <context>
