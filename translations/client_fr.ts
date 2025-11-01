@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="245"/>
         <source>Main content</source>
-        <translation type="unfinished"/>
+        <translation>Contenu principal</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="382"/>
@@ -433,7 +433,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="595"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur applique une sécurité de transport stricte et n’accepte pas les certificats non approuvés.</translation>
     </message>
 </context>
 <context>
@@ -1619,7 +1619,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Aucun compte %1 n&apos;est configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
@@ -2907,7 +2907,7 @@ Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichi
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation type="unfinished"/>
+        <translation>Afficher une notification lorsque l’utilisation du quota dépasse 80 %.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="219"/>
@@ -5378,7 +5378,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le bureau %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="179"/>
@@ -5599,13 +5599,13 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="1103"/>
         <source>Open %1 Assistant in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Ouvrir l&apos;assistant %1 dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1104"/>
         <source>Open %1 Talk in browser</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation type="unfinished"/>
+        <translation>Ouvrir %1 Talk dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1227"/>
@@ -6389,7 +6389,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur inattendue est survenue. Veuillez réessayer la synchronisation ou contacter l&apos;administrateur de votre serveur si le problème persiste.</translation>
     </message>
 </context>
 <context>
@@ -6874,7 +6874,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Message de statut</translation>
     </message>
 </context>
 <context>
