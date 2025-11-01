@@ -26,6 +26,8 @@
 #include <QJsonDocument>
 #include <QLoggingCategory>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
@@ -504,7 +506,7 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
 
 void ActivityListModel::activitiesReceived(const QJsonDocument &json, int statusCode)
 {
-    const auto activities = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
+    const auto activities = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
 
     if (!_accountState) {
         return;

@@ -78,6 +78,8 @@
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.1"
 
+using namespace Qt::StringLiterals;
+
 namespace {
 constexpr auto encryptJobPropertyFolder = "folder";
 constexpr auto encryptJobPropertyPath = "path";
@@ -394,7 +396,7 @@ void SocketApi::slotReadSocket()
         }();
 
         const auto argument = QString{argPos != -1 ? line.mid(argPos + 1) : QString()};
-        if (command.startsWith("ASYNC_")) {
+        if (command.startsWith("ASYNC_"_L1)) {
             const auto arguments = argument.split('|');
             if (arguments.size() != 2) {
                 listener->sendError(QStringLiteral("argument count is wrong"));
@@ -729,8 +731,8 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     job->setVerb(JsonApiJob::Verb::Post);
 
     QObject::connect(job, &JsonApiJob::jsonReceived, [](const QJsonDocument &json){
-        auto data = json.object().value("ocs").toObject().value("data").toObject();
-        auto url = QUrl(data.value("url").toString());
+        auto data = json.object().value("ocs"_L1).toObject().value("data"_L1).toObject();
+        auto url = QUrl(data.value("url"_L1).toString());
 
         if(!url.isEmpty())
             Utility::openBrowser(url);

@@ -16,6 +16,8 @@
 #include <QVarLengthArray>
 #include <set>
 
+using namespace Qt::StringLiterals;
+
 Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 namespace OCC {
@@ -742,8 +744,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
-        newInfo._isEncrypted = encryptionMap.value(removeTrailingSlash(path)).toString() == QStringLiteral("1");
+        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M"_L1);
+        newInfo._isEncrypted = encryptionMap.value(removeTrailingSlash(path)).toString() == "1"_L1;
         newInfo._path = relativePath;
 
         newInfo._isNonDecryptable = newInfo.isEncrypted()

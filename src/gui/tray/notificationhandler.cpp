@@ -14,6 +14,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "nextcloud.gui.servernotification", QtInfoMsg)
@@ -94,7 +96,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
     _preFetchEtagHeader = postFetchEtagHeader;
 
-    const auto notifies = json.object().value("ocs").toObject().value("data").toArray();
+    const auto notifies = json.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
 
     auto *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
 
@@ -106,33 +108,33 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         auto a = Activity::fromActivityJson(json, ai->account());
 
         a._type = Activity::NotificationType;
-        a._id = json.value("notification_id").toInteger();
+        a._id = json.value("notification_id"_L1).toInteger();
 
         if(json.contains("subjectRichParameters")) {
-            const auto richParams = json.value("subjectRichParameters").toObject();
+            const auto richParams = json.value("subjectRichParameters"_L1).toObject();
             const auto richParamsKeys = richParams.keys();
             for(const auto &key : richParamsKeys) {
                 const auto parameterJsonObject = richParams.value(key).toObject();
                 a._subjectRichParameters.insert(key, QVariant::fromValue(Activity::RichSubjectParameter{
-                                                    parameterJsonObject.value(QStringLiteral("type")).toString(),
-                                                    parameterJsonObject.value(QStringLiteral("id")).toString(),
-                                                    parameterJsonObject.value(QStringLiteral("name")).toString(),
+                                                    parameterJsonObject.value("type"_L1).toString(),
+                                                    parameterJsonObject.value("id"_L1).toString(),
+                                                    parameterJsonObject.value("name"_L1).toString(),
                                                     QString(),
                                                     QUrl()
                                                      }));
             }
         }
 
-        if (json.contains("shouldNotify")) {
-            a._shouldNotify = json.value("shouldNotify").toBool(true);
+        if (json.contains("shouldNotify"_L1)) {
+            a._shouldNotify = json.value("shouldNotify"_L1).toBool(true);
         }
 
         // 2 cases to consider:
         // 1. server == 24 & has Talk: object_type is chat/call/room & object_id contains conversationToken/messageId
         // 2. server < 24 & has Talk: object_type is chat/call/room & object_id contains _only_ conversationToken
-        if (a._objectType == "chat" || a._objectType == "call" || a._objectType == "room") {
-            const auto objectId = json.value("object_id").toString();
-            const auto objectIdData = objectId.split("/");
+        if (a._objectType == "chat"_L1 || a._objectType == "call"_L1 || a._objectType == "room"_L1) {
+            const auto objectId = json.value("object_id"_L1).toString();
+            const auto objectIdData = objectId.split(u'/');
 
             ActivityLink al;
             al._label = tr("Reply");
@@ -147,25 +149,25 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
                 qCInfo(lcServerNotification) << "Replying directly to Talk conversation" << a._talkNotificationData.conversationToken << "will not be possible because the notification doesn't contain the message ID.";
             }
 
-            if (a._subjectRichParameters.contains("user")) {
+            if (a._subjectRichParameters.contains("user"_L1)) {
 
                 // callback then it is the primary action
-                if (a._objectType == "call") {
+                if (a._objectType == "call"_L1) {
                     al._primary = false;
                 }
 
-                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].value<Activity::RichSubjectParameter>().id + QStringLiteral("/128");
+                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"_L1].value<Activity::RichSubjectParameter>().id + QStringLiteral("/128");
             }
 
             // We want to serve incoming call dialogs to the user for calls that
-            if (a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
+            if (a._objectType == "call"_L1 && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
                 callList.append(a);
             }
 
             a._links.insert(al._primary? 0 : a._links.size(), al);
         }
 
-        QUrl link(json.value("link").toString());
+        QUrl link(json.value("link"_L1).toString());
         if (!link.isEmpty()) {
             if (link.host().isEmpty()) {
                 link.setScheme(ai->account()->url().scheme());
