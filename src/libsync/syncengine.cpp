@@ -48,6 +48,7 @@
 #include <QProcess>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QStorageInfo>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -632,6 +633,7 @@ void SyncEngine::startSync()
     _remnantReadOnlyFolders.clear();
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
+    _discoveryPhase->_fileSystemReliablePermissions = _filesystemPermissionsReliable;
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
@@ -1291,6 +1293,11 @@ void SyncEngine::setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions 
 const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOptions() const
 {
     return _singleItemDiscoveryOptions;
+}
+
+void SyncEngine::setFilesystemPermissionsReliable(bool reliable)
+{
+    _filesystemPermissionsReliable = reliable;
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const
