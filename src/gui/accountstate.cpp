@@ -30,6 +30,8 @@
 
 #include <cmath>
 
+using namespace Qt::StringLiterals;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
@@ -629,8 +631,8 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                     for (const QJsonValue &value : navLinks) {
                         auto navLink = value.toObject();
 
-                        auto *app = new AccountApp(navLink.value("name").toString(), QUrl(navLink.value("href").toString()),
-                            navLink.value("id").toString(), QUrl(navLink.value("icon").toString()));
+                        auto *app = new AccountApp(navLink.value("name"_L1).toString(), QUrl(navLink.value("href"_L1).toString()),
+                            navLink.value("id"_L1).toString(), QUrl(navLink.value("icon"_L1).toString()));
 
                         _apps << app;
                     }
