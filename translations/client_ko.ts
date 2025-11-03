@@ -6806,7 +6806,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>당신의 상태는 무엇입니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
@@ -6816,17 +6816,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>비우기</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>적용</translation>
     </message>
 </context>
 <context>
@@ -6834,42 +6834,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>온라인 상태</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>온라인</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>자리 비움</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>바쁨</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>방해 금지</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>모든 알림을 음소거</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>숨겨짐</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>오프라인으로 표시</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
@@ -7325,12 +7325,12 @@ macOS may ignore or delay this request.</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="278"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>비우기</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>적용</translation>
     </message>
 </context>
 </TS>
