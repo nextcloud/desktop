@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-    - uses: cpp-linter/cpp-linter-action@b7fbdde0f6776f478f4d8867c2b746077fa7ea89 # v2.16.5
+    - uses: cpp-linter/cpp-linter-action@a645cdb1ded4f83d2a4af4b0e7929546bb040bea # v2.16.6
       id: linter
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
