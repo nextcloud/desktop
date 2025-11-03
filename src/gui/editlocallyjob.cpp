@@ -382,7 +382,8 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
 
     if (name.endsWith(_relPathParent)) {
         // let's remove remote dav path and remote root from the beginning of the name
-        const auto nameWithoutDavPath = name.mid(_accountState->account()->davPath().size());
+        const auto startIndex = name.indexOf(_accountState->account()->davPath());
+        const auto nameWithoutDavPath = name.mid(startIndex + _accountState->account()->davPath().size());
 
         const auto remoteFolderPathWithTrailingSlash = _folderForFile->remotePathTrailingSlash();
         const auto remoteFolderPathWithoutLeadingSlash = remoteFolderPathWithTrailingSlash.startsWith(QLatin1Char('/'))
