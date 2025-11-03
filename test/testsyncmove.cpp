@@ -868,7 +868,7 @@ private slots:
         fakeFolder.remoteModifier().rename("B", "_B");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
         QVERIFY(fakeFolder.currentRemoteState().find("_A/a1m"));
         QVERIFY(fakeFolder.currentRemoteState().find("_B/b1m"));
         QCOMPARE(counter.nDELETE, 0);
@@ -883,7 +883,7 @@ private slots:
         fakeFolder.localModifier().rename("_A", "S/A");
         fakeFolder.remoteModifier().rename("_B", "S/B");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
         QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
         QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
         QCOMPARE(counter.nDELETE, 0);
@@ -907,7 +907,7 @@ private slots:
         fakeFolder.remoteModifier().rename("B/b2", "C/b2");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
         QVERIFY(fakeFolder.currentRemoteState().find("A/b1"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/b1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/b2"));
