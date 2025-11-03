@@ -1968,7 +1968,39 @@
     },
     "Free up space" : {
       "comment" : "Context menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speicherplatz freigeben"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speicherplatz freigeben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free up space"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liberar espazo"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "釋放空間"
+          }
+        }
+      }
     },
     "Group share" : {
       "comment" : "Menu item label",
@@ -2394,7 +2426,39 @@
     },
     "Lock file" : {
       "comment" : "Context menu item label",
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei sperren"
+          }
+        },
+        "de_DE" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei sperren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lock file"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquear ficheiro"
+          }
+        },
+        "zh_HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上鎖檔案"
+          }
+        }
+      }
     },
     "Locking file \"%@\"…" : {
       "comment" : "Text label",
@@ -2402,13 +2466,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sperre Datei „%@“…"
+            "value" : "Sperre Datei \"%@“…"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sperre Datei „%@“…"
+            "value" : "Sperre Datei \"%@\"…"
           }
         },
         "en" : {
@@ -3843,13 +3907,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entsperre Datei „%@“…"
+            "value" : "Entsperre Datei \"%@“…"
           }
         },
         "de_DE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Entsperre Datei „%@“…"
+            "value" : "Entsperre Datei \"%@\"…"
           }
         },
         "en" : {
