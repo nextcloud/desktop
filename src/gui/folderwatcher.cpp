@@ -138,6 +138,8 @@ void FolderWatcher::performSetPermissionsTest(const QString &path)
         _canSetPermissions = false;
     }
 
+    qCInfo(lcFolderWatcher()) << "Permissions in file system for" << path << (_canSetPermissions ? "works as expected" : "are not reliable");
+
     FileSystem::setFileReadOnly(path, false);
     QFile(path).remove();
 }
