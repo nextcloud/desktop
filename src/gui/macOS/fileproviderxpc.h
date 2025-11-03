@@ -43,7 +43,9 @@ private slots:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
+    //! keys are File Provider domain identifiers
     QHash<QString, void*> _clientCommServices;
+    //! keys are File Provider domain identifiers
     QHash<QString, QDateTime> _unreachableFileProviderDomains;
 };
 

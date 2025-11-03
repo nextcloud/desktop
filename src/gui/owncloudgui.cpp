@@ -318,7 +318,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             }
             allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
-            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
+            const auto accountFpId = fileProvider->domainManager()->fileProviderDomainIdentifierFromAccountId(userIdAtHostWithPort);
             const auto displayName = account->displayName();
             const auto accountTooltipLabel = displayName.isEmpty() ? userIdAtHostWithPort : displayName;
 
