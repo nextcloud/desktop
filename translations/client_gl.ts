@@ -1210,7 +1210,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="165"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation>Non foi posíbel actualizar os metadatos do novo ficheiro %1.</translation>
+        <translation>Non é posíbel actualizar os metadatos do novo ficheiro %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="178"/>
@@ -4393,7 +4393,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Non é posíbel retirar %1 por mor dunha colisión co nome dun ficheiro local</translation>
+        <translation>Non foi posíbel retirar %1 por mor dunha colisión co nome dun ficheiro local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="153"/>
