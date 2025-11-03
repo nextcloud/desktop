@@ -9,6 +9,7 @@
 #include <QFileSystemWatcher>
 #include <QLocale>
 #include <QTimer>
+#include <qqmlregistration.h>
 
 #include "common/syncjournalfilerecord.h"
 
@@ -21,6 +22,7 @@ class Folder;
 class FileDetails : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
     Q_PROPERTY(QString name READ name NOTIFY fileChanged)
     Q_PROPERTY(QString sizeString READ sizeString NOTIFY fileChanged)

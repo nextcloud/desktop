@@ -14,6 +14,7 @@
 #include <QObject>
 #include <QMetaType>
 #include <QtNumeric>
+#include <qqmlregistration.h>
 
 #include <cstddef>
 #include <memory>
@@ -24,6 +25,7 @@ namespace OCC {
 class UserStatusSelectorModel : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(int userIndex READ userIndex WRITE setUserIndex NOTIFY userIndexChanged)
     Q_PROPERTY(QString userStatusMessage READ userStatusMessage WRITE setUserStatusMessage NOTIFY userStatusChanged)

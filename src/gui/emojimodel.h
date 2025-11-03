@@ -75,6 +75,7 @@ private:
 class EmojiModel : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QVariantList model READ model NOTIFY modelChanged)
     Q_PROPERTY(QAbstractListModel *emojiCategoriesModel READ emojiCategoriesModel CONSTANT)

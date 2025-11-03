@@ -11,6 +11,7 @@
 #include <QQuickItem>
 #include <QStyleHints>
 #include <QtQml>
+#include <qqmlregistration.h>
 
 class QWheelEvent;
 class WheelHandler;
@@ -21,6 +22,7 @@ class WheelHandler;
 class KirigamiWheelEvent : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(WheelEvent)
 
     /**
      * x: real

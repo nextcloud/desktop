@@ -19,6 +19,8 @@ namespace Mac {
 class FileProviderSettingsController : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     static FileProviderSettingsController *instance();
@@ -31,6 +33,13 @@ public:
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool trashDeletionSetForAccount(const QString &userIdAtHost) const;
+
+    static FileProviderSettingsController *create(QQmlEngine *, QJSEngine *engine)
+    {
+        auto _instance = Theme::instance();
+	QQmlEngine::setObjectOwnership(_instance, QJSEngine::CppOwnership);
+        return _instance;
+    }
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled, const bool showInformationDialog = true);

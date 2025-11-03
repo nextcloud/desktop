@@ -698,3 +698,6 @@ QUrl AccountApp::iconUrl() const
 /*-------------------------------------------------------------------------------------*/
 
 } // namespace OCC
+  
+Q_DECLARE_METATYPE(OCC::AccountState *)
+Q_DECLARE_METATYPE(OCC::AccountStatePtr)

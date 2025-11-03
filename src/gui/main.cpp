@@ -32,6 +32,9 @@
 #include <QQuickWindow>
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
+#include <QQmlExtensionPlugin>
+
+Q_IMPORT_QML_PLUGIN(com_nextcloud_desktopclient_trayPlugin)
 
 using namespace OCC;
 
@@ -103,7 +106,7 @@ int main(int argc, char **argv)
     }
 
 #ifndef Q_OS_WIN
-    signal(SIGPIPE, SIG_IGN);
+//    signal(SIGPIPE, SIG_IGN);
 #endif
     if (app.giveHelp()) {
         app.showHelp();

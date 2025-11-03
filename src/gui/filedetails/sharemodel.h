@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <qqmlregistration.h>
 
 #include "accountstate.h"
 #include "folder.h"
@@ -17,6 +18,7 @@ namespace OCC {
 class ShareModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
     Q_PROPERTY(bool accountConnected READ accountConnected NOTIFY accountConnectedChanged)
