@@ -112,7 +112,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     }
 
     if (_syncOptions._vfs->mode() == Vfs::WindowsCfApi) {
-        return callback(true);
+        return callback(false);
     }
 
     checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
