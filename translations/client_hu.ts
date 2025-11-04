@@ -6392,7 +6392,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Váratlan hiba történt. Próbáljon újra szinkronizálni, vagy lépjen kapcsolatba a rendszergazdával, ha a probléma továbbra is fennáll.</translation>
     </message>
 </context>
 <context>
