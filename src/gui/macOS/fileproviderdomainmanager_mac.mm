@@ -308,6 +308,18 @@ public:
         return nil;
     }
 
+    QString fileProviderDomainIdentifierForAccountId(const QString &accountId)
+    {
+        if (@available(macOS 11.0, *)) {
+            if (_registeredDomains.contains(accountId)) {
+                const auto fileProviderDomain = _registeredDomains[accountId];
+                return QString::fromNSString([fileProviderDomain identifier]);
+            }
+        }
+
+        return {};
+    }
+
     void addFileProviderDomain(const AccountState * const accountState)
     {
         if (@available(macOS 11.0, *)) {
@@ -597,6 +609,7 @@ public:
     }
 
 private:
+    //! keys are accountId, i.e. userIdAtHostWithPort
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
 
@@ -806,9 +819,13 @@ AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIde
     return accountForReceivedDomainIdentifier;
 }
 
-QString FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState)
+QString FileProviderDomainManager::fileProviderDomainIdentifierFromAccountId(const QString &accountId)
 {
-    return uuidDomainIdentifierForAccount(accountState->account());
+    if (!d || accountId.isEmpty()) {
+        return {};
+    }
+
+    return d->fileProviderDomainIdentifierForAccountId(accountId);
 }
 
 void* FileProviderDomainManager::domainForAccount(const AccountState * const accountState)
