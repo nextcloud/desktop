@@ -150,7 +150,6 @@ bool createDebugArchive(const QString &filename)
 
         while (it.hasNext()) {
             const auto logFilePath = it.next();
-            const auto logFileInfo = QFileInfo(logFilePath);
 
             // Calculate relative path from the base container log directory
             const auto relativePath = fileProviderExtensionLogDirectory.relativeFilePath(logFilePath);
@@ -162,6 +161,26 @@ bool createDebugArchive(const QString &filename)
         qDebug() << "Added file provider domain log files from" << fileProviderExtensionLogDirectory.path();
     } else {
         qWarning() << "file provider domain container log directory not found at" << fileProviderExtensionLogDirectory.path();
+    }
+
+    qDebug() << "Trying to add file provider database files...";
+    const auto fileProviderDomainsSupportDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainsSupportDirectory();
+
+    if (fileProviderDomainsSupportDirectory.exists()) {
+        QDirIterator it(fileProviderDomainsSupportDirectory.path(), QStringList() << "*.realm", QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+
+        while (it.hasNext()) {
+            const auto dbFilePath = it.next();
+
+            // Calculate relative path from the base domains support directory
+            const auto relativePath = fileProviderDomainsSupportDirectory.relativeFilePath(dbFilePath);
+            const auto zipPath = QStringLiteral("File Provider Domains/%1").arg(relativePath);
+
+            zip.addLocalFile(dbFilePath, zipPath);
+            qDebug() << "Added file provider domain database file from" << dbFilePath;
+        }
+    } else {
+        qWarning() << "file provider domains support directory not found at" << fileProviderDomainsSupportDirectory.path();
     }
 #endif
 
