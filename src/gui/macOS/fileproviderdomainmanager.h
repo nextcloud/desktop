@@ -24,7 +24,7 @@ public:
     ~FileProviderDomainManager() override;
 
     static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
-    static QString fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState);
+    QString fileProviderDomainIdentifierFromAccountId(const QString &accountId);
     
     void start();
     void* domainForAccount(const OCC::AccountState * const accountState);
