@@ -12,7 +12,7 @@
 #include "common/vfs.h"
 #include "config.h"
 #include <syncengine.h>
-
+#include "openfilemanager.h"
 #include "vfs/cfapi/cfapiwrapper.h"
 
 namespace cfapi {
@@ -1581,6 +1581,63 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         const auto directoryItem = fakeFolder.remoteModifier().find("directory");
         QCOMPARE(directoryItem, nullptr);
+    }
+
+    void syncFoldersOnDemand()
+    {
+        FakeFolder fakeFolder {FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        const auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+
+        cleanup();
+
+        fakeFolder.remoteModifier().insert("rootfile1");
+        fakeFolder.remoteModifier().mkdir("first folder");
+        fakeFolder.remoteModifier().insert("first folder/file1");
+        fakeFolder.remoteModifier().insert("first folder/file2");
+        fakeFolder.remoteModifier().insert("first folder/file3");
+        fakeFolder.remoteModifier().mkdir("first folder/second folder");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file1");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file2");
+        fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.size(), 2);
+        QVERIFY(itemInstruction(completeSpy, "rootfile1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "first folder", CSYNC_INSTRUCTION_NEW));
+
+        cleanup();
+
+        OCC::showInFileManager(fakeFolder.localPath() + "first folder");
+
+        QTest::qWait(5000);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "first folder");
+
+        QTest::qWait(5000);
+
+        const auto file3Info = fakeFolder.localModifier().find("first folder/file3");
+        QVERIFY(file3Info.exists());
+        const auto secondFolderInfo = fakeFolder.localModifier().find("first folder/second folder");
+        QVERIFY(secondFolderInfo.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        OCC::showInFileManager(fakeFolder.localPath() + "first folder/second folder");
+
+        QTest::qWait(5000);
+
+        const auto secondFile3Info = fakeFolder.localModifier().find("first folder/second folder/second file3");
+        QVERIFY(secondFile3Info.exists());
+
+        QVERIFY(fakeFolder.syncOnce());
     }
 };
 
