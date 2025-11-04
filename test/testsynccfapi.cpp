@@ -7,13 +7,18 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
+
 #include "common/vfs.h"
-#include "config.h"
-#include <syncengine.h>
 #include "openfilemanager.h"
+#include "syncengine.h"
+#include "folderman.h"
+#include "accountmanager.h"
+#include "configfile.h"
 #include "vfs/cfapi/cfapiwrapper.h"
+#include "testhelper.h"
+
+#include <QtTest>
 
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
@@ -1574,6 +1579,68 @@ private slots:
         const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("first folder/second folder/second folder");
         QVERIFY(!wrongSecondFolderInfo.exists());
 
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void switchVfsOffWithOnDemandFolder()
+    {
+        std::unique_ptr<FolderMan> folderMan;
+
+        folderMan.reset({});
+        folderMan.reset(new FolderMan{});
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
+
+        QScopedPointer<FakeQNAM> fakeQnam(new FakeQNAM({}));
+        OCC::AccountPtr account = OCC::Account::create();
+        account->setCredentials(new FakeCredentials{fakeQnam.data()});
+        account->setUrl(QUrl(("http://example.de")));
+        OCC::AccountManager::instance()->addAccount(account);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("directory");
+        fakeFolder.remoteModifier().mkdir("directory/subdir");
+        fakeFolder.remoteModifier().insert("directory/file1");
+        fakeFolder.remoteModifier().insert("directory/file2");
+        fakeFolder.remoteModifier().insert("directory/file3");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt1.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt2.txt");
+        fakeFolder.remoteModifier().insert("directory/subdir/fileTxt3.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        FolderMan *folderman = FolderMan::instance();
+        QCOMPARE(folderman, folderMan.get());
+        OCC::AccountState *accountState = OCC::AccountManager::instance()->accounts().first().data();
+        const auto folder = folderman->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
+        QVERIFY(folder);
+
+        auto realFolder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
+        QVERIFY(realFolder);
+
+        // perform an initial sync to ensure local and remote have the same state
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto offVfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::Off).release());
+        fakeFolder.switchToVfs(offVfs);
+
+        // Also wipes virtual files, schedules remote discovery
+        realFolder->setVirtualFilesEnabled(false);
+        realFolder->setVfsOnOffSwitchPending(false);
+
+        // Wipe pin states and selective sync db
+        realFolder->setRootPinState(PinState::AlwaysLocal);
+        realFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+
+        realFolder->processSwitchedToVirtualFiles();
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
     }
 };
