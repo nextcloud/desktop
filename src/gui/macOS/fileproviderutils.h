@@ -114,6 +114,11 @@ QDir fileProviderExtensionLogDirectory();
 QDir fileProviderDomainLogDirectory(const QString domainIdentifier);
 
 /**
+ * @brief Find the application support directory for all the file provider domains.
+ */
+QDir fileProviderDomainsSupportDirectory();
+
+/**
  * @brief Find the application support directory of the file provider domain with the given identifier.
  */
 QDir fileProviderDomainSupportDirectory(const QString domainIdentifier);
