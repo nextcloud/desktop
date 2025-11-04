@@ -7,13 +7,15 @@
  * any purpose.
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
+
 #include "common/vfs.h"
 #include "config.h"
 #include <syncengine.h>
 
 #include "vfs/cfapi/cfapiwrapper.h"
+
+#include <QtTest>
 
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
