@@ -167,13 +167,20 @@ QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
     return dir;
 }
 
-QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
+QDir fileProviderDomainsSupportDirectory()
 {
     auto dir = fileProviderExtensionContainer();
     dir.cd("Data");
     dir.cd("Library");
     dir.cd("Application Support");
     dir.cd("File Provider Domains");
+
+    return dir;
+}
+
+QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
+{
+    auto dir = fileProviderDomainsSupportDirectory();
     dir.cd(domainIdentifier);
 
     return dir;
