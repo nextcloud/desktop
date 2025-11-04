@@ -105,12 +105,11 @@ bool OCUpdater::performUpdate()
 
         messageBoxStartInstaller->setAttribute(Qt::WA_DeleteOnClose);
 
-        connect(messageBoxStartInstaller, &QMessageBox::finished, this, [this] (int result) {
-            if (result == QMessageBox::DialogCode::Rejected) {
-                return;
+        connect(messageBoxStartInstaller, &QMessageBox::buttonClicked, this, [this, messageBoxStartInstaller](QAbstractButton *button) {
+            auto clicked = messageBoxStartInstaller->standardButton(button);
+            if (clicked == QMessageBox::Ok) {
+                slotStartInstaller();
             }
-
-            slotStartInstaller();
         });
         messageBoxStartInstaller->open();
     }
