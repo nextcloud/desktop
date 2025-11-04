@@ -610,13 +610,33 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         }
         acc->_settingsMap.insert(key, settings.value(key));
     }
-
     acc->setCredentials(CredentialsFactory::create(authType));
-    acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
-    acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
-    acc->setProxyPort(settings.value(networkProxyPortC).toInt());
-    acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
-    acc->setProxyUser(settings.value(networkProxyUserC).toString());
+
+    {
+        auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
+        auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
+        auto accountProxyPort = settings.value(networkProxyPortC).toInt();
+        auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
+        auto accountProxyUser = settings.value(networkProxyUserC).toString();
+        const auto globalProxyType = settings.value(ClientProxy::proxyTypeC).value<QNetworkProxy::ProxyType>();
+        qCDebug(lcAccountManager) << "Account proxy type:" <<  accountProxyType;
+        qCDebug(lcAccountManager) << "Global proxy type:" <<  globalProxyType;
+        if (accountProxyType == QNetworkProxy::NoProxy && globalProxyType != QNetworkProxy::NoProxy) {
+            accountProxyType = globalProxyType;
+            accountProxyHost = settings.value(ClientProxy::proxyHostC).toString();
+            accountProxyPort =  settings.value(ClientProxy::proxyPortC).toInt();
+            accountProxyNeedsAuth = settings.value(ClientProxy::proxyNeedsAuthC).toBool();
+            accountProxyUser = settings.value(ClientProxy::proxyUserC).toString();
+            qCInfo(lcAccountManager) << "Account has no proxy set, using global proxy instead.";
+        }
+
+        acc->setProxyType(accountProxyType);
+        acc->setProxyHostName(accountProxyHost);
+        acc->setProxyPort(accountProxyPort);
+        acc->setProxyNeedsAuth(accountProxyNeedsAuth);
+        acc->setProxyUser(accountProxyUser);
+    }
+
     acc->setUploadLimitSetting(
         settings.value(
             networkUploadLimitSettingC,
@@ -627,7 +647,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             networkDownloadLimitSettingC,
             QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
         ).value<Account::AccountNetworkTransferLimitSetting>());
-
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
