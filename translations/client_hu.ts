@@ -2842,7 +2842,7 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="641"/>
+        <location filename="../src/gui/generalsettings.cpp" line="660"/>
         <source>Create Debug Archive</source>
         <translation>Hibakeresési archívum létrehozása</translation>
     </message>
@@ -2892,57 +2892,57 @@ Haladó felhasználók számára: a problémának ahhoz lehet köze, hogy több 
         <translation>Új&amp;raindítás és frissítés</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="194"/>
+        <location filename="../src/gui/generalsettings.cpp" line="213"/>
         <source>Server notifications that require attention.</source>
         <translation>Kiszolgálóértesítések, melyek a figyelmét kérik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Show chat notification dialogs.</source>
         <translation>Csevegésértesítési párbeszédablakok megjelenítése.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="202"/>
+        <location filename="../src/gui/generalsettings.cpp" line="221"/>
         <source>Show call notification dialogs.</source>
         <translation>Hívásértesítési párbeszédablakok megjelenítése.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Értesítés megjelenítése, ha a kvótahasználat 80% fölé megy.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="219"/>
+        <location filename="../src/gui/generalsettings.cpp" line="238"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Az automatikus indítást nem tilthatja le, mert az egész rendszerre kiterjedő automatikus indítás engedélyezett.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="373"/>
         <source>Restore to &amp;%1</source>
         <translation>Helyreállítás ide: &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="430"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>stable</source>
         <translation>stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="434"/>
+        <location filename="../src/gui/generalsettings.cpp" line="453"/>
         <source>beta</source>
         <translation>béta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>daily</source>
         <translation>napi</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="442"/>
+        <location filename="../src/gui/generalsettings.cpp" line="461"/>
         <source>enterprise</source>
         <translation>vállalati</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="499"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2954,7 +2954,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 A verziók visszaváltása nem lehetséges azonnal: a bétáról stabilra való váltás az új stabil verzióra való várakozást jelenti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="485"/>
+        <location filename="../src/gui/generalsettings.cpp" line="504"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2964,12 +2964,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira való váltás az új vállalati verzióra való várakozást jelenti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="492"/>
+        <location filename="../src/gui/generalsettings.cpp" line="511"/>
         <source>Changing update channel?</source>
         <translation>Módosítja a frissítési csatornát?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="493"/>
+        <location filename="../src/gui/generalsettings.cpp" line="512"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2979,27 +2979,27 @@ A verziók visszaváltása nem lehetséges azonnal: a stabilról vállalatira va
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="518"/>
         <source>Change update channel</source>
         <translation>Frissítési csatorna módosítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="500"/>
+        <location filename="../src/gui/generalsettings.cpp" line="519"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="643"/>
+        <location filename="../src/gui/generalsettings.cpp" line="662"/>
         <source>Zip Archives</source>
         <translation>Zip-archívumok</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="653"/>
+        <location filename="../src/gui/generalsettings.cpp" line="672"/>
         <source>Debug Archive Created</source>
         <translation>Hibakeresési archívum létrehozva</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="654"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Megosztás előtt távolítsa el az érzékenynek gondolt információt. A hibakeresési archívum itt lett létrehozva: %1</translation>
     </message>
