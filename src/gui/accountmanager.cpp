@@ -72,9 +72,6 @@ constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
-constexpr char unbrandedClientAppNameC[] = "Nextcloud";
-constexpr char legacyClientAppNameC[] = "Owncloud";
-
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 13;
 constexpr auto maxAccountVersion = 13;
@@ -279,9 +276,11 @@ bool AccountManager::restoreFromLegacySettings()
                     selectedAccountIds = childGroups;
                 }
 
+                const auto legacyVersion = oCSettings->value(ConfigFile::clientVersionC, {}).toString();
+                ConfigFile().setClientPreviousVersionString(legacyVersion);
+                qCInfo(lcAccountManager) << "Migrating from" << legacyVersion;
                 qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
                 settings = std::move(oCSettings);
-
                 ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 break;
             } else {
@@ -318,8 +317,9 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
     // Info
     configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
-    auto legacyAppName = settings->contains(legacyClientAppNameC) ? legacyClientAppNameC : unbrandedClientAppNameC;
-    const auto updaterGroupName = QString("%1/%2").arg(legacyAppName, ConfigFile::autoUpdateCheckC);
+    auto previousAppName = settings->contains(ConfigFile::legacyAppName) ? ConfigFile::legacyAppName
+                                                                         : ConfigFile::unbrandedAppName;
+    const auto updaterGroupName = QString("%1/%2").arg(previousAppName, ConfigFile::autoUpdateCheckC);
     configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
     // Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
