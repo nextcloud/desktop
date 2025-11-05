@@ -63,7 +63,7 @@ static constexpr char logDebugC[] = "logDebug";
 static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
-static constexpr char clientVersionC[] = "clientVersion";
+static constexpr char clientPreviousVersionC[] = "clientPreviousVersion";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -86,7 +86,6 @@ static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable")
 static const QString defaultEnterpriseChannel = "enterprise";
 
 static constexpr char languageC[] = "language";
-
 static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
 
@@ -149,7 +148,6 @@ ConfigFile::ConfigFile()
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     const QString config = configFile();
-
 
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup(defaultConnectionGroupName());
@@ -1159,6 +1157,18 @@ void ConfigFile::setClientVersionString(const QString &version)
     settings.setValue(QLatin1String(clientVersionC), version);
 }
 
+QString ConfigFile::clientPreviousVersionString() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(clientPreviousVersionC), QString()).toString();
+}
+
+void ConfigFile::setClientPreviousVersionString(const QString &version)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(clientPreviousVersionC), version);
+}
+
 bool ConfigFile::launchOnSystemStartup() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -1269,4 +1279,23 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
 
+bool ConfigFile::isUpgrade() const
+{
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
+    return currentVersion > previousVersion;
+}
+
+bool ConfigFile::isDowngrade() const
+{
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto previousVersion = QVersionNumber::fromString(clientPreviousVersionString());
+    return previousVersion > currentVersion;
+}
+
+bool ConfigFile::isMigration() const
+{
+    const auto versionChanged = isUpgrade() || isDowngrade();
+    return Theme::instance()->appName() != unbrandedAppName && versionChanged;
+}
 }
