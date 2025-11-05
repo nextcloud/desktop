@@ -2843,7 +2843,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="641"/>
+        <location filename="../src/gui/generalsettings.cpp" line="660"/>
         <source>Create Debug Archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
@@ -2893,57 +2893,57 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>重新啟動並更新(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="194"/>
+        <location filename="../src/gui/generalsettings.cpp" line="213"/>
         <source>Server notifications that require attention.</source>
         <translation>需要注意的伺服器通知。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Show chat notification dialogs.</source>
         <translation>顯示聊天通知對話方塊</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="202"/>
+        <location filename="../src/gui/generalsettings.cpp" line="221"/>
         <source>Show call notification dialogs.</source>
         <translation>顯示來電通知對話窗。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>當配額使用量超過 80% 時顯示通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="219"/>
+        <location filename="../src/gui/generalsettings.cpp" line="238"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>您無法停用自動啟動，因為已啟用系統層級的自動啟動。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="373"/>
         <source>Restore to &amp;%1</source>
         <translation>還原至 &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="430"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>stable</source>
         <translation>穩定版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="434"/>
+        <location filename="../src/gui/generalsettings.cpp" line="453"/>
         <source>beta</source>
         <translation>測試版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>daily</source>
         <translation>每日</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="442"/>
+        <location filename="../src/gui/generalsettings.cpp" line="461"/>
         <source>enterprise</source>
         <translation>企業版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="499"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2955,7 +2955,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="485"/>
+        <location filename="../src/gui/generalsettings.cpp" line="504"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2965,12 +2965,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="492"/>
+        <location filename="../src/gui/generalsettings.cpp" line="511"/>
         <source>Changing update channel?</source>
         <translation>變更更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="493"/>
+        <location filename="../src/gui/generalsettings.cpp" line="512"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2980,27 +2980,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="518"/>
         <source>Change update channel</source>
         <translation>變更更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="500"/>
+        <location filename="../src/gui/generalsettings.cpp" line="519"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="643"/>
+        <location filename="../src/gui/generalsettings.cpp" line="662"/>
         <source>Zip Archives</source>
         <translation>ZIP 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="653"/>
+        <location filename="../src/gui/generalsettings.cpp" line="672"/>
         <source>Debug Archive Created</source>
         <translation>已建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="654"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>請在分享前刪除敏感資訊！已於 %1 建立除錯封存檔</translation>
     </message>

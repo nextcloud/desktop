@@ -2838,7 +2838,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="641"/>
+        <location filename="../src/gui/generalsettings.cpp" line="660"/>
         <source>Create Debug Archive</source>
         <translation>디버그 아카이브 만들기</translation>
     </message>
@@ -2888,57 +2888,57 @@ For advanced users: this issue might be related to multiple sync database files 
         <translation>업데이트 재시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="194"/>
+        <location filename="../src/gui/generalsettings.cpp" line="213"/>
         <source>Server notifications that require attention.</source>
         <translation>주의가 필요한 서버 알림</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Show chat notification dialogs.</source>
         <translation>채팅 알림 대화상자를 표시합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="202"/>
+        <location filename="../src/gui/generalsettings.cpp" line="221"/>
         <source>Show call notification dialogs.</source>
         <translation>통화 알림을 대화 상자에 표시하기.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>사용량이 할당량의 80%을 넘은 경우에 대한 알림 표시.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="219"/>
+        <location filename="../src/gui/generalsettings.cpp" line="238"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>시스템 단위 자동 시작이 활성화되어 있으므로 자동 시작을 비활성화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="373"/>
         <source>Restore to &amp;%1</source>
         <translation>&amp;%1 으로 되돌리기</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="430"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>stable</source>
         <translation>안정판</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="434"/>
+        <location filename="../src/gui/generalsettings.cpp" line="453"/>
         <source>beta</source>
         <translation>베타</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>daily</source>
         <translation>일간</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="442"/>
+        <location filename="../src/gui/generalsettings.cpp" line="461"/>
         <source>enterprise</source>
         <translation>엔터프라이즈</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="499"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2950,7 +2950,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 버전을 바로 다운그레이드 할 수는 없습니다. 베타에서 안정판으로 바꾸려면 새로운 안정판 버전을 기다려야 합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="485"/>
+        <location filename="../src/gui/generalsettings.cpp" line="504"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2960,12 +2960,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 버전을 바로 다운그레이드 할 수는 없습니다. 안정판에서 엔터프라이즈로 바꾸려면 새로운 엔터프라이즈 버전을 기다려야 합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="492"/>
+        <location filename="../src/gui/generalsettings.cpp" line="511"/>
         <source>Changing update channel?</source>
         <translation>업데이트 채널을 바꾸시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="493"/>
+        <location filename="../src/gui/generalsettings.cpp" line="512"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2975,27 +2975,27 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="518"/>
         <source>Change update channel</source>
         <translation>업데이트 채널 변경</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="500"/>
+        <location filename="../src/gui/generalsettings.cpp" line="519"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="643"/>
+        <location filename="../src/gui/generalsettings.cpp" line="662"/>
         <source>Zip Archives</source>
         <translation>아카이브 압축</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="653"/>
+        <location filename="../src/gui/generalsettings.cpp" line="672"/>
         <source>Debug Archive Created</source>
         <translation>디버그 아카이브가 생성됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="654"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation type="unfinished"/>
     </message>

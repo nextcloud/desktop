@@ -2842,7 +2842,7 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="641"/>
+        <location filename="../src/gui/generalsettings.cpp" line="660"/>
         <source>Create Debug Archive</source>
         <translation>Criar arquivamento de depuração</translation>
     </message>
@@ -2892,57 +2892,57 @@ Para usuários avançados: este problema pode estar relacionado a vários arquiv
         <translation>&amp;Reiniciar &amp;&amp; Atualizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="194"/>
+        <location filename="../src/gui/generalsettings.cpp" line="213"/>
         <source>Server notifications that require attention.</source>
         <translation>Notificações do servidor que exigem atenção.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Show chat notification dialogs.</source>
         <translation>Mostrar diálogos de notificação de bate-papo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="202"/>
+        <location filename="../src/gui/generalsettings.cpp" line="221"/>
         <source>Show call notification dialogs.</source>
         <translation>Mostrar diálogos de notificação de chamadas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Show notification when quota usage exceeds 80%.</source>
         <translation>Mostrar notificação quando o uso da cota exceder 80%.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="219"/>
+        <location filename="../src/gui/generalsettings.cpp" line="238"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Você não pode desativar a inicialização automática porque a inicialização automática em todo o sistema está ativada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="373"/>
         <source>Restore to &amp;%1</source>
         <translation>Restaurar para &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="430"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>stable</source>
         <translation>estável</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="434"/>
+        <location filename="../src/gui/generalsettings.cpp" line="453"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="438"/>
+        <location filename="../src/gui/generalsettings.cpp" line="457"/>
         <source>daily</source>
         <translation>diário</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="442"/>
+        <location filename="../src/gui/generalsettings.cpp" line="461"/>
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="499"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -2954,7 +2954,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 O downgrade das versões não é possível imediatamente: mudar de beta para estável significa aguardar a nova versão estável.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="485"/>
+        <location filename="../src/gui/generalsettings.cpp" line="504"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -2964,12 +2964,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 O downgrade das versões não é possível imediatamente: mudar de estável para empresarial significa aguardar a nova versão empresarial.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="492"/>
+        <location filename="../src/gui/generalsettings.cpp" line="511"/>
         <source>Changing update channel?</source>
         <translation>Mudando o canal de atualização?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="493"/>
+        <location filename="../src/gui/generalsettings.cpp" line="512"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -2979,27 +2979,27 @@ O downgrade das versões não é possível imediatamente: mudar de estável para
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="499"/>
+        <location filename="../src/gui/generalsettings.cpp" line="518"/>
         <source>Change update channel</source>
         <translation>Mudar canal de atualização</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="500"/>
+        <location filename="../src/gui/generalsettings.cpp" line="519"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="643"/>
+        <location filename="../src/gui/generalsettings.cpp" line="662"/>
         <source>Zip Archives</source>
         <translation>Arquivos Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="653"/>
+        <location filename="../src/gui/generalsettings.cpp" line="672"/>
         <source>Debug Archive Created</source>
         <translation>Depurar arquivamento criado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="654"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Reduza as informações consideradas confidenciais antes de compartilhá-las! Arquivo de depuração criado em %1</translation>
     </message>
