@@ -26,6 +26,7 @@ const auto updateAvailableC = QStringLiteral("Updater/updateAvailable");
 const auto updateTargetVersionC = QStringLiteral("Updater/updateTargetVersion");
 const auto updateTargetVersionStringC = QStringLiteral("Updater/updateTargetVersionString");
 const auto autoUpdateAttemptedC = QStringLiteral("Updater/autoUpdateAttempted");
+const auto msiLogFileNameC = QStringLiteral("msi.log");
 }
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
@@ -222,7 +223,7 @@ void OCUpdater::slotStartInstaller()
             return QDir::toNativeSeparators(path);
         };
 
-        QString msiLogFile = cfg.configPath() + "msi.log";
+        QString msiLogFile = cfg.configPath() + msiLogFileNameC;
         QString command = QStringLiteral("&{msiexec /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
@@ -315,7 +316,7 @@ void NSISUpdater::wipeUpdateData()
         }
     }
     // Also try to remove the msi log file (created when running msiexec)
-    QString msiLogFileName = cfg.configPath() + "msi.log";
+    QString msiLogFileName = cfg.configPath() + msiLogFileNameC;
     if (QFile::remove(msiLogFileName)) {
         qCInfo(lcUpdater) << "Removed msi log file:" << msiLogFileName;
     } else {
