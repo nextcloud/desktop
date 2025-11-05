@@ -5,4 +5,14 @@
 // The common name of the signing certificate to use for code signing.
 // It must be present in your keychain and a development certificate.
 //
-CODE_SIGN_IDENTITY=
+CODE_SIGN_IDENTITY=Apple Development
+
+//
+// Xcode should automatically manage signing assets.
+//
+CODE_SIGN_STYLE = Automatic
+
+//
+// The development team identifier registered with Apple.
+//
+DEVELOPMENT_TEAM=NKUJUXUJ3B
