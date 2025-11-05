@@ -1518,7 +1518,7 @@ private slots:
         fakeFolder.remoteModifier().rename("B", "_B");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
         QVERIFY(fakeFolder.currentRemoteState().find("_A/a1m"));
         QVERIFY(fakeFolder.currentRemoteState().find("_B/b1m"));
 
@@ -1528,7 +1528,7 @@ private slots:
         fakeFolder.localModifier().rename("_A", "S/A");
         fakeFolder.remoteModifier().rename("_B", "S/B");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
         QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
         QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
     }
@@ -1551,7 +1551,8 @@ private slots:
         fakeFolder.remoteModifier().insert("first folder/second folder/second file3");
 
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QEXPECT_FAIL("", "windows VFS breaks comparison using currentLocalState()", Abort);
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentLocalState());
     }
 
     void testSyncFolderNewDeleteConflictExpectDeletion()
