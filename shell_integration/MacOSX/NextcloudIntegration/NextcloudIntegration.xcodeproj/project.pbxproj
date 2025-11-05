@@ -198,7 +198,6 @@
 		86E2C8FB2EF1D4ED00E38A5B /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../src; sourceTree = "<group>"; };
 		AA02B2AA2E7048C600C72B34 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		AA0A6B1D2E8EA94F007F4A7A /* Craft.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Craft.sh; sourceTree = "<group>"; };
-		AA1191B52E8EAFF900E21C7B /* Build.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text; path = Build.xcconfig.template; sourceTree = "<group>"; };
 		AA27A4E32E93C0D700665051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AA560CE62EDDB82900CD423E /* ServiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceResolver.swift; sourceTree = "<group>"; };
 		AA7F17E02E7017230000E928 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
@@ -386,7 +385,6 @@
 			isa = PBXGroup;
 			children = (
 				AA826BEE2E8EAA7500CE49C4 /* Build.xcconfig */,
-				AA1191B52E8EAFF900E21C7B /* Build.xcconfig.template */,
 				AA0A6B1D2E8EA94F007F4A7A /* Craft.sh */,
 			);
 			path = NextcloudDev;
