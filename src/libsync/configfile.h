@@ -14,6 +14,7 @@
 #include <QString>
 #include <QVariant>
 #include <chrono>
+#include <QVersionNumber>
 
 class QWidget;
 class QHeaderView;
@@ -223,6 +224,9 @@ public:
     [[nodiscard]] QString clientVersionString() const;
     void setClientVersionString(const QString &version);
 
+    [[nodiscard]] QString clientPreviousVersionString() const;
+    void setClientPreviousVersionString(const QString &version);
+
     /** If the option 'Launch on system startup' is set
         Updated by configVersionMigration() at client startup. */
     [[nodiscard]] bool launchOnSystemStartup() const;
@@ -255,6 +259,15 @@ public:
     [[nodiscard]] QString accountIdFromFileProviderDomainUuid(const QString &domainUuid) const;
     void removeFileProviderDomainUuidMapping(const QString &accountId);
     void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
+
+    /// Helper function for migration/upgrade proccess
+    [[nodiscard]] bool isUpgrade() const;
+    [[nodiscard]] bool isDowngrade() const;
+    [[nodiscard]] bool isMigration() const;
+    static constexpr char unbrandedAppName[] = "Nextcloud";
+    static constexpr char legacyAppName[] = "Owncloud";
+
+    static constexpr char clientVersionC[] = "clientVersion";
 
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";

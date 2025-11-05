@@ -124,14 +124,12 @@ bool Application::configVersionMigration()
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
 
     ConfigFile configFile;
-
-    // Did the client version change?
-    // (The client version is adjusted further down)
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
-    const auto versionChanged = previousVersion != currentVersion;
-    const auto downgrading = previousVersion > currentVersion;
-
+    if (configFile.clientPreviousVersionString().isEmpty()) {
+        configFile.setClientPreviousVersionString(configFile.clientVersionString());
+    }
+    
+    qCDebug(lcApplication) << "Is migration?"  << configFile.isMigration();
+    const auto versionChanged = configFile.isUpgrade() || configFile.isDowngrade();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -177,7 +175,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
