@@ -100,13 +100,16 @@ bool OCUpdater::performUpdate()
             tr("A new update for %1 is about to be installed. The updater may ask "
                "for additional privileges during the process. Your computer may reboot to complete the installation.")
                 .arg(Theme::instance()->appNameGUI()),
-            QMessageBox::Ok,
+            QMessageBox::Ok | QMessageBox::Cancel,
             nullptr);
 
         messageBoxStartInstaller->setAttribute(Qt::WA_DeleteOnClose);
 
-        connect(messageBoxStartInstaller, &QMessageBox::finished, this, [this] {
-            slotStartInstaller();
+        connect(messageBoxStartInstaller, &QMessageBox::buttonClicked, this, [this, messageBoxStartInstaller](QAbstractButton *button) {
+            auto clicked = messageBoxStartInstaller->standardButton(button);
+            if (clicked == QMessageBox::Ok) {
+                slotStartInstaller();
+            }
         });
         messageBoxStartInstaller->open();
     }
