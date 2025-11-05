@@ -20,6 +20,11 @@ if [ -z "${CODE_SIGN_IDENTITY}" ]; then
     exit 1
 fi
 
+if [ ! -f "$SOURCE_ROOT/NextcloudDev/Build.xcconfig" ]; then
+    cp "$SOURCE_ROOT/NextcloudDev/Build.xcconfig.example" "$SOURCE_ROOT/NextcloudDev/Build.xcconfig"
+    echo "Automatically created Build.xcconfig from template because it was not present yet."
+fi
+
 DESKTOP_CLIENT_PROJECT_ROOT="$SOURCE_ROOT/../../.."
 
 if [ -d "$DESKTOP_CLIENT_PROJECT_ROOT/admin/osx/mac-crafter" ]; then
