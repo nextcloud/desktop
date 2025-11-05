@@ -1628,6 +1628,8 @@ private slots:
         QVERIFY(file3Info.exists());
         const auto secondFolderInfo = fakeFolder.localModifier().find("first folder/second folder");
         QVERIFY(secondFolderInfo.exists());
+        const auto wrongFirstFolderInfo = fakeFolder.localModifier().find("first folder/first folder");
+        QVERIFY(!wrongFirstFolderInfo.exists());
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -1637,6 +1639,8 @@ private slots:
 
         const auto secondFile3Info = fakeFolder.localModifier().find("first folder/second folder/second file3");
         QVERIFY(secondFile3Info.exists());
+        const auto wrongSecondFolderInfo = fakeFolder.localModifier().find("first folder/second folder/second folder");
+        QVERIFY(!wrongSecondFolderInfo.exists());
 
         QVERIFY(fakeFolder.syncOnce());
     }
