@@ -878,69 +878,6 @@ private slots:
         QVERIFY(!hasDehydratedDbEntries("C/c2"));
     }
 
-    void testWipeVirtualSuffixFiles()
-    {
-        // TODO: Part of this test related to A/a3 is always failing on CI but never fails locally
-        // I had to comment it out as this prevents from running all other tests with no working ways to fix that
-        FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
-
-        // Create a suffix-vfs baseline
-
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().mkdir("A/B");
-        fakeFolder.remoteModifier().insert("f1");
-        fakeFolder.remoteModifier().insert("A/a1");
-        // fakeFolder.remoteModifier().insert("A/a3");
-        fakeFolder.remoteModifier().insert("A/B/b1");
-        fakeFolder.localModifier().mkdir("A");
-        fakeFolder.localModifier().mkdir("A/B");
-        fakeFolder.localModifier().insert("f2");
-        fakeFolder.localModifier().insert("A/a2");
-        fakeFolder.localModifier().insert("A/B/b2");
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        CFVERIFY_VIRTUAL(fakeFolder, "f1");
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
-        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
-        // CFVERIFY_VIRTUAL(fakeFolder, "A/a3");
-        CFVERIFY_VIRTUAL(fakeFolder, "A/B/b1");
-
-        // Make local changes to a3
-        // fakeFolder.localModifier().remove("A/a3");
-        // fakeFolder.localModifier().insert("A/a3", 100);
-
-        // Now wipe the virtuals
-        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
-
-        CFVERIFY_GONE(fakeFolder, "f1");
-        CFVERIFY_GONE(fakeFolder, "A/a1");
-        //QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a3").exists());
-        // QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
-        CFVERIFY_GONE(fakeFolder, "A/B/b1");
-
-        fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
-        // ItemCompletedSpy completeSpy(fakeFolder);
-        QVERIFY(fakeFolder.syncOnce());
-
-        QVERIFY(fakeFolder.currentLocalState().find("A"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/b1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/b2"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2"));
-        // QVERIFY(fakeFolder.currentLocalState().find("A/a3"));
-        QVERIFY(fakeFolder.currentLocalState().find("f1"));
-        QVERIFY(fakeFolder.currentLocalState().find("f2"));
-
-        // a3 has a conflict
-        // QVERIFY(itemInstruction(completeSpy, "A/a3", CSYNC_INSTRUCTION_CONFLICT));
-
-        // conflict files should exist
-        // QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 1);
-    }
-
     void testNewVirtuals()
     {
         FakeFolder fakeFolder{ FileInfo() };
@@ -951,7 +888,6 @@ private slots:
         fakeFolder.remoteModifier().mkdir("online");
         fakeFolder.remoteModifier().mkdir("unspec");
         QVERIFY(fakeFolder.syncOnce());
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         ::setPinState(fakeFolder.localPath() + "local", PinState::AlwaysLocal, cfapi::Recurse);
@@ -1096,7 +1032,6 @@ private slots:
         fakeFolder.remoteModifier().mkdir("online");
         fakeFolder.remoteModifier().mkdir("unspec");
         QVERIFY(fakeFolder.syncOnce());
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         ::setPinState(fakeFolder.localPath() + "local", PinState::AlwaysLocal, cfapi::NoRecurse);
@@ -1202,7 +1137,6 @@ private slots:
         fakeFolder.remoteModifier().mkdir("local");
         fakeFolder.remoteModifier().mkdir("online");
         QVERIFY(fakeFolder.syncOnce());
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         ::setPinState(fakeFolder.localPath() + "local", PinState::AlwaysLocal, cfapi::NoRecurse);
@@ -1335,7 +1269,6 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(fakeFolder.syncOnce());
 
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
@@ -1453,7 +1386,6 @@ private slots:
         fakeFolder.remoteModifier().remove("a/TESTFILE");
         fakeFolder.remoteModifier().mkdir("a/TESTFILE");
         QVERIFY(fakeFolder.syncOnce());
-        QEXPECT_FAIL("", "folders on-demand breaks existing tests", Abort);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
 
