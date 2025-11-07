@@ -44,6 +44,16 @@ public:
 public slots:
     void checkConnectivity() override {};
 
+    void setStateForTesting(OCC::AccountState::State state)
+    {
+        if (_state == state) {
+            return;
+        }
+
+        _state = state;
+        Q_EMIT stateChanged(state);
+    }
+
 private slots:
     void setState(OCC::AccountState::State state) override { Q_UNUSED(state) };
 };
