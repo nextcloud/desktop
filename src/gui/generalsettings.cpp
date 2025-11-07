@@ -119,22 +119,20 @@ QVector<ZipEntry> createDebugArchiveFileList()
 
 bool createDebugArchive(const QString &filename)
 {
-    const auto fileInfo = QFileInfo(filename);
-    const auto dirInfo = QFileInfo(fileInfo.dir().absolutePath());
-    if (!dirInfo.isWritable()) {
+    const auto entries = createDebugArchiveFileList();
+
+    KZip zip(filename);
+
+    if (!zip.open(QIODevice::WriteOnly)) {
         QMessageBox::critical(
             nullptr,
             QObject::tr("Failed to create debug archive"),
             QObject::tr("Could not create debug archive in selected location!"),
             QMessageBox::Ok
         );
+
         return false;
     }
-
-    const auto entries = createDebugArchiveFileList();
-
-    KZip zip(filename);
-    zip.open(QIODevice::WriteOnly);
 
     for (const auto &entry : entries) {
         zip.addLocalFile(entry.localFilename, entry.zipFilename);
