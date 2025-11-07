@@ -84,6 +84,7 @@ AccountPtr Account::create()
 {
     AccountPtr acc = AccountPtr(new Account);
     acc->setSharedThis(acc);
+    acc->_e2e.setAccount(acc);
     return acc;
 }
 
