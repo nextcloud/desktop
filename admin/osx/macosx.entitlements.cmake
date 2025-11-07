@@ -6,6 +6,8 @@
 	<true/>
 	<key>com.apple.security.network.client</key>
 	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.@APPLICATION_REV_DOMAIN@</string>
