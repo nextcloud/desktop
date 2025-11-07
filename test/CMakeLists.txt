@@ -19,6 +19,7 @@ add_library(testutils
   sharetestutils.cpp
   endtoendtestutils.cpp
   activitylistmodeltestutils.cpp
+  foldermantestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test Qt::Core5Compat)
@@ -140,6 +141,7 @@ nextcloud_add_test(LongPath)
 nextcloud_add_benchmark(LargeSync)
 
 nextcloud_add_test(Account)
+nextcloud_add_test(AccountSettings)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
