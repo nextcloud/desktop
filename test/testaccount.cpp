@@ -12,13 +12,10 @@
 #include <QTemporaryDir>
 #include <QtTest>
 
-#include "common/utility.h"
-#include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
-#include "configfile.h"
-#include "testhelper.h"
 #include "logger.h"
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 
@@ -100,7 +97,64 @@ private slots:
         setLimitSettings(LimitSetting::LegacyGlobalLimit);
         verifyLimitSettings(LimitSetting::NoLimit);
     }
+
+    void testAccount_listRemoteFolder_data()
+    {
+        QTest::addColumn<QString>("remotePath");
+        QTest::addColumn<QString>("subPath");
+        QTest::addColumn<QStringList>("expectedPaths");
+
+        QTest::newRow("root = /; requesting ''") << "" << "" << QStringList{ "A", "B", "C", "S" };
+        QTest::newRow("root = /; requesting A/") << "" << "A/" << QStringList{ "A/a1", "A/a2", "A/sub1" };
+        QTest::newRow("root = /; requesting A/sub1/") << "" << "A/sub1/" << QStringList{ "A/sub1/sub2" };
+        QTest::newRow("root = /; requesting A/sub1/sub2") << "" << "A/sub1/sub2/" << QStringList{};
+        QTest::newRow("root = /A; requesting A/") << "/A" << "A/" << QStringList{ "a1", "a2", "sub1" };
+        QTest::newRow("root = /A; requesting A/sub1") << "/A" << "A/sub1/" << QStringList{ "sub1/sub2" };
+        QTest::newRow("root = /A; requesting A/sub1/sub2") << "/A" << "A/sub1/sub2/" << QStringList{};
+    }
+
+    void testAccount_listRemoteFolder()
+    {
+        QFETCH(QString, remotePath);
+        QFETCH(QString, subPath);
+        QFETCH(QStringList, expectedPaths);
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().mkdir("A/sub1");
+        fakeFolder.remoteModifier().mkdir("A/sub1/sub2");
+        const auto account = fakeFolder.account();
+
+        QEventLoop localEventLoop;
+        auto lsPropPromise = QPromise<OCC::PlaceholderCreateInfo>{};
+        auto lsPropFuture = lsPropPromise.future();
+        auto lsPropFutureWatcher = QFutureWatcher<OCC::PlaceholderCreateInfo>{};
+        lsPropFutureWatcher.setFuture(lsPropFuture);
+
+        QList<QString> receivedPaths;
+
+        QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::finished,
+                            &localEventLoop, [&localEventLoop] () {
+                                qInfo() << "ls prop finished";
+                                localEventLoop.quit();
+                            });
+
+        QObject::connect(&lsPropFutureWatcher, &QFutureWatcher<QStringList>::resultReadyAt,
+                            &localEventLoop, [&receivedPaths, &lsPropFutureWatcher] (int resultIndex) {
+                                qInfo() << "ls prop result at index" << resultIndex;
+                                const auto &newResultEntries = lsPropFutureWatcher.resultAt(resultIndex);
+                                receivedPaths.append(newResultEntries.fullPath);
+                            });
+
+        fakeFolder.syncJournal().clearFileTable(); // pretend we only need to fetch placeholders
+
+        account->listRemoteFolder(&lsPropPromise, remotePath, subPath, &fakeFolder.syncJournal());
+        localEventLoop.exec();
+
+        receivedPaths.sort();
+        expectedPaths.sort();
+        QCOMPARE_EQ(receivedPaths, expectedPaths);
+    }
 };
 
-QTEST_APPLESS_MAIN(TestAccount)
+QTEST_GUILESS_MAIN(TestAccount)
 #include "testaccount.moc"
