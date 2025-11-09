@@ -67,10 +67,10 @@ index 0000000000..ccded5d62e
 +#include "qtcompat.h"
 diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
 new file mode 100644
-index 0000000000..5fadab7feb
+index 0000000000..44395bc6dd
 --- /dev/null
 +++ b/src/common/qtcompat.h
-@@ -0,0 +1,291 @@
+@@ -0,0 +1,298 @@
 +
 +#pragma once
 +
@@ -78,6 +78,7 @@ index 0000000000..5fadab7feb
 +#include <QLocale>
 +#include <QRegularExpression>
 +#include <QTimeZone>
++#include <QString>
 +
 +#include <type_traits>
 +
@@ -174,6 +175,12 @@ index 0000000000..5fadab7feb
 +inline QLatin1StringOrView operator""_L1(const char *str, size_t size)
 +{
 +    return QLatin1StringOrView(str, size);
++}
++
++inline QString operator""_s(const char16_t *str, size_t size)
++{
++    return QString(QStringPrivate(nullptr, const_cast<char16_t *>(str),
++                                  qsizetype(size)));
 +}
 +
 +} }
@@ -438,6 +445,42 @@ index 54d32c3580..2d1c6fd8be 100644
 +    set(QML_ACCEPTTHISOBJECT_PRAGMA "")
 +endif()
 +configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
+diff --git a/src/gui/EmojiPicker.qml b/src/gui/EmojiPicker.qml
+index f49410d6ea..db71b8e12d 100644
+--- a/src/gui/EmojiPicker.qml
++++ b/src/gui/EmojiPicker.qml
+@@ -116,10 +116,18 @@ ColumnLayout {
+                 }
+ 
+                 ToolTip {
+-                    popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                    id: emojiDelegateToolTip
++
+                     text: modelData === undefined ? "" : modelData.shortname
+                     visible: emojiDelegate.hovered
+                     delay: Qt.styleHints.mousePressAndHoldInterval
++
++                    Binding {
++                        target: emojiDelegateToolTip
++                        property: "popupType"
++                        value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                        when: emojiDelegateToolTip.hasOwnProperty("popupType")
++                    }
+                 }
+ 
+                 onClicked: {
+diff --git a/src/gui/accountstate.cpp b/src/gui/accountstate.cpp
+index 458f68cf84..d248e4ee55 100644
+--- a/src/gui/accountstate.cpp
++++ b/src/gui/accountstate.cpp
+@@ -17,6 +17,7 @@
+ #include "ocsuserstatusconnector.h"
+ #include "pushnotifications.h"
+ #include "networkjobs.h"
++#include "common/qtcompat.h"
+ 
+ #include <QSettings>
+ #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
 index f2f6a0503e..cc972dd676 100644
 --- a/src/gui/application.cpp
@@ -459,6 +502,29 @@ index f2f6a0503e..cc972dd676 100644
      qCInfo(lcApplication) << "selected application language:" << lang;
  
      auto *translator = new QTranslator(this);
+diff --git a/src/gui/filedetails/FileDetailsPage.qml b/src/gui/filedetails/FileDetailsPage.qml
+index c061eff726..2a0751b07c 100644
+--- a/src/gui/filedetails/FileDetailsPage.qml
++++ b/src/gui/filedetails/FileDetailsPage.qml
+@@ -196,9 +196,17 @@ Page {
+                     }
+ 
+                     ToolTip {
+-                        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                        id: overflowTagToolTip
++
+                         visible: hoverHandler.hovered
+                         text: tagRepeater.fileTagModel.overflowTagsString
++
++                        Binding {
++                            target: overflowTagToolTip
++                            property: "popupType"
++                            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                            when: overflowTagToolTip.hasOwnProperty("popupType")
++                        }
+                     }
+                 }
+             }
 diff --git a/src/gui/folderman.cpp b/src/gui/folderman.cpp
 index 17d693bf71..f7105f131c 100644
 --- a/src/gui/folderman.cpp
@@ -471,6 +537,18 @@ index 17d693bf71..f7105f131c 100644
  #include "gui/systray.h"
  #include <pushnotifications.h>
  #include <syncengine.h>
+diff --git a/src/gui/folderstatusmodel.cpp b/src/gui/folderstatusmodel.cpp
+index f6e341a58d..215dedaddf 100644
+--- a/src/gui/folderstatusmodel.cpp
++++ b/src/gui/folderstatusmodel.cpp
+@@ -8,6 +8,7 @@
+ #include "accountstate.h"
+ #include "common/asserts.h"
+ #include "common/utility.h"
++#include "common/qtcompat.h"
+ #include "folderman.h"
+ #include "folderstatusdelegate.h"
+ #include <account.h>
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
 index 3dc10ad198..637b58acf5 100644
 --- a/src/gui/folderwizard.cpp
@@ -554,6 +632,42 @@ index b62a7b3c07..85de6f00a1 100644
      void loadMiscSettings();
      void slotShowLegalNotice();
      void slotRemotePollIntervalChanged(int seconds);
+diff --git a/src/gui/owncloudsetupwizard.cpp b/src/gui/owncloudsetupwizard.cpp
+index 44d51f7a96..045b5db84c 100644
+--- a/src/gui/owncloudsetupwizard.cpp
++++ b/src/gui/owncloudsetupwizard.cpp
+@@ -9,6 +9,7 @@
+ #include "accountmanager.h"
+ #include "clientproxy.h"
+ #include "common/utility.h"
++#include "common/qtcompat.h"
+ #include "configfile.h"
+ #include "filesystem.h"
+ #include "folderman.h"
+diff --git a/src/gui/sharemanager.cpp b/src/gui/sharemanager.cpp
+index 3caee2fc56..b9782171e8 100644
+--- a/src/gui/sharemanager.cpp
++++ b/src/gui/sharemanager.cpp
+@@ -11,6 +11,7 @@
+ #include "accountstate.h"
+ #include "clientsideencryption.h"
+ #include "updatee2eefolderusersmetadatajob.h"
++#include "common/qtcompat.h"
+ 
+ #include <QUrl>
+ #include <QJsonDocument>
+diff --git a/src/gui/socketapi/socketapi.cpp b/src/gui/socketapi/socketapi.cpp
+index 68b717498f..d91dd74e91 100644
+--- a/src/gui/socketapi/socketapi.cpp
++++ b/src/gui/socketapi/socketapi.cpp
+@@ -19,6 +19,7 @@
+ #include "encryptfolderjob.h"
+ #include "theme.h"
+ #include "common/syncjournalfilerecord.h"
++#include "common/qtcompat.h"
+ #include "syncengine.h"
+ #include "syncfileitem.h"
+ #include "filesystem.h"
 diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
 index cc0397f295..c4753ab48d 100644
 --- a/src/gui/sslerrordialog.cpp
@@ -575,8 +689,31 @@ index cc0397f295..c4753ab48d 100644
  	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
          msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
      }
+diff --git a/src/gui/tray/ActivityItem.qml b/src/gui/tray/ActivityItem.qml
+index 6af9ec3c16..4195dd305b 100644
+--- a/src/gui/tray/ActivityItem.qml
++++ b/src/gui/tray/ActivityItem.qml
+@@ -30,9 +30,17 @@ ItemDelegate {
+     Accessible.onPressAction: root.clicked()
+ 
+     ToolTip {
+-        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++        id: rootToolTip
++
+         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
+         text: qsTr("In %1").arg(model.displayLocation)
++
++        Binding {
++            target: rootToolTip
++            property: "popupType"
++            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++            when: rootToolTip.hasOwnProperty("popupType")
++        }
+     }
+ 
+     // TODO: the current style does not support customization of this control
 diff --git a/src/gui/tray/ActivityItemContent.qml b/src/gui/tray/ActivityItemContent.qml
-index 2260ed8e6e..e36123fd8a 100644
+index 2260ed8e6e..9232fdc56e 100644
 --- a/src/gui/tray/ActivityItemContent.qml
 +++ b/src/gui/tray/ActivityItemContent.qml
 @@ -14,7 +14,7 @@ import com.nextcloud.desktopclient
@@ -588,11 +725,95 @@ index 2260ed8e6e..e36123fd8a 100644
  
      property variant activityData: {{}}
  
+@@ -178,9 +178,17 @@ RowLayout {
+                     icon.height: Style.activityListButtonIconSize
+ 
+                     ToolTip {
+-                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                        id: fieldDetailsButtonToolTip
++
+                         text: qsTr("Open file details")
+                         visible: parent.hovered
++
++                        Binding {
++                            target: fieldDetailsButtonToolTip
++                            property: "popupType"
++                            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                            when: fieldDetailsButtonToolTip.hasOwnProperty("popupType")
++                        }
+                     }
+ 
+                     display: Button.IconOnly
+@@ -201,9 +209,17 @@ RowLayout {
+                     display: Button.IconOnly
+ 
+                     ToolTip {
+-                        popupType: Qt.platform.os === "windows" ? Popup.Item : Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                        id: dismissActionButtonToolTip
++
+                         text: qsTr("Dismiss")
+                         visible: parent.hovered
++
++                        Binding {
++                            target: dismissActionButtonToolTip
++                            property: "popupType"
++                            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                            when: dismissActionButtonToolTip.hasOwnProperty("popupType")
++                        }
+                     }
+ 
+                     visible: root.showDismissButton
+diff --git a/src/gui/tray/TalkReplyTextField.qml b/src/gui/tray/TalkReplyTextField.qml
+index 28e3883633..6ed9550d9b 100644
+--- a/src/gui/tray/TalkReplyTextField.qml
++++ b/src/gui/tray/TalkReplyTextField.qml
+@@ -52,9 +52,17 @@ TextField {
+         }
+ 
+         ToolTip {
+-            popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++            id: sendReplyMessageButtonToolTip
++
+             visible: sendReplyMessageButton.hovered
+             text:  qsTr("Send reply to chat message")
++
++            Binding {
++                target: sendReplyMessageButtonToolTip
++                property: "popupType"
++                value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++                when: sendReplyMessageButtonToolTip.hasOwnProperty("popupType")
++            }
+         }
+     }
+ }
+diff --git a/src/gui/tray/TrayFolderListItem.qml b/src/gui/tray/TrayFolderListItem.qml
+index feb8303830..b2e29a7df9 100644
+--- a/src/gui/tray/TrayFolderListItem.qml
++++ b/src/gui/tray/TrayFolderListItem.qml
+@@ -17,9 +17,17 @@ MenuItem {
+     property string toolTipText: root.text
+ 
+     ToolTip {
+-        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++        id: rootToolTip
++
+         visible: root.hovered && root.toolTipText !== ""
+         text: root.toolTipText
++
++        Binding {
++            target: rootToolTip
++            property: "popupType"
++            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++            when: rootToolTip.hasOwnProperty("popupType")
++        }
+     }
+ 
+     contentItem: RowLayout {
 diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMenuButton.qml.in
-similarity index 99%
+similarity index 96%
 rename from src/gui/tray/TrayFoldersMenuButton.qml
 rename to src/gui/tray/TrayFoldersMenuButton.qml.in
-index 4ae4d28a58..2193c27219 100644
+index 4ae4d28a58..690d8acf58 100644
 --- a/src/gui/tray/TrayFoldersMenuButton.qml
 +++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
 @@ -2,7 +2,7 @@
@@ -604,6 +825,119 @@ index 4ae4d28a58..2193c27219 100644
  import QtQuick
  import QtQuick.Controls
  import QtQuick.Layouts
+@@ -53,9 +53,16 @@ HeaderButton {
+ 
+     ToolTip {
+         id: tooltip
+-        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++
+         visible: root.hovered && !foldersMenuLoader.isMenuVisible
+         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
++
++        Binding {
++            target: tooltip
++            property: "popupType"
++            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++            when: tooltip.hasOwnProperty("popupType")
++        }
+     }
+ 
+ 
+diff --git a/src/gui/tray/UnifiedSearchResultListItem.qml b/src/gui/tray/UnifiedSearchResultListItem.qml
+index 6c998598fb..5866e1615a 100644
+--- a/src/gui/tray/UnifiedSearchResultListItem.qml
++++ b/src/gui/tray/UnifiedSearchResultListItem.qml
+@@ -30,9 +30,17 @@ MouseArea {
+     height: Style.unifiedSearchItemHeight
+ 
+     ToolTip {
+-        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++        id: unifiedSearchResultMouseAreaToolTop
++
+         visible: unifiedSearchResultMouseArea.containsMouse
+         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
++
++        Binding {
++            target: unifiedSearchResultMouseAreaToolTop
++            property: "popupType"
++            value: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
++            when: unifiedSearchResultMouseAreaToolTop.hasOwnProperty("popupType")
++        }
+     }
+ 
+     Rectangle {
+diff --git a/src/gui/tray/activitydata.cpp b/src/gui/tray/activitydata.cpp
+index e4dc423264..674a3c7998 100644
+--- a/src/gui/tray/activitydata.cpp
++++ b/src/gui/tray/activitydata.cpp
+@@ -8,6 +8,7 @@
+ 
+ #include "activitydata.h"
+ #include "folderman.h"
++#include "common/qtcompat.h"
+ 
+ namespace {
+ QUrl stringToUrl(const QUrl &accountUrl, const QString &link) {
+diff --git a/src/gui/tray/activitylistmodel.cpp b/src/gui/tray/activitylistmodel.cpp
+index cd6f58b837..4f73c1bd5e 100644
+--- a/src/gui/tray/activitylistmodel.cpp
++++ b/src/gui/tray/activitylistmodel.cpp
+@@ -17,6 +17,7 @@
+ #include "caseclashfilenamedialog.h"
+ #include "activitydata.h"
+ #include "systray.h"
++#include "common/qtcompat.h"
+ 
+ #include <QtCore>
+ #include <QAbstractListModel>
+diff --git a/src/gui/tray/notificationhandler.cpp b/src/gui/tray/notificationhandler.cpp
+index b7ac772f9a..2520958e76 100644
+--- a/src/gui/tray/notificationhandler.cpp
++++ b/src/gui/tray/notificationhandler.cpp
+@@ -8,6 +8,7 @@
+ #include "accountstate.h"
+ #include "capabilities.h"
+ #include "networkjobs.h"
++#include "common/qtcompat.h"
+ 
+ #include "iconjob.h"
+ 
+diff --git a/src/gui/tray/talkreply.cpp b/src/gui/tray/talkreply.cpp
+index 2353164664..9063f7400b 100644
+--- a/src/gui/tray/talkreply.cpp
++++ b/src/gui/tray/talkreply.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include "accountstate.h"
+ #include "networkjobs.h"
++#include "common/qtcompat.h"
+ 
+ #include <QJsonDocument>
+ #include <QJsonObject>
+diff --git a/src/gui/tray/unifiedsearchresultslistmodel.cpp b/src/gui/tray/unifiedsearchresultslistmodel.cpp
+index 5a6ac2ad97..2010768b13 100644
+--- a/src/gui/tray/unifiedsearchresultslistmodel.cpp
++++ b/src/gui/tray/unifiedsearchresultslistmodel.cpp
+@@ -10,6 +10,7 @@
+ #include "guiutility.h"
+ #include "folderman.h"
+ #include "networkjobs.h"
++#include "common/qtcompat.h"
+ 
+ #include <algorithm>
+ 
+diff --git a/src/gui/userinfo.cpp b/src/gui/userinfo.cpp
+index dd19351a28..90c03fc565 100644
+--- a/src/gui/userinfo.cpp
++++ b/src/gui/userinfo.cpp
+@@ -10,6 +10,7 @@
+ #include "folderman.h"
+ #include "creds/abstractcredentials.h"
+ #include <theme.h>
++#include "common/qtcompat.h"
+ 
+ #include <QTimer>
+ #include <QJsonDocument>
 diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
 index 5820fc0c8a..a70abc9c8d 100644
 --- a/src/libsync/CMakeLists.txt
@@ -745,6 +1079,18 @@ index 44f7f7e55c..747c3ecb0a 100644
  #include "csync_exclude.h"
  #include "csync.h"
  
+diff --git a/src/libsync/discoveryphase.cpp b/src/libsync/discoveryphase.cpp
+index c560166aff..b0c4e60e0e 100644
+--- a/src/libsync/discoveryphase.cpp
++++ b/src/libsync/discoveryphase.cpp
+@@ -17,6 +17,7 @@
+ 
+ #include "common/asserts.h"
+ #include "common/checksums.h"
++#include "common/qtcompat.h"
+ 
+ #include <csync_exclude.h>
+ #include "vio/csync_vio_local.h"
 diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
 index b6a8708498..4e4f991c50 100644
 --- a/src/libsync/filesystem.cpp
@@ -973,6 +1319,18 @@ index 572bd3d3c9..3b177d9762 100644
              qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
              emit finishedWithError(reply());
  
+diff --git a/src/libsync/ocsuserstatusconnector.cpp b/src/libsync/ocsuserstatusconnector.cpp
+index 977c89d814..a252406752 100644
+--- a/src/libsync/ocsuserstatusconnector.cpp
++++ b/src/libsync/ocsuserstatusconnector.cpp
+@@ -6,6 +6,7 @@
+ #include "ocsuserstatusconnector.h"
+ #include "account.h"
+ #include "userstatusconnector.h"
++#include "common/qtcompat.h"
+ 
+ #include <networkjobs.h>
+ 
 diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
 index c7c259ab0f..e7ab6d6ad9 100644
 --- a/src/libsync/pushnotifications.cpp
@@ -1012,6 +1370,18 @@ index c7c259ab0f..e7ab6d6ad9 100644
      connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
      _webSocket->open(webSocketUrl);
  }
+diff --git a/src/libsync/syncfileitem.cpp b/src/libsync/syncfileitem.cpp
+index c08b3e2326..0fb7651aeb 100644
+--- a/src/libsync/syncfileitem.cpp
++++ b/src/libsync/syncfileitem.cpp
+@@ -8,6 +8,7 @@
+ #include "common/checksums.h"
+ #include "common/syncjournalfilerecord.h"
+ #include "common/utility.h"
++#include "common/qtcompat.h"
+ #include "helpers.h"
+ #include "filesystem.h"
+ 
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
 index 81342a629e..c0507f205c 100644
 --- a/src/libsync/theme.cpp
