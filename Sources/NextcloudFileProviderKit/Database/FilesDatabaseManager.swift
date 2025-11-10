@@ -9,15 +9,6 @@ import RealmSwift
 /// Realm database abstraction and management.
 ///
 public final class FilesDatabaseManager: Sendable {
-    ///
-    /// File name suffix for Realm database files.
-    ///
-    /// In the past, before account-specific databases, there was a single and shared database which had this file name.
-    ///
-    /// > Important: The value must not change, as it is used to migrate from the old unified database to the new per-account databases.
-    ///
-    static let databaseFilename = "fileproviderextdatabase.realm"
-
     public enum ErrorCode: Int {
         case metadataNotFound = -1000
         case parentMetadataNotFound = -1001
@@ -47,45 +38,6 @@ public final class FilesDatabaseManager: Sendable {
     var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
     ///
-    /// Check for the existence of the directory where to place database files and return it.
-    ///
-    /// - Returns: The location of the database files directory.
-    ///
-    private func assertDatabaseDirectory(for identifier: NSFileProviderDomainIdentifier) -> URL {
-        logger.debug("Asserting existence of database directory...")
-
-        let manager = FileManager.default
-
-        guard let fileProviderExtensionDataDirectory = manager.fileProviderDomainSupportDirectory(for: identifier) else {
-            logger.fault("Failed to resolve the file provider extension data directory!")
-            assertionFailure("Failed to resolve the file provider extension data directory!")
-            return manager.temporaryDirectory // Only to satisfy the non-optional return type. The extension is unusable at this point anyway.
-        }
-
-        let databaseDirectory = fileProviderExtensionDataDirectory.appendingPathComponent("Database", isDirectory: true)
-        let exists = manager.fileExists(atPath: databaseDirectory.path)
-
-        if exists {
-            logger.info("Database directory exists at: \(databaseDirectory.path)")
-        } else {
-            logger.info("Due to nonexistent \"Database\" directory, assume it is not a legacy location and returning file provider extension data directory at: \(fileProviderExtensionDataDirectory.path)")
-            return fileProviderExtensionDataDirectory
-        }
-
-        // Disable file protection for database directory.
-        // See: https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/
-
-        do {
-            try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: databaseDirectory.path)
-            logger.info("Set protectionKey attribute for database directory to FileProtectionType.completeUntilFirstUserAuthentication.")
-        } catch {
-            logger.error("Could not set protectionKey attribute to FileProtectionType.completeUntilFirstUserAuthentication for database directory: \(error)")
-        }
-
-        return databaseDirectory
-    }
-
-    ///
     /// Convenience initializer which defines a default configuration for Realm.
     ///
     /// - Parameters:
@@ -95,18 +47,18 @@ public final class FilesDatabaseManager: Sendable {
     ///
     public init(realmConfiguration customConfiguration: Realm.Configuration? = nil, account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging) {
         self.account = account
-
         logger = FileProviderLogger(category: "FilesDatabaseManager", log: log)
-        logger.info("Initializing for account: \(account.ncKitAccount)")
 
-        let databaseDirectory = customDatabaseDirectory ?? assertDatabaseDirectory(for: fileProviderDomainIdentifier)
-        let accountDatabaseFilename: String = if UUID(uuidString: fileProviderDomainIdentifier.rawValue) != nil {
-            "\(fileProviderDomainIdentifier.rawValue).realm"
-        } else {
-            account.fileName + "-" + Self.databaseFilename
+        let defaultDatabaseDirectory = FileManager.default.fileProviderDomainSupportDirectory(for: fileProviderDomainIdentifier)
+
+        guard let databaseDirectory = customDatabaseDirectory ?? defaultDatabaseDirectory else {
+            logger.fault("Neither custom nor default database directory defined!")
+            return
         }
 
-        let databaseLocation = databaseDirectory.appendingPathComponent(accountDatabaseFilename)
+        let databaseLocation = databaseDirectory
+            .appendingPathComponent(fileProviderDomainIdentifier.rawValue)
+            .appendingPathExtension("realm")
 
         let configuration = customConfiguration ?? Realm.Configuration(
             fileURL: databaseLocation,
@@ -140,53 +92,11 @@ public final class FilesDatabaseManager: Sendable {
 
         Realm.Configuration.defaultConfiguration = configuration
 
-        let fileManager = FileManager.default
-        let databasePathFromRealmConfiguration = configuration.fileURL?.path
-        let migrate = databasePathFromRealmConfiguration != nil && fileManager.fileExists(atPath: databasePathFromRealmConfiguration!) == false
-
         do {
             _ = try Realm()
             logger.info("Successfully created Realm.")
         } catch {
             logger.fault("Error creating Realm: \(error)")
-        }
-
-        // Migrate from old unified database to new per-account DB
-        guard migrate else {
-            logger.debug("No migration needed for \(account.ncKitAccount)")
-            return
-        }
-
-        let sharedDatabaseURL = databaseDirectory.appendingPathComponent(Self.databaseFilename)
-
-        guard FileManager.default.fileExists(atPath: sharedDatabaseURL.path) == true else {
-            logger.debug("No shared legacy database found at \"\(sharedDatabaseURL.path)\", skipping migration.")
-            return
-        }
-
-        logger.info("Migrating shared legacy database to new database for \(account.ncKitAccount)")
-
-        let legacyConfiguration = Realm.Configuration(fileURL: sharedDatabaseURL, schemaVersion: SchemaVersion.deletedLocalFileMetadata.rawValue, objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self])
-
-        do {
-            let legacyRealm = try Realm(configuration: legacyConfiguration)
-
-            let itemMetadatas = legacyRealm
-                .objects(RealmItemMetadata.self)
-                .filter { $0.account == account.ncKitAccount }
-
-            let remoteFileChunks = legacyRealm.objects(RemoteFileChunk.self)
-
-            logger.info("Migrating \(itemMetadatas.count) metadatas and \(remoteFileChunks.count) chunks.")
-
-            let currentRealm = try Realm()
-
-            try currentRealm.write {
-                itemMetadatas.forEach { currentRealm.create(RealmItemMetadata.self, value: $0) }
-                remoteFileChunks.forEach { currentRealm.create(RemoteFileChunk.self, value: $0) }
-            }
-        } catch {
-            logger.error("Error migrating shared legacy database to account-specific database for: \(account.ncKitAccount) because of error: \(error)")
         }
     }
 

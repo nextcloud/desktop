@@ -5,22 +5,6 @@
 import Foundation
 import OSLog
 
-private let lfuLogger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "localfileutils")
-
-///
-/// Resolve the path of the shared container for the app group of the file provider extension.
-///
-/// - Returns: Container URL for the extension's app group or `nil`, if it could not be found.
-///
-public func pathForAppGroupContainer() -> URL? {
-    guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "NCFPKAppGroupIdentifier") as? String else {
-        lfuLogger.error("Could not get app group container URL due to missing value for NCFPKAppGroupIdentifier key in Info.plist!")
-        return nil
-    }
-
-    return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
-}
-
 ///
 /// Determine whether the given filename is a lock file as created by certain applications like Microsoft Office or LibreOffice.
 ///
