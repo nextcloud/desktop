@@ -49,6 +49,10 @@
 
 Q_LOGGING_CATEGORY(lcGeneralSettings, "com.nextcloud.settings.general")
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 namespace {
 struct ZipEntry {
     QString localFilename;
@@ -126,6 +130,11 @@ bool createDebugArchive(const QString &filename)
     KZip zip(filename);
 
     if (!zip.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open debug archive for writing:"
+                 << filename
+                 << "because of error:"
+                 << zip.errorString();
+
         QMessageBox::critical(
             nullptr,
             QObject::tr("Failed to create debug archive"),
@@ -656,22 +665,38 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotCreateDebugArchive()
 {
-    const auto filename = QFileDialog::getSaveFileName(
+    const auto destination = QFileDialog::getSaveFileUrl(
         this,
         tr("Create Debug Archive"),
         QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
         tr("Zip Archives") + " (*.zip)"
     );
 
-    if (filename.isEmpty()) {
+    if (destination.path().isEmpty()) {
         return;
     }
 
-    if (createDebugArchive(filename)) {
+#ifdef Q_OS_MACOS
+    // On macOS with app sandbox, we need to explicitly access the security-scoped resource
+    // that was selected by the user via the file dialog. This is required even though we have
+    // the com.apple.security.files.user-selected.read-write entitlement.
+    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(destination);
+    
+    if (!scopedAccess->isValid()) {
+        QMessageBox::critical(
+            this,
+            tr("Failed to Access File"),
+            tr("Could not access the selected location. Please try again or choose a different location.")
+        );
+        return;
+    }
+#endif
+
+    if (createDebugArchive(destination.path())) {
         QMessageBox::information(
             this,
             tr("Debug Archive Created"),
-            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(filename)
+            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toString())
         );
     }
 }
