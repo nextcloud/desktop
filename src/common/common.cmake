@@ -31,6 +31,8 @@ if(WIN32)
 elseif(APPLE)
     list(APPEND common_SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/utility_mac.mm
+        ${CMAKE_CURRENT_LIST_DIR}/utility_mac_sandbox.h
+        ${CMAKE_CURRENT_LIST_DIR}/utility_mac_sandbox.mm
     )
 elseif(UNIX AND NOT APPLE)
     list(APPEND common_SOURCES
