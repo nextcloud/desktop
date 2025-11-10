@@ -8,6 +8,10 @@
 #include <QFileDialog>
 #include <QLineEdit>
 
+#ifdef Q_OS_MACOS
+#include "common/utility_mac_sandbox.h"
+#endif
+
 
 namespace OCC {
 AddCertificateDialog::AddCertificateDialog(QWidget *parent)
@@ -25,8 +29,24 @@ AddCertificateDialog::~AddCertificateDialog()
 
 void AddCertificateDialog::on_pushButtonBrowseCertificate_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select a certificate"), "", tr("Certificate files (*.p12 *.pfx)"));
-    ui->lineEditCertificatePath->setText(fileName);
+    // Use getSaveFileUrl for sandbox compatibility
+    const auto fileUrl = QFileDialog::getOpenFileUrl(this, tr("Select a certificate"), QUrl(), tr("Certificate files (*.p12 *.pfx)"));
+    
+    if (fileUrl.isEmpty()) {
+        return;
+    }
+
+#ifdef Q_OS_MACOS
+    // On macOS with app sandbox, we need to verify we can access the security-scoped resource
+    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(fileUrl);
+    
+    if (!scopedAccess->isValid()) {
+        ui->labelErrorCertif->setText(tr("Could not access the selected certificate file."));
+        return;
+    }
+#endif
+
+    ui->lineEditCertificatePath->setText(fileUrl.toLocalFile());
 }
 
 QString AddCertificateDialog::getCertificatePath()
