@@ -6386,7 +6386,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation type="unfinished"/>
+        <translation>Si è verificato un errore imprevisto. Riprova a sincronizzare o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
 </context>
 <context>
