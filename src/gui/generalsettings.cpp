@@ -127,11 +127,15 @@ bool createDebugArchive(const QString &filename)
 {
     const auto entries = createDebugArchiveFileList();
 
-    KZip zip(filename);
+    // Create the ZIP archive in a temporary directory first
+    const auto tempDir = QDir::temp();
+    const auto tempFilePath = tempDir.filePath(QStringLiteral("nextcloud-debug-archive-temp.zip"));
+    
+    KZip zip(tempFilePath);
 
     if (!zip.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open debug archive for writing:"
-                 << filename
+                 << tempFilePath
                  << "because of error:"
                  << zip.errorString();
 
@@ -202,6 +206,50 @@ bool createDebugArchive(const QString &filename)
     zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
+    
+    zip.close();
+    
+    // Now move the temporary ZIP file to the desired destination
+    QFile tempFile(tempFilePath);
+    if (!tempFile.exists()) {
+        qWarning() << "Temporary debug archive file does not exist:" << tempFilePath;
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not create debug archive in temporary location!"),
+            QMessageBox::Ok
+        );
+        return false;
+    }
+    
+    // Remove destination file if it already exists
+    if (QFile::exists(filename)) {
+        if (!QFile::remove(filename)) {
+            qWarning() << "Failed to remove existing file at destination:" << filename;
+            tempFile.remove();
+            QMessageBox::critical(
+                nullptr,
+                QObject::tr("Failed to create debug archive"),
+                QObject::tr("Could not remove existing file at destination!"),
+                QMessageBox::Ok
+            );
+            return false;
+        }
+    }
+    
+    // Move the temporary file to the final destination
+    if (!tempFile.rename(filename)) {
+        qWarning() << "Failed to move debug archive from" << tempFilePath << "to" << filename;
+        tempFile.remove();
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not move debug archive to selected location!"),
+            QMessageBox::Ok
+        );
+        return false;
+    }
+    
     return true;
 }
 
