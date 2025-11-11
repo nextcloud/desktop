@@ -128,7 +128,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="234"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atvērt pārlūkā</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -1783,7 +1783,7 @@ Vienīgā priekšrocība virtuālo datņu atbalsta atspējošanai ir tā, ka atk
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="436"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja atvērt %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="436"/>
@@ -3105,7 +3105,7 @@ Vienumi, kuriem ir atļauta izdzēšana, tiks izdzēsti, ja tie novērš mapes i
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="107"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja atvērt datni</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="108"/>
