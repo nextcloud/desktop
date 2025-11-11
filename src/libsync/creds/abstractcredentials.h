@@ -47,11 +47,11 @@ public:
     /** Whether fetchFromKeychain() was called before. */
     [[nodiscard]] bool wasFetched() const { return _wasFetched; }
 
-    /** Trigger (async) fetching of credential information
+    /** Trigger (async) fetching of credential information using the appplication name
      *
      * Should set _wasFetched = true, and later emit fetched() when done.
      */
-    virtual void fetchFromKeychain() = 0;
+    virtual void fetchFromKeychain(const QString &appName = {}) = 0;
 
     /** Ask credentials from the user (typically async)
      *

@@ -65,6 +65,11 @@ public:
      */
     void setAutoDelete(bool autoDelete);
 
+    /**
+     * Set application name to be used to search the keychain
+     */
+    void setAppName(const QString &AppName);
+
 protected:
     QString _serviceName;
     Account *_account = nullptr;

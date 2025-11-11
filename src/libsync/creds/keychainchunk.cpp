@@ -88,6 +88,11 @@ void Job::setAutoDelete(bool autoDelete)
     _autoDelete = autoDelete;
 }
 
+void Job::setAppName(const QString &appName)
+{
+    _appName = appName;
+}
+
 /*
 * WriteJob
 */
@@ -241,7 +246,8 @@ void ReadJob::start()
     const QString kck = _account ? AbstractCredentials::keychainKey(
             _account->url().toString(),
             _key,
-            _keychainMigration ? QString() : _account->id()
+            _keychainMigration ? QString() : _account->id(),
+            _appName
         ) : _key;
 
     auto job = new QKeychain::ReadPasswordJob(_serviceName, this);

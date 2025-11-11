@@ -41,7 +41,7 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-void DummyCredentials::fetchFromKeychain()
+void DummyCredentials::fetchFromKeychain(const QString &appName)
 {
     _wasFetched = true;
     emit fetched();
