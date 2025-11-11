@@ -296,7 +296,12 @@ SocketApi::SocketApi(QObject *parent)
         }
     }
     if (!_localServer.listen(socketPath)) {
-        qCWarning(lcSocketApi) << "can't start server" << socketPath;
+        qCWarning(lcSocketApi) << "can't start server" 
+                               << socketPath
+                               << "Error:"
+                               << _localServer.errorString()
+                               << "Error code:" 
+                               << _localServer.serverError();
     } else {
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }

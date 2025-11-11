@@ -33,7 +33,7 @@ import OSLog
             return nil;
         }
 
-        let socketPath = containerUrl.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
+        let socketPath = containerUrl.appendingPathComponent("fps", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self, log: log)
 
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
