@@ -24,7 +24,7 @@ public:
     [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
     [[nodiscard]] bool ready() const override;
     bool stillValid(QNetworkReply *reply) override;
-    void fetchFromKeychain() override;
+    void fetchFromKeychain(const QString &appName = {}) override;
     void askFromUser() override;
     void persist() override;
     void invalidateToken() override {}

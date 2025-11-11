@@ -149,7 +149,7 @@ QString HttpCredentials::fetchUser()
     return _user;
 }
 
-void HttpCredentials::fetchFromKeychain()
+void HttpCredentials::fetchFromKeychain(const QString &appName)
 {
     _wasFetched = true;
 
