@@ -18,9 +18,7 @@ QString fileProviderSocketPath()
 {
     NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
-    NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
-    NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];
-    NSURL *socket = [applicationSupport URLByAppendingPathComponent:@".fileprovidersocket" isDirectory:false];
+    NSURL *socket = [container URLByAppendingPathComponent:@"fps" isDirectory:false];
 
     return QString::fromNSString(socket.path);
 }

@@ -30,9 +30,14 @@ void FileProviderSocketServer::startListening()
     QLocalServer::removeServer(_socketPath);
 
     const auto serverStarted = _socketServer.listen(_socketPath);
+
     if (!serverStarted) {
         qCWarning(lcFileProviderSocketServer) << "Could not start file provider socket server"
-                                              << _socketPath;
+                                              << _socketPath
+                                              << "Error:" 
+                                              << _socketServer.errorString()
+                                              << "Error code:" 
+                                              << _socketServer.serverError();
     } else {
         qCInfo(lcFileProviderSocketServer) << "File provider socket server started, listening"
                                            << _socketPath;
