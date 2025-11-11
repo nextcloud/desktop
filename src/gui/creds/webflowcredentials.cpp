@@ -419,11 +419,17 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
 }
 
 void WebFlowCredentials::fetchFromKeychainHelper() {
+    auto key = _user;
+    if (!_clientSslCertificate.isNull()) {
+        qCDebug(lcWebFlowCredentials) << "Certificate found, changing keychain key to match it.";
+        key.append(clientCertificatePEMC);
+    }
     // Read client cert from keychain
     auto job = new KeychainChunk::ReadJob(_account,
-                                          _user + clientCertificatePEMC,
+                                          key,
                                           _keychainMigration,
                                           this);
+    qCDebug(lcWebFlowCredentials) << "Fecthing keychain with key:" << key;
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -438,9 +444,15 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
         }
     }
 
+    auto key = _user;
+    if (!_clientSslCertificate.isNull()) {
+        qCDebug(lcWebFlowCredentials) << "Certificate found, changing keychain key to match it.";
+        key.append(clientKeyPEMC);
+    }
+
     // Load key too
     auto job = new KeychainChunk::ReadJob(_account,
-                                          _user + clientKeyPEMC,
+                                          key,
                                           _keychainMigration,
                                           this);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
