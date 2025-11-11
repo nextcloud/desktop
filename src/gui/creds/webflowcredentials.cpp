@@ -132,8 +132,9 @@ bool WebFlowCredentials::ready() const {
     return _ready;
 }
 
-void WebFlowCredentials::fetchFromKeychain() {
+void WebFlowCredentials::fetchFromKeychain(const QString &appName) {
     _wasFetched = true;
+    _appName = appName;
 
     // Make sure we get the user from the config file
     fetchUser();
@@ -325,7 +326,7 @@ void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJo
 #endif
     job->setInsecureFallback(false);
     connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteJobDone);
-    job->setKey(keychainKey(_account->url().toString(), _user, _account->id()));
+    job->setKey(keychainKey(_account->url().toString(), _user, _account->id(), _appName));
     job->setTextData(_password);
     job->start();
 }
@@ -361,7 +362,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     _account->deleteAppPassword();
 
-    const auto kck = keychainKey(_account->url().toString(), _user, _account->id());
+    const auto kck = keychainKey(_account->url().toString(), _user, _account->id(), _appName);
     if (kck.isEmpty()) {
         qCWarning(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
@@ -419,17 +420,12 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
 }
 
 void WebFlowCredentials::fetchFromKeychainHelper() {
-    auto key = _user;
-    if (!_clientSslCertificate.isNull()) {
-        qCDebug(lcWebFlowCredentials) << "Certificate found, changing keychain key to match it.";
-        key.append(clientCertificatePEMC);
-    }
     // Read client cert from keychain
     auto job = new KeychainChunk::ReadJob(_account,
-                                          key,
+                                          _user + clientCertificatePEMC,
                                           _keychainMigration,
                                           this);
-    qCDebug(lcWebFlowCredentials) << "Fecthing keychain with key:" << key;
+    job->setAppName(_appName);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -444,17 +440,12 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
         }
     }
 
-    auto key = _user;
-    if (!_clientSslCertificate.isNull()) {
-        qCDebug(lcWebFlowCredentials) << "Certificate found, changing keychain key to match it.";
-        key.append(clientKeyPEMC);
-    }
-
     // Load key too
     auto job = new KeychainChunk::ReadJob(_account,
-                                          key,
+                                          _user + clientKeyPEMC,
                                           _keychainMigration,
                                           this);
+    job->setAppName(_appName);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
@@ -495,6 +486,7 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
                                               _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()),
                                               _keychainMigration,
                                               this);
+        job->setAppName(_appName);
         connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -528,7 +520,8 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
     const QString kck = keychainKey(
         _account->url().toString(),
         _user,
-        _keychainMigration ? QString() : _account->id());
+        _keychainMigration ? QString() : _account->id(),
+        _appName);
 
     auto job = new ReadPasswordJob(Theme::instance()->appName(), this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
