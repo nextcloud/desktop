@@ -26,15 +26,16 @@ import OSLog
     var changeObserver: RemoteChangeObserver?
     var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
+
     lazy var socketClient: LocalSocketClient? = {
-        guard let containerUrl = pathForAppGroupContainer() else {
+        guard let containerUrl = FileManager.default.applicationGroupContainer() else {
             logger.fault("Won't start socket client, no container URL available!")
             return nil;
         }
 
-        let socketPath = containerUrl.appendingPathComponent(
-            ".fileprovidersocket", conformingTo: .archive)
+        let socketPath = containerUrl.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self, log: log)
+
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
