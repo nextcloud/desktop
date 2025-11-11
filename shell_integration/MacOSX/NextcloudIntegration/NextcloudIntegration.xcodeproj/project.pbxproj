@@ -97,6 +97,13 @@
 			remoteGlobalIDString = 53903D0B2956164F00D0B308;
 			remoteInfo = NCDesktopClientSocketKit;
 		};
+		AA3CA0342EC35A3B00AFCA0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53B9797D2B84C81F002DA742;
+			remoteInfo = FileProviderUIExt;
+		};
 		C2B573DF1B1CD9CE00303B36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
@@ -580,6 +587,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AA3CA0352EC35A3B00AFCA0C /* PBXTargetDependency */,
 				C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */,
 				538E397527F4765000FA63D5 /* PBXTargetDependency */,
 				53903D202956164F00D0B308 /* PBXTargetDependency */,
@@ -936,6 +944,11 @@
 			isa = PBXTargetDependency;
 			target = 53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */;
 			targetProxy = 53903D322956173F00D0B308 /* PBXContainerItemProxy */;
+		};
+		AA3CA0352EC35A3B00AFCA0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53B9797D2B84C81F002DA742 /* FileProviderUIExt */;
+			targetProxy = AA3CA0342EC35A3B00AFCA0C /* PBXContainerItemProxy */;
 		};
 		C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
