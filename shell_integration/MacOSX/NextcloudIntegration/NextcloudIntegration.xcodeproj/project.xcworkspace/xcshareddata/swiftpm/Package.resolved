@@ -1,5 +1,5 @@
 {
-  "originHash" : "74a3274bff88648671702b7d1dfa0c8ea5acb44280987019f6c5bb7055b848b2",
+  "originHash" : "d82a73daf5dd90074877cf6ec77b0c894bff74b290079c18e98ef17e1f837e25",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -17,15 +17,6 @@
       "state" : {
         "revision" : "07a481be18943cfa3ce17c91b83d6017cdbb5846",
         "version" : "2.4.5"
-      }
-    },
-    {
-      "identity" : "nextcloudfileproviderkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nextcloud/NextcloudFileProviderKit.git",
-      "state" : {
-        "revision" : "3aed8ec1bef3d67d2d29e50123c5d7182f49afb9",
-        "version" : "3.2.9"
       }
     },
     {
@@ -62,6 +53,51 @@
       "state" : {
         "revision" : "b8e267d98a2a6e0c915d6284fddb3f265dc33c25",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-atomics.git",
+      "state" : {
+        "revision" : "b601256eab081c0f92f059e12818ac1d4f178ff7",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "7b847a3b7008b2dc2f47ca3110d8c782fb2e5c7e",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio.git",
+      "state" : {
+        "revision" : "a24771a4c228ff116df343c85fcf3dcfae31a06c",
+        "version" : "2.88.0"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system.git",
+      "state" : {
+        "revision" : "395a77f0aa927f0ff73941d7ac35f2b46d47c9db",
+        "version" : "1.6.3"
+      }
+    },
+    {
+      "identity" : "swiftformat",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicklockwood/SwiftFormat",
+      "state" : {
+        "revision" : "9c82dcb15307ba06795d31788d3467d9a375e3e7",
+        "version" : "0.58.5"
       }
     },
     {
