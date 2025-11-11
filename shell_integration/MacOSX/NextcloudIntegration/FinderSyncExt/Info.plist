@@ -37,7 +37,5 @@
 	</dict>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SocketApiPrefix</key>
-	<string>$(OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX)$(OC_APPLICATION_REV_DOMAIN)</string>
 </dict>
 </plist>

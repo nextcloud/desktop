@@ -13,7 +13,7 @@ namespace OCC
 
 QString socketApiSocketPath()
 {
-    NSString *appGroupId = [NSString stringWithFormat:@"group.%@", @APPLICATION_REV_DOMAIN];
+    NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
     NSURL *library = [container URLByAppendingPathComponent:@"Library" isDirectory:true];
     NSURL *applicationSupport = [library URLByAppendingPathComponent:@"Application Support" isDirectory:true];

@@ -90,7 +90,5 @@
             </array>
         </dict>
     </array>
-    <key>NCFPKAppGroupIdentifier</key>
-    <string>group.@APPLICATION_REV_DOMAIN@</string>
 </dict>
 </plist>

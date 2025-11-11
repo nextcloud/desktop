@@ -10,7 +10,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.@APPLICATION_REV_DOMAIN@</string>
+		<string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
 	</array>
 @DEBUG_ENTITLEMENTS@
 </dict>
