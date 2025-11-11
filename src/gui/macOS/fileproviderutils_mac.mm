@@ -136,54 +136,52 @@ QString domainIdentifierForAccount(const OCC::AccountPtr account)
     return domainIdentifierForAccount(account.get());
 }
 
-QDir fileProviderExtensionContainer()
+QString applicationGroupContainer()
 {
-    const auto baseBundleId = QCoreApplication::organizationDomain();
-    const auto extensionBundleId = baseBundleId + QStringLiteral(".FileProviderExt");
+    NSString *const groupId = (NSString *)[NSBundle.mainBundle objectForInfoDictionaryKey:@"NCFPKAppGroupIdentifier"];
 
-    auto dir = QDir::home();
-    dir.cd("Library");
-    dir.cd("Containers");
-    dir.cd(extensionBundleId);
+    if (groupId == nil) {
+        qCWarning(lcMacFileProviderUtils) << "No app group identifier found in Info.plist, cannot determine application group container.";
+        return QString::fromNSString([NSFileManager.defaultManager temporaryDirectory].path);
+    }
 
-    return dir;
+    return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
 }
 
 QDir fileProviderExtensionLogDirectory()
 {
-    auto dir = fileProviderExtensionContainer();
-    dir.cd("Data");
-    dir.cd("Library");
-    dir.cd("Logs");
+    auto applicationGroupContainerPath = applicationGroupContainer();
+    auto logsPath = applicationGroupContainerPath + "/Library/Logs/File Provider Domains";
+    auto directory = QDir(logsPath);
 
-    return dir;
+    return directory;
 }
 
 QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
 {
-    auto dir = fileProviderExtensionLogDirectory();
-    dir.cd(domainIdentifier);
+    auto logsDirectory = fileProviderExtensionLogDirectory();
+    auto domainLogsPath = logsDirectory.filePath(domainIdentifier);
+    auto directory = QDir(domainLogsPath);
 
-    return dir;
+    return directory;
 }
 
 QDir fileProviderDomainsSupportDirectory()
 {
-    auto dir = fileProviderExtensionContainer();
-    dir.cd("Data");
-    dir.cd("Library");
-    dir.cd("Application Support");
-    dir.cd("File Provider Domains");
+    auto applicationGroupContainerPath = applicationGroupContainer();
+    auto supportPath = applicationGroupContainerPath + "/Library/Application Support/File Provider Domains";
+    auto directory = QDir(supportPath);
 
-    return dir;
+    return directory;
 }
 
 QDir fileProviderDomainSupportDirectory(const QString domainIdentifier)
 {
-    auto dir = fileProviderDomainsSupportDirectory();
-    dir.cd(domainIdentifier);
+    auto supportDirectory = fileProviderDomainsSupportDirectory();
+    auto domainSupportPath = supportDirectory.filePath(domainIdentifier);
+    auto directory = QDir(domainSupportPath);
 
-    return dir;
+    return directory;
 }
 
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier)
