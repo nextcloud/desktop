@@ -30,22 +30,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 #endif
 
-#ifdef Q_OS_WIN
-void jobKeyPrependAppName(QString &key)
-{
-    // NOTE: The following is normally done in AbstractCredentials::keychainKey
-    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
-
-    // On Windows the credential keys aren't namespaced properly
-    // by qtkeychain. To work around that we manually add namespacing
-    // to the generated keys. See #6125.
-    // It's safe to do that since the key format is changing for 2.4
-    // anyway to include the account ids. That means old keys can be
-    // migrated to new namespaced keys on windows for 2.4.
-    key.prepend(QCoreApplication::applicationName() + "_");
-}
-#endif
-
 /*
 * Job
 */
@@ -53,6 +37,7 @@ Job::Job(QObject *parent)
     : QObject(parent)
 {
     _serviceName = Theme::instance()->appName();
+    _appName = QCoreApplication::applicationName();
 }
 
 Job::~Job()
@@ -122,7 +107,7 @@ WriteJob::WriteJob(const QString &key, const QByteArray &data, QObject *parent)
     : WriteJob(nullptr, key, data, parent)
 {
 #ifdef Q_OS_WIN
-    jobKeyPrependAppName(_key);
+    _key.prepend(_appName + "_");
 #endif
 }
 
@@ -243,7 +228,7 @@ ReadJob::ReadJob(const QString &key, QObject *parent)
     : ReadJob(nullptr, key, false, parent)
 {
 #ifdef Q_OS_WIN
-    jobKeyPrependAppName(_key);
+    _key.prepend(_appName + "_");
 #endif
 }
 
@@ -375,7 +360,7 @@ DeleteJob::DeleteJob(const QString &key, QObject *parent)
     : DeleteJob(nullptr, key, false, parent)
 {
 #ifdef Q_OS_WIN
-    jobKeyPrependAppName(_key);
+    _key.prepend(_appName + "_");
 #endif
 }
 

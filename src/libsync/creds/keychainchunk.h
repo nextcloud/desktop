@@ -69,6 +69,7 @@ protected:
     QString _serviceName;
     Account *_account = nullptr;
     QString _key;
+    QString _appName;
     bool _insecureFallback = false;
     bool _autoDelete = true;
     bool _keychainMigration = false;
