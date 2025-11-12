@@ -97,6 +97,7 @@ Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 QString ConfigFile::_confDir = {};
 QString ConfigFile::_discoveredLegacyConfigPath = {};
+ConfigFile::MigrationPhase ConfigFile::_migrationPhase = ConfigFile::MigrationPhase::NotStarted;
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -1293,9 +1294,40 @@ bool ConfigFile::isDowngrade() const
     return previousVersion > currentVersion;
 }
 
-bool ConfigFile::isMigration() const
+bool ConfigFile::shouldTryUnbrandedToBrandedMigration() const
 {
-    const auto versionChanged = isUpgrade() || isDowngrade();
-    return Theme::instance()->appName() != unbrandedAppName && versionChanged;
+    return migrationPhase() == ConfigFile::MigrationPhase::SetupFolders
+        && Theme::instance()->appName() != unbrandedAppName;
+}
+
+bool ConfigFile::shouldTryToMigrate() const
+{
+    return !isClientVersionSet() && (isUpgrade() || isDowngrade());
+}
+
+bool ConfigFile::isClientVersionSet() const
+{
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto clientConfigVersion = QVersionNumber::fromString(clientVersionString());
+    const auto isVersionSet = !clientConfigVersion.isNull() && !clientPreviousVersionString().isEmpty();
+    return isVersionSet && clientConfigVersion == currentVersion;
+}
+
+bool ConfigFile::isMigrationInProgress() const
+{
+    return _migrationPhase != MigrationPhase::NotStarted && _migrationPhase != MigrationPhase::Done;
+}
+
+void ConfigFile::setMigrationPhase(const MigrationPhase phase)
+{
+    // do not rollback
+    if (phase > _migrationPhase) {
+        _migrationPhase = phase;
+    }
+}
+
+ConfigFile::MigrationPhase ConfigFile::migrationPhase() const
+{
+    return _migrationPhase;
 }
 }
