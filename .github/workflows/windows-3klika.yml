@@ -1,0 +1,76 @@
+name: Windows - 3klika Oblak
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      APP_NAME: "3klika Oblak"
+      APP_REV_DOMAIN: "rs.3klika.oblak"
+      OEM_THEME_DIR: "C:/oem/3klika"
+      APP_ICON: "C:/oem/3klika/icons/3klika.png"
+      DEFAULT_URL: "https://oblak.3klika.rs"
+      QT_VER: "6.6.3"
+      QT_HOST: "msvc2019_64"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prep OEM assets
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "$env:OEM_THEME_DIR\icons" | Out-Null
+          Copy-Item "branding/3klika.png" "$env:OEM_THEME_DIR\icons\3klika.png"
+          New-Item -ItemType Directory -Force -Path "C:\ProgramData\Nextcloud" | Out-Null
+          @"
+[General]
+skipUpdateCheck=true
+lastConnectedServer=$env:DEFAULT_URL
+overrideServerUrl=$env:DEFAULT_URL
+"@ | Out-File -Encoding ascii "C:\ProgramData\Nextcloud\nextcloud.cfg"
+
+      - name: Install tools
+        shell: pwsh
+        run: |
+          choco install -y ninja nsis git
+          python -m pip install --upgrade pip pipx
+          pipx install aqtinstall
+
+      - name: Install Qt ${{ env.QT_VER }}
+        shell: pwsh
+        run: |
+          aqt install-qt windows desktop $env:QT_VER $env:QT_HOST -O C:\Qt
+          echo "CMAKE_PREFIX_PATH=C:\Qt\$env:QT_VER\$env:QT_HOST" >> $env:GITHUB_ENV
+
+      - name: Configure CMake
+        shell: pwsh
+        run: |
+          cmake -S . -B build -G Ninja `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DAPPLICATION_NAME="${env:APP_NAME}" `
+            -DAPPLICATION_REV_DOMAIN="${env:APP_REV_DOMAIN}" `
+            -DOEM_THEME_DIR="${env:OEM_THEME_DIR}" `
+            -DAPPLICATION_ICON="${env:APP_ICON}" `
+            -DBUILD_UPDATER=OFF -DBUILD_SHELL_INTEGRATION=OFF -DWITH_CRASHREPORTER=OFF
+
+      - name: Build
+        run: ninja -C build
+
+      - name: Package (CPack or ZIP)
+        shell: pwsh
+        run: |
+          cmake --build build --target package || $true
+          Compress-Archive -Path "build\bin\*" -DestinationPath "3klika-Oblak-win64.zip"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 3klika-Oblak-Windows
+          path: |
+            build\*.exe
+            build\*.msi
+            3klika-Oblak-win64.zip
