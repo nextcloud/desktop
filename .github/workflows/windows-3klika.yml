@@ -1,9 +1,7 @@
 name: Windows - 3klika Oblak
-
 on:
   workflow_dispatch:
-  push:
-    branches: [ master, main ]
+  push: { branches: [ master, main ] }
 
 jobs:
   build:
@@ -15,16 +13,19 @@ jobs:
       APP_ICON: "C:/oem/3klika/icons/3klika.png"
       DEFAULT_URL: "https://oblak.3klika.rs"
       QT_VER: "6.6.3"
-      QT_HOST: "msvc2019_64"
+      QT_HOST: "msvc2022_64"   # stabilnije na windows-latest
     steps:
-      - name: Checkout
+      - name: Checkout (incl. submodules)
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
-      - name: Prep OEM assets
+      - name: Prep OEM
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path "$env:OEM_THEME_DIR\icons" | Out-Null
-          Copy-Item "branding/3klika.png" "$env:OEM_THEME_DIR\icons\3klika.png"
+          if (Test-Path "branding/3klika.png") { Copy-Item "branding/3klika.png" "$env:OEM_THEME_DIR\icons\3klika.png" }
           New-Item -ItemType Directory -Force -Path "C:\ProgramData\Nextcloud" | Out-Null
           @"
 [General]
@@ -33,20 +34,22 @@ lastConnectedServer=$env:DEFAULT_URL
 overrideServerUrl=$env:DEFAULT_URL
 "@ | Out-File -Encoding ascii "C:\ProgramData\Nextcloud\nextcloud.cfg"
 
-      - name: Install tools
+      - name: Tools
         shell: pwsh
         run: |
           choco install -y ninja nsis git
           python -m pip install --upgrade pip pipx
           pipx install aqtinstall
 
-      - name: Install Qt ${{ env.QT_VER }}
+      - name: Install Qt
         shell: pwsh
         run: |
           aqt install-qt windows desktop $env:QT_VER $env:QT_HOST -O C:\Qt
           echo "CMAKE_PREFIX_PATH=C:\Qt\$env:QT_VER\$env:QT_HOST" >> $env:GITHUB_ENV
+          echo "Qt6_DIR=C:\Qt\$env:QT_VER\$env:QT_HOST\lib\cmake\Qt6" >> $env:GITHUB_ENV
+          echo "PATH=C:\Qt\$env:QT_VER\$env:QT_HOST\bin;${env:PATH}" >> $env:GITHUB_ENV
 
-      - name: Configure CMake
+      - name: Configure
         shell: pwsh
         run: |
           cmake -S . -B build -G Ninja `
@@ -60,7 +63,7 @@ overrideServerUrl=$env:DEFAULT_URL
       - name: Build
         run: ninja -C build
 
-      - name: Package (CPack or ZIP)
+      - name: Package (ZIP fallback)
         shell: pwsh
         run: |
           cmake --build build --target package || $true
@@ -74,4 +77,3 @@ overrideServerUrl=$env:DEFAULT_URL
             build\*.exe
             build\*.msi
             3klika-Oblak-win64.zip
-# kick
