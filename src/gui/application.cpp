@@ -119,16 +119,21 @@ namespace {
 
 bool Application::configVersionMigration()
 {
+    ConfigFile configFile;
+    const auto shouldTryToMigrate = configFile.shouldTryToMigrate();
+    if (!shouldTryToMigrate) {
+        qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
+        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+        return false;
+    }
+
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-
-    ConfigFile configFile;
-    if (configFile.clientPreviousVersionString().isEmpty()) {
-        configFile.setClientPreviousVersionString(configFile.clientVersionString());
-    }
+    configFile.setClientPreviousVersionString(configFile.clientVersionString());
     
-    qCDebug(lcApplication) << "Is migration?"  << configFile.isMigration();
+    qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
     const auto versionChanged = configFile.isUpgrade() || configFile.isDowngrade();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
@@ -480,9 +485,11 @@ Application::~Application()
 void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
-
+    ConfigFile configFile;
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
 
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 

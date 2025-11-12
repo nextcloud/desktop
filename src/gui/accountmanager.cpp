@@ -327,6 +327,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
@@ -603,6 +604,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         acc->_settingsMap.insert(key, settings.value(key));
     }
     acc->setCredentials(CredentialsFactory::create(authType));
+
+
 
     {
         auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
