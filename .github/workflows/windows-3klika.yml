@@ -78,3 +78,4 @@ overrideServerUrl=$env:DEFAULT_URL
             build\*.exe
             build\*.msi
             3klika-Oblak-win64.zip
+# kick
