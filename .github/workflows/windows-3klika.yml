@@ -1,6 +1,7 @@
 name: Windows - 3klika Oblak
 on:
   workflow_dispatch:
+  workflow_dispatch:
   push: { branches: [ master, main ] }
 
 jobs:
