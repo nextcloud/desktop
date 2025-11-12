@@ -258,9 +258,22 @@ public:
     void removeFileProviderDomainMappingByDomainIdentifier(const QString domainIdentifier);
 
     /// Helper function for migration/upgrade proccess
+    enum MigrationPhase {
+        NotStarted,
+        SetupConfigFile,
+        SetupUsers,
+        SetupFolders,
+        Done
+    };
     [[nodiscard]] bool isUpgrade() const;
     [[nodiscard]] bool isDowngrade() const;
-    [[nodiscard]] bool isMigration() const;
+    [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
+    [[nodiscard]] bool shouldTryToMigrate() const;
+    [[nodiscard]] bool isClientVersionSet() const;
+    [[nodiscard]] bool isMigrationInProgress() const;
+    [[nodiscard]] bool isMigrationDone() const;
+    [[nodiscard]] MigrationPhase migrationPhase() const;
+    void setMigrationPhase(const MigrationPhase phase);
     static constexpr char unbrandedAppName[] = "Nextcloud";
     static constexpr char legacyAppName[] = "Owncloud";
 
@@ -302,6 +315,7 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
+    static MigrationPhase _migrationPhase;
 };
 }
 #endif // CONFIGFILE_H
