@@ -151,6 +151,7 @@ QString HttpCredentials::fetchUser()
 
 void HttpCredentials::fetchFromKeychain(const QString &appName)
 {
+    Q_UNUSED(appName)
     _wasFetched = true;
 
     // User must be fetched from config file
