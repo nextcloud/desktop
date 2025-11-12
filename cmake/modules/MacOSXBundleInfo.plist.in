@@ -91,6 +91,6 @@
         </dict>
     </array>
     <key>NCFPKAppGroupIdentifier</key>
-    <string>@SOCKETAPI_TEAM_IDENTIFIER_PREFIX@@APPLICATION_REV_DOMAIN@</string>
+    <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
 </dict>
 </plist>
