@@ -104,11 +104,6 @@ QString domainIdentifierForAccountIdentifier(const NSString *accountId);
 bool illegalDomainIdentifier(const QString &domainId);
 
 /**
- * @brief Find the logs directory of the file provider extension for all the domains.
- */
-QDir fileProviderExtensionLogDirectory();
-
-/**
  * @brief Find the logs directory of the file provider domain with the given identifier.
  */
 QDir fileProviderDomainLogDirectory(const QString domainIdentifier);
