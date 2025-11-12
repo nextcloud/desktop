@@ -148,19 +148,10 @@ QString applicationGroupContainer()
     return QString::fromNSString([NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:groupId].path);
 }
 
-QDir fileProviderExtensionLogDirectory()
-{
-    auto applicationGroupContainerPath = applicationGroupContainer();
-    auto logsPath = applicationGroupContainerPath + "/Library/Logs/File Provider Domains";
-    auto directory = QDir(logsPath);
-
-    return directory;
-}
-
 QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
 {
-    auto logsDirectory = fileProviderExtensionLogDirectory();
-    auto domainLogsPath = logsDirectory.filePath(domainIdentifier);
+    auto logsDirectory = fileProviderDomainSupportDirectory(domainIdentifier);
+    auto domainLogsPath = logsDirectory.filePath("Logs");
     auto directory = QDir(domainLogsPath);
 
     return directory;
@@ -169,7 +160,7 @@ QDir fileProviderDomainLogDirectory(const QString domainIdentifier)
 QDir fileProviderDomainsSupportDirectory()
 {
     auto applicationGroupContainerPath = applicationGroupContainer();
-    auto supportPath = applicationGroupContainerPath + "/Library/Application Support/File Provider Domains";
+    auto supportPath = applicationGroupContainerPath + "/File Provider Domains";
     auto directory = QDir(supportPath);
 
     return directory;
