@@ -28,12 +28,8 @@ public extension FilesDatabaseManager {
             .count
     }
 
-    func parentDirectoryMetadataForItem(
-        _ itemMetadata: SendableItemMetadata
-    ) -> SendableItemMetadata? {
-        self.itemMetadata(
-            account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl
-        )
+    func parentDirectoryMetadataForItem(_ itemMetadata: SendableItemMetadata) -> SendableItemMetadata? {
+        self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
     }
 
     func directoryMetadata(ocId: String) -> SendableItemMetadata? {

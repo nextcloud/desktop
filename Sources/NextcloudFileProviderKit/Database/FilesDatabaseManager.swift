@@ -211,24 +211,51 @@ public final class FilesDatabaseManager: Sendable {
         return nil
     }
 
-    public func itemMetadata(
-        account: String, locatedAtRemoteUrl remoteUrl: String // Is the URL for the actual item
-    ) -> SendableItemMetadata? {
-        guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
-        let fileName = actualRemoteUrl.lastPathComponent
-        guard var serverUrl = actualRemoteUrl
-            .deletingLastPathComponent()
-            .absoluteString
-            .removingPercentEncoding
-        else { return nil }
-        if serverUrl.hasSuffix("/") {
-            serverUrl.removeLast()
+    ///
+    /// Look up the item metadata by its account identifier and remote address.
+    ///
+    /// - Parameters:
+    ///     - account: The account this item is scoped by.
+    ///     - remoteURL: The full remote URL of the item as a `String`.
+    ///
+    /// - Returns: Metadata related to the item found by the parameters.
+    ///
+    public func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
+        guard let remoteURLComponents = URLComponents(string: rawRemoteURL) else {
+            return nil
         }
+
+        guard let remoteURL = remoteURLComponents.url else {
+            return nil
+        }
+
+        // Get the file name but also take the possible fragment into consideration which is not part of a URL path but a file name.
+        var fileName = remoteURL.lastPathComponent
+
+        if let fragment = remoteURL.fragment {
+            fileName = "\(fileName)#\(fragment)"
+        }
+
+        // Derive the parent address by removing the last path component and discarding the fragment which may actually be part of the file name and not a URL fragment.
+        var parentURLComponents = remoteURLComponents
+        parentURLComponents.path = remoteURL.deletingLastPathComponent().path
+        parentURLComponents.fragment = nil
+
+        guard var rawParentURL = parentURLComponents.url?.absoluteString.removingPercentEncoding else {
+            return nil
+        }
+
+        // Remove any trailing slash.
+        if rawParentURL.hasSuffix("/") {
+            rawParentURL.removeLast()
+        }
+
         if let metadata = itemMetadatas.where({
-            $0.account == account && $0.serverUrl == serverUrl && $0.fileName == fileName
+            $0.account == account && $0.serverUrl == rawParentURL && $0.fileName == fileName
         }).first {
             return SendableItemMetadata(value: metadata)
         }
+
         return nil
     }
 
