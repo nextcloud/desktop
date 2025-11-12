@@ -25,6 +25,7 @@ void AbstractCredentials::setAccount(Account *account)
 
 QString AbstractCredentials::keychainKey(const QString &url, const QString &user, const QString &accountId, const QString &appName)
 {
+    Q_UNUSED(appName)
     auto serverUrl = url;
     if (serverUrl.isEmpty()) {
         qCWarning(lcCredentials) << "Empty url in keyChain, error!";
