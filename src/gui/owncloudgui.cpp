@@ -1,4 +1,5 @@
 /*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2013 ownCloud GmbH
  * SPDX-License-Identifier: GPL-2.0-or-later
@@ -359,7 +360,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         for (const AccountStatePtr &a : problemAccounts) {
             accountNames.append(a->account()->displayName());
         }
-        _tray->setToolTip(tr("Disconnected from %1").arg(accountNames.join(QLatin1String(", "))));
+        _tray->setTrayToolTip(tr("Disconnected from %1").arg(accountNames.join(QLatin1String(", "))));
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
@@ -371,18 +372,18 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             }
             messages.append(message);
         }
-        _tray->setToolTip(messages.join(QLatin1String("\n\n")));
+        _tray->setTrayToolTip(messages.join(QLatin1String("\n\n")));
 #endif
         return;
     }
 
     if (allSignedOut) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
-        _tray->setToolTip(tr("Please sign in"));
+        _tray->setTrayToolTip(tr("Please sign in"));
         return;
     } else if (allPaused) {
         _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true));
-        _tray->setToolTip(tr("Account synchronization is disabled"));
+        _tray->setTrayToolTip(tr("Account synchronization is disabled"));
         return;
     }
 
@@ -462,9 +463,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #endif
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
-        _tray->setToolTip(trayMessage);
+        _tray->setTrayToolTip(trayMessage);
     } else {
-        _tray->setToolTip(tr("There are no sync folders configured."));
+        _tray->setTrayToolTip(tr("There are no sync folders configured."));
     }
 }
 

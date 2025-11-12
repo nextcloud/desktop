@@ -1,4 +1,5 @@
 /*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2013 ownCloud GmbH
  * SPDX-License-Identifier: GPL-2.0-or-later
@@ -54,6 +55,15 @@ Systray *Systray::instance()
 QQmlApplicationEngine *Systray::trayEngine() const
 {
     return _trayEngine.get();
+}
+
+void Systray::setTrayToolTip(const QString &toolTip)
+{
+    QSystemTrayIcon::setToolTip(toolTip);
+
+#ifdef Q_OS_MACOS
+    setStatusItemToolTip(this, toolTip);
+#endif
 }
 
 void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)

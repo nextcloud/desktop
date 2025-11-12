@@ -1,4 +1,5 @@
 /*
+ * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2013 ownCloud GmbH
  * SPDX-License-Identifier: GPL-2.0-or-later
@@ -45,6 +46,7 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState);
+void setStatusItemToolTip(QSystemTrayIcon *trayIcon, const QString &toolTip);
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
@@ -93,6 +95,8 @@ public:
     bool raiseDialogs();
 
     [[nodiscard]] QQmlApplicationEngine* trayEngine() const;
+
+    void setTrayToolTip(const QString &toolTip);
 
 signals:
     void currentUserChanged();
