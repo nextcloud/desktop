@@ -3,7 +3,7 @@ name: Windows - 3klika Oblak
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
 
 jobs:
   build:
