@@ -66,7 +66,7 @@ public:
     [[nodiscard]] QString password() const override;
     [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
     [[nodiscard]] bool ready() const override;
-    void fetchFromKeychain() override;
+    void fetchFromKeychain(const QString &appName = {}) override;
     void askFromUser() override;
 
     bool stillValid(QNetworkReply *reply) override;
