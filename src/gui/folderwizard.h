@@ -53,6 +53,9 @@ public:
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
 
+signals:
+    void initialFolderSelectionCanceled();
+
 protected:
     void changeEvent(QEvent *) override;
 
@@ -65,6 +68,7 @@ private:
     Ui_FolderWizardSourcePage _ui{};
     Folder::Map _folderMap;
     AccountPtr _account;
+    bool _initialFolderSelection = true;
 };
 
 

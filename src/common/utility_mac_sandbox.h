@@ -66,5 +66,16 @@ private:
     std::unique_ptr<Impl> _impl;
 };
 
+/**
+ * @brief Get the real user home directory path
+ * 
+ * In sandboxed macOS apps, QStandardPaths::HomeLocation returns the sandbox
+ * container directory, not the actual user home directory. This function uses
+ * NSHomeDirectory() to retrieve the real home directory path.
+ * 
+ * @return The real user home directory path
+ */
+[[nodiscard]] QString getRealHomeDirectory();
+
 } // namespace Utility
 } // namespace OCC
