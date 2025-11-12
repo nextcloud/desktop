@@ -36,7 +36,11 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLineEdit" name="localFolderLineEdit"/>
+         <widget class="QLineEdit" name="localFolderLineEdit">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="localFolderChooseBtn">
