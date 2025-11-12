@@ -102,5 +102,13 @@ bool MacSandboxSecurityScopedAccess::isValid() const
     return _impl && _impl->hasAccess();
 }
 
+QString getRealHomeDirectory()
+{
+    @autoreleasepool {
+        NSString *homeDir = NSHomeDirectory();
+        return QString::fromNSString(homeDir);
+    }
+}
+
 } // namespace Utility
 } // namespace OCC
