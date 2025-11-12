@@ -199,7 +199,10 @@ bool CredentialsStub::ready() const
     return false;
 }
 
-void CredentialsStub::fetchFromKeychain() { }
+void CredentialsStub::fetchFromKeychain(const QString &appName)
+{
+    Q_UNUSED(appName)
+}
 
 void CredentialsStub::askFromUser() { }
 
