@@ -208,11 +208,11 @@ quint64 ClientStatusReportingDatabase::getLastSentReportTimestamp() const
     const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
     query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     if (!prepareResult || !query.exec()) {
-        qCWarning(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
+        qCDebug(lcClientStatusReportingDatabase) << "Could not read last timestamp for client status report.";
         return 0;
     }
     if (!query.next()) {
-        qCWarning(lcClientStatusReportingDatabase) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
+        qCDebug(lcClientStatusReportingDatabase) << "No timestamp found for client status report. It was not sent yet.";
         return 0;
     }
     return query.value(query.record().indexOf(QStringLiteral("value"))).toULongLong();
