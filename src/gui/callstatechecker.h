@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <qqmlregistration.h>
 
 #include "networkjobs.h"
 #include "accountstate.h"
@@ -16,6 +17,7 @@ namespace OCC {
 class CallStateChecker : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString token READ token WRITE setToken NOTIFY tokenChanged)
     Q_PROPERTY(AccountState* accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(bool checking READ checking WRITE setChecking NOTIFY checkingChanged)

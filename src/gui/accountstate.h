@@ -284,7 +284,4 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(OCC::AccountState *)
-Q_DECLARE_METATYPE(OCC::AccountStatePtr)
-
 #endif //ACCOUNTINFO_H

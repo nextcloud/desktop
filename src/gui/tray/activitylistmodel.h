@@ -8,8 +8,10 @@
 #define ACTIVITYLISTMODEL_H
 
 #include <QtCore>
+#include <qqmlregistration.h>
 
 #include "activitydata.h"
+#include "accountstate.h"
 
 class QJsonDocument;
 
@@ -21,7 +23,6 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcActivity)
 
-class AccountState;
 class ConflictDialog;
 class InvalidFilenameDialog;
 class CaseClashFilenameDialog;
@@ -36,6 +37,7 @@ class CaseClashFilenameDialog;
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
     Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
     Q_PROPERTY(bool hasSyncConflicts READ hasSyncConflicts NOTIFY hasSyncConflictsChanged)

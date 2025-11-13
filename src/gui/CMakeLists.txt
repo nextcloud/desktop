@@ -183,40 +183,7 @@ set(client_SRCS
     emojimodel.cpp
     syncconflictsmodel.h
     syncconflictsmodel.cpp
-    fileactivitylistmodel.h
-    fileactivitylistmodel.cpp
-    filedetails/datefieldbackend.h
-    filedetails/datefieldbackend.cpp
-    filedetails/filedetails.h
-    filedetails/filedetails.cpp
-    filedetails/sharemodel.h
-    filedetails/sharemodel.cpp
-    filedetails/shareemodel.h
-    filedetails/shareemodel.cpp
-    filedetails/sortedsharemodel.h
-    filedetails/sortedsharemodel.cpp
-    tray/svgimageprovider.h
-    tray/svgimageprovider.cpp
-    tray/syncstatussummary.h
-    tray/syncstatussummary.cpp
-    tray/activitydata.h
-    tray/activitydata.cpp
-    tray/activitylistmodel.h
-    tray/activitylistmodel.cpp
-    tray/unifiedsearchresult.h
-    tray/asyncimageresponse.cpp
-    tray/unifiedsearchresult.cpp
-    tray/unifiedsearchresultslistmodel.h
-    tray/trayimageprovider.cpp
-    tray/unifiedsearchresultslistmodel.cpp
-    tray/usermodel.h
-    tray/usermodel.cpp
-    tray/notificationhandler.h
-    tray/notificationhandler.cpp
-    tray/sortedactivitylistmodel.h
-    tray/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
-    tray/talkreply.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
@@ -534,26 +501,41 @@ endif()
 
 add_library(nextcloudCore STATIC ${final_src})
 
-target_link_libraries(nextcloudCore
-  PUBLIC
-  Nextcloud::sync
-  Qt::Widgets
-  Qt::Svg
-  Qt::Network
-  Qt::Xml
-  Qt::Qml
-  Qt::Quick
-  Qt::QuickControls2
-  Qt::QuickWidgets
-  KF6::Archive
-  )
+qt_add_qml_module(nextcloudCore
+    URI com.nextcloud.desktopclient
+    IMPORTS
+    	com.nextcloud.desktopclient.tray
+	com.nextcloud.desktopclient.filedetails
+    QML_FILES 
+        UserStatusMessageView.qml
+        UserStatusSelectorPage.qml
+        EmojiPicker.qml
+        UserStatusSelectorButton.qml
+        UserStatusSetStatusView.qml
+        PredefinedStatusButton.qml
+        ErrorBox.qml
+)
 
-if(KF6GuiAddons_FOUND)
-  target_link_libraries(nextcloudCore
-    PUBLIC
-    KF6::GuiAddons
-  )
-  add_definitions(-DHAVE_KGUIADDONS)
+target_link_libraries(nextcloudCore PUBLIC
+    Nextcloud::sync
+    Qt::Widgets
+    Qt::Svg
+    Qt::Network
+    Qt::Xml
+    Qt::Qml
+    Qt::Quick
+    Qt::QuickControls2
+    Qt::QuickWidgets
+    KF6::Archive
+)
+
+target_include_directories(nextcloudCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+if(TARGET KF6::GuiAddons)
+    target_link_libraries(nextcloudCore PUBLIC
+        KF6::GuiAddons
+    )
+    add_definitions(-DHAVE_KGUIADDONS)
 endif()
 
 add_subdirectory(socketapi)
@@ -588,6 +570,9 @@ target_include_directories(nextcloudCore
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+add_subdirectory(tray)
+add_subdirectory(filedetails)
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     if(NOT WIN32)
@@ -652,7 +637,15 @@ set_target_properties(nextcloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(nextcloud PRIVATE nextcloudCore)
+set_target_properties(nextcloud PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(nextcloud PRIVATE
+    nextcloudTray
+    nextcloudTrayplugin
+    nextcloudFileDetails
+    nextcloudFileDetailsplugin
+    nextcloudCore
+    nextcloudCoreplugin
+)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")

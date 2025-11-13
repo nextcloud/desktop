@@ -12,6 +12,7 @@
 #include <QStringList>
 #include <QQuickImageProvider>
 #include <QHash>
+#include <QQmlEngine>
 
 #include "accountfwd.h"
 #include "accountmanager.h"
@@ -218,12 +219,21 @@ private:
 class UserModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
 public:
 
     static UserModel *instance();
     ~UserModel() override = default;
+
+    static UserModel *create(QQmlEngine *, QJSEngine *)
+    {
+        auto i = instance();
+	QQmlEngine::setObjectOwnership(i, QJSEngine::CppOwnership);
+        return i;
+    }
 
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
     int currentUserIndex();
@@ -309,9 +319,19 @@ private:
 class UserAppsModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
 public:
     static UserAppsModel *instance();
     ~UserAppsModel() override = default;
+
+    static UserAppsModel *create(QQmlEngine *, QJSEngine *)
+    {
+        auto _instance = instance();
+	QQmlEngine::setObjectOwnership(_instance, QJSEngine::CppOwnership);
+        return _instance;
+    }
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 

@@ -15,6 +15,7 @@
 #include <QIcon>
 #include <QJsonObject>
 #include <QVariantMap>
+#include <qqmlregistration.h>
 
 namespace OCC {
 /**
@@ -93,6 +94,7 @@ public:
 
 struct TalkNotificationData {
     Q_GADGET
+    QML_ELEMENT
     Q_PROPERTY(QString conversationToken MEMBER conversationToken)
     Q_PROPERTY(QString messageId MEMBER messageId)
     Q_PROPERTY(QString messageSent MEMBER messageSent)
@@ -131,6 +133,7 @@ public:
 class Activity
 {
     Q_GADGET
+    QML_ELEMENT
     Q_PROPERTY(OCC::Activity::Type type MEMBER _type)
     Q_PROPERTY(OCC::TalkNotificationData talkNotificationData MEMBER _talkNotificationData)
     Q_PROPERTY(QVariantMap subjectRichParameters MEMBER _subjectRichParameters)

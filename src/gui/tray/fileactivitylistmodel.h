@@ -13,6 +13,7 @@ namespace OCC {
 class FileActivityListModel : public ActivityListModel
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
 
 public:
