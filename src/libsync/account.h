@@ -313,7 +313,7 @@ public:
 
     /// Used in RemoteWipe
     void retrieveAppPassword();
-    void writeAppPasswordOnce(QString appPassword);
+    void writeAppPasswordOnce(const QString &appPassword);
     void deleteAppPassword();
 
     void deleteAppToken();
