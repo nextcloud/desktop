@@ -51,13 +51,13 @@
                     <subviews>
                         <textField focusRingType="none" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="LDe-7m-hvL" userLabel="Activity Label">
                             <rect key="frame" x="-2" y="26" width="322" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="Locking file filename.txt…" usesSingleLineMode="YES" id="Zld-Ku-SeH">
+                            <textFieldCell key="cell" lineBreakMode="truncatingMiddle" title="Locking file filename.txt…" usesSingleLineMode="YES" id="Zld-Ku-SeH">
                                 <font key="font" textStyle="headline" name=".SFNS-Bold"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField focusRingType="none" verticalHuggingPriority="749" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="DG3-ti-eu7" userLabel="Status Label">
+                        <textField focusRingType="none" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="DG3-ti-eu7" userLabel="Status Label">
                             <rect key="frame" x="-2" y="0.0" width="322" height="16"/>
                             <textFieldCell key="cell" selectable="YES" title="Communicating with server..." id="tz0-OE-Too">
                                 <font key="font" metaFont="system"/>
@@ -87,6 +87,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                         <imageReference key="image" image="xmark.circle.fill" catalog="system" symbolScale="large"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
                     </buttonCell>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="7qN-mr-hAh" secondAttribute="height" multiplier="1:1" id="K00-Bi-dEy"/>

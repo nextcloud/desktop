@@ -74,8 +74,9 @@ class LockViewController: NSViewController {
     }
 
     private func presentError(_ error: String) {
-        logger.error("Error: \(error)")
-        descriptionLabel.stringValue = "Error: \(error)"
+        logger.error("Presenting error: \(error)")
+        descriptionLabel.stringValue = error
+        warnImage.contentTintColor = .systemRed
         stopIndicatingLoading()
     }
 
@@ -83,12 +84,12 @@ class LockViewController: NSViewController {
         return await withCheckedContinuation { continuation in
             kit.getCapabilities(account: account.ncKitAccount) { account, _, data, error in
                 guard error == .success, let capabilitiesJson = data?.data else {
-                    self.presentError("Error getting server caps: \(error.errorDescription)")
+                    self.presentError("Failed to fetch server capabilities: \(error.errorDescription)")
                     continuation.resume(returning: nil)
                     return
                 }
 
-                self.logger.info("Successfully retrieved server share capabilities")
+                self.logger.info("Successfully retrieved server share capabilities.")
                 continuation.resume(returning: Capabilities(data: capabilitiesJson))
             }
         }
@@ -96,18 +97,20 @@ class LockViewController: NSViewController {
 
     private func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
         guard let manager = NSFileProviderManager(for: actionViewController.domain) else {
-            fatalError("NSFileProviderManager isn't expected to fail")
+            fatalError("Failed to initialize file provider manager for domain with identifier \"\(actionViewController.domain.identifier)\"!")
         }
 
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
+
             guard itemUrl.startAccessingSecurityScopedResource() else {
                 logger.error("Could not access scoped resource for item url!")
                 return
             }
+
             await updateFileDetailsDisplay(itemUrl: itemUrl)
-            itemUrl.stopAccessingSecurityScopedResource()
             await lockOrUnlockFile(localItemUrl: itemUrl)
+            itemUrl.stopAccessingSecurityScopedResource()
         } catch let error {
             let errorString = "Error processing item: \(error)"
             logger.error("\(errorString)")
@@ -125,7 +128,9 @@ class LockViewController: NSViewController {
             scale: 1.0,
             representationTypes: .icon
         )
+
         let generator = QLThumbnailGenerator.shared
+
         let fileThumbnail = await withCheckedContinuation { continuation in
             generator.generateRepresentations(for: request) { thumbnail, type, error in
                 if thumbnail == nil || error != nil {
@@ -141,26 +146,25 @@ class LockViewController: NSViewController {
     private func lockOrUnlockFile(localItemUrl: URL) async {
         descriptionLabel.stringValue = "Fetching file details…"
 
-        guard let itemIdentifier = await withCheckedContinuation({
-            (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
-            NSFileProviderManager.getIdentifierForUserVisibleFile(
-                at: localItemUrl
-            ) { identifier, domainIdentifier, error in
-                defer { continuation.resume(returning: identifier) }
-                guard error == nil else {
-                    self.presentError("No item with identifier: \(error.debugDescription)")
-                    return
-                }
-            }
-        }) else {
-            presentError("Could not get identifier for item, no shares can be acquired.")
+        var itemIdentifier: NSFileProviderItemIdentifier?
+
+        do {
+            (itemIdentifier, _) = try await NSFileProviderManager.identifierForUserVisibleFile(at: localItemUrl)
+        } catch {
+            self.presentError("No item with identifier: \(error.localizedDescription)")
+            return
+        }
+
+        guard let itemIdentifier else {
+            self.presentError("Failed to get identifier for file at \(localItemUrl.path)!")
             return
         }
 
         do {
             let connection = try await serviceConnection(url: localItemUrl, interruptionHandler: {
-                self.logger.error("Service connection interrupted")
+                self.presentError("File provider service connection interrupted!")
             })
+
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let account = Account(dictionary: credentials),
@@ -169,8 +173,10 @@ class LockViewController: NSViewController {
                 presentError("Failed to get details from File Provider Extension.")
                 return
             }
+
             let serverPathString = serverPath as String
             let kit = NextcloudKit.shared
+
             kit.appendSession(
                 account: account.ncKitAccount,
                 urlBase: account.serverUrl,
@@ -180,27 +186,25 @@ class LockViewController: NSViewController {
                 userAgent: "Nextcloud-macOS/FileProviderUIExt",
                 groupIdentifier: ""
             )
-            guard let capabilities = await fetchCapabilities(account: account, kit: kit),
-                  capabilities.files?.locking != nil
-            else {
+
+            guard let capabilities = await fetchCapabilities(account: account, kit: kit), capabilities.files?.locking != nil else {
                 presentError("Server does not have the ability to lock files.")
                 return
             }
-            guard let itemMetadata = await fetchItemMetadata(
-                itemRelativePath: serverPathString, account: account, kit: kit
-            ) else {
+
+            guard let itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString, account: account, kit: kit) else {
                 presentError("Could not get item metadata.")
                 return
             }
 
             // Run lock state checks
             if locking {
-                guard itemMetadata.lock == nil else {
+                guard itemMetadata.lock == false else {
                     presentError("File is already locked.")
                     return
                 }
             } else {
-                guard itemMetadata.lock != nil else {
+                guard itemMetadata.lock == true else {
                     presentError("File is already unlocked.")
                     return
                 }
@@ -209,39 +213,28 @@ class LockViewController: NSViewController {
             descriptionLabel.stringValue = locking ? String(localized: "Communicating with server, locking file…") : String(localized: "Communicating with server, unlocking file…")
 
             let serverUrlFileName = itemMetadata.serverUrl + "/" + itemMetadata.fileName
-            
-            logger.info("Locking file: \(serverUrlFileName) \(self.locking ? "locking" : "unlocking")")
 
-            let error = await withCheckedContinuation { continuation in
-                kit.lockUnlockFile(
-                    serverUrlFileName: serverUrlFileName,
-                    shouldLock: locking,
-                    account: account.ncKitAccount,
-                    completion: { _, _, error in
-                        continuation.resume(returning: error)
-                    }
-                )
+            logger.info("About to \(self.locking ? "lock" : "unlock")...", [.url: serverUrlFileName])
+
+            do {
+                let lock = try await kit.lockUnlockFile(serverUrlFileName: serverUrlFileName, shouldLock: locking, account: account.ncKitAccount)
+                logger.debug(locking ? "Successfully locked file." : "Successfully unlocked file.")
+            } catch {
+                presentError("Could not lock file: \(error.localizedDescription)")
             }
 
-            if error == .success {
-                descriptionLabel.stringValue = String(format: self.locking ? String(localized: "File \"%@\" locked!") : String(localized: "File \"%@\" unlocked!"), itemMetadata.fileName)
-                warnImage.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: String(localized: "Checkmark in a circle"))
-                stopIndicatingLoading()
+            descriptionLabel.stringValue = String(format: self.locking ? String(localized: "File \"%@\" locked!") : String(localized: "File \"%@\" unlocked!"), itemMetadata.fileName)
+            warnImage.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: String(localized: "Checkmark in a circle"))
+            warnImage.contentTintColor = .systemGreen
+            stopIndicatingLoading()
 
-                if let manager = NSFileProviderManager(for: actionViewController.domain) {
-                    do {
-                        try await manager.signalEnumerator(for: itemIdentifier)
-                    } catch let error {
-                        presentError(
-                            """
-                            Could not signal lock state change in virtual file.
-                            Changes may take a while to be reflected on your Mac.
-                            Error: \(error.localizedDescription)
-                            """)
-                    }
+            if let manager = NSFileProviderManager(for: actionViewController.domain) {
+                do {
+                    try await manager.signalEnumerator(for: itemIdentifier)
+                } catch let error {
+                    logger.error("Signaling enumerator for item failed.", [.error: error, .item: itemIdentifier])
+                    presentError("Could not signal lock state change in file provider item. Changes may take a while to be reflected on your Mac.")
                 }
-            } else {
-                presentError("Could not lock file: \(error.errorDescription).")
             }
         } catch let error {
             presentError("Could not lock file: \(error).")
