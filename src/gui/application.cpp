@@ -374,7 +374,6 @@ Application::Application(int &argc, char **argv)
     }
 
     _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(this, &Application::systemPaletteChanged,
             _theme, &Theme::systemPaletteHasChanged);
 
@@ -392,6 +391,7 @@ Application::Application(int &argc, char **argv)
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
