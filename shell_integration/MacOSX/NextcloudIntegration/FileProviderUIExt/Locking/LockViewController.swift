@@ -60,7 +60,7 @@ class LockViewController: NSViewController {
             await processItemIdentifier(firstItem)
         }
 
-        closeButton.title = String(localized: "Close")
+        closeButton.setAccessibilityTitle(String(localized: "Close"))
     }
 
     @IBAction func closeAction(_ sender: Any) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24412" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24412"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -79,7 +79,7 @@
                 </stackView>
                 <button horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="7qN-mr-hAh">
                     <rect key="frame" x="458" y="23" width="32" height="43"/>
-                    <buttonCell key="cell" type="bevel" title="Close" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="7Oc-Xd-RzM">
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="7Oc-Xd-RzM">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                         <imageReference key="image" image="xmark.circle.fill" catalog="system" symbolScale="large"/>
@@ -88,6 +88,7 @@
                         <constraint firstAttribute="width" secondItem="7qN-mr-hAh" secondAttribute="height" multiplier="1:1" id="K00-Bi-dEy"/>
                         <constraint firstAttribute="width" constant="32" id="zVJ-h1-QXJ"/>
                     </constraints>
+                    <accessibility description="Close" identifier="close"/>
                     <connections>
                         <action selector="closeAction:" target="-2" id="E6h-U9-2eB"/>
                     </connections>
