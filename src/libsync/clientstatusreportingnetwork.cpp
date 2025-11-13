@@ -55,17 +55,19 @@ bool ClientStatusReportingNetwork::isInitialized() const
 void ClientStatusReportingNetwork::sendReportToServer()
 {
     if (!_isInitialized) {
-        qCWarning(lcClientStatusReportingNetwork) << "Could not send report to server. Status reporting is not initialized";
+        qCWarning(lcClientStatusReportingNetwork) << "Could not send client status report to server. Status reporting is not initialized";
         return;
     }
 
     const auto lastSentReportTime = _database->getLastSentReportTimestamp();
     if (QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
+        qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because interval is not met";
         return;
     }
 
     const auto report = prepareReport();
     if (report.isEmpty()) {
+        qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because no records are queued";
         return;
     }
 
@@ -87,7 +89,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
                 reportToServerSentSuccessfully();
                 return;
             }
-            qCWarning(lcClientStatusReportingNetwork) << "Received error when sending client report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
+            qCWarning(lcClientStatusReportingNetwork) << "Received error when sending client status report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
         }
     });
     clientStatusReportingJob->start();
@@ -95,7 +97,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
 
 void ClientStatusReportingNetwork::reportToServerSentSuccessfully()
 {
-    qCInfo(lcClientStatusReportingNetwork) << "Report sent successfully";
+    qCInfo(lcClientStatusReportingNetwork) << "Succesfully sent client status report";
     if (!_database->deleteClientStatusReportingRecords()) {
         qCWarning(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
     }
