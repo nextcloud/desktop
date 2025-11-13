@@ -77,20 +77,20 @@ public struct TestableRemoteInterface: RemoteInterface {
         taskHandler _: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) { ("", nil, .invalidResponseError) }
 
-    public func download(
-        remotePath _: String,
-        localPath _: String,
-        account _: Account,
-        options _: NKRequestOptions,
-        requestHandler _: @escaping (DownloadRequest) -> Void,
-        taskHandler _: @escaping (URLSessionTask) -> Void,
-        progressHandler _: @escaping (Progress) -> Void
+    public func downloadAsync(
+        serverUrlFileName: Any,
+        fileNameLocalPath: String,
+        account: String,
+        options: NKRequestOptions,
+        requestHandler: @escaping (_ request: DownloadRequest) -> Void,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        progressHandler: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
         etag: String?,
-        date: NSDate?,
+        date: Date?,
         length: Int64,
-        headers: [AnyHashable: Any]?,
+        headers: [AnyHashable: any Sendable]?,
         afError: AFError?,
         nkError: NKError
     ) {

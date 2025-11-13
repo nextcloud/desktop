@@ -555,6 +555,13 @@ let mockCapabilities = ##"""
 """##
 
 public class MockRemoteInterface: RemoteInterface {
+    ///
+    /// `RemoteInterface` makes it necessary to bypass its API to fully register a mocked account object.
+    ///
+    /// Use ``injectMock(_:)`` to add a new one.
+    ///
+    public var mockedAccounts = [String: Account]()
+
     public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
     public var delegate: (any NextcloudKitDelegate)?
@@ -576,6 +583,13 @@ public class MockRemoteInterface: RemoteInterface {
         self.rootItem = rootItem
         self.rootTrashItem = rootTrashItem
         self.pagination = pagination
+    }
+
+    ///
+    /// Use this to register a mocked account object in ``mockedAccounts`` which otherwise cannot be passed through fully with `RemoteInterface`.
+    ///
+    public func injectMock(_ account: Account) {
+        mockedAccounts[account.ncKitAccount] = account
     }
 
     func sanitisedPath(_ path: String, account: Account) -> String? {
@@ -978,28 +992,37 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, nil, .success)
     }
 
-    public func download(
-        remotePath: String,
-        localPath: String,
-        account: Account,
-        options _: NKRequestOptions = .init(),
-        requestHandler _: @escaping (DownloadRequest) -> Void = { _ in },
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
-        progressHandler _: @escaping (Progress) -> Void = { _ in }
+    public func downloadAsync(
+        serverUrlFileName: Any,
+        fileNameLocalPath: String,
+        account: String,
+        options: NKRequestOptions,
+        requestHandler: @escaping (_ request: DownloadRequest) -> Void,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        progressHandler: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
         etag: String?,
-        date: NSDate?,
+        date: Date?,
         length: Int64,
-        headers: [AnyHashable: Any]?,
+        headers: [AnyHashable: any Sendable]?,
         afError: AFError?,
         nkError: NKError
     ) {
-        guard let item = item(remotePath: remotePath, account: account) else {
+        guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
+            return (account, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        guard let account = mockedAccounts[account] else {
+            return (account, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        guard let item = item(remotePath: serverUrlFileName, account: account) else {
             return (account.ncKitAccount, nil, nil, 0, nil, nil, .urlError)
         }
 
-        let localUrl = URL(fileURLWithPath: localPath)
+        let localUrl = URL(fileURLWithPath: fileNameLocalPath)
+
         do {
             if item.directory {
                 print("Creating directory at \(localUrl) for item \(item.name)")
@@ -1007,7 +1030,7 @@ public class MockRemoteInterface: RemoteInterface {
                 try fm.createDirectory(at: localUrl, withIntermediateDirectories: true)
             } else {
                 print("Writing data to \(localUrl) for item \(item.name)")
-                try item.data?.write(to: localUrl, options: .atomic)
+                try item.data?.write(to: localUrl)
             }
         } catch {
             print("Could not write item data: \(error)")
@@ -1017,7 +1040,7 @@ public class MockRemoteInterface: RemoteInterface {
         return (
             account.ncKitAccount,
             item.versionIdentifier,
-            item.creationDate as NSDate,
+            item.creationDate as Date,
             item.size,
             nil,
             nil,

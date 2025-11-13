@@ -87,10 +87,10 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
-    func download(
-        remotePath: String,
-        localPath: String,
-        account: Account,
+    func downloadAsync(
+        serverUrlFileName: Any,
+        fileNameLocalPath: String,
+        account: String,
         options: NKRequestOptions,
         requestHandler: @escaping (_ request: DownloadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,

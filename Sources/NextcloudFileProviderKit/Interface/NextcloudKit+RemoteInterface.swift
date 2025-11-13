@@ -221,7 +221,7 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
-    public func download(
+    public func downloadAsync(
         remotePath: String,
         localPath: String,
         account: Account,

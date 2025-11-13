@@ -28,6 +28,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     func testFetchFileContents() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+
         let remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "0",
@@ -54,9 +56,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
 
-        let (localPathMaybe, fetchedItemMaybe, error) = await item.fetchContents(
-            dbManager: Self.dbManager
-        )
+        let (localPathMaybe, fetchedItemMaybe, error) = await item.fetchContents(dbManager: Self.dbManager)
         XCTAssertNil(error)
         let localPath = try XCTUnwrap(localPathMaybe)
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
@@ -74,6 +74,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
     func testFetchDirectoryContents() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+
         let remoteDirectory = MockRemoteItem(
             identifier: "directory",
             versionIdentifier: "0",

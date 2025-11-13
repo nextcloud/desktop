@@ -63,10 +63,10 @@ public extension Item {
                         attributes: nil
                     )
                 } else {
-                    let (_, _, _, _, _, _, error) = await remoteInterface.download(
-                        remotePath: remotePath,
-                        localPath: childLocalPath,
-                        account: account,
+                    let (_, _, _, _, _, _, error) = await remoteInterface.downloadAsync(
+                        serverUrlFileName: remotePath,
+                        fileNameLocalPath: childLocalPath,
+                        account: account.ncKitAccount,
                         options: .init(),
                         requestHandler: { progress.setHandlersFromAfRequest($0) },
                         taskHandler: { task in
@@ -181,10 +181,10 @@ public extension Item {
             }
 
         } else {
-            let (_, _, _, _, _, _, error) = await remoteInterface.download(
-                remotePath: serverUrlFileName,
-                localPath: localPath.path,
-                account: account,
+            let (_, _, _, _, _, _, error) = await remoteInterface.downloadAsync(
+                serverUrlFileName: serverUrlFileName,
+                fileNameLocalPath: localPath.path,
+                account: account.ncKitAccount,
                 options: .init(),
                 requestHandler: { _ in },
                 taskHandler: { _ in },
