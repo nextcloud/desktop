@@ -198,36 +198,40 @@ void NetworkSettings::saveProxySettings()
 
 void NetworkSettings::saveBWLimitSettings()
 {
+    using NetworkTransferLimitSetting = Account::AccountNetworkTransferLimitSetting;
+
     const auto downloadLimit = _ui->downloadSpinBox->value();
     const auto uploadLimit = _ui->uploadSpinBox->value();
 
-    auto useDownloadLimit = 0;
-    auto useUploadLimit = 0;
+    auto useDownloadLimit = NetworkTransferLimitSetting::NoLimit;
+    auto useUploadLimit = NetworkTransferLimitSetting::NoLimit;
 
     if (_ui->downloadLimitRadioButton->isChecked()) {
-        useDownloadLimit = 1;
+        useDownloadLimit = NetworkTransferLimitSetting::ManualLimit;
     } else if (_ui->noDownloadLimitRadioButton->isChecked()) {
-        useDownloadLimit = 0;
+        useDownloadLimit = NetworkTransferLimitSetting::NoLimit;
     } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
-        useDownloadLimit = -1;
+        useDownloadLimit = NetworkTransferLimitSetting::AutoLimit;
     } else if (_account) {
-        useDownloadLimit = -2;
+        // Legacy global. See Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit
+        useDownloadLimit = NetworkTransferLimitSetting::NoLimit;
     }
 
     if (_ui->uploadLimitRadioButton->isChecked()) {
-        useUploadLimit = 1;
+        useUploadLimit = NetworkTransferLimitSetting::ManualLimit;
     } else if (_ui->noUploadLimitRadioButton->isChecked()) {
-        useUploadLimit = 0;
+        useUploadLimit = NetworkTransferLimitSetting::NoLimit;
     } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
-        useUploadLimit = -1;
+        useUploadLimit = NetworkTransferLimitSetting::AutoLimit;
     } else if (_account) {
-        useUploadLimit = -2;
+        // Legacy global. See Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit
+        useUploadLimit = NetworkTransferLimitSetting::NoLimit;
     }
 
     if (_account) {
-        _account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
+        _account->setDownloadLimitSetting(useDownloadLimit);
         _account->setDownloadLimit(downloadLimit);
-        _account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
+        _account->setUploadLimitSetting(useUploadLimit);
         _account->setUploadLimit(uploadLimit);
         AccountManager::instance()->saveAccount(_account);
     }

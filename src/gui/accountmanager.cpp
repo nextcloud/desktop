@@ -72,10 +72,6 @@ constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
-// The maximum versions that this client can read
-constexpr auto maxAccountsVersion = 13;
-constexpr auto maxAccountVersion = 13;
-
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 
 constexpr auto generalC = "General";
@@ -83,6 +79,17 @@ constexpr auto generalC = "General";
 
 
 namespace OCC {
+
+namespace {
+    template<typename VersionType>
+    inline VersionType VersionFromSetting(QSettings *settings) {
+        return settings->value(QLatin1String(versionC), int(VersionType::Min)).value<VersionType>();
+    }
+    template<typename VersionType>
+    inline void VersionToSetting(QSettings *settings, VersionType version) {
+        settings->setValue(QLatin1String(versionC), int(version));
+    }
+}
 
 Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
 
@@ -149,7 +156,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
     }
 
     ConfigFile().cleanupGlobalNetworkConfiguration();
-    ClientProxy().cleanupGlobalNetworkConfiguration();   
+    ClientProxy().cleanupGlobalNetworkConfiguration();
 
     return result;
 }
@@ -157,27 +164,42 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
 void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
 {
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    const auto accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+    const auto accountsVersion = VersionFromSetting<AccountsVersion>(settings.get());
 
     qCInfo(lcAccountManager) << "Checking for accounts versions.";
     qCInfo(lcAccountManager) << "Config accounts version:" << accountsVersion;
-    qCInfo(lcAccountManager) << "Max accounts Version is set to:" << maxAccountsVersion;
-    if (accountsVersion <= maxAccountsVersion) {
+    qCInfo(lcAccountManager) << "Max accounts Version is set to:" << AccountsVersion::Max;
+    if (accountsVersion <= AccountsVersion::Max) {
         const auto settingsChildGroups = settings->childGroups();
         for (const auto &accountId : settingsChildGroups) {
             settings->beginGroup(accountId);
-            const auto accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+            const auto accountVersion = VersionFromSetting<AccountVersion>(settings.get());
 
-            if (accountVersion > maxAccountVersion) {
+            if (accountVersion > AccountVersion::Max) {
                 ignoreKeys->append(settings->group());
                 qCInfo(lcAccountManager) << "Ignoring account" << accountId << "because of version" << accountVersion;
             }
+
             settings->endGroup();
         }
     } else {
         deleteKeys->append(settings->group());
     }
 }
+
+void AccountManager::migrateToActualVersion()
+{
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+
+    migrateAccountsSettings(settings);
+
+    for (const auto &accountId : settings->childGroups()) {
+        settings->beginGroup(accountId);
+        migrateAccountSettings(settings);
+        settings->endGroup();
+    }
+}
+
 #if !DISABLE_ACCOUNT_MIGRATION
 bool AccountManager::restoreFromLegacySettings()
 {
@@ -317,7 +339,7 @@ bool AccountManager::restoreFromLegacySettings()
             moveNetworkSettingsFromGlobalToAccount(acc);
         }
         configFile.cleanupGlobalNetworkConfiguration();
-        ClientProxy().cleanupGlobalNetworkConfiguration();   
+        ClientProxy().cleanupGlobalNetworkConfiguration();
         return true;
     }
 
@@ -339,7 +361,9 @@ bool AccountManager::restoreFromLegacySettings()
 void AccountManager::save(bool saveCredentials)
 {
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->setValue(QLatin1String(versionC), maxAccountsVersion);
+
+    VersionToSetting(settings.get(), AccountsVersion::Max);
+
     for (const auto &acc : std::as_const(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account(), *settings, saveCredentials);
@@ -376,7 +400,7 @@ void AccountManager::saveAccountState(AccountState *a)
 void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials)
 {
     qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
-    settings.setValue(QLatin1String(versionC), maxAccountVersion);
+    VersionToSetting(&settings, AccountVersion::Max);
     if (account->isPublicShareLink()) {
         settings.setValue(QLatin1String(urlC), account->publicShareLinkUrl().toString());
     } else {
@@ -797,5 +821,56 @@ void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
 
     _forceLegacyImport = forceLegacyImport;
     Q_EMIT forceLegacyImportChanged();
+}
+
+void AccountManager::migrateAccountsSettings(const std::unique_ptr<QSettings> &settings)
+{
+    const auto accountsVersion = VersionFromSetting<AccountsVersion>(settings.get());
+
+    switch (accountsVersion) {
+        // Nothing here for now
+    default:
+        VersionToSetting(settings.get(), AccountsVersion::Max);
+        break;
+    }
+}
+
+void AccountManager::migrateAccountSettings(const std::unique_ptr<QSettings> &settings)
+{
+    const auto accountVersion = VersionFromSetting<AccountVersion>(settings.get());
+
+    switch (accountVersion)
+    {
+        // No previous statements
+    case AccountVersion::V13: {
+        // Related to issue #9037
+        const auto networkLimitSettingFix = [&settings](const QString &key) {
+            using NetworkLimitSetting = Account::AccountNetworkTransferLimitSetting;
+
+            const auto limitSetting = settings->value(key).value<NetworkLimitSetting>();
+
+            switch (limitSetting) {
+            case NetworkLimitSetting::LegacyGlobalLimit:
+                [[fallthrough]];
+            case NetworkLimitSetting::AutoLimit:
+                settings->setValue(key, int(NetworkLimitSetting::NoLimit));
+                break;
+            default:
+                break;
+            }
+        };
+
+        qCInfo(lcAccountManager) << "Migrating account" << settings->group()
+                                 << "settings from version" << accountVersion
+                                 << "to" << AccountVersion::V14;
+
+        networkLimitSettingFix(networkDownloadLimitSettingC);
+        networkLimitSettingFix(networkUploadLimitSettingC);
+    } [[fallthrough]];
+        // Tip: add new migration rules here
+    default:
+        VersionToSetting(settings.get(), AccountVersion::Max);
+        break;
+    }
 }
 }

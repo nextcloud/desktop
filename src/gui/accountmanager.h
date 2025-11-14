@@ -31,6 +31,21 @@ public:
     };
     Q_ENUM (AccountsRestoreResult);
 
+    enum class AccountsVersion {
+        V13 = 13,
+        Min = V13,
+        Max = V13
+    };
+    Q_ENUM (AccountsVersion);
+
+    enum class AccountVersion {
+        V13 = 13,
+        V14,
+        Min = V13,
+        Max = V14
+    };
+    Q_ENUM (AccountVersion);
+
     static AccountManager *instance();
     ~AccountManager() override = default;
 
@@ -83,6 +98,12 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
+    /**
+     * Checks the versions of account groups and each account individually
+     * then attempts a soft migration.
+     */
+    static void migrateToActualVersion();
+
 public slots:
     /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
     void saveAccount(const OCC::AccountPtr &newAccountData);
@@ -110,6 +131,9 @@ signals:
     void capabilitiesChanged();
 
 private:
+    static void migrateAccountsSettings(const std::unique_ptr<QSettings> &settings);
+    static void migrateAccountSettings(const std::unique_ptr<QSettings> &settings);
+
     // saving and loading Account to settings
     void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
