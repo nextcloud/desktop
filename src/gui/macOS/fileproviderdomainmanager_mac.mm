@@ -7,6 +7,7 @@
 
 #import <FileProvider/FileProvider.h>
 
+#include <QDir>
 #include <QLatin1StringView>
 #include <QLoggingCategory>
 #include <QUuid>
@@ -696,6 +697,34 @@ void FileProviderDomainManager::updateFileProviderDomains()
 
         const auto accountState = AccountManager::instance()->accountFromUserId(remainingAccountId);
         removeFileProviderDomainForAccount(accountState.data());
+    }
+
+    // If there are no enabled accounts, check for and remove the FileProviderExt directory
+    // from the group container
+    if (fileProviderEnabledAccountIds.isEmpty()) {
+        const QString groupContainer = Mac::FileProviderUtils::groupContainerPath();
+
+        if (!groupContainer.isEmpty()) {
+            QDir groupDir(groupContainer);
+            const QString fileProviderExtDirName = QStringLiteral("FileProviderExt");
+
+            if (groupDir.exists(fileProviderExtDirName)) {
+                const QString fileProviderExtPath = groupDir.absoluteFilePath(fileProviderExtDirName);
+                QDir fileProviderExtDir(fileProviderExtPath);
+
+                qCInfo(lcMacFileProviderDomainManager) << "No file provider enabled accounts, removing FileProviderExt directory at:"
+                                                       << fileProviderExtPath;
+
+                if (fileProviderExtDir.removeRecursively()) {
+                    qCInfo(lcMacFileProviderDomainManager) << "Successfully removed FileProviderExt directory in groun container.";
+                } else {
+                    qCWarning(lcMacFileProviderDomainManager) << "Failed to remove FileProviderExt directory at:"
+                                                              << fileProviderExtPath;
+                }
+            }
+        } else {
+            qCWarning(lcMacFileProviderDomainManager) << "Could not determine group container path!";
+        }
     }
 
     emit domainSetupComplete();
