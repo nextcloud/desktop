@@ -9,6 +9,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 import com.nextcloud.desktopclient
+import com.nextcloud.desktopclient as NC
 import Style
 import "../tray"
 
@@ -189,8 +190,8 @@ TextField {
                 delegate: ShareeDelegate {
                     width: shareeListView.contentItem.width
 
-                    enabled: model.type !== Sharee.LookupServerSearchResults
-                    hoverEnabled: model.type !== Sharee.LookupServerSearchResults
+                    enabled: model.type !== NC.sharee.LookupServerSearchResults
+                    hoverEnabled: model.type !== NC.sharee.LookupServerSearchResults
 
                     function selectSharee() {
                         root.shareeSelected(model.sharee);
@@ -200,7 +201,7 @@ TextField {
                     }
 
                     function selectItem() {
-                        if (model.type === Sharee.LookupServerSearch) {
+                        if (model.type === NC.sharee.LookupServerSearch) {
                             shareeListView.currentIndex = -1
                             root.shareeModel.searchGlobally()
                         } else {

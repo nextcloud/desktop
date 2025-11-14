@@ -44,57 +44,57 @@ ColumnLayout {
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
+        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Online
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.onlineIcon : ""
         icon.color: "transparent"
         text: qsTr("Online")
         Layout.fillWidth: true
-        onClicked: handleStatusClick(NC.UserStatus.Online)
+        onClicked: handleStatusClick(NC.userStatus.Online)
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.UserStatus.Away
+        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Away
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.awayIcon : ""
         icon.color: "transparent"
         text: qsTr("Away")
         Layout.fillWidth: true
-        onClicked: handleStatusClick(NC.UserStatus.Away)
+        onClicked: handleStatusClick(NC.userStatus.Away)
     }
 
     UserStatusSelectorButton {
         visible: userStatusSelectorModel && userStatusSelectorModel.busyStatusSupported
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.UserStatus.Busy
+        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.Busy
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.busyIcon : ""
         icon.color: "transparent"
         text: qsTr("Busy")
         Layout.fillWidth: true
-        onClicked: handleStatusClick(NC.UserStatus.Busy)
+        onClicked: handleStatusClick(NC.userStatus.Busy)
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
+        checked: userStatusSelectorModel && userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.dndIcon : ""
         icon.color: "transparent"
         text: qsTr("Do not disturb")
         secondaryText: qsTr("Mute all notifications")
         Layout.fillWidth: true
-        onClicked: handleStatusClick(NC.UserStatus.DoNotDisturb)
+        onClicked: handleStatusClick(NC.userStatus.DoNotDisturb)
     }
 
     UserStatusSelectorButton {
-        checked: userStatusSelectorModel && (userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible
-            || userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline)
+        checked: userStatusSelectorModel && (userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible
+            || userStatusSelectorModel.onlineStatus === NC.userStatus.Offline)
         checkable: true
         icon.source: userStatusSelectorModel ? userStatusSelectorModel.invisibleIcon : ""
         icon.color: "transparent"
         text: qsTr("Invisible")
         secondaryText: qsTr("Appear offline")
         Layout.fillWidth: true
-        onClicked: handleStatusClick(NC.UserStatus.Invisible)
+        onClicked: handleStatusClick(NC.userStatus.Invisible)
     }
 
     Item {
