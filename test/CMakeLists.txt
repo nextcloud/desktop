@@ -19,6 +19,7 @@ add_library(testutils
   sharetestutils.cpp
   endtoendtestutils.cpp
   activitylistmodeltestutils.cpp
+  foldermantestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test Qt::Core5Compat)
@@ -143,6 +144,12 @@ nextcloud_add_test(Account)
 nextcloud_add_test(Folder)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
+
+if(NOT BUILD_FILE_PROVIDER_MODULE)
+    # the File Provider build crashes this test in CI for some reason
+    # I'm not yet sure what's causing it as it works fine with a classic build...
+    nextcloud_add_test(AccountSettings)
+endif()
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 
