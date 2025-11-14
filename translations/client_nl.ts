@@ -177,59 +177,59 @@
 <context>
     <name>CurrentAccountHeaderButton</name>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="27"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
         <source>Current account</source>
         <translation>Huidige gebruiker</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Resume sync for all</source>
         <translation>Synchronisatie hervatten voor alles</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Pause sync for all</source>
         <translation>Synchronisatie pauzeren voor alles</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="140"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
         <source>Add account</source>
         <translation>Gebruiker toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="144"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="145"/>
         <source>Add new account</source>
         <translation>Nieuwe gebruiker toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="178"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="179"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="202"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="203"/>
         <source>Exit</source>
         <translation>Verlaat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
         <source>Current account avatar</source>
         <translation>Huidige gebruiker avatar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is online</source>
         <translation>Huidige gebruikersstatus is Online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is do not disturb</source>
         <translation>Huidige gebruikersstatus is Niet Storen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="348"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="349"/>
         <source>Account switcher and settings menu</source>
         <translation>Wisselen van gebruiker en instellingsmenu</translation>
     </message>
@@ -6551,12 +6551,12 @@ Server antwoordde met fout: %2</translation>
 <context>
     <name>ShareeSearchField</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Search for users or groups…</source>
         <translation>Zoeken naar gebruikers of groepen ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Sharing is not available for this folder</source>
         <translation>Delen is niet beschikbaar voor deze map</translation>
     </message>

@@ -177,59 +177,59 @@
 <context>
     <name>CurrentAccountHeaderButton</name>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="27"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
         <source>Current account</source>
         <translation>現在のアカウント</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Resume sync for all</source>
         <translation>全ての同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Pause sync for all</source>
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="140"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="144"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="145"/>
         <source>Add new account</source>
         <translation>新しいアカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="178"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="179"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="202"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="203"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
         <source>Current account avatar</source>
         <translation>現在のアバター</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is online</source>
         <translation>現在のステータスはオンラインです</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is do not disturb</source>
         <translation>現在のステータスは取り込み中です</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="348"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="349"/>
         <source>Account switcher and settings menu</source>
         <translation>アカウントスイッチャーと設定メニュー</translation>
     </message>
@@ -6566,12 +6566,12 @@ Server replied with error: %2</source>
 <context>
     <name>ShareeSearchField</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Search for users or groups…</source>
         <translation>ユーザーまたはグループを検索する ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Sharing is not available for this folder</source>
         <translation>このフォルダでは共有は利用できません</translation>
     </message>

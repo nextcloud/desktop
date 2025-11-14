@@ -177,59 +177,59 @@
 <context>
     <name>CurrentAccountHeaderButton</name>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="27"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
         <source>Current account</source>
         <translation>Cuenta actual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Resume sync for all</source>
         <translation>Reanudar sincronización para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="40"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="159"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="160"/>
         <source>Pause sync for all</source>
         <translation>Pausar sincronización para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="140"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="141"/>
         <source>Add account</source>
         <translation>Añadir cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="144"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="145"/>
         <source>Add new account</source>
         <translation>Añadir cuenta nueva</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="178"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="179"/>
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="202"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="203"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="243"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="244"/>
         <source>Current account avatar</source>
         <translation>Avatar de la cuenta actual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is online</source>
         <translation>El estado actual de la cuenta es en línea</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="273"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="274"/>
         <source>Current account status is do not disturb</source>
         <translation>El estado actual de la cuenta es no molestar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="348"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="349"/>
         <source>Account switcher and settings menu</source>
         <translation>Menú para cambio de cuentas y ajustes</translation>
     </message>
@@ -6567,12 +6567,12 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>ShareeSearchField</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Search for users or groups…</source>
         <translation>Buscar usuarios o grupos…</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="38"/>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="39"/>
         <source>Sharing is not available for this folder</source>
         <translation>Compartir no está disponible para esta carpeta</translation>
     </message>
