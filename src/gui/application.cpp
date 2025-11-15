@@ -141,14 +141,6 @@ bool Application::configVersionMigration()
         return true;
     }
 
-    // 'Launch on system startup' defaults to true > 3.11.x
-    const auto theme = Theme::instance();
-    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
-    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
-
-    // default is now off to displaying dialog warning user of too many files deletion
-    configFile.setPromptDeleteFiles(false);
-
     // back up all old config files
     QStringList backupFilesList;
     QDir configDir(configFile.configPath());
@@ -190,15 +182,27 @@ bool Application::configVersionMigration()
         }
     }
 
-    if (!deleteKeys.isEmpty()) {
-        auto settings = ConfigFile::settingsWithGroup("foo");
-        settings->endGroup();
+    if (downgrading) {
+        // 'Launch on system startup' defaults to true > 3.11.x
+        const auto theme = Theme::instance();
+        configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
+        Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
 
-        // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : std::as_const(deleteKeys)) {
-            settings->remove(badKey);
-            qCInfo(lcApplication) << "Migration: removed" << badKey << "key from settings.";
+        // default is now off to displaying dialog warning user of too many files deletion
+        configFile.setPromptDeleteFiles(false);
+
+        if (!deleteKeys.isEmpty()) {
+            auto settings = ConfigFile::settingsWithGroup("foo");
+            settings->endGroup();
+
+            // Wipe confusing keys from the future, ignore the others
+            for (const auto &badKey : std::as_const(deleteKeys)) {
+                settings->remove(badKey);
+                qCInfo(lcApplication) << "Migration: removed" << badKey << "key from settings.";
+            }
         }
+    } else { // upgrading
+        AccountManager::migrateToActualVersion();
     }
 
     configFile.setClientVersionString(MIRALL_VERSION_STRING);
@@ -323,6 +327,8 @@ Application::Application(int &argc, char **argv)
     // only copy the settings and check what should be skipped
     if (!configVersionMigration()) {
         qCWarning(lcApplication) << "Config version migration was not possible.";
+    } else {
+        AccountManager::instance()->save();
     }
 
     ConfigFile cfg;
