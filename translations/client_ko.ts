@@ -4152,6 +4152,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 %1이(가) 없다고(아니라고) 보고함</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
@@ -4637,6 +4649,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Missing ETag from server</source>
         <translation>서버에서 ETag 누락</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

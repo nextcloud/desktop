@@ -4139,6 +4139,18 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Server rapporteerde nr %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
@@ -4624,6 +4636,18 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Missing ETag from server</source>
         <translation>Ontbrekende ETag van de server</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

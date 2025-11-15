@@ -4152,6 +4152,18 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le serveur n&apos;a signalé aucun %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Impossible de synchroniser à cause d&apos;une date de modification invalide</translation>
@@ -4637,6 +4649,18 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Missing ETag from server</source>
         <translation>L&apos;information Etag de modification de fichier est manquante sur le serveur</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
+        <source>Folder is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
+        <source>File is not accessible on the server.</source>
+        <comment>server error</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
