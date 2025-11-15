@@ -1334,7 +1334,6 @@ UserModel *UserModel::instance()
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    // TODO: Remember selected user from last quit via settings file
     if (AccountManager::instance()->accounts().size() > 0) {
         buildUserList();
     }
@@ -1343,14 +1342,26 @@ UserModel::UserModel(QObject *parent)
         this, &UserModel::buildUserList);
 }
 
+// TODO: refactor buildUserList usage. Currently it is called for every account
 void UserModel::buildUserList()
 {
     for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
         auto user = AccountManager::instance()->accounts().at(i);
         addUser(user);
     }
+
+    // TODO: consider generating random IDs in the future instead of 0, 1, 2 etc
+    if(!_users.isEmpty()) {
+        ConfigFile cfg;
+        const int lastSelectedAccountId = cfg.lastSelectedAccount();
+        if(lastSelectedAccountId < _users.size() && lastSelectedAccountId >= 0) {
+            setCurrentUserId(lastSelectedAccountId);
+        } else {
+            setCurrentUserId(0);
+        }
+    }
+
     if (_init) {
-        _users.first()->setCurrentUser(true);
         _init = false;
     }
 }
@@ -1524,6 +1535,11 @@ void UserModel::setCurrentUserId(const int id)
         // order has changed, index remained the same
         emit currentUserChanged();
     } else if (_currentUserId != id) {
+        // avoid overwriting as it will always be set to 0 at first
+        if (_currentUserId >= 0) {
+            ConfigFile cfg;
+            cfg.setLastSelectedAccount(id);
+        }
         _currentUserId = id;
         emit currentUserChanged();
     }
