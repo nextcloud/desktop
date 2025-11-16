@@ -605,8 +605,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
     acc->setCredentials(CredentialsFactory::create(authType));
 
-
-
     {
         auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
         auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
