@@ -298,8 +298,6 @@ bool AccountManager::restoreFromLegacySettings()
                                                         configFile.showCallNotifications()).toBool());
     configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC,
                                                         configFile.showChatNotifications()).toBool());
-    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC,
-                                                                configFile.showQuotaWarningNotifications()).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
                                                                configFile.showInExplorerNavigationPane()).toBool());
     // Advanced

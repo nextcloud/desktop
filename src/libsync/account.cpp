@@ -101,10 +101,6 @@ QString Account::davPath() const
 
 QString Account::davPathRoot() const
 {
-    if (_isPublicLink) {
-        return QStringLiteral("/public.php/webdav");
-    } 
-
     return davPathBase() + QLatin1Char('/') + davUser();
 }
 
