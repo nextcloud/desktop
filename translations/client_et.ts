@@ -4157,13 +4157,13 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/libsync/discovery.cpp" line="784"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Kaust ei ole serveris enam ligipääsetav.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Fail ei ole serveris enam ligipääsetav.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
@@ -4656,13 +4656,13 @@ Tegemist on uue ja katseise võimalusega. Kui otsustad seda kasutada, siis palun
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Kaust ei ole serveris enam ligipääsetav.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Fail ei ole serveris enam ligipääsetav.</translation>
     </message>
 </context>
 <context>
