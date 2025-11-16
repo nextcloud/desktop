@@ -4157,13 +4157,13 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/discovery.cpp" line="784"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Auf den Ordner kann auf dem Server nicht zugegriffen werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Auf die Datei kann auf dem Server nicht zugegriffen werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
@@ -4656,13 +4656,13 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Auf den Ordner kann auf dem Server nicht zugegriffen werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Auf die Datei kann auf dem Server nicht zugegriffen werden.</translation>
     </message>
 </context>
 <context>
