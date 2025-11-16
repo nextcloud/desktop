@@ -4157,13 +4157,13 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/discovery.cpp" line="784"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel acceder ao cartafol no servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel acceder ao ficheiro no servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
@@ -4656,13 +4656,13 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel acceder ao cartafol no servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>Non é posíbel acceder ao ficheiro no servidor.</translation>
     </message>
 </context>
 <context>
