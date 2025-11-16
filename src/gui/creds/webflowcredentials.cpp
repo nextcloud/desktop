@@ -326,7 +326,7 @@ void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJo
 #endif
     job->setInsecureFallback(false);
     connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteJobDone);
-    job->setKey(keychainKey(_account->url().toString(), _user, _account->id(), _appName));
+    job->setKey(keychainKey(_account->url().toString(), _user, _account->id()));
     job->setTextData(_password);
     job->start();
 }
@@ -552,6 +552,7 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
         _password = job->textData();
         _ready = true;
         _credentialsValid = true;
+        persist();
     } else {
         _ready = false;
     }
