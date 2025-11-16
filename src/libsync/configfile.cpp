@@ -71,7 +71,6 @@ static constexpr char proxyPortC[] = "Proxy/port";
 static constexpr char proxyUserC[] = "Proxy/user";
 static constexpr char proxyPassC[] = "Proxy/pass";
 static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
-static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static constexpr char forceLoginV2C[] = "forceLoginV2";
 
 static constexpr char certPath[] = "http_certificatePath";
@@ -332,16 +331,15 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &defaultValue) const
 {
     if (Utility::isWindows()) {
+        const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
         // check for policies first and return immediately if a value is found.
-        QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)")
-                                 .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
+        QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
         if (userPolicy.contains(setting)) {
             return userPolicy.value(setting);
         }
 
-        QSettings machinePolicy(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)")
-                                    .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
+        QSettings machinePolicy(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
         if (machinePolicy.contains(setting)) {
             return machinePolicy.value(setting);
@@ -812,6 +810,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
     const QVariant &defaultValue) const
 {
     QVariant systemSetting;
+    const auto appName = isUnbrandedToBrandedMigrationInProgress() ? unbrandedAppName : Theme::instance()->appNameGUI();
     if (Utility::isMac()) {
         QSettings systemSettings(QLatin1String("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
         if (!group.isEmpty()) {
@@ -819,14 +818,13 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
         }
         systemSetting = systemSettings.value(param, defaultValue);
     } else if (Utility::isUnix()) {
-        QSettings systemSettings(QString(SYSCONFDIR "/%1/%1.conf").arg(Theme::instance()->appName()), QSettings::NativeFormat);
+        QSettings systemSettings(QString(SYSCONFDIR "/%1/%1.conf").arg(appName), QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
-        QSettings systemSettings(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)")
-                                     .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
+        QSettings systemSettings(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)").arg(APPLICATION_VENDOR, appName),
             QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
@@ -1368,6 +1366,11 @@ bool ConfigFile::shouldTryUnbrandedToBrandedMigration() const
 {
     return migrationPhase() == ConfigFile::MigrationPhase::SetupFolders
         && Theme::instance()->appName() != unbrandedAppName;
+}
+
+bool ConfigFile::isUnbrandedToBrandedMigrationInProgress() const
+{
+    return isMigrationInProgress() && Theme::instance()->appName() != unbrandedAppName;
 }
 
 bool ConfigFile::shouldTryToMigrate() const
