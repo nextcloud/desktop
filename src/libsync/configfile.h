@@ -261,10 +261,10 @@ public:
     [[nodiscard]] bool isUpgrade() const;
     [[nodiscard]] bool isDowngrade() const;
     [[nodiscard]] bool shouldTryUnbrandedToBrandedMigration() const;
+    [[nodiscard]] bool isUnbrandedToBrandedMigrationInProgress() const;
     [[nodiscard]] bool shouldTryToMigrate() const;
     [[nodiscard]] bool isClientVersionSet() const;
     [[nodiscard]] bool isMigrationInProgress() const;
-    [[nodiscard]] bool isMigrationDone() const;
     [[nodiscard]] MigrationPhase migrationPhase() const;
     void setMigrationPhase(const MigrationPhase phase);
     static constexpr char unbrandedAppName[] = "Nextcloud";
@@ -280,6 +280,7 @@ public:
     static constexpr char showChatNotificationsC[] = "showChatNotifications";
     static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
     static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
+    static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
     static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
     static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
     static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";

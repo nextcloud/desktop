@@ -305,15 +305,14 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
                                                                configFile.showInExplorerNavigationPane()).toBool());
     // Advanced
-    configFile.setConfirmExternalStorage(settings->value(ConfigFile::confirmExternalStorageC,
-                                                         configFile.confirmExternalStorage()).toBool());
+    const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC, configFile.newBigFolderSizeLimit().second).toLongLong();
+    const auto useNewBigFolderSizeLimit = settings->value(ConfigFile::useNewBigFolderSizeLimitC, configFile.useNewBigFolderSizeLimit()).toBool();
+    configFile.setNewBigFolderSizeLimit(useNewBigFolderSizeLimit, newBigFolderSizeLimit);
     configFile.setNotifyExistingFoldersOverLimit(settings->value(ConfigFile::notifyExistingFoldersOverLimitC,
                                                                  configFile.notifyExistingFoldersOverLimit()).toBool());
-    const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC,
-                                                       configFile.newBigFolderSizeLimit().second).toLongLong();
-    configFile.setNewBigFolderSizeLimit(configFile.useNewBigFolderSizeLimit(), newBigFolderSizeLimit);
     configFile.setStopSyncingExistingFoldersOverLimit(settings->value(ConfigFile::stopSyncingExistingFoldersOverLimitC,
                                                                       configFile.stopSyncingExistingFoldersOverLimit()).toBool());
+    configFile.setConfirmExternalStorage(settings->value(ConfigFile::confirmExternalStorageC, configFile.confirmExternalStorage()).toBool());
     configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
     // Info
     configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
