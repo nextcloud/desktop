@@ -30,6 +30,8 @@ int c_utimes(const QString &uri, const time_t time)
 #include <errno.h>
 #include <wtypes.h>
 
+#include "common/filesystembase.h"
+
 constexpr long long CSYNC_SECONDS_SINCE_1601 = 11644473600LL;
 constexpr long long CSYNC_USEC_IN_SEC = 1000000LL;
 
@@ -50,11 +52,11 @@ int c_utimes(const QString &uri, const time_t time)
     FILETIME filetime;
     HANDLE hFile = nullptr;
 
-    auto wuri = uri.toStdWString();
+    const auto wuri = reinterpret_cast<const wchar_t *>(OCC::FileSystem::longWinPath(uri).utf16());
 
     UnixTimeToFiletime(time, &filetime);
 
-    hFile=CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+    hFile=CreateFileW(wuri, FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
                       nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if(hFile==INVALID_HANDLE_VALUE) {
         switch(GetLastError()) {
