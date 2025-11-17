@@ -195,9 +195,9 @@ private slots:
         QCOMPARE(completeSpy.findItem("nofileid")->_instruction, CSYNC_INSTRUCTION_ERROR);
         QCOMPARE(completeSpy.findItem("nopermissions")->_instruction, CSYNC_INSTRUCTION_NEW);
         QCOMPARE(completeSpy.findItem("nopermissions/A")->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QVERIFY(completeSpy.findItem("noetag")->_errorString.contains("ETag"));
-        QVERIFY(completeSpy.findItem("nofileid")->_errorString.contains("file id"));
-        QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("permission"));
+        QVERIFY(completeSpy.findItem("noetag")->_errorString.contains("File is not accessible on the server"));
+        QVERIFY(completeSpy.findItem("nofileid")->_errorString.contains("File is not accessible on the server"));
+        QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("File is not accessible on the server"));
     }
 
     void testQuotaReportedAsDouble()
