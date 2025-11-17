@@ -4159,13 +4159,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="784"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>無法存取伺服器上的資料夾。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="785"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>無法存取伺服器上的檔案。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1203"/>
@@ -4658,13 +4658,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>無法存取伺服器上的資料夾。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="545"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
-        <translation type="unfinished"/>
+        <translation>無法存取伺服器上的檔案。</translation>
     </message>
 </context>
 <context>
