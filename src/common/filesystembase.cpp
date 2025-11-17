@@ -887,7 +887,7 @@ bool FileSystem::setAclPermission(const QString &unsafePath, FolderPermissions p
             const auto childFile = joinPath(path, oneEntry);
 
             const auto &childFileStdWString = childFile.toStdWString();
-            const auto attributes = GetFileAttributes(childFileStdWString.c_str());
+            const auto attributes = GetFileAttributesW(childFileStdWString.c_str());
 
                    // testing if that could be a pure virtual placeholder file (i.e. CfApi file without data)
                    // we do not want to trigger implicit hydration ourself
