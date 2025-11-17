@@ -1261,7 +1261,7 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
         // only execute if logging is enabled
         auto debug = qDebug(lcEngine);
         debug << "paths to discover locally";
-        for (auto path : _localDiscoveryPaths) {
+        for (const auto &path : _localDiscoveryPaths) {
             debug << path;
         }
     }
