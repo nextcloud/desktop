@@ -348,11 +348,15 @@ int FolderMan::setupFoldersMigration()
     ConfigFile cfg;
     QDir storageDir(cfg.configPath());
     _folderConfigPath = cfg.configPath();
+    auto configPath = _folderConfigPath;
 
-    const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();
-    const auto configPath = legacyConfigPath.isEmpty() ? _folderConfigPath : legacyConfigPath;
-
-    qCInfo(lcFolderMan) << "Setup folders from " << configPath << "(migration)";
+#if !DISABLE_ACCOUNT_MIGRATION
+    if (const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();!legacyConfigPath.isEmpty()) {
+        configPath =  legacyConfigPath;
+        qCInfo(lcFolderMan) << "Starting folder migration from legacy path:" << legacyConfigPath;
+    }
+#endif
+    qCInfo(lcFolderMan) << "Setup folders from" << configPath;
 
     QDir dir(configPath);
     // We need to include hidden files just in case the alias starts with '.'
