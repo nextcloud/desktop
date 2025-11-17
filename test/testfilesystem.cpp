@@ -9,6 +9,7 @@
 
 #include <QtTest>
 #include <QTemporaryDir>
+#include <QTemporaryFile>
 
 #include "common/filesystembase.h"
 #include "logger.h"
@@ -16,6 +17,7 @@
 #include "libsync/filesystem.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 namespace std_fs = std::filesystem;
 
 class TestFileSystem : public QObject
@@ -127,6 +129,30 @@ private Q_SLOTS:
         QCOMPARE(permissionsDidChange, false);
     }
 #endif
+
+    void testSetFileReadOnlyLongPath()
+    {
+        // this should be enough to hit Windows' default MAX_PATH limitation (260 chars)
+        QTemporaryFile longFile(u"test"_s.repeated(60));
+
+        // QTemporaryFile::open actually creates the file
+        QVERIFY(longFile.open());
+        QVERIFY(!longFile.fileName().isEmpty());
+
+        QFileInfo fileInfo(longFile);
+        const auto path = fileInfo.absoluteFilePath();
+
+        // ensure we start with a read/writeable directory
+        QVERIFY(FileSystem::isWritable(path));
+
+        FileSystem::setFileReadOnly(path, true);
+        // path should now be readonly
+        QVERIFY(!FileSystem::isWritable(path));
+
+        FileSystem::setFileReadOnly(path, false);
+        // path should now be writable aagain
+        QVERIFY(FileSystem::isWritable(path));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestFileSystem)
