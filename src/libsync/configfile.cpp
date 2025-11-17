@@ -182,7 +182,7 @@ bool ConfigFile::optionalServerNotifications() const
 bool ConfigFile::showChatNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(showChatNotificationsC, true).toBool() && optionalServerNotifications();
+    return settings.value(showChatNotificationsC, true).toBool();
 }
 
 void ConfigFile::setShowChatNotifications(const bool show)
@@ -195,7 +195,7 @@ void ConfigFile::setShowChatNotifications(const bool show)
 bool ConfigFile::showCallNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(showCallNotificationsC, true).toBool() && optionalServerNotifications();
+    return settings.value(showCallNotificationsC, true).toBool();
 }
 
 void ConfigFile::setShowCallNotifications(bool show)
@@ -208,7 +208,7 @@ void ConfigFile::setShowCallNotifications(bool show)
 bool ConfigFile::showQuotaWarningNotifications() const
 {
     const QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(showQuotaWarningNotificationsC, true).toBool() && optionalServerNotifications();
+    return settings.value(showQuotaWarningNotificationsC, true).toBool();
 }
 
 void ConfigFile::setShowQuotaWarningNotifications(bool show)
