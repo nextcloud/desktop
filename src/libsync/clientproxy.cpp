@@ -12,15 +12,6 @@
 #include <QThreadPool>
 #include <QSettings>
 
-namespace {
-    constexpr auto proxyTypeC = "Proxy/type";
-    constexpr auto proxyHostC = "Proxy/host";
-    constexpr auto proxyPortC = "Proxy/port";
-    constexpr auto proxyUserC = "Proxy/user";
-    constexpr auto proxyPassC = "Proxy/pass";
-    constexpr auto proxyNeedsAuthC = "Proxy/needsAuth";
-}
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcClientProxy, "nextcloud.sync.clientproxy", QtInfoMsg)
