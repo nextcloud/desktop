@@ -93,6 +93,15 @@ void Job::setAppName(const QString &appName)
     _appName = appName;
 }
 
+#ifdef Q_OS_WIN
+void Job::jobKeyPrependAppName(QString &key)
+{
+    // NOTE: The following is normally done in AbstractCredentials::keychainKey
+    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
+    key.prepend(_appName + "_");
+}
+#endif
+
 /*
 * WriteJob
 */
@@ -112,7 +121,7 @@ WriteJob::WriteJob(const QString &key, const QByteArray &data, QObject *parent)
     : WriteJob(nullptr, key, data, parent)
 {
 #ifdef Q_OS_WIN
-    _key.prepend(_appName + "_");
+    jobKeyPrependAppName(_key);
 #endif
 }
 
@@ -233,7 +242,7 @@ ReadJob::ReadJob(const QString &key, QObject *parent)
     : ReadJob(nullptr, key, false, parent)
 {
 #ifdef Q_OS_WIN
-    _key.prepend(_appName + "_");
+    jobKeyPrependAppName(_key);
 #endif
 }
 
@@ -366,7 +375,7 @@ DeleteJob::DeleteJob(const QString &key, QObject *parent)
     : DeleteJob(nullptr, key, false, parent)
 {
 #ifdef Q_OS_WIN
-    _key.prepend(_appName + "_");
+    jobKeyPrependAppName(_key);
 #endif
 }
 
