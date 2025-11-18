@@ -53,6 +53,7 @@ HeaderButton {
 
     ToolTip {
         id: tooltip
+        popupType: Qt.platform.os === "windows" ? Popup.Item : Popup.Native
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
     }
