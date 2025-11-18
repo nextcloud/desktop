@@ -996,10 +996,10 @@ public class MockRemoteInterface: RemoteInterface {
         serverUrlFileName: Any,
         fileNameLocalPath: String,
         account: String,
-        options: NKRequestOptions,
-        requestHandler: @escaping (_ request: DownloadRequest) -> Void,
-        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
-        progressHandler: @escaping (_ progress: Progress) -> Void
+        options _: NKRequestOptions,
+        requestHandler _: @escaping (_ request: DownloadRequest) -> Void,
+        taskHandler _: @escaping (_ task: URLSessionTask) -> Void,
+        progressHandler _: @escaping (_ progress: Progress) -> Void
     ) async -> (
         account: String,
         etag: String?,

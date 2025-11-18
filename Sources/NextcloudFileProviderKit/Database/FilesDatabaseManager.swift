@@ -205,19 +205,15 @@ public final class FilesDatabaseManager: Sendable {
         // changes in the db.
         //
         // Let's therefore create a copy
-        if let itemMetadata = itemMetadatas
-            .where({
-                $0.ocId == ocId
-            })
-            .first {
-                return SendableItemMetadata(value: itemMetadata)
-            }
+        if let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first {
+            return SendableItemMetadata(value: itemMetadata)
+        }
 
         return nil
     }
 
     public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
-        return itemMetadata(ocId: identifier.rawValue)
+        itemMetadata(ocId: identifier.rawValue)
     }
 
     ///
