@@ -68,6 +68,7 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
     , _serverColor(Theme::defaultColor())
+    , _e2e{}
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
