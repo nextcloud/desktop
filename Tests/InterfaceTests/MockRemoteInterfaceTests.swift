@@ -383,24 +383,31 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testDownload() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        remoteInterface.injectMock(Self.account)
+
         debugPrint(remoteInterface)
-        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(
-            "file.txt", conformingTo: .text
-        )
+
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file.txt", conformingTo: .text)
+
         if !FileManager.default.isWritableFile(atPath: fileUrl.path) {
             print("WARNING: TEMP NOT WRITEABLE. SKIPPING TEST")
             return
         }
+
         let fileData = Data("Hello, World!".utf8)
         _ = await remoteInterface.upload(
-            remotePath: Self.account.davFilesUrl + "/file.txt", localPath: fileUrl.path, account: Self.account
-        )
-
-        let result = await remoteInterface.download(
             remotePath: Self.account.davFilesUrl + "/file.txt",
             localPath: fileUrl.path,
             account: Self.account
         )
+
+        let result = await remoteInterface.downloadAsync(
+            serverUrlFileName: Self.account.davFilesUrl + "/file.txt",
+            fileNameLocalPath: fileUrl.path,
+            account: Self.account.ncKitAccount,
+            options: .init()
+        )
+
         XCTAssertEqual(result.nkError, .success)
 
         let downloadedData = try Data(contentsOf: fileUrl)
@@ -859,3 +866,4 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(failState, .authenticationError)
     }
 }
+
