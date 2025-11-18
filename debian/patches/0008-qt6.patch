@@ -470,7 +470,7 @@ index f49410d6ea..db71b8e12d 100644
  
                  onClicked: {
 diff --git a/src/gui/accountstate.cpp b/src/gui/accountstate.cpp
-index 72ad6466c4..fe76174331 100644
+index d139565a56..41e2924fce 100644
 --- a/src/gui/accountstate.cpp
 +++ b/src/gui/accountstate.cpp
 @@ -17,6 +17,7 @@
@@ -482,7 +482,7 @@ index 72ad6466c4..fe76174331 100644
  #include <QSettings>
  #include <QTimer>
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 1b07c351a3..1367f882de 100644
+index a250954dae..6e36ba6465 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -36,6 +36,7 @@
@@ -493,7 +493,7 @@ index 1b07c351a3..1367f882de 100644
  
  #include "config.h"
  
-@@ -1020,7 +1021,7 @@ void Application::setupTranslations()
+@@ -1025,7 +1026,7 @@ void Application::setupTranslations()
  {
      qCInfo(lcApplication) << "System UI languages are:" << QLocale::system().uiLanguages();
      const auto enforcedLocale = enforcedLanguage();
@@ -571,7 +571,7 @@ index 3dc10ad198..637b58acf5 100644
          });
          _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
 diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
-index d0cfcc4f74..4b3455faf1 100644
+index d1caae9ac6..eaf5474f4d 100644
 --- a/src/gui/generalsettings.cpp
 +++ b/src/gui/generalsettings.cpp
 @@ -44,6 +44,7 @@
@@ -602,7 +602,7 @@ index d0cfcc4f74..4b3455faf1 100644
  
      // accountAdded means the wizard was finished and the wizard might change some options.
      connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-@@ -653,6 +659,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+@@ -654,6 +660,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
      }
  }
  
@@ -610,7 +610,7 @@ index d0cfcc4f74..4b3455faf1 100644
  void GeneralSettings::slotCreateDebugArchive()
  {
      const auto filename = QFileDialog::getSaveFileName(
-@@ -674,6 +681,7 @@ void GeneralSettings::slotCreateDebugArchive()
+@@ -675,6 +682,7 @@ void GeneralSettings::slotCreateDebugArchive()
          );
      }
  }
@@ -987,7 +987,7 @@ index 5820fc0c8a..a70abc9c8d 100644
      PRIVATE
          cxx_std_17
 diff --git a/src/libsync/account.cpp b/src/libsync/account.cpp
-index a1fedb873d..ece9f14fba 100644
+index 159375d9fa..77ee9b3e33 100644
 --- a/src/libsync/account.cpp
 +++ b/src/libsync/account.cpp
 @@ -23,6 +23,7 @@
@@ -998,7 +998,7 @@ index a1fedb873d..ece9f14fba 100644
  #include "clientsideencryption.h"
  #include "ocsuserstatusconnector.h"
  
-@@ -1246,7 +1247,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
+@@ -1254,7 +1255,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
                                            serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                            newEntry);
  
@@ -1077,7 +1077,7 @@ index 9ce1b567fa..ef19a95180 100644
      return decryptedAndUnGzipped;
  }
 diff --git a/src/libsync/discovery.cpp b/src/libsync/discovery.cpp
-index 08677e49b6..4a4760b0ff 100644
+index f91c368f41..d635251b40 100644
 --- a/src/libsync/discovery.cpp
 +++ b/src/libsync/discovery.cpp
 @@ -23,6 +23,7 @@
@@ -1484,6 +1484,19 @@ index e76b158775..4431aee63a 100644
  #include "account.h"
  #include "accountstate.h"
  #include "logger.h"
+diff --git a/test/testaccountsettings.cpp b/test/testaccountsettings.cpp
+index b43723f630..93568774f0 100644
+--- a/test/testaccountsettings.cpp
++++ b/test/testaccountsettings.cpp
+@@ -16,6 +16,8 @@
+ 
+ #include "accountsettings.h"
+ 
++#include "common/qtcompat.h"
++
+ using namespace OCC;
+ 
+ class TestAccountSettings : public QObject
 diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
 index 850e9c919c..fc0371170e 100644
 --- a/test/testdatefieldbackend.cpp
@@ -1496,6 +1509,18 @@ index 850e9c919c..fc0371170e 100644
  
  using namespace OCC;
  
+diff --git a/test/testfilesystem.cpp b/test/testfilesystem.cpp
+index 912e28312d..ed77a043d2 100644
+--- a/test/testfilesystem.cpp
++++ b/test/testfilesystem.cpp
+@@ -12,6 +12,7 @@
+ #include <QTemporaryFile>
+ 
+ #include "common/filesystembase.h"
++#include "common/qtcompat.h"
+ #include "logger.h"
+ 
+ #include "libsync/filesystem.h"
 diff --git a/test/testfolder.cpp b/test/testfolder.cpp
 index b45cf49114..060f9aca0b 100644
 --- a/test/testfolder.cpp
