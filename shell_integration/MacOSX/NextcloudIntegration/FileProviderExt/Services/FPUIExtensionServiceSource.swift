@@ -90,7 +90,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             logger.error("Could not get db manager for \(account)")
             return nil
         }
-        guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
+        guard let item = dbManager.itemMetadata(identifier) else {
             logger.error("No item \(rawIdentifier) in db, no shares.")
             return nil
         }
