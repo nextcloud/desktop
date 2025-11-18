@@ -326,7 +326,7 @@ void AccountSettings::slotE2eEncryptionGenerateKeys()
     connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
     _accountState->account()->setE2eEncryptionKeysGenerationAllowed(true);
     _accountState->account()->setAskUserForMnemonic(true);
-    _accountState->account()->e2e()->initialize(this, _accountState->account());
+    _accountState->account()->e2e()->initialize(this);
 }
 
 void AccountSettings::slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated)
@@ -1133,7 +1133,7 @@ void AccountSettings::forgetEncryptionOnDeviceForAccount(const AccountPtr &accou
     case QMessageBox::Ok:
         connect(account->e2e(), &ClientSideEncryption::sensitiveDataForgotten,
                 this, &AccountSettings::forgetE2eEncryption);
-        account->e2e()->forgetSensitiveData(account);
+        account->e2e()->forgetSensitiveData();
         break;
     case QMessageBox::Cancel:
         break;
@@ -1697,7 +1697,7 @@ void AccountSettings::setupE2eEncryption()
             }
         });
         _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
-        _accountState->account()->e2e()->initialize(this, _accountState->account());
+        _accountState->account()->e2e()->initialize(this);
     }
 }
 
