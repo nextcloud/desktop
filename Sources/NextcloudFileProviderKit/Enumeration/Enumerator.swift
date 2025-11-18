@@ -10,9 +10,6 @@ import NextcloudKit
 public class Enumerator: NSObject, NSFileProviderEnumerator {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private var enumeratedItemMetadata: SendableItemMetadata?
-    private var enumeratingSystemIdentifier: Bool {
-        Self.isSystemIdentifier(enumeratedItemIdentifier)
-    }
 
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
@@ -51,7 +48,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             serverUrl = account.davFilesUrl
         } else {
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier])
-            enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
+            enumeratedItemMetadata = dbManager.itemMetadata(
                 enumeratedItemIdentifier)
 
             if let enumeratedItemMetadata {

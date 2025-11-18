@@ -166,14 +166,14 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         remoteInterface.capabilities = mockCapabilities
 
         // --- DB State (What the app thinks is true) ---
-        // A materialised file in the root that will be updated.
+        // A materialized file in the root that will be updated.
         var rootFileToUpdate =
             SendableItemMetadata(ocId: "rootFile", fileName: "root-file.txt", account: Self.account)
         rootFileToUpdate.downloaded = true
         rootFileToUpdate.etag = "ETAG_OLD_ROOTFILE"
         Self.dbManager.addItemMetadata(rootFileToUpdate)
 
-        // A materialised folder that will have its contents changed.
+        // A materialized folder that will have its contents changed.
         var folderA =
             SendableItemMetadata(ocId: "folderA", fileName: "FolderA", account: Self.account)
         folderA.directory = true
@@ -181,7 +181,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         folderA.etag = "ETAG_OLD_FOLDERA"
         Self.dbManager.addItemMetadata(folderA)
 
-        // A materialised file inside FolderA that will be deleted.
+        // A materialized file inside FolderA that will be deleted.
         var fileInAToDelete =
             SendableItemMetadata(ocId: "fileInA", fileName: "file-in-a.txt", account: Self.account)
         fileInAToDelete.downloaded = true
@@ -190,7 +190,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         fileInAToDelete.syncTime = Date(timeIntervalSince1970: 1000)
         Self.dbManager.addItemMetadata(fileInAToDelete)
 
-        // A materialised folder that will be deleted entirely.
+        // A materialized folder that will be deleted entirely.
         var folderBToDelete =
             SendableItemMetadata(ocId: "folderB", fileName: "FolderB", account: Self.account)
         folderBToDelete.directory = true
@@ -356,7 +356,7 @@ final class RemoteChangeObserverTests: NextcloudFileProviderKitTestCase {
         // No capabilities -> will force polling.
         remoteInterface.capabilities = ""
 
-        // DB State: A materialised file with an old ETag.
+        // DB State: A materialized file with an old ETag.
         var fileToUpdate = SendableItemMetadata(ocId: "item1", fileName: "file.txt", account: Self.account)
         fileToUpdate.downloaded = true
         fileToUpdate.etag = "ETAG_OLD"

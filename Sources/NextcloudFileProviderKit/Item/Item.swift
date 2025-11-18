@@ -374,7 +374,7 @@ public class Item: NSObject, NSFileProviderItem {
             )
         }
 
-        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
+        guard let metadata = dbManager.itemMetadata(identifier) else {
             return nil
         }
 

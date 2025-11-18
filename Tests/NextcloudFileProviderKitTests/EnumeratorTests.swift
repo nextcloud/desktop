@@ -223,7 +223,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         // 3. Assert
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
-        XCTAssertEqual(observer.items.count, 2, "Should only enumerate the 2 materialised items.")
+        XCTAssertEqual(observer.items.count, 2, "Should only enumerate the 2 materialized items.")
 
         let enumeratedIds = Set(observer.items.map(\.itemIdentifier.rawValue))
         XCTAssertTrue(
@@ -247,7 +247,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
     func testWorkingSetEnumerationWhenNoMaterialisedItems() async throws {
         // This test verifies that the enumerator behaves correctly when there are
-        // no materialised items in the database.
+        // no materialized items in the database.
 
         // 1. Arrange
         let db = Self.dbManager.ncDatabase()

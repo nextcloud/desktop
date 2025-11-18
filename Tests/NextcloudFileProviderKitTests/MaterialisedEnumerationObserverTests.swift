@@ -35,21 +35,21 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let expect = XCTestExpectation(description: "Enumerator completion handler called")
 
         // The observer's logic requires metadata to exist in the DB to update it.
-        let observer = MaterialisedEnumerationObserver(ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
             XCTAssertTrue(
                 unmaterialisedIds.isEmpty,
                 "Unmaterialised set should be empty when DB starts empty."
             )
 
-            // The items are correctly identified as newly materialised because they weren't in the
-            // DB's materialised list (which was empty).
+            // The items are correctly identified as newly materialized because they weren't in the
+            // DB's materialized list (which was empty).
             XCTAssertEqual(
                 newlyMaterialisedIds.count,
                 2,
                 "Both enumerated items should be identified as newly materialised."
             )
-            XCTAssertTrue(newlyMaterialisedIds.contains("file1"))
-            XCTAssertTrue(newlyMaterialisedIds.contains("dir1"))
+            XCTAssertTrue(newlyMaterialisedIds.contains(NSFileProviderItemIdentifier("file1")))
+            XCTAssertTrue(newlyMaterialisedIds.contains(NSFileProviderItemIdentifier("dir1")))
 
             // Verify that the database state is NOT updated
             let fileMetadata = dbManager.itemMetadata(ocId: "file1")
@@ -77,7 +77,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
     }
 
     func testMaterialisedObserverWithMixedState() async {
-        // Setup a DB with a mix of materialised and non-materialised items.
+        // Setup a DB with a mix of materialized and non-materialised items.
         var itemA = SendableItemMetadata(ocId: "itemA", fileName: "itemA", account: Self.account)
         itemA.downloaded = true // Was materialised
 
@@ -101,19 +101,19 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         let expect = XCTestExpectation(description: "Enumerator completion handler called")
         let enumeratorItemsToReturn = [itemB, itemC]
 
-        let observer = MaterialisedEnumerationObserver(ncKitAccount: Self.account.ncKitAccount, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
-            // Unmaterialised: itemA and dirD were materialised but not in the latest enumeration.
+        let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { newlyMaterialisedIds, unmaterialisedIds in
+            // Unmaterialised: itemA and dirD were materialized but not in the latest enumeration.
             XCTAssertEqual(
                 unmaterialisedIds.count, 2, "itemA and dirD should be reported as unmaterialised."
             )
-            XCTAssertTrue(unmaterialisedIds.contains("itemA"))
-            XCTAssertTrue(unmaterialisedIds.contains("dirD"))
+            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("itemA")))
+            XCTAssertTrue(unmaterialisedIds.contains(NSFileProviderItemIdentifier("dirD")))
 
-            // Newly Materialised: itemB was NOT materialised but WAS in the latest enumeration.
+            // Newly Materialised: itemB was NOT materialized but WAS in the latest enumeration.
             XCTAssertEqual(
                 newlyMaterialisedIds.count, 1, "itemB should be reported as newly materialised."
             )
-            XCTAssertEqual(newlyMaterialisedIds.first, "itemB")
+            XCTAssertEqual(newlyMaterialisedIds.first, NSFileProviderItemIdentifier("itemB"))
 
             // Check final database state
             let finalItemA = dbManager.itemMetadata(ocId: "itemA")

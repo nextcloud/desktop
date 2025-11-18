@@ -223,6 +223,8 @@ public actor FileProviderLog: FileProviderLogging {
                     account.ncKitAccount
                 case let date as Date:
                     messageDateFormatter.string(from: date)
+                case let error as NSError:
+                    error.debugDescription
                 case let lock as NKLock:
                     lock.token ?? "nil"
                 case let item as NSFileProviderItem:

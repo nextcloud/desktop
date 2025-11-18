@@ -205,10 +205,19 @@ public final class FilesDatabaseManager: Sendable {
         // changes in the db.
         //
         // Let's therefore create a copy
-        if let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first {
-            return SendableItemMetadata(value: itemMetadata)
-        }
+        if let itemMetadata = itemMetadatas
+            .where({
+                $0.ocId == ocId
+            })
+            .first {
+                return SendableItemMetadata(value: itemMetadata)
+            }
+
         return nil
+    }
+
+    public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
+        return itemMetadata(ocId: identifier.rawValue)
     }
 
     ///
@@ -259,6 +268,19 @@ public final class FilesDatabaseManager: Sendable {
         return nil
     }
 
+    ///
+    /// Fetch the metadata object for the root container of the given account.
+    ///
+    /// This is useful for when you have only the `NSFileProviderItemIdentifier.rootContainer` but no `ocId` to look up metadata by.
+    ///
+    public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
+        guard let object = itemMetadatas.where({ $0.account == account.ncKitAccount && $0.directory && $0.path == Account.webDavFilesUrlSuffix }).first else {
+            return nil
+        }
+
+        return SendableItemMetadata(value: object)
+    }
+
     public func itemMetadatas(account: String) -> [SendableItemMetadata] {
         itemMetadatas
             .where { $0.account == account }
@@ -271,12 +293,6 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadatas
             .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
             .toUnmanagedResults()
-    }
-
-    public func itemMetadataFromFileProviderItemIdentifier(
-        _ identifier: NSFileProviderItemIdentifier
-    ) -> SendableItemMetadata? {
-        itemMetadata(ocId: identifier.rawValue)
     }
 
     private func processItemMetadatasToDelete(
@@ -607,13 +623,23 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     private func managedMaterialisedItemMetadatas(account: String) -> Results<RealmItemMetadata> {
-        itemMetadatas
-            .where {
-                $0.account == account &&
-                    (($0.directory && $0.visitedDirectory) || (!$0.directory && $0.downloaded))
-            }
+        itemMetadatas.where { candidate in
+            let belongsToAccount = candidate.account == account
+            let isVisitedDirectory = candidate.directory && candidate.visitedDirectory
+            let isDownloadedFile = candidate.directory == false && candidate.downloaded
+
+            return belongsToAccount && (isVisitedDirectory || isDownloadedFile)
+        }
     }
 
+    ///
+    /// Return metadata for materialized file provider items.
+    ///
+    /// - Parameters:
+    ///     - account: The account identifier to filter by.
+    ///
+    /// - Returns: An array of sendable metadata objects.
+    ///
     public func materialisedItemMetadatas(account: String) -> [SendableItemMetadata] {
         managedMaterialisedItemMetadatas(account: account).toUnmanagedResults()
     }

@@ -1186,11 +1186,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(sItemC)
         Self.dbManager.addItemMetadata(sDirD)
 
-        let materialised =
+        let materialized =
             Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount)
-        XCTAssertEqual(materialised.count, 5)
+        XCTAssertEqual(materialized.count, 5)
 
-        let materialisedOcIds = materialised.map(\.ocId)
+        let materialisedOcIds = materialized.map(\.ocId)
         XCTAssertTrue(materialisedOcIds.contains(itemA.ocId))
         XCTAssertTrue(materialisedOcIds.contains(folderA.ocId))
         XCTAssertTrue(materialisedOcIds.contains(sItemA.ocId))
@@ -1249,7 +1249,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         // --- Multi-level file structure to test the full scope ---
 
-        // LEVEL 1: Root level materialised folder updated recently
+        // LEVEL 1: Root level materialized folder updated recently
         var updatedDir = SendableItemMetadata(ocId: "updatedDir", fileName: "UpdatedDir", account: Self.account)
         updatedDir.directory = true
         updatedDir.visitedDirectory = true // Materialised
@@ -1267,7 +1267,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var childOfUpdatedDirRecent = SendableItemMetadata(ocId: "childOfUpdatedRecent", fileName: "childRecent.txt", account: Self.account)
         childOfUpdatedDirRecent.serverUrl = Self.account.davFilesUrl + "/UpdatedDir"
         childOfUpdatedDirRecent.syncTime = recentSyncDate // Recent sync time
-        childOfUpdatedDirRecent.downloaded = false // NOT materialised - but should still be included
+        childOfUpdatedDirRecent.downloaded = false // NOT materialized - but should still be included
         Self.dbManager.addItemMetadata(childOfUpdatedDirRecent)
 
         // LEVEL 2: Child folder of updated folder with recent sync time
@@ -1285,7 +1285,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         grandchildOfUpdated.downloaded = false // Not materialised
         Self.dbManager.addItemMetadata(grandchildOfUpdated)
 
-        // DELETED STRUCTURE: Root level materialised folder deleted recently
+        // DELETED STRUCTURE: Root level materialized folder deleted recently
         var deletedDir = SendableItemMetadata(ocId: "deletedDir", fileName: "DeletedDir", account: Self.account)
         deletedDir.directory = true
         deletedDir.visitedDirectory = true // Materialised
@@ -1322,32 +1322,32 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         deepNestedInDeleted.downloaded = false
         Self.dbManager.addItemMetadata(deepNestedInDeleted)
 
-        // STANDALONE ITEMS: Materialised file synced recently - should be returned
+        // STANDALONE ITEMS: materialized file synced recently - should be returned
         var standaloneUpdatedFile = SendableItemMetadata(ocId: "standaloneUpdated", fileName: "standalone.txt", account: Self.account)
         standaloneUpdatedFile.downloaded = true // Materialised
         standaloneUpdatedFile.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(standaloneUpdatedFile)
 
-        // Materialised file synced too long ago - should NOT be returned
+        // materialized file synced too long ago - should NOT be returned
         var standaloneOldFile = SendableItemMetadata(ocId: "standaloneOld", fileName: "old.txt", account: Self.account)
         standaloneOldFile.downloaded = true // Materialised
         standaloneOldFile.syncTime = oldSyncDate
         Self.dbManager.addItemMetadata(standaloneOldFile)
 
-        // Non-materialised item synced recently - should NOT be returned (not in initial materialised set)
+        // Non-materialised item synced recently - should NOT be returned (not in initial materialized set)
         var nonMaterialisedFile = SendableItemMetadata(ocId: "nonMaterialised", fileName: "non-mat.txt", account: Self.account)
         nonMaterialisedFile.downloaded = false
         nonMaterialisedFile.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(nonMaterialisedFile)
 
-        // MIXED MATERIALISATION: Another materialised folder to test child inclusion
+        // MIXED MATERIALISATION: Another materialized folder to test child inclusion
         var anotherMaterialisedDir = SendableItemMetadata(ocId: "anotherMatDir", fileName: "AnotherMatDir", account: Self.account)
         anotherMaterialisedDir.directory = true
         anotherMaterialisedDir.visitedDirectory = true
         anotherMaterialisedDir.syncTime = recentSyncDate
         Self.dbManager.addItemMetadata(anotherMaterialisedDir)
 
-        // Child with recent sync but NOT materialised - should still be included due to recent sync
+        // Child with recent sync but NOT materialized - should still be included due to recent sync
         var nonMatChildRecent = SendableItemMetadata(ocId: "nonMatChildRecent", fileName: "nonMatChild.txt", account: Self.account)
         nonMatChildRecent.serverUrl = Self.account.davFilesUrl + "/AnotherMatDir"
         nonMatChildRecent.syncTime = recentSyncDate
@@ -1362,10 +1362,10 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // 3. Assert - Updated items
         let updatedIds = Set(result.updated.map(\.ocId))
 
-        // Should include materialised items with recent sync
-        XCTAssertTrue(updatedIds.contains("updatedDir"), "Updated materialised directory should be included")
-        XCTAssertTrue(updatedIds.contains("standaloneUpdated"), "Updated materialised file should be included")
-        XCTAssertTrue(updatedIds.contains("anotherMatDir"), "Another materialised directory should be included")
+        // Should include materialized items with recent sync
+        XCTAssertTrue(updatedIds.contains("updatedDir"), "Updated materialized directory should be included")
+        XCTAssertTrue(updatedIds.contains("standaloneUpdated"), "Updated materialized file should be included")
+        XCTAssertTrue(updatedIds.contains("anotherMatDir"), "Another materialized directory should be included")
 
         // Should include children with recent sync regardless of materialisation
         XCTAssertTrue(updatedIds.contains("childOfUpdatedRecent"), "Child with recent sync should be included regardless of materialisation")
@@ -1382,8 +1382,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // 4. Assert - Deleted items
         let deletedIds = Set(result.deleted.map(\.ocId))
 
-        // Should include the deleted materialised directory
-        XCTAssertTrue(deletedIds.contains("deletedDir"), "Deleted materialised directory should be included")
+        // Should include the deleted materialized directory
+        XCTAssertTrue(deletedIds.contains("deletedDir"), "Deleted materialized directory should be included")
 
         // Should include children/descendants with recent sync under deleted paths
         XCTAssertTrue(deletedIds.contains("childOfDeletedRecent"), "Child of deleted dir with recent sync should be included")
