@@ -68,6 +68,7 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
     , _serverColor(Theme::defaultColor())
+    , _e2e{}
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -140,6 +141,11 @@ void Account::setDavUser(const QString &newDavUser)
 
     emit wantsAccountSaved(sharedFromThis());
     emit prettyNameChanged();
+}
+
+QString Account::userFromCredentials() const
+{
+    return _credentials ? _credentials->user() : QString{};
 }
 
 #ifndef TOKEN_AUTH_ONLY
