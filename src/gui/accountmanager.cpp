@@ -276,9 +276,11 @@ bool AccountManager::restoreFromLegacySettings()
                     selectedAccountIds = childGroups;
                 }
 
+                const auto legacyVersion = oCSettings->value(ConfigFile::clientVersionC, {}).toString();
+                ConfigFile().setClientPreviousVersionString(legacyVersion);
+                qCInfo(lcAccountManager) << "Migrating from" << legacyVersion;
                 qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
                 settings = std::move(oCSettings);
-
                 ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 break;
             } else {
@@ -288,14 +290,39 @@ bool AccountManager::restoreFromLegacySettings()
     }
 
     ConfigFile configFile;
+    // General settings
     configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
-    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC, configFile.launchOnSystemStartup()).toBool());
-    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC, configFile.optionalServerNotifications()).toBool());
-    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC, configFile.promptDeleteFiles()).toBool());
-    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC, configFile.showCallNotifications()).toBool());
-    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC, configFile.showChatNotifications()).toBool());
-    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC, configFile.showQuotaWarningNotifications()).toBool());
-    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC, configFile.showInExplorerNavigationPane()).toBool());
+    configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC,
+                                                        configFile.launchOnSystemStartup()).toBool());
+    configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC,
+                                                              configFile.optionalServerNotifications()).toBool());
+    configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC,
+                                                    configFile.promptDeleteFiles()).toBool());
+    configFile.setShowCallNotifications(settings->value(ConfigFile::showCallNotificationsC,
+                                                        configFile.showCallNotifications()).toBool());
+    configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC,
+                                                        configFile.showChatNotifications()).toBool());
+    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC,
+                                                                configFile.showQuotaWarningNotifications()).toBool());
+    configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
+                                                               configFile.showInExplorerNavigationPane()).toBool());
+    // Advanced
+    const auto newBigFolderSizeLimit = settings->value(ConfigFile::newBigFolderSizeLimitC, configFile.newBigFolderSizeLimit().second).toLongLong();
+    const auto useNewBigFolderSizeLimit = settings->value(ConfigFile::useNewBigFolderSizeLimitC, configFile.useNewBigFolderSizeLimit()).toBool();
+    configFile.setNewBigFolderSizeLimit(useNewBigFolderSizeLimit, newBigFolderSizeLimit);
+    configFile.setNotifyExistingFoldersOverLimit(settings->value(ConfigFile::notifyExistingFoldersOverLimitC,
+                                                                 configFile.notifyExistingFoldersOverLimit()).toBool());
+    configFile.setStopSyncingExistingFoldersOverLimit(settings->value(ConfigFile::stopSyncingExistingFoldersOverLimitC,
+                                                                      configFile.stopSyncingExistingFoldersOverLimit()).toBool());
+    configFile.setConfirmExternalStorage(settings->value(ConfigFile::confirmExternalStorageC, configFile.confirmExternalStorage()).toBool());
+    configFile.setMoveToTrash(settings->value(ConfigFile::moveToTrashC, configFile.moveToTrash()).toBool());
+    // Info
+    configFile.setUpdateChannel(settings->value(ConfigFile::updateChannelC, configFile.currentUpdateChannel()).toString());
+    auto previousAppName = settings->contains(ConfigFile::legacyAppName) ? ConfigFile::legacyAppName
+                                                                         : ConfigFile::unbrandedAppName;
+    const auto updaterGroupName = QString("%1/%2").arg(previousAppName, ConfigFile::autoUpdateCheckC);
+    configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
+    // Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
     configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
     configFile.setUploadLimit(settings->value(ConfigFile::uploadLimitC, configFile.uploadLimit()).toInt());
@@ -303,6 +330,7 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setDownloadLimit(settings->value(ConfigFile::downloadLimitC, configFile.downloadLimit()).toInt());
 
     // Try to load the single account.
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     if (!settings->childKeys().isEmpty()) {
         settings->beginGroup(accountsC);
         const auto childGroups = selectedAccountIds.isEmpty() ? settings->childGroups() : selectedAccountIds;
@@ -582,13 +610,33 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         }
         acc->_settingsMap.insert(key, settings.value(key));
     }
-
     acc->setCredentials(CredentialsFactory::create(authType));
-    acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
-    acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
-    acc->setProxyPort(settings.value(networkProxyPortC).toInt());
-    acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
-    acc->setProxyUser(settings.value(networkProxyUserC).toString());
+
+    {
+        auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
+        auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
+        auto accountProxyPort = settings.value(networkProxyPortC).toInt();
+        auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
+        auto accountProxyUser = settings.value(networkProxyUserC).toString();
+        const auto globalProxyType = settings.value(ClientProxy::proxyTypeC).value<QNetworkProxy::ProxyType>();
+        qCDebug(lcAccountManager) << "Account proxy type:" <<  accountProxyType;
+        qCDebug(lcAccountManager) << "Global proxy type:" <<  globalProxyType;
+        if (accountProxyType == QNetworkProxy::NoProxy && globalProxyType != QNetworkProxy::NoProxy) {
+            accountProxyType = globalProxyType;
+            accountProxyHost = settings.value(ClientProxy::proxyHostC).toString();
+            accountProxyPort =  settings.value(ClientProxy::proxyPortC).toInt();
+            accountProxyNeedsAuth = settings.value(ClientProxy::proxyNeedsAuthC).toBool();
+            accountProxyUser = settings.value(ClientProxy::proxyUserC).toString();
+            qCInfo(lcAccountManager) << "Account has no proxy set, using global proxy instead.";
+        }
+
+        acc->setProxyType(accountProxyType);
+        acc->setProxyHostName(accountProxyHost);
+        acc->setProxyPort(accountProxyPort);
+        acc->setProxyNeedsAuth(accountProxyNeedsAuth);
+        acc->setProxyUser(accountProxyUser);
+    }
+
     acc->setUploadLimitSetting(
         settings.value(
             networkUploadLimitSettingC,
@@ -599,7 +647,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             networkDownloadLimitSettingC,
             QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::NoLimit)
         ).value<Account::AccountNetworkTransferLimitSetting>());
-
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
@@ -786,7 +833,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
 
 bool AccountManager::forceLegacyImport() const
 {
-    return _forceLegacyImport;
+   return _forceLegacyImport;
 }
 
 void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
