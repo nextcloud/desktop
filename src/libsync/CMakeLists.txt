@@ -58,6 +58,8 @@ set(libsync_SRCS
     helpers.cpp
     httplogger.h
     httplogger.cpp
+    updatechannel.h
+    updatechannel.cpp
     logger.h
     logger.cpp
     accessmanager.h
