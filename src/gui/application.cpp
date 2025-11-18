@@ -119,19 +119,22 @@ namespace {
 
 bool Application::configVersionMigration()
 {
+    ConfigFile configFile;
+    const auto shouldTryToMigrate = configFile.shouldTryToMigrate();
+    if (!shouldTryToMigrate) {
+        qCInfo(lcApplication) << "This is not an upgrade/downgrade/migration. Proceed to read current application config file.";
+        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+        return false;
+    }
+
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupConfigFile);
     QStringList deleteKeys, ignoreKeys;
     AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
     FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-
-    ConfigFile configFile;
-
-    // Did the client version change?
-    // (The client version is adjusted further down)
-    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
-    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
-    const auto versionChanged = previousVersion != currentVersion;
-    const auto downgrading = previousVersion > currentVersion;
-
+    configFile.setClientPreviousVersionString(configFile.clientVersionString());
+    
+    qCDebug(lcApplication) << "Migration is in progress:"  << configFile.isMigrationInProgress();
+    const auto versionChanged = configFile.isUpgrade() || configFile.isDowngrade();
     if (versionChanged) {
         qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
@@ -177,7 +180,7 @@ bool Application::configVersionMigration()
                "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
+                .arg((configFile.isDowngrade() ? tr("newer", "newer software version") : tr("older", "older software version")),
                      deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
                      backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -484,7 +487,8 @@ Application::~Application()
 void Application::setupAccountsAndFolders()
 {
     _folderManager.reset(new FolderMan);
-
+    ConfigFile configFile;
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupUsers);
     const auto accountsRestoreResult = restoreLegacyAccount();
     const auto accounts = AccountManager::instance()->accounts();
     if (accountsRestoreResult != AccountManager::AccountsRestoreSuccessFromLegacyVersion
@@ -496,6 +500,7 @@ void Application::setupAccountsAndFolders()
         return;
     }
 
+    configFile.setMigrationPhase(ConfigFile::MigrationPhase::SetupFolders);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
     FolderMan::instance()->setSyncEnabled(true);
 
