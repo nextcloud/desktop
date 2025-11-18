@@ -257,7 +257,7 @@ private slots:
     // invoked when encrypted folder lock has been released
     void slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode);
     // invoked on internal error to unlock a folder and failed
-    void slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString);
+    void slotOnErrorStartFolderUnlock(OCC::SyncFileItem::Status status, const QString &errorString);
 
 public:
     virtual void doStartUpload() = 0;
@@ -380,7 +380,7 @@ public:
     void doStartUpload() override;
 
 public slots:
-    void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
+    void abort(OCC::PropagatorJob::AbortType abortType) override;
 
 private slots:
     void slotPropfindFinished();

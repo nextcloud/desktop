@@ -310,6 +310,6 @@ signals:
     void updatedRootFolderQuota(const int64_t &bytesUsed, const int64_t &bytesAvailable);
 
 private slots:
-    void setFolderQuota(const FolderQuota &folderQuota);
+    void setFolderQuota(const OCC::FolderQuota &folderQuota);
 };
 }

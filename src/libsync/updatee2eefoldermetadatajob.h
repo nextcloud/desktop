@@ -34,7 +34,7 @@ private slots:
     void start();
     void slotFetchMetadataJobFinished(int httpReturnCode, const QString &message);
     void slotUpdateMetadataFinished(int httpReturnCode, const QString &message);
-    void unlockFolder(const EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
+    void unlockFolder(const OCC::EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
 
 signals:
     void fileDropMetadataParsedAndAdjusted(const OCC::FolderMetadata *const metadata);

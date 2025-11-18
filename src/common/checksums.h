@@ -131,7 +131,7 @@ public:
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);
     void validationFailed(const QString &errMsg, const QByteArray &calculatedChecksumType,
-        const QByteArray &calculatedChecksum, const ValidateChecksumHeader::FailureReason reason);
+        const QByteArray &calculatedChecksum, const OCC::ValidateChecksumHeader::FailureReason reason);
 
 private slots:
     void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);

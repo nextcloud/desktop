@@ -150,7 +150,7 @@ public slots:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
+    void setLocalDiscoveryOptions(OCC::LocalDiscoveryEnums::LocalDiscoveryStyle style, std::set<QString> paths = {});
     void addAcceptedInvalidFileName(const QString& filePath);
     void setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value);
 
@@ -213,7 +213,7 @@ private slots:
 
     void slotItemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
     void slotDiscoveryFinished();
-    void slotPropagationFinished(SyncFileItem::Status status);
+    void slotPropagationFinished(OCC::SyncFileItem::Status status);
     void slotProgress(const OCC::SyncFileItem &item, qint64 current);
     void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
     void detectFileLock(const OCC::SyncFileItemPtr &item);

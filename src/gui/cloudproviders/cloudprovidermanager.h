@@ -23,7 +23,7 @@ public:
 signals:
 
 public slots:
-    void slotFolderListChanged(const Folder::Map &folderMap);
+    void slotFolderListChanged(const OCC::Folder::Map &folderMap);
 
 private:
     QMap<QString, CloudProviderWrapper*> _map;

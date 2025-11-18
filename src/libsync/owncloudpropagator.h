@@ -123,7 +123,7 @@ public slots:
      * Asynchronous abort requires emit of abortFinished() signal,
      * while synchronous is expected to abort immedietaly.
     */
-    virtual void abort(PropagatorJob::AbortType abortType) {
+    virtual void abort(OCC::PropagatorJob::AbortType abortType) {
         if (abortType == AbortType::Asynchronous)
             emit abortFinished();
     }
@@ -136,12 +136,12 @@ signals:
     /**
      * Emitted when the job is fully finished
      */
-    void finished(SyncFileItem::Status);
+    void finished(OCC::SyncFileItem::Status);
 
     /**
      * Emitted when the abort is fully finished
      */
-    void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
+    void abortFinished(OCC::SyncFileItem::Status status = SyncFileItem::NormalError);
 protected:
     [[nodiscard]] OwncloudPropagator *propagator() const;
 
@@ -184,7 +184,7 @@ protected:
     [[nodiscard]] bool hasEncryptedAncestor() const;
 
 protected slots:
-    void slotRestoreJobFinished(SyncFileItem::Status status);
+    void slotRestoreJobFinished(OCC::SyncFileItem::Status status);
 
 private:
     void reportClientStatuses();
