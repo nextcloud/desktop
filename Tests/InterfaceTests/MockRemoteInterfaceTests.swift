@@ -866,4 +866,3 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(failState, .authenticationError)
     }
 }
-
