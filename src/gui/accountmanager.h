@@ -113,7 +113,7 @@ private:
     // saving and loading Account to settings
     void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
-    void moveNetworkSettingsFromGlobalToAccount(const AccountPtr &account);
+    void migrateNetworkSettings(const AccountPtr &account, const QSettings &settings);
 
     bool restoreFromLegacySettings();
 
