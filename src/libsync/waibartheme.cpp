@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "nextcloudtheme.h"
+#include "waibartheme.h"
 
 #include <QString>
 #include <QVariant>
@@ -20,14 +20,14 @@
 
 namespace OCC {
 
-NextcloudTheme::NextcloudTheme()
+WAIBARTheme::WAIBARTheme()
     : Theme()
 {
 }
 
-QString NextcloudTheme::wizardUrlHint() const
+QString WAIBARTheme::wizardUrlHint() const
 {
-    return QStringLiteral("https://try.nextcloud.com");
+    return QStringLiteral("");
 }
 
 }

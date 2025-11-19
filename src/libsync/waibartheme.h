@@ -4,24 +4,24 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef NEXTCLOUD_THEME_H
-#define NEXTCLOUD_THEME_H
+#ifndef WAIBAR_THEME_H
+#define WAIBAR_THEME_H
 
 #include "theme.h"
 
 namespace OCC {
 
 /**
- * @brief The NextcloudTheme class
+ * @brief The WAIBARTheme class
  * @ingroup libsync
  */
-class NextcloudTheme : public Theme
+class WAIBARTheme : public Theme
 {
     Q_OBJECT
 public:
-    NextcloudTheme();
+    WAIBARTheme();
 
     [[nodiscard]] QString wizardUrlHint() const override;
 };
 }
-#endif // NEXTCLOUD_THEME_H
+#endif // WAIBAR_THEME_H

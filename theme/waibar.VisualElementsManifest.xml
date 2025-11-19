@@ -2,6 +2,6 @@
   <VisualElements
 	ForegroundText="light"
   ShowNameOnSquare150x150Logo="on"
-  Square150x150Logo="visualelements\Nextcloud-w10starttile.png"
-	Square70x70Logo="visualelements\Nextcloud-w10starttile.png"/>
+  Square150x150Logo="visualelements\WAIBAR-w10starttile.png"
+	Square70x70Logo="visualelements\WAIBAR-w10starttile.png"/>
 </Application>
