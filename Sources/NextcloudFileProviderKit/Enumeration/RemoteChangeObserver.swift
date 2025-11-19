@@ -9,13 +9,12 @@ import NextcloudKit
 
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
-public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
+public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate, @unchecked Sendable {
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
     public let dbManager: FilesDatabaseManager
     public var account: Account
-    public var accountId: String { account.ncKitAccount }
 
     public var webSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
     public var webSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
@@ -121,7 +120,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
             return
         }
         guard webSocketAuthenticationFailCount < webSocketAuthenticationFailLimit else {
-            logger.error("Exceeded authentication failures for notify push websocket \(accountId), will poll instead.", [.account: accountId])
+            logger.error("Exceeded authentication failures for notify push websocket \(account.ncKitAccount), will poll instead.", [.account: account.ncKitAccount])
             startPollingTimer()
             return
         }
@@ -159,7 +158,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         )
 
         guard error == .success else {
-            logger.error("Could not get capabilities: \(error.errorCode) \(error.errorDescription)", [.account: accountId])
+            logger.error("Could not get capabilities: \(error.errorCode) \(error.errorDescription)", [.account: account.ncKitAccount])
             reconnectWebSocket()
             return
         }
@@ -167,7 +166,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         guard let capabilities,
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
-            logger.error("Could not get notifyPush websocket \(accountId), polling.", [.account: accountId])
+            logger.error("Could not get notifyPush websocket \(account.ncKitAccount), polling.", [.account: account.ncKitAccount])
             startPollingTimer()
             return
         }
@@ -185,7 +184,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         )
         webSocketTask = webSocketUrlSession?.webSocketTask(with: websocketEndpointUrl)
         webSocketTask?.resume()
-        logger.info("Successfully configured push notifications for \(accountId)", [.account: accountId])
+        logger.info("Successfully configured push notifications for \(account.ncKitAccount)", [.account: account.ncKitAccount])
     }
 
     public func authenticationChallenge(
@@ -225,7 +224,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         didOpenWithProtocol _: String?
     ) {
         guard !invalidated else { return }
-        logger.debug("Websocket connected \(accountId) sending auth details", [.account: accountId])
+        logger.debug("Websocket connected \(account.ncKitAccount) sending auth details", [.account: account.ncKitAccount])
         Task { await authenticateWebSocket() }
     }
 
@@ -243,13 +242,13 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
             return
         }
 
-        logger.debug("Socket connection closed for \(accountId).", [.account: accountId])
+        logger.debug("Socket connection closed for \(account.ncKitAccount).", [.account: account.ncKitAccount])
 
         if let reason {
             logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "")")
         }
 
-        logger.debug("Retrying websocket connection for \(accountId).", [.account: accountId])
+        logger.debug("Retrying websocket connection for \(account.ncKitAccount).", [.account: account.ncKitAccount])
         reconnectWebSocket()
     }
 
@@ -262,7 +261,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
             try await webSocketTask?.send(.string(account.username))
             try await webSocketTask?.send(.string(account.password))
         } catch {
-            logger.error("Error authenticating websocket.", [.account: accountId, .error: error])
+            logger.error("Error authenticating websocket.", [.account: account.ncKitAccount, .error: error])
         }
 
         readWebSocket()
@@ -279,7 +278,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
             do {
                 try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
             } catch {
-                self.logger.error("Could not sleep websocket ping.", [.account: self.accountId, .error: error])
+                self.logger.error("Could not sleep websocket ping.", [.account: self.account.ncKitAccount, .error: error])
             }
             guard !Task.isCancelled else { return }
             self.pingWebSocket()
@@ -289,7 +288,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     private func pingWebSocket() { // Keep the socket connection alive
         guard !invalidated else { return }
         guard networkReachability != .notReachable else {
-            logger.error("Not pinging because network is unreachable.", [.account: accountId])
+            logger.error("Not pinging because network is unreachable.", [.account: account.ncKitAccount])
             return
         }
 
@@ -315,7 +314,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         webSocketTask?.receive { result in
             switch result {
                 case .failure:
-                    self.logger.debug("Failed to read websocket \(self.accountId)", [.account: self.accountId])
+                    self.logger.debug("Failed to read websocket \(self.account.ncKitAccount)", [.account: self.account.ncKitAccount])
                 // Do not reconnect here, delegate methods will handle reconnecting
                 case let .success(message):
                     switch message {
@@ -334,7 +333,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     private func processWebsocket(data: Data) {
         guard !invalidated else { return }
         guard let string = String(data: data, encoding: .utf8) else {
-            logger.error("Could parse websocket data for id: \(accountId)", [.account: accountId])
+            logger.error("Could parse websocket data for id: \(account.ncKitAccount)", [.account: account.ncKitAccount])
             return
         }
         processWebsocket(string: string)
@@ -343,14 +342,14 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
     private func processWebsocket(string: String) {
         logger.debug("Received websocket string: \(string)")
         if string == "notify_file" {
-            logger.debug("Received file notification for \(accountId)", [.account: accountId])
+            logger.debug("Received file notification for \(account.ncKitAccount)", [.account: account.ncKitAccount])
             startWorkingSetCheck()
         } else if string == "notify_activity" {
-            logger.debug("Ignoring activity notification: \(accountId)", [.account: accountId])
+            logger.debug("Ignoring activity notification: \(account.ncKitAccount)", [.account: account.ncKitAccount])
         } else if string == "notify_notification" {
-            logger.debug("Ignoring notification: \(accountId)", [.account: accountId])
+            logger.debug("Ignoring notification: \(account.ncKitAccount)", [.account: account.ncKitAccount])
         } else if string == "authenticated" {
-            logger.debug("Correctly authed websocket \(accountId), pinging", [.account: accountId])
+            logger.debug("Correctly authed websocket \(account.ncKitAccount), pinging", [.account: account.ncKitAccount])
             NotificationCenter.default.post(
                 name: NotifyPushAuthenticatedNotificationName, object: self
             )
@@ -358,14 +357,14 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         } else if string == "err: Invalid credentials" {
             logger.debug(
                 """
-                Invalid creds for websocket for \(accountId),
+                Invalid creds for websocket for \(account.ncKitAccount),
                 reattempting auth.
                 """
             )
             webSocketAuthenticationFailCount += 1
             reconnectWebSocket()
         } else {
-            logger.error("Received unknown string from websocket \(accountId): \(string)", [.account: accountId])
+            logger.error("Received unknown string from websocket \(account.ncKitAccount): \(string)", [.account: account.ncKitAccount])
         }
     }
 
@@ -455,7 +454,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
         let materialisedItems = dbManager
-            .materialisedItemMetadatas(account: accountId)
+            .materialisedItemMetadatas(account: account.ncKitAccount)
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var allNewMetadatas = [SendableItemMetadata]()
@@ -502,7 +501,7 @@ public final class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSess
                         examinedItemIds.insert(item.ocId)
                     }
             } else if let readError, readError != .success {
-                logger.info("Finished change enumeration of working set for user \(accountId) with error.", [.account: accountId, .error: readError])
+                logger.info("Finished change enumeration of working set for user \(account.ncKitAccount) with error.", [.account: account.ncKitAccount, .error: readError])
                 return
             } else {
                 allDeletedMetadatas += deletedMetadatas ?? []
