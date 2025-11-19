@@ -4,7 +4,7 @@
 import Foundation
 import NextcloudFileProviderKit
 
-public class MockChangeNotificationInterface: ChangeNotificationInterface {
+public class MockChangeNotificationInterface: ChangeNotificationInterface, @unchecked Sendable {
     public var changeHandler: (() -> Void)?
     public init(changeHandler: (() -> Void)? = nil) {
         self.changeHandler = changeHandler

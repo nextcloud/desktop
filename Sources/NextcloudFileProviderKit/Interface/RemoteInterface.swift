@@ -23,7 +23,7 @@ public enum AuthenticationAttemptResultState: Int {
 /// Usually, the shared `NextcloudKit` instance is conforming to this and provided as an argument.
 /// NextcloudKit is not mockable as of writing, hence this protocol was defined to enable testing.
 ///
-public protocol RemoteInterface {
+public protocol RemoteInterface: Sendable {
     func setDelegate(_ delegate: NextcloudKitDelegate)
 
     func createFolder(

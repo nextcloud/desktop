@@ -3,6 +3,6 @@
 
 import Foundation
 
-public protocol ChangeNotificationInterface {
+public protocol ChangeNotificationInterface: Sendable {
     func notifyChange()
 }

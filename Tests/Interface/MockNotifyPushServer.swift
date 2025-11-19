@@ -7,7 +7,7 @@ import NIOPosix
 import NIOWebSocket
 
 @available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
-public class MockNotifyPushServer {
+public class MockNotifyPushServer: @unchecked Sendable {
     /// The server's host.
     private let host: String
     /// The server's port.

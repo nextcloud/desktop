@@ -7,7 +7,7 @@ import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
 import NextcloudKit
 
-public struct TestableRemoteInterface: RemoteInterface {
+public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
     public init() {}
 
     public func setDelegate(_: any NextcloudKitDelegate) {}

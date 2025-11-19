@@ -554,7 +554,7 @@ let mockCapabilities = ##"""
 }
 """##
 
-public class MockRemoteInterface: RemoteInterface {
+public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ///
     /// `RemoteInterface` makes it necessary to bypass its API to fully register a mocked account object.
     ///

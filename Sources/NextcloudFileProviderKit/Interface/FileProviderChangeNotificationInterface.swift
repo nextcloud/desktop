@@ -1,10 +1,10 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import FileProvider
+@preconcurrency import FileProvider
 import Foundation
 
-public class FileProviderChangeNotificationInterface: ChangeNotificationInterface {
+public final class FileProviderChangeNotificationInterface: ChangeNotificationInterface {
     let domain: NSFileProviderDomain
     let logger: FileProviderLogger
 
