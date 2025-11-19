@@ -671,8 +671,11 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
+    ConfigFile configFile;
     const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
-    const auto job = new QKeychain::ReadPasswordJob(Theme::instance()->appName(), this);
+    const auto appName = configFile.isUnbrandedToBrandedMigrationInProgress() ? ConfigFile::unbrandedAppName 
+        : Theme::instance()->appName();
+    const auto job = new QKeychain::ReadPasswordJob(appName, this);
     job->setKey(proxyPasswordKey);
     connect(job, &QKeychain::Job::finished, this, [acc](const QKeychain::Job *const incomingJob) {
         const auto incomingReadJob = qobject_cast<const QKeychain::ReadPasswordJob *>(incomingJob);
