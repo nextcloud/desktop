@@ -294,6 +294,9 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
     configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC,
                                                         configFile.launchOnSystemStartup()).toBool());
+    const auto useMonoIcons = settings->value(ConfigFile::monoIconsC, configFile.monoIcons()).toBool();
+    Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
+    configFile.setMonoIcons(useMonoIcons);
     configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC,
                                                               configFile.optionalServerNotifications()).toBool());
     configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC,

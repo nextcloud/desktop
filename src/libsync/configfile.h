@@ -284,6 +284,7 @@ public:
 
     static constexpr char isVfsEnabledC[] = "isVfsEnabled";
     static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
+    static constexpr char monoIconsC[] = "monoIcons";
     static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
     static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
     static constexpr char showCallNotificationsC[] = "showCallNotifications";
