@@ -39,12 +39,10 @@
 namespace {
 static constexpr char showMainDialogAsNormalWindowC[] = "showMainDialogAsNormalWindow";
 static constexpr char showConfigBackupWarningC[] = "showConfigBackupWarning";
-
 static constexpr char remotePollIntervalC[] = "remotePollInterval";
 static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
 static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
-static constexpr char monoIconsC[] = "monoIcons";
 static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
