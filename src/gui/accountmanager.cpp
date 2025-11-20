@@ -46,6 +46,7 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
+constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -139,8 +140,8 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
                 jar->restore(acc->cookieJarPath());
             }
             addAccountState(accState);
+            migrateNetworkSettings(acc, *settings);
             settings->endGroup();
-            moveNetworkSettingsFromGlobalToAccount(acc);
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
             _additionalBlockedAccountIds.insert(accountId);
@@ -294,6 +295,9 @@ bool AccountManager::restoreFromLegacySettings()
     configFile.setVfsEnabled(settings->value(ConfigFile::isVfsEnabledC, configFile.isVfsEnabled()).toBool());
     configFile.setLaunchOnSystemStartup(settings->value(ConfigFile::launchOnSystemStartupC,
                                                         configFile.launchOnSystemStartup()).toBool());
+    const auto useMonoIcons = settings->value(ConfigFile::monoIconsC, configFile.monoIcons()).toBool();
+    Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
+    configFile.setMonoIcons(useMonoIcons);
     configFile.setOptionalServerNotifications(settings->value(ConfigFile::optionalServerNotificationsC,
                                                               configFile.optionalServerNotifications()).toBool());
     configFile.setPromptDeleteFiles(settings->value(ConfigFile::promptDeleteC,
@@ -302,8 +306,6 @@ bool AccountManager::restoreFromLegacySettings()
                                                         configFile.showCallNotifications()).toBool());
     configFile.setShowChatNotifications(settings->value(ConfigFile::showChatNotificationsC,
                                                         configFile.showChatNotifications()).toBool());
-    configFile.setShowQuotaWarningNotifications(settings->value(ConfigFile::showQuotaWarningNotificationsC,
-                                                                configFile.showQuotaWarningNotifications()).toBool());
     configFile.setShowInExplorerNavigationPane(settings->value(ConfigFile::showInExplorerNavigationPaneC,
                                                                configFile.showInExplorerNavigationPane()).toBool());
     // Advanced
@@ -322,7 +324,8 @@ bool AccountManager::restoreFromLegacySettings()
                                                                          : ConfigFile::unbrandedAppName;
     const auto updaterGroupName = QString("%1/%2").arg(previousAppName, ConfigFile::autoUpdateCheckC);
     configFile.setAutoUpdateCheck(settings->value(updaterGroupName, configFile.autoUpdateCheck()).toBool(), {});
-    // Network
+
+    // Global Proxy and Network
     ClientProxy().saveProxyConfigurationFromSettings(*settings);
     configFile.setUseUploadLimit(settings->value(ConfigFile::useUploadLimitC, configFile.useUploadLimit()).toInt());
     configFile.setUploadLimit(settings->value(ConfigFile::uploadLimitC, configFile.uploadLimit()).toInt());
@@ -341,8 +344,8 @@ bool AccountManager::restoreFromLegacySettings()
                 continue;
             }
             addAccount(acc);
+            migrateNetworkSettings(acc, *settings);
             settings->endGroup();
-            moveNetworkSettingsFromGlobalToAccount(acc);
         }
         configFile.cleanupGlobalNetworkConfiguration();
         ClientProxy().cleanupGlobalNetworkConfiguration();   
@@ -513,30 +516,60 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     }
 }
 
-void AccountManager::moveNetworkSettingsFromGlobalToAccount(const AccountPtr &account)
+void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSettings &settings)
 {
+    // QSettings from old ConfigFile to new ConfigFile to Account
+    auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
+    auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
+    auto accountProxyPort = settings.value(networkProxyPortC).toInt();
+    auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
+    auto accountProxyUser = settings.value(networkProxyUserC).toString();
+
+    // Override user settings with global settings if user is set to use global settings
     ConfigFile configFile;
-    const auto hostname = configFile.proxyHostName();
-
-    if (!hostname.isEmpty()) {
-        account->setProxySettings(static_cast<QNetworkProxy::ProxyType>(configFile.proxyType()),
-                                  hostname,
-                                  configFile.proxyPort(),
-                                  configFile.proxyNeedsAuth(),
-                                  configFile.proxyUser(),
-                                  configFile.proxyPassword());
+    auto accountProxySetting = settings.value(networkProxySettingC).toInt();
+    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+        accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
+        accountProxyHost = configFile.proxyHostName();
+        accountProxyPort = configFile.proxyPort();
+        accountProxyNeedsAuth = configFile.proxyNeedsAuth();
+        accountProxyUser = configFile.proxyUser();
+        qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
-
-    const auto useUploadLimit = configFile.useUploadLimit();
-    const auto useDownloadLimit = configFile.useDownloadLimit();
-    if (useUploadLimit == 0 && useDownloadLimit == 0) {
-        return;
+    account->setProxyType(accountProxyType);
+    account->setProxyHostName(accountProxyHost);
+    account->setProxyPort(accountProxyPort);
+    account->setProxyNeedsAuth(accountProxyNeedsAuth);
+    account->setProxyUser(accountProxyUser);
+    const auto globalUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useUploadLimit());
+    const auto globalUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useDownloadLimit());
+    // User network settings
+    auto userUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(settings.value(networkUploadLimitSettingC, 
+        QVariant::fromValue(account->uploadLimitSetting())).toInt());
+    auto userUploadLimit = settings.value(networkUploadLimitC, account->uploadLimit()).toInt();
+    auto userUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(settings.value(networkDownloadLimitSettingC, 
+        QVariant::fromValue(account->downloadLimitSetting())).toInt());
+    auto userDownloadLimit = settings.value(networkDownloadLimitC, account->downloadLimit()).toInt();
+    if (userUseUploadLimit == Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
+        userUseUploadLimit = globalUseUploadLimit;
+        userUploadLimit = configFile.uploadLimit();
+        qCDebug(lcAccountManager) << "Overriding upload limit with global setting:" << userUseUploadLimit 
+            << "- upload limit:" << userUploadLimit;
     }
-
-    account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
-    account->setUploadLimit(configFile.uploadLimit());
-    account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
-    account->setDownloadLimit(configFile.downloadLimit());
+    if (userUseDownloadLimit == Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
+        userUseDownloadLimit = globalUseDownloadLimit;
+        userDownloadLimit = configFile.downloadLimit();
+        qCDebug(lcAccountManager) << "Overriding download limit with global setting" << userUseDownloadLimit 
+            << "- download limit:" << userDownloadLimit;
+    }
+    if (userUseUploadLimit != Account::AccountNetworkTransferLimitSetting::NoLimit) {
+        account->setUploadLimitSetting(userUseUploadLimit);
+        account->setUploadLimit(userUploadLimit);
+    }
+    if (userUseDownloadLimit != Account::AccountNetworkTransferLimitSetting::NoLimit) {
+        account->setDownloadLimitSetting(userUseDownloadLimit);
+        account->setDownloadLimit(userDownloadLimit);
+    }
 }
 
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
@@ -612,31 +645,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    {
-        auto accountProxyType = settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>();
-        auto accountProxyHost = settings.value(networkProxyHostNameC).toString();
-        auto accountProxyPort = settings.value(networkProxyPortC).toInt();
-        auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
-        auto accountProxyUser = settings.value(networkProxyUserC).toString();
-        const auto globalProxyType = settings.value(ClientProxy::proxyTypeC).value<QNetworkProxy::ProxyType>();
-        qCDebug(lcAccountManager) << "Account proxy type:" <<  accountProxyType;
-        qCDebug(lcAccountManager) << "Global proxy type:" <<  globalProxyType;
-        if (accountProxyType == QNetworkProxy::NoProxy && globalProxyType != QNetworkProxy::NoProxy) {
-            accountProxyType = globalProxyType;
-            accountProxyHost = settings.value(ClientProxy::proxyHostC).toString();
-            accountProxyPort =  settings.value(ClientProxy::proxyPortC).toInt();
-            accountProxyNeedsAuth = settings.value(ClientProxy::proxyNeedsAuthC).toBool();
-            accountProxyUser = settings.value(ClientProxy::proxyUserC).toString();
-            qCInfo(lcAccountManager) << "Account has no proxy set, using global proxy instead.";
-        }
-
-        acc->setProxyType(accountProxyType);
-        acc->setProxyHostName(accountProxyHost);
-        acc->setProxyPort(accountProxyPort);
-        acc->setProxyNeedsAuth(accountProxyNeedsAuth);
-        acc->setProxyUser(accountProxyUser);
-    }
-
     acc->setUploadLimitSetting(
         settings.value(
             networkUploadLimitSettingC,
@@ -650,8 +658,11 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
+    ConfigFile configFile;
     const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
-    const auto job = new QKeychain::ReadPasswordJob(Theme::instance()->appName(), this);
+    const auto appName = configFile.isUnbrandedToBrandedMigrationInProgress() ? ConfigFile::unbrandedAppName 
+        : Theme::instance()->appName();
+    const auto job = new QKeychain::ReadPasswordJob(appName, this);
     job->setKey(proxyPasswordKey);
     connect(job, &QKeychain::Job::finished, this, [acc](const QKeychain::Job *const incomingJob) {
         const auto incomingReadJob = qobject_cast<const QKeychain::ReadPasswordJob *>(incomingJob);
@@ -689,7 +700,6 @@ AccountStatePtr AccountManager::account(const QString &name)
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
     const auto accountsList = accounts();
-
     for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
         const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
@@ -700,7 +710,6 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
             return account;
         }
     }
-
     return {};
 }
 
