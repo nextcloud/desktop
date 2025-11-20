@@ -46,6 +46,7 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
+constexpr auto networkProxySettingC = "networkProxySetting";
 constexpr auto networkProxyTypeC = "networkProxyType";
 constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
@@ -524,28 +525,22 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
     auto accountProxyNeedsAuth = settings.value(networkProxyNeedsAuthC).toBool();
     auto accountProxyUser = settings.value(networkProxyUserC).toString();
 
+    // Override user settings with global settings if user is set to use global settings
     ConfigFile configFile;
-    const auto globalProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
-
-    // Check if any proxy was set in the global settings
-    const auto accountHasDefaultOrNoProxy = accountProxyType == QNetworkProxy::NoProxy 
-        || accountProxyType == QNetworkProxy::DefaultProxy;
-    const auto globalHasDefinedProxy = globalProxyType != QNetworkProxy::NoProxy;
-    if (globalHasDefinedProxy && accountHasDefaultOrNoProxy) {
-        accountProxyType = globalProxyType;
+    auto accountProxySetting = settings.value(networkProxySettingC).toInt();
+    if (accountProxySetting == 0 && configFile.isMigrationInProgress()) {
+        accountProxyType = static_cast<QNetworkProxy::ProxyType>(configFile.proxyType());
         accountProxyHost = configFile.proxyHostName();
         accountProxyPort = configFile.proxyPort();
         accountProxyNeedsAuth = configFile.proxyNeedsAuth();
         accountProxyUser = configFile.proxyUser();
-        qCInfo(lcAccountManager) << "Account has no proxy set, using global proxy instead:" << accountProxyType;
+        qCInfo(lcAccountManager) << "Account is using global settings:" << accountProxyType;
     }
     account->setProxyType(accountProxyType);
     account->setProxyHostName(accountProxyHost);
     account->setProxyPort(accountProxyPort);
     account->setProxyNeedsAuth(accountProxyNeedsAuth);
     account->setProxyUser(accountProxyUser);
-
-    // Global network settings vs User network settings
     const auto globalUseUploadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useUploadLimit());
     const auto globalUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(configFile.useDownloadLimit());
     // User network settings
@@ -555,26 +550,18 @@ void AccountManager::migrateNetworkSettings(const AccountPtr &account, const QSe
     auto userUseDownloadLimit = static_cast<Account::AccountNetworkTransferLimitSetting>(settings.value(networkDownloadLimitSettingC, 
         QVariant::fromValue(account->downloadLimitSetting())).toInt());
     auto userDownloadLimit = settings.value(networkDownloadLimitC, account->downloadLimit()).toInt();
-
-    // Override user settings with global settings if the global setting exists
-    const auto globalNetworkIsDefined = globalUseUploadLimit != Account::AccountNetworkTransferLimitSetting::NoLimit;
-    const auto userNetworkIsNotDefined = [](Account::AccountNetworkTransferLimitSetting userNetworkLimit) -> bool { 
-        return userNetworkLimit == Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit 
-            || userNetworkLimit == Account::AccountNetworkTransferLimitSetting::NoLimit;
-    };
-    if (globalNetworkIsDefined && userNetworkIsNotDefined(userUseUploadLimit)) {
+    if (userUseUploadLimit == Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
         userUseUploadLimit = globalUseUploadLimit;
         userUploadLimit = configFile.uploadLimit();
         qCDebug(lcAccountManager) << "Overriding upload limit with global setting:" << userUseUploadLimit 
             << "- upload limit:" << userUploadLimit;
     }
-    if (globalNetworkIsDefined && userNetworkIsNotDefined(userUseDownloadLimit)) {
+    if (userUseDownloadLimit == Account::AccountNetworkTransferLimitSetting::LegacyGlobalLimit) {
         userUseDownloadLimit = globalUseDownloadLimit;
         userDownloadLimit = configFile.downloadLimit();
         qCDebug(lcAccountManager) << "Overriding download limit with global setting" << userUseDownloadLimit 
             << "- download limit:" << userDownloadLimit;
     }
-  
     if (userUseUploadLimit != Account::AccountNetworkTransferLimitSetting::NoLimit) {
         account->setUploadLimitSetting(userUseUploadLimit);
         account->setUploadLimit(userUploadLimit);
