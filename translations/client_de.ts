@@ -585,7 +585,7 @@ Soll das Konto importiert werden?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Dadurch werden Ihr Ordner und alle darin enthaltenen Dateien verschlüsselt. Auf diese Dateien kann ohne Ihren mnemonischen Verschlüsselungsschlüssel nicht mehr zugegriffen werden.
+        <translation>Dadurch werden Ihr Ordner und alle darin enthaltenen Dateien verschlüsselt. Auf diese Dateien kann ohne Ihre Gedächtnisstütze nicht mehr zugegriffen werden.
 &lt;b&gt;Dies kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?&lt;/b&gt;</translation>
     </message>
     <message>
@@ -756,7 +756,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1097"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation>Um Ihre kryptografische Identität zu schützen, verschlüsseln wir sie mit einer Eselsbrücke aus zwölf Wörtern aus dem Wörterbuch. Bitte notieren Sie sich diese und bewahren Sie sie sicher auf. Sie benötigen sie, um die Synchronisierung verschlüsselter Ordner auf Ihren anderen Geräten einzurichten.</translation>
+        <translation>Um Ihre kryptografische Identität zu schützen, verschlüsseln wir sie mit einer Gedächtnisstütze aus zwölf Wörtern aus dem Wörterbuch. Bitte notieren Sie sich diese und bewahren Sie sie sicher auf. Sie benötigen sie, um die Synchronisierung verschlüsselter Ordner auf Ihren anderen Geräten einzurichten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
