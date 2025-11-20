@@ -557,12 +557,12 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifrado de extremo a extremo con ficheiros virtuais</translation>
+        <translation>Cifraxe de extremo a extremo con ficheiros virtuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
+        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e a cifraxe de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
@@ -579,24 +579,24 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="114"/>
         <source>End-to-end Encryption</source>
-        <translation>Cifrado de extremo a extremo</translation>
+        <translation>Cifraxe de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="117"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Isto cifrará o seu cartafol e todos os ficheiros que conteña. Estes ficheiros xa non serán accesíbeis sen a súa chave mnemónica de cifrado.
+        <translation>Isto cifrará o seu cartafol e todos os ficheiros que conteña. Estes ficheiros xa non serán accesíbeis sen a súa chave mnemónica de cifraxe.
 &lt;b&gt;Este proceso non é reversíbel. Confirma que quere continuar?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation>O cifrado de extremo a extremo aínda non foi preparado para esta conta</translation>
+        <translation>A cifraxe de extremo a extremo aínda non foi preparada para esta conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <source>Forget encryption setup</source>
-        <translation>Esquecer a configuración do cifrado</translation>
+        <translation>Esquecer a configuración da cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
@@ -606,7 +606,7 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation>O cifrado está configurado. Lembre &lt;b&gt;cifrar&lt;/b&gt; un cartafol para cifrar de extremo a extremo calquera ficheiro novo que engada nel.</translation>
+        <translation>A cifraxe está configurada. Lembre &lt;b&gt;cifrar&lt;/b&gt; un cartafol para cifrar de extremo a extremo calquera ficheiro novo que engada nel.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="352"/>
@@ -621,18 +621,18 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="400"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>O cartafol ten un pequeno problema de sincronización. O cifrado deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
+        <translation>O cartafol ten un problema menor de sincronización. A cifraxe deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="402"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation>O cartafol ten un erro de sincronización. O cifrado deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
+        <translation>O cartafol ten un erro de sincronización. A cifraxe deste cartafol será posíbel unha vez que se sincronice correctamente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation>Non pode cifrar este cartafol porque o cifrado de extremo a extremo aínda non está configurado neste dispositivo.
+        <translation>Non pode cifrar este cartafol porque a cifraxe de extremo a extremo aínda non está configurada neste dispositivo.
 Gustaríalle facelo agora?</translation>
     </message>
     <message>
@@ -645,7 +645,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
         <source>Encryption failed</source>
-        <translation>Fallou o cifrado</translation>
+        <translation>Produciuse un fallo na cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
@@ -751,7 +751,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1095"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemónico de cifrado de extremo a extremo</translation>
+        <translation>Mnemónico de cifraxe de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1097"/>
@@ -761,17 +761,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation>Ignorar o cifrado de extremo a extremo neste dispositivo</translation>
+        <translation>Ignorar a cifraxe de extremo a extremo neste dispositivo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1123"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation>Confirma que quere ignorar os axustes de cifrado de extremo a extremo para %1 neste dispositivo?</translation>
+        <translation>Confirma que quere ignorar os axustes da cifraxe de extremo a extremo para %1 neste dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation>Ignorar o cifrado de extremo a extremo eliminará os datos sensíbeis e todos os ficheiros cifrados deste dispositivo.&lt;br&gt;Porén, os ficheiros cifrados permanecerán no servidor e en todos os seus outros dispositivos, se están configurados.</translation>
+        <translation>Ignorar a cifraxe de extremo a extremo eliminará os datos sensíbeis e todos os ficheiros cifrados deste dispositivo.&lt;br&gt;Porén, os ficheiros cifrados permanecerán no servidor e en todos os seus outros dispositivos, se están configurados.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1197"/>
@@ -801,17 +801,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1695"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation>O cifrado de extremo a extremo foi preparado nesta conta con outro dispositivo.&lt;br&gt;Introduza o mnemotécnico único para que os cartafoles cifrados tamén se sincronicen neste dispositivo.</translation>
+        <translation>A cifraxe de extremo a extremo foi preparada nesta conta con outro dispositivo.&lt;br&gt;Introduza o mnemotécnico único para que os cartafoles cifrados tamén se sincronicen neste dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1753"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation>Esta conta admite o cifrado de extremo a extremo, mais hai que configuralo primeiro.</translation>
+        <translation>Esta conta admite a cifraxe de extremo a extremo, mais hai que configuralo primeiro.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1757"/>
         <source>Set up encryption</source>
-        <translation>Definir o cifrado</translation>
+        <translation>Definir a cifraxe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1319"/>
@@ -1235,7 +1235,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="244"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
+        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información da cifraxe</translation>
     </message>
 </context>
 <context>
@@ -1486,7 +1486,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2275"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Introduza a súa frase de contrasinal de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>Introduza a súa frase de contrasinal de cifraxe de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2283"/>
@@ -1868,7 +1868,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/encryptfolderjob.cpp" line="118"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Non foi posíbel xerar os metadatos para o cifrado, Desbloqueando o cartafol.
+        <translation>Non foi posíbel xerar os metadatos para a cifraxe, Desbloqueando o cartafol.
 Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     </message>
 </context>
@@ -4261,7 +4261,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
+        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información da cifraxe</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
@@ -4882,7 +4882,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>A conta %1 non ten o cifrado de extremo a extremo configurado. Configure isto nos axustes  da súa conta para activar o cifrado do cartafol.</translation>
+        <translation>A conta %1 non ten a cifraxe de extremo a extremo configurada. Configure isto nos axustes  da súa conta para activar a cifraxe do cartafol.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="561"/>
