@@ -590,4 +590,22 @@ Utility::NtfsPermissionLookupRAII::~NtfsPermissionLookupRAII()
     qt_ntfs_permission_lookup--;
 }
 
+void Utility::HandleDeleter::operator()(HANDLE handle) const
+{
+    if (handle == INVALID_HANDLE_VALUE) {
+        return;
+    }
+
+    ::CloseHandle(handle);
+}
+
+void Utility::LocalFreeDeleter::operator()(void *p) const
+{
+    if (!p) {
+        return;
+    }
+
+    ::LocalFree(reinterpret_cast<HLOCAL>(p));
+}
+
 } // namespace OCC
