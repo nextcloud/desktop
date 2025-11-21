@@ -88,4 +88,4 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}/${{ inputs.CRAFT_TARGET }}/build/nextcloud-client/work/build
-          ctest --output-on-failure --output-junit testResult.xml
+          ctest --output-on-failure --output-junit testResult.xml --parallel 4
