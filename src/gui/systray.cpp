@@ -964,6 +964,15 @@ QPoint Systray::calcTrayIconCenter() const
     return QCursor::pos(currentScreen());
 }
 
+void Systray::setToolTip(const QString &tip)
+{
+#ifdef Q_OS_MACOS
+    setTrayIconToolTip(this, tip);
+#else
+    QSystemTrayIcon::setToolTip(tip);
+#endif
+}
+
 AccessManagerFactory::AccessManagerFactory()
     : QQmlNetworkAccessManagerFactory()
 {

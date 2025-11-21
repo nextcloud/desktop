@@ -48,6 +48,7 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 #endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
+void setTrayIconToolTip(QSystemTrayIcon *trayIcon, const QString &toolTip);
 #endif
 
 /**
@@ -148,6 +149,8 @@ public slots:
     void createFileActivityDialog(const QString &localPath);
 
     void presentShareViewInTray(const QString &localPath);
+
+    void setToolTip(const QString &tip);
 
 private slots:
     void slotUpdateSyncPausedState();
