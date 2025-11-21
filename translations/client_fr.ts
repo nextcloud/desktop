@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Un compte a été détecté à partir d’un ancien client de synchronisation bureau. 
 Le compte doit-il être importé ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="354"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>Importation de l&apos;héritage</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>Importer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="355"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Impossible d&apos;importer des comptes à partir de l&apos;ancienne configuration client.</translation>
     </message>

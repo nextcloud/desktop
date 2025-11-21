@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Откривен је налог са застареле верзије десктоп клијента.
 Да ли желите да се увезе?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="354"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>Увоз старе верзије</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>Увези</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>Прескочи</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="355"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Нису могли да се увезу налози из конфигурације клијента старе верзије.</translation>
     </message>
