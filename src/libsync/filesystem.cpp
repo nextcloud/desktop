@@ -465,70 +465,63 @@ bool FileSystem::setFolderPermissions(const QString &path,
 bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
 {
 #ifdef Q_OS_WIN
-    HANDLE fileHandle = nullptr;
+    Utility::UniqueHandle fileHandle;
     constexpr SECURITY_INFORMATION securityInfo = DACL_SECURITY_INFORMATION | READ_CONTROL;
     PACL resultDacl = nullptr;
-    PSECURITY_DESCRIPTOR securityDescriptor = nullptr;
-
-    const auto cleanup = [&fileHandle, &securityDescriptor](bool returnValue) -> bool {
-        if (fileHandle) {
-            CloseHandle(fileHandle);
-        }
-        if (securityDescriptor) {
-            // as per GetSecurityInfo docs, free using `LocalFree`.
-            LocalFree(reinterpret_cast<HLOCAL>(securityDescriptor));
-        }
-        return returnValue;
-    };
+    Utility::UniqueLocalFree<PSECURITY_DESCRIPTOR> securityDescriptor;
 
     const auto longPath = longWinPath(QString::fromStdWString(path.wstring()));
     const auto rawLongPath = reinterpret_cast<const wchar_t *>(longPath.utf16());
-    qCInfo(lcFileSystem()).nospace() << "Checking whether folder is read only, path=" << longPath;
+    qCDebug(lcFileSystem()).nospace() << "Checking whether folder is read only, path=" << longPath;
 
     // CreateFileW is known to work with long paths in the \\?\ variant
     constexpr DWORD desiredAccess = READ_CONTROL;
     constexpr DWORD shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
     constexpr DWORD creationDisposition = OPEN_EXISTING;
     constexpr DWORD flagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_OPEN_NO_RECALL;
-    fileHandle = CreateFileW(rawLongPath, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr);
+    fileHandle.reset(CreateFileW(rawLongPath, desiredAccess, shareMode, nullptr, creationDisposition, flagsAndAttributes, nullptr));
 
-    if (fileHandle == INVALID_HANDLE_VALUE) {
+    if (fileHandle.get() == INVALID_HANDLE_VALUE) {
         qCWarning(lcFileSystem).nospace() << "CreateFileW failed, path=" << longPath << " errorMessage=" << Utility::formatWinError(GetLastError());
-        return cleanup(false);
+        return false;
     }
 
-    if (const auto lastError = GetSecurityInfo(fileHandle, SE_FILE_OBJECT, securityInfo, nullptr, nullptr, &resultDacl, nullptr, &securityDescriptor); lastError != ERROR_SUCCESS) {
-        qCWarning(lcFileSystem).nospace() << "GetSecurityInfo failed, path=" << longPath << " errorMessage=" << Utility::formatWinError(lastError);
-        return cleanup(false);
+    {
+        PSECURITY_DESCRIPTOR securityDescriptorUnmanaged = nullptr;
+        if (const auto lastError = GetSecurityInfo(fileHandle.get(), SE_FILE_OBJECT, securityInfo, nullptr, nullptr, &resultDacl, nullptr, &securityDescriptorUnmanaged); lastError != ERROR_SUCCESS) {
+            qCWarning(lcFileSystem).nospace() << "GetSecurityInfo failed, path=" << longPath << " errorMessage=" << Utility::formatWinError(lastError);
+            return false;
+        }
+        securityDescriptor.reset(securityDescriptorUnmanaged);
     }
 
     if (!resultDacl) {
         qCWarning(lcFileSystem).nospace() << "failed to retrieve DACL needed to figure out whether a folder is read-only, path=" << longPath;
-        return cleanup(false);
+        return false;
     }
 
     ACL_SIZE_INFORMATION aclSize;
     if (!GetAclInformation(resultDacl, &aclSize, sizeof(aclSize), AclSizeInformation)) {
         qCWarning(lcFileSystem).nospace() << "GetAclInformation failed, path=" << longPath << " errorMessage=" << Utility::formatWinError(GetLastError());
-        return cleanup(false);
+        return false;
     }
 
     for (int i = 0; i < aclSize.AceCount; ++i) {
         void *currentAce = nullptr;
         if (!GetAce(resultDacl, i, &currentAce)) {
             qCWarning(lcFileSystem).nospace() << "GetAce failed, path=" << longPath << " errorMessage=" << Utility::formatWinError(GetLastError());
-            return cleanup(false);
+            return false;
         }
 
         const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
 
         if ((ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
             qCInfo(lcFileSystem()).nospace() << "Detected access denied ACL: assuming read-only, path=" << longPath;
-            return cleanup(true);
+            return true;
         }
     }
 
-    return cleanup(false);
+    return false;
 #else
     try
     {

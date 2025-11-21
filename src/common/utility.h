@@ -326,6 +326,35 @@ namespace Utility {
         Q_DISABLE_COPY(NtfsPermissionLookupRAII);
     };
 
+    /**
+     * Closes a Win32 HANDLE if the HANDLE is valid (i.e. not `INVALID_HANDLE_VALUE`).
+     */
+    struct OCSYNC_EXPORT HandleDeleter {
+        typedef HANDLE pointer; // HANDLEs are not really pointers even though they're treated as such
+
+        void operator()(HANDLE handle) const;
+    };
+
+    /**
+     * A `std::unique_ptr` that automatically closes a HANDLE.
+     */
+    using UniqueHandle = std::unique_ptr<HANDLE, HandleDeleter>;
+
+    /**
+     * Releases a pointer previously allocated by `LocalAlloc`.
+     */
+    struct OCSYNC_EXPORT LocalFreeDeleter {
+        void operator()(void *p) const;
+    };
+
+    /**
+     * A `std::unique_ptr` that automatically cleans up `P*` types (e.g. `PSID`).
+     *
+     * Use this whenever the Win32 API docs of a given function tell you to free a returned buffer
+     * by calling the `LocalFree` function.
+     */
+    template<typename T>
+    using UniqueLocalFree = std::unique_ptr<typename std::remove_pointer<T>::type, LocalFreeDeleter>;
 #endif
 }
 /** @} */ // \addtogroup
