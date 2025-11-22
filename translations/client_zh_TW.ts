@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>移除「%1」時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>無法移除資料夾「%1」</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation>公開分享連結</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1070"/>
         <source>File %1 is already locked by %2.</source>
         <translation>檔案 %1 已被 %2 鎖定。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1072"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>%1 的鎖定操作失敗，錯誤為 %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1066"/>
+        <location filename="../src/libsync/account.cpp" line="1074"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>%1 的解除鎖定操作失敗，錯誤為 %2</translation>
     </message>
@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>偵測到來自舊版桌面客戶端的帳號。
 應該匯入帳號嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="326"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>略過</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="327"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>無法從舊版客戶端組態設定中匯入帳號。</translation>
     </message>
@@ -1071,71 +1071,71 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="174"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>有些設定是在此客戶端的 %1 版本中設定的，並使用了此版本中無法使用的功能。&lt;br&gt;&lt;br&gt;繼續則代表 &lt;b&gt;%2 這些設定&lt;/b&gt;。&lt;br&gt;&lt;br&gt;目前設定組態檔已備份至 &lt;i&gt;%3&lt;/i&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>較新</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>較舊</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>忽略</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="515"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="516"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="518"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="519"/>
+        <location filename="../src/gui/application.cpp" line="524"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="522"/>
+        <location filename="../src/gui/application.cpp" line="527"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1143,12 +1143,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>存取組態設定檔時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的組態設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>
@@ -2843,7 +2843,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="660"/>
+        <location filename="../src/gui/generalsettings.cpp" line="661"/>
         <source>Create Debug Archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
@@ -2990,17 +2990,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="662"/>
+        <location filename="../src/gui/generalsettings.cpp" line="663"/>
         <source>Zip Archives</source>
         <translation>ZIP 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="672"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Debug Archive Created</source>
         <translation>已建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>請在分享前刪除敏感資訊！已於 %1 建立除錯封存檔</translation>
     </message>
@@ -4136,100 +4136,80 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>檔案有為虛擬檔案保留的副檔名。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="780"/>
-        <source>size</source>
-        <translation>大小</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
-        <source>permission</source>
-        <translation>權限</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
-        <source>file id</source>
-        <translation>檔案 ID</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="790"/>
-        <source>Server reported no %1</source>
-        <translation>伺服器回報沒有 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>無法存取伺服器上的資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="789"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>無法存取伺服器上的檔案。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1203"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>由於修改時間無效，無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>%1 的上傳超過了個人檔案中剩餘空間的 %2。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>%1 的上傳超過了資料夾 %3 中的剩餘空間的 %2。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1238"/>
+        <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1288"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>從資料庫刪除檔案紀錄 %1 時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1568"/>
-        <location filename="../src/libsync/discovery.cpp" line="2041"/>
+        <location filename="../src/libsync/discovery.cpp" line="1567"/>
+        <location filename="../src/libsync/discovery.cpp" line="2040"/>
         <source>Moved to invalid target, restoring</source>
         <translation>移動至無效目標，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1896"/>
+        <location filename="../src/libsync/discovery.cpp" line="1895"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>無法修改已加密的項目，因為選定的憑證無效。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1964"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>由於是「選擇要同步的項目」黑名單，故忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>不允許，您無權新增子資料夾到該資料夾</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2005"/>
+        <location filename="../src/libsync/discovery.cpp" line="2004"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>不允許，您無權新增檔案到該資料夾</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2018"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允許上傳此檔案，這在伺服器上是唯讀，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="2054"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許移除，正在復原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2226"/>
+        <location filename="../src/libsync/discovery.cpp" line="2225"/>
         <source>Error while reading the database</source>
         <translation>讀取資料庫時發生錯誤</translation>
     </message>
@@ -4648,11 +4628,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Missing File ID from server</source>
         <translation>伺服器遺失檔案 ID</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
-        <source>Missing ETag from server</source>
-        <translation>伺服器遺失 ETag</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
@@ -5614,12 +5589,12 @@ Server replied with error: %2</source>
         <translation>公開分享連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>在瀏覽器中開啟 Nextcloud Assistant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在瀏覽器中開啟 Nextcloud Talk</translation>
     </message>
@@ -5855,7 +5830,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>您已在 ％2 登出您的帳號 %1。請再次登入。</translation>
     </message>
@@ -6280,7 +6255,7 @@ Server replied with error: %2</source>
         <translation>已同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation>刪除檔案時發生錯誤</translation>
     </message>
@@ -6672,12 +6647,12 @@ Server replied with error: %2</source>
         <translation>開啟本機資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Disconnected</source>
         <translation>已中斷連線</translation>
     </message>
@@ -6971,17 +6946,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="250"/>
+        <location filename="../src/common/checksums.cpp" line="258"/>
         <source>The checksum header is malformed.</source>
         <translation>校驗檢查碼標頭異常。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="284"/>
+        <location filename="../src/common/checksums.cpp" line="292"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>校驗檢查碼標頭包含了未知的檢查碼類型「%1」</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="289"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>下載的檔案與校驗檢查碼不相符，將會還原。「%1」!=「%2」</translation>
     </message>

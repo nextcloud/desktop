@@ -42,7 +42,11 @@ public:
     [[nodiscard]] bool ready() const override { return true; }
     bool stillValid(QNetworkReply *) override { return true; }
     void askFromUser() override {};
-    void fetchFromKeychain() override { _wasFetched = true; Q_EMIT fetched(); };
+    void fetchFromKeychain(const QString &appName = {}) override {
+        Q_UNUSED(appName)
+        _wasFetched = true;
+        Q_EMIT fetched();
+    };
     void persist() override {};
     void invalidateToken() override {};
     void forgetSensitiveData() override {};

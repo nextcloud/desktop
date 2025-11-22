@@ -30,22 +30,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 #endif
 
-#ifdef Q_OS_WIN
-void jobKeyPrependAppName(QString &key)
-{
-    // NOTE: The following is normally done in AbstractCredentials::keychainKey
-    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
-
-    // On Windows the credential keys aren't namespaced properly
-    // by qtkeychain. To work around that we manually add namespacing
-    // to the generated keys. See #6125.
-    // It's safe to do that since the key format is changing for 2.4
-    // anyway to include the account ids. That means old keys can be
-    // migrated to new namespaced keys on windows for 2.4.
-    key.prepend(QCoreApplication::applicationName() + "_");
-}
-#endif
-
 /*
 * Job
 */
@@ -53,6 +37,7 @@ Job::Job(QObject *parent)
     : QObject(parent)
 {
     _serviceName = Theme::instance()->appName();
+    _appName = QCoreApplication::applicationName();
 }
 
 Job::~Job()
@@ -102,6 +87,20 @@ void Job::setAutoDelete(bool autoDelete)
 {
     _autoDelete = autoDelete;
 }
+
+void Job::setAppName(const QString &appName)
+{
+    _appName = appName;
+}
+
+#ifdef Q_OS_WIN
+void Job::jobKeyPrependAppName(QString &key)
+{
+    // NOTE: The following is normally done in AbstractCredentials::keychainKey
+    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
+    key.prepend(_appName + "_");
+}
+#endif
 
 /*
 * WriteJob
@@ -256,7 +255,8 @@ void ReadJob::start()
     const QString kck = _account ? AbstractCredentials::keychainKey(
             _account->url().toString(),
             _key,
-            _keychainMigration ? QString() : _account->id()
+            _keychainMigration ? QString() : _account->id(),
+            _appName
         ) : _key;
 
     auto job = new QKeychain::ReadPasswordJob(_serviceName, this);

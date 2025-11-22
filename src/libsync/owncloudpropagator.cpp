@@ -879,7 +879,7 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
 
 QString OwncloudPropagator::fullLocalPath(const QString &tmp_file_name) const
 {
-    return _localDir + tmp_file_name;
+    return QDir::fromNativeSeparators(FileSystem::joinPath(_localDir, tmp_file_name));
 }
 
 QString OwncloudPropagator::localPath() const

@@ -572,7 +572,7 @@ public:
     [[nodiscard]] QString password() const override { return "password"; }
     [[nodiscard]] QNetworkAccessManager *createQNAM() const override { return _qnam; }
     [[nodiscard]] bool ready() const override { return true; }
-    void fetchFromKeychain() override { }
+    void fetchFromKeychain(const QString &appName) override { Q_UNUSED(appName) }
     void askFromUser() override { }
     bool stillValid(QNetworkReply *reply) override {
         return reply->error() != QNetworkReply::AuthenticationRequiredError;

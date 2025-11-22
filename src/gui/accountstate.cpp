@@ -296,7 +296,12 @@ void AccountState::checkConnectivity()
     // make little sense, we might be missing client certs.
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
-        account()->credentials()->fetchFromKeychain();
+        ConfigFile configFile;
+        const auto shouldTryUnbrandedToBrandedMigration = configFile.shouldTryUnbrandedToBrandedMigration();
+        qCDebug(lcAccountState) << "shouldTryUnbrandedToBrandedMigration?" << shouldTryUnbrandedToBrandedMigration;
+        qCDebug(lcAccountState) << "migrationPhase?" << configFile.migrationPhase();
+        const auto appName = shouldTryUnbrandedToBrandedMigration ? configFile.unbrandedAppName : "";
+        account()->credentials()->fetchFromKeychain(appName);
         return;
     }
 
@@ -492,6 +497,10 @@ void AccountState::slotCredentialsFetched(AbstractCredentials *)
     qCInfo(lcAccountState) << "Fetched credentials for" << _account->url().toString()
                            << "attempting to connect";
     _waitingForNewCredentials = false;
+    ConfigFile configFile;
+    if (configFile.isMigrationInProgress()) {
+        configFile.setMigrationPhase(ConfigFile::MigrationPhase::Done);
+    }
     checkConnectivity();
 }
 

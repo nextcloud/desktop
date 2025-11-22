@@ -55,7 +55,7 @@ public:
 
     [[nodiscard]] bool ready() const override;
 
-    void fetchFromKeychain() override;
+    void fetchFromKeychain(const QString &appName = {}) override;
     void askFromUser() override;
 
     bool stillValid(QNetworkReply *reply) override;
@@ -127,6 +127,7 @@ protected:
     bool _ready = false;
     bool _credentialsValid = false;
     bool _keychainMigration = false;
+    QString _appName;
 
     WebFlowCredentialsDialog *_askDialog = nullptr;
 };

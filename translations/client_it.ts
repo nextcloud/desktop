@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Errore durante la rimozione di &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Impossibile rimuovere la cartella &quot;%1&quot;</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation>Link di condivisione pubblico</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1070"/>
         <source>File %1 is already locked by %2.</source>
         <translation>File %1 è già bloccato da %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1072"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Operazione di blocco di %1 fallita con errore %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1066"/>
+        <location filename="../src/libsync/account.cpp" line="1074"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Operazione di sblocco di %1 fallita con errore %2</translation>
     </message>
@@ -462,30 +462,30 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>È stato rilevato un account da un client desktop legacy.
 L&apos;account deve essere importato?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="326"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>Importazione obsoleta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>Importa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>Salta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="327"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Importazione account fallita da una configurazione di client obsoleto.</translation>
     </message>
@@ -1070,71 +1070,71 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="174"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Alcune impostazioni sono state configurate nelle versioni %1 di questo client e utilizzano funzionalità che non sono disponibili in questa versione. &lt;br&gt;&lt;br&gt; Continuare significherà &lt;b&gt;%2 queste impostazioni &lt;/b&gt;. &lt;br&gt;&lt;br&gt;Il file di configurazione attuale è stato backuppato su &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>mai</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>più vecchio</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>ignorare</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>eliminare</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Esci</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Continua</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="515"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="516"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>1 account</source>
         <translation>1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="518"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 cartelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="519"/>
+        <location filename="../src/gui/application.cpp" line="524"/>
         <source>1 folder</source>
         <translation>1 cartella</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>Legacy import</source>
         <translation>Importazione obsoleta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="522"/>
+        <location filename="../src/gui/application.cpp" line="527"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1142,12 +1142,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>Errore accedendo al file di configurazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Si è verificato un errore durante l&apos;accesso al file di configurazione su %1. Assicurati che il file sia accessibile dal tuo account di sistema.</translation>
     </message>
@@ -2844,7 +2844,7 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="660"/>
+        <location filename="../src/gui/generalsettings.cpp" line="661"/>
         <source>Create Debug Archive</source>
         <translation>Crea archivio di debug</translation>
     </message>
@@ -2991,17 +2991,17 @@ Il downgrade delle versioni non è possibile immediatamente: passare da stabile 
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="662"/>
+        <location filename="../src/gui/generalsettings.cpp" line="663"/>
         <source>Zip Archives</source>
         <translation>Archivi zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="672"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Debug Archive Created</source>
         <translation>Archivio di debug creato</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Redigi le informazioni considerate sensibili prima di condividerle! Archivio di debug creato al %1</translation>
     </message>
@@ -4129,100 +4129,80 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il file ha l&apos;estensione riservata ai file virtuali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="780"/>
-        <source>size</source>
-        <translation>dimensione</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
-        <source>permission</source>
-        <translation>permesso</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
-        <source>file id</source>
-        <translation>ID del file</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="790"/>
-        <source>Server reported no %1</source>
-        <translation>Il server non ha restituito alcun %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="789"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1203"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nei file personali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation>Il caricamento di %1supera %2 dello spazio rimasto nella cartella %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1238"/>
+        <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossibile caricare il file, perché è aperto in &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1288"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errore nella rilevazione del record del file %1 dal database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1568"/>
-        <location filename="../src/libsync/discovery.cpp" line="2041"/>
+        <location filename="../src/libsync/discovery.cpp" line="1567"/>
+        <location filename="../src/libsync/discovery.cpp" line="2040"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Spostato su una destinazione non valida, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1896"/>
+        <location filename="../src/libsync/discovery.cpp" line="1895"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Impossibile modificare l&apos;elemento crittografato perché il certificato selezionato non è valido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1964"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorato in base alla lista nera per la scelta di cosa sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non consentito perché non sei autorizzato ad aggiungere sottocartelle a quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2005"/>
+        <location filename="../src/libsync/discovery.cpp" line="2004"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non ti è consentito perché non hai i permessi per aggiungere file in quella cartella </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2018"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non ti è permesso caricare questo file perché hai l&apos;accesso in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="2054"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2226"/>
+        <location filename="../src/libsync/discovery.cpp" line="2225"/>
         <source>Error while reading the database</source>
         <translation>Errore durante la lettura del database</translation>
     </message>
@@ -4641,11 +4621,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Missing File ID from server</source>
         <translation>File ID mancante dal server</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
-        <source>Missing ETag from server</source>
-        <translation>ETag mancante dal server</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
@@ -5607,12 +5582,12 @@ Il server ha risposto con errore: %2</translation>
         <translation>Link di condivisione pubblico</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Apri Nextcloud Assistant nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Apri Nextcloud Talk nel browser</translation>
     </message>
@@ -5848,7 +5823,7 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>Sei stato disconnesso dal tuo utente %1 su %2. Accedi nuovamente.</translation>
     </message>
@@ -6273,7 +6248,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>%1 sincronizzato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation>Errore durante l&apos;eliminazione del file</translation>
     </message>
@@ -6665,12 +6640,12 @@ Il server ha risposto con errore: %2</translation>
         <translation>Apri cartella locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Connected</source>
         <translation>Collegato</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Disconnected</source>
         <translation>Disconnesso</translation>
     </message>
@@ -6964,17 +6939,17 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="250"/>
+        <location filename="../src/common/checksums.cpp" line="258"/>
         <source>The checksum header is malformed.</source>
         <translation>L&apos;intestazione del codice di controllo non è valida.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="284"/>
+        <location filename="../src/common/checksums.cpp" line="292"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>L&apos;intestazione di controllo conteneva un tipo di codice di controllo &quot;%1&quot; sconosciuto</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="289"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Il file scaricato non verifica il codice di controllo, sarà ripristinato. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>

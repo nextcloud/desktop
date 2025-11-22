@@ -610,6 +610,7 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
     cfgFile.setOptionalServerNotifications(enable);
     _ui->chatNotificationsCheckBox->setEnabled(enable);
     _ui->callNotificationsCheckBox->setEnabled(enable);
+    _ui->quotaWarningNotificationsCheckBox->setEnabled(enable);
 }
 
 void GeneralSettings::slotToggleChatNotifications(bool enable)

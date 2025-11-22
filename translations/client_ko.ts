@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>&quot;%1&quot; 삭제중 오류 발생: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>폴더 &quot;%1&quot;을(를) 지울 수 없음</translation>
     </message>
@@ -444,17 +444,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1062"/>
+        <location filename="../src/libsync/account.cpp" line="1070"/>
         <source>File %1 is already locked by %2.</source>
         <translation>%1 파일은 이미 %2에 의해 잠겼습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1064"/>
+        <location filename="../src/libsync/account.cpp" line="1072"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>%2 오류로 인해 %1의 잠금에 실패했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1066"/>
+        <location filename="../src/libsync/account.cpp" line="1074"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>%2 오류로 인해 %1의 잠금 해제에 실패했습니다.</translation>
     </message>
@@ -462,29 +462,29 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="243"/>
+        <location filename="../src/gui/accountmanager.cpp" line="244"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="245"/>
-        <location filename="../src/gui/accountmanager.cpp" line="326"/>
+        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>Legacy import</source>
         <translation>예전 버전에서 가져오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="246"/>
+        <location filename="../src/gui/accountmanager.cpp" line="247"/>
         <source>Import</source>
         <translation>가져오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="247"/>
+        <location filename="../src/gui/accountmanager.cpp" line="248"/>
         <source>Skip</source>
         <translation>건너뛰기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="327"/>
+        <location filename="../src/gui/accountmanager.cpp" line="358"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>예전 버전의 클라이언트에서 계정을 가져올 수 없습니다.</translation>
     </message>
@@ -1068,71 +1068,71 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="174"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>설정의 일부가 %1 버전의 클라이언트에서 설정되었고 현재 버전에서 사용할 수 없는 기능을 사용합니다.&lt;br&gt;&lt;br&gt;계속하면 &lt;b&gt;이 설정들이 %2됩니다.&lt;/b&gt;&lt;br&gt;&lt;br&gt;현재 설정을 &lt;i&gt;%3&lt;/i&gt;에 백업했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>이후</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>이전</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>무시</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="181"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="183"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>끝내기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="184"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="515"/>
+        <location filename="../src/gui/application.cpp" line="520"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="516"/>
+        <location filename="../src/gui/application.cpp" line="521"/>
         <source>1 account</source>
         <translation>1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="518"/>
+        <location filename="../src/gui/application.cpp" line="523"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="519"/>
+        <location filename="../src/gui/application.cpp" line="524"/>
         <source>1 folder</source>
         <translation>1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="521"/>
+        <location filename="../src/gui/application.cpp" line="526"/>
         <source>Legacy import</source>
         <translation>레거시 불러오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="522"/>
+        <location filename="../src/gui/application.cpp" line="527"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1140,12 +1140,12 @@ This action will abort any currently running synchronization.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Error accessing the configuration file</source>
         <translation>설정 파일 액세스 오류</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>%1의 구성 파일에 액세스하는 동안 오류가 발생했습니다. 시스템 계정으로 파일에 액세스할 수 있는지 확인하십시오.</translation>
     </message>
@@ -2838,7 +2838,7 @@ For advanced users: this issue might be related to multiple sync database files 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="285"/>
-        <location filename="../src/gui/generalsettings.cpp" line="660"/>
+        <location filename="../src/gui/generalsettings.cpp" line="661"/>
         <source>Create Debug Archive</source>
         <translation>디버그 아카이브 만들기</translation>
     </message>
@@ -2985,17 +2985,17 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="662"/>
+        <location filename="../src/gui/generalsettings.cpp" line="663"/>
         <source>Zip Archives</source>
         <translation>아카이브 압축</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="672"/>
+        <location filename="../src/gui/generalsettings.cpp" line="673"/>
         <source>Debug Archive Created</source>
         <translation>디버그 아카이브가 생성됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="673"/>
+        <location filename="../src/gui/generalsettings.cpp" line="674"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4132,100 +4132,80 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일이 가상 파일에 예약된 확장자를 가짐</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="780"/>
-        <source>size</source>
-        <translation>크기</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="782"/>
-        <source>permission</source>
-        <translation>권한</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="786"/>
-        <source>file id</source>
-        <translation>파일 id</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="790"/>
-        <source>Server reported no %1</source>
-        <translation>서버가 %1이(가) 없다고(아니라고) 보고함</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="784"/>
+        <location filename="../src/libsync/discovery.cpp" line="788"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="785"/>
+        <location filename="../src/libsync/discovery.cpp" line="789"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1203"/>
+        <location filename="../src/libsync/discovery.cpp" line="1202"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1238"/>
+        <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>파일이 &quot;%1&quot;에서 열려있기 때문에 업로드할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1288"/>
+        <location filename="../src/libsync/discovery.cpp" line="1287"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>파일 레코드 %1(을)를 데이터베이스에서 제거하는 중 오류 발생</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1568"/>
-        <location filename="../src/libsync/discovery.cpp" line="2041"/>
+        <location filename="../src/libsync/discovery.cpp" line="1567"/>
+        <location filename="../src/libsync/discovery.cpp" line="2040"/>
         <source>Moved to invalid target, restoring</source>
         <translation>유효하지 않은 목적지로 옮겨짐, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1896"/>
+        <location filename="../src/libsync/discovery.cpp" line="1895"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1965"/>
+        <location filename="../src/libsync/discovery.cpp" line="1964"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;동기화 할 대상 선택&quot; 블랙리스트로 인해 무시되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1999"/>
+        <location filename="../src/libsync/discovery.cpp" line="1998"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>해당 폴더에 하위 폴더를 추가 할 수 있는 권한이 없기 때문에 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2005"/>
+        <location filename="../src/libsync/discovery.cpp" line="2004"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>해당 폴더에 파일을 추가 할 권한이 없으므로 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2019"/>
+        <location filename="../src/libsync/discovery.cpp" line="2018"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>이 파일은 서버에서 읽기 전용이므로 업로드 할 수 없습니다. 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2055"/>
+        <location filename="../src/libsync/discovery.cpp" line="2054"/>
         <source>Not allowed to remove, restoring</source>
         <translation>삭제가 허용되지 않음, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2226"/>
+        <location filename="../src/libsync/discovery.cpp" line="2225"/>
         <source>Error while reading the database</source>
         <translation>데이터베이스를 읽는 중 오류 발생</translation>
     </message>
@@ -4644,11 +4624,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateuploadng.cpp" line="524"/>
         <source>Missing File ID from server</source>
         <translation>서버에서 파일 ID 누락</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
-        <source>Missing ETag from server</source>
-        <translation>서버에서 ETag 누락</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
@@ -5610,12 +5585,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>브라우저에서 Nextcloud 어시스턴트 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1087"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1079"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>브라우저에서 Nextcloud 토크 열기</translation>
     </message>
@@ -5851,7 +5826,7 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="171"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="172"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>귀하의 계정 %1이(가) %2에서 로그아웃 했습니다. 다시 로그인하십시오.</translation>
     </message>
@@ -6276,7 +6251,7 @@ Server replied with error: %2</source>
         <translation>%1 동기화</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation type="unfinished"/>
     </message>
@@ -6668,12 +6643,12 @@ Server replied with error: %2</source>
         <translation>로컬 폴더 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Connected</source>
         <translation>연결됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="86"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="87"/>
         <source>Disconnected</source>
         <translation>연결되지 않음</translation>
     </message>
@@ -6967,17 +6942,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="250"/>
+        <location filename="../src/common/checksums.cpp" line="258"/>
         <source>The checksum header is malformed.</source>
         <translation>체크섬 헤더가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="284"/>
+        <location filename="../src/common/checksums.cpp" line="292"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>체크섬 헤더에 알 수 없는 체크섬 유형 &quot;%1&quot;이 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="289"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>다운로드한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.  &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
