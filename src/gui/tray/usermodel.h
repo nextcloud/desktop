@@ -292,6 +292,8 @@ private:
     bool _init = true;
 
     void buildUserList();
+    void addAccsToUserList();
+    void setInitialUser();
 };
 
 class ImageProvider : public QQuickAsyncImageProvider

@@ -1334,13 +1334,14 @@ UserModel *UserModel::instance()
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    // TODO: Remember selected user from last quit via settings file
     if (AccountManager::instance()->accounts().size() > 0) {
-        buildUserList();
+        setInitialUser();
     }
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &UserModel::buildUserList);
+        this, &UserModel::addAccsToUserList);
+    connect(AccountManager::instance(), &AccountManager::accountListInitialized,
+        this, &UserModel::setInitialUser);
 }
 
 void UserModel::buildUserList()
@@ -1349,10 +1350,41 @@ void UserModel::buildUserList()
         auto user = AccountManager::instance()->accounts().at(i);
         addUser(user);
     }
+}
+
+void UserModel::addAccsToUserList()
+{
     if (_init) {
-        _users.first()->setCurrentUser(true);
-        _init = false;
+        return;
     }
+
+    buildUserList();
+}
+
+void UserModel::setInitialUser()
+{
+    if (!_init) {
+        return;
+    }
+
+    buildUserList();
+
+    if(!_users.isEmpty()) {
+        ConfigFile cfg;
+        const uint lastSelectedAccountId = cfg.lastSelectedAccount();
+
+        for (int i = 0; i <  _users.size(); i++) {
+            if (_users.at(i)->account()->id().toUInt() == lastSelectedAccountId) {
+                setCurrentUserId(i);
+            }
+        }
+
+        if (_currentUserId < 0) {
+            setCurrentUserId(0);
+        }
+    }
+
+    _init = false;
 }
 
 int UserModel::numUsers()
@@ -1430,7 +1462,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
 
         _users << u;
-        if (isCurrent || _currentUserId < 0) {
+        if (isCurrent || (_currentUserId < 0 && !_init)) {
             setCurrentUserId(_users.size() - 1);
         }
 
@@ -1524,6 +1556,8 @@ void UserModel::setCurrentUserId(const int id)
         // order has changed, index remained the same
         emit currentUserChanged();
     } else if (_currentUserId != id) {
+        ConfigFile cfg;
+        cfg.setLastSelectedAccount(_users[id]->account()->id().toUInt());
         _currentUserId = id;
         emit currentUserChanged();
     }

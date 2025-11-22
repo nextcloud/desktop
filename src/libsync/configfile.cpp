@@ -83,6 +83,9 @@ static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable")
 static const QString defaultEnterpriseChannel = "enterprise";
 
 static constexpr char languageC[] = "language";
+
+static constexpr char lastSelectedAccountC[] = "lastSelectedAccount";
+
 static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
 
@@ -1225,6 +1228,18 @@ void ConfigFile::setLanguage(const QString& language)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(languageC), language);
+}
+
+uint ConfigFile::lastSelectedAccount() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(lastSelectedAccountC), QLatin1String("")).toUInt();
+}
+
+void ConfigFile::setLastSelectedAccount(const uint accountId)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(lastSelectedAccountC), accountId);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)

@@ -242,6 +242,10 @@ public:
     [[nodiscard]] QString language() const;
     void setLanguage(const QString &language);
 
+    /// Store and retrieve the last selected account identifier
+    [[nodiscard]] uint lastSelectedAccount() const;
+    void setLastSelectedAccount(const uint accountId);
+
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);
