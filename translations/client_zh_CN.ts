@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>删除  &quot;%1&quot; 出错：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>无法删除文件夹 &quot;%1&quot;</translation>
     </message>
@@ -6243,7 +6243,7 @@ Server replied with error: %2</source>
         <translation>已同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation>删除文件时发生错误</translation>
     </message>

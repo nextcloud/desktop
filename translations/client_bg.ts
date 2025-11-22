@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Грешка при премахването на „%1“: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation> Не можа да бъде премахната папката „%1“</translation>
     </message>
@@ -6235,7 +6235,7 @@ Server replied with error: %2</source>
         <translation>Синхронизиран %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation type="unfinished"/>
     </message>
