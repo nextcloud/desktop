@@ -48,7 +48,7 @@ import OSLog
     // This does lead to long load times when a file provider domain is initially configured.
     // We can instead do a fast enumeration where we only scan folders as the user navigates through
     // them, thereby avoiding this issue; the trade-off is that we will be unable to detect
-    // materialised file moves to unexplored folders, therefore deleting the item when we could have
+    // materialized file moves to unexplored folders, therefore deleting the item when we could have
     // just moved it instead.
     //
     // Since it's not desirable to cancel a long recursive enumeration half-way through, we do the
@@ -500,7 +500,7 @@ import OSLog
         }
 
         let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
-        let materialisedObserver = MaterialisedEnumerationObserver(ncKitAccount: ncAccount.ncKitAccount, dbManager: dbManager, log: log) { _, _ in
+        let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { _, _ in
             completionHandler()
         }
         let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)

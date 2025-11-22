@@ -90,7 +90,7 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
 
     if (metadata._documentSize == 0) {
         // If the document size is 0, we can try to get the size of the file
-        // directly from its path. These are all materialised files anyway
+        // directly from its path. These are all materialized files anyway
         // so the size will be properly represented
         const auto path = metadata.userVisiblePath();
         const auto fileInfo = QFileInfo(path);
