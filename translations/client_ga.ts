@@ -326,12 +326,12 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="290"/>
+        <location filename="../src/libsync/filesystem.cpp" line="296"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Earráid agus &quot;% 1&quot; á bhaint: % 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="333"/>
+        <location filename="../src/libsync/filesystem.cpp" line="339"/>
         <source>Could not remove folder &quot;%1&quot;</source>
         <translation>Níorbh fhéidir fillteán &quot;% 1&quot; a bhaint</translation>
     </message>
@@ -6254,7 +6254,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Sioncronaithe % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="322"/>
+        <location filename="../src/libsync/filesystem.cpp" line="328"/>
         <source>Error deleting the file</source>
         <translation>Earráid agus an comhad á scriosadh</translation>
     </message>
