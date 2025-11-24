@@ -9,6 +9,9 @@
 #ifndef _CSYNC_VIO_LOCAL_H
 #define _CSYNC_VIO_LOCAL_H
 
+#include "csync.h"
+#include "ocsynclib.h"
+
 #include <QString>
 
 struct csync_vio_handle_t;
