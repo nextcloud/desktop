@@ -174,8 +174,8 @@ public extension ItemMetadata {
 
     func remotePath() -> String {
         if ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            // For the root container the fileName is "__NC_ROOT__" (aka NextcloudKit.shared.nkCommonInstance.rootFileName)
-            // --> appending the fileName to that is not correct, as it most likely won't ecist
+            // For the root container the fileName is defined by NextcloudKit.shared.nkCommonInstance.rootFileName.
+            // --> appending the fileName to that is not correct, as it most likely won't exist.
             return serverUrl
         }
 
