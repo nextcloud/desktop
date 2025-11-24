@@ -70,7 +70,13 @@ bool FolderWatcher::isReliable() const
     return _isReliable;
 }
 
-void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
+bool FolderWatcher::canSetPermissions() const
+{
+    return _canSetPermissions;
+}
+
+void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
+{
     QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
     for (int i = 0; i < newSubPaths.size(); i++) {
         QString path = dir.path() + "/" + newSubPaths[i];
@@ -99,6 +105,43 @@ void FolderWatcher::startNotificatonTest(const QString &path)
     // Don't do the local file modification immediately:
     // wait for FolderWatchPrivate::_ready
     startNotificationTestWhenReady();
+}
+
+void FolderWatcher::performSetPermissionsTest(const QString &path)
+{
+    _canSetPermissions = true;
+
+    if (!QFile::exists(path)) {
+        QFile f(path);
+        f.open(QIODevice::WriteOnly);
+        if (!f.isOpen()) {
+            qCWarning(lcFolderWatcher()) << "Failed to create test file: " << path;
+            return;
+        }
+        f.write("test");
+        f.close();
+    }
+
+    if (!FileSystem::isWritable(path)) {
+        FileSystem::setFileReadOnly(path, false);
+        if (!FileSystem::isWritable(path)) {
+            qCWarning(lcFolderWatcher()) << "Cannot make file readable: " << path;
+            _canSetPermissions = false;
+            QFile(path).remove();
+            return;
+        }
+    }
+
+    FileSystem::setFileReadOnly(path, true);
+    if (FileSystem::isWritable(path)) {
+        qCWarning(lcFolderWatcher()) << "Cannot make file read-only: " << path;
+        _canSetPermissions = false;
+    }
+
+    qCInfo(lcFolderWatcher()) << "Permissions in file system for" << path << (_canSetPermissions ? "works as expected" : "are not reliable");
+
+    FileSystem::setFileReadOnly(path, false);
+    QFile(path).remove();
 }
 
 void FolderWatcher::startNotificationTestWhenReady()
